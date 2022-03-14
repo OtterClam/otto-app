@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
     :root {
@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
         border: none;
         outline: none;
     }
-    
+
     input {
         border: none;
         outline: none;
@@ -31,10 +31,10 @@ const GlobalStyle = createGlobalStyle`
     a {
         text-decoration: none;
     }
-`;
+`
 
 const GlobalStyles = (): JSX.Element => {
-  return <GlobalStyle />;
-};
+  return <GlobalStyle />
+}
 
-export default GlobalStyles;
+export default GlobalStyles

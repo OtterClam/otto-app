@@ -4,11 +4,11 @@
     "es6": true
   },
   "extends": [
+    "plugin:react/recommended",
     "airbnb",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
-    "plugin:react/recommended",
     "plugin:import/typescript"
   ],
   "globals": {
@@ -43,6 +43,7 @@
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-this-alias": "off",
     "@typescript-eslint/no-unused-vars": "off",
@@ -75,7 +76,7 @@
     "no-underscore-dangle": "off",
     "no-unused-expressions": "off",
     "no-useless-return": "off",
-    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "prettier/prettier": ["error"],
     "import/first": "error",
     "import/no-amd": "error",
     "import/no-webpack-loader-syntax": "error",

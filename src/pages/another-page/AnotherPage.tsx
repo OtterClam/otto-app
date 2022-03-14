@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const StyledAnotherPage = styled.div`
   width: 100%;
@@ -8,12 +8,10 @@ const StyledAnotherPage = styled.div`
   font-size: 2.3rem;
   padding: 3rem;
   border: solid 1px pink;
-`;
+`
 
 const AnotherPage = () => {
-  return (
-    <StyledAnotherPage>pages/another-page/AnotherPage.tsx</StyledAnotherPage>
-  );
-};
+  return <StyledAnotherPage>pages/another-page/AnotherPage.tsx</StyledAnotherPage>
+}
 
-export default AnotherPage;
+export default AnotherPage

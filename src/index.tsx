@@ -1,10 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
 
-import { store } from "./state/store";
-import GlobalStyles from "./styles/GlobalStyles";
-import Routing from "./Routing";
+import { store } from './state/store'
+import GlobalStyles from './styles/GlobalStyles'
+import Routing from './Routing'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -13,5 +13,5 @@ ReactDOM.render(
       <Routing />
     </Provider>
   </React.StrictMode>,
-  document.getElementById("root")
-);
+  document.getElementById('root')
+)

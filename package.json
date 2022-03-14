@@ -2,18 +2,6 @@
   "name": "otto-app",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@reduxjs/toolkit": "^1.5.1",
-    "@usedapp/core": "^0.10.0",
-    "@web3-react/walletconnect-connector": "^6.2.10",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-redux": "^7.2.0",
-    "react-router-dom": "^6.2.1",
-    "react-scripts": "5.0.0",
-    "styled-components": "^5.3.3",
-    "typescript": "~4.5.5"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -34,6 +22,18 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.5.1",
+    "@usedapp/core": "^0.10.0",
+    "@web3-react/walletconnect-connector": "^6.2.10",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^6.2.1",
+    "react-scripts": "4.0.3",
+    "styled-components": "^5.3.3",
+    "typescript": "~4.5.5"
   },
   "devDependencies": {
     "@types/node": "^17.0.13",

@@ -1,23 +1,23 @@
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import Connector from "./Connector";
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+import Connector from './Connector'
 
 interface NavItemType {
-  label: string;
-  link: string;
+  label: string
+  link: string
 }
 
 // We can delete this after launch
 const navItems: NavItemType[] = [
   {
-    label: "Home",
-    link: "/",
+    label: 'Home',
+    link: '/',
   },
   {
-    label: "Another Page",
-    link: "/another",
+    label: 'Another Page',
+    link: '/another',
   },
-];
+]
 
 const StyledHeader = styled.div`
   position: relative;
@@ -27,11 +27,11 @@ const StyledHeader = styled.div`
   align-items: center;
   padding: 1rem 3rem;
   border: solid 1px blue;
-`;
+`
 
 const Logo = styled.div`
   font-size: 2.3rem;
-`;
+`
 
 const NavItems = styled.div`
   position: absolute;
@@ -39,12 +39,12 @@ const NavItems = styled.div`
   left: 50%;
   display: flex;
   transform: translate(-50%, -50%);
-`;
+`
 
 const NavItem = styled(Link)`
   margin: 0 1rem;
   font-size: 2rem;
-`;
+`
 
 const Header = () => {
   return (
@@ -59,7 +59,7 @@ const Header = () => {
       </NavItems>
       <Connector />
     </StyledHeader>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

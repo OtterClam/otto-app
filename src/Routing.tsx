@@ -1,8 +1,8 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import App from "./App";
-import AnotherPage from "./pages/another-page/AnotherPage";
-import HomePage from "./pages/home/HomePage";
-import NotFoundPage from "./pages/not-found/NotFoundPage";
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import App from './App'
+import AnotherPage from './pages/another-page/AnotherPage'
+import HomePage from './pages/home/HomePage'
+import NotFoundPage from './pages/not-found/NotFoundPage'
 
 const Routing = () => {
   return (
@@ -15,7 +15,7 @@ const Routing = () => {
         </Route>
       </Routes>
     </BrowserRouter>
-  );
-};
+  )
+}
 
-export default Routing;
+export default Routing
