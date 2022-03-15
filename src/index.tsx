@@ -2,9 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 
-import { store } from './state/store'
+import { store } from './store/store'
 import GlobalStyles from './styles/GlobalStyles'
 import Routing from './Routing'
+import './i18n'
 
 ReactDOM.render(
   <React.StrictMode>

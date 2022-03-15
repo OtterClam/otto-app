@@ -3,7 +3,7 @@ import { utils } from 'ethers'
 import { useContractFunction } from '@usedapp/core'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { setError } from '../../state/errorSlice'
+import { setError } from '../../store/errorSlice'
 
 const useContract = (address: string, abi: any, functionName: string, transactionName: string) => {
   const dispatch = useDispatch()

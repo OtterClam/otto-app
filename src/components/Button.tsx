@@ -2,7 +2,7 @@ import { useEthers } from '@usedapp/core'
 import { ReactNode, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { selectError } from '../state/errorSlice'
+import { selectError } from '../store/errorSlice'
 
 interface ButtonProps {
   primary?: boolean

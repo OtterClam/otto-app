@@ -8,7 +8,7 @@ import metamask from '../assets/wallets/metamask.jpg'
 import walletConnect from '../assets/wallets/walletconnect.jpg'
 import Popup from './Popup'
 import { INFURA_ID } from '../app/globals'
-import { selectConnectingWallet, walletConnected } from '../state/uiSlice'
+import { selectConnectingWallet, walletConnected } from '../store/uiSlice'
 
 export const walletConnectConnector = new WalletConnectConnector({
   rpc: {

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import WethSwap from './WethSwap'
 
 const StyledHomePage = styled.div`
@@ -17,9 +18,10 @@ const Header = styled.div`
 `
 
 const HomePage = () => {
+  const { t } = useTranslation()
   return (
     <StyledHomePage>
-      <Header>pages/home-page/HomePage.tsx</Header>
+      <Header>{t('title')}</Header>
       <WethSwap />
     </StyledHomePage>
   )

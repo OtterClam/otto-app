@@ -1,6 +1,6 @@
 import { shortenAddress, useEthers } from '@usedapp/core'
 import { useDispatch } from 'react-redux'
-import { connectWallet } from '../state/uiSlice'
+import { connectWallet } from '../store/uiSlice'
 import Button from './Button'
 
 const Connector = () => {

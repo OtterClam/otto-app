@@ -1,17 +1,21 @@
-import { useEthers } from '@usedapp/core'
+import { ChainId, useEthers } from '@usedapp/core'
 import { useDispatch } from 'react-redux'
-import { clearError, ErrorButtonType, setError } from '../../state/errorSlice'
+import { clearError, ErrorButtonType, setError } from '../../store/errorSlice'
 import { ETH_GLOBALS, RINKEBY_GLOBALS } from '../globals'
 
 const useGlobals = () => {
   const dispatch = useDispatch()
   const { chainId } = useEthers()
 
-  if (chainId === 4) {
+  if (chainId === ChainId.Mumbai) {
     dispatch(clearError())
     return RINKEBY_GLOBALS
   }
-  if (chainId === 1) {
+  if (chainId === ChainId.Polygon) {
+    dispatch(clearError())
+    return ETH_GLOBALS
+  }
+  if (chainId === 31337) {
     dispatch(clearError())
     return ETH_GLOBALS
   }
