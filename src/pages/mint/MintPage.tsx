@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import Hero from './Hero'
 import Countdown from './Countdown'
+import Intro from './Intro'
 
 const StyledPage = styled.div`
   width: 100%;
@@ -17,6 +18,7 @@ const MintPage = () => {
     <StyledPage>
       <Countdown />
       <Hero />
+      <Intro />
     </StyledPage>
   )
 }

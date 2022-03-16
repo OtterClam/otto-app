@@ -5,21 +5,19 @@ import heroImg from './otto_portal-hero.png'
 
 const StyledHero = styled.section`
   width: 100%;
-  height: 545px;
-  padding-left: 60px;
-  padding-right: 60px;
+  height: 40vw;
+  padding: 60px 90px;
   display: flex;
-  justify-items: center;
+  justify-content: center;
   gap: 30px;
 `
 
 const StyledContainer = styled.div`
-  margin-top: 90px;
-  margin-bottom: 220px;
   flex: 1;
   display: flex;
   flex-direction: column;
   text-align: center;
+  justify-content: center;
 `
 
 const StyledText = styled.p``
