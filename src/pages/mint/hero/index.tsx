@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { ContentMedium, Display2, Headline } from 'styles/typographs'
+import { ContentMedium, Display2, Headline } from 'styles/typography'
 import heroImg from './otto_portal-hero.png'
 
 const StyledHero = styled.section`

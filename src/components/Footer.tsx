@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Caption } from 'styles/typographs'
+import { Caption } from 'styles/typography'
 
 const StyledFooter = styled.div`
   width: 100%;
