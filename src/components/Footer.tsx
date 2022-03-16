@@ -3,16 +3,18 @@ import { Caption } from 'styles/typography'
 
 const StyledFooter = styled.div`
   width: 100%;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem 3rem;
 `
 
 const Footer = () => {
   return (
     <StyledFooter>
-      <Caption>Ottopia © 2022 OtterClam All Rights Reserved</Caption>
+      <p>
+        <Caption>Ottopia © 2022 OtterClam All Rights Reserved</Caption>
+      </p>
     </StyledFooter>
   )
 }
