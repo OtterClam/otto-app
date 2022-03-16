@@ -1,24 +1,18 @@
 import styled from 'styled-components'
-import Socials from './Socials'
+import { Caption } from 'styles/typographs'
 
 const StyledFooter = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 2rem 3rem;
-  border: solid 1px green;
-`
-
-const Logo = styled.div`
-  font-size: 2.3rem;
 `
 
 const Footer = () => {
   return (
     <StyledFooter>
-      <Logo>components/Footer.tsx</Logo>
-      <Socials />
+      <Caption>Ottopia © 2022 OtterClam All Rights Reserved</Caption>
     </StyledFooter>
   )
 }

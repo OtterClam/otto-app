@@ -1,3 +1,12 @@
 {
-  "title": "Otto App"
+  "title": "Otto App",
+  "mint": {
+    "title": "Mint Portals",
+    "hero": {
+      "title": "Otto Portals",
+      "subtitle": "Summon your own Otto NFTs",
+      "desc": "Mint Otto Portal with Whitelist ticket, and summon your unique Otto NFTs. Otto? Lottie? Celo? It’s all surprise!",
+      "limit": "Only 5,000 Portals available"
+    }
+  }
 }

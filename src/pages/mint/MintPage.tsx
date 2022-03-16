@@ -1,29 +1,25 @@
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
+import Hero from './hero'
+import Countdown from './countdown'
 
-const StyledHomePage = styled.div`
+const StyledPage = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 1;
-  padding: 3rem;
-  border: solid 1px orange;
+  background-color: ${({ theme }) => theme.colors.otterBlack};
 `
 
-const Header = styled.div`
-  width: 100%;
-  font-size: 2.3rem;
-`
-
-const HomePage = () => {
+const MintPage = () => {
   const { t } = useTranslation()
   return (
-    <StyledHomePage>
-      <Header>{t('title')}</Header>
+    <StyledPage>
+      <Countdown />
+      <Hero />
       <div style={{ background: '#666', width: '580px', height: '1800px' }} />
-    </StyledHomePage>
+    </StyledPage>
   )
 }
 
-export default HomePage
+export default MintPage
