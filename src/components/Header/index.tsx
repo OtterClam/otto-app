@@ -12,7 +12,9 @@ const StyledHeader = styled.div`
   padding: 20px 0;
 `
 
-const StyledLogo = styled.img``
+const StyledLogo = styled.img`
+  height: 60px;
+`
 
 const NavItems = styled.div`
   display: flex;
@@ -33,6 +35,11 @@ const NavItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 180px;
+    height: 60px;
+  }
 `
 
 const Header = () => {

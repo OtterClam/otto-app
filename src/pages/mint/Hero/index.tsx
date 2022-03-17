@@ -10,6 +10,12 @@ const StyledHero = styled.section`
   display: flex;
   justify-content: center;
   gap: 30px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    flex-direction: column;
+    height: auto;
+    padding: 40px 10px;
+  }
 `
 
 const StyledContainer = styled.div`

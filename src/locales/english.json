@@ -16,7 +16,19 @@
       "limit": "Only 5,000 Portals available"
     },
     "intro": {
-      "title": "How do Ottopia Portals work?"
+      "title": "How do Ottopia Portals work?",
+      "step1": "Step 1",
+      "step1_title": "Collect Whitelist Tickets",
+      "step1_desc": "Otto portals can only be minted with Whitelist Tickets. One wallet can have multiple whitelist tickets. If you’re not sure you have whitelist tickets, please check in our Discord channel.",
+      "step2": "Step 2",
+      "step2_title": "Mint Ottopia Portal with CLAM or ETH",
+      "step2_desc": "We accept $CLAM and ETH for Ottopia Portal minting. However, we're offering a 30% discount when you pay with $CLAM. This is a simple way to save money while supporting the continued growth of the Otter Kingdom.\n\n Whitelist-Only Sale:\n1 Portal = 0.06 ETH\n\nPublic Sale:\n1 Portal = 0.08 ETH",
+      "step3": "Step 3",
+      "step3_title": "Wait and take care of your Ottopia Portals",
+      "step3_desc": "Ottopia Portals need time to prepare the tranmission, so be patient and take care of your Ottopia Portal(s) carefully.",
+      "step4": "Step 4",
+      "step4_title": "Summon your Ottos",
+      "step4_desc": "When the time is up, you will be able to summon your Otto.\n\n1 portal can only summon 1 Otto. The traits will be randomly generated the moment you summon a Otto. If you're lucky, you'll summon an Otto that possesses rare, or super rare traits that greatly increase your Otto's value."
     }
   }
 }

@@ -31,6 +31,10 @@ const StyledBorder = styled.div`
   backdrop-filter: blur(5px);
   border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.crownYellow};
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 100%;
+  }
 `
 
 const StyledInnerBorder = styled.div`
@@ -46,6 +50,7 @@ const StyledContainer = styled.div`
   overflow-y: auto;
   width 100%;
   height: 100%;
+  background-color: ${({ theme }) => theme.colors.otterBlack};
 `
 
 const config: Config = {

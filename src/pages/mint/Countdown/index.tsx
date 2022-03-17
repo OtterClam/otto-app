@@ -28,6 +28,10 @@ const StyledNumberSlot = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 10px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    gap: 6px;
+  }
 `
 
 const StyledNumbers = styled.p`
@@ -45,6 +49,11 @@ const StyledNumber = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 28px;
+    height: 36px;
+  }
 `
 
 const StyledUnit = styled.p``
