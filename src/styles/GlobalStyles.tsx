@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
+import cursor from 'assets/cursor.png'
 
 const GlobalStyle = createGlobalStyle`
     :root {
@@ -7,6 +8,10 @@ const GlobalStyle = createGlobalStyle`
         --sub: grey;
         --primary: #32B2E5;
         --error: red;
+    }
+
+    body {
+        cursor: url(${cursor}), auto;
     }
 
     * {
