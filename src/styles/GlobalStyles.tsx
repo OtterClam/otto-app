@@ -22,12 +22,12 @@ const GlobalStyle = createGlobalStyle`
 
     @font-face {
         font-family: 'Pangolin';
-        src: local('Pangolin-Regular'), url('./fonts/pangolin-regular.woff2') format('woff2');;
+        src: url('./fonts/pangolin-regular.woff2') format('woff2');
     }
 
     @font-face {
         font-family: 'PaytoneOne';
-        src: local('PaytoneOne-Regular'), url('./fonts/paytoneone-regular.woff2') format('woff2');
+        src: url('./fonts/paytoneone-regular.woff2') format('woff2');
     }
 
     p {
