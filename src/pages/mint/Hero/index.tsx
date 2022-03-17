@@ -32,11 +32,13 @@ const StyledPink = styled.p`
   color: ${props => props.theme.colors.clamPink};
 `
 
-const StyledHeroImage = styled.div`
+const StyledHeroImage = styled.img`
   flex: 1;
-  background-image: url(${heroImg});
-  background-size: contain;
-  background-repeat: no-repeat;
+  object-fit: contain;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    flex: none;
+  }
 `
 
 export default function Hero() {
@@ -57,7 +59,7 @@ export default function Hero() {
           <ContentMedium>{t('mint.hero.limit')}</ContentMedium>
         </StyledPink>
       </StyledContainer>
-      <StyledHeroImage />
+      <StyledHeroImage src={heroImg} />
     </StyledHero>
   )
 }

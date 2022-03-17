@@ -1,8 +1,11 @@
+import { useMediaQuery } from 'hooks/useMediaQuery'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { breakpoints } from 'styles/breakpoints'
 import { Display3 } from 'styles/typography'
 import Connector from '../Connector'
-import logo from './Logo.svg'
+import logoLarge from './logo-large.svg'
+import logoSmall from './logo-small.svg'
 
 const StyledHeader = styled.div`
   position: relative;
@@ -44,9 +47,11 @@ const NavItem = styled.div`
 `
 
 const Header = () => {
+  const isMobile = useMediaQuery(breakpoints.mobile)
+
   return (
     <StyledHeader>
-      <StyledLogo src={logo} alt="logo" />
+      <StyledLogo src={isMobile ? logoSmall : logoLarge} alt="logo" />
       <NavItems>
         <NavItem>
           <Display3>Mint Portals</Display3>
