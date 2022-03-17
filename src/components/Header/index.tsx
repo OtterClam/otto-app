@@ -1,5 +1,4 @@
 import { useMediaQuery } from 'hooks/useMediaQuery'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { breakpoints } from 'styles/breakpoints'
 import { Display3 } from 'styles/typography'

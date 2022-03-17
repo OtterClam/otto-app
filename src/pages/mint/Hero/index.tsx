@@ -15,6 +15,7 @@ const StyledHero = styled.section`
     flex-direction: column;
     height: auto;
     padding: 40px 10px;
+    align-items: center;
   }
 `
 
@@ -28,16 +29,20 @@ const StyledContainer = styled.div`
 
 const StyledText = styled.p``
 
+const StyledDesc = styled.p`
+  margin-top: 20px;
+`
+
 const StyledPink = styled.p`
   color: ${props => props.theme.colors.clamPink};
 `
 
 const StyledHeroImage = styled.img`
-  flex: 1;
+  width: 50%;
   object-fit: contain;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    flex: none;
+    width: 80%;
   }
 `
 
@@ -52,9 +57,9 @@ export default function Hero() {
         <StyledText>
           <Headline>{t('mint.hero.subtitle')}</Headline>
         </StyledText>
-        <StyledText>
+        <StyledDesc>
           <ContentMedium>{t('mint.hero.desc')}</ContentMedium>
-        </StyledText>
+        </StyledDesc>
         <StyledPink>
           <ContentMedium>{t('mint.hero.limit')}</ContentMedium>
         </StyledPink>
