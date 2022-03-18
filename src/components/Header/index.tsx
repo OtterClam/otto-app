@@ -9,28 +9,28 @@ import logoSmall from './logo-small.svg'
 const StyledHeader = styled.div`
   position: relative;
   width: 90%;
+  height: 68px;
   display: flex;
   align-items: center;
-  padding: 20px 0;
+  margin: 20px 0;
 `
 
 const StyledLogo = styled.img`
-  height: 60px;
+  height: 100%;
+  flex: 1;
 `
 
 const NavItems = styled.div`
+  flex: 1;
   display: flex;
-  height: 68px;
-  justify-content: left;
+  height: 100%;
+  justify-content: center;
 `
 
 const NavItem = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
   display: flex;
-  transform: translate(-50%, -50%);
   width: 420px;
+  height: 100%;
   background-color: #fff;
   border: 4px solid ${props => props.theme.colors.otterBlack};
   border-radius: 10px;
@@ -41,7 +41,6 @@ const NavItem = styled.div`
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 180px;
-    height: 60px;
   }
 `
 
@@ -57,6 +56,7 @@ const Header = () => {
         </NavItem>
       </NavItems>
       {/* <Connector /> */}
+      <div style={{ flex: 1 }} />
     </StyledHeader>
   )
 }

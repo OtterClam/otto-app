@@ -27,6 +27,7 @@
     "@reduxjs/toolkit": "^1.5.1",
     "@usedapp/core": "^0.10.0",
     "@web3-react/walletconnect-connector": "^6.2.10",
+    "axios": "^0.26.1",
     "i18next": "^21.6.14",
     "i18next-browser-languagedetector": "^6.1.3",
     "react": "^17.0.2",

@@ -1,9 +1,8 @@
+import { WHITELIST_MINT_TIME } from 'constant'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Caption, ContentMedium, Headline } from 'styles/typography'
-
-const WHITELIST_MINT_TIME = 1647694800000 // 2022/3/19 21:00+8
 
 const StyledCountdown = styled.section`
   width: 100%;

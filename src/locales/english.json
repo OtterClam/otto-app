@@ -12,8 +12,17 @@
     "hero": {
       "title": "Ottopia Portals",
       "subtitle": "Summon your own Otto NFTs",
-      "desc": "Mint Otto Portal with Whitelist ticket, and summon your unique Otto NFTs. Otto? Lottie? Celo? It’s all surprise!",
+      "desc": "Mint Otto Portal with Whitelist ticket, and summon your unique Otto NFTs. Otto? Lottie? Cleo? It’s all surprise!",
       "limit": "Only 5,000 Portals available"
+    },
+    "checkWL": {
+      "title": "Check if you’re Whitelisted",
+      "desc": "Only the whitelisted accounts are qualified to mint Ottopia Portals at the Whitelist-only Sale. Connect wallet to see if you’re on the list!",
+      "connect": "Connect Wallet",
+      "has-wl-title": "You are whitelisted!",
+      "has-wl-desc": "Get ready! Your Ottopia Portals will be able to mint at {{time}}",
+      "no-wl-title": "Oops, you are not whitelisted.",
+      "no-wl-desc": "Don’t worry. You can join your Discord, and prepare for the Public Sale at {{time}}."
     },
     "intro": {
       "title": "How do Ottopia Portals work?",
@@ -30,5 +39,6 @@
       "step4_title": "Summon your Ottos",
       "step4_desc": "When the time is up, you will be able to summon your Otto.\n\n1 portal can only summon 1 Otto. The traits will be randomly generated the moment you summon a Otto. If you're lucky, you'll summon an Otto that possesses rare, or super rare traits that greatly increase your Otto's value."
     }
-  }
+  },
+  "connect-wallet": "Connect Wallet"
 }

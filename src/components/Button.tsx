@@ -1,27 +1,44 @@
 import { useEthers } from '@usedapp/core'
 import { ReactNode, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { Display3 } from 'styles/typography'
 import { selectError } from '../store/errorSlice'
 
 interface ButtonProps {
   primary?: boolean
+  color?: string
 }
 
-const StyledButton = styled.button`
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  border: ${(props: ButtonProps) => (props.primary ? '0' : '1px')} solid var(--main);
-  background-color: ${(props: ButtonProps) => (props.primary ? 'var(--primary)' : 'var(--bg)')};
-
-  font-size: 1.6rem;
+const StyledButton = styled.div`
+  border: 4px solid ${({ theme }) => theme.colors.otterBlack};
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.colors.otterBlue};
 
   :disabled {
     cursor: auto;
     background-color: var(--sub);
+  }
+
+  :active {
+    border: 4px solid #fff;
+  }
+
+  :hover {
+    background-color: ${({ theme }) => theme.colors.otterBlueHover};
+  }
+`
+
+const StyledInnerButton = styled.button`
+  color: #fff;
+  padding: 0 45px;
+  margin: -4px -4px 6px -4px;
+  border: 4px solid ${({ theme }) => theme.colors.otterBlack};
+  border-radius: 10px;
+
+  :active {
+    translate: 0 6px;
   }
 `
 
@@ -37,6 +54,7 @@ const Button = ({ children, click, primary, disabled, loading }: Props) => {
   const { account, activateBrowserWallet } = useEthers()
   const error = useSelector(selectError)
   const [pending, setPending] = useState(false)
+  const { t } = useTranslation()
 
   const isWeb3 = loading !== undefined
 
@@ -46,16 +64,19 @@ const Button = ({ children, click, primary, disabled, loading }: Props) => {
 
   return (
     <StyledButton
-      onClick={() => {
-        if (loading || disabled || pending) return
-        if (isWeb3) setPending(true)
-        if (isWeb3 && !account) activateBrowserWallet()
-        else click()
-      }}
-      disabled={disabled || loading || pending}
-      primary={primary}
+    // primary={primary}
     >
-      {isWeb3 && !account ? 'Connect Wallet' : loading ? 'Loading...' : children}
+      <StyledInnerButton
+        onClick={() => {
+          if (loading || disabled || pending) return
+          if (isWeb3) setPending(true)
+          if (isWeb3 && !account) activateBrowserWallet()
+          else click()
+        }}
+        disabled={disabled || loading || pending}
+      >
+        <Display3>{isWeb3 && !account ? t('connect-wallet') : loading ? 'Loading...' : children}</Display3>
+      </StyledInnerButton>
     </StyledButton>
   )
 }

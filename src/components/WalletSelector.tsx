@@ -7,13 +7,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import metamask from '../assets/wallets/metamask.jpg'
 import walletConnect from '../assets/wallets/walletconnect.jpg'
 import Popup from './Popup'
-import { INFURA_ID } from '../app/globals'
 import { selectConnectingWallet, walletConnected } from '../store/uiSlice'
 
 export const walletConnectConnector = new WalletConnectConnector({
   rpc: {
-    1: `https://mainnet.infura.io/v3/${INFURA_ID}`,
-    4: `https://rinkeby.infura.io/v3/${INFURA_ID}`,
+    137: 'https://polygon-rpc.com',
   },
   qrcode: true,
 })
@@ -53,9 +51,7 @@ const Icon = styled.img`
 const WalletSelector = (): JSX.Element => {
   const dispatch = useDispatch()
   const { account, activateBrowserWallet, activate } = useEthers()
-
   const connectingWallet = useSelector(selectConnectingWallet)
-
   return (
     <Popup show={connectingWallet && !account} close={() => dispatch(walletConnected())} header="Connect to a wallet">
       <Option onClick={() => activateBrowserWallet()}>
@@ -63,8 +59,8 @@ const WalletSelector = (): JSX.Element => {
         <Icon src={metamask} alt="Metamask logo" />
       </Option>
       <Option onClick={() => activate(walletConnectConnector)}>
-        <Name>Walletconnect</Name>
-        <Icon src={walletConnect} alt="Walletconnect logo" />
+        <Name>WalletConnect</Name>
+        <Icon src={walletConnect} alt="WalletConnect logo" />
       </Option>
     </Popup>
   )
