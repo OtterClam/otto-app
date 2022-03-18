@@ -14,13 +14,17 @@ import NoWLImage from './no-wl.png'
 
 const StyledCheckWL = styled.div`
   width: 90%;
-  margin-bottom: 45px;
+  margin: 45px 0;
   padding: 3px;
   border: 2px solid #1d2654;
   backdrop-filter: blur(5px);
   /* Note: backdrop-filter has minimal browser support */
   border-radius: 15px;
   background-color: ${({ theme }) => theme.colors.crownYellow};
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    margin: 20px 0;
+  }
 `
 
 const StyledInnerBorder = styled.div`

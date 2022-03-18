@@ -1,3 +1,5 @@
+import Button from 'components/Button'
+import { WHITE_PAPER_LINK } from 'constant'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { ContentMedium, Display2, Headline } from 'styles/typography'
@@ -46,6 +48,13 @@ const StyledHeroImage = styled.img`
   }
 `
 
+const StyledLink = styled.a`
+  margin-top: 40px;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    margin-top: 20px;
+  }
+`
+
 export default function Hero() {
   const { t } = useTranslation()
   return (
@@ -63,6 +72,11 @@ export default function Hero() {
         <StyledPink>
           <ContentMedium>{t('mint.hero.limit')}</ContentMedium>
         </StyledPink>
+        <StyledLink href={WHITE_PAPER_LINK} target="_blank">
+          <Button primaryColor="white">
+            <Headline>{t('mint.hero.whitepaper')}</Headline>
+          </Button>
+        </StyledLink>
       </StyledContainer>
       <StyledHeroImage src={heroImg} />
     </StyledHero>

@@ -6,15 +6,18 @@ import styled from 'styled-components'
 import { Display3 } from 'styles/typography'
 import { selectError } from '../store/errorSlice'
 
+export type ButtonColor = 'blue' | 'white'
+
 interface ButtonProps {
-  primary?: boolean
-  color?: string
+  primaryColor: ButtonColor
 }
 
-const StyledButton = styled.div`
+const StyledButton = styled.div<ButtonProps>`
+  display: inline-block;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
-  background-color: ${({ theme }) => theme.colors.otterBlue};
+  background-color: ${({ theme, primaryColor }) =>
+    primaryColor === 'blue' ? theme.colors.otterBlue : theme.colors.lightGray200};
 
   :disabled {
     cursor: auto;
@@ -22,16 +25,19 @@ const StyledButton = styled.div`
   }
 
   :active {
-    border: 4px solid #fff;
+    border: 4px solid transparent;
+    background-color: transparent;
   }
 
   :hover {
-    background-color: ${({ theme }) => theme.colors.otterBlueHover};
+    background-color: ${({ theme, primaryColor }) =>
+      primaryColor === 'blue' ? theme.colors.otterBlueHover : theme.colors.lightGray100};
   }
 `
 
-const StyledInnerButton = styled.button`
-  color: #fff;
+const StyledInnerButton = styled.button<ButtonProps>`
+  color: ${({ theme, primaryColor }) => (primaryColor === 'blue' ? '#fff' : theme.colors.otterBlack)};
+  background-color: ${({ theme, primaryColor }) => (primaryColor === 'blue' ? theme.colors.otterBlue : '#fff')};
   padding: 0 45px;
   margin: -4px -4px 6px -4px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
@@ -40,18 +46,23 @@ const StyledInnerButton = styled.button`
   :active {
     translate: 0 6px;
   }
+
+  :hover {
+    background-color: ${({ theme, primaryColor }) =>
+      primaryColor === 'blue' ? theme.colors.otterBlueHover : theme.colors.lightGray100};
+  }
 `
 
 interface Props {
-  click: () => void
-  primary?: boolean
+  click?: () => void
+  primaryColor?: ButtonColor
   isWeb3?: boolean
   disabled?: boolean
   loading?: boolean
   children?: ReactNode
 }
 
-const Button = ({ children, click, primary, isWeb3, disabled, loading }: Props) => {
+const Button = ({ children, click, primaryColor = 'blue', isWeb3, disabled, loading }: Props) => {
   const { account, activateBrowserWallet } = useEthers()
   const error = useSelector(selectError)
   const [pending, setPending] = useState(false)
@@ -62,19 +73,26 @@ const Button = ({ children, click, primary, isWeb3, disabled, loading }: Props) 
   }, [error, loading])
 
   return (
-    <StyledButton
-    // primary={primary}
-    >
+    <StyledButton primaryColor={primaryColor}>
       <StyledInnerButton
+        primaryColor={primaryColor}
         onClick={() => {
-          if (loading || disabled || pending) return
-          if (isWeb3) setPending(true)
-          if (isWeb3 && !account) activateBrowserWallet()
-          else click()
+          if (click) {
+            if (loading || disabled || pending) return
+            if (isWeb3) setPending(true)
+            if (isWeb3 && !account) activateBrowserWallet()
+            else click()
+          }
         }}
         disabled={disabled || loading || pending}
       >
-        <Display3>{isWeb3 && !account ? t('connect-wallet') : loading ? 'Loading...' : children}</Display3>
+        {isWeb3 && !account ? (
+          <Display3> {t('connect-wallet')}</Display3>
+        ) : loading ? (
+          <Display3>Loading...</Display3>
+        ) : (
+          children
+        )}
       </StyledInnerButton>
     </StyledButton>
   )
