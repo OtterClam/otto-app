@@ -45,18 +45,17 @@ const StyledInnerButton = styled.button`
 interface Props {
   click: () => void
   primary?: boolean
+  isWeb3?: boolean
   disabled?: boolean
   loading?: boolean
   children?: ReactNode
 }
 
-const Button = ({ children, click, primary, disabled, loading }: Props) => {
+const Button = ({ children, click, primary, isWeb3, disabled, loading }: Props) => {
   const { account, activateBrowserWallet } = useEthers()
   const error = useSelector(selectError)
   const [pending, setPending] = useState(false)
   const { t } = useTranslation()
-
-  const isWeb3 = loading !== undefined
 
   useEffect(() => {
     if (error || loading) setPending(false)
