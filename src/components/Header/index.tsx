@@ -55,7 +55,7 @@ const Header = () => {
           <Display3>Mint Portals</Display3>
         </NavItem>
       </NavItems>
-      <Connector />
+      {/* <Connector /> */}
       <div style={{ flex: 1 }} />
     </StyledHeader>
   )

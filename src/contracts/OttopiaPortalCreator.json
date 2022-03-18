@@ -90,6 +90,24 @@
     {
       "inputs": [
         {
+          "internalType": "uint256",
+          "name": "amount_",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address[]",
+          "name": "wallets",
+          "type": "address[]"
+        }
+      ],
+      "name": "addOttolisted",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "enum OttopiaPortalCreator.SALE_STAGE",
           "name": "stage_",
           "type": "uint8"
@@ -108,6 +126,19 @@
       "name": "adjustSaleConfig",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "clamPerWETH",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "clamPerWETH_",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -351,7 +382,7 @@
         },
         {
           "internalType": "address[]",
-          "name": "ottolisted_",
+          "name": "wallets",
           "type": "address[]"
         }
       ],

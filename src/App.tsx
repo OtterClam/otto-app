@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom'
 import { ChainId, Config, DAppProvider } from '@usedapp/core'
 
 import { theme } from 'styles'
+import MintPopup from 'components/MintPopup'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import Error from './components/Error'
@@ -79,6 +80,7 @@ const App = () => {
           <Footer />
           <Error />
           <WalletSelector />
+          <MintPopup />
         </DAppProvider>
       </StyledApp>
     </ThemeProvider>
