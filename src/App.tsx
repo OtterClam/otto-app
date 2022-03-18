@@ -41,14 +41,14 @@ const StyledInnerBorder = styled.div`
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
   overflow: hidden;
-  width 100%;
+  width: 100%;
   height: 100%;
 `
 
 const StyledContainer = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
-  width 100%;
+  width: 100%;
   height: 100%;
   background-color: ${({ theme }) => theme.colors.otterBlack};
 `

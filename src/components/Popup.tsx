@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import styled from 'styled-components'
+import { Headline } from 'styles/typography'
 import exit from '../assets/ui/exit.svg'
 import Button from './Button'
 
@@ -26,10 +27,22 @@ const Background = styled.button`
 
 const Container = styled.div`
   position: relative;
-  width: 40rem;
-  background-color: var(--bg);
-  border-radius: 2rem;
-  padding: 2rem;
+  width: 30rem;
+  background-color: ${({ theme }) => theme.colors.crownYellow};
+  padding: 6px;
+
+  border: 4px solid ${props => props.theme.colors.otterBlack};
+  border-radius: 20px;
+`
+
+const StyledInnerContainer = styled.div`
+  border: 4px solid ${({ theme }) => theme.colors.otterBlack};
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  padding: 30px;
+  background-color: #fff;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,16 +52,14 @@ const ExitButton = styled.button`
   position: absolute;
   top: 2rem;
   right: 2rem;
-  cursor: pointer;
 `
 
 const Exit = styled.img`
-  height: 2rem;
+  height: 16px;
 `
 
 const Header = styled.div`
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
 `
 
 const SubHeader = styled.div`
@@ -80,17 +91,23 @@ const Popup = ({ show, close, header, subHeader, buttonText, buttonAction, child
     <StyledPopup>
       <Background />
       <Container>
-        <ExitButton onClick={() => close()}>
-          <Exit src={exit} />
-        </ExitButton>
-        {header && <Header>{header}</Header>}
-        {subHeader && <SubHeader>{subHeader}</SubHeader>}
-        {children && <Content>{children}</Content>}
-        {buttonText && buttonAction && (
-          <Button primary click={buttonAction}>
-            {buttonText}
-          </Button>
-        )}
+        <StyledInnerContainer>
+          <ExitButton onClick={() => close()}>
+            <Exit src={exit} />
+          </ExitButton>
+          {header && (
+            <Header>
+              <Headline> {header}</Headline>
+            </Header>
+          )}
+          {subHeader && <SubHeader>{subHeader}</SubHeader>}
+          {children && <Content>{children}</Content>}
+          {buttonText && buttonAction && (
+            <Button primary click={buttonAction}>
+              {buttonText}
+            </Button>
+          )}
+        </StyledInnerContainer>
       </Container>
     </StyledPopup>
   )

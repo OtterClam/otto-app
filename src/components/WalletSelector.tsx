@@ -4,6 +4,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { useEthers } from '@usedapp/core'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { ContentLarge } from 'styles/typography'
 import metamask from '../assets/wallets/metamask.jpg'
 import walletConnect from '../assets/wallets/walletconnect.jpg'
 import Popup from './Popup'
@@ -21,9 +22,9 @@ const Option = styled.button`
   display: flex;
   align-items: center;
   margin: 0.7rem 0;
-  cursor: pointer;
   background: white;
-  border: solid 1px var(--sub);
+  border: 4px solid ${({ theme }) => theme.colors.lightGray300};
+  border-radius: 10px;
 
   padding: 0.9rem 1.2rem;
   @media (max-width: 600px) {
@@ -31,17 +32,10 @@ const Option = styled.button`
   }
 `
 
-const Name = styled.div`
+const Name = styled(ContentLarge)`
   display: flex;
   align-items: center;
   flex: 1;
-
-  font-weight: 600;
-  font-size: 1.6rem;
-  @media (max-width: 600px) {
-    font-weight: 700;
-    font-size: 1.6rem;
-  }
 `
 
 const Icon = styled.img`
