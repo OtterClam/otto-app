@@ -7,6 +7,7 @@ import Step2Img from './step2.png'
 import Step2ExtraImg from './step2-extra.png'
 import Step3Img from './step3.png'
 import Step4Img from './step4.png'
+import LimitedTreasuryImg from './limited-treasury.jpeg'
 
 const StyledIntro = styled.div`
   display: flex;
@@ -15,7 +16,18 @@ const StyledIntro = styled.div`
   margin: 0 80px;
 `
 
-const StyledTitle = styled.p``
+const StyledLimitedTreasury = styled.img`
+  width: 100%;
+  border-radius: 8px;
+`
+
+const StyledTitle = styled.p`
+  margin-top: 80px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    margin-top: 40px;
+  }
+`
 
 const StyledStepSection = styled.section`
   display: flex;
@@ -88,6 +100,7 @@ export default function Intro() {
   )
   return (
     <StyledIntro>
+      <StyledLimitedTreasury src={LimitedTreasuryImg} alt="Limited Treasury" />
       <StyledTitle>
         <Display2>{t('mint.intro.title')}</Display2>
       </StyledTitle>
