@@ -12,6 +12,7 @@ const StyledHero = styled.section`
   display: flex;
   justify-content: center;
   gap: 30px;
+  color: #fff;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     flex-direction: column;

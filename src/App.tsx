@@ -6,7 +6,6 @@ import { theme } from 'styles'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import Error from './components/Error'
-import { INFURA_ID } from './app/globals'
 import WalletSelector from './components/WalletSelector'
 import bg from './assets/bg.jpg'
 
@@ -56,7 +55,11 @@ const StyledContainer = styled.div`
 const config: Config = {
   readOnlyChainId: ChainId.Polygon,
   readOnlyUrls: {
-    [ChainId.Mainnet]: `https://mainnet.infura.io/v3/${INFURA_ID}`,
+    [ChainId.Mainnet]: 'https://polygon-rpc.com',
+    31338: 'https://fork-rpc.otterclam.finance',
+  },
+  multicallAddresses: {
+    31338: '0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507',
   },
 }
 

@@ -4,6 +4,7 @@ import Hero from './Hero'
 import Countdown from './Countdown'
 import Intro from './Intro'
 import CheckWL from './CheckWL'
+import Mint from './Mint'
 
 const StyledPage = styled.div`
   width: 100%;
@@ -17,6 +18,7 @@ const MintPage = () => {
   const { t } = useTranslation()
   return (
     <StyledPage>
+      <Mint />
       <Countdown />
       <Hero />
       <CheckWL />

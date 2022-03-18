@@ -3,8 +3,6 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { utils } from 'ethers'
 
-import { useTokenSymbol } from '../contracts/views'
-
 const StyledTokenInput = styled.div`
   width: 100%;
   display: flex;
@@ -57,7 +55,7 @@ const TokenInput = ({ value, token, setValue, eth }: Props) => {
   const { account } = useEthers()
   const etherBalance = useEtherBalance(account)
   const tokenBalance = useTokenBalance(token, account)
-  const symbol = useTokenSymbol(token)
+  const symbol = 'eth'
   const [error, setError] = useState('')
 
   const balance = eth ? utils.formatEther(etherBalance?.toString() || '1') : tokenBalance

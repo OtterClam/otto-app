@@ -31,10 +31,6 @@ const GlobalStyle = createGlobalStyle`
         src: url('./fonts/paytoneone-regular.woff2') format('woff2');
     }
 
-    p {
-        color: var(--main);
-    }
-
     button {
         background: none;
         border: none;

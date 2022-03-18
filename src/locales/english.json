@@ -39,6 +39,13 @@
       "step4": "Step 4",
       "step4_title": "Summon your Ottos",
       "step4_desc": "When the time is up, you will be able to summon your Otto.\n\n1 portal can only summon 1 Otto. The traits will be randomly generated the moment you summon a Otto. If you're lucky, you'll summon an Otto that possesses rare, or super rare traits that greatly increase your Otto's value."
+    },
+    "mint": {
+      "title": "Mint Portal",
+      "mint_summary": "Mint Summary({{address}})",
+      "portal": "Ottopia Portal",
+      "info_desc": "A special portal that you can summon 1 Otto to the Otter Kingdom. Mint Portals and prepare for the Ottopian journey!",
+      "amount_left": "{{amount}} left"
     }
   },
   "connect-wallet": "Connect Wallet",

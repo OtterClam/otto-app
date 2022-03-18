@@ -12,6 +12,7 @@ const StyledCountdown = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: #fff;
 `
 
 const StyledTitle = styled.p``
