@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
-import cursor from 'assets/cursor.png'
+import cursorDefault from 'assets/cursor-default.png'
+import cursorPointer from 'assets/cursor-pointer.png'
 
 const GlobalStyle = createGlobalStyle`
     :root {
@@ -11,7 +12,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body {
-        cursor: url(${cursor}), auto;
+        cursor: url(${cursorDefault}), auto;
     }
 
     * {
@@ -22,7 +23,7 @@ const GlobalStyle = createGlobalStyle`
 
     @font-face {
         font-family: 'Pangolin';
-        src: url('./fonts/pangolin-regular.woff2') format('woff2');
+        src: url('./fonts/Pangolin-Regular.ttf') ;
     }
 
     @font-face {
@@ -38,6 +39,7 @@ const GlobalStyle = createGlobalStyle`
         background: none;
         border: none;
         outline: none;
+        cursor: url(${cursorPointer}) 7 0 ,auto;
     }
 
     input {
