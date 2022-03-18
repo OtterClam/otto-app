@@ -5,6 +5,7 @@ import { useEthers } from '@usedapp/core'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { ContentLarge } from 'styles/typography'
+import { useTranslation } from 'react-i18next'
 import metamask from '../assets/wallets/metamask.jpg'
 import walletConnect from '../assets/wallets/walletconnect.jpg'
 import Popup from './Popup'
@@ -43,11 +44,16 @@ const Icon = styled.img`
 `
 
 const WalletSelector = (): JSX.Element => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const { account, activateBrowserWallet, activate } = useEthers()
   const connectingWallet = useSelector(selectConnectingWallet)
   return (
-    <Popup show={connectingWallet && !account} close={() => dispatch(walletConnected())} header="Connect to a wallet">
+    <Popup
+      show={connectingWallet && !account}
+      close={() => dispatch(walletConnected())}
+      header={t('wallet_selector_head')}
+    >
       <Option onClick={() => activateBrowserWallet()}>
         <Name>Metamask</Name>
         <Icon src={metamask} alt="Metamask logo" />

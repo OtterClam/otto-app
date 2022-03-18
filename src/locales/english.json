@@ -40,5 +40,6 @@
       "step4_desc": "When the time is up, you will be able to summon your Otto.\n\n1 portal can only summon 1 Otto. The traits will be randomly generated the moment you summon a Otto. If you're lucky, you'll summon an Otto that possesses rare, or super rare traits that greatly increase your Otto's value."
     }
   },
-  "connect-wallet": "Connect Wallet"
+  "connect-wallet": "Connect Wallet",
+  "wallet_selector_head": "Connect to a wallet"
 }
