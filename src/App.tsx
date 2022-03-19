@@ -56,7 +56,7 @@ const StyledContainer = styled.div`
 const config: Config = {
   readOnlyChainId: ChainId.Polygon,
   readOnlyUrls: {
-    [ChainId.Mainnet]: 'https://polygon-rpc.com',
+    [ChainId.Polygon]: 'https://polygon-rpc.com',
     [ChainId.Hardhat]: 'http://127.0.0.1:8545',
   },
   multicallAddresses: {

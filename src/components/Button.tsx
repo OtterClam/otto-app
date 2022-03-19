@@ -13,17 +13,12 @@ interface ButtonProps {
   padding?: string
 }
 
-const StyledButton = styled.div<ButtonProps>`
+const StyledButton = styled.button<ButtonProps>`
   display: inline-block;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
   background-color: ${({ theme, primaryColor }) =>
     primaryColor === 'blue' ? theme.colors.otterBlue : theme.colors.lightGray200};
-
-  :disabled {
-    cursor: auto;
-    background-color: var(--sub);
-  }
 
   :hover {
     background-color: ${({ theme, primaryColor }) =>
@@ -34,12 +29,23 @@ const StyledButton = styled.div<ButtonProps>`
     border: 4px solid transparent;
     background-color: transparent;
   }
+
+  :disabled {
+    background-color: ${({ theme }) => theme.colors.darkGray300};
+  }
 `
 
-const StyledInnerButton = styled.button<ButtonProps>`
+interface InnerButtonProps {
+  primaryColor: ButtonColor
+  padding?: string
+  disabled?: boolean
+}
+
+const StyledInnerButton = styled.div<InnerButtonProps>`
   width: 100%;
   color: ${({ theme, primaryColor }) => (primaryColor === 'blue' ? '#fff' : theme.colors.otterBlack)};
-  background-color: ${({ theme, primaryColor }) => (primaryColor === 'blue' ? theme.colors.otterBlue : '#fff')};
+  background-color: ${({ theme, primaryColor, disabled }) =>
+    disabled ? theme.colors.darkGray200 : primaryColor === 'blue' ? theme.colors.otterBlue : '#fff'};
   padding: ${({ padding }) => padding || '0 45px'};
   /* margin: -4px -4px 6px -4px; */
   margin: 0 0 6px 0;
@@ -47,8 +53,12 @@ const StyledInnerButton = styled.button<ButtonProps>`
   border-radius: 8px;
 
   :hover {
-    background-color: ${({ theme, primaryColor }) =>
-      primaryColor === 'blue' ? theme.colors.otterBlueHover : theme.colors.lightGray100};
+    background-color: ${({ theme, primaryColor, disabled }) =>
+      disabled
+        ? theme.colors.darkGray200
+        : primaryColor === 'blue'
+        ? theme.colors.otterBlueHover
+        : theme.colors.lightGray100};
   }
 
   :active {
@@ -77,20 +87,19 @@ const Button = ({ children, click, primaryColor = 'blue', isWeb3, disabled, load
   }, [error, loading])
 
   return (
-    <StyledButton primaryColor={primaryColor}>
-      <StyledInnerButton
-        primaryColor={primaryColor}
-        padding={padding}
-        onClick={() => {
-          if (click) {
-            if (loading || disabled || pending) return
-            if (isWeb3) setPending(true)
-            if (isWeb3 && !account) activateBrowserWallet()
-            else click()
-          }
-        }}
-        disabled={disabled || loading || pending}
-      >
+    <StyledButton
+      primaryColor={primaryColor}
+      disabled={disabled || loading || pending}
+      onClick={() => {
+        if (click) {
+          if (loading || disabled || pending) return
+          if (isWeb3) setPending(true)
+          if (isWeb3 && !account) activateBrowserWallet()
+          else click()
+        }
+      }}
+    >
+      <StyledInnerButton primaryColor={primaryColor} padding={padding} disabled={disabled || loading || pending}>
         {isWeb3 && !account ? (
           <Display3> {t('connect-wallet')}</Display3>
         ) : loading ? (

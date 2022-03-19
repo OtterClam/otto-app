@@ -36,6 +36,10 @@ const GlobalStyle = createGlobalStyle`
         border: none;
         outline: none;
         cursor: url(${cursorPointer}) 7 0 ,auto;
+
+        :disabled {
+            cursor: url(${cursorDefault}), auto;
+        }
     }
 
     input {

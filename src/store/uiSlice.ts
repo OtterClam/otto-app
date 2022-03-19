@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '.'
 
-export type MintStatus = 'before' | 'minting' | 'success'
+export type MintStatus = 'init' | 'minting' | 'success'
 
 interface UiState {
   connectingWallet: boolean
@@ -11,7 +11,7 @@ interface UiState {
 
 const initialState: UiState = {
   connectingWallet: false,
-  mintStatus: 'before',
+  mintStatus: 'init',
   mintNumber: 0,
 }
 
@@ -33,7 +33,7 @@ export const uiSlice = createSlice({
       state.mintNumber = action.payload
     },
     mintFailed: state => {
-      state.mintStatus = 'before'
+      state.mintStatus = 'init'
     },
   },
 })

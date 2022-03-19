@@ -34,7 +34,7 @@ export default function MintPopup() {
   const mintStatus = useSelector(selectMintStatus)
   const mintNumber = useSelector(selectMintNumber)
   return (
-    <Fullscreen show={mintStatus !== 'before'}>
+    <Fullscreen show={mintStatus !== 'init'}>
       <StyledMintPopup>
         {mintStatus === 'minting' && (
           <>

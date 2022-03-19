@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { changeNetwork } from '../app/lib/web3'
+import { changeNetwork } from '../helpers/web3'
 import { clearError, ErrorButtonType, selectError } from '../store/errorSlice'
 import Popup from './Popup'
 
