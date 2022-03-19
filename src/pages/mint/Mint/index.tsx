@@ -309,7 +309,9 @@ export default function Mint() {
     mint(account, quantity, payment, paidOption === 'clam')
   }, [account, quantity, totalPaymentETH, totalPaymentCLAM, paidOption, mint])
 
-  useEffect(() => setQuantity(ottolisted || 0), [ottolisted])
+  useEffect(() => {
+    if (ottolisted > 0) setQuantity(ottolisted || 0)
+  }, [ottolisted])
   useEffect(() => {
     if (mintState.status === 'Mining') dispatch(mintStart())
     if (mintState.status === 'Success') dispatch(mintSuccess(quantity))
