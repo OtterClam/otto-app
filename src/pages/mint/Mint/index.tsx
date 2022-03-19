@@ -344,6 +344,7 @@ export default function Mint() {
               <StyledCardBottomContainer>
                 <StyledButtons>
                   <Button
+                    disabled={ottolisted === 0}
                     padding={isMobile ? '8px 16px' : '4px 20px'}
                     click={() => setQuantity(Math.max(quantity - 1, 1))}
                   >
@@ -353,6 +354,7 @@ export default function Mint() {
                     <ContentLarge>{quantity}</ContentLarge>
                   </StyledQuantity>
                   <Button
+                    disabled={ottolisted === 0}
                     padding={isMobile ? '8px 16px' : '4px 20px'}
                     click={() => setQuantity(Math.min(quantity + 1, ottolisted))}
                   >
