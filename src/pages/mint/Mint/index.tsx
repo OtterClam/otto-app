@@ -252,6 +252,30 @@ const StyledCLAMBalance = styled.p`
   }
 `
 
+const StyledBuyCLAM = styled.p`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`
+
+const StyledBuyCLAMLink = styled(ContentSmall)`
+  color: ${({ theme }) => theme.colors.clamPink};
+  display: inline-flex;
+  justify-content: right;
+  align-items: center;
+  &::before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    margin-right: 4px;
+    background: url(${CLAM});
+    display: inline-block;
+    background-size: 24px 24px;
+  }
+`
+
 type PaidOption = 'clam' | 'eth'
 
 export default function Mint() {
@@ -345,7 +369,7 @@ export default function Mint() {
               </StyledCardBottomContainer>
             </StyledCard>
             <StyledPaymentMethod as="p">
-              Payment Method <Note> (1ETH = {trim(ethers.utils.formatUnits(clamPerETH, 9), 2)} CLAM)</Note>
+              Payment Method <Note> (1 ETH = {trim(ethers.utils.formatUnits(clamPerETH, 9), 2)} CLAM)</Note>
             </StyledPaymentMethod>
             <StyledSelector selected={paidOption === 'clam'} onClick={() => setPaidOption('clam')}>
               <StyledSelectorText as="p">Pay with CLAM</StyledSelectorText>
@@ -420,6 +444,16 @@ export default function Mint() {
                 <Headline>Approve</Headline>
               </Button>
             )}
+            <StyledBuyCLAM>
+              <ContentSmall>Not enough CLAM? </ContentSmall>
+              <a
+                href="https://quickswap.exchange/#/swap?outputCurrency=0xC250e9987A032ACAC293d838726C511E6E1C029d"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <StyledBuyCLAMLink>Buy CLAM</StyledBuyCLAMLink>
+              </a>
+            </StyledBuyCLAM>
           </StyledRightSection>
         </StyledSection>
       </StyledContainer>
