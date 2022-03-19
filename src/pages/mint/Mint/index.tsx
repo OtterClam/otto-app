@@ -438,7 +438,7 @@ export default function Mint() {
             )}
             {account && hasAllowance && saleStage.toNumber() === 0 && (
               <Button click={onMint} disabled>
-                Not Available
+                Not Started
               </Button>
             )}
             {account && hasAllowance && saleStage.toNumber() > 0 && (
