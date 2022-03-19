@@ -311,7 +311,8 @@ export default function Mint() {
   const { account, chainId } = useEthers()
   const [ethPrice, clamPrice, clamPerETH, saleStage] = useMintInfo()
   const ottolisted = useOttolisted()
-  const [quantity, setQuantity] = useState(ottolisted || 0)
+  const maxCanMint = saleStage.lte(1) ? ottolisted : 6
+  const [quantity, setQuantity] = useState(maxCanMint || 0)
   const [ottoSupply, ottoBalance] = useOttoInfo()
   const ethBalance = useTokenBalance(paidOption === 'eth' && WETH, account, { chainId }) || 0
   const clamBalance = useTokenBalance(paidOption === 'clam' && CLAM, account, { chainId }) || 0
@@ -334,8 +335,8 @@ export default function Mint() {
   }, [account, quantity, totalPaymentETH, totalPaymentCLAM, paidOption, mint])
 
   useEffect(() => {
-    if (ottolisted > 0) setQuantity(ottolisted || 0)
-  }, [ottolisted])
+    if (maxCanMint > 0) setQuantity(maxCanMint || 0)
+  }, [maxCanMint])
   useEffect(() => {
     if (mintState.status === 'Mining') dispatch(mintStart())
     if (mintState.status === 'Success') dispatch(mintSuccess(quantity))
@@ -384,7 +385,7 @@ export default function Mint() {
               <StyledCardBottomContainer>
                 <StyledButtons>
                   <Button
-                    disabled={ottolisted === 0}
+                    disabled={maxCanMint === 0}
                     padding={isMobile ? '8px 16px' : '4px 20px'}
                     click={() => setQuantity(Math.max(quantity - 1, 1))}
                   >
@@ -394,16 +395,16 @@ export default function Mint() {
                     <ContentLarge>{quantity}</ContentLarge>
                   </StyledQuantity>
                   <Button
-                    disabled={ottolisted === 0}
+                    disabled={maxCanMint === 0}
                     padding={isMobile ? '8px 16px' : '4px 20px'}
-                    click={() => setQuantity(Math.min(quantity + 1, ottolisted))}
+                    click={() => setQuantity(Math.min(quantity + 1, maxCanMint))}
                   >
                     <Headline>+</Headline>
                   </Button>
                   <Button
                     primaryColor="white"
                     padding={isMobile ? '8px 10px' : '4px 20px'}
-                    click={() => setQuantity(ottolisted)}
+                    click={() => setQuantity(maxCanMint)}
                   >
                     <Headline>Max</Headline>
                   </Button>
@@ -482,7 +483,7 @@ export default function Mint() {
               </Button>
             )}
             {account && hasAllowance && saleStage.toNumber() > 0 && (
-              <Button click={onMint} disabled={ottolisted === 0}>
+              <Button click={onMint} disabled={maxCanMint === 0}>
                 <Headline>Mint</Headline>
               </Button>
             )}
