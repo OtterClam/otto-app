@@ -396,13 +396,13 @@ export default function Mint() {
                 <>
                   {paidOption === 'eth' && (
                     <StyledSummaryItem>
-                      <p>You ETH balance:</p>
+                      <p>Your ETH balance:</p>
                       <StyledETHBalance>{trim(ethers.utils.formatEther(ethBalance), 4)}</StyledETHBalance>
                     </StyledSummaryItem>
                   )}
                   {paidOption === 'clam' && (
                     <StyledSummaryItem>
-                      <p>You CLAM balance:</p>
+                      <p>Your CLAM balance:</p>
                       <StyledCLAMBalance>{trim(ethers.utils.formatUnits(clamBalance, 9), 2)}</StyledCLAMBalance>
                     </StyledSummaryItem>
                   )}
