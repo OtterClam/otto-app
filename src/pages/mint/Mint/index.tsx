@@ -4,7 +4,7 @@ import ETH from 'assets/eth.png'
 import Button from 'components/Button'
 import { PUBLIC_MINT_TIME } from 'constant'
 import { useApprove, useMint } from 'contracts/functions'
-import { useMintInfo, useOttolisted, useOttoSupply } from 'contracts/views'
+import { useMintInfo, useOttolisted, useOttoInfo } from 'contracts/views'
 import { ethers } from 'ethers'
 import { trim } from 'helpers/trim'
 import useContractAddresses from 'hooks/useContractAddresses'
@@ -288,7 +288,7 @@ export default function Mint() {
   const [ethPrice, clamPrice, clamPerETH, saleStage] = useMintInfo()
   const ottolisted = useOttolisted()
   const [quantity, setQuantity] = useState(ottolisted || 0)
-  const ottoSupply = useOttoSupply()
+  const [ottoSupply, ottoBalance] = useOttoInfo()
   const ethBalance = useTokenBalance(paidOption === 'eth' && WETH, account, { chainId }) || 0
   const clamBalance = useTokenBalance(paidOption === 'clam' && CLAM, account, { chainId }) || 0
   const ethAllowance = useTokenAllowance(paidOption === 'eth' && WETH, account, PORTAL_CREATOR, { chainId })
@@ -335,7 +335,7 @@ export default function Mint() {
                   <StyledPortalInfoTitle>{t('mint.mint.portal')}</StyledPortalInfoTitle>
                   <StyledPortalInfoDesc>{t('mint.mint.info_desc')}</StyledPortalInfoDesc>
                   <StyledPortalInfoAmountLeft>
-                    {t('mint.mint.amount_left', { amount: 5000 - ottoSupply })}
+                    {t('mint.mint.amount_left', { amount: 5000 - ottoSupply.toNumber() })}
                   </StyledPortalInfoAmountLeft>
                   {account && ottolisted > 0 && (
                     <StyledPortalInfoDesc>You can mint {ottolisted} Otto Portals!</StyledPortalInfoDesc>
@@ -427,7 +427,7 @@ export default function Mint() {
               )}
               {!account && <ContentSmall>Please connect your wallet to proceed the process.</ContentSmall>}
             </StyledSummary>
-            {account && saleStage.toNumber() <= 1 && ottolisted === 0 && (
+            {account && saleStage.toNumber() <= 1 && ottoBalance.eq(0) && ottolisted === 0 && (
               <NotOttolistedWarning>
                 Sorry, you are not whitelisted. Come back later at the Public Sale starting at{' '}
                 {new Date(PUBLIC_MINT_TIME).toLocaleString()}

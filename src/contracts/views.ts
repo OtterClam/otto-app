@@ -54,19 +54,27 @@ export const useOttolisted = () => {
   return value ? value[0].toNumber() : null
 }
 
-export const useOttoSupply = () => {
+export const useOttoInfo = () => {
   const { OTTO } = useContractAddresses()
-  const { library } = useEthers()
+  const { library, account } = useEthers()
   const contract = new Contract(OTTO, Otto, library)
-  const { value, error } =
-    useCall({
-      contract,
-      method: 'totalSupply',
-      args: [],
-    }) || {}
-  if (error) {
-    console.error(error)
-    return 0
-  }
-  return value ? value[0].toNumber() : 0
+  const results =
+    useCalls([
+      {
+        contract,
+        method: 'totalSupply',
+        args: [],
+      },
+      {
+        contract,
+        method: 'balanceOf',
+        args: [account],
+      },
+    ]) || {}
+  results.forEach((result, idx) => {
+    if (result && result.error) {
+      console.error(`Error encountered  ${result.error.message}`)
+    }
+  })
+  return results.map(result => BigNumber.from(result?.value?.[0] || '0'))
 }
