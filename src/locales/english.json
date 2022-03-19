@@ -10,32 +10,32 @@
       "seconds": "Seconds"
     },
     "hero": {
-      "title": "Ottopia Portals",
+      "title": "Otto Portals",
       "subtitle": "Summon your own Otto NFTs",
       "desc": "Mint Otto Portal with Whitelist ticket, and summon your unique Otto NFTs. Otto? Lottie? Cleo? It’s all surprise!",
       "limit": "Only 5,000 Portals available",
-      "whitepaper": "Check out White Paper"
+      "whitepaper": "Check out the White Paper"
     },
     "checkWL": {
       "title": "Check if you’re Whitelisted",
-      "desc": "Only the whitelisted accounts are qualified to mint Ottopia Portals at the Whitelist-only Sale. Connect wallet to see if you’re on the list!",
+      "desc": "Only the whitelisted accounts are qualified to mint Otto Portals at the Whitelist-only Sale. Connect wallet to see if you’re on the list!",
       "connect": "Connect Wallet",
       "has-wl-title": "You are whitelisted!",
-      "has-wl-desc": "Get ready! Your Ottopia Portals will be able to mint at {{time}}",
+      "has-wl-desc": "Get ready! Your Otto Portals will be able to mint at {{time}}",
       "no-wl-title": "Oops, you are not whitelisted.",
       "no-wl-desc": "Don’t worry. You can join your Discord, and prepare for the Public Sale at {{time}}."
     },
     "intro": {
-      "title": "How do Ottopia Portals work?",
+      "title": "How do Otto Portals work?",
       "step1": "Step 1",
       "step1_title": "Collect Whitelist Tickets",
-      "step1_desc": "Otto portals can only be minted with Whitelist Tickets. One wallet can have multiple whitelist tickets. If you’re not sure you have whitelist tickets, please check in our Discord channel.",
+      "step1_desc": "Otto Portals can only be minted with Whitelist Tickets. One wallet can have mutiple whitelist tickets. If you’re not sure you have whitelist tickets, please check in our OtterClam Discord channel.",
       "step2": "Step 2",
-      "step2_title": "Mint Ottopia Portal with CLAM or ETH",
-      "step2_desc": "We accept $CLAM and ETH for Ottopia Portal minting. However, we're offering a 30% discount when you pay with $CLAM. This is a simple way to save money while supporting the continued growth of the Otter Kingdom.\n\n Whitelist-Only Sale:\n1 Portal = 0.06 ETH\n\nPublic Sale:\n1 Portal = 0.08 ETH",
+      "step2_title": "Mint Otto Portal with CLAM or ETH",
+      "step2_desc": "We accept $CLAM and ETH for Otto Portal purchase. However, we're offering a 30% discount when you pay with $CLAM. This is a simple way to save money while supporting the continued growth of the Otter Kingdom.\n\n Whitelist-Only Sale:\n1 Portal = 0.06 ETH\n\nPublic Sale:\n1 Portal = 0.08 ETH",
       "step3": "Step 3",
-      "step3_title": "Wait and take care of your Ottopia Portals",
-      "step3_desc": "Ottopia Portals need time to prepare the transmission, so be patient and take care of your Ottopia Portal(s) carefully.",
+      "step3_title": "Wait for your Otto Portal to activate",
+      "step3_desc": "Otto Portals need time to power up. Once they are ready, you will be able to summon your Otto.",
       "step4": "Step 4",
       "step4_title": "Summon your Ottos",
       "step4_desc": "When the time is up, you will be able to summon your Otto.\n\n1 portal can only summon 1 Otto. The traits will be randomly generated the moment you summon a Otto. If you're lucky, you'll summon an Otto that possesses rare, or super rare traits that greatly increase your Otto's value."
@@ -43,8 +43,8 @@
     "mint": {
       "title": "Mint Portal",
       "mint_summary": "Mint Summary({{address}})",
-      "portal": "Ottopia Portal",
-      "info_desc": "A special portal that you can summon 1 Otto to the Otter Kingdom. Mint Portals and prepare for the Ottopian journey!",
+      "portal": "Otto Portal",
+      "info_desc": "One portal mints one Otto. Mint portals to summon your Otto and begin your Otterverse adventure!",
       "amount_left": "{{amount}} left"
     }
   },
