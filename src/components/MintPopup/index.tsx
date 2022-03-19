@@ -1,3 +1,5 @@
+import { useEthers } from '@usedapp/core'
+import Button from 'components/Button'
 import Fullscreen from 'components/Fullscreen'
 import { useSelector } from 'react-redux'
 import { selectMintNumber, selectMintStatus } from 'store/uiSlice'
@@ -31,6 +33,7 @@ const StyledSuccessPortal = styled.img`
 `
 
 export default function MintPopup() {
+  const { account } = useEthers()
   const mintStatus = useSelector(selectMintStatus)
   const mintNumber = useSelector(selectMintNumber)
   return (
@@ -52,6 +55,11 @@ export default function MintPopup() {
             <ContentMedium>
               Your Otto Portal(s) are now preparing to initiate. Close to check out the remaining preparation time.
             </ContentMedium>
+            <a href={`https://opensea.io/${account}`} target="_blank" rel="noreferrer">
+              <Button>
+                <Headline>Check on OpenSea</Headline>
+              </Button>
+            </a>
           </>
         )}
       </StyledMintPopup>

@@ -17,6 +17,7 @@ import styled from 'styled-components'
 import { breakpoints } from 'styles/breakpoints'
 import { Caption, ContentLarge, ContentMedium, ContentSmall, Display2, Headline, Note } from 'styles/typography'
 import PortalPreviewImage from './portal-preview.png'
+import SmallPortalImage from './portal-small.png'
 
 const StyledMint = styled.section`
   width: 90%;
@@ -276,6 +277,29 @@ const StyledBuyCLAMLink = styled(ContentSmall)`
   }
 `
 
+const StyledOpenSeaHint = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: ${({ theme }) => theme.colors.lightGray200};
+  border-radius: 20px;
+  padding: 20px;
+  gap: 10px;
+`
+
+const StyledSmallPortal = styled.img`
+  width: 48px;
+  height: 48px;
+`
+
+const StyledHintText = styled(ContentMedium)`
+  flex: 1;
+`
+
+const StyledHintTextHighlight = styled(ContentMedium)`
+  color: ${({ theme }) => theme.colors.otterBlue};
+`
+
 type PaidOption = 'clam' | 'eth'
 
 export default function Mint() {
@@ -326,6 +350,20 @@ export default function Mint() {
     <StyledMint>
       <StyledContainer>
         <StyledTitle>{t('mint.mint.title')}</StyledTitle>
+        {ottoBalance.gt(0) && (
+          <StyledOpenSeaHint>
+            <StyledSmallPortal src={SmallPortalImage} />
+            <StyledHintText>
+              You have already minted
+              <StyledHintTextHighlight> {ottoBalance.toString()} Otto Portals</StyledHintTextHighlight>.
+            </StyledHintText>
+            <a href={`https://opensea.io/${account}`} target="_blank" rel="noreferrer">
+              <Button>
+                <Headline>Check on OpenSea</Headline>
+              </Button>
+            </a>
+          </StyledOpenSeaHint>
+        )}
         <StyledSection>
           <StyledLeftSection>
             <StyledCard>
