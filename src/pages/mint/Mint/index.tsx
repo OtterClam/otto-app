@@ -436,6 +436,11 @@ export default function Mint() {
                 <Headline>Connect</Headline>
               </Button>
             )}
+            {account && hasAllowance && saleStage.toNumber() === 0 && (
+              <Button click={onMint} disabled>
+                Not Available
+              </Button>
+            )}
             {account && hasAllowance && saleStage.toNumber() > 0 && (
               <Button click={onMint} disabled={ottolisted === 0}>
                 <Headline>Mint</Headline>
