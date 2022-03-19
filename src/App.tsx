@@ -57,10 +57,10 @@ const config: Config = {
   readOnlyChainId: ChainId.Polygon,
   readOnlyUrls: {
     [ChainId.Mainnet]: 'https://polygon-rpc.com',
-    31338: 'https://fork-rpc.otterclam.finance',
+    [ChainId.Hardhat]: 'http://127.0.0.1:8545',
   },
   multicallAddresses: {
-    31338: '0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507',
+    [ChainId.Hardhat]: '0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507',
   },
 }
 

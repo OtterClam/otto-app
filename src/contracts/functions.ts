@@ -10,14 +10,14 @@ export const useApprove = (token: Token) => {
   const { WETH, CLAM } = useContractAddresses()
   const { library } = useEthers()
   const erc20 = new Contract(token === 'clam' ? CLAM : WETH, erc20Abi, library)
-  const { state: approveState, send: approve } = useContractFunction(erc20, 'approve')
-  return { approveState, approve }
+  const { state: approveState, send: approve, resetState: resetApprove } = useContractFunction(erc20, 'approve')
+  return { approveState, approve, resetApprove }
 }
 
 export const useMint = () => {
   const { PORTAL_CREATOR } = useContractAddresses()
   const { library } = useEthers()
   const portal = new Contract(PORTAL_CREATOR, OttopiaPortalCreator, library)
-  const { state: mintState, send: mint } = useContractFunction(portal, 'mint')
-  return { mintState, mint }
+  const { state: mintState, send: mint, resetState: resetMint } = useContractFunction(portal, 'mint')
+  return { mintState, mint, resetMint }
 }

@@ -1,7 +1,7 @@
 import { ChainId, useEthers } from '@usedapp/core'
 import { useDispatch } from 'react-redux'
 import { clearError, ErrorButtonType, setError } from '../store/errorSlice'
-import { POLYGON_MAINNET, OTTER_FORK } from '../contracts/addresses'
+import { POLYGON_MAINNET, LOCALHOST } from '../contracts/addresses'
 
 const useContractAddresses = () => {
   const dispatch = useDispatch()
@@ -11,9 +11,9 @@ const useContractAddresses = () => {
     dispatch(clearError())
     return POLYGON_MAINNET
   }
-  if ((chainId as number) === 31338) {
+  if (chainId === ChainId.Hardhat) {
     dispatch(clearError())
-    return OTTER_FORK
+    return LOCALHOST
   }
   if (!chainId) {
     dispatch(clearError())

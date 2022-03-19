@@ -17,6 +17,11 @@ export const useMintInfo = () => {
       },
       {
         contract,
+        method: 'priceInCLAM',
+        args: [],
+      },
+      {
+        contract,
         method: 'clamPerWETH',
         args: [],
       },
@@ -50,16 +55,14 @@ export const useOttolisted = () => {
 
 export const useOttoSupply = () => {
   const { OTTO } = useContractAddresses()
-  const { account, library } = useEthers()
+  const { library } = useEthers()
   const contract = new Contract(OTTO, Otto, library)
   const { value, error } =
-    useCall(
-      account && {
-        contract,
-        method: 'totalSupply',
-        args: [],
-      }
-    ) || {}
+    useCall({
+      contract,
+      method: 'totalSupply',
+      args: [],
+    }) || {}
   if (error) {
     console.error(error)
     return 0

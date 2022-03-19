@@ -1,4 +1,4 @@
-import { shortenAddress, useEthers, useTokenAllowance, useTokenBalance } from '@usedapp/core'
+import { shortenAddress, useEthers, useTokenAllowance, useTokenBalance, TransactionState } from '@usedapp/core'
 import { useMintInfo, useOttolisted, useOttoSupply } from 'contracts/views'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -6,7 +6,7 @@ import { Caption, ContentLarge, ContentMedium, ContentSmall, Display2, Headline 
 import ETH from 'assets/eth.png'
 import CLAM from 'assets/clam.png'
 import Button from 'components/Button'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { ethers, BigNumber } from 'ethers'
 import { useApprove, useMint } from 'contracts/functions'
@@ -197,17 +197,29 @@ export default function Mint() {
   const [paidOption, setPaidOption] = useState<PaidOption>('clam')
   const { PORTAL_CREATOR, WETH, CLAM } = useContractAddresses()
   const { account } = useEthers()
-  const [ethPrice, clamPerETH] = useMintInfo()
+  const [ethPrice, clamPrice, clamPerETH] = useMintInfo()
+  console.log(`eth price ${ethPrice}`)
   const ottolisted = useOttolisted()
   const ottoSupply = useOttoSupply()
-  const ethBalance = useTokenBalance(WETH, account) || 0
-  const clamBalance = useTokenBalance(CLAM, account) || 0
-  const ethAllowance = useTokenAllowance(WETH, account, PORTAL_CREATOR)
-  const clamAllowance = useTokenAllowance(CLAM, account, PORTAL_CREATOR)
-  const { approveState, approve } = useApprove(paidOption)
-  const { mintState, mint } = useMint()
+  const ethBalance = useTokenBalance(paidOption === 'eth' && WETH, account) || 0
+  const clamBalance = useTokenBalance(paidOption === 'clam' && CLAM, account) || 0
+  const ethAllowance = useTokenAllowance(paidOption === 'eth' && WETH, account, PORTAL_CREATOR)
+  const clamAllowance = useTokenAllowance(paidOption === 'clam' && CLAM, account, PORTAL_CREATOR)
+  const { approveState, approve, resetApprove } = useApprove(paidOption)
+  const { mintState, mint, resetMint } = useMint()
   const totalPaymentETH = BigNumber.from(ethPrice).mul(quantity)
-  const totalPaymentCLAM = totalPaymentETH.mul(clamPerETH).div(1e9)
+  const totalPaymentCLAM = totalPaymentETH.mul(clamPerETH).div(1e9).mul(7000).div(10000)
+  const hasEthAllowance = ethAllowance?.gte(totalPaymentETH)
+  const hasClamAllowance = clamAllowance?.gte(totalPaymentCLAM)
+  const hasAllowance = paidOption === 'clam' ? hasClamAllowance : hasEthAllowance
+  const onApprove = useCallback(() => {
+    approve(PORTAL_CREATOR, paidOption === 'clam' ? ethers.utils.parseUnits('10000', 9) : ethers.utils.parseEther('1'))
+  }, [paidOption, totalPaymentCLAM, totalPaymentETH, approve])
+  const onMint = useCallback(() => {
+    // Set CLAM have 1% slippage
+    const payment = paidOption === 'clam' ? totalPaymentCLAM.mul(10100).div(10000) : totalPaymentETH
+    mint(account, quantity, payment, paidOption === 'clam')
+  }, [account, quantity, totalPaymentETH, totalPaymentCLAM, paidOption, mint])
   return (
     <StyledMint>
       <StyledContainer>
@@ -258,14 +270,18 @@ export default function Mint() {
             <StyledSummary>
               {account && (
                 <>
-                  <StyledSummaryItem>
-                    <p>You ETH balance:</p>
-                    <StyledETHBalance>{ethers.utils.formatEther(ethBalance)}</StyledETHBalance>
-                  </StyledSummaryItem>
-                  <StyledSummaryItem>
-                    <p>You CLAM balance:</p>
-                    <StyledCLAMBalance>{ethers.utils.formatUnits(clamBalance, 9)}</StyledCLAMBalance>
-                  </StyledSummaryItem>
+                  {paidOption === 'eth' && (
+                    <StyledSummaryItem>
+                      <p>You ETH balance:</p>
+                      <StyledETHBalance>{ethers.utils.formatEther(ethBalance)}</StyledETHBalance>
+                    </StyledSummaryItem>
+                  )}
+                  {paidOption === 'clam' && (
+                    <StyledSummaryItem>
+                      <p>You CLAM balance:</p>
+                      <StyledCLAMBalance>{ethers.utils.formatUnits(clamBalance, 9)}</StyledCLAMBalance>
+                    </StyledSummaryItem>
+                  )}
                   <StyledSummaryItem>
                     <p>Otto Portals:</p>
                     <p>{quantity}</p>
@@ -292,27 +308,14 @@ export default function Mint() {
                 <Headline>Connect</Headline>
               </Button>
             )}
-            {account && paidOption === 'eth' && ethAllowance?.gte(totalPaymentETH) && (
-              <Button>
-                <Headline>Mint with ETH</Headline>
+            {account && hasAllowance && (
+              <Button click={onMint}>
+                <Headline>Mint</Headline>
               </Button>
             )}
-            {account && paidOption === 'eth' && ethAllowance?.lt(totalPaymentETH) && (
-              <Button>
-                <Headline>Approve ETH</Headline>
-              </Button>
-            )}
-            {account && paidOption === 'clam' && clamAllowance?.gte(totalPaymentCLAM) && (
-              <Button>
-                <Headline>Mint CLAM</Headline>
-              </Button>
-            )}
-            {account && paidOption === 'clam' && clamAllowance?.lt(totalPaymentCLAM) && (
-              <Button
-                click={() => approve(PORTAL_CREATOR, totalPaymentCLAM.mul(2))}
-                loading={approveState.status === 'Mining'}
-              >
-                <Headline>Approve CLAM</Headline>
+            {account && !hasAllowance && (
+              <Button click={onApprove} loading={approveState.status === 'Mining'}>
+                <Headline>Approve</Headline>
               </Button>
             )}
           </StyledRightSection>
