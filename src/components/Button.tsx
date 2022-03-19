@@ -76,6 +76,8 @@ interface Props {
   padding?: string
 }
 
+const audio = new Audio('https://ottopia.app/ottoclick.mp3')
+
 const Button = ({ children, click, primaryColor = 'blue', isWeb3, disabled, loading, padding }: Props) => {
   const { account, activateBrowserWallet } = useEthers()
   const error = useSelector(selectError)
@@ -96,6 +98,9 @@ const Button = ({ children, click, primaryColor = 'blue', isWeb3, disabled, load
           if (isWeb3) setPending(true)
           if (isWeb3 && !account) activateBrowserWallet()
           else click()
+
+          audio.load()
+          audio.play()
         }
       }}
     >
