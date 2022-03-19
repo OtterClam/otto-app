@@ -15,6 +15,7 @@ import { connectWallet, mintStart, mintSuccess, mintFailed } from 'store/uiSlice
 import { trim } from 'helpers/trim'
 import { useMediaQuery } from 'hooks/useMediaQuery'
 import { breakpoints } from 'styles/breakpoints'
+import { PUBLIC_MINT_TIME } from 'constant'
 import PortalPreviewImage from './portal-preview.png'
 
 const StyledMint = styled.section`
@@ -147,6 +148,7 @@ const StyledCLAMMintPrice = styled(ContentLarge)`
   display: flex;
   justify-content: right;
   align-items: center;
+  margin-left: 4px;
   &::before {
     content: '';
     width: 24px;
@@ -162,8 +164,6 @@ const StyledButtons = styled.div`
   height: 60px;
   gap: 10px;
 `
-
-const StyledWhitelistTickets = styled(Caption)``
 
 const StyledQuantity = styled.div`
   width: 102px;
@@ -218,6 +218,11 @@ const StyledDivider = styled.div`
   background-color: ${({ theme }) => theme.colors.lightGray400};
 `
 
+const NotOttolistedWarning = styled(ContentLarge)`
+  text-align: center;
+  color: ${({ theme }) => theme.colors.clamPink};
+`
+
 const StyledETHBalance = styled.p`
   display: flex;
   justify-content: right;
@@ -253,21 +258,21 @@ export default function Mint() {
   const { t } = useTranslation()
   const isMobile = useMediaQuery(breakpoints.mobile)
   const dispatch = useDispatch()
-  const [quantity, setQuantity] = useState(1)
   const [paidOption, setPaidOption] = useState<PaidOption>('clam')
   const { PORTAL_CREATOR, WETH, CLAM } = useContractAddresses()
   const { account, chainId } = useEthers()
-  const [ethPrice, clamPrice, clamPerETH] = useMintInfo()
+  const [ethPrice, clamPrice, clamPerETH, saleStage] = useMintInfo()
   const ottolisted = useOttolisted()
+  const [quantity, setQuantity] = useState(ottolisted || 0)
   const ottoSupply = useOttoSupply()
   const ethBalance = useTokenBalance(paidOption === 'eth' && WETH, account, { chainId }) || 0
   const clamBalance = useTokenBalance(paidOption === 'clam' && CLAM, account, { chainId }) || 0
   const ethAllowance = useTokenAllowance(paidOption === 'eth' && WETH, account, PORTAL_CREATOR, { chainId })
   const clamAllowance = useTokenAllowance(paidOption === 'clam' && CLAM, account, PORTAL_CREATOR, { chainId })
-  const { approveState, approve, resetApprove } = useApprove(paidOption)
+  const { approveState, approve } = useApprove(paidOption)
   const { mintState, mint, resetMint } = useMint()
-  const totalPaymentETH = BigNumber.from(ethPrice).mul(quantity)
-  const totalPaymentCLAM = BigNumber.from(clamPrice).mul(quantity)
+  const totalPaymentETH = ethPrice.mul(quantity)
+  const totalPaymentCLAM = clamPrice.mul(quantity)
   const hasEthAllowance = ethAllowance?.gte(totalPaymentETH)
   const hasClamAllowance = clamAllowance?.gte(totalPaymentCLAM)
   const hasAllowance = paidOption === 'clam' ? hasClamAllowance : hasEthAllowance
@@ -280,6 +285,7 @@ export default function Mint() {
     mint(account, quantity, payment, paidOption === 'clam')
   }, [account, quantity, totalPaymentETH, totalPaymentCLAM, paidOption, mint])
 
+  useEffect(() => setQuantity(ottolisted || 0), [ottolisted])
   useEffect(() => {
     if (mintState.status === 'Mining') dispatch(mintStart())
     if (mintState.status === 'Success') dispatch(mintSuccess(quantity))
@@ -344,7 +350,7 @@ export default function Mint() {
             <StyledSelector selected={paidOption === 'clam'} onClick={() => setPaidOption('clam')}>
               <StyledSelectorText as="p">Pay with CLAM</StyledSelectorText>
               <StyledETHMintPrice>
-                {ethers.utils.formatEther(totalPaymentETH.mul(7000).div(10000))} ={' '}
+                {ethers.utils.formatEther(totalPaymentETH.mul(7000).div(10000))} =
               </StyledETHMintPrice>
               <StyledCLAMMintPrice>{trim(ethers.utils.formatUnits(totalPaymentCLAM, 9), 2)}</StyledCLAMMintPrice>
             </StyledSelector>
@@ -393,13 +399,19 @@ export default function Mint() {
               )}
               {!account && <ContentSmall>Please connect your wallet to proceed the process.</ContentSmall>}
             </StyledSummary>
+            {account && saleStage.toNumber() <= 1 && ottolisted === 0 && (
+              <NotOttolistedWarning>
+                Sorry, you are not whitelisted. Come back later at the Public Sale starting at{' '}
+                {new Date(PUBLIC_MINT_TIME).toLocaleString()}
+              </NotOttolistedWarning>
+            )}
             {!account && (
               <Button click={() => dispatch(connectWallet())}>
                 <Headline>Connect</Headline>
               </Button>
             )}
-            {account && hasAllowance && (
-              <Button click={onMint}>
+            {account && hasAllowance && saleStage.toNumber() > 0 && (
+              <Button click={onMint} disabled={ottolisted === 0}>
                 <Headline>Mint</Headline>
               </Button>
             )}

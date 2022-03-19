@@ -1,5 +1,5 @@
 import { useCall, useCalls, useEthers } from '@usedapp/core'
-import { Contract } from 'ethers'
+import { Contract, BigNumber } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { abi as Otto } from './Otto.json'
 import { abi as OttopiaPortalCreator } from './OttopiaPortalCreator.json'
@@ -25,13 +25,14 @@ export const useMintInfo = () => {
         method: 'clamPerWETH',
         args: [],
       },
+      { contract, method: 'saleStage', args: [] },
     ]) || {}
   results.forEach((result, idx) => {
     if (result && result.error) {
       console.error(`Error encountered  ${result.error.message}`)
     }
   })
-  return results.map(result => result?.value?.[0] || '0')
+  return results.map(result => BigNumber.from(result?.value?.[0] || '0'))
 }
 
 export const useOttolisted = () => {
@@ -50,7 +51,7 @@ export const useOttolisted = () => {
     console.error(error)
     return 0
   }
-  return value ? value[0].toNumber() : 0
+  return value ? value[0].toNumber() : null
 }
 
 export const useOttoSupply = () => {

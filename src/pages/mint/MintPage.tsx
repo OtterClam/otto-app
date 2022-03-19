@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
+import { WHITELIST_MINT_TIME } from 'constant'
 import Hero from './Hero'
 import Countdown from './Countdown'
 import Intro from './Intro'
@@ -18,10 +19,10 @@ const MintPage = () => {
   const { t } = useTranslation()
   return (
     <StyledPage>
-      <Mint />
-      <Countdown />
+      {Date.now() < WHITELIST_MINT_TIME && <Countdown />}
       <Hero />
-      <CheckWL />
+      {/* <CheckWL /> */}
+      <Mint />
       <Intro />
     </StyledPage>
   )
