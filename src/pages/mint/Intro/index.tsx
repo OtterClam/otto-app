@@ -9,11 +9,12 @@ import Step3Img from './step3.png'
 import Step4Img from './step4.png'
 import LimitedTreasuryImg from './limited-treasury.jpeg'
 
-const StyledIntro = styled.div`
+const StyledIntro = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 80px;
+  color: #fff;
 `
 
 const StyledLimitedTreasury = styled.img`

@@ -7,14 +7,13 @@ const StyledFooter = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
 `
 
 const Footer = () => {
   return (
     <StyledFooter>
-      <p>
-        <Caption>Ottopia © 2022 OtterClam All Rights Reserved</Caption>
-      </p>
+      <Caption as="p">Ottopia © 2022 OtterClam All Rights Reserved</Caption>
     </StyledFooter>
   )
 }

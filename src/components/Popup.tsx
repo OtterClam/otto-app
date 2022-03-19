@@ -62,10 +62,9 @@ const Header = styled.div`
   margin-bottom: 20px;
 `
 
-const SubHeader = styled.div`
+const SubHeader = styled(Headline)`
   font-size: 1.8rem;
   margin-bottom: 1rem;
-  color: var(--sub);
 `
 
 const Content = styled.div`
