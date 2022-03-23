@@ -55,6 +55,7 @@ export const ContentMedium = styled.span`
 `
 
 export const ContentSmall = styled.span`
+  white-space: pre-line;
   font-family: 'Pangolin';
   font-size: 18px;
   line-height: 1.5;
