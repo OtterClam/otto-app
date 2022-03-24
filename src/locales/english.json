@@ -1,6 +1,15 @@
 {
   "home": {
-    "title": "Welcome to Ottopia"
+    "title": "Welcome to Ottopia",
+    "mint_portal": "Mint Portal",
+    "menu": {
+      "my_portals": "My Portals",
+      "buy_clam": "Buy CLAM",
+      "otter_dao": "Otter DAO",
+      "treasury": "Treasury",
+      "join_discord": "Join Discord",
+      "white_paper": "White Paper"
+    }
   },
   "mint": {
     "title": "Mint Portals",

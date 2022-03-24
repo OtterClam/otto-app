@@ -3,7 +3,6 @@ import { ChainId, Config, DAppProvider } from '@usedapp/core'
 
 import { theme } from 'styles'
 import MintPopup from 'components/MintPopup'
-import Layout from 'Layout'
 import { Outlet } from 'react-router-dom'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
@@ -16,6 +15,11 @@ const StyledApp = styled.div`
   height: 100vh;
   background-image: url(${bg});
   background-size: cover;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    height: auto;
+    background-position: center;
+  }
 `
 
 const config: Config = {

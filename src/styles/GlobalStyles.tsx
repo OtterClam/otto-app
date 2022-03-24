@@ -3,14 +3,6 @@ import cursorDefault from 'assets/cursor-default.png'
 import cursorPointer from 'assets/cursor-pointer.png'
 
 const GlobalStyle = createGlobalStyle`
-    :root {
-        --bg: white;
-        --main: white;
-        --sub: grey;
-        --primary: #32B2E5;
-        --error: red;
-    }
-
     body {
         cursor: url(${cursorDefault}), auto;
     }

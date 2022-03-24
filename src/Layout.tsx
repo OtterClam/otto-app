@@ -22,6 +22,17 @@ const StyledBorder = styled.div`
   }
 `
 
+const StyledNoBorder = styled.div`
+  max-width: 1200px;
+  width: 90%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 100%;
+  }
+`
+
 const StyledInnerBorder = styled.div`
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
@@ -38,15 +49,23 @@ const StyledContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.otterBlack};
 `
 
-export default function Layout({ title, children }: PropsWithChildren<{ title: string }>) {
+export default function Layout({
+  title,
+  noBorder = false,
+  children,
+}: PropsWithChildren<{ title: string; noBorder?: boolean }>) {
   return (
     <>
       <Header title={title} />
-      <StyledBorder>
-        <StyledInnerBorder>
-          <StyledContainer>{children}</StyledContainer>
-        </StyledInnerBorder>
-      </StyledBorder>
+      {noBorder ? (
+        <StyledNoBorder>{children}</StyledNoBorder>
+      ) : (
+        <StyledBorder>
+          <StyledInnerBorder>
+            <StyledContainer>{children}</StyledContainer>
+          </StyledInnerBorder>
+        </StyledBorder>
+      )}
       <Footer />
     </>
   )

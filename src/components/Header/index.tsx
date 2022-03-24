@@ -38,6 +38,7 @@ const NavItem = styled.div`
   justify-content: center;
   align-items: center;
   color: ${props => props.theme.colors.otterBlack};
+  text-align: center;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 180px;

@@ -74,11 +74,12 @@ interface Props {
   loading?: boolean
   children?: ReactNode
   padding?: string
+  className?: string
 }
 
 const audio = new Audio('https://ottopia.app/ottoclick.mp3')
 
-const Button = ({ children, click, primaryColor = 'blue', isWeb3, disabled, loading, padding }: Props) => {
+const Button = ({ children, className, click, primaryColor = 'blue', isWeb3, disabled, loading, padding }: Props) => {
   const { account, activateBrowserWallet } = useEthers()
   const error = useSelector(selectError)
   const [pending, setPending] = useState(false)
@@ -90,6 +91,7 @@ const Button = ({ children, click, primaryColor = 'blue', isWeb3, disabled, load
 
   return (
     <StyledButton
+      className={className}
       primaryColor={primaryColor}
       disabled={disabled || loading || pending}
       onClick={() => {

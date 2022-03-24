@@ -8,6 +8,7 @@ export const colors = {
   lightGray300: '#DBE6EC',
   lightGray200: '#E9F0F3',
   lightGray100: '#F7F9FB',
+  darkGray100: '#8193B5',
   darkGray200: '#5E6E99',
   darkGray300: '#434E77',
 }

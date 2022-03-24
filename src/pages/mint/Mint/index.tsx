@@ -2,7 +2,7 @@ import { shortenAddress, useEthers, useTokenAllowance, useTokenBalance } from '@
 import CLAM from 'assets/clam.png'
 import ETH from 'assets/eth.png'
 import Button from 'components/Button'
-import { PUBLIC_MINT_TIME } from 'constant'
+import { BUY_CLAM_LINK, PUBLIC_MINT_TIME } from 'constant'
 import { useApprove, useMint } from 'contracts/functions'
 import { useMintInfo, useOttolisted, useOttoInfo } from 'contracts/views'
 import { ethers } from 'ethers'
@@ -494,11 +494,7 @@ export default function Mint() {
             )}
             <StyledBuyCLAM>
               <ContentSmall>Not enough CLAM? </ContentSmall>
-              <a
-                href="https://quickswap.exchange/#/swap?outputCurrency=0xC250e9987A032ACAC293d838726C511E6E1C029d"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href={BUY_CLAM_LINK} target="_blank" rel="noreferrer">
                 <StyledBuyCLAMLink>Buy CLAM</StyledBuyCLAMLink>
               </a>
             </StyledBuyCLAM>
