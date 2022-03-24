@@ -9,8 +9,8 @@ const Routing = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          {/* <Route index element={<HomePage />} /> */}
-          <Route index element={<MintPage />} />
+          <Route index element={<HomePage />} />
+          <Route path="mint" element={<MintPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

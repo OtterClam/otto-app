@@ -1,5 +1,7 @@
 {
-  "title": "Otto App",
+  "home": {
+    "title": "Welcome to Ottopia"
+  },
   "mint": {
     "title": "Mint Portals",
     "countdown": {

@@ -44,7 +44,7 @@ const NavItem = styled.div`
   }
 `
 
-const Header = () => {
+export default function Header({ title }: { title: string }) {
   const isMobile = useMediaQuery(breakpoints.mobile)
 
   return (
@@ -52,7 +52,7 @@ const Header = () => {
       <StyledLogo src={isMobile ? logoSmall : logoLarge} alt="logo" />
       <NavItems>
         <NavItem>
-          <Display3>Mint Portals</Display3>
+          <Display3>{title}</Display3>
         </NavItem>
       </NavItems>
       {/* <Connector /> */}
@@ -60,5 +60,3 @@ const Header = () => {
     </StyledHeader>
   )
 }
-
-export default Header

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
+import Layout from 'Layout'
 
 const StyledHomePage = styled.div`
   width: 100%;
@@ -11,18 +12,14 @@ const StyledHomePage = styled.div`
   border: solid 1px orange;
 `
 
-const Header = styled.div`
-  width: 100%;
-  font-size: 2.3rem;
-`
-
 const HomePage = () => {
   const { t } = useTranslation()
   return (
-    <StyledHomePage>
-      <Header>{t('title')}</Header>
-      <div style={{ background: '#666', width: '580px', height: '1800px' }} />
-    </StyledHomePage>
+    <Layout title={t('home.title')}>
+      <StyledHomePage>
+        <div style={{ background: '#666', width: '580px', height: '1800px' }} />
+      </StyledHomePage>
+    </Layout>
   )
 }
 
