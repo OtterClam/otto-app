@@ -56,6 +56,9 @@
       "amount_left": "{{amount}} left"
     }
   },
+  "my_portals": {
+    "title": "My Portals"
+  },
   "connect-wallet": "Connect Wallet",
   "wallet_selector_head": "Connect to a wallet"
 }
