@@ -1,5 +1,6 @@
 import { gql, useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
+import { LoadingView } from 'components/LoadingView'
 import Layout from 'Layout'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -74,7 +75,7 @@ export default function MyPortalsPage() {
   const renderContent = useCallback(() => {
     switch (state) {
       case State.Loading:
-        return <p>{t('my_portals.loading')}</p>
+        return <LoadingView />
       case State.NoPortals:
         return <NoPortalView />
       case State.HasPortals:
