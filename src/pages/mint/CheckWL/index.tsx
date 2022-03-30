@@ -117,7 +117,7 @@ export default function CheckWL() {
         <StyledImage src={stateMeta[state].image} alt="check" />
         {(state === CheckState.Connect || state === CheckState.Loading) && (
           <Button click={() => dispatch(connectWallet())} loading={state === CheckState.Loading}>
-            <Display3>{t('connect-wallet')}</Display3>
+            <Display3>{t('connect_wallet')}</Display3>
           </Button>
         )}
       </StyledInnerBorder>

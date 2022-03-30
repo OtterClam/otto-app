@@ -7,6 +7,12 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum PortalStatus {
+  OPENED = "OPENED",
+  SUMMONED = "SUMMONED",
+  UNOPENED = "UNOPENED",
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================
