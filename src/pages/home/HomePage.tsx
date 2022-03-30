@@ -70,7 +70,7 @@ const StyledPortalImage = styled.img`
 `
 
 const StyledButton = styled(Button)`
-  translate: 0 -80px;
+  transform: translate(0, -80px);
 `
 
 interface Menu {
