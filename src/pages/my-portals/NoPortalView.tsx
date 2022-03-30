@@ -7,7 +7,7 @@ import WhiteBlankPortal from './white-blank-portal.png'
 
 const StyledNoPortalView = styled.div`
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 186px);
   display: flex;
   justify-content: center;
   background: #fff;
