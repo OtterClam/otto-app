@@ -15,12 +15,12 @@ const GlobalStyle = createGlobalStyle`
 
     @font-face {
         font-family: 'Pangolin';
-        src: url('./fonts/Pangolin-Regular.ttf') ;
+        src: url('/fonts/Pangolin-Regular.ttf') ;
     }
 
     @font-face {
         font-family: 'PaytoneOne';
-        src: url('./fonts/paytoneone-regular.woff2') format('woff2');
+        src: url('/fonts/paytoneone-regular.woff2') format('woff2');
     }
 
     button {

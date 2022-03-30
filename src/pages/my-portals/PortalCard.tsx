@@ -65,21 +65,23 @@ const StyledProgressBar = styled(ProgressBar)`
   border-radius: 6px;
 `
 
-interface Props {
-  portal: ListMyPortals_ottos
-}
-
 interface PortalMeta {
   name: string
   image: string
+}
+
+interface Props {
+  portal: ListMyPortals_ottos
 }
 
 export default function PortalCard({ portal: { tokenURI, portalStatus, canSummonAt } }: Props) {
   const { t } = useTranslation()
   const [now, setNow] = useState(Date.now())
   const [portalMeta, setPortalMeta] = useState<PortalMeta | null>(null)
+  // FIXME: remove me after graph synced
+  canSummonAt = BigInt(1649250000000)
   const openProgress = useMemo(
-    () => Math.round(((Number(canSummonAt) - now) / (7 * 86400 * 1000)) * 100),
+    () => 100 - Math.round(((Number(canSummonAt) - now) / (7 * 86400 * 1000)) * 100),
     [canSummonAt, now]
   )
   const duration = useMemo(
