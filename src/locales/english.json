@@ -56,6 +56,18 @@
       "amount_left": "{{amount}} left"
     }
   },
-  "connect-wallet": "Connect Wallet",
-  "wallet_selector_head": "Connect to a wallet"
+  "my_portals": {
+    "title": "My Portals",
+    "no_portal": "You don't have any portal yet.",
+    "mint_portal": "Mint Portals",
+    "status": {
+      "UNOPENED": "Charging...",
+      "CAN_OPEN": "Ready to initiate!",
+      "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
+    },
+    "open_duration": "{{duration}} left"
+  },
+  "connect_wallet": "Connect Wallet",
+  "wallet_selector_head": "Connect to a wallet",
+  "connect_help_text": "Please connect wallet to continue playing."
 }

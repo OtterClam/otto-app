@@ -1,12 +1,13 @@
-import styled, { ThemeProvider } from 'styled-components'
+import { ApolloProvider } from '@apollo/client'
 import { ChainId, Config, DAppProvider } from '@usedapp/core'
-
-import { theme } from 'styles'
 import MintPopup from 'components/MintPopup'
+import { apollo } from 'libs/apollo'
 import { Outlet } from 'react-router-dom'
+import styled, { ThemeProvider } from 'styled-components'
+import { theme } from 'styles'
+import bg from './assets/bg.jpg'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
-import bg from './assets/bg.jpg'
 
 const StyledApp = styled.div`
   display: flex;
@@ -35,16 +36,18 @@ const config: Config = {
 
 const App = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <StyledApp>
-        <DAppProvider config={config}>
-          <Outlet />
-          <Error />
-          <WalletSelector />
-          <MintPopup />
-        </DAppProvider>
-      </StyledApp>
-    </ThemeProvider>
+    <ApolloProvider client={apollo}>
+      <ThemeProvider theme={theme}>
+        <StyledApp>
+          <DAppProvider config={config}>
+            <Outlet />
+            <Error />
+            <WalletSelector />
+            <MintPopup />
+          </DAppProvider>
+        </StyledApp>
+      </ThemeProvider>
+    </ApolloProvider>
   )
 }
 

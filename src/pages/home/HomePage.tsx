@@ -9,7 +9,7 @@ import { Display3 } from 'styles/typography'
 import { Link } from 'react-router-dom'
 import { useMediaQuery } from 'hooks/useMediaQuery'
 import { breakpoints } from 'styles/breakpoints'
-import PortalIcon from './portal_disabled.png'
+import PortalIcon from './portal.png'
 import BuyCLAMIcon from './buy-clam.png'
 import DAOIcon from './dao.png'
 import JoinDiscordIcon from './join-discord.png'
@@ -70,13 +70,14 @@ const StyledPortalImage = styled.img`
 `
 
 const StyledButton = styled(Button)`
-  translate: 0 -80px;
+  transform: translate(0, -80px);
 `
 
 interface Menu {
   title: string
   icon: string
-  href?: string
+  href: string
+  internal?: boolean
 }
 
 const HomePage = () => {
@@ -85,7 +86,7 @@ const HomePage = () => {
 
   const leftMenus: Menu[] = useMemo(
     () => [
-      { title: t('home.menu.my_portals'), icon: PortalIcon },
+      { title: t('home.menu.my_portals'), icon: PortalIcon, href: '/my-portals', internal: true },
       { title: t('home.menu.otter_dao'), icon: DAOIcon, href: DAO_LINK },
       { title: t('home.menu.join_discord'), icon: JoinDiscordIcon, href: DISCORD_LINK },
     ],
@@ -102,11 +103,17 @@ const HomePage = () => {
 
   const renderMenus = (menus: Menu[]) => (
     <StyledMenus>
-      {menus.map(({ title, icon, href }, i) => (
-        <a href={href} target="_blank" rel="noreferrer">
-          <StyledMenuButton key={i} title={title} icon={icon} disabled={!href} />
-        </a>
-      ))}
+      {menus.map(({ title, icon, href, internal }, i) =>
+        internal ? (
+          <Link to={href} rel="noreferrer">
+            <StyledMenuButton key={i} title={title} icon={icon} disabled={!href} />
+          </Link>
+        ) : (
+          <a href={href} target="_blank" rel="noreferrer">
+            <StyledMenuButton key={i} title={title} icon={icon} disabled={!href} />
+          </a>
+        )
+      )}
     </StyledMenus>
   )
 
