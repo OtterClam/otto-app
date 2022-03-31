@@ -2,6 +2,7 @@ import styled, { keyframes } from 'styled-components'
 
 const StyledProgressBar = styled.div<{ height: string }>`
   min-height: ${({ height }) => height};
+  border-radius: 6px;
   background-color: #f2efef;
   overflow: hidden;
 `

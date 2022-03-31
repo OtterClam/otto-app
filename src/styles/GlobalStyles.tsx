@@ -41,6 +41,7 @@ const GlobalStyle = createGlobalStyle`
 
     a {
         text-decoration: none;
+        cursor: url(${cursorPointer}) 7 0 ,auto;
     }
 `
 

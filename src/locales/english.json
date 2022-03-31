@@ -65,7 +65,9 @@
       "CAN_OPEN": "Ready to initiate!",
       "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
     },
-    "open_duration": "{{duration}} left"
+    "open_duration": "{{duration}} left",
+    "opensea_link": "View on OpenSea",
+    "open_now": "Open Now!"
   },
   "connect_wallet": "Connect Wallet",
   "wallet_selector_head": "Connect to a wallet",

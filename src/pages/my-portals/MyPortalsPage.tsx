@@ -4,6 +4,7 @@ import { LoadingView } from 'components/LoadingView'
 import Layout from 'Layout'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import ConnectView from './ConnectView'
 import NoPortalView from './NoPortalView'
@@ -36,7 +37,7 @@ const StyledMyPortals = styled.div`
 
 export const LIST_MY_PORTALS = gql`
   query ListMyPortals($owner: Bytes!) {
-    ottos(where: { owner: $owner }, orderBy: tokenId) {
+    ottos(where: { owner: $owner, portalStatus_not: SUMMONED }, orderBy: tokenId) {
       tokenId
       tokenURI
       portalStatus
@@ -82,7 +83,9 @@ export default function MyPortalsPage() {
         return (
           <StyledMyPortals>
             {data?.ottos.map((portal, index) => (
-              <PortalCard key={index} portal={portal} />
+              <Link key={index} to={portal.tokenId}>
+                <PortalCard portal={portal} />
+              </Link>
             ))}
           </StyledMyPortals>
         )
