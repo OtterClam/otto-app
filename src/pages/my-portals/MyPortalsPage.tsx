@@ -1,10 +1,11 @@
 import { gql, useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
 import { LoadingView } from 'components/LoadingView'
+import { ottoClick } from 'constant'
 import Layout from 'Layout'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import ConnectView from './ConnectView'
 import NoPortalView from './NoPortalView'
@@ -56,6 +57,7 @@ enum State {
 
 export default function MyPortalsPage() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const { account } = useEthers()
   const { data, loading } = useQuery<ListMyPortals, ListMyPortalsVariables>(LIST_MY_PORTALS, {
     variables: { owner: account || '' },
@@ -83,9 +85,19 @@ export default function MyPortalsPage() {
         return (
           <StyledMyPortals>
             {data?.ottos.map((portal, index) => (
-              <Link key={index} to={portal.tokenId}>
+              <a
+                key={index}
+                href={portal.tokenId}
+                onClick={e => {
+                  e.preventDefault()
+                  ottoClick.play()
+                  navigate(portal.tokenId)
+                }}
+              >
+                {/* <Link key={index} to={portal.tokenId}> */}
                 <PortalCard portal={portal} />
-              </Link>
+                {/* </Link> */}
+              </a>
             ))}
           </StyledMyPortals>
         )

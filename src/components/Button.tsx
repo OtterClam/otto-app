@@ -1,4 +1,5 @@
 import { useEthers } from '@usedapp/core'
+import { ottoClick } from 'constant'
 import { ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -93,8 +94,6 @@ interface Props {
   className?: string
 }
 
-const audio = new Audio('https://ottopia.app/ottoclick.mp3')
-
 const Button = ({ children, className, click, primaryColor = 'blue', isWeb3, disabled, loading, padding }: Props) => {
   const { account, activateBrowserWallet } = useEthers()
   const error = useSelector(selectError)
@@ -105,20 +104,22 @@ const Button = ({ children, className, click, primaryColor = 'blue', isWeb3, dis
     if (error || loading) setPending(false)
   }, [error, loading])
 
+  const _disabled = disabled || loading || pending
+
   return (
     <StyledButton
       className={className}
       primaryColor={primaryColor}
-      disabled={disabled || loading || pending}
+      disabled={_disabled}
       onClick={() => {
         if (click) {
           if (loading || disabled || pending) return
           if (isWeb3) setPending(true)
           if (isWeb3 && !account) activateBrowserWallet()
           else click()
-
-          audio.load()
-          audio.play()
+        }
+        if (!_disabled) {
+          ottoClick.play()
         }
       }}
     >
