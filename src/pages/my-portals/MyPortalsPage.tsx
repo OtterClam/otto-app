@@ -5,7 +5,7 @@ import { ottoClick } from 'constant'
 import Layout from 'Layout'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import ConnectView from './ConnectView'
 import NoPortalView from './NoPortalView'
@@ -94,9 +94,7 @@ export default function MyPortalsPage() {
                   navigate(portal.tokenId)
                 }}
               >
-                {/* <Link key={index} to={portal.tokenId}> */}
                 <PortalCard portal={portal} />
-                {/* </Link> */}
               </a>
             ))}
           </StyledMyPortals>

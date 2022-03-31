@@ -7,12 +7,14 @@ interface UiState {
   connectingWallet: boolean
   mintStatus: MintStatus
   mintNumber: number
+  showSideMenu: boolean
 }
 
 const initialState: UiState = {
   connectingWallet: false,
   mintStatus: 'init',
   mintNumber: 0,
+  showSideMenu: false,
 }
 
 export const uiSlice = createSlice({
@@ -35,15 +37,24 @@ export const uiSlice = createSlice({
     mintFailed: state => {
       state.mintStatus = 'init'
     },
+    showSideMenu: state => {
+      state.showSideMenu = true
+    },
+    hideSideMenu: state => {
+      state.showSideMenu = false
+    },
   },
 })
 
-export const { connectWallet, walletConnected, mintStart, mintSuccess, mintFailed } = uiSlice.actions
+export const { connectWallet, walletConnected, mintStart, mintSuccess, mintFailed, showSideMenu, hideSideMenu } =
+  uiSlice.actions
 
 export const selectConnectingWallet = (state: RootState) => state.ui.connectingWallet
 
 export const selectMintStatus = (state: RootState) => state.ui.mintStatus
 
 export const selectMintNumber = (state: RootState) => state.ui.mintNumber
+
+export const selectShowSideMenu = (state: RootState) => state.ui.showSideMenu
 
 export default uiSlice.reducer
