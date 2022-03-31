@@ -37,6 +37,9 @@ export const uiSlice = createSlice({
     mintFailed: state => {
       state.mintStatus = 'init'
     },
+    mintReset: state => {
+      state.mintStatus = 'init'
+    },
     showSideMenu: state => {
       state.showSideMenu = true
     },
@@ -46,8 +49,16 @@ export const uiSlice = createSlice({
   },
 })
 
-export const { connectWallet, walletConnected, mintStart, mintSuccess, mintFailed, showSideMenu, hideSideMenu } =
-  uiSlice.actions
+export const {
+  connectWallet,
+  walletConnected,
+  mintStart,
+  mintSuccess,
+  mintFailed,
+  mintReset,
+  showSideMenu,
+  hideSideMenu,
+} = uiSlice.actions
 
 export const selectConnectingWallet = (state: RootState) => state.ui.connectingWallet
 

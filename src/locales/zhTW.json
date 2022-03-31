@@ -13,6 +13,22 @@
   },
   "mint": {
     "title": "Mint Portals",
+    "minted_desc": "You have already minted",
+    "minted_desc_amount": " {{amount}} Otto Portal(s)",
+    "check_on_opensea": "Check on OpenSea",
+    "payment_method": "Payment Method",
+    "pay_with_clam": "Pay with CLAM",
+    "pay_with_eth": "Pay with ETH",
+    "eth_balance": "Your ETH balance:",
+    "clam_balance": "Your CLAM balance:",
+    "portal_amount": "Otto Portals:",
+    "total_payment": "Total Payment:",
+    "please_connect": "Please connect your wallet to proceed the process.",
+    "connect": "Connect",
+    "mint_button": "Mint",
+    "approve_button": "Approve",
+    "not_enough_clam": "Not enough CLAM?",
+    "buy": "Buy",
     "countdown": {
       "preWhiteListSale": "Whitelist-Only Sale Countdown",
       "days": "Days",
@@ -54,10 +70,15 @@
       "portal": "Otto Portal",
       "info_desc": "One portal mints one Otto. Mint portals to summon your Otto and begin your Otterverse adventure!",
       "amount_left": "{{amount}} left"
+    },
+    "popup": {
+      "processing": "Processing... Please do not close the window. The transaction will be finished soon.",
+      "success_msg": "You just purchased {{mintNumber}} Otto Portal(s)",
+      "view_my_portals": "View my portals"
     }
   },
   "my_portals": {
-    "title": "我的傳送門",
+    "title": "My Portals",
     "no_portal": "You don't have any portal yet.",
     "mint_portal": "Mint Portals",
     "status": {
