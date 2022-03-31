@@ -2,22 +2,25 @@ import { useMediaQuery } from 'hooks/useMediaQuery'
 import styled from 'styled-components'
 import { breakpoints } from 'styles/breakpoints'
 import { Display3 } from 'styles/typography'
-import Connector from '../Connector'
+import Connector from './Connector'
+import ClamBalance from './ClamBalance'
 import logoLarge from './logo-large.svg'
 import logoSmall from './logo-small.svg'
 
 const StyledHeader = styled.div`
-  position: relative;
+  /* position: relative; */
   width: 90%;
+  max-width: 1200px;
   height: 68px;
   display: flex;
   align-items: center;
+  justify-content: center;
   margin: 20px 0;
+  gap: 10px;
 `
 
 const StyledLogo = styled.img`
   height: 100%;
-  flex: 1;
 `
 
 const NavItems = styled.div`
@@ -56,8 +59,9 @@ export default function Header({ title }: { title: string }) {
           <Display3>{title}</Display3>
         </NavItem>
       </NavItems>
-      {/* <Connector /> */}
-      <div style={{ flex: 1 }} />
+      {!isMobile && <ClamBalance />}
+      <Connector />
+      {/* <div style={{ flex: 1 }} /> */}
     </StyledHeader>
   )
 }

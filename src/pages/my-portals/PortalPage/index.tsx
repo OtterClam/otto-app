@@ -75,9 +75,13 @@ const StyledOpenSeaLink = styled.a`
   }
 `
 
-const StyledTitle = styled.p``
+const StyledTitle = styled.p`
+  color: ${({ theme }) => theme.colors.otterBlack};
+`
 
-const StyledDescription = styled.p``
+const StyledDescription = styled.p`
+  color: ${({ theme }) => theme.colors.otterBlack};
+`
 
 const StyledStatusContainer = styled.div`
   margin-top: 40px;
@@ -86,7 +90,9 @@ const StyledStatusContainer = styled.div`
   align-items: center;
 `
 
-const StyledStatus = styled.p``
+const StyledStatus = styled.p`
+  color: ${({ theme }) => theme.colors.otterBlack};
+`
 
 const StyledDuration = styled.p`
   display: flex;

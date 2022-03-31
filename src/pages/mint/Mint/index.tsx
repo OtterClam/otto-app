@@ -24,8 +24,6 @@ const StyledMint = styled.section`
   margin-bottom: 45px;
   padding: 3px;
   border: 2px solid #1d2654;
-  backdrop-filter: blur(5px);
-  /* Note: backdrop-filter has minimal browser support */
   border-radius: 15px;
   background-color: ${({ theme }) => theme.colors.crownYellow};
 
@@ -174,6 +172,7 @@ const StyledQuantity = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 62px;
   }

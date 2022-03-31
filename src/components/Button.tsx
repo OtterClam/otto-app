@@ -3,26 +3,46 @@ import { ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { theme } from 'styles'
 import { Display3 } from 'styles/typography'
 import { selectError } from '../store/errorSlice'
 
-export type ButtonColor = 'blue' | 'white'
+export type ButtonColor = 'blue' | 'white' | 'pink'
 
 interface ButtonProps {
   primaryColor: ButtonColor
   padding?: string
 }
 
+const buttonColors = {
+  blue: {
+    text: 'white',
+    outerBackground: theme.colors.otterBlue,
+    innerBackground: theme.colors.otterBlue,
+    hover: theme.colors.otterBlueHover,
+  },
+  white: {
+    text: theme.colors.otterBlack,
+    outerBackground: theme.colors.lightGray200,
+    innerBackground: 'white',
+    hover: theme.colors.lightGray100,
+  },
+  pink: {
+    text: 'white',
+    outerBackground: theme.colors.clamPink,
+    innerBackground: theme.colors.clamPink,
+    hover: theme.colors.clamPink,
+  },
+}
+
 const StyledButton = styled.button<ButtonProps>`
   display: inline-block;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
-  background-color: ${({ theme, primaryColor }) =>
-    primaryColor === 'blue' ? theme.colors.otterBlue : theme.colors.lightGray200};
+  background-color: ${({ primaryColor }) => buttonColors[primaryColor].outerBackground};
 
   :hover {
-    background-color: ${({ theme, primaryColor }) =>
-      primaryColor === 'blue' ? theme.colors.otterBlueHover : theme.colors.lightGray100};
+    background-color: ${({ primaryColor }) => buttonColors[primaryColor].hover};
   }
 
   :active {
@@ -44,22 +64,17 @@ interface InnerButtonProps {
 
 const StyledInnerButton = styled.div<InnerButtonProps>`
   width: 100%;
-  color: ${({ theme, primaryColor }) => (primaryColor === 'blue' ? '#fff' : theme.colors.otterBlack)};
+  color: ${({ primaryColor }) => buttonColors[primaryColor].text};
   background-color: ${({ theme, primaryColor, disabled }) =>
-    disabled ? theme.colors.darkGray200 : primaryColor === 'blue' ? theme.colors.otterBlue : '#fff'};
+    disabled ? theme.colors.darkGray200 : buttonColors[primaryColor].innerBackground};
   padding: ${({ padding }) => padding || '0 45px'};
-  /* margin: -4px -4px 6px -4px; */
   margin: 0 0 6px 0;
   outline: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 8px;
 
   :hover {
     background-color: ${({ theme, primaryColor, disabled }) =>
-      disabled
-        ? theme.colors.darkGray200
-        : primaryColor === 'blue'
-        ? theme.colors.otterBlueHover
-        : theme.colors.lightGray100};
+      disabled ? theme.colors.darkGray200 : buttonColors[primaryColor].hover};
   }
 
   :active {

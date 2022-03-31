@@ -69,6 +69,9 @@
     "opensea_link": "View on OpenSea",
     "open_now": "Open Now!"
   },
+  "header": {
+    "connect": "Connect"
+  },
   "connect_wallet": "Connect Wallet",
   "wallet_selector_head": "Connect to a wallet",
   "connect_help_text": "Please connect wallet to continue playing."
