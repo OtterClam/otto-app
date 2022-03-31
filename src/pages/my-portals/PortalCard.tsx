@@ -85,25 +85,24 @@ interface Props {
   portal: ListMyPortals_ottos
 }
 
-export default function PortalCard({ portal: { tokenURI, portalStatus, canSummonAt } }: Props) {
+export default function PortalCard({ portal: { tokenURI, portalStatus, canOpenAt } }: Props) {
   const { t } = useTranslation()
   const [now, setNow] = useState(Date.now())
   const [portalMeta, setPortalMeta] = useState<PortalMeta | null>(null)
-  // FIXME: remove me after graph synced
-  canSummonAt = BigInt(1649250000000)
+  canOpenAt *= 1000
   const openProgress = useMemo(
-    () => 100 - Math.round(((Number(canSummonAt) - now) / (7 * 86400 * 1000)) * 100),
-    [canSummonAt, now]
+    () => 100 - Math.round(((Number(canOpenAt) - now) / (7 * 86400 * 1000)) * 100),
+    [canOpenAt, now]
   )
   const duration = useMemo(
     () =>
       formatDuration(
         intervalToDuration({
           start: now,
-          end: Number(canSummonAt),
+          end: Number(canOpenAt),
         })
       ),
-    [canSummonAt, now]
+    [canOpenAt, now]
   )
 
   useEffect(() => {

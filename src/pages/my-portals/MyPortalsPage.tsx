@@ -41,7 +41,7 @@ export const LIST_MY_PORTALS = gql`
       tokenId
       tokenURI
       portalStatus
-      canSummonAt
+      canOpenAt
       mintAt
     }
   }

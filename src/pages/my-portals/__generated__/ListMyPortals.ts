@@ -14,7 +14,7 @@ export interface ListMyPortals_ottos {
   tokenId: any;
   tokenURI: string;
   portalStatus: PortalStatus;
-  canSummonAt: any;
+  canOpenAt: any;
   mintAt: any;
 }
 

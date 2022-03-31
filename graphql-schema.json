@@ -7475,7 +7475,7 @@
             "deprecationReason": null
           },
           {
-            "name": "canSummonAt",
+            "name": "canOpenAt",
             "description": null,
             "args": [],
             "type": {
@@ -8184,7 +8184,7 @@
             "deprecationReason": null
           },
           {
-            "name": "canSummonAt",
+            "name": "canOpenAt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -8196,7 +8196,7 @@
             "deprecationReason": null
           },
           {
-            "name": "canSummonAt_not",
+            "name": "canOpenAt_not",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -8208,7 +8208,7 @@
             "deprecationReason": null
           },
           {
-            "name": "canSummonAt_gt",
+            "name": "canOpenAt_gt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -8220,7 +8220,7 @@
             "deprecationReason": null
           },
           {
-            "name": "canSummonAt_lt",
+            "name": "canOpenAt_lt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -8232,7 +8232,7 @@
             "deprecationReason": null
           },
           {
-            "name": "canSummonAt_gte",
+            "name": "canOpenAt_gte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -8244,7 +8244,7 @@
             "deprecationReason": null
           },
           {
-            "name": "canSummonAt_lte",
+            "name": "canOpenAt_lte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -8256,7 +8256,7 @@
             "deprecationReason": null
           },
           {
-            "name": "canSummonAt_in",
+            "name": "canOpenAt_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -8276,7 +8276,7 @@
             "deprecationReason": null
           },
           {
-            "name": "canSummonAt_not_in",
+            "name": "canOpenAt_not_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -8676,7 +8676,7 @@
             "deprecationReason": null
           },
           {
-            "name": "canSummonAt",
+            "name": "canOpenAt",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null

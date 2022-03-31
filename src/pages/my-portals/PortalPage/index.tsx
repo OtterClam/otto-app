@@ -21,7 +21,7 @@ export const GET_PORTAL = gql`
       tokenId
       tokenURI
       portalStatus
-      canSummonAt
+      canOpenAt
       mintAt
     }
   }
@@ -43,6 +43,7 @@ const StyledPortalPage = styled.div`
 
 const StyledPortalImage = styled.img`
   width: 440px;
+  min-width: 440px;
   height: 440px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
 
@@ -116,23 +117,22 @@ export default function PortalPage() {
   const { data, loading } = useQuery<GetPortal, GetPortalVariables>(GET_PORTAL, {
     variables: { portalId: portalId || '0' },
   })
-  let { canSummonAt } = data?.ottos[0] || {}
+  const canOpenAt = (data?.ottos[0].canOpenAt || 0) * 1000
   const { tokenURI, portalStatus } = data?.ottos[0] || {}
-  canSummonAt = BigInt(1649250000000)
 
   const progress = useMemo(
-    () => 100 - Math.round(((Number(canSummonAt) - now) / (7 * 86400 * 1000)) * 100),
-    [canSummonAt, now]
+    () => 100 - Math.round(((Number(canOpenAt) - now) / (7 * 86400 * 1000)) * 100),
+    [canOpenAt, now]
   )
   const duration = useMemo(
     () =>
       formatDuration(
         intervalToDuration({
           start: now,
-          end: Number(canSummonAt),
+          end: Number(canOpenAt),
         })
       ),
-    [canSummonAt, now]
+    [canOpenAt, now]
   )
 
   useEffect(() => {
