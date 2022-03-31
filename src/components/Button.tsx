@@ -31,6 +31,7 @@ const StyledButton = styled.button<ButtonProps>`
   }
 
   :disabled {
+    border: 4px solid ${({ theme }) => theme.colors.otterBlack};
     background-color: ${({ theme }) => theme.colors.darkGray300};
   }
 `
@@ -62,7 +63,7 @@ const StyledInnerButton = styled.div<InnerButtonProps>`
   }
 
   :active {
-    translate: 0 6px;
+    transform: ${({ disabled }) => (disabled ? 'none' : 'translateY(6px)')};
   }
 `
 

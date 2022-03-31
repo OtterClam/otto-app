@@ -1,6 +1,7 @@
 import MintPage from 'pages/mint/MintPage'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import MyPortalsPage from 'pages/my-portals/MyPortalsPage'
+import PortalPage from 'pages/my-portals/PortalPage'
 import App from './App'
 import HomePage from './pages/home/HomePage'
 import NotFoundPage from './pages/not-found/NotFoundPage'
@@ -12,7 +13,10 @@ const Routing = () => {
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
           <Route path="mint" element={<MintPage />} />
-          <Route path="my-portals" element={<MyPortalsPage />} />
+          <Route path="my-portals">
+            <Route index element={<MyPortalsPage />} />
+            <Route path=":portalId" element={<PortalPage />} />
+          </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

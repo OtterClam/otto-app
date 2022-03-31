@@ -15,7 +15,7 @@ const StyledPortalCard = styled(BorderContainer)`
   height: 448px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+
   padding: 15px;
   gap: 12px;
 
@@ -24,6 +24,14 @@ const StyledPortalCard = styled(BorderContainer)`
     height: 363px;
     padding: 8px 5px;
     gap: 8px;
+    align-items: center;
+  }
+
+  &:hover {
+    transform: scale(1.01);
+    background-color: ${({ theme }) => theme.colors.lightGray100};
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.2);
+    transition: 0.2s;
   }
 `
 
@@ -38,9 +46,13 @@ const StyledPortalImage = styled.img`
   }
 `
 
-const StyledPortalTitle = styled.div``
+const StyledPortalTitle = styled.div`
+  color: ${({ theme }) => theme.colors.otterBlack};
+`
 
-const StyledPortalStatus = styled.div``
+const StyledPortalStatus = styled.div`
+  color: ${({ theme }) => theme.colors.otterBlack};
+`
 
 const StyledCountdown = styled.div`
   width: 90%;
@@ -62,7 +74,6 @@ const StyledCountdown = styled.div`
 
 const StyledProgressBar = styled(ProgressBar)`
   width: 90%;
-  border-radius: 6px;
 `
 
 interface PortalMeta {
