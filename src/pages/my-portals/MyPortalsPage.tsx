@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import ConnectView from './ConnectView'
 import NoPortalView from './NoPortalView'
 import PortalCard from './PortalCard'
+import PortalContainer from './PortalContainer'
 import { ListMyPortals, ListMyPortalsVariables } from './__generated__/ListMyPortals'
 
 const StyledMyPortalsPage = styled.div`
@@ -94,7 +95,7 @@ export default function MyPortalsPage() {
                   navigate(portal.tokenId)
                 }}
               >
-                <PortalCard portal={portal} />
+                <PortalContainer rawPortal={portal}>{props => <PortalCard {...props} />}</PortalContainer>
               </a>
             ))}
           </StyledMyPortals>

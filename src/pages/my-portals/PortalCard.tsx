@@ -1,14 +1,10 @@
-import axios from 'axios'
 import BorderContainer from 'components/BorderContainer'
 import ProgressBar from 'components/ProgressBar'
-import { formatDuration, intervalToDuration } from 'date-fns'
-import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { theme } from 'styles'
 import { Caption, ContentMedium, ContentSmall } from 'styles/typography'
 import ClockImage from './clock.png'
-import { ListMyPortals_ottos } from './__generated__/ListMyPortals'
 
 const StyledPortalCard = styled(BorderContainer)`
   width: 265px;
@@ -76,54 +72,18 @@ const StyledProgressBar = styled(ProgressBar)`
   width: 90%;
 `
 
-interface PortalMeta {
-  name: string
-  image: string
-}
-
-interface Props {
-  portal: ListMyPortals_ottos
-}
-
-export default function PortalCard({ portal: { tokenURI, portalStatus, canOpenAt } }: Props) {
+export default function PortalCard({ portal, state, progress, duration, metadata }: RenderPortalProps) {
   const { t } = useTranslation()
-  const [now, setNow] = useState(Date.now())
-  const [portalMeta, setPortalMeta] = useState<PortalMeta | null>(null)
-  canOpenAt *= 1000
-  const openProgress = useMemo(
-    () => 100 - Math.round(((Number(canOpenAt) - now) / (7 * 86400 * 1000)) * 100),
-    [canOpenAt, now]
-  )
-  const duration = useMemo(
-    () =>
-      formatDuration(
-        intervalToDuration({
-          start: now,
-          end: Number(canOpenAt),
-        })
-      ),
-    [canOpenAt, now]
-  )
-
-  useEffect(() => {
-    axios.get<PortalMeta>(tokenURI).then(res => {
-      setPortalMeta(res.data)
-    })
-  }, [tokenURI])
-  useEffect(() => {
-    setTimeout(() => setNow(Date.now()), 1000)
-  }, [now])
-
   return (
     <StyledPortalCard borderColor={theme.colors.clamPink}>
-      <StyledPortalImage src={portalMeta?.image} />
+      <StyledPortalImage src={metadata?.image} />
       <StyledPortalTitle>
-        <ContentMedium>{portalMeta?.name}</ContentMedium>
+        <ContentMedium>{metadata?.name}</ContentMedium>
       </StyledPortalTitle>
       <StyledPortalStatus>
-        <ContentSmall>{t(`my_portals.status.${portalStatus}`)}</ContentSmall>
+        <ContentSmall>{t(`my_portals.state.${state}`)}</ContentSmall>
       </StyledPortalStatus>
-      <StyledProgressBar height="12px" progress={openProgress} />
+      <StyledProgressBar height="12px" progress={progress} />
       <StyledCountdown>
         <Caption>{t('my_portals.open_duration', { duration })}</Caption>
       </StyledCountdown>

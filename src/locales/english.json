@@ -81,13 +81,14 @@
     "title": "My Portals",
     "no_portal": "You don't have any portal yet.",
     "mint_portal": "Mint Portals",
-    "status": {
+    "state": {
       "UNOPENED": "Charging...",
       "CAN_OPEN": "Ready to initiate!",
       "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
     },
     "open_duration": "{{duration}} left",
     "opensea_link": "View on OpenSea",
+    "open_portal": "Open your portal now!",
     "open_now": "Open Now!"
   },
   "header": {
