@@ -1,8 +1,10 @@
 import { useEthers } from '@usedapp/core'
 import Button from 'components/Button'
 import Fullscreen from 'components/Fullscreen'
-import { useSelector } from 'react-redux'
-import { selectMintNumber, selectMintStatus } from 'store/uiSlice'
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { mintReset, selectMintNumber, selectMintStatus } from 'store/uiSlice'
 import styled from 'styled-components'
 import { ContentLarge, ContentMedium, Display3, Headline } from 'styles/typography'
 import LoadingOtter from './loading-otter.png'
@@ -28,12 +30,13 @@ const StyledLoadingOtter = styled.img`
 const StyledLoadingText = styled(ContentLarge)``
 
 const StyledSuccessPortal = styled.img`
-  width: 545px;
-  height: 545px;
+  width: 360px;
 `
 
 export default function MintPopup() {
-  const { account } = useEthers()
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const mintStatus = useSelector(selectMintStatus)
   const mintNumber = useSelector(selectMintNumber)
   return (
@@ -42,24 +45,22 @@ export default function MintPopup() {
         {mintStatus === 'minting' && (
           <>
             <StyledLoadingOtter src={LoadingOtter} />
-            <StyledLoadingText as="p">
-              Processing... Please do not close the window. The transaction will be finished soon.
-            </StyledLoadingText>
+            <StyledLoadingText as="p">{t('mint.popup.processing')}</StyledLoadingText>
           </>
         )}
         {mintStatus === 'success' && (
           <>
             <StyledSuccessPortal src={SuccessPortal} />
             <Headline>Clamtastic!</Headline>
-            <Display3>You just purchased {mintNumber} Otto Portal(s)</Display3>
-            <ContentMedium>
-              Your Otto Portal(s) are now preparing to initiate. Close to check out the remaining preparation time.
-            </ContentMedium>
-            <a href={`https://opensea.io/${account}`} target="_blank" rel="noreferrer">
-              <Button>
-                <Headline>Check on OpenSea</Headline>
-              </Button>
-            </a>
+            <Display3>{t('mint.popup.success_msg', { mintNumber })}</Display3>
+            <Button
+              click={() => {
+                dispatch(mintReset())
+                navigate('/my-portals')
+              }}
+            >
+              <Headline>{t('mint.popup.view_my_portals')}</Headline>
+            </Button>
           </>
         )}
       </StyledMintPopup>

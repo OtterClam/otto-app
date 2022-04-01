@@ -2,6 +2,17 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import en from './locales/english.json'
+import zhTW from './locales/zhTW.json'
+
+export const languages = [
+  { name: 'English', locale: 'en', resource: en },
+  { name: '中文', locale: 'zh-TW', resource: zhTW },
+]
+
+const resources = languages.reduce((acc, { locale, resource }) => {
+  acc[locale] = { translation: resource }
+  return acc
+}, {} as any)
 
 i18n
   // detect user language
@@ -17,9 +28,7 @@ i18n
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
-    resources: {
-      en: { translation: en },
-    },
+    resources,
   })
 
 export default i18n

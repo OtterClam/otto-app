@@ -354,12 +354,15 @@ export default function Mint() {
           <StyledOpenSeaHint>
             <StyledSmallPortal src={SmallPortalImage} />
             <StyledHintText>
-              You have already minted
-              <StyledHintTextHighlight> {ottoBalance.toString()} Otto Portals</StyledHintTextHighlight>.
+              {t('mint.minted_desc')}
+              <StyledHintTextHighlight>
+                {t('mint.minted_desc_amount', { amount: ottoBalance.toString() })}
+              </StyledHintTextHighlight>
+              .
             </StyledHintText>
             <a href={`https://opensea.io/${account}`} target="_blank" rel="noreferrer">
               <Button>
-                <Headline>Check on OpenSea</Headline>
+                <Headline>{t('mint.check_on_opensea')}</Headline>
               </Button>
             </a>
           </StyledOpenSeaHint>
@@ -375,9 +378,6 @@ export default function Mint() {
                   <StyledPortalInfoAmountLeft>
                     {t('mint.mint.amount_left', { amount: 5000 - ottoSupply.toNumber() })}
                   </StyledPortalInfoAmountLeft>
-                  {account && ottolisted > 0 && (
-                    <StyledPortalInfoDesc>You can mint {ottolisted} Otto Portals!</StyledPortalInfoDesc>
-                  )}
                   <StyledETHMintPrice>{ethers.utils.formatEther(ethPrice)}</StyledETHMintPrice>
                 </StyledPortalInfo>
               </StyledCardTopContainer>
@@ -411,17 +411,17 @@ export default function Mint() {
               </StyledCardBottomContainer>
             </StyledCard>
             <StyledPaymentMethod as="p">
-              Payment Method <Note> (1 ETH = {trim(ethers.utils.formatUnits(clamPerETH, 9), 2)} CLAM)</Note>
+              {t('mint.payment_method')} <Note> (1 ETH = {trim(ethers.utils.formatUnits(clamPerETH, 9), 2)} CLAM)</Note>
             </StyledPaymentMethod>
             <StyledSelector selected={paidOption === 'clam'} onClick={() => setPaidOption('clam')}>
-              <StyledSelectorText as="p">Pay with CLAM</StyledSelectorText>
+              <StyledSelectorText as="p">{t('mint.pay_with_clam')}</StyledSelectorText>
               <StyledETHMintPrice>
                 {ethers.utils.formatEther(totalPaymentETH.mul(7000).div(10000))} =
               </StyledETHMintPrice>
               <StyledCLAMMintPrice>{trim(ethers.utils.formatUnits(totalPaymentCLAM, 9), 2)}</StyledCLAMMintPrice>
             </StyledSelector>
             <StyledSelector selected={paidOption === 'eth'} onClick={() => setPaidOption('eth')}>
-              <ContentLarge as="p">Pay with ETH</ContentLarge>
+              <ContentLarge as="p">{t('mint.pay_with_eth')}</ContentLarge>
               <StyledETHMintPrice>{ethers.utils.formatEther(totalPaymentETH)}</StyledETHMintPrice>
             </StyledSelector>
           </StyledLeftSection>
@@ -434,67 +434,56 @@ export default function Mint() {
                 <>
                   {paidOption === 'eth' && (
                     <StyledSummaryItem>
-                      <p>Your ETH balance:</p>
+                      <p>{t('mint.eth_balance')}</p>
                       <StyledETHBalance>{trim(ethers.utils.formatEther(ethBalance), 4)}</StyledETHBalance>
                     </StyledSummaryItem>
                   )}
                   {paidOption === 'clam' && (
                     <StyledSummaryItem>
-                      <p>Your CLAM balance:</p>
+                      <p>{t('mint.clam_balance')}</p>
                       <StyledCLAMBalance>{trim(ethers.utils.formatUnits(clamBalance, 9), 2)}</StyledCLAMBalance>
                     </StyledSummaryItem>
                   )}
                   <StyledSummaryItem>
-                    <p>Otto Portals:</p>
+                    <p>{t('mint.portal_amount')}</p>
                     <p>{quantity}</p>
                   </StyledSummaryItem>
                   <StyledDivider />
                   {paidOption === 'eth' && (
                     <StyledSummaryItem>
-                      <p>total:</p>
+                      <p>{t('mint.total_payment')}</p>
                       <StyledETHBalance>{trim(ethers.utils.formatEther(totalPaymentETH), 4)}</StyledETHBalance>
                     </StyledSummaryItem>
                   )}
                   {paidOption === 'clam' && (
                     <StyledSummaryItem>
-                      <p>Total Payment:</p>
+                      <p>{t('mint.total_payment')}</p>
                       <StyledCLAMBalance>{trim(ethers.utils.formatUnits(totalPaymentCLAM, 9), 2)} </StyledCLAMBalance>
                     </StyledSummaryItem>
                   )}
                 </>
               )}
-              {!account && <ContentSmall>Please connect your wallet to proceed the process.</ContentSmall>}
+              {!account && <ContentSmall>{t('mint.please_connect')}</ContentSmall>}
             </StyledSummary>
-            {account && saleStage.toNumber() <= 1 && ottoBalance.eq(0) && ottolisted === 0 && (
-              <NotOttolistedWarning>
-                Sorry, you are not whitelisted. Come back later at the Public Sale starting at{' '}
-                {new Date(PUBLIC_MINT_TIME).toLocaleString()}
-              </NotOttolistedWarning>
-            )}
             {!account && (
               <Button click={() => dispatch(connectWallet())}>
-                <Headline>Connect</Headline>
-              </Button>
-            )}
-            {account && hasAllowance && saleStage.toNumber() === 0 && (
-              <Button click={onMint} disabled>
-                Not Started
+                <Headline>{t('mint.connect')}</Headline>
               </Button>
             )}
             {account && hasAllowance && saleStage.toNumber() > 0 && (
               <Button click={onMint} disabled={maxCanMint === 0}>
-                <Headline>Mint</Headline>
+                <Headline>{t('mint.mint_button')}</Headline>
               </Button>
             )}
             {account && !hasAllowance && (
               <Button click={onApprove} loading={approveState.status === 'Mining'}>
-                <Headline>Approve</Headline>
+                <Headline>{t('mint.approve_button')}</Headline>
               </Button>
             )}
             <StyledBuyCLAM>
-              <ContentSmall>Not enough CLAM? </ContentSmall>
+              <ContentSmall>{t('mint.not_enough_clam')}</ContentSmall>
               <a href={BUY_CLAM_LINK} target="_blank" rel="noreferrer">
-                <StyledBuyCLAMLink>Buy CLAM</StyledBuyCLAMLink>
+                <StyledBuyCLAMLink>{t('mint.buy')}</StyledBuyCLAMLink>
               </a>
             </StyledBuyCLAM>
           </StyledRightSection>

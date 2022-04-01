@@ -1,6 +1,7 @@
 import { ApolloProvider } from '@apollo/client'
 import { ChainId, Config, DAppProvider } from '@usedapp/core'
 import MintPopup from 'components/MintPopup'
+import SideMenu from 'components/SideMenu'
 import { apollo } from 'libs/apollo'
 import { Outlet } from 'react-router-dom'
 import styled, { ThemeProvider } from 'styled-components'
@@ -44,6 +45,7 @@ const App = () => {
             <Error />
             <WalletSelector />
             <MintPopup />
+            <SideMenu />
           </DAppProvider>
         </StyledApp>
       </ThemeProvider>

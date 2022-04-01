@@ -2,13 +2,16 @@ import { useMediaQuery } from 'hooks/useMediaQuery'
 import styled from 'styled-components'
 import { breakpoints } from 'styles/breakpoints'
 import { Display3 } from 'styles/typography'
+import Button from 'components/Button'
+import { useDispatch } from 'react-redux'
+import { showSideMenu } from 'store/uiSlice'
 import Connector from './Connector'
 import ClamBalance from './ClamBalance'
 import logoLarge from './logo-large.svg'
 import logoSmall from './logo-small.svg'
+import iconHamburger from './icon-hamburger.svg'
 
 const StyledHeader = styled.div`
-  /* position: relative; */
   width: 90%;
   max-width: 1200px;
   height: 68px;
@@ -48,7 +51,10 @@ const NavItem = styled.div`
   }
 `
 
+const StyledIcon = styled.img``
+
 export default function Header({ title }: { title: string }) {
+  const dispatch = useDispatch()
   const isMobile = useMediaQuery(breakpoints.mobile)
 
   return (
@@ -61,7 +67,9 @@ export default function Header({ title }: { title: string }) {
       </NavItems>
       {!isMobile && <ClamBalance />}
       <Connector />
-      {/* <div style={{ flex: 1 }} /> */}
+      <Button primaryColor="white" padding="2px 6px" click={() => dispatch(showSideMenu())}>
+        <StyledIcon src={iconHamburger} />
+      </Button>
     </StyledHeader>
   )
 }
