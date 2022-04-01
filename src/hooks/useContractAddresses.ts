@@ -1,9 +1,11 @@
 import { ChainId, useEthers } from '@usedapp/core'
 import { useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import { clearError, ErrorButtonType, setError } from '../store/errorSlice'
 import { POLYGON_MAINNET, LOCALHOST } from '../contracts/addresses'
 
 const useContractAddresses = () => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const { chainId } = useEthers()
 
@@ -22,8 +24,8 @@ const useContractAddresses = () => {
 
   dispatch(
     setError({
-      header: 'Unsupported Network',
-      subHeader: 'Only Polygon Mainnet are supported',
+      header: t('unsupported_network.title'),
+      subHeader: t('unsupported_network.desc'),
       button: ErrorButtonType.SWITCH_TO_MAINNET,
     })
   )

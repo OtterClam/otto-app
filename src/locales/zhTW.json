@@ -99,5 +99,10 @@
   },
   "connect_wallet": "連接錢包",
   "wallet_selector_head": "連接錢包",
-  "connect_help_text": "請連接你的錢包來參與阿獺王國吧"
+  "connect_help_text": "請連接你的錢包來參與阿獺王國吧",
+  "unsupported_network": {
+    "title": "不支援的區塊鏈",
+    "desc": "Ottopia 只支援 Polygon 喔！",
+    "action": "切換到 Polygon"
+  }
 }

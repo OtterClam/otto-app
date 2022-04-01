@@ -99,5 +99,10 @@
   },
   "connect_wallet": "Connect Wallet",
   "wallet_selector_head": "Connect to a wallet",
-  "connect_help_text": "Please connect wallet to continue playing."
+  "connect_help_text": "Please connect wallet to continue playing.",
+  "unsupported_network": {
+    "title": "Unsupported Network",
+    "desc": "Only Polygon Mainnet are supported.",
+    "action": "Switch to Polygon"
+  }
 }

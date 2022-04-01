@@ -67,7 +67,7 @@ export default function Header({ title }: { title: string }) {
       </NavItems>
       {!isMobile && <ClamBalance />}
       <Connector />
-      <Button primaryColor="white" padding="2px 6px" click={() => dispatch(showSideMenu())}>
+      <Button primaryColor="white" padding="2px 6px" onClick={() => dispatch(showSideMenu())}>
         <StyledIcon src={iconHamburger} />
       </Button>
     </StyledHeader>

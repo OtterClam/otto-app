@@ -386,7 +386,7 @@ export default function Mint() {
                   <Button
                     disabled={maxCanMint === 0}
                     padding={isMobile ? '8px 16px' : '4px 20px'}
-                    click={() => setQuantity(Math.max(quantity - 1, 1))}
+                    onClick={() => setQuantity(Math.max(quantity - 1, 1))}
                   >
                     <Headline>-</Headline>
                   </Button>
@@ -396,14 +396,14 @@ export default function Mint() {
                   <Button
                     disabled={maxCanMint === 0}
                     padding={isMobile ? '8px 16px' : '4px 20px'}
-                    click={() => setQuantity(Math.min(quantity + 1, maxCanMint))}
+                    onClick={() => setQuantity(Math.min(quantity + 1, maxCanMint))}
                   >
                     <Headline>+</Headline>
                   </Button>
                   <Button
                     primaryColor="white"
                     padding={isMobile ? '8px 10px' : '4px 20px'}
-                    click={() => setQuantity(maxCanMint)}
+                    onClick={() => setQuantity(maxCanMint)}
                   >
                     <Headline>Max</Headline>
                   </Button>
@@ -466,17 +466,17 @@ export default function Mint() {
               {!account && <ContentSmall>{t('mint.please_connect')}</ContentSmall>}
             </StyledSummary>
             {!account && (
-              <Button click={() => dispatch(connectWallet())}>
+              <Button onClick={() => dispatch(connectWallet())}>
                 <Headline>{t('mint.connect')}</Headline>
               </Button>
             )}
             {account && hasAllowance && saleStage.toNumber() > 0 && (
-              <Button click={onMint} disabled={maxCanMint === 0}>
+              <Button onClick={onMint} disabled={maxCanMint === 0}>
                 <Headline>{t('mint.mint_button')}</Headline>
               </Button>
             )}
             {account && !hasAllowance && (
-              <Button click={onApprove} loading={approveState.status === 'Mining'}>
+              <Button onClick={onApprove} loading={approveState.status === 'Mining'}>
                 <Headline>{t('mint.approve_button')}</Headline>
               </Button>
             )}

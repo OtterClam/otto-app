@@ -40,7 +40,7 @@ export default function ConnectView() {
         <StyledHelpText>
           <ContentSmall>{t('connect_help_text')}</ContentSmall>
         </StyledHelpText>
-        <Button click={() => dispatch(connectWallet())}>
+        <Button onClick={() => dispatch(connectWallet())}>
           <Headline>{t('connect_wallet')}</Headline>
         </Button>
       </StyledInnerContainer>

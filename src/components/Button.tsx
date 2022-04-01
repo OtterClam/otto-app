@@ -84,7 +84,7 @@ const StyledInnerButton = styled.div<InnerButtonProps>`
 `
 
 interface Props {
-  click?: () => void
+  onClick?: () => void
   primaryColor?: ButtonColor
   isWeb3?: boolean
   disabled?: boolean
@@ -94,7 +94,7 @@ interface Props {
   className?: string
 }
 
-const Button = ({ children, className, click, primaryColor = 'blue', isWeb3, disabled, loading, padding }: Props) => {
+const Button = ({ children, className, onClick, primaryColor = 'blue', isWeb3, disabled, loading, padding }: Props) => {
   const { account, activateBrowserWallet } = useEthers()
   const error = useSelector(selectError)
   const [pending, setPending] = useState(false)
@@ -112,11 +112,11 @@ const Button = ({ children, className, click, primaryColor = 'blue', isWeb3, dis
       primaryColor={primaryColor}
       disabled={_disabled}
       onClick={() => {
-        if (click) {
+        if (onClick) {
           if (loading || disabled || pending) return
           if (isWeb3) setPending(true)
           if (isWeb3 && !account) activateBrowserWallet()
-          else click()
+          else onClick()
         }
         if (!_disabled) {
           ottoClick.play()

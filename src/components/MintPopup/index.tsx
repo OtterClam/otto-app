@@ -54,7 +54,7 @@ export default function MintPopup() {
             <Headline>Clamtastic!</Headline>
             <Display3>{t('mint.popup.success_msg', { mintNumber })}</Display3>
             <Button
-              click={() => {
+              onClick={() => {
                 dispatch(mintReset())
                 navigate('/my-portals')
               }}
