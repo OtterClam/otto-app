@@ -1,34 +1,34 @@
 {
   "home": {
-    "title": "Welcome to Ottopia",
-    "mint_portal": "Mint Portal",
+    "title": "阿獺王國",
+    "mint_portal": "鑄造傳送門",
     "menu": {
-      "my_portals": "My Portals",
-      "buy_clam": "Buy CLAM",
+      "my_portals": "我的傳送門",
+      "buy_clam": "買 CLAM",
       "otter_dao": "Otter DAO",
-      "treasury": "Treasury",
-      "join_discord": "Join Discord",
-      "white_paper": "White Paper"
+      "treasury": "國庫",
+      "join_discord": "加入 Discord",
+      "white_paper": "白皮書"
     }
   },
   "mint": {
-    "title": "Mint Portals",
-    "minted_desc": "You have already minted",
-    "minted_desc_amount": " {{amount}} Otto Portal(s)",
-    "check_on_opensea": "Check on OpenSea",
-    "payment_method": "Payment Method",
-    "pay_with_clam": "Pay with CLAM",
-    "pay_with_eth": "Pay with ETH",
-    "eth_balance": "Your ETH balance:",
-    "clam_balance": "Your CLAM balance:",
-    "portal_amount": "Otto Portals:",
-    "total_payment": "Total Payment:",
-    "please_connect": "Please connect your wallet to proceed the process.",
-    "connect": "Connect",
-    "mint_button": "Mint",
-    "approve_button": "Approve",
-    "not_enough_clam": "Not enough CLAM?",
-    "buy": "Buy",
+    "title": "鑄造傳送門",
+    "minted_desc": "你已經鑄造了",
+    "minted_desc_amount": " {{amount}} 阿獺傳送門",
+    "check_on_opensea": "去 OpenSea 瞧瞧",
+    "payment_method": "支付方式",
+    "pay_with_clam": "使用CLAM支付",
+    "pay_with_eth": "使用ETH支付",
+    "eth_balance": "你的ETH:",
+    "clam_balance": "你的CLAM:",
+    "portal_amount": "傳送門:",
+    "total_payment": "總計:",
+    "please_connect": "請連接你的錢包來鑄造傳送門。",
+    "connect": "連接",
+    "mint_button": "鑄造",
+    "approve_button": "允許花費",
+    "not_enough_clam": "CLAM不夠嗎？",
+    "buy": "購買",
     "countdown": {
       "preWhiteListSale": "Whitelist-Only Sale Countdown",
       "days": "Days",
@@ -37,11 +37,11 @@
       "seconds": "Seconds"
     },
     "hero": {
-      "title": "Otto Portals",
-      "subtitle": "Summon your own Otto NFTs",
-      "desc": "Mint Otto Portal with Whitelist ticket, and summon your unique Otto NFTs. Otto? Lottie? Cleo? It’s all surprise!",
-      "limit": "Only 5,000 Portals available",
-      "whitepaper": "Check out the White Paper"
+      "title": "阿獺傳送門",
+      "subtitle": "召喚你專屬的阿獺 NFTs",
+      "desc": "鑄造阿獺傳送門來召喚獨一無二的阿獺。Otto? Lottie? Cleo? 都有可能出現在你的阿獺傳送門中。",
+      "limit": "限量 5,000 個傳送門",
+      "whitepaper": "查看白皮書"
     },
     "checkWL": {
       "title": "Check if you’re Whitelisted",
@@ -53,51 +53,51 @@
       "no-wl-desc": "Don’t worry. You can join your Discord, and prepare for the Public Sale at {{time}}."
     },
     "intro": {
-      "title": "How do Otto Portals work?",
-      "step1": "Step 1",
-      "step1_title": "Mint Otto Portal with CLAM or ETH",
-      "step1_desc": "We accept $CLAM and ETH for Otto Portal purchase. However, we're offering a 30% discount when you pay with $CLAM. This is a simple way to save money while supporting the continued growth of the Otter Kingdom.\n\n1 Portal = 0.08 ETH",
-      "step2": "Step 2",
-      "step2_title": "Wait for your Otto Portal to activate",
-      "step2_desc": "Otto Portals need time to power up. Once they are ready, you will be able to summon your Otto.",
-      "step3": "Step 3",
-      "step3_title": "Summon your Ottos",
-      "step3_desc": "When the time is up, you will be able to summon your Otto.\n\n1 portal can only summon 1 Otto. The traits will be randomly generated the moment you summon a Otto. If you're lucky, you'll summon an Otto that possesses rare, or super rare traits that greatly increase your Otto's value."
+      "title": "阿獺傳送門如何運作的？",
+      "step1": "步驟 1",
+      "step1_title": "使用 CLAM 或 ETH 鑄造阿獺傳送門",
+      "step1_desc": "我們接受使用 CLAM 或是 ETH 來鑄造阿獺傳送門。不過，如果你使用 CLAM 來鑄造，我們會給予 30% 的折扣！使用 CLAM 鑄造是一個省錢又可以持續支持阿獺王國的方式。\n\n1 個傳送門 = 0.08 ETH",
+      "step2": "步驟 2",
+      "step2_title": "等待你的傳送門開啟",
+      "step2_desc": "每個傳送門都需要7天的時間來開啟。一但他準備好了，你就可以開啟傳送門來召喚阿獺。",
+      "step3": "步驟 3",
+      "step3_title": "召喚你的阿獺",
+      "step3_desc": "當傳送門的開啟時間到了，你就可以召喚阿獺！\n\n注意：一個傳送門只能召喚一隻阿獺。每隻阿獺的特性都是在開門時使用 Chainlink VRF 隨機產生的。如果你夠幸運，有機會獲得超級稀有的阿獺喔！"
     },
     "mint": {
-      "title": "Mint Portal",
-      "mint_summary": "Mint Summary({{address}})",
-      "portal": "Otto Portal",
-      "info_desc": "One portal mints one Otto. Mint portals to summon your Otto and begin your Otterverse adventure!",
-      "amount_left": "{{amount}} left"
+      "title": "鑄造傳送門",
+      "mint_summary": "鑄造資訊({{address}})",
+      "portal": "阿獺傳送門",
+      "info_desc": "一個傳送門只能召喚一隻阿獺。鑄造傳送門來召喚你的阿獺，一起加入阿獺王國的家庭吧！",
+      "amount_left": "剩餘： {{amount}} 阿獺傳送門"
     },
     "popup": {
-      "processing": "Processing... Please do not close the window. The transaction will be finished soon.",
-      "success_msg": "You just purchased {{mintNumber}} Otto Portal(s)",
-      "view_my_portals": "View my portals"
+      "processing": "處理中...請不要關閉這個視窗。交易通常很快會完成。",
+      "success_msg": "你鑄造了 {{mintNumber}} 阿獺傳送門",
+      "view_my_portals": "查看我的傳送門"
     }
   },
   "my_portals": {
-    "title": "My Portals",
-    "no_portal": "You don't have any portal yet.",
-    "mint_portal": "Mint Portals",
+    "title": "我的傳送門",
+    "no_portal": "你還沒有擁有任何傳送門喔",
+    "mint_portal": "馬上鑄造一個吧",
     "status": {
-      "UNOPENED": "Charging...",
-      "CAN_OPEN": "Ready to initiate!",
-      "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
+      "UNOPENED": "充能中...",
+      "CAN_OPEN": "可以開啟了！",
+      "OPENED": "這個傳送門已經開啟，但你只能召喚一隻阿獺進入阿獺王國，請謹慎選擇喔！"
     },
-    "open_duration": "{{duration}} left",
-    "opensea_link": "View on OpenSea",
-    "open_now": "Open Now!"
+    "open_duration": "剩餘： {{duration}}",
+    "opensea_link": "在 OpenSea 上瞧瞧",
+    "open_now": "開啟！"
   },
   "header": {
-    "connect": "Connect"
+    "connect": "連接"
   },
   "side_menu": {
-    "select_language": "Select Language",
-    "follow_us": "Follow us"
+    "select_language": "選擇語言",
+    "follow_us": "關注我們"
   },
-  "connect_wallet": "Connect Wallet",
-  "wallet_selector_head": "Connect to a wallet",
-  "connect_help_text": "Please connect wallet to continue playing."
+  "connect_wallet": "連接錢包",
+  "wallet_selector_head": "連接錢包",
+  "connect_help_text": "請連接你的錢包來參與阿獺王國吧"
 }

@@ -39,7 +39,7 @@
     "hero": {
       "title": "Otto Portals",
       "subtitle": "Summon your own Otto NFTs",
-      "desc": "Mint Otto Portal with Whitelist ticket, and summon your unique Otto NFTs. Otto? Lottie? Cleo? It’s all surprise!",
+      "desc": "Mint Otto Portal and summon your unique Otto NFTs. Otto? Lottie? Cleo? It’s all surprise!",
       "limit": "Only 5,000 Portals available",
       "whitepaper": "Check out the White Paper"
     },
@@ -56,7 +56,7 @@
       "title": "How do Otto Portals work?",
       "step1": "Step 1",
       "step1_title": "Mint Otto Portal with CLAM or ETH",
-      "step1_desc": "We accept $CLAM and ETH for Otto Portal purchase. However, we're offering a 30% discount when you pay with $CLAM. This is a simple way to save money while supporting the continued growth of the Otter Kingdom.\n\n1 Portal = 0.08 ETH",
+      "step1_desc": "We accept $CLAM and ETH for Otto Portal minting. However, we're offering a 30% discount when you pay with $CLAM. This is a simple way to save money while supporting the continued growth of the Otter Kingdom.\n\n1 Portal = 0.08 ETH",
       "step2": "Step 2",
       "step2_title": "Wait for your Otto Portal to activate",
       "step2_desc": "Otto Portals need time to power up. Once they are ready, you will be able to summon your Otto.",
@@ -73,7 +73,7 @@
     },
     "popup": {
       "processing": "Processing... Please do not close the window. The transaction will be finished soon.",
-      "success_msg": "You just purchased {{mintNumber}} Otto Portal(s)",
+      "success_msg": "You just minted {{mintNumber}} Otto Portal(s)",
       "view_my_portals": "View my portals"
     }
   },
