@@ -82,13 +82,20 @@
     "no_portal": "你還沒有擁有任何傳送門喔",
     "mint_portal": "馬上鑄造一個吧",
     "state": {
-      "UNOPENED": "充能中...",
+      "CHARGING": "充能中...",
       "CAN_OPEN": "可以開啟了！",
       "OPENED": "這個傳送門已經開啟，但你只能召喚一隻阿獺進入阿獺王國，請謹慎選擇喔！"
     },
     "open_duration": "剩餘： {{duration}}",
     "opensea_link": "在 OpenSea 上瞧瞧",
     "open_now": "開啟！"
+  },
+  "portal": {
+    "state": {
+      "CHARGING": "Charging...",
+      "CAN_OPEN": "This Portal is ready to initiate!",
+      "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
+    }
   },
   "header": {
     "connect": "連接"

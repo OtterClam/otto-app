@@ -1,5 +1,7 @@
 import BorderContainer from 'components/BorderContainer'
 import ProgressBar from 'components/ProgressBar'
+import { PortalState } from 'models/Portal'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { theme } from 'styles'
@@ -68,14 +70,27 @@ const StyledCountdown = styled.div`
   }
 `
 
+const StyledCanOpenText = styled.p`
+  color: ${({ theme }) => theme.colors.seaweedGreen};
+`
+
 const StyledProgressBar = styled(ProgressBar)`
   width: 90%;
 `
 
-export default function PortalCard({ portal, state, progress, duration, metadata }: RenderPortalProps) {
+const StyledOpenedText = styled.p`
+  color: ${({ theme }) => theme.colors.otterBlue};
+`
+
+export default function PortalCard({ state, progress, duration, metadata }: RenderPortalProps) {
   const { t } = useTranslation()
+  const borderColor = useMemo(() => {
+    if (state === PortalState.OPENED) return theme.colors.crownYellow
+    if (state === PortalState.CAN_OPEN) return theme.colors.seaweedGreen
+    return theme.colors.clamPink
+  }, [state])
   return (
-    <StyledPortalCard borderColor={theme.colors.clamPink}>
+    <StyledPortalCard borderColor={borderColor}>
       <StyledPortalImage src={metadata?.image} />
       <StyledPortalTitle>
         <ContentMedium>{metadata?.name}</ContentMedium>
@@ -83,10 +98,22 @@ export default function PortalCard({ portal, state, progress, duration, metadata
       <StyledPortalStatus>
         <ContentSmall>{t(`my_portals.state.${state}`)}</ContentSmall>
       </StyledPortalStatus>
-      <StyledProgressBar height="12px" progress={progress} />
-      <StyledCountdown>
-        <Caption>{t('my_portals.open_duration', { duration })}</Caption>
-      </StyledCountdown>
+      {state !== PortalState.OPENED && <StyledProgressBar height="12px" progress={progress} />}
+      {state === PortalState.CHARGING && (
+        <StyledCountdown>
+          <Caption>{t('my_portals.open_duration', { duration })}</Caption>
+        </StyledCountdown>
+      )}
+      {state === PortalState.CAN_OPEN && (
+        <StyledCanOpenText>
+          <Caption>{t('my_portals.open_portal')}</Caption>
+        </StyledCanOpenText>
+      )}
+      {state === PortalState.OPENED && (
+        <StyledOpenedText>
+          <Caption>{t('my_portals.choose_otto')}</Caption>
+        </StyledOpenedText>
+      )}
     </StyledPortalCard>
   )
 }

@@ -6,10 +6,12 @@ export interface RawPortal {
   portalStatus: PortalStatus
   canOpenAt: any
   mintAt: any
+  candidates: string[]
+  legendary: boolean
 }
 
 export enum PortalState {
-  UNOPENED = 'UNOPENED',
+  CHARGING = 'CHARGING',
   CAN_OPEN = 'CAN_OPEN',
   OPENED = 'OPENED',
 }
@@ -33,6 +35,14 @@ export default class Portal {
     return this.raw.tokenURI
   }
 
+  get candidates(): string[] {
+    return this.raw.candidates
+  }
+
+  get legendary(): boolean {
+    return this.raw.legendary
+  }
+
   public state(now: number): PortalState {
     if (this.raw.portalStatus === PortalStatus.OPENED) {
       return PortalState.OPENED
@@ -42,7 +52,7 @@ export default class Portal {
       return PortalState.CAN_OPEN
     }
 
-    return PortalState.UNOPENED
+    return PortalState.CHARGING
   }
 
   public openProgress(now: number): number {

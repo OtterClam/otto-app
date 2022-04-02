@@ -5,6 +5,7 @@ import { LoadingView } from 'components/LoadingView'
 import ProgressBar from 'components/ProgressBar'
 import { OPENSEA_NFT_LINK } from 'constant'
 import Layout from 'Layout'
+import { PortalState } from 'models/Portal'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -12,6 +13,7 @@ import { Caption, ContentLarge, ContentSmall, Display3, Headline } from 'styles/
 import ClockImage from '../clock.png'
 import PortalContainer from '../PortalContainer'
 import { GetPortal, GetPortalVariables } from './__generated__/GetPortal'
+import GetThroughPortal from './get_through_portal.png'
 
 export const GET_PORTAL = gql`
   query GetPortal($portalId: BigInt!) {
@@ -21,12 +23,14 @@ export const GET_PORTAL = gql`
       portalStatus
       canOpenAt
       mintAt
+      candidates
+      legendary
     }
   }
 `
 
 const StyledPortalPage = styled.div`
-  height: 100%;
+  min-height: 100%;
   background: white;
   padding: 30px;
 
@@ -53,6 +57,7 @@ const StyledPortalImage = styled.img`
 
 const StyledContentContainer = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 20px;
 `
@@ -107,6 +112,26 @@ const StyledDuration = styled.p`
   }
 `
 
+const StyledOpenDesc = styled.div`
+  padding: 30px;
+  background: ${({ theme }) => theme.colors.lightGray100};
+  border: 4px solid ${({ theme }) => theme.colors.lightGray400};
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`
+
+const StyledOpenImg = styled.img`
+  width: 98px;
+`
+
+const StyledOpenDescText = styled.p``
+
+const StyledOpenDescNumber = styled(ContentSmall)`
+  color: ${({ theme }) => theme.colors.clamPink};
+`
+
 export default function PortalPage() {
   const { t } = useTranslation()
   const { portalId } = useParams()
@@ -119,7 +144,7 @@ export default function PortalPage() {
         {loading && <LoadingView />}
         {data && (
           <PortalContainer rawPortal={data.ottos[0]}>
-            {({ state, duration, progress, metadata }) => (
+            {({ portal, state, duration, progress, metadata }) => (
               <>
                 <StyledPortalImage src={metadata?.image} />
                 <StyledContentContainer>
@@ -132,18 +157,36 @@ export default function PortalPage() {
                   <StyledDescription>
                     <ContentSmall>{metadata?.description}</ContentSmall>
                   </StyledDescription>
-                  <StyledStatusContainer>
-                    <StyledStatus>
-                      <ContentLarge>{t(`my_portals.state.${state}`)}</ContentLarge>
-                    </StyledStatus>
-                    <StyledDuration>
-                      <Caption>{duration}</Caption>
-                    </StyledDuration>
-                  </StyledStatusContainer>
-                  <ProgressBar height="20px" progress={progress} />
-                  <Button disabled>
-                    <Headline>{t('my_portals.open_now')}</Headline>
-                  </Button>
+                  {state !== PortalState.OPENED && (
+                    <StyledStatusContainer>
+                      <StyledStatus>
+                        <ContentLarge>{t(`portal.state.${state}`)}</ContentLarge>
+                      </StyledStatus>
+                      {state === PortalState.CHARGING && (
+                        <StyledDuration>
+                          <Caption>{duration}</Caption>
+                        </StyledDuration>
+                      )}
+                    </StyledStatusContainer>
+                  )}
+                  {state !== PortalState.OPENED && (
+                    <>
+                      <ProgressBar height="20px" progress={progress} />
+                      <Button disabled={state === PortalState.CHARGING}>
+                        <Headline>{t('my_portals.open_now')}</Headline>
+                      </Button>
+                    </>
+                  )}
+                  {state === PortalState.OPENED && (
+                    <StyledOpenDesc>
+                      <StyledOpenImg src={GetThroughPortal} />
+                      <StyledOpenDescText>
+                        <ContentSmall>{t('portal.open_desc_1')}</ContentSmall>
+                        <StyledOpenDescNumber>{t('otto', { count: portal.candidates.length })}</StyledOpenDescNumber>
+                        <ContentSmall>{t('portal.open_desc_2')}</ContentSmall>
+                      </StyledOpenDescText>
+                    </StyledOpenDesc>
+                  )}
                 </StyledContentContainer>
               </>
             )}

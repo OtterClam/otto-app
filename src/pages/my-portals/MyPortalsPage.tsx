@@ -45,6 +45,8 @@ export const LIST_MY_PORTALS = gql`
       portalStatus
       canOpenAt
       mintAt
+      candidates
+      legendary
     }
   }
 `

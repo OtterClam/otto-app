@@ -2,7 +2,6 @@ import axios from 'axios'
 import { formatDuration, intervalToDuration } from 'date-fns'
 import Portal, { RawPortal } from 'models/Portal'
 import { useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 interface Props {
   rawPortal: RawPortal

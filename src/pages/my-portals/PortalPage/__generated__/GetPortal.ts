@@ -16,6 +16,8 @@ export interface GetPortal_ottos {
   portalStatus: PortalStatus;
   canOpenAt: any;
   mintAt: any;
+  candidates: any[];
+  legendary: boolean;
 }
 
 export interface GetPortal {

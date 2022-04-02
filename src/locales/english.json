@@ -82,14 +82,24 @@
     "no_portal": "You don't have any portal yet.",
     "mint_portal": "Mint Portals",
     "state": {
-      "UNOPENED": "Charging...",
+      "CHARGING": "Charging...",
       "CAN_OPEN": "Ready to initiate!",
       "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
     },
     "open_duration": "{{duration}} left",
     "opensea_link": "View on OpenSea",
     "open_portal": "Open your portal now!",
-    "open_now": "Open Now!"
+    "open_now": "Open Now!",
+    "choose_otto": "Choose an Otto now!"
+  },
+  "portal": {
+    "state": {
+      "CHARGING": "Charging...",
+      "CAN_OPEN": "This Portal is ready to initiate!",
+      "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
+    },
+    "open_desc_1": "There are ",
+    "open_desc_2": " waiting at this portal, but you still need one more step to summon an Otto to go through the portal. Once it’s confirmed, the portal NFT’s appearance will be changed to the Otto’s!"
   },
   "header": {
     "connect": "Connect"
@@ -105,5 +115,7 @@
     "title": "Unsupported Network",
     "desc": "Only Polygon Mainnet are supported.",
     "action": "Switch to Polygon"
-  }
+  },
+  "otto_one": "{{count}} Otto",
+  "otto_other": "{{count}} Ottos"
 }
