@@ -13,16 +13,6 @@ const GlobalStyle = createGlobalStyle`
         padding: 0;
     }
 
-    @font-face {
-        font-family: 'Pangolin';
-        src: url('/fonts/Pangolin-Regular.ttf') ;
-    }
-
-    @font-face {
-        font-family: 'PaytoneOne';
-        src: url('/fonts/paytoneone-regular.woff2') format('woff2');
-    }
-
     button {
         background: none;
         border: none;
@@ -42,6 +32,22 @@ const GlobalStyle = createGlobalStyle`
     a {
         text-decoration: none;
         cursor: url(${cursorPointer}) 7 0 ,auto;
+    }
+
+    @font-face {
+        font-family: 'Pangolin';
+        src: url('/fonts/Pangolin-Regular.ttf') ;
+    }
+
+    @font-face {
+        font-family: 'PaytoneOne';
+        src: url('/fonts/paytoneone-regular.woff2') format('woff2');
+    }
+
+    @font-face {
+        font-family: naikaifont;
+        src: url(https://cdn.jsdelivr.net/gh/max32002/naikaifont@1.0/webfont/NaikaiFont-Regular-Lite.woff2) format("woff2")
+        , url(https://cdn.jsdelivr.net/gh/max32002/naikaifont@1.0/webfont/NaikaiFont-Regular-Lite.woff) format("woff");
     }
 `
 
