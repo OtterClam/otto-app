@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Display1 = styled.span`
-  font-family: 'PaytoneOne';
+  font-family: 'PaytoneOne', 'naikaifont';
   font-size: 60px;
   line-height: 1.5;
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -10,7 +10,7 @@ export const Display1 = styled.span`
 `
 
 export const Display2 = styled.span`
-  font-family: 'PaytoneOne';
+  font-family: 'PaytoneOne', 'naikaifont';
   font-size: 48px;
   line-height: 1.5;
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -19,7 +19,7 @@ export const Display2 = styled.span`
 `
 
 export const Display3 = styled.span`
-  font-family: 'Pangolin';
+  font-family: 'Pangolin', 'naikaifont';
   font-size: 36px;
   line-height: 1.5;
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -28,7 +28,7 @@ export const Display3 = styled.span`
 `
 
 export const Headline = styled.span`
-  font-family: 'Pangolin';
+  font-family: 'Pangolin', 'naikaifont';
   font-size: 24px;
   line-height: 1.5;
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -37,7 +37,7 @@ export const Headline = styled.span`
 `
 
 export const ContentLarge = styled.span`
-  font-family: 'Pangolin';
+  font-family: 'Pangolin', 'naikaifont';
   font-size: 20px;
   line-height: 1.5;
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -46,7 +46,7 @@ export const ContentLarge = styled.span`
 `
 
 export const ContentMedium = styled.span`
-  font-family: 'Pangolin';
+  font-family: 'Pangolin', 'naikaifont';
   font-size: 18px;
   line-height: 1.5;
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -56,7 +56,7 @@ export const ContentMedium = styled.span`
 
 export const ContentSmall = styled.span`
   white-space: pre-line;
-  font-family: 'Pangolin';
+  font-family: 'Pangolin', 'naikaifont';
   font-size: 18px;
   line-height: 1.5;
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -65,7 +65,7 @@ export const ContentSmall = styled.span`
 `
 
 export const Caption = styled.span`
-  font-family: 'Pangolin';
+  font-family: 'Pangolin', 'naikaifont';
   font-size: 14px;
   line-height: 1.5;
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -74,7 +74,7 @@ export const Caption = styled.span`
 `
 
 export const Note = styled.span`
-  font-family: 'Pangolin';
+  font-family: 'Pangolin', 'naikaifont';
   font-size: 12px;
   line-height: 1.5;
   @media ${({ theme }) => theme.breakpoints.mobile} {
