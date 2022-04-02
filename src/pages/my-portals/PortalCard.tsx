@@ -3,8 +3,7 @@ import ProgressBar from 'components/ProgressBar'
 import { PortalState } from 'models/Portal'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
-import { theme } from 'styles'
+import styled, { useTheme } from 'styled-components'
 import { Caption, ContentMedium, ContentSmall } from 'styles/typography'
 import ClockImage from './clock.png'
 
@@ -84,6 +83,7 @@ const StyledOpenedText = styled.p`
 
 export default function PortalCard({ state, progress, duration, metadata }: RenderPortalProps) {
   const { t } = useTranslation()
+  const theme = useTheme()
   const borderColor = useMemo(() => {
     if (state === PortalState.OPENED) return theme.colors.crownYellow
     if (state === PortalState.CAN_OPEN) return theme.colors.seaweedGreen

@@ -3,7 +3,7 @@ import OpenSeaBlue from 'assets/opensea-blue.svg'
 import Button from 'components/Button'
 import { LoadingView } from 'components/LoadingView'
 import ProgressBar from 'components/ProgressBar'
-import { OPENSEA_NFT_LINK } from 'constant'
+import { getOpenSeaLink, OPENSEA_NFT_LINK } from 'constant'
 import Layout from 'Layout'
 import { PortalState } from 'models/Portal'
 import { useTranslation } from 'react-i18next'
@@ -14,6 +14,7 @@ import ClockImage from '../clock.png'
 import PortalContainer from '../PortalContainer'
 import { GetPortal, GetPortalVariables } from './__generated__/GetPortal'
 import GetThroughPortal from './get_through_portal.png'
+import PortalCandidates from './PortalCandidates'
 
 export const GET_PORTAL = gql`
   query GetPortal($portalId: BigInt!) {
@@ -33,7 +34,9 @@ const StyledPortalPage = styled.div`
   min-height: 100%;
   background: white;
   padding: 30px;
+`
 
+const StyledPortalInfo = styled.div`
   display: flex;
   gap: 30px;
 
@@ -146,48 +149,51 @@ export default function PortalPage() {
           <PortalContainer rawPortal={data.ottos[0]}>
             {({ portal, state, duration, progress, metadata }) => (
               <>
-                <StyledPortalImage src={metadata?.image} />
-                <StyledContentContainer>
-                  <StyledOpenSeaLink href={OPENSEA_NFT_LINK + portalId} target="_blank">
-                    <Caption>{t('my_portals.opensea_link')}</Caption>
-                  </StyledOpenSeaLink>
-                  <StyledTitle>
-                    <Display3>{metadata?.name}</Display3>
-                  </StyledTitle>
-                  <StyledDescription>
-                    <ContentSmall>{metadata?.description}</ContentSmall>
-                  </StyledDescription>
-                  {state !== PortalState.OPENED && (
-                    <StyledStatusContainer>
-                      <StyledStatus>
-                        <ContentLarge>{t(`portal.state.${state}`)}</ContentLarge>
-                      </StyledStatus>
-                      {state === PortalState.CHARGING && (
-                        <StyledDuration>
-                          <Caption>{duration}</Caption>
-                        </StyledDuration>
-                      )}
-                    </StyledStatusContainer>
-                  )}
-                  {state !== PortalState.OPENED && (
-                    <>
-                      <ProgressBar height="20px" progress={progress} />
-                      <Button disabled={state === PortalState.CHARGING}>
-                        <Headline>{t('my_portals.open_now')}</Headline>
-                      </Button>
-                    </>
-                  )}
-                  {state === PortalState.OPENED && (
-                    <StyledOpenDesc>
-                      <StyledOpenImg src={GetThroughPortal} />
-                      <StyledOpenDescText>
-                        <ContentSmall>{t('portal.open_desc_1')}</ContentSmall>
-                        <StyledOpenDescNumber>{t('otto', { count: portal.candidates.length })}</StyledOpenDescNumber>
-                        <ContentSmall>{t('portal.open_desc_2')}</ContentSmall>
-                      </StyledOpenDescText>
-                    </StyledOpenDesc>
-                  )}
-                </StyledContentContainer>
+                <StyledPortalInfo>
+                  <StyledPortalImage src={metadata?.image} />
+                  <StyledContentContainer>
+                    <StyledOpenSeaLink href={getOpenSeaLink(portal.tokenId)} target="_blank">
+                      <Caption>{t('my_portals.opensea_link')}</Caption>
+                    </StyledOpenSeaLink>
+                    <StyledTitle>
+                      <Display3>{metadata?.name}</Display3>
+                    </StyledTitle>
+                    <StyledDescription>
+                      <ContentSmall>{metadata?.description}</ContentSmall>
+                    </StyledDescription>
+                    {state !== PortalState.OPENED && (
+                      <StyledStatusContainer>
+                        <StyledStatus>
+                          <ContentLarge>{t(`portal.state.${state}`)}</ContentLarge>
+                        </StyledStatus>
+                        {state === PortalState.CHARGING && (
+                          <StyledDuration>
+                            <Caption>{duration}</Caption>
+                          </StyledDuration>
+                        )}
+                      </StyledStatusContainer>
+                    )}
+                    {state !== PortalState.OPENED && (
+                      <>
+                        <ProgressBar height="20px" progress={progress} />
+                        <Button disabled={state === PortalState.CHARGING}>
+                          <Headline>{t('my_portals.open_now')}</Headline>
+                        </Button>
+                      </>
+                    )}
+                    {state === PortalState.OPENED && (
+                      <StyledOpenDesc>
+                        <StyledOpenImg src={GetThroughPortal} />
+                        <StyledOpenDescText>
+                          <ContentSmall>{t('portal.open_desc_1')}</ContentSmall>
+                          <StyledOpenDescNumber>{t('otto', { count: portal.candidates.length })}</StyledOpenDescNumber>
+                          <ContentSmall>{t('portal.open_desc_2')}</ContentSmall>
+                        </StyledOpenDescText>
+                      </StyledOpenDesc>
+                    )}
+                  </StyledContentContainer>
+                </StyledPortalInfo>
+                {state === PortalState.OPENED && <PortalCandidates portal={portal} />}
               </>
             )}
           </PortalContainer>

@@ -1,0 +1,58 @@
+import BorderContainer from 'components/BorderContainer'
+import Button from 'components/Button'
+import { useTranslation } from 'react-i18next'
+import styled, { useTheme } from 'styled-components'
+import { ContentMedium, ContentSmall, Headline, Note } from 'styles/typography'
+
+const StyledOttoCandidate = styled(BorderContainer)`
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  gap: 10px;
+`
+
+const StyledPFP = styled.img`
+  width: 225px;
+  height: 225px;
+  border: 4px solid ${({ theme }) => theme.colors.otterBlack}; ;
+`
+
+const StyledName = styled.p`
+  text-align: center;
+`
+
+const StyledGender = styled.p``
+
+const StyledDesc = styled.p`
+  text-align: center;
+  $color: ${({ theme }) => theme.colors.darkGray200};
+`
+
+interface Props {
+  name: string
+  gender: string
+  image: string
+  onSummon: () => void
+}
+
+export default function OttoCandidateCard({ name, gender, image, onSummon }: Props) {
+  const { t } = useTranslation()
+  const theme = useTheme()
+  return (
+    <StyledOttoCandidate borderColor={theme.colors.otterBlue}>
+      <StyledPFP src={image} />
+      <StyledName>
+        <ContentMedium>{name}</ContentMedium>
+      </StyledName>
+      <StyledGender>
+        <ContentSmall>{t('portal.gender', { gender })}</ContentSmall>
+      </StyledGender>
+      <StyledDesc>
+        <Note>{t('portal.otto_candidate_desc')}</Note>
+      </StyledDesc>
+      <Button onClick={() => onSummon()}>
+        <Headline>{t('portal.summon_otto_button')}</Headline>
+      </Button>
+    </StyledOttoCandidate>
+  )
+}

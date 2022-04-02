@@ -16,8 +16,9 @@ const BorderContainer = styled.div<Props>`
     left: 0px;
     right: 0px;
     bottom: 0px;
-    border: 3px solid ${({ theme, borderColor }) => borderColor || theme.colors.crownYellow};
+    border: 5px solid ${({ theme, borderColor }) => borderColor || theme.colors.crownYellow};
     border-radius: 12px;
+    pointer-events: none;
   }
 
   &:after {
@@ -28,7 +29,8 @@ const BorderContainer = styled.div<Props>`
     right: 3px;
     bottom: 3px;
     border: 2px solid ${({ theme }) => theme.colors.otterBlack};
-    border-radius: 10px;
+    border-radius: 12px;
+    pointer-events: none;
   }
 `
 

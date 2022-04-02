@@ -15,6 +15,10 @@ export const DISCORD_LINK = 'https://discord.gg/otterclam'
 
 export const OPENSEA_NFT_LINK = 'https://opensea.io/assets/matic/0x6e8a9cb6b1e73e9fce3fd3c68b5af9728f708eb7/'
 
+export function getOpenSeaLink(tokenId: string) {
+  return `${OPENSEA_NFT_LINK}${tokenId}`
+}
+
 export const ottoClick = new Audio('https://ottopia.app/ottoclick.mp3')
 
 ottoClick.load()

@@ -99,7 +99,11 @@
       "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
     },
     "open_desc_1": "There are ",
-    "open_desc_2": " waiting at this portal, but you still need one more step to summon an Otto to go through the portal. Once it’s confirmed, the portal NFT’s appearance will be changed to the Otto’s!"
+    "open_desc_2": " waiting at this portal, but you still need one more step to summon an Otto to go through the portal. Once it’s confirmed, the portal NFT’s appearance will be changed to the Otto’s!",
+    "otto_candidate_desc": "The attribute values and rarity score will reveal after you summon this Otto",
+    "summon_otto_button": "Summon",
+    "candidates_title": "Choose your Otto to join the Otter Kingdom:",
+    "gender": "Gender: {{gender}}"
   },
   "header": {
     "connect": "Connect"
