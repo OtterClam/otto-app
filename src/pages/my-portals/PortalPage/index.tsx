@@ -10,25 +10,15 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { Caption, ContentLarge, ContentSmall, Display3, Headline } from 'styles/typography'
+import { useOpenPortal } from 'contracts/functions'
+import { useEffect, useState } from 'react'
 import ClockImage from '../clock.png'
 import PortalContainer from '../PortalContainer'
 import { GetPortal, GetPortalVariables } from './__generated__/GetPortal'
 import GetThroughPortal from './get_through_portal.png'
 import PortalCandidates from './PortalCandidates'
-
-export const GET_PORTAL = gql`
-  query GetPortal($portalId: BigInt!) {
-    ottos(where: { tokenId: $portalId }) {
-      tokenId
-      tokenURI
-      portalStatus
-      canOpenAt
-      mintAt
-      candidates
-      legendary
-    }
-  }
-`
+import OpenPortalPopup from './OpenPortalPopup'
+import { GET_PORTAL } from './queries'
 
 const StyledPortalPage = styled.div`
   min-height: 100%;
@@ -137,10 +127,20 @@ const StyledOpenDescNumber = styled(ContentSmall)`
 
 export default function PortalPage() {
   const { t } = useTranslation()
-  const { portalId } = useParams()
-  const { data, loading } = useQuery<GetPortal, GetPortalVariables>(GET_PORTAL, {
-    variables: { portalId: portalId || '0' },
+  const { portalId = '0' } = useParams()
+  const { data, loading, refetch } = useQuery<GetPortal, GetPortalVariables>(GET_PORTAL, {
+    variables: { portalId },
   })
+  const { openState, open, resetOpen } = useOpenPortal()
+  const [showOpenPortalPopup, setShowOpenPortalPopup] = useState(false)
+  useEffect(() => {
+    if (openState.status === 'Mining') setShowOpenPortalPopup(true)
+    if (openState.status === 'Fail' || openState.status === 'Exception') {
+      setShowOpenPortalPopup(false)
+      window.alert(openState.errorMessage)
+      resetOpen()
+    }
+  }, [openState])
   return (
     <Layout title={t('my_portals.title')}>
       <StyledPortalPage>
@@ -176,7 +176,7 @@ export default function PortalPage() {
                     {state !== PortalState.OPENED && (
                       <>
                         <ProgressBar height="20px" progress={progress} />
-                        <Button disabled={state === PortalState.CHARGING}>
+                        <Button disabled={state === PortalState.CHARGING} onClick={() => open(portalId)}>
                           <Headline>{t('my_portals.open_now')}</Headline>
                         </Button>
                       </>
@@ -199,6 +199,14 @@ export default function PortalPage() {
           </PortalContainer>
         )}
       </StyledPortalPage>
+      <OpenPortalPopup
+        show={showOpenPortalPopup}
+        portalId={portalId}
+        onClose={() => {
+          setShowOpenPortalPopup(false)
+          refetch()
+        }}
+      />
     </Layout>
   )
 }

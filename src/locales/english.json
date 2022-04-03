@@ -103,7 +103,23 @@
     "otto_candidate_desc": "The attribute values and rarity score will reveal after you summon this Otto",
     "summon_otto_button": "Summon",
     "candidates_title": "Choose your Otto to join the Otter Kingdom:",
-    "gender": "Gender: {{gender}}"
+    "gender": "Gender: {{gender}}",
+    "open_popup": {
+      "headline_1": "Don’t fret. You might have the best Otto yet!",
+      "headline_2": "Two too few?",
+      "headline_3": "One for me, three for thee!",
+      "headline_4": "Four is more, but you need a super rare score!",
+      "headline_5": "Now this is what I call a selection!",
+      "headline_6": "Option paralysis. Heard of it?",
+      "headline_7": "Seven is heaven! Which will you choose?",
+      "headline_8": "Eight is great…but wait! Who do I take?",
+      "title_one": "There is {{count}} Otto at the portal",
+      "title_other": "There are {{count}} Ottos at the portal",
+      "title_legendary": "Here comes a legendary Otto!",
+      "desc_one": "Your Otto is ready to join the Otterverse, but you still need to go back to summon this Otto through the portal.",
+      "desc_other": "They are ready to enter the Otterverse, but each portal only has the power to transport one Otto. Head back to the summon page to pick your favorite Otto. Choose wisely!",
+      "back_to_summon": "Back to Summon"
+    }
   },
   "header": {
     "connect": "Connect"
@@ -121,5 +137,6 @@
     "action": "Switch to Polygon"
   },
   "otto_one": "{{count}} Otto",
-  "otto_other": "{{count}} Ottos"
+  "otto_other": "{{count}} Ottos",
+  "button_processing": "Processing..."
 }

@@ -1,8 +1,7 @@
 import { useCall, useCalls, useEthers } from '@usedapp/core'
 import { Contract, BigNumber } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
-import { abi as Otto } from './Otto.json'
-import { abi as OttopiaPortalCreator } from './OttopiaPortalCreator.json'
+import { Otto, OttopiaPortalCreator } from './abis'
 
 export const useMintInfo = () => {
   const { PORTAL_CREATOR } = useContractAddresses()

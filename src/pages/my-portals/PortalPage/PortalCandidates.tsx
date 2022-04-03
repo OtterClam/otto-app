@@ -1,4 +1,4 @@
-import useApi from 'hooks/useApi'
+import useApi, { OttoCandidateMeta } from 'hooks/useApi'
 import Portal from 'models/Portal'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -8,12 +8,6 @@ import OttoCandidateCard from './OttoCandidateCard'
 
 interface Props {
   portal: Portal
-}
-
-interface OttoCandidateMeta {
-  name: string
-  gender: string
-  image: string
 }
 
 const StyledPortalCandidates = styled.div``
@@ -39,7 +33,7 @@ export default function PortalCandidates({ portal }: Props) {
   const api = useApi()
   const [candidates, setCandidates] = useState<OttoCandidateMeta[]>([])
   useEffect(() => {
-    api.get(`/ottos/candidates/metadata/${portal.tokenId}`).then(res => setCandidates(res.data))
+    api.getPortalCandidates(portal.tokenId).then(setCandidates)
   }, [portal])
 
   return (
