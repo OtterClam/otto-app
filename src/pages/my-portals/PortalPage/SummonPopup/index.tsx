@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import { ContentLarge, Display3, Headline } from 'styles/typography'
 import { PortalStatus } from '__generated__/global-types'
 import LegendaryPortal from 'assets/legendary_portal.png'
+import { PortalMeta } from 'pages/my-portals/types'
 import { GET_PORTAL } from '../queries'
 import { GetPortal, GetPortalVariables } from '../__generated__/GetPortal'
 

@@ -2,6 +2,7 @@ import axios from 'axios'
 import { formatDuration, intervalToDuration } from 'date-fns'
 import Portal, { RawPortal } from 'models/Portal'
 import { useEffect, useMemo, useState } from 'react'
+import { PortalMeta, RenderPortalProps } from './types'
 
 interface Props {
   rawPortal: RawPortal
@@ -23,9 +24,12 @@ export default function PortalContainer({ rawPortal, children }: Props) {
     )
   }, [portal, now])
   useEffect(() => {
-    axios.get<PortalMeta>(portal.tokenURI).then(res => {
-      setMetadata(res.data)
-    })
+    axios
+      .get<PortalMeta>(portal.tokenURI)
+      .then(res => {
+        setMetadata(res.data)
+      })
+      .catch(err => console.error('fetch portal meta failed', err))
   }, [portal])
   useEffect(() => {
     setTimeout(() => setNow(Date.now()), 1000)

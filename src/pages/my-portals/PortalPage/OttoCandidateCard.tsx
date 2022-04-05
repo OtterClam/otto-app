@@ -9,6 +9,13 @@ const StyledOttoCandidate = styled(BorderContainer)`
   flex-direction: column;
   padding: 15px;
   gap: 10px;
+
+  &:hover {
+    transform: scale(1.01);
+    background-color: ${({ theme }) => theme.colors.lightGray100};
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.2);
+    transition: 0.2s;
+  }
 `
 
 const StyledPFP = styled.img`

@@ -1,3 +1,9 @@
 {
-  "cSpell.words": ["ottolisted", "Ottopia", "ottos"]
+  "cSpell.words": ["ottolisted", "Ottopia", "ottos"],
+  "i18nJsonEditor.workspaceFolders": [
+    {
+      "name": "Locales",
+      "path": "./src/locales"
+    }
+  ]
 }

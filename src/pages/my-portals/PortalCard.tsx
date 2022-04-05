@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import styled, { useTheme } from 'styled-components'
 import { Caption, ContentMedium, ContentSmall } from 'styles/typography'
 import ClockImage from './clock.png'
+import { RenderPortalProps } from './types'
 
 const StyledPortalCard = styled(BorderContainer)`
   width: 265px;
@@ -81,7 +82,7 @@ const StyledOpenedText = styled.p`
   color: ${({ theme }) => theme.colors.otterBlue};
 `
 
-export default function PortalCard({ state, progress, duration, metadata }: RenderPortalProps) {
+export default function PortalCard({ portal, state, progress, duration, metadata }: RenderPortalProps) {
   const { t } = useTranslation()
   const theme = useTheme()
   const borderColor = useMemo(() => {
@@ -96,7 +97,7 @@ export default function PortalCard({ state, progress, duration, metadata }: Rend
         <ContentMedium>{metadata?.name}</ContentMedium>
       </StyledPortalTitle>
       <StyledPortalStatus>
-        <ContentSmall>{t(`my_portals.state.${state}`)}</ContentSmall>
+        <ContentSmall>{t(portal.legendary ? 'my_portals.legendary_desc' : `my_portals.state.${state}`)}</ContentSmall>
       </StyledPortalStatus>
       {state !== PortalState.OPENED && <StyledProgressBar height="12px" progress={progress} />}
       {state === PortalState.CHARGING && (

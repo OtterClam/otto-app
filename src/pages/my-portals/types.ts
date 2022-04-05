@@ -1,4 +1,6 @@
-interface RenderPortalProps {
+import Portal, { PortalState } from 'models/Portal'
+
+export interface RenderPortalProps {
   portal: Portal
   state: PortalState
   progress: number
@@ -6,7 +8,7 @@ interface RenderPortalProps {
   metadata: PortalMeta | null
 }
 
-interface PortalMeta {
+export interface PortalMeta {
   name: string
   image: string
   description: string

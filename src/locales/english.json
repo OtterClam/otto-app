@@ -1,110 +1,115 @@
 {
+  "button_processing": "Processing...",
+  "connect_help_text": "Please connect wallet to continue playing.",
+  "connect_wallet": "Connect Wallet",
+  "header": {
+    "connect": "Connect"
+  },
   "home": {
-    "title": "Welcome to Ottopia",
-    "mint_portal": "Mint Portal",
     "menu": {
-      "my_portals": "My Portals",
       "buy_clam": "Buy CLAM",
+      "join_discord": "Join Discord",
+      "my_portals": "My Portals",
       "otter_dao": "Otter DAO",
       "treasury": "Treasury",
-      "join_discord": "Join Discord",
       "white_paper": "White Paper"
-    }
+    },
+    "mint_portal": "Mint Portal",
+    "title": "Welcome to Ottopia"
   },
   "mint": {
-    "title": "Mint Portals",
-    "minted_desc": "You have already minted",
-    "minted_desc_amount": " {{amount}} Otto Portal(s)",
-    "check_on_opensea": "Check on OpenSea",
-    "payment_method": "Payment Method",
-    "pay_with_clam": "Pay with CLAM",
-    "pay_with_eth": "Pay with ETH",
-    "eth_balance": "Your ETH balance:",
-    "clam_balance": "Your CLAM balance:",
-    "portal_amount": "Otto Portals:",
-    "total_payment": "Total Payment:",
-    "please_connect": "Please connect your wallet to proceed the process.",
-    "connect": "Connect",
-    "mint_button": "Mint",
     "approve_button": "Approve",
-    "not_enough_clam": "Not enough CLAM?",
     "buy": "Buy",
+    "checkWL": {
+      "connect": "Connect Wallet",
+      "desc": "Only the whitelisted accounts are qualified to mint Otto Portals at the Whitelist-only Sale. Connect wallet to see if you’re on the list!",
+      "has-wl-desc": "Get ready! Your Otto Portals will be able to mint at {{time}}",
+      "has-wl-title": "You are whitelisted!",
+      "no-wl-desc": "Don’t worry. You can join your Discord, and prepare for the Public Sale at {{time}}.",
+      "no-wl-title": "Oops, you are not whitelisted.",
+      "title": "Check if you’re Whitelisted"
+    },
+    "check_on_opensea": "Check on OpenSea",
+    "clam_balance": "Your CLAM balance:",
+    "connect": "Connect",
     "countdown": {
-      "preWhiteListSale": "Whitelist-Only Sale Countdown",
       "days": "Days",
       "hours": "Hours",
       "minutes": "Minutes",
+      "preWhiteListSale": "Whitelist-Only Sale Countdown",
       "seconds": "Seconds"
     },
+    "eth_balance": "Your ETH balance:",
     "hero": {
-      "title": "Otto Portals",
-      "subtitle": "Summon your own Otto NFTs",
       "desc": "Mint Otto Portal and summon your unique Otto NFTs. Otto? Lottie? Cleo? It’s all surprise!",
       "limit": "Only 5,000 Portals available",
+      "subtitle": "Summon your own Otto NFTs",
+      "title": "Otto Portals",
       "whitepaper": "Check out the White Paper"
     },
-    "checkWL": {
-      "title": "Check if you’re Whitelisted",
-      "desc": "Only the whitelisted accounts are qualified to mint Otto Portals at the Whitelist-only Sale. Connect wallet to see if you’re on the list!",
-      "connect": "Connect Wallet",
-      "has-wl-title": "You are whitelisted!",
-      "has-wl-desc": "Get ready! Your Otto Portals will be able to mint at {{time}}",
-      "no-wl-title": "Oops, you are not whitelisted.",
-      "no-wl-desc": "Don’t worry. You can join your Discord, and prepare for the Public Sale at {{time}}."
-    },
     "intro": {
-      "title": "How do Otto Portals work?",
       "step1": "Step 1",
-      "step1_title": "Mint Otto Portal with CLAM or ETH",
       "step1_desc": "We accept $CLAM and ETH for Otto Portal minting. However, we're offering a 30% discount when you pay with $CLAM. This is a simple way to save money while supporting the continued growth of the Otter Kingdom.\n\n1 Portal = 0.08 ETH",
+      "step1_title": "Mint Otto Portal with CLAM or ETH",
       "step2": "Step 2",
-      "step2_title": "Wait for your Otto Portal to activate",
       "step2_desc": "Otto Portals need time to power up. Once they are ready, you will be able to summon your Otto.",
+      "step2_title": "Wait for your Otto Portal to activate",
       "step3": "Step 3",
+      "step3_desc": "When the time is up, you will be able to summon your Otto.\n\n1 portal can only summon 1 Otto. The traits will be randomly generated the moment you summon a Otto. If you're lucky, you'll summon an Otto that possesses rare, or super rare traits that greatly increase your Otto's value.",
       "step3_title": "Summon your Ottos",
-      "step3_desc": "When the time is up, you will be able to summon your Otto.\n\n1 portal can only summon 1 Otto. The traits will be randomly generated the moment you summon a Otto. If you're lucky, you'll summon an Otto that possesses rare, or super rare traits that greatly increase your Otto's value."
+      "title": "How do Otto Portals work?"
     },
     "mint": {
-      "title": "Mint Portal",
+      "amount_left": "{{amount}} left",
+      "info_desc": "One portal mints one Otto. Mint portals to summon your Otto and begin your Otterverse adventure!",
       "mint_summary": "Mint Summary({{address}})",
       "portal": "Otto Portal",
-      "info_desc": "One portal mints one Otto. Mint portals to summon your Otto and begin your Otterverse adventure!",
-      "amount_left": "{{amount}} left"
+      "title": "Mint Portal"
     },
+    "mint_button": "Mint",
+    "minted_desc": "You have already minted",
+    "minted_desc_amount": " {{amount}} Otto Portal(s)",
+    "not_enough_clam": "Not enough CLAM?",
+    "pay_with_clam": "Pay with CLAM",
+    "pay_with_eth": "Pay with ETH",
+    "payment_method": "Payment Method",
+    "please_connect": "Please connect your wallet to proceed the process.",
     "popup": {
       "processing": "Processing... Please do not close the window. The transaction will be finished soon.",
       "success_msg": "You just minted {{mintNumber}} Otto Portal(s)",
       "view_my_portals": "View my portals"
-    }
+    },
+    "portal_amount": "Otto Portals:",
+    "title": "Mint Portals",
+    "total_payment": "Total Payment:"
   },
   "my_portals": {
-    "title": "My Portals",
-    "no_portal": "You don't have any portal yet.",
+    "choose_otto": "Choose an Otto now!",
     "mint_portal": "Mint Portals",
-    "state": {
-      "CHARGING": "Charging...",
-      "CAN_OPEN": "Ready to initiate!",
-      "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
-    },
+    "no_portal": "You don't have any portal yet.",
     "open_duration": "{{duration}} left",
-    "opensea_link": "View on OpenSea",
-    "open_portal": "Open your portal now!",
     "open_now": "Open Now!",
-    "choose_otto": "Choose an Otto now!"
-  },
-  "portal": {
+    "open_portal": "Open your portal now!",
+    "opensea_link": "View on OpenSea",
     "state": {
+      "CAN_OPEN": "Ready to initiate!",
       "CHARGING": "Charging...",
-      "CAN_OPEN": "This Portal is ready to initiate!",
       "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
     },
-    "open_desc_1": "There are ",
-    "open_desc_2": " waiting at this portal, but you still need one more step to summon an Otto to go through the portal. Once it’s confirmed, the portal NFT’s appearance will be changed to the Otto’s!",
-    "otto_candidate_desc": "The attribute values and rarity score will reveal after you summon this Otto",
-    "summon_otto_button": "Summon",
+    "legendary_desc": "Legendary Ottos deserve legendary owners. Are you up for the challenge?",
+    "title": "My Portals"
+  },
+  "otto_one": "{{count}} Otto",
+  "otto_other": "{{count}} Ottos",
+  "portal": {
     "candidates_title": "Choose your Otto to join the Otter Kingdom:",
     "gender": "Gender: {{gender}}",
+    "open_desc_1": "There are ",
+    "open_desc_2": " waiting at this portal, but you still need one more step to summon an Otto to go through the portal. Once it’s confirmed, the portal NFT’s appearance will be changed to the Otto’s!",
     "open_popup": {
+      "back_to_summon": "Back to Summon",
+      "desc_one": "Your Otto is ready to join the Otterverse, but you still need to go back to summon this Otto through the portal.",
+      "desc_other": "They are ready to enter the Otterverse, but each portal only has the power to transport one Otto. Head back to the summon page to pick your favorite Otto. Choose wisely!",
       "headline_1": "Don’t fret. You might have the best Otto yet!",
       "headline_2": "Two too few?",
       "headline_3": "One for me, three for thee!",
@@ -113,30 +118,26 @@
       "headline_6": "Option paralysis. Heard of it?",
       "headline_7": "Seven is heaven! Which will you choose?",
       "headline_8": "Eight is great…but wait! Who do I take?",
-      "title_one": "There is {{count}} Otto at the portal",
-      "title_other": "There are {{count}} Ottos at the portal",
       "title_legendary": "Here comes a legendary Otto!",
-      "desc_one": "Your Otto is ready to join the Otterverse, but you still need to go back to summon this Otto through the portal.",
-      "desc_other": "They are ready to enter the Otterverse, but each portal only has the power to transport one Otto. Head back to the summon page to pick your favorite Otto. Choose wisely!",
-      "back_to_summon": "Back to Summon"
-    }
-  },
-  "header": {
-    "connect": "Connect"
+      "title_one": "There is {{count}} Otto at the portal",
+      "title_other": "There are {{count}} Ottos at the portal"
+    },
+    "otto_candidate_desc": "The attribute values and rarity score will reveal after you summon this Otto",
+    "state": {
+      "CAN_OPEN": "This Portal is ready to initiate!",
+      "CHARGING": "Charging...",
+      "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
+    },
+    "summon_otto_button": "Summon"
   },
   "side_menu": {
-    "select_language": "Select Language",
-    "follow_us": "Follow us"
+    "follow_us": "Follow us",
+    "select_language": "Select Language"
   },
-  "connect_wallet": "Connect Wallet",
-  "wallet_selector_head": "Connect to a wallet",
-  "connect_help_text": "Please connect wallet to continue playing.",
   "unsupported_network": {
-    "title": "Unsupported Network",
+    "action": "Switch to Polygon",
     "desc": "Only Polygon Mainnet are supported.",
-    "action": "Switch to Polygon"
+    "title": "Unsupported Network"
   },
-  "otto_one": "{{count}} Otto",
-  "otto_other": "{{count}} Ottos",
-  "button_processing": "Processing..."
+  "wallet_selector_head": "Connect to a wallet"
 }

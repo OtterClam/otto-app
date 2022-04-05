@@ -173,7 +173,11 @@ export default function PortalPage() {
                       <Display3>{metadata?.name}</Display3>
                     </StyledTitle>
                     <StyledDescription>
-                      <ContentSmall>{metadata?.description}</ContentSmall>
+                      <ContentSmall>
+                        {state === PortalState.OPENED
+                          ? t(`portal.open_popup.headline_${portal.candidates.length}`)
+                          : metadata?.description}
+                      </ContentSmall>
                     </StyledDescription>
                     {portal.beforeOpen && (
                       <>
