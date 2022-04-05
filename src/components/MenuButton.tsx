@@ -90,7 +90,7 @@ const StyledContainer = styled.div<InnerButtonProps>`
   }
 
   ${StyledButton}:disabled & {
-    background-color: ${({ theme }) => theme.colors.darkGray300};
+    background-color: ${({ theme }) => theme.colors.darkGray200};
   }
 `
 

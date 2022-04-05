@@ -9,12 +9,12 @@
     "menu": {
       "buy_clam": "買 CLAM",
       "join_discord": "加入 Discord",
-      "my_portals": "我的傳送門",
+      "mint_portals": "鑄造傳送門",
       "otter_dao": "Otter DAO",
       "treasury": "國庫",
       "white_paper": "白皮書"
     },
-    "mint_portal": "鑄造傳送門",
+    "play": "開始玩",
     "title": "阿獺王國"
   },
   "mint": {
@@ -83,8 +83,14 @@
     "title": "鑄造傳送門",
     "total_payment": "總計:"
   },
+  "mint_banner": {
+    "cta": "鑄造你的傳送門",
+    "para1": "進入",
+    "para2": "阿獺王國！"
+  },
   "my_portals": {
     "choose_otto": "選擇你的 Otto 吧！",
+    "legendary_desc": "傳奇阿獺",
     "mint_portal": "馬上鑄造一個吧",
     "no_portal": "你還沒有擁有任何傳送門喔",
     "open_duration": "剩餘： {{duration}}",
@@ -97,6 +103,19 @@
       "OPENED": "這個傳送門已經開啟，但你只能召喚一隻阿獺進入阿獺王國，請謹慎選擇喔！"
     },
     "title": "我的傳送門"
+  },
+  "play": {
+    "menu": {
+      "auction_house": "拍賣所",
+      "forge_house": "鐵匠鋪",
+      "leaderboard": "排行榜",
+      "missions": "出任務",
+      "my_items": "我的道具",
+      "my_ottos": "我的阿獺",
+      "my_portals": "我的傳送門",
+      "otto_market": "市集"
+    },
+    "title": "開始玩"
   },
   "portal": {
     "candidates_title": "選擇你的阿獺來加入阿獺王國吧：",
