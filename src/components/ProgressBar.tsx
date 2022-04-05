@@ -17,16 +17,28 @@ const BarAnimation = keyframes`
 `
 
 const StyledInnerProgressBar = styled.div<{ height: string; progress: number }>`
-  background-image: linear-gradient(
-    135deg,
-    #3b4bd8 25%,
-    #626fe0 25%,
-    #626fe0 50%,
-    #3b4bd8 50%,
-    #3b4bd8 75%,
-    #626fe0 75%,
-    #626fe0 100%
-  );
+  background-image: ${({ progress }) =>
+    progress >= 100
+      ? `linear-gradient(
+          135deg,
+          #38D075 25%,
+          #60D991 25%,
+          #60D991 50%,
+          #38D075 50%,
+          #38D075 75%,
+          #60D991 75%,
+          #60D991 100%
+        )`
+      : `linear-gradient(
+          135deg,
+          #3b4bd8 25%,
+          #626fe0 25%,
+          #626fe0 50%,
+          #3b4bd8 50%,
+          #3b4bd8 75%,
+          #626fe0 75%,
+          #626fe0 100%
+        )`};
   background-size: 40px 40px;
 
   width: ${({ progress }) => progress}%;

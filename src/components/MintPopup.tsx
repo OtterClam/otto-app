@@ -1,4 +1,3 @@
-import { useEthers } from '@usedapp/core'
 import Button from 'components/Button'
 import Fullscreen from 'components/Fullscreen'
 import { useTranslation } from 'react-i18next'
@@ -7,8 +6,8 @@ import { useNavigate } from 'react-router-dom'
 import { mintReset, selectMintNumber, selectMintStatus } from 'store/uiSlice'
 import styled from 'styled-components'
 import { ContentLarge, ContentMedium, Display3, Headline } from 'styles/typography'
-import LoadingOtter from './loading-otter.png'
-import SuccessPortal from './success-portal.png'
+import LoadingOtter from 'assets/loading-otter.png'
+import SuccessPortal from 'assets/success-portal.png'
 
 const StyledMintPopup = styled.div`
   min-height: 90vh;

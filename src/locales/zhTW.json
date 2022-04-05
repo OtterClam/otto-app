@@ -1,108 +1,140 @@
 {
+  "button_processing": "處理中...",
+  "connect_help_text": "請連接你的錢包來參與阿獺王國吧",
+  "connect_wallet": "連接錢包",
+  "header": {
+    "connect": "連接"
+  },
   "home": {
-    "title": "阿獺王國",
-    "mint_portal": "鑄造傳送門",
     "menu": {
-      "my_portals": "我的傳送門",
       "buy_clam": "買 CLAM",
+      "join_discord": "加入 Discord",
+      "my_portals": "我的傳送門",
       "otter_dao": "Otter DAO",
       "treasury": "國庫",
-      "join_discord": "加入 Discord",
       "white_paper": "白皮書"
-    }
+    },
+    "mint_portal": "鑄造傳送門",
+    "title": "阿獺王國"
   },
   "mint": {
-    "title": "鑄造傳送門",
-    "minted_desc": "你已經鑄造了",
-    "minted_desc_amount": " {{amount}} 阿獺傳送門",
-    "check_on_opensea": "去 OpenSea 瞧瞧",
-    "payment_method": "支付方式",
-    "pay_with_clam": "使用CLAM支付",
-    "pay_with_eth": "使用ETH支付",
-    "eth_balance": "你的ETH:",
-    "clam_balance": "你的CLAM:",
-    "portal_amount": "傳送門:",
-    "total_payment": "總計:",
-    "please_connect": "請連接你的錢包來鑄造傳送門。",
-    "connect": "連接",
-    "mint_button": "鑄造",
     "approve_button": "允許花費",
-    "not_enough_clam": "CLAM不夠嗎？",
     "buy": "購買",
+    "checkWL": {
+      "connect": "Connect Wallet",
+      "desc": "Only the whitelisted accounts are qualified to mint Otto Portals at the Whitelist-only Sale. Connect wallet to see if you’re on the list!",
+      "has-wl-desc": "Get ready! Your Otto Portals will be able to mint at {{time}}",
+      "has-wl-title": "You are whitelisted!",
+      "no-wl-desc": "Don’t worry. You can join your Discord, and prepare for the Public Sale at {{time}}.",
+      "no-wl-title": "Oops, you are not whitelisted.",
+      "title": "Check if you’re Whitelisted"
+    },
+    "check_on_opensea": "去 OpenSea 瞧瞧",
+    "clam_balance": "你的CLAM:",
+    "connect": "連接",
     "countdown": {
-      "preWhiteListSale": "Whitelist-Only Sale Countdown",
       "days": "Days",
       "hours": "Hours",
       "minutes": "Minutes",
+      "preWhiteListSale": "Whitelist-Only Sale Countdown",
       "seconds": "Seconds"
     },
+    "eth_balance": "你的ETH:",
     "hero": {
-      "title": "阿獺傳送門",
-      "subtitle": "召喚你專屬的阿獺 NFTs",
       "desc": "鑄造阿獺傳送門來召喚獨一無二的阿獺。Otto? Lottie? Cleo? 都有可能出現在你的阿獺傳送門中。",
       "limit": "限量 5,000 個傳送門",
+      "subtitle": "召喚你專屬的阿獺 NFTs",
+      "title": "阿獺傳送門",
       "whitepaper": "查看白皮書"
     },
-    "checkWL": {
-      "title": "Check if you’re Whitelisted",
-      "desc": "Only the whitelisted accounts are qualified to mint Otto Portals at the Whitelist-only Sale. Connect wallet to see if you’re on the list!",
-      "connect": "Connect Wallet",
-      "has-wl-title": "You are whitelisted!",
-      "has-wl-desc": "Get ready! Your Otto Portals will be able to mint at {{time}}",
-      "no-wl-title": "Oops, you are not whitelisted.",
-      "no-wl-desc": "Don’t worry. You can join your Discord, and prepare for the Public Sale at {{time}}."
-    },
     "intro": {
-      "title": "阿獺傳送門如何運作的？",
       "step1": "步驟 1",
-      "step1_title": "使用 CLAM 或 ETH 鑄造阿獺傳送門",
       "step1_desc": "我們接受使用 CLAM 或是 ETH 來鑄造阿獺傳送門。不過，如果你使用 CLAM 來鑄造，我們會給予 30% 的折扣！使用 CLAM 鑄造是一個省錢又可以持續支持阿獺王國的方式。\n\n1 個傳送門 = 0.08 ETH",
+      "step1_title": "使用 CLAM 或 ETH 鑄造阿獺傳送門",
       "step2": "步驟 2",
-      "step2_title": "等待你的傳送門開啟",
       "step2_desc": "每個傳送門都需要7天的時間來開啟。一但他準備好了，你就可以開啟傳送門來召喚阿獺。",
+      "step2_title": "等待你的傳送門開啟",
       "step3": "步驟 3",
+      "step3_desc": "當傳送門的開啟時間到了，你就可以召喚阿獺！\n\n注意：一個傳送門只能召喚一隻阿獺。每隻阿獺的特性都是在開門時使用 Chainlink VRF 隨機產生的。如果你夠幸運，有機會獲得超級稀有的阿獺喔！",
       "step3_title": "召喚你的阿獺",
-      "step3_desc": "當傳送門的開啟時間到了，你就可以召喚阿獺！\n\n注意：一個傳送門只能召喚一隻阿獺。每隻阿獺的特性都是在開門時使用 Chainlink VRF 隨機產生的。如果你夠幸運，有機會獲得超級稀有的阿獺喔！"
+      "title": "阿獺傳送門如何運作的？"
     },
     "mint": {
-      "title": "鑄造傳送門",
+      "amount_left": "剩餘： {{amount}} 阿獺傳送門",
+      "info_desc": "一個傳送門只能召喚一隻阿獺。鑄造傳送門來召喚你的阿獺，一起加入阿獺王國的家庭吧！",
       "mint_summary": "鑄造資訊({{address}})",
       "portal": "阿獺傳送門",
-      "info_desc": "一個傳送門只能召喚一隻阿獺。鑄造傳送門來召喚你的阿獺，一起加入阿獺王國的家庭吧！",
-      "amount_left": "剩餘： {{amount}} 阿獺傳送門"
+      "title": "鑄造傳送門"
     },
+    "mint_button": "鑄造",
+    "minted_desc": "你已經鑄造了",
+    "minted_desc_amount": " {{amount}} 阿獺傳送門",
+    "not_enough_clam": "CLAM不夠嗎？",
+    "pay_with_clam": "使用CLAM支付",
+    "pay_with_eth": "使用ETH支付",
+    "payment_method": "支付方式",
+    "please_connect": "請連接你的錢包來鑄造傳送門。",
     "popup": {
       "processing": "處理中...請不要關閉這個視窗。交易通常很快會完成。",
       "success_msg": "你鑄造了 {{mintNumber}} 阿獺傳送門",
       "view_my_portals": "查看我的傳送門"
-    }
+    },
+    "portal_amount": "傳送門:",
+    "title": "鑄造傳送門",
+    "total_payment": "總計:"
   },
   "my_portals": {
-    "title": "我的傳送門",
-    "no_portal": "你還沒有擁有任何傳送門喔",
+    "choose_otto": "選擇你的 Otto 吧！",
     "mint_portal": "馬上鑄造一個吧",
-    "status": {
-      "UNOPENED": "充能中...",
+    "no_portal": "你還沒有擁有任何傳送門喔",
+    "open_duration": "剩餘： {{duration}}",
+    "open_now": "開啟！",
+    "open_portal": "開啟你的傳送門！",
+    "opensea_link": "在 OpenSea 上瞧瞧",
+    "state": {
       "CAN_OPEN": "可以開啟了！",
+      "CHARGING": "充能中...",
       "OPENED": "這個傳送門已經開啟，但你只能召喚一隻阿獺進入阿獺王國，請謹慎選擇喔！"
     },
-    "open_duration": "剩餘： {{duration}}",
-    "opensea_link": "在 OpenSea 上瞧瞧",
-    "open_now": "開啟！"
+    "title": "我的傳送門"
   },
-  "header": {
-    "connect": "連接"
+  "portal": {
+    "candidates_title": "選擇你的阿獺來加入阿獺王國吧：",
+    "gender": "性別：{{gender}}",
+    "open_desc_1": "目前有",
+    "open_desc_2": "在傳送們中等待，不過你還需要最後一步召喚啊獺穿過傳送門！一旦召喚了，傳送門就會變成你召喚的阿獺喔！",
+    "open_popup": {
+      "back_to_summon": "回到傳送門",
+      "desc_one": "你的阿獺已經準備加入阿獺王國了，不過你還得去進行最後的召喚喔！",
+      "desc_other": "你的阿獺們已經準備加入阿獺王國了，不過一個傳送門只有剛剛好的能量召喚一隻阿獺。請你召喚一隻你最喜歡的阿獺吧！",
+      "headline_1": "唯一的阿獺降臨了！這該不會就是最好的那一隻吧？",
+      "headline_2": "2 隻恰恰好，但只有一隻能過傳送門，你會選哪隻呢？",
+      "headline_3": "3 隻阿獺降臨傳送門，召喚你最愛的那隻阿獺吧！",
+      "headline_4": "四方阿獺勇士來相會，選擇你最中意的一隻過傳送門吧！",
+      "headline_5": "各位觀眾，5 隻阿獺！選擇多多，好處多多！",
+      "headline_6": "按個按鈕就降臨了 6 隻阿獺，但我只能召喚一隻啊，有選擇障礙！",
+      "headline_7": "7 隻阿獺齊聚傳送門，但只有一隻能通過，你該怎麼選？",
+      "headline_8": "八仙過海來傳送門啦！但太多選擇了，你究竟該怎麼選呢？",
+      "title_legendary": "傳說級的阿獺登場啦！",
+      "title_one": "現在有 {{count}} 隻阿獺在傳送門等待召喚",
+      "title_other": "現在有 {{count}} 隻阿獺在傳送門等待召喚"
+    },
+    "otto_candidate_desc": "稀有度和屬性只會在你召喚之後呈現喔",
+    "state": {
+      "CAN_OPEN": "This Portal is ready to initiate!",
+      "CHARGING": "充能中...",
+      "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
+    },
+    "summon_otto_button": "召喚"
   },
   "side_menu": {
-    "select_language": "選擇語言",
-    "follow_us": "關注我們"
+    "follow_us": "關注我們",
+    "select_language": "選擇語言"
   },
-  "connect_wallet": "連接錢包",
-  "wallet_selector_head": "連接錢包",
-  "connect_help_text": "請連接你的錢包來參與阿獺王國吧",
   "unsupported_network": {
-    "title": "不支援的區塊鏈",
+    "action": "切換到 Polygon",
     "desc": "Ottopia 只支援 Polygon 喔！",
-    "action": "切換到 Polygon"
-  }
+    "title": "不支援的區塊鏈"
+  },
+  "wallet_selector_head": "連接錢包"
 }

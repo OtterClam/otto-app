@@ -11,6 +11,7 @@ export const colors = {
   darkGray100: '#8193B5',
   darkGray200: '#5E6E99',
   darkGray300: '#434E77',
+  seaweedGreen: '#38D075',
 }
 
 export type Colors = typeof colors

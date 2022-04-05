@@ -5,6 +5,7 @@ interface Addresses {
   WETH: string
   OTTO: string
   PORTAL_CREATOR: string
+  SUMMONER: string
 }
 
 export const POLYGON_MAINNET: Addresses = {
@@ -12,6 +13,15 @@ export const POLYGON_MAINNET: Addresses = {
   WETH: '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
   OTTO: '0x6e8A9Cb6B1E73e9fCe3FD3c68b5af9728F708eB7',
   PORTAL_CREATOR: '0xCb8Ba0c08e746CA6fa79fe535580f89A8eC082C2',
+  SUMMONER: '0xEF55Ac9c5A569Ee8A7962bd0D1FEae65F09Ffd9b',
+}
+
+export const POLYGON_MUMBAI: Addresses = {
+  CLAM: '0xC250e9987A032ACAC293d838726C511E6E1C029d',
+  WETH: '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+  OTTO: '0xb35617516850310200a1f8a96858e3306f5eb9c3',
+  PORTAL_CREATOR: '0xCb8Ba0c08e746CA6fa79fe535580f89A8eC082C2',
+  SUMMONER: '0x54a6610ca1989e4C55B34026a1Bf0dED5579e0D5',
 }
 
 export const LOCALHOST: Addresses = {
@@ -19,15 +29,5 @@ export const LOCALHOST: Addresses = {
   WETH: '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
   OTTO: '0x6e8A9Cb6B1E73e9fCe3FD3c68b5af9728F708eB7',
   PORTAL_CREATOR: '0xCb8Ba0c08e746CA6fa79fe535580f89A8eC082C2',
-}
-
-export function getContractAddresses(chainId: number): Addresses {
-  switch (chainId) {
-    case ChainId.Polygon:
-      return POLYGON_MAINNET
-    case ChainId.Hardhat:
-      return LOCALHOST
-    default:
-      return POLYGON_MAINNET
-  }
+  SUMMONER: '0xEF55Ac9c5A569Ee8A7962bd0D1FEae65F09Ffd9b',
 }

@@ -1,8 +1,8 @@
 import { ApolloProvider } from '@apollo/client'
-import { ChainId, Config, DAppProvider } from '@usedapp/core'
+import { ChainId, Config, DAppProvider, useEthers } from '@usedapp/core'
 import MintPopup from 'components/MintPopup'
 import SideMenu from 'components/SideMenu'
-import { apollo } from 'libs/apollo'
+import useApollo from 'hooks/useApollo'
 import { Outlet } from 'react-router-dom'
 import styled, { ThemeProvider } from 'styled-components'
 import { theme } from 'styles'
@@ -34,21 +34,28 @@ const config: Config = {
   },
 }
 
-const App = () => {
+const ApolloApp = () => {
+  const apollo = useApollo()
   return (
     <ApolloProvider client={apollo}>
       <ThemeProvider theme={theme}>
         <StyledApp>
-          <DAppProvider config={config}>
-            <Outlet />
-            <Error />
-            <WalletSelector />
-            <MintPopup />
-            <SideMenu />
-          </DAppProvider>
+          <Outlet />
+          <Error />
+          <WalletSelector />
+          <MintPopup />
+          <SideMenu />
         </StyledApp>
       </ThemeProvider>
     </ApolloProvider>
+  )
+}
+
+const App = () => {
+  return (
+    <DAppProvider config={config}>
+      <ApolloApp />
+    </DAppProvider>
   )
 }
 

@@ -2,7 +2,7 @@ import { ChainId, useEthers } from '@usedapp/core'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { clearError, ErrorButtonType, setError } from '../store/errorSlice'
-import { POLYGON_MAINNET, LOCALHOST } from '../contracts/addresses'
+import { POLYGON_MAINNET, LOCALHOST, POLYGON_MUMBAI } from '../contracts/addresses'
 
 const useContractAddresses = () => {
   const { t } = useTranslation()
@@ -12,6 +12,10 @@ const useContractAddresses = () => {
   if (chainId === ChainId.Polygon) {
     dispatch(clearError())
     return POLYGON_MAINNET
+  }
+  if (chainId === ChainId.Mumbai) {
+    dispatch(clearError())
+    return POLYGON_MUMBAI
   }
   if (chainId === ChainId.Hardhat) {
     dispatch(clearError())

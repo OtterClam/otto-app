@@ -125,9 +125,9 @@ const Button = ({ children, className, onClick, primaryColor = 'blue', isWeb3, d
     >
       <StyledInnerButton primaryColor={primaryColor} padding={padding} disabled={disabled || loading || pending}>
         {isWeb3 && !account ? (
-          <Display3> {t('connect_wallet')}</Display3>
+          <Display3>{t('connect_wallet')}</Display3>
         ) : loading ? (
-          <Display3>Loading...</Display3>
+          <Display3>{t('button_processing')}</Display3>
         ) : (
           children
         )}

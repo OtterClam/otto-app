@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { PortalStatus } from "./../../../../__generated__/globalTypes";
+import { PortalStatus } from "./../../../__generated__/global-types";
 
 // ====================================================
 // GraphQL query operation: ListMyPortals
@@ -16,6 +16,8 @@ export interface ListMyPortals_ottos {
   portalStatus: PortalStatus;
   canOpenAt: any;
   mintAt: any;
+  candidates: any[];
+  legendary: boolean;
 }
 
 export interface ListMyPortals {

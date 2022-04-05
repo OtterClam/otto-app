@@ -1,14 +1,12 @@
-import axios from 'axios'
 import BorderContainer from 'components/BorderContainer'
 import ProgressBar from 'components/ProgressBar'
-import { formatDuration, intervalToDuration } from 'date-fns'
-import { useEffect, useMemo, useState } from 'react'
+import { PortalState } from 'models/Portal'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
-import { theme } from 'styles'
+import styled, { useTheme } from 'styled-components'
 import { Caption, ContentMedium, ContentSmall } from 'styles/typography'
 import ClockImage from './clock.png'
-import { ListMyPortals_ottos } from './__generated__/ListMyPortals'
+import { RenderPortalProps } from './types'
 
 const StyledPortalCard = styled(BorderContainer)`
   width: 265px;
@@ -72,61 +70,51 @@ const StyledCountdown = styled.div`
   }
 `
 
+const StyledCanOpenText = styled.p`
+  color: ${({ theme }) => theme.colors.seaweedGreen};
+`
+
 const StyledProgressBar = styled(ProgressBar)`
   width: 90%;
 `
 
-interface PortalMeta {
-  name: string
-  image: string
-}
+const StyledOpenedText = styled.p`
+  color: ${({ theme }) => theme.colors.otterBlue};
+`
 
-interface Props {
-  portal: ListMyPortals_ottos
-}
-
-export default function PortalCard({ portal: { tokenURI, portalStatus, canOpenAt } }: Props) {
+export default function PortalCard({ portal, state, progress, duration, metadata }: RenderPortalProps) {
   const { t } = useTranslation()
-  const [now, setNow] = useState(Date.now())
-  const [portalMeta, setPortalMeta] = useState<PortalMeta | null>(null)
-  canOpenAt *= 1000
-  const openProgress = useMemo(
-    () => 100 - Math.round(((Number(canOpenAt) - now) / (7 * 86400 * 1000)) * 100),
-    [canOpenAt, now]
-  )
-  const duration = useMemo(
-    () =>
-      formatDuration(
-        intervalToDuration({
-          start: now,
-          end: Number(canOpenAt),
-        })
-      ),
-    [canOpenAt, now]
-  )
-
-  useEffect(() => {
-    axios.get<PortalMeta>(tokenURI).then(res => {
-      setPortalMeta(res.data)
-    })
-  }, [tokenURI])
-  useEffect(() => {
-    setTimeout(() => setNow(Date.now()), 1000)
-  }, [now])
-
+  const theme = useTheme()
+  const borderColor = useMemo(() => {
+    if (state === PortalState.OPENED) return theme.colors.crownYellow
+    if (state === PortalState.CAN_OPEN) return theme.colors.seaweedGreen
+    return theme.colors.clamPink
+  }, [state])
   return (
-    <StyledPortalCard borderColor={theme.colors.clamPink}>
-      <StyledPortalImage src={portalMeta?.image} />
+    <StyledPortalCard borderColor={borderColor}>
+      <StyledPortalImage src={metadata?.image} />
       <StyledPortalTitle>
-        <ContentMedium>{portalMeta?.name}</ContentMedium>
+        <ContentMedium>{metadata?.name}</ContentMedium>
       </StyledPortalTitle>
       <StyledPortalStatus>
-        <ContentSmall>{t(`my_portals.status.${portalStatus}`)}</ContentSmall>
+        <ContentSmall>{t(portal.legendary ? 'my_portals.legendary_desc' : `my_portals.state.${state}`)}</ContentSmall>
       </StyledPortalStatus>
-      <StyledProgressBar height="12px" progress={openProgress} />
-      <StyledCountdown>
-        <Caption>{t('my_portals.open_duration', { duration })}</Caption>
-      </StyledCountdown>
+      {state !== PortalState.OPENED && <StyledProgressBar height="12px" progress={progress} />}
+      {state === PortalState.CHARGING && (
+        <StyledCountdown>
+          <Caption>{t('my_portals.open_duration', { duration })}</Caption>
+        </StyledCountdown>
+      )}
+      {state === PortalState.CAN_OPEN && (
+        <StyledCanOpenText>
+          <Caption>{t('my_portals.open_portal')}</Caption>
+        </StyledCanOpenText>
+      )}
+      {state === PortalState.OPENED && (
+        <StyledOpenedText>
+          <Caption>{t('my_portals.choose_otto')}</Caption>
+        </StyledOpenedText>
+      )}
     </StyledPortalCard>
   )
 }
