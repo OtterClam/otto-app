@@ -1,24 +1,25 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import OpenSeaBlue from 'assets/opensea-blue.svg'
 import Button from 'components/Button'
 import { LoadingView } from 'components/LoadingView'
 import ProgressBar from 'components/ProgressBar'
-import { getOpenSeaLink, OPENSEA_NFT_LINK } from 'constant'
+import { getOpenSeaLink } from 'constant'
+import { useOpenPortal, useSummonOtto } from 'contracts/functions'
 import Layout from 'Layout'
 import { PortalState } from 'models/Portal'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { Caption, ContentLarge, ContentSmall, Display3, Headline } from 'styles/typography'
-import { useOpenPortal } from 'contracts/functions'
-import { useEffect, useState } from 'react'
 import ClockImage from '../clock.png'
 import PortalContainer from '../PortalContainer'
-import { GetPortal, GetPortalVariables } from './__generated__/GetPortal'
 import GetThroughPortal from './get_through_portal.png'
-import PortalCandidates from './PortalCandidates'
 import OpenPortalPopup from './OpenPortalPopup'
+import PortalCandidates from './PortalCandidates'
 import { GET_PORTAL } from './queries'
+import SummonPopup from './SummonPopup'
+import { GetPortal, GetPortalVariables } from './__generated__/GetPortal'
 
 const StyledPortalPage = styled.div`
   min-height: 100%;
@@ -133,6 +134,9 @@ export default function PortalPage() {
   })
   const { openState, open, resetOpen } = useOpenPortal()
   const [showOpenPortalPopup, setShowOpenPortalPopup] = useState(false)
+  const { summonState, summon, resetSummon } = useSummonOtto()
+  const [showSummonPopup, setShowSummonPopup] = useState(false)
+
   useEffect(() => {
     if (openState.status === 'Mining') setShowOpenPortalPopup(true)
     if (openState.status === 'Fail' || openState.status === 'Exception') {
@@ -141,6 +145,16 @@ export default function PortalPage() {
       resetOpen()
     }
   }, [openState])
+
+  useEffect(() => {
+    if (summonState.status === 'Mining') setShowSummonPopup(true)
+    if (summonState.status === 'Fail' || summonState.status === 'Exception') {
+      setShowSummonPopup(false)
+      window.alert(summonState.errorMessage)
+      resetSummon()
+    }
+  }, [summonState])
+
   return (
     <Layout title={t('my_portals.title')}>
       <StyledPortalPage>
@@ -161,20 +175,18 @@ export default function PortalPage() {
                     <StyledDescription>
                       <ContentSmall>{metadata?.description}</ContentSmall>
                     </StyledDescription>
-                    {state !== PortalState.OPENED && (
-                      <StyledStatusContainer>
-                        <StyledStatus>
-                          <ContentLarge>{t(`portal.state.${state}`)}</ContentLarge>
-                        </StyledStatus>
-                        {state === PortalState.CHARGING && (
-                          <StyledDuration>
-                            <Caption>{duration}</Caption>
-                          </StyledDuration>
-                        )}
-                      </StyledStatusContainer>
-                    )}
-                    {state !== PortalState.OPENED && (
+                    {portal.beforeOpen && (
                       <>
+                        <StyledStatusContainer>
+                          <StyledStatus>
+                            <ContentLarge>{t(`portal.state.${state}`)}</ContentLarge>
+                          </StyledStatus>
+                          {state === PortalState.CHARGING && (
+                            <StyledDuration>
+                              <Caption>{duration}</Caption>
+                            </StyledDuration>
+                          )}
+                        </StyledStatusContainer>
                         <ProgressBar height="20px" progress={progress} />
                         <Button disabled={state === PortalState.CHARGING} onClick={() => open(portalId)}>
                           <Headline>{t('my_portals.open_now')}</Headline>
@@ -193,7 +205,9 @@ export default function PortalPage() {
                     )}
                   </StyledContentContainer>
                 </StyledPortalInfo>
-                {state === PortalState.OPENED && <PortalCandidates portal={portal} />}
+                {state === PortalState.OPENED && (
+                  <PortalCandidates portal={portal} onSummon={index => summon(portalId, index)} />
+                )}
               </>
             )}
           </PortalContainer>
@@ -204,6 +218,14 @@ export default function PortalPage() {
         portalId={portalId}
         onClose={() => {
           setShowOpenPortalPopup(false)
+          refetch()
+        }}
+      />
+      <SummonPopup
+        show={showSummonPopup}
+        portalId={portalId}
+        onClose={() => {
+          setShowSummonPopup(false)
           refetch()
         }}
       />

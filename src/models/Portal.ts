@@ -14,6 +14,7 @@ export enum PortalState {
   CHARGING = 'CHARGING',
   CAN_OPEN = 'CAN_OPEN',
   OPENED = 'OPENED',
+  SUMMONED = 'SUMMONED',
 }
 
 export default class Portal {
@@ -43,9 +44,17 @@ export default class Portal {
     return this.raw.legendary
   }
 
+  get beforeOpen(): boolean {
+    return this.raw.portalStatus === PortalStatus.UNOPENED
+  }
+
   public state(now: number): PortalState {
     if (this.raw.portalStatus === PortalStatus.OPENED) {
       return PortalState.OPENED
+    }
+
+    if (this.raw.portalStatus === PortalStatus.SUMMONED) {
+      return PortalState.SUMMONED
     }
 
     if (this.canOpenAt < now) {

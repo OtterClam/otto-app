@@ -28,3 +28,12 @@ export const useOpenPortal = () => {
   const { state: openState, send: open, resetState: resetOpen } = useContractFunction(summoner, 'requestOpen')
   return { openState, open, resetOpen }
 }
+
+export const useSummonOtto = () => {
+  const { SUMMONER } = useContractAddresses()
+  const { library } = useEthers()
+  const summoner = new Contract(SUMMONER, OttoSummoner, library)
+  const { state: summonState, send, resetState: resetSummon } = useContractFunction(summoner, 'summon')
+  const summon = (tokenId: string, index: number) => send(tokenId, index)
+  return { summonState, summon, resetSummon }
+}

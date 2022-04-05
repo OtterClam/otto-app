@@ -6,10 +6,6 @@ import styled from 'styled-components'
 import { Headline } from 'styles/typography'
 import OttoCandidateCard from './OttoCandidateCard'
 
-interface Props {
-  portal: Portal
-}
-
 const StyledPortalCandidates = styled.div``
 
 const StyledTitle = styled.p`
@@ -18,17 +14,24 @@ const StyledTitle = styled.p`
 `
 
 const StyledCandidates = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 25px;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  gap: 15px;
+  grid-template-columns: repeat(auto-fit, 265px);
 `
 
 const StyledCandidateItem = styled.div`
   width: 265px;
-  height: 496px;
 `
 
-export default function PortalCandidates({ portal }: Props) {
+interface Props {
+  portal: Portal
+  onSummon: (index: number) => void
+}
+
+export default function PortalCandidates({ portal, onSummon }: Props) {
   const { t } = useTranslation()
   const api = useApi()
   const [candidates, setCandidates] = useState<OttoCandidateMeta[]>([])
@@ -44,12 +47,7 @@ export default function PortalCandidates({ portal }: Props) {
       <StyledCandidates>
         {candidates.map((candidate, index) => (
           <StyledCandidateItem key={index}>
-            <OttoCandidateCard
-              onSummon={() => {
-                console.log(`summon${index}`)
-              }}
-              {...candidate}
-            />
+            <OttoCandidateCard onSummon={() => onSummon(index)} {...candidate} />
           </StyledCandidateItem>
         ))}
       </StyledCandidates>

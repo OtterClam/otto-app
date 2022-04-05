@@ -9,10 +9,14 @@ export interface OttoCandidateMeta {
 }
 
 export class Api {
-  private axios: Axios
+  private _axios: Axios
+
+  public get axios(): Axios {
+    return this._axios
+  }
 
   constructor(axios: Axios) {
-    this.axios = axios
+    this._axios = axios
   }
 
   public async getPortalCandidates(portalId: string): Promise<OttoCandidateMeta[]> {
