@@ -25,6 +25,11 @@ const StyledOpenPortalPopup = styled.div`
   text-align: center;
   gap: 10px;
   color: white;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    padding: 20px 0;
+    min-height: unset;
+  }
 `
 
 const StyledCloseButton = styled.button`
@@ -71,15 +76,30 @@ const StyledPFPContainer = styled.div`
   align-items: center;
   gap: 20px;
   z-index: 1;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 100%;
+    height: auto;
+    margin-top: 60px;
+  }
 `
 
 const StyledPFP = styled.img`
   width: 120px;
   height: 120px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 80px;
+    height: 80px;
+  }
 `
 
 const StyledHeadline = styled.p`
   margin-top: 80px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    margin-top: 120px;
+  }
 `
 
 const StyledTitle = styled.p``

@@ -30,6 +30,10 @@ const Container = styled.div`
 
   border: 4px solid ${props => props.theme.colors.otterBlack};
   border-radius: 20px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 100%;
+  }
 `
 
 const StyledInnerContainer = styled.div`
