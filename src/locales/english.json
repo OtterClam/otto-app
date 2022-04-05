@@ -9,12 +9,12 @@
     "menu": {
       "buy_clam": "Buy CLAM",
       "join_discord": "Join Discord",
-      "my_portals": "My Portals",
+      "mint_portals": "Mint Portals",
       "otter_dao": "Otter DAO",
       "treasury": "Treasury",
       "white_paper": "White Paper"
     },
-    "mint_portal": "Mint Portal",
+    "play": "Play",
     "title": "Welcome to Ottopia"
   },
   "mint": {
@@ -83,8 +83,14 @@
     "title": "Mint Portals",
     "total_payment": "Total Payment:"
   },
+  "mint_banner": {
+    "cta": "MINT PORTAL >",
+    "para1": "DIVE INTO THE",
+    "para2": "OTTERVERSE!"
+  },
   "my_portals": {
     "choose_otto": "Choose an Otto now!",
+    "legendary_desc": "Legendary Ottos deserve legendary owners. Are you up for the challenge?",
     "mint_portal": "Mint Portals",
     "no_portal": "You don't have any portal yet.",
     "open_duration": "{{duration}} left",
@@ -96,11 +102,23 @@
       "CHARGING": "Charging...",
       "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
     },
-    "legendary_desc": "Legendary Ottos deserve legendary owners. Are you up for the challenge?",
     "title": "My Portals"
   },
   "otto_one": "{{count}} Otto",
   "otto_other": "{{count}} Ottos",
+  "play": {
+    "menu": {
+      "auction_house": "Auction House",
+      "forge_house": "Forge House",
+      "leaderboard": "Leaderboard",
+      "missions": "Missions",
+      "my_items": "My Items",
+      "my_ottos": "My Ottos",
+      "my_portals": "My Portals",
+      "otto_market": "Otto Market"
+    },
+    "title": "Play"
+  },
   "portal": {
     "candidates_title": "Choose your Otto to join the Otter Kingdom:",
     "gender": "Gender: {{gender}}",

@@ -9,13 +9,13 @@ import { Display3 } from 'styles/typography'
 import { Link } from 'react-router-dom'
 import { useMediaQuery } from 'hooks/useMediaQuery'
 import { breakpoints } from 'styles/breakpoints'
-import PortalIcon from './portal.png'
-import BuyCLAMIcon from './buy-clam.png'
-import DAOIcon from './dao.png'
-import JoinDiscordIcon from './join-discord.png'
-import TreasuryIcon from './treasury.png'
-import WhitePaperIcon from './whitepaper.png'
-import PortalLarge from './portal-large.png'
+import PortalIcon from './icons/portal.png'
+import BuyCLAMIcon from './icons/buy-clam.png'
+import DAOIcon from './icons/dao.png'
+import JoinDiscordIcon from './icons/join-discord.png'
+import TreasuryIcon from './icons/treasury.png'
+import WhitePaperIcon from './icons/whitepaper.png'
+import PortalLarge from './icons/portal-large.png'
 
 const StyledHomePage = styled.div`
   width: 80%;
@@ -86,7 +86,7 @@ const HomePage = () => {
 
   const leftMenus: Menu[] = useMemo(
     () => [
-      { title: t('home.menu.my_portals'), icon: PortalIcon, href: '/my-portals', internal: true },
+      { title: t('home.menu.mint_portals'), icon: PortalIcon, href: '/mint', internal: true },
       { title: t('home.menu.otter_dao'), icon: DAOIcon, href: DAO_LINK },
       { title: t('home.menu.join_discord'), icon: JoinDiscordIcon, href: DISCORD_LINK },
     ],
@@ -120,9 +120,9 @@ const HomePage = () => {
   const renderPortals = () => (
     <StyledPortalContainer>
       <StyledPortalImage src={PortalLarge} />
-      <Link to="/mint">
+      <Link to="/play">
         <StyledButton primaryColor="white">
-          <Display3>{t('home.mint_portal')}</Display3>
+          <Display3>{t('home.play')}</Display3>
         </StyledButton>
       </Link>
     </StyledPortalContainer>
