@@ -1,11 +1,12 @@
 import Button from 'components/Button'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { connectWallet } from 'store/uiSlice'
 import styled from 'styled-components'
 import { ContentSmall, Headline } from 'styles/typography'
 import WhiteBlankPortal from 'assets/white-blank-portal.png'
 
-const StyledNoPortalView = styled.div`
+const StyledConnectView = styled.div`
   width: 100%;
   height: calc(100vh - 186px);
   display: flex;
@@ -22,28 +23,27 @@ const StyledInnerContainer = styled.div`
   justify-content: center;
 `
 
-const StyledMainImage = styled.img`
+const StyledConnectImage = styled.img`
   width: 220px;
   height: 192px;
 `
 
 const StyledHelpText = styled.p``
 
-export default function NoPortalView() {
+export default function ConnectView() {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
   return (
-    <StyledNoPortalView>
+    <StyledConnectView>
       <StyledInnerContainer>
-        <StyledMainImage src={WhiteBlankPortal} />
+        <StyledConnectImage src={WhiteBlankPortal} />
         <StyledHelpText>
-          <ContentSmall>{t('my_portals.no_portal')}</ContentSmall>
+          <ContentSmall>{t('connect_help_text')}</ContentSmall>
         </StyledHelpText>
-        <Link to="/mint">
-          <Button>
-            <Headline>{t('my_portals.mint_portal')}</Headline>
-          </Button>
-        </Link>
+        <Button onClick={() => dispatch(connectWallet())}>
+          <Headline>{t('connect_wallet')}</Headline>
+        </Button>
       </StyledInnerContainer>
-    </StyledNoPortalView>
+    </StyledConnectView>
   )
 }

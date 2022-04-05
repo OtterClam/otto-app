@@ -1,12 +1,11 @@
 import Button from 'components/Button'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
-import { connectWallet } from 'store/uiSlice'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { ContentSmall, Headline } from 'styles/typography'
-import WhiteBlankPortal from './white-blank-portal.png'
+import WhiteBlankPortal from 'assets/white-blank-portal.png'
 
-const StyledConnectView = styled.div`
+const StyledNoOttoView = styled.div`
   width: 100%;
   height: calc(100vh - 186px);
   display: flex;
@@ -23,27 +22,28 @@ const StyledInnerContainer = styled.div`
   justify-content: center;
 `
 
-const StyledConnectImage = styled.img`
+const StyledMainImage = styled.img`
   width: 220px;
   height: 192px;
 `
 
 const StyledHelpText = styled.p``
 
-export default function ConnectView() {
+export default function NoOttoView() {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
   return (
-    <StyledConnectView>
+    <StyledNoOttoView>
       <StyledInnerContainer>
-        <StyledConnectImage src={WhiteBlankPortal} />
+        <StyledMainImage src={WhiteBlankPortal} />
         <StyledHelpText>
-          <ContentSmall>{t('connect_help_text')}</ContentSmall>
+          <ContentSmall>{t('my_ottos.no_otto')}</ContentSmall>
         </StyledHelpText>
-        <Button onClick={() => dispatch(connectWallet())}>
-          <Headline>{t('connect_wallet')}</Headline>
-        </Button>
+        <Link to="/mint">
+          <Button>
+            <Headline>{t('my_ottos.mint_portal')}</Headline>
+          </Button>
+        </Link>
       </StyledInnerContainer>
-    </StyledConnectView>
+    </StyledNoOttoView>
   )
 }

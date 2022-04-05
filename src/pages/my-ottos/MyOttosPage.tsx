@@ -1,5 +1,6 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
+import ConnectView from 'components/ConnectView'
 import { LoadingView } from 'components/LoadingView'
 import { ottoClick } from 'constant'
 import Layout from 'Layout'
@@ -7,20 +8,20 @@ import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import ConnectView from 'components/ConnectView'
-import NoPortalView from './NoPortalView'
-import PortalCard from './PortalCard'
-import PortalContainer from './PortalContainer'
-import { ListMyPortals, ListMyPortalsVariables } from './__generated__/ListMyPortals'
+import NoOttoView from './NoOttoView'
+import OttoCard from './OttoCard'
+import OttoContainer from './OttoContainer'
+import { LIST_MY_OTTOS } from './queries'
+import { ListMyOttos, ListMyOttosVariables } from './__generated__/ListMyOttos'
 
-const StyledMyPortalsPage = styled.div`
+const StyledMyOttosPage = styled.div`
   width: 100%;
   height: 100%;
   min-height: 100%;
   background-color: white;
 `
 
-const StyledMyPortals = styled.div`
+const StyledMyOttos = styled.div`
   padding: 20px;
   background-color: white;
   display: grid;
@@ -37,32 +38,18 @@ const StyledMyPortals = styled.div`
   }
 `
 
-export const LIST_MY_PORTALS = gql`
-  query ListMyPortals($owner: Bytes!) {
-    ottos(where: { owner: $owner, portalStatus_not: SUMMONED }, orderBy: tokenId) {
-      tokenId
-      tokenURI
-      portalStatus
-      canOpenAt
-      mintAt
-      candidates
-      legendary
-    }
-  }
-`
-
 enum State {
   NoConnect,
   Loading,
-  NoPortals,
-  HasPortals,
+  NoOttos,
+  HasOttos,
 }
 
-export default function MyPortalsPage() {
+export default function MyOttosPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { account } = useEthers()
-  const { data, loading } = useQuery<ListMyPortals, ListMyPortalsVariables>(LIST_MY_PORTALS, {
+  const { data, loading } = useQuery<ListMyOttos, ListMyOttosVariables>(LIST_MY_OTTOS, {
     variables: { owner: account || '' },
     skip: !account,
   })
@@ -74,33 +61,33 @@ export default function MyPortalsPage() {
       return State.Loading
     }
     if ((data?.ottos.length || 0) > 0) {
-      return State.HasPortals
+      return State.HasOttos
     }
-    return State.NoPortals
+    return State.NoOttos
   }, [account, loading, data])
   const renderContent = useCallback(() => {
     switch (state) {
       case State.Loading:
         return <LoadingView />
-      case State.NoPortals:
-        return <NoPortalView />
-      case State.HasPortals:
+      case State.NoOttos:
+        return <NoOttoView />
+      case State.HasOttos:
         return (
-          <StyledMyPortals>
-            {data?.ottos.map((portal, index) => (
+          <StyledMyOttos>
+            {data?.ottos.map((otto, index) => (
               <a
                 key={index}
-                href={portal.tokenId}
+                href={otto.tokenId}
                 onClick={e => {
                   e.preventDefault()
                   ottoClick.play()
-                  navigate(portal.tokenId)
+                  navigate(otto.tokenId)
                 }}
               >
-                <PortalContainer rawPortal={portal}>{props => <PortalCard {...props} />}</PortalContainer>
+                <OttoContainer rawOtto={otto}>{props => <OttoCard {...props} />}</OttoContainer>
               </a>
             ))}
-          </StyledMyPortals>
+          </StyledMyOttos>
         )
       case State.NoConnect:
       default:
@@ -108,8 +95,8 @@ export default function MyPortalsPage() {
     }
   }, [state, data])
   return (
-    <Layout title={t('my_portals.title')}>
-      <StyledMyPortalsPage>{renderContent()}</StyledMyPortalsPage>
+    <Layout title={t('my_ottos.title')}>
+      <StyledMyOttosPage>{renderContent()}</StyledMyOttosPage>
     </Layout>
   )
 }

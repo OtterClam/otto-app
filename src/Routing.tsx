@@ -1,11 +1,12 @@
 import MintPage from 'pages/mint/MintPage'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import MyPortalsPage from 'pages/my-portals/MyPortalsPage'
 import PortalPage from 'pages/my-portals/PortalPage'
 import PlayPage from 'pages/play/PlayPage'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import HomePage from 'pages/home/HomePage'
+import MyOttosPage from 'pages/my-ottos/MyOttosPage'
+import NotFoundPage from 'pages/not-found/NotFoundPage'
 import App from './App'
-import HomePage from './pages/home/HomePage'
-import NotFoundPage from './pages/not-found/NotFoundPage'
 
 const Routing = () => {
   return (
@@ -18,6 +19,10 @@ const Routing = () => {
           <Route path="my-portals">
             <Route index element={<MyPortalsPage />} />
             <Route path=":portalId" element={<PortalPage />} />
+          </Route>
+          <Route path="my-ottos">
+            <Route index element={<MyOttosPage />} />
+            <Route path=":ottoId" element={<PortalPage />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>

@@ -157,5 +157,10 @@
     "desc": "Only Polygon Mainnet are supported.",
     "title": "Unsupported Network"
   },
-  "wallet_selector_head": "Connect to a wallet"
+  "wallet_selector_head": "Connect to a wallet",
+  "my_ottos": {
+    "title": "My Ottos",
+    "no_otto": "You don't have any otto yet.",
+    "mint_portal": "Mint Portal"
+  }
 }
