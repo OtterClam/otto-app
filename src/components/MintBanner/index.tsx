@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Display2, Display3, Headline } from 'styles/typography'
-import PortalLight from './portal-light.png'
+import JoinUsImage from './join-us.png'
 
 const StyledMintBanner = styled.div`
   width: 100%;
@@ -37,21 +37,21 @@ const StyledContainer = styled.div`
   gap: 20px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    gap: 0;
-    padding: 6px 0;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 0;
   }
 `
 
 const StyledImg = styled.img`
-  width: 185px;
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    width: 138px;
-  }
+  height: 135px;
+  margin-right: -48px;
 `
 
 const StyledParagraph = styled.p`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `
 
 interface Props {
@@ -64,9 +64,9 @@ export default function MintBanner({ className }: Props) {
     <StyledMintBanner className={className}>
       <StyledInnerButton>
         <StyledContainer>
-          <StyledImg src={PortalLight} alt="mint" />
+          <StyledImg src={JoinUsImage} alt="mint" />
           <StyledParagraph>
-            <Display3>{t('mint_banner.para1')}</Display3>
+            <Headline>{t('mint_banner.para1')}</Headline>
             <Display2>{t('mint_banner.para2')}</Display2>
           </StyledParagraph>
           <Link to="/mint">
