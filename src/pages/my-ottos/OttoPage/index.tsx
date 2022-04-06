@@ -9,12 +9,14 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { Caption, ContentLarge, ContentSmall, Display3, Headline } from 'styles/typography'
+import Button from 'components/Button'
 import { GET_OTTO } from '../queries'
 import { GetOtto, GetOttoVariables } from '../__generated__/GetOtto'
 import GenderIcon from './icons/gender.png'
 import PersonalityIcon from './icons/personality.png'
 import BirthdayIcon from './icons/birthday.png'
 import VoiceIcon from './icons/voice.png'
+import PlayIcon from './icons/play-voice.svg'
 
 const StyledOttoPage = styled.div`
   min-height: 100%;
@@ -33,6 +35,13 @@ const StyledOttoContainer = styled.div`
   }
 `
 
+const StyledLeftContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+`
+
 const StyledOttoImage = styled.img`
   width: 440px;
   min-width: 440px;
@@ -42,6 +51,21 @@ const StyledOttoImage = styled.img`
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 100%;
     height: unset;
+  }
+`
+
+const StyledPlayButtonText = styled(Headline)`
+  display: flex;
+  align-items: center;
+  &:before {
+    content: '';
+    background-image: url(${PlayIcon});
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    display: block;
   }
 `
 
@@ -142,7 +166,12 @@ export default function OttoPage() {
         {(loading || loadingOtto) && <LoadingView />}
         {otto && (
           <StyledOttoContainer>
-            <StyledOttoImage src={otto.image} />
+            <StyledLeftContainer>
+              <StyledOttoImage src={otto.image} />
+              <Button primaryColor="white" disableSound onClick={() => otto.playVoice()}>
+                <StyledPlayButtonText>{t('otto.play_voice')}</StyledPlayButtonText>
+              </Button>
+            </StyledLeftContainer>
             <StyledContentContainer>
               <StyledOpenSeaLink href={getOpenSeaLink(otto.tokenId)} target="_blank">
                 <Caption>{t('otto.opensea_link')}</Caption>

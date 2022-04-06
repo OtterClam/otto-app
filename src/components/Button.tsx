@@ -92,9 +92,20 @@ interface Props {
   children?: ReactNode
   padding?: string
   className?: string
+  disableSound?: boolean
 }
 
-const Button = ({ children, className, onClick, primaryColor = 'blue', isWeb3, disabled, loading, padding }: Props) => {
+const Button = ({
+  children,
+  className,
+  onClick,
+  primaryColor = 'blue',
+  isWeb3,
+  disabled,
+  loading,
+  padding,
+  disableSound = false,
+}: Props) => {
   const { account, activateBrowserWallet } = useEthers()
   const error = useSelector(selectError)
   const [pending, setPending] = useState(false)
@@ -118,7 +129,7 @@ const Button = ({ children, className, onClick, primaryColor = 'blue', isWeb3, d
           if (isWeb3 && !account) activateBrowserWallet()
           else onClick()
         }
-        if (!_disabled) {
+        if (!_disabled && !disableSound) {
           ottoClick.play()
         }
       }}

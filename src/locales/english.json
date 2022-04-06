@@ -170,6 +170,7 @@
     "gender": "Gender: {{gender}}",
     "personality": "Personality: {{personality}}",
     "birthday": "Birthday: {{birthday}}",
-    "voice": "Voice: {{voice}}"
+    "voice": "Voice: {{voice}}",
+    "play_voice": "Hear this Otto's voice"
   }
 }
