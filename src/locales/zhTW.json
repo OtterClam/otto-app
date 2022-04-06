@@ -21,7 +21,7 @@
     "approve_button": "允許花費",
     "buy": "購買",
     "checkWL": {
-      "connect": "Connect Wallet",
+      "connect": "連接錢包",
       "desc": "Only the whitelisted accounts are qualified to mint Otto Portals at the Whitelist-only Sale. Connect wallet to see if you’re on the list!",
       "has-wl-desc": "Get ready! Your Otto Portals will be able to mint at {{time}}",
       "has-wl-title": "You are whitelisted!",
@@ -30,8 +30,8 @@
       "title": "Check if you’re Whitelisted"
     },
     "check_on_opensea": "去 OpenSea 瞧瞧",
-    "clam_balance": "你的CLAM:",
-    "connect": "連接",
+    "clam_balance": "你的 CLAM:",
+    "connect": "連接錢包",
     "countdown": {
       "days": "Days",
       "hours": "Hours",
@@ -39,7 +39,7 @@
       "preWhiteListSale": "Whitelist-Only Sale Countdown",
       "seconds": "Seconds"
     },
-    "eth_balance": "你的ETH:",
+    "eth_balance": "你的 ETH:",
     "hero": {
       "desc": "鑄造阿獺傳送門來召喚獨一無二的阿獺。Otto? Lottie? Cleo? 都有可能出現在你的阿獺傳送門中。",
       "limit": "限量 5,000 個傳送門",
@@ -69,9 +69,9 @@
     "mint_button": "鑄造",
     "minted_desc": "你已經鑄造了",
     "minted_desc_amount": " {{amount}} 阿獺傳送門",
-    "not_enough_clam": "CLAM不夠嗎？",
-    "pay_with_clam": "使用CLAM支付",
-    "pay_with_eth": "使用ETH支付",
+    "not_enough_clam": "CLAM 不夠嗎？",
+    "pay_with_clam": "使用 CLAM 支付",
+    "pay_with_eth": "使用 ETH 支付",
     "payment_method": "支付方式",
     "please_connect": "請連接你的錢包來鑄造傳送門。",
     "popup": {
@@ -89,10 +89,10 @@
     "para2": "阿獺王國！"
   },
   "my_ottos": {
-    "mint_portal": "Mint Portal",
-    "no_otto": "You don't have any otto yet.",
-    "rarity_score": "Base Rarity Score: {{score}}",
-    "title": "My Ottos"
+    "mint_portal": "鑄造傳送門",
+    "no_otto": "你還沒有任何阿獺。",
+    "rarity_score": "基本稀有分數： {{score}}",
+    "title": "我的阿獺"
   },
   "my_portals": {
     "choose_otto": "選擇你的 Otto 吧！",
@@ -111,15 +111,15 @@
     "title": "我的傳送門"
   },
   "otto": {
-    "birthday": "Birthday: {{birthday}}",
-    "gender": "Gender: {{gender}}",
-    "opensea_link": "View on OpenSea",
-    "personality": "Personality: {{personality}}",
-    "play_voice": "Hear this Otto's voice",
-    "rarity_score": "Base Rarity Score: {{score}}",
-    "voice": "Voice: {{voice}}"
+    "birthday": "生日： {{birthday}}",
+    "gender": "性別： {{gender}}",
+    "opensea_link": "在 OpenSea 上瞧瞧",
+    "personality": "個性： {{personality}}",
+    "play_voice": "聽聽這隻阿獺的聲音",
+    "rarity_score": "基本稀有分數： {{score}}",
+    "voice": "聲音： {{voice}}"
   },
-  "otto_other": "{{count}} Ottos",
+  "otto_other": "{{count}} 隻阿獺",
   "play": {
     "menu": {
       "auction_house": "拍賣所",
@@ -131,7 +131,7 @@
       "my_portals": "我的傳送門",
       "otto_market": "市集"
     },
-    "title": "開始玩"
+    "title": "開始遊玩"
   },
   "portal": {
     "candidates_title": "選擇你的阿獺來加入阿獺王國吧：",
@@ -158,14 +158,14 @@
     },
     "otto_candidate_desc": "稀有度和屬性只會在你召喚之後呈現喔",
     "state": {
-      "CAN_OPEN": "This Portal is ready to initiate!",
+      "CAN_OPEN": "可以開啟了！",
       "CHARGING": "充能中...",
-      "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
+      "OPENED": "這個傳送門已經開啟，但你只能召喚一隻阿獺進入阿獺王國，請謹慎選擇喔！"
     },
     "summon_otto_button": "召喚",
     "summon_popup": {
-      "desc": "Congrats!\nThis Otto just officially joined the Otter Kingdom and became one of the members of this big, warm family.\nFind out more about this Otto now!",
-      "view_my_otto": "View My Otto"
+      "desc": "恭喜！\n這隻阿獺剛剛正式加入阿獺王國、並成為這個溫暖大家庭的一份子了。\n快去看看這隻阿獺的完整介紹吧！",
+      "view_my_otto": "查看我的阿獺"
     }
   },
   "side_menu": {
