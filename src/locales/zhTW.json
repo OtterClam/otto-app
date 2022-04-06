@@ -88,6 +88,12 @@
     "para1": "進入",
     "para2": "阿獺王國！"
   },
+  "my_ottos": {
+    "mint_portal": "Mint Portal",
+    "no_otto": "You don't have any otto yet.",
+    "rarity_score": "Base Rarity Score: {{score}}",
+    "title": "My Ottos"
+  },
   "my_portals": {
     "choose_otto": "選擇你的 Otto 吧！",
     "legendary_desc": "傳奇阿獺",
@@ -104,6 +110,16 @@
     },
     "title": "我的傳送門"
   },
+  "otto": {
+    "birthday": "Birthday: {{birthday}}",
+    "gender": "Gender: {{gender}}",
+    "opensea_link": "View on OpenSea",
+    "personality": "Personality: {{personality}}",
+    "play_voice": "Hear this Otto's voice",
+    "rarity_score": "Base Rarity Score: {{score}}",
+    "voice": "Voice: {{voice}}"
+  },
+  "otto_other": "{{count}} Ottos",
   "play": {
     "menu": {
       "auction_house": "拍賣所",
@@ -123,7 +139,6 @@
     "open_desc_1": "目前有",
     "open_desc_2": "在傳送們中等待，不過你還需要最後一步召喚啊獺穿過傳送門！一旦召喚了，傳送門就會變成你召喚的阿獺喔！",
     "open_popup": {
-      "processing": "傳送門開啟中…\n\n這可能會需要幾分鐘的時間，請勿關閉視窗並耐心等候\n\n感謝 ʕ•̫͡•ʔ b",
       "back_to_summon": "回到傳送門",
       "desc_one": "你的阿獺已經準備加入阿獺王國了，不過你還得去進行最後的召喚喔！",
       "desc_other": "你的阿獺們已經準備加入阿獺王國了，不過一個傳送門只有剛剛好的能量召喚一隻阿獺。請你召喚一隻你最喜歡的阿獺吧！",
@@ -135,6 +150,8 @@
       "headline_6": "按個按鈕就降臨了 6 隻阿獺，但我只能召喚一隻啊，有選擇障礙！",
       "headline_7": "7 隻阿獺齊聚傳送門，但只有一隻能通過，你該怎麼選？",
       "headline_8": "八仙過海來傳送門啦！但太多選擇了，你究竟該怎麼選呢？",
+      "headline_legendary": "Legendary Ottos deserve legendary owners. Are you up for the challenge?",
+      "processing": "傳送門開啟中…\n\n這可能會需要幾分鐘的時間，請勿關閉視窗並耐心等候\n\n感謝 ʕ•̫͡•ʔ b",
       "title_legendary": "傳說級的阿獺登場啦！",
       "title_one": "現在有 {{count}} 隻阿獺在傳送門等待召喚",
       "title_other": "現在有 {{count}} 隻阿獺在傳送門等待召喚"
@@ -145,7 +162,11 @@
       "CHARGING": "充能中...",
       "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
     },
-    "summon_otto_button": "召喚"
+    "summon_otto_button": "召喚",
+    "summon_popup": {
+      "desc": "Congrats!\nThis Otto just officially joined the Otter Kingdom and became one of the members of this big, warm family.\nFind out more about this Otto now!",
+      "view_my_otto": "View My Otto"
+    }
   },
   "side_menu": {
     "follow_us": "關注我們",

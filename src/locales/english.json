@@ -88,6 +88,12 @@
     "para1": "DIVE INTO THE",
     "para2": "OTTERVERSE!"
   },
+  "my_ottos": {
+    "mint_portal": "Mint Portal",
+    "no_otto": "You don't have any otto yet.",
+    "rarity_score": "Base Rarity Score: {{score}}",
+    "title": "My Ottos"
+  },
   "my_portals": {
     "choose_otto": "Choose an Otto now!",
     "legendary_desc": "Legendary Ottos deserve legendary owners. Are you up for the challenge?",
@@ -103,6 +109,15 @@
       "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
     },
     "title": "My Portals"
+  },
+  "otto": {
+    "birthday": "Birthday: {{birthday}}",
+    "gender": "Gender: {{gender}}",
+    "opensea_link": "View on OpenSea",
+    "personality": "Personality: {{personality}}",
+    "play_voice": "Hear this Otto's voice",
+    "rarity_score": "Base Rarity Score: {{score}}",
+    "voice": "Voice: {{voice}}"
   },
   "otto_one": "{{count}} Otto",
   "otto_other": "{{count}} Ottos",
@@ -125,7 +140,6 @@
     "open_desc_1": "There are ",
     "open_desc_2": " waiting at this portal, but you still need one more step to summon an Otto to go through the portal. Once it’s confirmed, the portal NFT’s appearance will be changed to the Otto’s!",
     "open_popup": {
-      "processing": "Processing...\n\nIt might takes a few minutes to finish the portal opening process.\nPlease do not close the window! Thanks for your patience ʕ•̫͡•ʔ b",
       "back_to_summon": "Back to Summon",
       "desc_one": "Your Otto is ready to join the Otterverse, but you still need to go back to summon this Otto through the portal.",
       "desc_other": "They are ready to enter the Otterverse, but each portal only has the power to transport one Otto. Head back to the summon page to pick your favorite Otto. Choose wisely!",
@@ -137,6 +151,8 @@
       "headline_6": "Option paralysis. Heard of it?",
       "headline_7": "Seven is heaven! Which will you choose?",
       "headline_8": "Eight is great…but wait! Who do I take?",
+      "headline_legendary": "Legendary Ottos deserve legendary owners. Are you up for the challenge?",
+      "processing": "Processing...\n\nIt might takes a few minutes to finish the portal opening process.\nPlease do not close the window! Thanks for your patience ʕ•̫͡•ʔ b",
       "title_legendary": "Here comes a legendary Otto!",
       "title_one": "There is {{count}} Otto at the portal",
       "title_other": "There are {{count}} Ottos at the portal"
@@ -162,20 +178,5 @@
     "desc": "Only Polygon Mainnet are supported.",
     "title": "Unsupported Network"
   },
-  "wallet_selector_head": "Connect to a wallet",
-  "my_ottos": {
-    "title": "My Ottos",
-    "no_otto": "You don't have any otto yet.",
-    "mint_portal": "Mint Portal",
-    "rarity_score": "Base Rarity Score: {{score}}"
-  },
-  "otto": {
-    "opensea_link": "View on OpenSea",
-    "rarity_score": "Base Rarity Score: {{score}}",
-    "gender": "Gender: {{gender}}",
-    "personality": "Personality: {{personality}}",
-    "birthday": "Birthday: {{birthday}}",
-    "voice": "Voice: {{voice}}",
-    "play_voice": "Hear this Otto's voice"
-  }
+  "wallet_selector_head": "Connect to a wallet"
 }
