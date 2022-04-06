@@ -174,7 +174,9 @@ export default function PortalPage() {
                     </StyledTitle>
                     <StyledDescription>
                       <ContentSmall>
-                        {state === PortalState.OPENED
+                        {portal.legendary
+                          ? t('my_portals.legendary_desc')
+                          : state === PortalState.OPENED
                           ? t(`portal.open_popup.headline_${portal.candidates.length}`)
                           : metadata?.description}
                       </ContentSmall>
