@@ -48,6 +48,7 @@ export const ContentLarge = styled.span`
 export const ContentMedium = styled.span`
   font-family: 'Pangolin', 'naikaifont';
   font-size: 18px;
+  font-weight: 400;
   line-height: 1.5;
   @media ${({ theme }) => theme.breakpoints.mobile} {
     font-size: 16px;

@@ -1,14 +1,12 @@
 import { useQuery } from '@apollo/client'
 import OpenSeaBlue from 'assets/opensea-blue.svg'
 import { LoadingView } from 'components/LoadingView'
-import { getOpenSeaLink } from 'constant'
 import Layout from 'Layout'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { Caption, ContentSmall, Display3 } from 'styles/typography'
+import { ContentSmall } from 'styles/typography'
 import ClockImage from '../clock.png'
-import OttoContainer from '../OttoContainer'
 import { GET_OTTO } from '../queries'
 import { GetOtto, GetOttoVariables } from '../__generated__/GetOtto'
 
@@ -128,7 +126,7 @@ export default function OttoPage() {
     <Layout title={t('my_portals.title')}>
       <StyledOttoPage>
         {loading && <LoadingView />}
-        {data && (
+        {/* {data && (
           <OttoContainer rawOtto={data.ottos[0]}>
             {({ otto, metadata }) => (
               <StyledOttoInfo>
@@ -147,7 +145,7 @@ export default function OttoPage() {
               </StyledOttoInfo>
             )}
           </OttoContainer>
-        )}
+        )} */}
       </StyledOttoPage>
     </Layout>
   )

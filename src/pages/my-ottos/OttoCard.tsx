@@ -1,17 +1,17 @@
 import BorderContainer from 'components/BorderContainer'
-import ProgressBar from 'components/ProgressBar'
-import { PortalState } from 'models/Portal'
+import useOtto from 'hooks/useOtto'
+import { RawOtto } from 'models/Otto'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { useTheme } from 'styled-components'
 import { Caption, ContentMedium, ContentSmall } from 'styles/typography'
-import { RenderOttoProps } from './types'
 
 const StyledOttoCard = styled(BorderContainer)`
   width: 265px;
   height: 448px;
   display: flex;
   flex-direction: column;
+  color: ${({ theme }) => theme.colors.otterBlack};
 
   padding: 15px;
   gap: 12px;
@@ -43,40 +43,51 @@ const StyledPortalImage = styled.img`
   }
 `
 
-const StyledPortalTitle = styled.div`
-  color: ${({ theme }) => theme.colors.otterBlack};
+const StyledOttoName = styled.h2`
+  text-align: center;
 `
 
-const StyledPortalStatus = styled.div`
-  color: ${({ theme }) => theme.colors.otterBlack};
+const StyledRarityScore = styled.p``
+
+const StyledAttrs = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 60px);
+  column-gap: 10px;
 `
 
-const StyledCountdown = styled.div`
-  width: 90%;
+const StyledAttr = styled.div`
   display: flex;
-  color: ${({ theme }) => theme.colors.darkGray200};
-  align-items: center;
-
-  &::before {
-    content: '';
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 21px;
-    height: 21px;
-    margin-right: 10px;
-    display: block;
-  }
+  justify-content: space-between;
 `
 
-export default function OttoCard({ otto, metadata }: RenderOttoProps) {
+interface Props {
+  rawOtto: RawOtto
+}
+
+export default function OttoCard({ rawOtto }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
+  const { loading, otto } = useOtto(rawOtto)
+  const score = useMemo(() => otto?.metadata?.otto_attrs.find(p => p.trait_type === 'BRS')?.value, [otto])
   return (
-    <StyledOttoCard borderColor={theme.colors.crownYellow}>
-      <StyledPortalImage src={metadata?.image} />
-      <StyledPortalTitle>
-        <ContentMedium>{metadata?.name}</ContentMedium>
-      </StyledPortalTitle>
+    <StyledOttoCard borderColor={theme.colors.lightGray400}>
+      <StyledPortalImage src={otto?.image} />
+      <StyledOttoName>
+        <ContentMedium>{otto?.name}</ContentMedium>
+      </StyledOttoName>
+      <StyledRarityScore>
+        <ContentSmall>{t('my_ottos.rarity_score', { score })}</ContentSmall>
+      </StyledRarityScore>
+      <StyledAttrs>
+        {otto?.metadata?.otto_attrs
+          ?.filter(p => p.trait_type !== 'BRS')
+          .map(({ trait_type, value }) => (
+            <StyledAttr>
+              <Caption>{trait_type}</Caption>
+              <Caption>{value}</Caption>
+            </StyledAttr>
+          ))}
+      </StyledAttrs>
     </StyledOttoCard>
   )
 }
