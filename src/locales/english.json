@@ -114,7 +114,7 @@
     "birthday": "Birthday: {{birthday}}",
     "classic": "Classic",
     "classic_note": "A general Otto that shares the peace all over the Otter Kingdom.",
-    "coatOfArms": "This Otter’s coat of arms is Warrior",
+    "coatOfArms": "This Otter’s coat of arms is {{arms}}",
     "first_gen": "1st generation Otto",
     "first_gen_desc": "Total 5,000 Ottos for the 1st generation in the kingdom.",
     "gender": "Gender: {{gender}}",
