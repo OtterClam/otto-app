@@ -24,7 +24,7 @@ const StyledMyPortals = styled.div`
   padding: 20px;
   background-color: white;
   display: grid;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   justify-items: center;
   gap: 20px;

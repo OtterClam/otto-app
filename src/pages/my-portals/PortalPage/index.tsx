@@ -133,7 +133,7 @@ export default function PortalPage() {
     variables: { portalId },
   })
   const { openState, open, resetOpen } = useOpenPortal()
-  const [showOpenPortalPopup, setShowOpenPortalPopup] = useState(false)
+  const [showOpenPortalPopup, setShowOpenPortalPopup] = useState(true)
   const { summonState, summon, resetSummon } = useSummonOtto()
   const [showSummonPopup, setShowSummonPopup] = useState(false)
 

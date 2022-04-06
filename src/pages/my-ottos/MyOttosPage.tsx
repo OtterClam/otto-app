@@ -25,7 +25,7 @@ const StyledMyOttos = styled.div`
   padding: 20px;
   background-color: white;
   display: grid;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   justify-items: center;
   gap: 20px;
@@ -80,17 +80,7 @@ export default function MyOttosPage() {
           <>
             <StyledMyOttos>
               {data?.ottos.map((otto, index) => (
-                <a
-                  key={index}
-                  href={otto.tokenId}
-                  onClick={e => {
-                    e.preventDefault()
-                    ottoClick.play()
-                    navigate(otto.tokenId)
-                  }}
-                >
-                  <OttoCard rawOtto={otto} />
-                </a>
+                <OttoCard key={index} rawOtto={otto} />
               ))}
             </StyledMyOttos>
             <StyledMintBanner>

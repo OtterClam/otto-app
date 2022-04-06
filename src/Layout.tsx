@@ -12,7 +12,6 @@ const StyledBorder = styled.div`
   padding: 6px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   box-sizing: border-box;
-  backdrop-filter: blur(5px);
   border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.crownYellow};
 

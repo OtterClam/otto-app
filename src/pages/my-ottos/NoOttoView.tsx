@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { ContentSmall, Headline } from 'styles/typography'
-import WhiteBlankPortal from 'assets/white-blank-portal.png'
+import NoOttoImage from './no-otto.png'
 
 const StyledNoOttoView = styled.div`
   width: 100%;
@@ -34,7 +34,7 @@ export default function NoOttoView() {
   return (
     <StyledNoOttoView>
       <StyledInnerContainer>
-        <StyledMainImage src={WhiteBlankPortal} />
+        <StyledMainImage src={NoOttoImage} />
         <StyledHelpText>
           <ContentSmall>{t('my_ottos.no_otto')}</ContentSmall>
         </StyledHelpText>

@@ -162,6 +162,14 @@
     "title": "My Ottos",
     "no_otto": "You don't have any otto yet.",
     "mint_portal": "Mint Portal",
-    "rarity_score": "Rarity Score: {{score}}"
+    "rarity_score": "Base Rarity Score: {{score}}"
+  },
+  "otto": {
+    "opensea_link": "View on OpenSea",
+    "rarity_score": "Base Rarity Score: {{score}}",
+    "gender": "Gender: {{gender}}",
+    "personality": "Personality: {{personality}}",
+    "birthday": "Birthday: {{birthday}}",
+    "voice": "Voice: {{voice}}"
   }
 }

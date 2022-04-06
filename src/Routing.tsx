@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import HomePage from 'pages/home/HomePage'
 import MyOttosPage from 'pages/my-ottos/MyOttosPage'
 import NotFoundPage from 'pages/not-found/NotFoundPage'
+import OttoPage from 'pages/my-ottos/OttoPage'
 import App from './App'
 
 const Routing = () => {
@@ -22,7 +23,7 @@ const Routing = () => {
           </Route>
           <Route path="my-ottos">
             <Route index element={<MyOttosPage />} />
-            <Route path=":ottoId" element={<PortalPage />} />
+            <Route path=":ottoId" element={<OttoPage />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>

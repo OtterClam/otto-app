@@ -1,22 +1,29 @@
 import { useQuery } from '@apollo/client'
 import OpenSeaBlue from 'assets/opensea-blue.svg'
 import { LoadingView } from 'components/LoadingView'
+import { getOpenSeaLink } from 'constant'
+import useOtto from 'hooks/useOtto'
 import Layout from 'Layout'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { ContentSmall } from 'styles/typography'
-import ClockImage from '../clock.png'
+import { Caption, ContentLarge, ContentSmall, Display3, Headline } from 'styles/typography'
 import { GET_OTTO } from '../queries'
 import { GetOtto, GetOttoVariables } from '../__generated__/GetOtto'
+import GenderIcon from './icons/gender.png'
+import PersonalityIcon from './icons/personality.png'
+import BirthdayIcon from './icons/birthday.png'
+import VoiceIcon from './icons/voice.png'
 
 const StyledOttoPage = styled.div`
   min-height: 100%;
   background: white;
   padding: 30px;
+  color: ${({ theme }) => theme.colors.otterBlack};
 `
 
-const StyledOttoInfo = styled.div`
+const StyledOttoContainer = styled.div`
   display: flex;
   gap: 30px;
 
@@ -26,7 +33,7 @@ const StyledOttoInfo = styled.div`
   }
 `
 
-const StyledPortalImage = styled.img`
+const StyledOttoImage = styled.img`
   width: 440px;
   min-width: 440px;
   height: 440px;
@@ -61,91 +68,115 @@ const StyledOpenSeaLink = styled.a`
   }
 `
 
-const StyledTitle = styled.p`
-  color: ${({ theme }) => theme.colors.otterBlack};
+const StyledName = styled.p``
+
+const StyledRarityScore = styled.p``
+
+const StyledDescription = styled.p``
+
+const StyledInfos = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 `
 
-const StyledDescription = styled.p`
-  color: ${({ theme }) => theme.colors.otterBlack};
-`
-
-const StyledStatusContainer = styled.div`
-  margin-top: 40px;
+const StyledInfo = styled.p<{ icon: string }>`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-
-const StyledStatus = styled.p`
-  color: ${({ theme }) => theme.colors.otterBlack};
-`
-
-const StyledDuration = styled.p`
-  display: flex;
-  color: ${({ theme }) => theme.colors.darkGray200};
-  &::before {
+  &:before {
     content: '';
-    background: url(${ClockImage});
+    display: block;
+    margin-right: 12px;
+    background-image: url(${({ icon }) => icon});
     background-size: contain;
     background-repeat: no-repeat;
-    width: 21px;
-    height: 21px;
-    margin-right: 10px;
-    display: block;
+    width: 30px;
+    height: 30px;
   }
 `
 
-const StyledOpenDesc = styled.div`
-  padding: 30px;
-  background: ${({ theme }) => theme.colors.lightGray100};
-  border: 4px solid ${({ theme }) => theme.colors.lightGray400};
-  border-radius: 20px;
+const StyledAttrs = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 118px);
+  column-gap: 20px;
+`
+
+const StyledAttr = styled.div`
   display: flex;
-  align-items: center;
-  gap: 20px;
-`
-
-const StyledOpenImg = styled.img`
-  width: 98px;
-`
-
-const StyledOpenDescText = styled.p``
-
-const StyledOpenDescNumber = styled(ContentSmall)`
-  color: ${({ theme }) => theme.colors.clamPink};
+  justify-content: space-between;
 `
 
 export default function OttoPage() {
   const { t } = useTranslation()
   const { ottoId = '0' } = useParams()
-  const { data, loading, refetch } = useQuery<GetOtto, GetOttoVariables>(GET_OTTO, {
+  const { data, loading } = useQuery<GetOtto, GetOttoVariables>(GET_OTTO, {
     variables: { ottoId },
   })
+  const { loading: loadingOtto, otto } = useOtto(data?.ottos[0])
+  const infos = useMemo(
+    () =>
+      otto
+        ? [
+            {
+              icon: GenderIcon,
+              text: t('otto.gender', { gender: otto.gender }),
+            },
+            {
+              icon: PersonalityIcon,
+              text: t('otto.personality', { personality: otto.personality }),
+            },
+            {
+              icon: BirthdayIcon,
+              text: t('otto.birthday', { birthday: otto.birthday.toLocaleDateString() }),
+            },
+            {
+              icon: VoiceIcon,
+              text: t('otto.voice', { voice: otto.voiceName }),
+            },
+          ]
+        : null,
+    [otto, t]
+  )
 
   return (
     <Layout title={t('my_portals.title')}>
       <StyledOttoPage>
-        {loading && <LoadingView />}
-        {/* {data && (
-          <OttoContainer rawOtto={data.ottos[0]}>
-            {({ otto, metadata }) => (
-              <StyledOttoInfo>
-                <StyledPortalImage src={metadata?.image} />
-                <StyledContentContainer>
-                  <StyledOpenSeaLink href={getOpenSeaLink(otto.tokenId)} target="_blank">
-                    <Caption>{t('my_portals.opensea_link')}</Caption>
-                  </StyledOpenSeaLink>
-                  <StyledTitle>
-                    <Display3>{metadata?.name}</Display3>
-                  </StyledTitle>
-                  <StyledDescription>
-                    <ContentSmall>{metadata?.description}</ContentSmall>
-                  </StyledDescription>
-                </StyledContentContainer>
-              </StyledOttoInfo>
-            )}
-          </OttoContainer>
-        )} */}
+        {(loading || loadingOtto) && <LoadingView />}
+        {otto && (
+          <StyledOttoContainer>
+            <StyledOttoImage src={otto.image} />
+            <StyledContentContainer>
+              <StyledOpenSeaLink href={getOpenSeaLink(otto.tokenId)} target="_blank">
+                <Caption>{t('otto.opensea_link')}</Caption>
+              </StyledOpenSeaLink>
+              <StyledName>
+                <Display3>{otto.name}</Display3>
+              </StyledName>
+              <StyledRarityScore>
+                <Headline>{t('otto.rarity_score', { score: otto.baseRarityScore })}</Headline>
+              </StyledRarityScore>
+              <StyledInfos>
+                {infos?.map(({ icon, text }, index) => (
+                  <StyledInfo key={index} icon={icon}>
+                    <ContentLarge>{text}</ContentLarge>
+                  </StyledInfo>
+                ))}
+              </StyledInfos>
+              <StyledDescription>
+                <ContentSmall>{otto.description}</ContentSmall>
+              </StyledDescription>
+
+              <StyledAttrs>
+                {otto?.metadata?.otto_attrs
+                  ?.filter(p => p.trait_type !== 'BRS')
+                  .map(({ trait_type, value }) => (
+                    <StyledAttr>
+                      <ContentLarge>{trait_type}</ContentLarge>
+                      <ContentLarge>{value}</ContentLarge>
+                    </StyledAttr>
+                  ))}
+              </StyledAttrs>
+            </StyledContentContainer>
+          </StyledOttoContainer>
+        )}
       </StyledOttoPage>
     </Layout>
   )

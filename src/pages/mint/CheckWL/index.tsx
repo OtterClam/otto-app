@@ -17,7 +17,6 @@ const StyledCheckWL = styled.div`
   margin: 45px 0;
   padding: 3px;
   border: 2px solid #1d2654;
-  backdrop-filter: blur(5px);
   /* Note: backdrop-filter has minimal browser support */
   border-radius: 15px;
   background-color: ${({ theme }) => theme.colors.crownYellow};
