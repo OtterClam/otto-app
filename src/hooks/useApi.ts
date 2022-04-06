@@ -20,10 +20,7 @@ export class Api {
   }
 
   public async getPortalCandidates(portalId: string): Promise<OttoCandidateMeta[]> {
-    return this.axios
-      .get(`/ottos/candidates/metadata/${portalId}`)
-      .then(res => res.data)
-      .catch(err => console.error('fetch otto candidates failed', err))
+    return this.axios.get(`/ottos/candidates/metadata/${portalId}`).then(res => res.data)
   }
 }
 
