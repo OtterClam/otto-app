@@ -112,13 +112,21 @@
   },
   "otto": {
     "birthday": "生日： {{birthday}}",
+    "classic": "Classic",
+    "classic_note": "A general Otto that shares the peace all over the Otter Kingdom.",
+    "coatOfArms": "This Otter’s coat of arms is Warrior",
+    "first_gen": "1st generation Otto",
+    "first_gen_desc": "Total 5,000 Ottos for the 1st generation in the kingdom.",
     "gender": "性別： {{gender}}",
+    "legendary": "Legendary",
+    "legendary_note": "Artist chosen Otto that is super rare and unique.",
     "opensea_link": "在 OpenSea 上瞧瞧",
     "personality": "個性： {{personality}}",
     "play_voice": "聽聽這隻阿獺的聲音",
     "rarity_score": "基本稀有分數： {{score}}",
     "voice": "聲音： {{voice}}"
   },
+  "otto_one": "{{count}} Otto",
   "otto_other": "{{count}} 隻阿獺",
   "play": {
     "menu": {
