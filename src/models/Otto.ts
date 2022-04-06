@@ -36,6 +36,8 @@ export default class Otto {
 
   public readonly voiceName: string = ''
 
+  public readonly coatOfArms: string = ''
+
   constructor(raw: RawOtto, metadata: OttoMeta) {
     this.raw = raw
     this.metadata = metadata
@@ -49,6 +51,7 @@ export default class Otto {
       }
     }
 
+    console.log(JSON.stringify(this.metadata.otto_traits))
     for (let idx = 0; idx < this.metadata.otto_traits.length; idx++) {
       const { trait_type, value } = this.metadata.otto_traits[idx]
       if (trait_type === 'Gender') {
@@ -62,6 +65,9 @@ export default class Otto {
       }
       if (trait_type === 'Voice') {
         this.voiceName = String(value)
+      }
+      if (trait_type === 'Coat of Arms') {
+        this.coatOfArms = String(value)
       }
     }
   }

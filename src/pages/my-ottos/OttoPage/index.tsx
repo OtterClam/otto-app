@@ -8,7 +8,7 @@ import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { Caption, ContentLarge, ContentSmall, Display3, Headline } from 'styles/typography'
+import { Caption, ContentLarge, ContentSmall, Display3, Headline, Note } from 'styles/typography'
 import Button from 'components/Button'
 import { format } from 'date-fns'
 import { GET_OTTO } from '../queries'
@@ -18,6 +18,9 @@ import PersonalityIcon from './icons/personality.png'
 import BirthdayIcon from './icons/birthday.png'
 import VoiceIcon from './icons/voice.png'
 import PlayIcon from './icons/play-voice.svg'
+import ClassicIcon from './badge/classic.png'
+import LegendaryIcon from './badge/legendary.png'
+import FirstGenIcon from './first-gen.png'
 
 const StyledOttoPage = styled.div`
   min-height: 100%;
@@ -131,6 +134,35 @@ const StyledAttr = styled.div`
   justify-content: space-between;
 `
 
+const StyledStatsContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+`
+
+const StyledStat = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  align-items: center;
+  border: 2px solid ${({ theme }) => theme.colors.otterBlack};
+  border-radius: 15px;
+  background: ${({ theme }) => theme.colors.lightGray100};
+  padding: 20px;
+`
+
+const StyledStatIcon = styled.img`
+  width: 49px;
+`
+
+const StyledStatTitle = styled.p``
+
+const StyledStatDesc = styled.p`
+  color: ${({ theme }) => theme.colors.darkGray100};
+  text-align: center;
+`
+
 export default function OttoPage() {
   const { t } = useTranslation()
   const { ottoId = '0' } = useParams()
@@ -162,6 +194,7 @@ export default function OttoPage() {
         : null,
     [otto, t]
   )
+
   useEffect(() => {
     if (otto) setTimeout(() => otto?.playVoice(), 1000)
   }, [otto])
@@ -209,6 +242,36 @@ export default function OttoPage() {
                     </StyledAttr>
                   ))}
               </StyledAttrs>
+
+              <StyledStatsContainer>
+                <StyledStat>
+                  <StyledStatIcon src={otto.legendary ? LegendaryIcon : ClassicIcon} />
+                  <StyledStatTitle>
+                    <ContentSmall>{t(otto.legendary ? 'otto.legendary' : 'otto.classic')}</ContentSmall>
+                  </StyledStatTitle>
+                  <StyledStatDesc>
+                    <Note>{t(otto.legendary ? 'otto.legendary_note' : 'otto.classic_note')}</Note>
+                  </StyledStatDesc>
+                </StyledStat>
+                <StyledStat>
+                  <StyledStatIcon src={`/arms/${otto.coatOfArms}.png`} />
+                  <StyledStatTitle>
+                    <ContentSmall>{otto.coatOfArms}</ContentSmall>
+                  </StyledStatTitle>
+                  <StyledStatDesc>
+                    <Note>{t('otto.coatOfArms')}</Note>
+                  </StyledStatDesc>
+                </StyledStat>
+                <StyledStat>
+                  <StyledStatIcon src={FirstGenIcon} />
+                  <StyledStatTitle>
+                    <ContentSmall>{t('otto.first_gen')}</ContentSmall>
+                  </StyledStatTitle>
+                  <StyledStatDesc>
+                    <Note>{t('otto.first_gen_desc')}</Note>
+                  </StyledStatDesc>
+                </StyledStat>
+              </StyledStatsContainer>
             </StyledContentContainer>
           </StyledOttoContainer>
         )}

@@ -117,7 +117,14 @@
     "personality": "Personality: {{personality}}",
     "play_voice": "Hear this Otto's voice",
     "rarity_score": "Base Rarity Score: {{score}}",
-    "voice": "Voice: {{voice}}"
+    "voice": "Voice: {{voice}}",
+    "legendary": "Legendary",
+    "classic": "Classic",
+    "legendary_note": "Artist chosen Otto that is super rare and unique.",
+    "classic_note": "A general Otto that shares the peace all over the Otter Kingdom.",
+    "coatOfArms": "This Otter’s coat of arms is Warrior",
+    "first_gen": "1st generation Otto",
+    "first_gen_desc": "Total 5,000 Ottos for the 1st generation in the kingdom."
   },
   "otto_one": "{{count}} Otto",
   "otto_other": "{{count}} Ottos",
