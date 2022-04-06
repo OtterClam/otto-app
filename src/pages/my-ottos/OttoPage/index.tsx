@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { Caption, ContentLarge, ContentSmall, Display3, Headline } from 'styles/typography'
 import Button from 'components/Button'
+import { format } from 'date-fns'
 import { GET_OTTO } from '../queries'
 import { GetOtto, GetOttoVariables } from '../__generated__/GetOtto'
 import GenderIcon from './icons/gender.png'
@@ -151,7 +152,7 @@ export default function OttoPage() {
             },
             {
               icon: BirthdayIcon,
-              text: t('otto.birthday', { birthday: otto.birthday.toLocaleDateString() }),
+              text: t('otto.birthday', { birthday: format(otto.birthday, 'MMM dd, yyyy') }),
             },
             {
               icon: VoiceIcon,

@@ -221,22 +221,26 @@ export default function PortalPage() {
           </PortalContainer>
         )}
       </StyledPortalPage>
-      <OpenPortalPopup
-        show={showOpenPortalPopup}
-        portalId={portalId}
-        onClose={() => {
-          setShowOpenPortalPopup(false)
-          refetch()
-        }}
-      />
-      <SummonPopup
-        show={showSummonPopup}
-        portalId={portalId}
-        onClose={() => {
-          setShowSummonPopup(false)
-          refetch()
-        }}
-      />
+      {showOpenPortalPopup && (
+        <OpenPortalPopup
+          show={showOpenPortalPopup}
+          portalId={portalId}
+          onClose={() => {
+            setShowOpenPortalPopup(false)
+            refetch()
+          }}
+        />
+      )}
+      {showSummonPopup && (
+        <SummonPopup
+          show={showSummonPopup}
+          portalId={portalId}
+          onClose={() => {
+            setShowSummonPopup(false)
+            refetch()
+          }}
+        />
+      )}
     </Layout>
   )
 }

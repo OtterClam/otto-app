@@ -7,7 +7,7 @@ import Fullscreen from 'components/Fullscreen'
 import PortalAnimation from 'components/PortalAnimation'
 import { ottoClick } from 'constant'
 import useApi, { OttoCandidateMeta } from 'hooks/useApi'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Caption, ContentLarge, Display3, Headline } from 'styles/typography'
@@ -129,9 +129,20 @@ export default function OpenPortalPopup({ show, portalId, onClose }: Props) {
   const loading = data?.ottos[0].portalStatus !== PortalStatus.OPENED
   const opened = data?.ottos[0].portalStatus === PortalStatus.OPENED
   const legendary = data?.ottos[0].legendary || false
+  const audio = useMemo(() => {
+    const audio = new Audio('/sfx-victory6.mp3')
+    audio.load()
+    return audio
+  }, [])
 
   useEffect(() => {
-    if (opened) api.getPortalCandidates(portalId).then(setCandidates)
+    if (opened) {
+      audio.play()
+      api
+        .getPortalCandidates(portalId)
+        .then(setCandidates)
+        .catch(err => console.error('get portal candidates failed', { err }))
+    }
   }, [portalId, api, opened])
 
   return (
