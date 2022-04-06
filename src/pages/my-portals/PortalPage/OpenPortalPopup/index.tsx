@@ -1,8 +1,10 @@
 import { useQuery } from '@apollo/client'
-import LoadingOtter from 'assets/loading-otter.png'
+import LegendaryPortal from 'assets/legendary_portal.png'
 import SuccessPortal from 'assets/success-portal.png'
+import CloseIcon from 'assets/ui/close_icon.svg'
 import Button from 'components/Button'
 import Fullscreen from 'components/Fullscreen'
+import PortalAnimation from 'components/PortalAnimation'
 import { ottoClick } from 'constant'
 import useApi, { OttoCandidateMeta } from 'hooks/useApi'
 import { useEffect, useState } from 'react'
@@ -10,8 +12,6 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Caption, ContentLarge, Display3, Headline } from 'styles/typography'
 import { PortalStatus } from '__generated__/global-types'
-import CloseIcon from 'assets/ui/close_icon.svg'
-import LegendaryPortal from 'assets/legendary_portal.png'
 import { GET_PORTAL } from '../queries'
 import { GetPortal, GetPortalVariables } from '../__generated__/GetPortal'
 
@@ -42,29 +42,26 @@ const StyledCloseIcon = styled.img`
   width: 24px;
 `
 
-const StyledLoadingOtter = styled.img`
-  width: 142px;
-  height: 127px;
+const StyledLoadingPortal = styled.div`
+  width: 360px;
+  height: 360px;
 `
 
-const StyledLoadingText = styled(ContentLarge)``
-
-const StyledLegendaryPortal = styled.img`
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  top: 50px;
-  left: calc(50% - 200px);
-  z-index: 0;
+const StyledLoadingText = styled(ContentLarge)`
+  white-space: pre-wrap;
 `
 
-const StyledSuccessPortal = styled.img`
+const StyledSuccessPortal = styled.div`
   position: absolute;
-  width: 300px;
-  height: 300px;
+  width: 360px;
+  height: 360px;
   top: 130px;
-  left: calc(50% - 150px);
+  left: calc(50% - 180px);
   z-index: 0;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    top: 30px;
+  }
 `
 
 const StyledPFPContainer = styled.div`
@@ -96,15 +93,20 @@ const StyledPFP = styled.img`
 
 const StyledHeadline = styled.p`
   margin-top: 80px;
+  z-index: 2;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    margin-top: 120px;
+    margin-top: 200px;
   }
 `
 
-const StyledTitle = styled.p``
+const StyledTitle = styled.p`
+  z-index: 2;
+`
 
-const StyledDesc = styled.p``
+const StyledDesc = styled.p`
+  z-index: 2;
+`
 
 interface Props {
   show: boolean
@@ -122,8 +124,8 @@ export default function OpenPortalPopup({ show, portalId, onClose }: Props) {
     skip: !show,
     pollInterval: 5000,
   })
-  const loading = data?.ottos[0].portalStatus !== PortalStatus.OPENED
-  const opened = data?.ottos[0].portalStatus === PortalStatus.OPENED
+  const loading = false // data?.ottos[0].portalStatus !== PortalStatus.OPENED
+  const opened = true // data?.ottos[0].portalStatus === PortalStatus.OPENED
   const legendary = data?.ottos[0].legendary || false
 
   useEffect(() => {
@@ -135,8 +137,10 @@ export default function OpenPortalPopup({ show, portalId, onClose }: Props) {
       <StyledOpenPortalPopup>
         {loading && (
           <>
-            <StyledLoadingOtter src={LoadingOtter} />
-            <StyledLoadingText as="p">{t('mint.popup.processing')}</StyledLoadingText>
+            <StyledLoadingPortal>
+              <PortalAnimation />
+            </StyledLoadingPortal>
+            <StyledLoadingText as="p">{t('portal.open_popup.processing')}</StyledLoadingText>
           </>
         )}
         {opened && (
@@ -149,7 +153,9 @@ export default function OpenPortalPopup({ show, portalId, onClose }: Props) {
             >
               <StyledCloseIcon src={CloseIcon} />
             </StyledCloseButton>
-            {legendary ? <StyledLegendaryPortal src={LegendaryPortal} /> : <StyledSuccessPortal src={SuccessPortal} />}
+            <StyledSuccessPortal>
+              <PortalAnimation />
+            </StyledSuccessPortal>
             <StyledPFPContainer>
               {candidates.map(({ image }, index) => (
                 <StyledPFP key={index} src={image} />

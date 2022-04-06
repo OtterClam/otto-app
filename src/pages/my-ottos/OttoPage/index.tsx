@@ -4,7 +4,7 @@ import { LoadingView } from 'components/LoadingView'
 import { getOpenSeaLink } from 'constant'
 import useOtto from 'hooks/useOtto'
 import Layout from 'Layout'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -159,6 +159,9 @@ export default function OttoPage() {
         : null,
     [otto, t]
   )
+  useEffect(() => {
+    if (otto) setTimeout(() => otto?.playVoice(), 1000)
+  }, [otto])
 
   return (
     <Layout title={t('my_portals.title')}>

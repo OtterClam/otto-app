@@ -1,18 +1,15 @@
 import { useQuery } from '@apollo/client'
 import LoadingOtter from 'assets/loading-otter.png'
-import SuccessPortal from 'assets/success-portal.png'
 import CloseIcon from 'assets/ui/close_icon.svg'
 import Button from 'components/Button'
 import Fullscreen from 'components/Fullscreen'
+import PortalAnimation from 'components/PortalAnimation'
 import { ottoClick } from 'constant'
-import useApi from 'hooks/useApi'
-import { useEffect, useState } from 'react'
+import useOtto from 'hooks/useOtto'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { ContentLarge, Display3, Headline } from 'styles/typography'
-import { PortalStatus } from '__generated__/global-types'
-import LegendaryPortal from 'assets/legendary_portal.png'
-import { PortalMeta } from 'pages/my-portals/types'
+import { ContentLarge, Headline } from 'styles/typography'
 import { GET_PORTAL } from '../queries'
 import { GetPortal, GetPortalVariables } from '../__generated__/GetPortal'
 
@@ -45,47 +42,27 @@ const StyledLoadingOtter = styled.img`
 
 const StyledLoadingText = styled(ContentLarge)``
 
-const StyledLegendaryPortal = styled.img`
+const StyledPortalAnimation = styled.div`
   position: absolute;
-  width: 400px;
-  height: 400px;
-  top: 50px;
-  left: calc(50% - 200px);
-  z-index: 0;
-`
-
-const StyledSuccessPortal = styled.img`
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  top: 130px;
-  left: calc(50% - 150px);
-  z-index: 0;
-`
-
-const StyledPFPContainer = styled.div`
-  width: 540px;
-  height: 260px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  z-index: 1;
+  width: 360px;
+  height: 360px;
+  top: 80px;
+  left: calc(50% - 180px);
 `
 
 const StyledPFP = styled.img`
+  position: absolute;
+  top: 180px;
   width: 120px;
   height: 120px;
+  z-index: 10;
 `
 
-const StyledHeadline = styled.p`
-  margin-top: 80px;
+const StyledDesc = styled.p`
+  margin-top: 300px;
+  white-space: pre-wrap;
+  z-index: 9;
 `
-
-const StyledTitle = styled.p``
-
-const StyledDesc = styled.p``
 
 interface Props {
   show: boolean
@@ -95,20 +72,15 @@ interface Props {
 
 export default function SummonPopup({ show, portalId, onClose }: Props) {
   const { t } = useTranslation()
-  const api = useApi()
+  const navigate = useNavigate()
   const { data } = useQuery<GetPortal, GetPortalVariables>(GET_PORTAL, {
     variables: { portalId },
     skip: !show,
     pollInterval: 5000,
   })
-  const [metadata, setMetadata] = useState<PortalMeta | null>(null)
-  const loading = data?.ottos[0].portalStatus !== PortalStatus.SUMMONED
-  const summoned = data?.ottos[0].portalStatus === PortalStatus.SUMMONED
-  const legendary = data?.ottos[0].legendary || false
-
-  useEffect(() => {
-    if (summoned) api.axios.get(data?.ottos[0].tokenURI).then(res => setMetadata(res.data))
-  }, [portalId, api, summoned])
+  const loading = false // data?.ottos[0].portalStatus !== PortalStatus.SUMMONED
+  const summoned = true // data?.ottos[0].portalStatus === PortalStatus.SUMMONED
+  const { otto } = useOtto(summoned && data?.ottos[0])
 
   return (
     <Fullscreen show={show}>
@@ -119,7 +91,7 @@ export default function SummonPopup({ show, portalId, onClose }: Props) {
             <StyledLoadingText as="p">{t('mint.popup.processing')}</StyledLoadingText>
           </>
         )}
-        {summoned && (
+        {otto && (
           <>
             <StyledCloseButton
               onClick={() => {
@@ -129,13 +101,19 @@ export default function SummonPopup({ show, portalId, onClose }: Props) {
             >
               <StyledCloseIcon src={CloseIcon} />
             </StyledCloseButton>
-            {legendary ? <StyledLegendaryPortal src={LegendaryPortal} /> : <StyledSuccessPortal src={SuccessPortal} />}
-            <StyledPFP src={metadata?.image} />
-            <StyledTitle>
-              <Display3>Summoned!! {metadata?.name}</Display3>
-            </StyledTitle>
-            <Button onClick={onClose}>
-              <Headline>{t('portal.open_popup.back_to_summon')}</Headline>
+            <StyledPortalAnimation>
+              <PortalAnimation />
+            </StyledPortalAnimation>
+            <StyledPFP src={otto.image} />
+            <StyledDesc>
+              <ContentLarge>{t('portal.summon_popup.desc')}</ContentLarge>
+            </StyledDesc>
+            <Button
+              onClick={() => {
+                navigate(`/my-ottos/${portalId}`)
+              }}
+            >
+              <Headline>{t('portal.summon_popup.view_my_otto')}</Headline>
             </Button>
           </>
         )}

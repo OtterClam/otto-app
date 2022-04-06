@@ -125,6 +125,7 @@
     "open_desc_1": "There are ",
     "open_desc_2": " waiting at this portal, but you still need one more step to summon an Otto to go through the portal. Once it’s confirmed, the portal NFT’s appearance will be changed to the Otto’s!",
     "open_popup": {
+      "processing": "Processing...\n\nIt might takes a few minutes to finish the portal opening process.\nPlease do not close the window! Thanks for your patience ʕ•̫͡•ʔ b",
       "back_to_summon": "Back to Summon",
       "desc_one": "Your Otto is ready to join the Otterverse, but you still need to go back to summon this Otto through the portal.",
       "desc_other": "They are ready to enter the Otterverse, but each portal only has the power to transport one Otto. Head back to the summon page to pick your favorite Otto. Choose wisely!",
@@ -146,7 +147,11 @@
       "CHARGING": "Charging...",
       "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
     },
-    "summon_otto_button": "Summon"
+    "summon_otto_button": "Summon",
+    "summon_popup": {
+      "desc": "Congrats!\nThis Otto just officially joined the Otter Kingdom and became one of the members of this big, warm family.\nFind out more about this Otto now!",
+      "view_my_otto": "View My Otto"
+    }
   },
   "side_menu": {
     "follow_us": "Follow us",

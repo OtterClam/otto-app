@@ -2,7 +2,9 @@ import axios from 'axios'
 import Otto, { OttoMeta, RawOtto } from 'models/Otto'
 import { useEffect, useMemo, useState } from 'react'
 
-export default function useOtto(rawOtto: RawOtto | undefined) {
+type Falsy = false | 0 | '' | null | undefined
+
+export default function useOtto(rawOtto: RawOtto | Falsy) {
   const [loading, setLoading] = useState(true)
   const [metadata, setMetadata] = useState<OttoMeta | null>(null)
   const otto = useMemo(() => (rawOtto && metadata ? new Otto(rawOtto, metadata) : null), [rawOtto, metadata])

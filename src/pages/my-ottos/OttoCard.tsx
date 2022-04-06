@@ -78,8 +78,6 @@ export default function OttoCard({ rawOtto }: Props) {
         e.preventDefault()
         ottoClick.play()
         navigate(rawOtto.tokenId)
-
-        setTimeout(() => otto?.playVoice(), 1000)
       }}
     >
       <StyledOttoCard borderColor={theme.colors.lightGray400}>
