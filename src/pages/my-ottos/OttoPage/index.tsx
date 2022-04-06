@@ -47,6 +47,8 @@ const StyledOttoImage = styled.img`
   min-width: 440px;
   height: 440px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
+  background: url(/otto-loading.jpg);
+  background-size: 100% 100%;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 100%;

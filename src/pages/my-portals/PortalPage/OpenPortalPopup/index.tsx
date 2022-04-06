@@ -84,6 +84,8 @@ const StyledPFPContainer = styled.div`
 const StyledPFP = styled.img`
   width: 120px;
   height: 120px;
+  background: url(/otto-loading.jpg);
+  background-size: 100% 100%;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 80px;
@@ -162,7 +164,9 @@ export default function OpenPortalPopup({ show, portalId, onClose }: Props) {
               ))}
             </StyledPFPContainer>
             <StyledHeadline>
-              <Headline>{t(`portal.open_popup.headline_${count}`)}</Headline>
+              <Headline>
+                {legendary ? t('portal.open_popup.headline_legendary') : t(`portal.open_popup.headline_${count}`)}
+              </Headline>
             </StyledHeadline>
             <StyledTitle>
               <Display3>

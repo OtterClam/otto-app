@@ -36,11 +36,6 @@ const StyledCloseIcon = styled.img`
   width: 24px;
 `
 
-const StyledLoadingOtter = styled.img`
-  width: 142px;
-  height: 127px;
-`
-
 const StyledLoadingText = styled(ContentLarge)``
 
 const StyledPortalAnimation = styled.div`
@@ -54,9 +49,11 @@ const StyledPortalAnimation = styled.div`
 const StyledPFP = styled.img`
   position: absolute;
   top: 180px;
-  width: 120px;
-  height: 120px;
+  width: 156px;
+  height: 156px;
   z-index: 10;
+  background: url(/otto-loading.jpg);
+  background-size: 100% 100%;
 `
 
 const StyledDesc = styled.p`
@@ -88,7 +85,7 @@ export default function SummonPopup({ show, portalId, onClose }: Props) {
       <StyledSummonPopup>
         {loading && (
           <>
-            <StyledLoadingOtter src={LoadingOtter} />
+            <PortalAnimation />
             <StyledLoadingText as="p">{t('mint.popup.processing')}</StyledLoadingText>
           </>
         )}

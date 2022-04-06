@@ -21,7 +21,9 @@ const StyledOttoCandidate = styled(BorderContainer)`
 const StyledPFP = styled.img`
   width: 225px;
   height: 225px;
-  border: 4px solid ${({ theme }) => theme.colors.otterBlack}; ;
+  border: 4px solid ${({ theme }) => theme.colors.otterBlack};
+  background: url(/otto-loading.jpg);
+  background-size: 100% 100%;
 `
 
 const StyledName = styled.p`

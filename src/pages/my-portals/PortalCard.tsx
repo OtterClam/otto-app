@@ -37,6 +37,8 @@ const StyledPortalImage = styled.img`
   width: 225px;
   height: 225px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
+  background: url(/portal-loading.jpg);
+  background-size: 100% 100%;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 90%;

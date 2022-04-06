@@ -34,10 +34,12 @@ const StyledOttoCard = styled(BorderContainer)`
   }
 `
 
-const StyledPortalImage = styled.img`
+const StyledOttoImage = styled.img`
   width: 225px;
   height: 225px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
+  background: url(/otto-loading.jpg);
+  background-size: 100% 100%;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 90%;
@@ -81,7 +83,7 @@ export default function OttoCard({ rawOtto }: Props) {
       }}
     >
       <StyledOttoCard borderColor={theme.colors.lightGray400}>
-        <StyledPortalImage src={otto?.image} />
+        <StyledOttoImage src={otto?.image} />
         <StyledOttoName>
           <ContentMedium>{otto?.name}</ContentMedium>
         </StyledOttoName>
