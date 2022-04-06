@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { ContentLarge, Headline } from 'styles/typography'
+import { PortalStatus } from '__generated__/global-types'
 import { GET_PORTAL } from '../queries'
 import { GetPortal, GetPortalVariables } from '../__generated__/GetPortal'
 
@@ -78,8 +79,8 @@ export default function SummonPopup({ show, portalId, onClose }: Props) {
     skip: !show,
     pollInterval: 5000,
   })
-  const loading = false // data?.ottos[0].portalStatus !== PortalStatus.SUMMONED
-  const summoned = true // data?.ottos[0].portalStatus === PortalStatus.SUMMONED
+  const loading = data?.ottos[0].portalStatus !== PortalStatus.SUMMONED
+  const summoned = data?.ottos[0].portalStatus === PortalStatus.SUMMONED
   const { otto } = useOtto(summoned && data?.ottos[0])
 
   return (

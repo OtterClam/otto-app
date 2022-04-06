@@ -124,8 +124,8 @@ export default function OpenPortalPopup({ show, portalId, onClose }: Props) {
     skip: !show,
     pollInterval: 5000,
   })
-  const loading = false // data?.ottos[0].portalStatus !== PortalStatus.OPENED
-  const opened = true // data?.ottos[0].portalStatus === PortalStatus.OPENED
+  const loading = data?.ottos[0].portalStatus !== PortalStatus.OPENED
+  const opened = data?.ottos[0].portalStatus === PortalStatus.OPENED
   const legendary = data?.ottos[0].legendary || false
 
   useEffect(() => {
