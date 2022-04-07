@@ -169,7 +169,7 @@ export default function OpenPortalPopup({ show, portalId, onClose }: Props) {
             <StyledLoadingText as="p">{t('portal.open_popup.processing')}</StyledLoadingText>
           </>
         )}
-        {opened && (
+        {candidates.length > 0 && (
           <>
             <StyledCloseButton
               onClick={() => {
