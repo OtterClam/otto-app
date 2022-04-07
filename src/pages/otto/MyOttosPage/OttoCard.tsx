@@ -1,10 +1,7 @@
 import BorderContainer from 'components/BorderContainer'
-import { ottoClick } from 'constant'
 import useOtto from 'hooks/useOtto'
 import { RawOtto } from 'models/Otto'
-import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
 import styled, { useTheme } from 'styled-components'
 import { Caption, ContentMedium, ContentSmall } from 'styles/typography'
 
@@ -71,36 +68,26 @@ interface Props {
 export default function OttoCard({ rawOtto }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const navigate = useNavigate()
   const { loading, otto } = useOtto(rawOtto)
   return (
-    <a
-      href={rawOtto.tokenId}
-      onClick={async e => {
-        e.preventDefault()
-        ottoClick.play()
-        navigate(rawOtto.tokenId)
-      }}
-    >
-      <StyledOttoCard borderColor={theme.colors.lightGray400}>
-        <StyledOttoImage src={otto?.image} />
-        <StyledOttoName>
-          <ContentMedium>{otto?.name}</ContentMedium>
-        </StyledOttoName>
-        <StyledRarityScore>
-          <ContentSmall>{t('my_ottos.rarity_score', { score: otto?.baseRarityScore })}</ContentSmall>
-        </StyledRarityScore>
-        <StyledAttrs>
-          {otto?.metadata?.otto_attrs
-            ?.filter(p => p.trait_type !== 'BRS')
-            .map(({ trait_type, value }) => (
-              <StyledAttr>
-                <Caption>{trait_type}</Caption>
-                <Caption>{value}</Caption>
-              </StyledAttr>
-            ))}
-        </StyledAttrs>
-      </StyledOttoCard>
-    </a>
+    <StyledOttoCard borderColor={theme.colors.lightGray400}>
+      <StyledOttoImage src={otto?.image} />
+      <StyledOttoName>
+        <ContentMedium>{otto?.name}</ContentMedium>
+      </StyledOttoName>
+      <StyledRarityScore>
+        <ContentSmall>{t('my_ottos.rarity_score', { score: otto?.baseRarityScore })}</ContentSmall>
+      </StyledRarityScore>
+      <StyledAttrs>
+        {otto?.metadata?.otto_attrs
+          ?.filter(p => p.trait_type !== 'BRS')
+          .map(({ trait_type, value }) => (
+            <StyledAttr>
+              <Caption>{trait_type}</Caption>
+              <Caption>{value}</Caption>
+            </StyledAttr>
+          ))}
+      </StyledAttrs>
+    </StyledOttoCard>
   )
 }

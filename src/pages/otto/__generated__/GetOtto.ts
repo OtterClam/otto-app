@@ -3,8 +3,6 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { PortalStatus } from "./../../../__generated__/global-types";
-
 // ====================================================
 // GraphQL query operation: GetOtto
 // ====================================================
@@ -13,10 +11,7 @@ export interface GetOtto_ottos {
   __typename: "Otto";
   tokenId: any;
   tokenURI: string;
-  portalStatus: PortalStatus;
-  canOpenAt: any;
   mintAt: any;
-  candidates: any[];
   legendary: boolean;
 }
 

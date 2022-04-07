@@ -4,9 +4,9 @@ import PortalPage from 'pages/my-portals/PortalPage'
 import PlayPage from 'pages/play/PlayPage'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import HomePage from 'pages/home/HomePage'
-import MyOttosPage from 'pages/my-ottos/MyOttosPage'
+import MyOttosPage from 'pages/otto/MyOttosPage/MyOttosPage'
 import NotFoundPage from 'pages/not-found/NotFoundPage'
-import OttoPage from 'pages/my-ottos/OttoPage'
+import OttoPage from 'pages/otto/OttoPage'
 import App from './App'
 
 const Routing = () => {
@@ -25,6 +25,7 @@ const Routing = () => {
             <Route index element={<MyOttosPage />} />
             <Route path=":ottoId" element={<OttoPage />} />
           </Route>
+          <Route path="ottos/:ottoId" element={<OttoPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

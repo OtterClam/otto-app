@@ -9,10 +9,10 @@ import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { LIST_MY_OTTOS } from '../queries'
+import { ListMyOttos, ListMyOttosVariables } from '../__generated__/ListMyOttos'
 import NoOttoView from './NoOttoView'
 import OttoCard from './OttoCard'
-import { LIST_MY_OTTOS } from './queries'
-import { ListMyOttos, ListMyOttosVariables } from './__generated__/ListMyOttos'
 
 const StyledMyOttosPage = styled.div`
   width: 100%;
@@ -80,7 +80,17 @@ export default function MyOttosPage() {
           <>
             <StyledMyOttos>
               {data?.ottos.map((otto, index) => (
-                <OttoCard key={index} rawOtto={otto} />
+                <a
+                  key={index}
+                  href={otto.tokenId}
+                  onClick={async e => {
+                    e.preventDefault()
+                    ottoClick.play()
+                    navigate(otto.tokenId.tokenId)
+                  }}
+                >
+                  <OttoCard key={index} rawOtto={otto} />
+                </a>
               ))}
             </StyledMyOttos>
             <StyledMintBanner>

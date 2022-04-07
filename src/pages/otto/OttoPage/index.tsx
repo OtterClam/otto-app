@@ -12,7 +12,6 @@ import { Caption, ContentLarge, ContentSmall, Display3, Headline, Note } from 's
 import Button from 'components/Button'
 import { format } from 'date-fns'
 import { GET_OTTO } from '../queries'
-import { GetOtto, GetOttoVariables } from '../__generated__/GetOtto'
 import GenderIcon from './icons/gender.png'
 import PersonalityIcon from './icons/personality.png'
 import BirthdayIcon from './icons/birthday.png'
@@ -21,6 +20,7 @@ import PlayIcon from './icons/play-voice.svg'
 import ClassicIcon from './badge/classic.png'
 import LegendaryIcon from './badge/legendary.png'
 import FirstGenIcon from './first-gen.png'
+import { GetOtto, GetOttoVariables } from '../__generated__/GetOtto'
 
 const StyledOttoPage = styled.div`
   min-height: 100%;

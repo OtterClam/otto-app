@@ -9,9 +9,10 @@ import Layout from 'Layout'
 import { PortalState } from 'models/Portal'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { Caption, ContentLarge, ContentSmall, Display3, Headline } from 'styles/typography'
+import { PortalStatus } from '__generated__/global-types'
 import ClockImage from '../clock.png'
 import PortalContainer from '../PortalContainer'
 import GetThroughPortal from './get_through_portal.png'
@@ -131,6 +132,7 @@ const StyledOpenDescNumber = styled(ContentSmall)`
 export default function PortalPage() {
   const { t } = useTranslation()
   const { portalId = '0' } = useParams()
+  const navigate = useNavigate()
   const { data, loading, refetch } = useQuery<GetPortal, GetPortalVariables>(GET_PORTAL, {
     variables: { portalId },
   })
@@ -156,6 +158,12 @@ export default function PortalPage() {
       resetSummon()
     }
   }, [summonState])
+
+  useEffect(() => {
+    if (data?.ottos[0].portalStatus === PortalStatus.SUMMONED) {
+      navigate(`/my-ottos/${portalId}`)
+    }
+  }, [data])
 
   return (
     <Layout title={t('my_portals.title')}>
