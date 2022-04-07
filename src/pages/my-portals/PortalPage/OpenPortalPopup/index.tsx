@@ -7,7 +7,7 @@ import Fullscreen from 'components/Fullscreen'
 import PortalAnimation from 'components/PortalAnimation'
 import { ottoClick } from 'constant'
 import useApi, { OttoCandidateMeta } from 'hooks/useApi'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Caption, ContentLarge, Display3, Headline } from 'styles/typography'
@@ -135,15 +135,28 @@ export default function OpenPortalPopup({ show, portalId, onClose }: Props) {
     return audio
   }, [])
 
+  const fetchCandidates = useCallback(() => {
+    api
+      .getPortalCandidates(portalId)
+      .then(data => {
+        if (data.length === 0) {
+          setTimeout(fetchCandidates, 1000)
+        } else {
+          setCandidates(data)
+        }
+      })
+      .catch(err => console.error('get portal candidates failed', { err }))
+  }, [api, portalId])
+
   useEffect(() => {
     if (opened) {
-      audio.play()
-      api
-        .getPortalCandidates(portalId)
-        .then(setCandidates)
-        .catch(err => console.error('get portal candidates failed', { err }))
+      fetchCandidates()
     }
   }, [portalId, api, opened])
+
+  useEffect(() => {
+    if (candidates.length > 0) audio.play()
+  }, [candidates])
 
   return (
     <Fullscreen show={show}>
