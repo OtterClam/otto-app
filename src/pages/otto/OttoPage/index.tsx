@@ -11,6 +11,7 @@ import styled from 'styled-components'
 import { Caption, ContentLarge, ContentSmall, Display3, Headline, Note } from 'styles/typography'
 import Button from 'components/Button'
 import { format } from 'date-fns'
+import ReactMarkdown from 'react-markdown'
 import { GET_OTTO } from '../queries'
 import GenderIcon from './icons/gender.png'
 import PersonalityIcon from './icons/personality.png'
@@ -229,14 +230,16 @@ export default function OttoPage() {
                 ))}
               </StyledInfos>
               <StyledDescription>
-                <ContentSmall>{otto.description}</ContentSmall>
+                <ContentSmall>
+                  <ReactMarkdown>{otto.description}</ReactMarkdown>
+                </ContentSmall>
               </StyledDescription>
 
               <StyledAttrs>
                 {otto?.metadata?.otto_attrs
                   ?.filter(p => p.trait_type !== 'BRS')
-                  .map(({ trait_type, value }) => (
-                    <StyledAttr>
+                  .map(({ trait_type, value }, index) => (
+                    <StyledAttr key={index}>
                       <ContentLarge>{trait_type}</ContentLarge>
                       <ContentLarge>{value}</ContentLarge>
                     </StyledAttr>
