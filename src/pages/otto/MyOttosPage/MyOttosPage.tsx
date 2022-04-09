@@ -86,7 +86,7 @@ export default function MyOttosPage() {
                   onClick={async e => {
                     e.preventDefault()
                     ottoClick.play()
-                    navigate(otto.tokenId.tokenId)
+                    navigate(otto.tokenId)
                   }}
                 >
                   <OttoCard key={index} rawOtto={otto} />
