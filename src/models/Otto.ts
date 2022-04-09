@@ -51,7 +51,6 @@ export default class Otto {
       }
     }
 
-    console.log(JSON.stringify(this.metadata.otto_traits))
     for (let idx = 0; idx < this.metadata.otto_traits.length; idx++) {
       const { trait_type, value } = this.metadata.otto_traits[idx]
       if (trait_type === 'Gender') {
