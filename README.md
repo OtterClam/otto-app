@@ -1,27 +1,6 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Dapp](https://github.com/chase-manning/cra-template-dapp) template.
+This project is the entry of Ottopia!
 
-## About
-
-This app is a boilerplate template to be used for creating EVM Dapps! :tada:
-It will require modification to fit the needs of your Dapp, but hopefully will serve as a good starting point to get you up and running quicker.  
-An example Dapp is included for converting ETH to WETH, this is to show how you can use the boilerplate to make contract interractions.
-
-## Get started
-
-Before this Dapp is production ready, you will need to make a few changes!  
-First, go to `src/app/globals.ts` and update the `INFURA_ID` with your own Infura ID (You can get one [here](https://infura.io/)).
-
-### Firebase Setup
-
-- Setup an account with [Firebase](https://firebase.google.com/)
-- Create a new Project for the hosting
-- Edit `.github/workflows/ci.yml` and replace `project-id` with your new Project ID from Firebase
-- Edit `.firebaserc` and replace `project-id` with your new Project ID from Firebase
-- Install Firebase CLI with `yarn install -g firebase-tools`
-- Login to the Firebase CLI with `firebase login:ci`
-- Copy the secret that is output to your console and create a GitHub secret for it as `FIREBASE_SECRET`
-- Follow the steps [here](https://github.com/FirebaseExtended/action-hosting-deploy/blob/main/docs/service-account.md) to create a Firebase Service Account
-- Copy the secret and create a GitHub secret for it as `FIREBASE_SERVICE_ACCOUNT`
+You can visit Ottopia at https://ottopia.app
 
 ## Available Scripts
 
