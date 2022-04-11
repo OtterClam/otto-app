@@ -115,7 +115,7 @@
     "birthday": "生日： {{birthday}}",
     "classic": "經典",
     "classic_note": "經典阿獺是阿獺王國裡最大宗、且最人見人愛的王國居民。",
-    "coatOfArms": "阿獺王國共有 5 大家族，這隻阿獺是屬於 {{arms}}，快尋找同樣家徽的阿獺吧！",
+    "coatOfArms": "阿獺王國共有 5 大家族，這隻阿獺是屬於{{arms}}，快尋找同樣家徽的阿獺吧！",
     "first_gen": "第一代阿獺",
     "first_gen_desc": "為第一代先驅者，總共會有 5000 隻阿獺傳送到阿獺王國。",
     "gender": "性別： {{gender}}",

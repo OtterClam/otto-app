@@ -264,12 +264,12 @@ export default function OttoPage() {
                   </StyledStatDesc>
                 </StyledStat>
                 <StyledStat>
-                  <StyledStatIcon src={`/arms/${otto.coatOfArms}.png`} />
+                  <StyledStatIcon src={`/arms/${otto.armsImage}.png`} />
                   <StyledStatTitle>
                     <ContentSmall>{otto.coatOfArms}</ContentSmall>
                   </StyledStatTitle>
                   <StyledStatDesc>
-                    <Note>{t('otto.coatOfArms', { arms: otto.armsImage })}</Note>
+                    <Note>{t('otto.coatOfArms', { arms: otto.coatOfArms })}</Note>
                   </StyledStatDesc>
                 </StyledStat>
                 <StyledStat>
