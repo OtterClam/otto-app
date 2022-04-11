@@ -94,7 +94,7 @@ export default function SummonPopup({ show, portalId, onClose }: Props) {
             <StyledCloseButton
               onClick={() => {
                 ottoClick.play()
-                onClose()
+                navigate(`/my-ottos/${portalId}`)
               }}
             >
               <StyledCloseIcon src={CloseIcon} />
