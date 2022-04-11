@@ -111,6 +111,7 @@
     "title": "My Portals"
   },
   "otto": {
+    "title": "Otto Details",
     "birthday": "Birthday: {{birthday}}",
     "classic": "Classic",
     "classic_note": "A general Otto that shares the peace all over the Otter Kingdom.",

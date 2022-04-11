@@ -201,7 +201,7 @@ export default function OttoPage() {
   }, [otto])
 
   return (
-    <Layout title={t('my_portals.title')}>
+    <Layout title={t('otto.title')}>
       <StyledOttoPage>
         {(loading || loadingOtto) && <LoadingView />}
         {otto && (
