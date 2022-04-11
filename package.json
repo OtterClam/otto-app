@@ -30,6 +30,7 @@
     "@reduxjs/toolkit": "^1.5.1",
     "@usedapp/core": "^0.12.1",
     "@web3-react/walletconnect-connector": "^6.2.10",
+    "@web3-react/walletlink-connector": "^6.2.13",
     "axios": "^0.26.1",
     "date-fns": "^2.28.0",
     "graphql": "^15.0.0",

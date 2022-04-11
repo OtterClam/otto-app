@@ -1,15 +1,21 @@
-import { useEffect } from 'react'
-import styled from 'styled-components'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { useEthers } from '@usedapp/core'
-import { useDispatch, useSelector } from 'react-redux'
-
-import { ContentLarge } from 'styles/typography'
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import styled from 'styled-components'
+import { ContentLarge } from 'styles/typography'
+import CoinbaseWalletIcon from 'assets/wallets/coinbase.png'
 import metamask from '../assets/wallets/metamask.jpg'
 import walletConnect from '../assets/wallets/walletconnect.jpg'
-import Popup from './Popup'
 import { selectConnectingWallet, walletConnected } from '../store/uiSlice'
+import Popup from './Popup'
+
+const CoinbaseWallet = new WalletLinkConnector({
+  url: 'https://polygon-rpc.com',
+  appName: 'Ottopia',
+  supportedChainIds: [137],
+})
 
 export const walletConnectConnector = new WalletConnectConnector({
   rpc: {
@@ -61,6 +67,10 @@ const WalletSelector = (): JSX.Element => {
       <Option onClick={() => activate(walletConnectConnector)}>
         <Name>WalletConnect</Name>
         <Icon src={walletConnect} alt="WalletConnect logo" />
+      </Option>
+      <Option onClick={() => activate(CoinbaseWallet)}>
+        <Name>Coinbase Wallet</Name>
+        <Icon src={CoinbaseWalletIcon} alt="Coinbase Wallet" />
       </Option>
     </Popup>
   )
