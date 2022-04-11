@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",
-    "@reduxjs/toolkit": "^1.5.1",
+    "@reduxjs/toolkit": "^1.8.1",
     "@usedapp/core": "^0.12.1",
     "@web3-react/walletconnect-connector": "^6.2.10",
     "@web3-react/walletlink-connector": "^6.2.13",
