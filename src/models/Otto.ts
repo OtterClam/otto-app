@@ -14,6 +14,7 @@ export interface OttoMeta {
   name: string
   image: string
   description: string
+  attributes: [Attr]
   otto_attrs: [Attr]
   otto_traits: [Attr]
   animation_url: string
@@ -38,11 +39,20 @@ export default class Otto {
 
   public readonly coatOfArms: string = ''
 
+  public readonly armsImage: string = ''
+
   constructor(raw: RawOtto, metadata: OttoMeta) {
     this.raw = raw
     this.metadata = metadata
     this.voice = new Audio(this.metadata.animation_url)
     this.voice.load()
+
+    for (let idx = 0; idx < this.metadata.attributes.length; idx++) {
+      const { trait_type, value } = this.metadata.attributes[idx]
+      if (trait_type === 'Coat of Arms') {
+        this.armsImage = String(value)
+      }
+    }
 
     for (let idx = 0; idx < this.metadata.otto_attrs.length; idx++) {
       const { trait_type, value } = this.metadata.otto_attrs[idx]

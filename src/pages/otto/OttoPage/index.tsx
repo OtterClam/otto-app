@@ -262,7 +262,7 @@ export default function OttoPage() {
                     <ContentSmall>{otto.coatOfArms}</ContentSmall>
                   </StyledStatTitle>
                   <StyledStatDesc>
-                    <Note>{t('otto.coatOfArms', { arms: otto.coatOfArms })}</Note>
+                    <Note>{t('otto.coatOfArms', { arms: otto.armsImage })}</Note>
                   </StyledStatDesc>
                 </StyledStat>
                 <StyledStat>
