@@ -12,7 +12,8 @@ export default function useOtto(rawOtto: RawOtto | Falsy) {
   const { i18n } = useTranslation()
   const otto = useMemo(() => (rawOtto && metadata ? new Otto(rawOtto, metadata) : null), [rawOtto, metadata])
   useEffect(() => {
-    if (rawOtto)
+    if (rawOtto) {
+      setLoading(true)
       axios
         .get<OttoMeta>(rawOtto.tokenURI, { params: { lang: i18n.resolvedLanguage } })
         .then(res => {
@@ -24,6 +25,7 @@ export default function useOtto(rawOtto: RawOtto | Falsy) {
           console.error('fetch otto meta failed', err)
         })
         .finally(() => setLoading(false))
-  }, [rawOtto])
+    }
+  }, [rawOtto, i18n.resolvedLanguage])
   return { loading, otto, error }
 }
