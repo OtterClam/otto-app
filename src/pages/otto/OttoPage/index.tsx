@@ -12,6 +12,7 @@ import { Caption, ContentLarge, ContentSmall, Display3, Headline, Note } from 's
 import Button from 'components/Button'
 import { format } from 'date-fns'
 import ReactMarkdown from 'react-markdown'
+import Loading from 'components/Loading'
 import { GET_OTTO } from '../queries'
 import GenderIcon from './icons/gender.png'
 import PersonalityIcon from './icons/personality.png'
@@ -167,7 +168,7 @@ const StyledStatDesc = styled.p`
 export default function OttoPage() {
   const { t } = useTranslation()
   const { ottoId = '0' } = useParams()
-  const { data, loading } = useQuery<GetOtto, GetOttoVariables>(GET_OTTO, {
+  const { data, loading: loadingGraph } = useQuery<GetOtto, GetOttoVariables>(GET_OTTO, {
     variables: { ottoId },
   })
   const { loading: loadingOtto, otto } = useOtto(data?.ottos[0])
@@ -203,49 +204,56 @@ export default function OttoPage() {
   return (
     <Layout title={t('otto.title')}>
       <StyledOttoPage>
-        {(loading || loadingOtto) && <LoadingView />}
-        {otto && (
-          <StyledOttoContainer>
-            <StyledLeftContainer>
-              <StyledOttoImage src={otto.image} />
-              <Button primaryColor="white" disableSound onClick={() => otto.playVoice()}>
-                <StyledPlayButtonText>{t('otto.play_voice')}</StyledPlayButtonText>
-              </Button>
-            </StyledLeftContainer>
-            <StyledContentContainer>
-              <StyledOpenSeaLink href={getOpenSeaLink(otto.tokenId)} target="_blank">
-                <Caption>{t('otto.opensea_link')}</Caption>
-              </StyledOpenSeaLink>
-              <StyledName>
-                <Display3>{otto.name}</Display3>
-              </StyledName>
-              <StyledRarityScore>
+        <StyledOttoContainer>
+          <StyledLeftContainer>
+            <StyledOttoImage src={otto?.image} />
+            <Button primaryColor="white" disableSound onClick={() => otto?.playVoice()}>
+              <StyledPlayButtonText>{t('otto.play_voice')}</StyledPlayButtonText>
+            </Button>
+          </StyledLeftContainer>
+          <StyledContentContainer>
+            <StyledOpenSeaLink href={getOpenSeaLink(ottoId)} target="_blank">
+              <Caption>{t('otto.opensea_link')}</Caption>
+            </StyledOpenSeaLink>
+            <StyledName>
+              {!otto ? <Loading width="320px" height="54px" /> : <Display3>{otto.name}</Display3>}
+            </StyledName>
+            <StyledRarityScore>
+              {!otto ? (
+                <Loading width="260px" height="36px" />
+              ) : (
                 <Headline>{t('otto.rarity_score', { score: otto.baseRarityScore })}</Headline>
-              </StyledRarityScore>
-              <StyledInfos>
-                {infos?.map(({ icon, text }, index) => (
-                  <StyledInfo key={index} icon={icon}>
-                    <ContentLarge>{text}</ContentLarge>
-                  </StyledInfo>
-                ))}
-              </StyledInfos>
-              <StyledDescription>
+              )}
+            </StyledRarityScore>
+            <StyledInfos>
+              {infos?.map(({ icon, text }, index) => (
+                <StyledInfo key={index} icon={icon}>
+                  <ContentLarge>{text}</ContentLarge>
+                </StyledInfo>
+              ))}
+            </StyledInfos>
+            <StyledDescription>
+              {!otto ? (
+                <Loading width="100%" height="260px" />
+              ) : (
                 <ContentSmall>
                   <ReactMarkdown>{otto.description}</ReactMarkdown>
                 </ContentSmall>
-              </StyledDescription>
+              )}
+            </StyledDescription>
 
-              <StyledAttrs>
-                {otto?.metadata?.otto_attrs
-                  ?.filter(p => p.trait_type !== 'BRS')
-                  .map(({ trait_type, value }, index) => (
-                    <StyledAttr key={index}>
-                      <ContentLarge>{trait_type}</ContentLarge>
-                      <ContentLarge>{value}</ContentLarge>
-                    </StyledAttr>
-                  ))}
-              </StyledAttrs>
+            <StyledAttrs>
+              {otto?.metadata?.otto_attrs
+                ?.filter(p => p.trait_type !== 'BRS')
+                .map(({ trait_type, value }, index) => (
+                  <StyledAttr key={index}>
+                    <ContentLarge>{trait_type}</ContentLarge>
+                    <ContentLarge>{value}</ContentLarge>
+                  </StyledAttr>
+                ))}
+            </StyledAttrs>
 
+            {otto && (
               <StyledStatsContainer>
                 <StyledStat>
                   <StyledStatIcon src={otto.legendary ? LegendaryIcon : ClassicIcon} />
@@ -275,9 +283,9 @@ export default function OttoPage() {
                   </StyledStatDesc>
                 </StyledStat>
               </StyledStatsContainer>
-            </StyledContentContainer>
-          </StyledOttoContainer>
-        )}
+            )}
+          </StyledContentContainer>
+        </StyledOttoContainer>
       </StyledOttoPage>
     </Layout>
   )

@@ -14,6 +14,8 @@ export default function useOtto(rawOtto: RawOtto | Falsy) {
   useEffect(() => {
     if (rawOtto) {
       setLoading(true)
+      setMetadata(null)
+      setError(null)
       axios
         .get<OttoMeta>(rawOtto.tokenURI, { params: { lang: i18n.resolvedLanguage } })
         .then(res => {
