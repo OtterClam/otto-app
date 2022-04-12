@@ -38,6 +38,7 @@ const StyledLogo = styled.img`
 
 const StyledBackButton = styled.button`
   width: 68px;
+  height: 100%;
   background: ${({ theme }) => theme.colors.clamPink};
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
