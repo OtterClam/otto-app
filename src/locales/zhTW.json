@@ -118,30 +118,30 @@
     "first_gen": "第一代阿獺",
     "first_gen_desc": "為第一代先驅者，總共會有 5000 隻阿獺傳送到阿獺王國。",
     "gender": "性別： {{gender}}",
-    "genetic_traits_tab": "Genetic Traits",
+    "genetic_traits_tab": "生物特徵",
     "legendary": "傳奇",
     "legendary_note": "絕無僅有，為藝術家欽定的傳奇夢幻阿獺。",
     "opensea_link": "在 OpenSea 上瞧瞧",
     "personality": "個性： {{personality}}",
     "play_voice": "聽聽這隻阿獺的聲音",
     "rarity": {
-      "C1": "Uncommon",
-      "C2": "Common",
-      "C3": "Very Common",
-      "E1": "Myths",
-      "E2": "Legendary",
-      "E3": "Epic",
-      "R1": "Ultra Rare",
-      "R2": "Super Rare",
-      "R3": "Rare"
+      "C1": "不常見",
+      "C2": "常見",
+      "C3": "非常常見",
+      "E1": "神話的",
+      "E2": "傳奇的",
+      "E3": "史詩的",
+      "R1": "超激稀有",
+      "R2": "非常稀有",
+      "R3": "稀有"
     },
     "rarity_score": "基本稀有分數： {{score}}",
     "title": "詳細資訊",
     "traits": {
-      "Voice": "Voice"
+      "Voice": "聲音"
     },
     "voice": "聲音： {{voice}}",
-    "wearable_traits_tab": "Wearable Traits"
+    "wearable_traits_tab": "可穿脫特徵"
   },
   "otto_one": "{{count}} 隻阿獺",
   "otto_other": "{{count}} 隻阿獺",
