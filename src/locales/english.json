@@ -111,7 +111,6 @@
     "title": "My Portals"
   },
   "otto": {
-    "title": "Otto Details",
     "birthday": "Birthday: {{birthday}}",
     "classic": "Classic",
     "classic_note": "A general Otto that shares the peace all over the Otter Kingdom.",
@@ -119,13 +118,40 @@
     "first_gen": "1st generation Otto",
     "first_gen_desc": "Total 5,000 Ottos for the 1st generation in the kingdom.",
     "gender": "Gender: {{gender}}",
+    "genetic_traits_tab": "Genetic Traits",
     "legendary": "Legendary",
     "legendary_note": "Artist chosen Otto that is super rare and unique.",
     "opensea_link": "View on OpenSea",
     "personality": "Personality: {{personality}}",
     "play_voice": "Hear this Otto's voice",
+    "rarity": {
+      "C1": "Uncommon",
+      "C2": "Common",
+      "C3": "Very Common",
+      "E1": "Myths",
+      "E2": "Legendary",
+      "E3": "Epic",
+      "R1": "Ultra Rare",
+      "R2": "Super Rare",
+      "R3": "Rare"
+    },
     "rarity_score": "Base Rarity Score: {{score}}",
-    "voice": "Voice: {{voice}}"
+    "title": "Otto Details",
+    "traits": {
+      "Background": "Background",
+      "Clothes": "Clothes",
+      "Eyes": "Eyes",
+      "Facial Accessories": "Facial Accessories",
+      "Headwear": "Headwear",
+      "Mouth": "Mouth",
+      "Personality": "Personality",
+      "Skin color": "Skin Color",
+      "Skin type": "Skin Type",
+      "Voice": "Voice",
+      "title": "{{type}}: {{name}}"
+    },
+    "voice": "Voice: {{voice}}",
+    "wearable_traits_tab": "Wearable Traits"
   },
   "otto_one": "{{count}} Otto",
   "otto_other": "{{count}} Ottos",

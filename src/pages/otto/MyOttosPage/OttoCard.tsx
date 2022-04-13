@@ -68,7 +68,7 @@ interface Props {
 export default function OttoCard({ rawOtto }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { loading, otto } = useOtto(rawOtto)
+  const { loading, otto } = useOtto(rawOtto, false)
   return (
     <StyledOttoCard borderColor={theme.colors.lightGray400}>
       <StyledOttoImage src={otto?.image} />
