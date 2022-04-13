@@ -42,6 +42,7 @@ const StyledBackButton = styled.button`
   background: ${({ theme }) => theme.colors.clamPink};
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
+  color: ${props => props.theme.colors.otterBlack};
 `
 
 const StyledTitle = styled.div`
