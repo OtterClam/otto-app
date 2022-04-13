@@ -111,7 +111,6 @@
     "title": "我的傳送門"
   },
   "otto": {
-    "title": "詳細資訊",
     "birthday": "生日： {{birthday}}",
     "classic": "經典",
     "classic_note": "經典阿獺是阿獺王國裡最大宗、且最人見人愛的王國居民。",
@@ -119,13 +118,30 @@
     "first_gen": "第一代阿獺",
     "first_gen_desc": "為第一代先驅者，總共會有 5000 隻阿獺傳送到阿獺王國。",
     "gender": "性別： {{gender}}",
+    "genetic_traits_tab": "Genetic Traits",
     "legendary": "傳奇",
     "legendary_note": "絕無僅有，為藝術家欽定的傳奇夢幻阿獺。",
     "opensea_link": "在 OpenSea 上瞧瞧",
     "personality": "個性： {{personality}}",
     "play_voice": "聽聽這隻阿獺的聲音",
+    "rarity": {
+      "C1": "Uncommon",
+      "C2": "Common",
+      "C3": "Very Common",
+      "E1": "Myths",
+      "E2": "Legendary",
+      "E3": "Epic",
+      "R1": "Ultra Rare",
+      "R2": "Super Rare",
+      "R3": "Rare"
+    },
     "rarity_score": "基本稀有分數： {{score}}",
-    "voice": "聲音： {{voice}}"
+    "title": "詳細資訊",
+    "traits": {
+      "Voice": "Voice"
+    },
+    "voice": "聲音： {{voice}}",
+    "wearable_traits_tab": "Wearable Traits"
   },
   "otto_one": "{{count}} 隻阿獺",
   "otto_other": "{{count}} 隻阿獺",
