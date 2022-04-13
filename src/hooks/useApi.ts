@@ -24,7 +24,7 @@ export class Api {
     return this.axios.get(`/ottos/candidates/metadata/${portalId}`).then(res => res.data)
   }
 
-  public async getOttoMeta(ottoId: string, lang: string): Promise<OttoMeta> {
+  public async getOttoMeta(ottoId: string, lang: string, details: boolean): Promise<OttoMeta> {
     return this.axios.get(`/ottos/metadata/${ottoId}`, { params: { details: true, lang } }).then(res => res.data)
   }
 }

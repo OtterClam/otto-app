@@ -6,7 +6,7 @@ import useApi from './useApi'
 
 type Falsy = false | 0 | '' | null | undefined
 
-export default function useOtto(rawOtto: RawOtto | Falsy) {
+export default function useOtto(rawOtto: RawOtto | Falsy, details: boolean) {
   const api = useApi()
   const { i18n } = useTranslation()
   const [error, setError] = useState<any | null>(null)
@@ -19,7 +19,7 @@ export default function useOtto(rawOtto: RawOtto | Falsy) {
       setMetadata(null)
       setError(null)
       api
-        .getOttoMeta(rawOtto.tokenId, i18n.resolvedLanguage)
+        .getOttoMeta(rawOtto.tokenId, i18n.resolvedLanguage, details)
         .then(data => {
           setError(null)
           setMetadata(data)

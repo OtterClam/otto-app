@@ -176,10 +176,10 @@ const StyledStatDesc = styled.p`
 export default function OttoPage() {
   const { t } = useTranslation()
   const { ottoId = '0' } = useParams()
-  const { data, loading: loadingGraph } = useQuery<GetOtto, GetOttoVariables>(GET_OTTO, {
+  const { data } = useQuery<GetOtto, GetOttoVariables>(GET_OTTO, {
     variables: { ottoId },
   })
-  const { loading: loadingOtto, otto } = useOtto(data?.ottos[0])
+  const { otto } = useOtto(data?.ottos[0], true)
   const infos = useMemo(
     () =>
       otto

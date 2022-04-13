@@ -78,7 +78,7 @@ export default function SummonPopup({ show, portalId, onClose }: Props) {
   })
   const loading = data?.ottos[0].portalStatus !== PortalStatus.SUMMONED
   const summoned = data?.ottos[0].portalStatus === PortalStatus.SUMMONED
-  const { otto } = useOtto(summoned && data?.ottos[0])
+  const { otto } = useOtto(summoned && data?.ottos[0], false)
 
   return (
     <Fullscreen show={show}>
