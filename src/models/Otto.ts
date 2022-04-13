@@ -10,6 +10,23 @@ export interface Attr {
   value: string | number
 }
 
+export interface Trait {
+  type: string
+  name: string
+  image: string
+  rarity: string
+  base_rarity_score: number
+  relative_rarity_score: number
+  total_rarity_score: number
+  wearable: boolean
+  stats: [Stat]
+}
+
+export interface Stat {
+  name: string
+  value: string
+}
+
 export interface OttoMeta {
   name: string
   image: string
@@ -17,6 +34,7 @@ export interface OttoMeta {
   attributes: [Attr]
   otto_attrs: [Attr]
   otto_traits: [Attr]
+  otto_details: [Trait]
   animation_url: string
 }
 
@@ -40,6 +58,10 @@ export default class Otto {
   public readonly coatOfArms: string = ''
 
   public readonly armsImage: string = ''
+
+  public readonly geneticTraits: Trait[] = []
+
+  public readonly wearableTraits: Trait[] = []
 
   constructor(raw: RawOtto, metadata: OttoMeta) {
     this.raw = raw
@@ -65,18 +87,23 @@ export default class Otto {
       const { trait_type, value } = this.metadata.otto_traits[idx]
       if (trait_type === 'Gender') {
         this.gender = String(value)
-      }
-      if (trait_type === 'Personality') {
+      } else if (trait_type === 'Personality') {
         this.personality = String(value)
-      }
-      if (trait_type === 'Birthday') {
+      } else if (trait_type === 'Birthday') {
         this.birthday = new Date(Number(value) * 1000)
-      }
-      if (trait_type === 'Voice') {
+      } else if (trait_type === 'Voice') {
         this.voiceName = String(value)
-      }
-      if (trait_type === 'Coat of Arms') {
+      } else if (trait_type === 'Coat of Arms') {
         this.coatOfArms = String(value)
+      }
+    }
+
+    for (let idx = 0; idx < this.metadata.otto_details.length; idx++) {
+      const trait = this.metadata.otto_details[idx]
+      if (trait.wearable) {
+        this.wearableTraits.push(trait)
+      } else {
+        this.geneticTraits.push(trait)
       }
     }
   }

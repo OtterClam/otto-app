@@ -16,12 +16,9 @@ import { GET_OTTO } from '../queries'
 import { GetOtto, GetOttoVariables } from '../__generated__/GetOtto'
 import ClassicIcon from './badge/classic.png'
 import LegendaryIcon from './badge/legendary.png'
-import FirstGenIcon from './first-gen.png'
-import BirthdayIcon from './icons/birthday.png'
-import GenderIcon from './icons/gender.png'
-import PersonalityIcon from './icons/personality.png'
+import FirstGenIcon from './badge/first-gen.png'
 import PlayIcon from './icons/play-voice.svg'
-import VoiceIcon from './icons/voice.png'
+import OttoTraitDetails from './OttoTraitDetails'
 
 const StyledOttoPage = styled.div`
   min-height: 100%;
@@ -48,6 +45,8 @@ const StyledLeftContainer = styled.div`
 `
 
 const StyledOttoImage = styled.img`
+  position: sticky;
+  top: 30px;
   width: 440px;
   min-width: 440px;
   height: 440px;
@@ -58,12 +57,22 @@ const StyledOttoImage = styled.img`
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 100%;
     height: unset;
+    position: unset;
+  }
+`
+
+const StyledPlayButton = styled(Button)`
+  position: sticky;
+  top: 490px;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    position: unset;
   }
 `
 
 const StyledPlayButtonText = styled(Headline)`
   display: flex;
   align-items: center;
+
   &:before {
     content: '';
     background-image: url(${PlayIcon});
@@ -176,19 +185,19 @@ export default function OttoPage() {
       otto
         ? [
             {
-              icon: GenderIcon,
+              icon: '/trait-icons/Gender.png',
               text: t('otto.gender', { gender: otto.gender }),
             },
             {
-              icon: PersonalityIcon,
+              icon: '/trait-icons/Personality.png',
               text: t('otto.personality', { personality: otto.personality }),
             },
             {
-              icon: BirthdayIcon,
+              icon: '/trait-icons/Birthday.png',
               text: t('otto.birthday', { birthday: format(otto.birthday, 'MMM dd, yyyy') }),
             },
             {
-              icon: VoiceIcon,
+              icon: '/trait-icons/Voice.png',
               text: t('otto.voice', { voice: otto.voiceName }),
             },
           ]
@@ -206,9 +215,9 @@ export default function OttoPage() {
         <StyledOttoContainer>
           <StyledLeftContainer>
             <StyledOttoImage src={otto?.image} />
-            <Button primaryColor="white" disableSound onClick={() => otto?.playVoice()}>
+            <StyledPlayButton primaryColor="white" disableSound onClick={() => otto?.playVoice()}>
               <StyledPlayButtonText>{t('otto.play_voice')}</StyledPlayButtonText>
-            </Button>
+            </StyledPlayButton>
           </StyledLeftContainer>
           <StyledContentContainer>
             <StyledOpenSeaLink href={getOpenSeaLink(ottoId)} target="_blank">
@@ -253,35 +262,38 @@ export default function OttoPage() {
             </StyledAttrs>
 
             {otto && (
-              <StyledStatsContainer>
-                <StyledStat>
-                  <StyledStatIcon src={otto.legendary ? LegendaryIcon : ClassicIcon} />
-                  <StyledStatTitle>
-                    <ContentSmall>{t(otto.legendary ? 'otto.legendary' : 'otto.classic')}</ContentSmall>
-                  </StyledStatTitle>
-                  <StyledStatDesc>
-                    <Note>{t(otto.legendary ? 'otto.legendary_note' : 'otto.classic_note')}</Note>
-                  </StyledStatDesc>
-                </StyledStat>
-                <StyledStat>
-                  <StyledStatIcon src={`/arms/${otto.armsImage}.png`} />
-                  <StyledStatTitle>
-                    <ContentSmall>{otto.coatOfArms}</ContentSmall>
-                  </StyledStatTitle>
-                  <StyledStatDesc>
-                    <Note>{t('otto.coatOfArms', { arms: otto.coatOfArms })}</Note>
-                  </StyledStatDesc>
-                </StyledStat>
-                <StyledStat>
-                  <StyledStatIcon src={FirstGenIcon} />
-                  <StyledStatTitle>
-                    <ContentSmall>{t('otto.first_gen')}</ContentSmall>
-                  </StyledStatTitle>
-                  <StyledStatDesc>
-                    <Note>{t('otto.first_gen_desc')}</Note>
-                  </StyledStatDesc>
-                </StyledStat>
-              </StyledStatsContainer>
+              <>
+                <StyledStatsContainer>
+                  <StyledStat>
+                    <StyledStatIcon src={otto.legendary ? LegendaryIcon : ClassicIcon} />
+                    <StyledStatTitle>
+                      <ContentSmall>{t(otto.legendary ? 'otto.legendary' : 'otto.classic')}</ContentSmall>
+                    </StyledStatTitle>
+                    <StyledStatDesc>
+                      <Note>{t(otto.legendary ? 'otto.legendary_note' : 'otto.classic_note')}</Note>
+                    </StyledStatDesc>
+                  </StyledStat>
+                  <StyledStat>
+                    <StyledStatIcon src={`/arms/${otto.armsImage}.png`} />
+                    <StyledStatTitle>
+                      <ContentSmall>{otto.coatOfArms}</ContentSmall>
+                    </StyledStatTitle>
+                    <StyledStatDesc>
+                      <Note>{t('otto.coatOfArms', { arms: otto.coatOfArms })}</Note>
+                    </StyledStatDesc>
+                  </StyledStat>
+                  <StyledStat>
+                    <StyledStatIcon src={FirstGenIcon} />
+                    <StyledStatTitle>
+                      <ContentSmall>{t('otto.first_gen')}</ContentSmall>
+                    </StyledStatTitle>
+                    <StyledStatDesc>
+                      <Note>{t('otto.first_gen_desc')}</Note>
+                    </StyledStatDesc>
+                  </StyledStat>
+                </StyledStatsContainer>
+                <OttoTraitDetails otto={otto} />
+              </>
             )}
           </StyledContentContainer>
         </StyledOttoContainer>

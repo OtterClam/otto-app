@@ -125,7 +125,33 @@
     "personality": "Personality: {{personality}}",
     "play_voice": "Hear this Otto's voice",
     "rarity_score": "Base Rarity Score: {{score}}",
-    "voice": "Voice: {{voice}}"
+    "voice": "Voice: {{voice}}",
+    "genetic_traits_tab": "Genetic Traits",
+    "wearable_traits_tab": "Wearable Traits",
+    "traits": {
+      "title": "{{type}}: {{name}}",
+      "Background": "Background",
+      "Skin color": "Skin Color",
+      "Skin type": "Skin Type",
+      "Clothes": "Clothes",
+      "Mouth": "Mouth",
+      "Eyes": "Eyes",
+      "Facial Accessories": "Facial Accessories",
+      "Headwear": "Headwear",
+      "Personality": "Personality",
+      "Voice": "Voice"
+    },
+    "rarity": {
+      "C3": "Very Common",
+      "C2": "Common",
+      "C1": "Uncommon",
+      "R3": "Rare",
+      "R2": "Super Rare",
+      "R1": "Ultra Rare",
+      "E3": "Epic",
+      "E2": "Legendary",
+      "E1": "Myths"
+    }
   },
   "otto_one": "{{count}} Otto",
   "otto_other": "{{count}} Ottos",
