@@ -11,6 +11,7 @@ const StyledConnectButton = styled.button`
   height: 100%;
   padding: 16px;
   background-color: white;
+  color: ${props => props.theme.colors.otterBlack};
 `
 
 const Connector = () => {
