@@ -1,7 +1,7 @@
 import Button from 'components/Button'
 import { WHITE_PAPER_LINK } from 'constant'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { ContentMedium, Display2, Headline } from 'styles/typography'
 import heroImg from './otto_portal-hero.png'
 

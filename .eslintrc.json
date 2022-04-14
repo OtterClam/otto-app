@@ -91,7 +91,7 @@
     ],
     "react/jsx-indent": "off",
     "react/jsx-indent-props": "off",
-    "react/jsx-key": "off",
+    "react/jsx-key": "on",
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-props-no-spreading": "off",
     "react/no-access-state-in-setstate": "off",

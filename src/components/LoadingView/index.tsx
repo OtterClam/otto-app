@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { useMemo } from 'react'
 import LoadingAnimation1 from './images/loading_animation1.gif'
 import LoadingAnimation2 from './images/loading_animation2.gif'

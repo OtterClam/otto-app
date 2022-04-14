@@ -1,6 +1,6 @@
 import { languages } from 'i18n'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { ContentSmall } from 'styles/typography'
 import SelectButton from './SelectButton'
 

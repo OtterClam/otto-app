@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes } from 'styled-components/macro'
 import Opening01 from './Opening01.png'
 import Opening02 from './Opening02.png'
 import Opening03 from './Opening03.png'

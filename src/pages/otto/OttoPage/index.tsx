@@ -10,7 +10,7 @@ import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactMarkdown from 'react-markdown'
 import { useParams } from 'react-router-dom'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Display3, Headline, Note } from 'styles/typography'
 import { GET_OTTO } from '../queries'
 import { GetOtto, GetOttoVariables } from '../__generated__/GetOtto'
@@ -56,6 +56,7 @@ const StyledOttoImage = styled.img`
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 100%;
+    min-width: unset;
     height: unset;
     position: unset;
   }
@@ -108,18 +109,18 @@ const StyledOpenSeaLink = styled.a`
   }
 `
 
-const StyledName = styled.p``
+const StyledName = styled.div``
 
-const StyledRarityScore = styled.p``
+const StyledRarityScore = styled.div``
 
-const StyledDescription = styled.p``
+const StyledDescription = styled.div``
 
 const StyledInfos = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 `
 
-const StyledInfo = styled.p<{ icon: string }>`
+const StyledInfo = styled.div<{ icon: string }>`
   display: flex;
   &:before {
     content: '';
@@ -148,6 +149,11 @@ const StyledStatsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    display: flex;
+    flex-direction: column;
+  }
 `
 
 const StyledStat = styled.div`

@@ -1,7 +1,7 @@
 import Button from 'components/Button'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
 import WhiteBlankPortal from 'assets/white-blank-portal.png'
 

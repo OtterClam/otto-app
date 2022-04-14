@@ -1,7 +1,7 @@
 import { shortenAddress, useEthers } from '@usedapp/core'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { ContentLarge } from 'styles/typography'
 import { connectWallet } from '../../store/uiSlice'
 

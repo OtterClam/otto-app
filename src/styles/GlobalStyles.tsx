@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components/macro'
 import cursorDefault from 'assets/cursor-default.png'
 import cursorPointer from 'assets/cursor-pointer.png'
 

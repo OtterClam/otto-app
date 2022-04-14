@@ -1,5 +1,5 @@
 import { useEthers, useTokenBalance } from '@usedapp/core'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import CLAM from 'assets/clam.png'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { utils } from 'ethers'

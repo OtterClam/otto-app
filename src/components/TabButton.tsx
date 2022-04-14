@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 const StyledTabButton = styled.button<{ selected: boolean }>`
   padding: 12px 32px;

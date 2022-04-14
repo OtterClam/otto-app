@@ -1,8 +1,7 @@
 import { Trait } from 'models/Otto'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { useTranslation } from 'react-i18next'
 import { ContentLarge, ContentSmall, Note } from 'styles/typography'
-import { stat } from 'fs'
 
 const StyledTraitCard = styled.div`
   display: flex;
@@ -79,6 +78,7 @@ const StyledImageContainer = styled.div<{ rarity: string }>`
 
 const StyledImage = styled.img`
   width: 100%;
+  border-radius: 5px;
 `
 
 const StyledInfoContainer = styled.div`
@@ -128,8 +128,8 @@ export default function TraitCard({ trait: { type, name, image, stats, rarity, t
             <ContentSmall>{t('otto.rarity_score', { score: total_rarity_score })}</ContentSmall>
           </StyledRarityScore>
           <StyledStats>
-            {stats.map(({ name, value }) => (
-              <StyledStat>
+            {stats.map(({ name, value }, i) => (
+              <StyledStat key={i}>
                 <Note>{name}</Note>
                 <Note>{value}</Note>
               </StyledStat>

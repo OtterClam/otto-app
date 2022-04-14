@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { ContentSmall, Display2, Headline } from 'styles/typography'
 import Step1Img from './step1.png'
 import Step2Img from './step2.png'

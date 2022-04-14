@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
 import exit from '../assets/ui/exit.svg'
 import Button from './Button'

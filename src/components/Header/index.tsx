@@ -1,5 +1,5 @@
 import { useMediaQuery } from 'hooks/useMediaQuery'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { breakpoints } from 'styles/breakpoints'
 import { Display3 } from 'styles/typography'
 import Button from 'components/Button'

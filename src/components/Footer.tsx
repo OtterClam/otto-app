@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
 
 const StyledFooter = styled.div`

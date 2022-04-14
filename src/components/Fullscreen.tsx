@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 const StyledPopup = styled.div`
   position: fixed;

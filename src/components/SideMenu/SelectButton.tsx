@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { ContentSmall } from 'styles/typography'
 import CheckedBox from './checkbox-checked.svg'
 import UncheckedBox from './checkbox-unchecked.svg'

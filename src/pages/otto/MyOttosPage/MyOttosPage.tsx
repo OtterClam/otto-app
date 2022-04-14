@@ -8,7 +8,7 @@ import Layout from 'Layout'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { LIST_MY_OTTOS } from '../queries'
 import { ListMyOttos, ListMyOttosVariables } from '../__generated__/ListMyOttos'
 import NoOttoView from './NoOttoView'
@@ -89,7 +89,7 @@ export default function MyOttosPage() {
                     navigate(otto.tokenId)
                   }}
                 >
-                  <OttoCard key={index} rawOtto={otto} />
+                  <OttoCard rawOtto={otto} />
                 </a>
               ))}
             </StyledMyOttos>

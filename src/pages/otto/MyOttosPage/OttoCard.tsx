@@ -2,7 +2,7 @@ import BorderContainer from 'components/BorderContainer'
 import useOtto from 'hooks/useOtto'
 import { RawOtto } from 'models/Otto'
 import { useTranslation } from 'react-i18next'
-import styled, { useTheme } from 'styled-components'
+import styled, { useTheme } from 'styled-components/macro'
 import { Caption, ContentMedium, ContentSmall } from 'styles/typography'
 
 const StyledOttoCard = styled(BorderContainer)`
@@ -81,8 +81,8 @@ export default function OttoCard({ rawOtto }: Props) {
       <StyledAttrs>
         {otto?.metadata?.otto_attrs
           ?.filter(p => p.trait_type !== 'BRS')
-          .map(({ trait_type, value }) => (
-            <StyledAttr>
+          .map(({ trait_type, value }, index) => (
+            <StyledAttr key={index}>
               <Caption>{trait_type}</Caption>
               <Caption>{value}</Caption>
             </StyledAttr>

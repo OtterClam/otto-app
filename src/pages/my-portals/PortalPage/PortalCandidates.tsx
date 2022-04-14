@@ -2,7 +2,7 @@ import useApi, { OttoCandidateMeta } from 'hooks/useApi'
 import Portal from 'models/Portal'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
 import OttoCandidateCard from './OttoCandidateCard'
 

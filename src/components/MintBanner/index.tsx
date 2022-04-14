@@ -1,7 +1,7 @@
 import Button from 'components/Button'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { Display2, Display3, Headline } from 'styles/typography'
 import JoinUsImage from './join-us.png'
 

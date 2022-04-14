@@ -1,7 +1,7 @@
 import { WHITELIST_MINT_TIME } from 'constant'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { Caption, ContentMedium, Headline } from 'styles/typography'
 
 const StyledCountdown = styled.section`

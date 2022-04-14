@@ -1,6 +1,6 @@
 import Layout from 'Layout'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import Hero from './Hero'
 import Intro from './Intro'
 import Mint from './Mint'

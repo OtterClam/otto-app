@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { useTranslation } from 'react-i18next'
 import Layout from 'Layout'
 import MenuButton from 'components/MenuButton'
@@ -105,12 +105,12 @@ const HomePage = () => {
     <StyledMenus>
       {menus.map(({ title, icon, href, internal }, i) =>
         internal ? (
-          <Link to={href} rel="noreferrer">
-            <StyledMenuButton key={i} title={title} icon={icon} disabled={!href} />
+          <Link key={i} to={href} rel="noreferrer">
+            <StyledMenuButton title={title} icon={icon} disabled={!href} />
           </Link>
         ) : (
-          <a href={href} target="_blank" rel="noreferrer">
-            <StyledMenuButton key={i} title={title} icon={icon} disabled={!href} />
+          <a key={i} href={href} target="_blank" rel="noreferrer">
+            <StyledMenuButton title={title} icon={icon} disabled={!href} />
           </a>
         )
       )}
