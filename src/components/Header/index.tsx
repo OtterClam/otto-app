@@ -5,7 +5,7 @@ import { Display3 } from 'styles/typography'
 import Button from 'components/Button'
 import { useDispatch } from 'react-redux'
 import { showSideMenu } from 'store/uiSlice'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useEthers } from '@usedapp/core'
 import Connector from './Connector'
 import ClamBalance from './ClamBalance'
@@ -25,6 +25,8 @@ const StyledHeader = styled.div`
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 95%;
+    height: 48px;
+    margin: 10px 0;
   }
 `
 
@@ -43,6 +45,11 @@ const StyledBackButton = styled.button`
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
   color: ${props => props.theme.colors.otterBlack};
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 48px;
+    height: 48px;
+  }
 `
 
 const StyledTitle = styled.div`
@@ -85,7 +92,7 @@ export default function Header({ title }: { title: string }) {
       </StyledTitle>
       {!isMobile && <ClamBalance />}
       {!hideConnector && <Connector />}
-      <Button primaryColor="white" padding="2px 6px" onClick={() => dispatch(showSideMenu())}>
+      <Button primaryColor="white" height="100%" padding="0 4px" onClick={() => dispatch(showSideMenu())}>
         <StyledIcon src={iconHamburger} />
       </Button>
     </StyledHeader>
