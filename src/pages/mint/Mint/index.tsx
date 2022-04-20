@@ -2,19 +2,18 @@ import { shortenAddress, useEthers, useTokenAllowance, useTokenBalance } from '@
 import CLAM from 'assets/clam.png'
 import ETH from 'assets/eth.png'
 import Button from 'components/Button'
-import { BUY_CLAM_LINK, PUBLIC_MINT_TIME } from 'constant'
+import { BUY_CLAM_LINK } from 'constant'
 import { useApprove, useMint } from 'contracts/functions'
-import { useMintInfo, useOttolisted, useOttoInfo } from 'contracts/views'
+import { useMintInfo, useOttoInfo, useOttolisted } from 'contracts/views'
 import { ethers } from 'ethers'
 import { trim } from 'helpers/trim'
 import useContractAddresses from 'hooks/useContractAddresses'
-import { useMediaQuery } from 'hooks/useMediaQuery'
+import { useBreakPoints } from 'hooks/useMediaQuery'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { connectWallet, mintFailed, mintStart, mintSuccess } from 'store/uiSlice'
 import styled from 'styled-components/macro'
-import { breakpoints } from 'styles/breakpoints'
 import { Caption, ContentLarge, ContentMedium, ContentSmall, Display2, Headline, Note } from 'styles/typography'
 import PortalPreviewImage from './portal-preview.png'
 import SmallPortalImage from './portal-small.png'
@@ -303,7 +302,7 @@ type PaidOption = 'clam' | 'eth'
 
 export default function Mint() {
   const { t } = useTranslation()
-  const isMobile = useMediaQuery(breakpoints.mobile)
+  const { isMobile } = useBreakPoints()
   const dispatch = useDispatch()
   const [paidOption, setPaidOption] = useState<PaidOption>('clam')
   const { PORTAL_CREATOR, WETH, CLAM } = useContractAddresses()

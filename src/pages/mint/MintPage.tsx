@@ -16,7 +16,7 @@ const StyledPage = styled.div`
 const MintPage = () => {
   const { t } = useTranslation()
   return (
-    <Layout title={t('mint.title')}>
+    <Layout title={t('mint.title')} background="dark">
       <StyledPage>
         <Hero />
         <Mint />

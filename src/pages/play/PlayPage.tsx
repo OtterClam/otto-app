@@ -57,7 +57,7 @@ const PlayPage = () => {
     () => [
       { title: t('play.menu.my_portals'), icon: MyPortalIcon, href: '/my-portals' },
       { title: t('play.menu.my_ottos'), icon: MyOttosIcon, href: '/my-ottos' },
-      { title: t('play.menu.my_items'), icon: MyItemsIcon },
+      { title: t('play.menu.my_items'), icon: MyItemsIcon, href: '/my-items' },
       { title: t('play.menu.otto_market'), icon: OttoMarketIcon },
       { title: t('play.menu.forge_house'), icon: ForgeHouseIcon },
       { title: t('play.menu.auction_house'), icon: AuctionHouseIcon },

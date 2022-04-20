@@ -10,7 +10,8 @@ import { selectError } from '../store/errorSlice'
 
 export type ButtonColor = 'blue' | 'white' | 'pink'
 
-interface ButtonProps {
+interface StyledButtonProps {
+  height?: string
   primaryColor: ButtonColor
   padding?: string
 }
@@ -36,8 +37,9 @@ const buttonColors = {
   },
 }
 
-const StyledButton = styled.button<ButtonProps>`
+const StyledButton = styled.button<StyledButtonProps>`
   display: inline-block;
+  height: ${props => props.height};
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
   background-color: ${({ primaryColor }) => buttonColors[primaryColor].outerBackground};
@@ -64,7 +66,10 @@ interface InnerButtonProps {
 }
 
 const StyledInnerButton = styled.div<InnerButtonProps>`
+  display: flex;
+  align-items: center;
   width: 100%;
+  height: calc(100% - 6px);
   color: ${({ primaryColor }) => buttonColors[primaryColor].text};
   background-color: ${({ theme, primaryColor, disabled }) =>
     disabled ? theme.colors.darkGray200 : buttonColors[primaryColor].innerBackground};
@@ -84,6 +89,7 @@ const StyledInnerButton = styled.div<InnerButtonProps>`
 `
 
 interface Props {
+  height?: string
   onClick?: () => void
   primaryColor?: ButtonColor
   isWeb3?: boolean
@@ -97,6 +103,7 @@ interface Props {
 
 const Button = ({
   children,
+  height,
   className,
   onClick,
   primaryColor = 'blue',
@@ -122,6 +129,7 @@ const Button = ({
       className={className}
       primaryColor={primaryColor}
       disabled={_disabled}
+      height={height}
       onClick={() => {
         if (onClick) {
           if (loading || disabled || pending) return

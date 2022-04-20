@@ -212,5 +212,18 @@
     "desc": "Only Polygon Mainnet are supported.",
     "title": "Unsupported Network"
   },
-  "wallet_selector_head": "Connect to a wallet"
+  "wallet_selector_head": "Connect to a wallet",
+  "my_items": {
+    "title": "My Items",
+    "section_title": {
+      "All": "All",
+      "Consumable": "Other Items",
+      "Holding": "Holdings",
+      "Headwear": "Headwears",
+      "Facial Accessories": "Facial Accessories ",
+      "Clothes": "Clothes",
+      "Background": "Backgrounds"
+    },
+    "no_selected_item": "Select an item to view the detail."
+  }
 }

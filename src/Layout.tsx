@@ -3,6 +3,8 @@ import styled from 'styled-components/macro'
 import Footer from './components/Footer'
 import Header from './components/Header'
 
+type Background = 'white' | 'dark'
+
 const StyledBorder = styled.div`
   max-width: 1200px;
   flex: 1;
@@ -39,19 +41,22 @@ const StyledInnerBorder = styled.div`
   height: 100%;
 `
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ background: Background }>`
   overflow-x: hidden;
   overflow-y: auto;
   width: 100%;
   height: 100%;
-  background-color: ${({ theme }) => theme.colors.otterBlack};
+  background-color: ${({ theme, background }) =>
+    background === 'white' ? theme.colors.white : theme.colors.otterBlack};
 `
 
-export default function Layout({
-  title,
-  noBorder = false,
-  children,
-}: PropsWithChildren<{ title: string; noBorder?: boolean }>) {
+interface Props {
+  title: string
+  noBorder?: boolean
+  background?: Background
+}
+
+export default function Layout({ title, noBorder = false, background = 'white', children }: PropsWithChildren<Props>) {
   return (
     <>
       <Header title={title} />
@@ -60,7 +65,7 @@ export default function Layout({
       ) : (
         <StyledBorder>
           <StyledInnerBorder>
-            <StyledContainer>{children}</StyledContainer>
+            <StyledContainer background={background}>{children}</StyledContainer>
           </StyledInnerBorder>
         </StyledBorder>
       )}
