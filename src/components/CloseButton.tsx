@@ -1,4 +1,5 @@
 import CloseIcon from 'assets/ui/close_icon_dark.svg'
+import WhiteCloseIcon from 'assets/ui/close_icon.svg'
 import { ottoClick } from 'constant'
 import styled from 'styled-components/macro'
 
@@ -13,10 +14,11 @@ const StyledCloseIcon = styled.img`
 
 interface Props {
   className?: string
+  color?: 'white' | 'dark'
   onClose: () => void
 }
 
-export default function CloseButton({ className, onClose }: Props) {
+export default function CloseButton({ className, color = 'dark', onClose }: Props) {
   return (
     <StyledCloseButton
       className={className}
@@ -25,7 +27,7 @@ export default function CloseButton({ className, onClose }: Props) {
         onClose()
       }}
     >
-      <StyledCloseIcon src={CloseIcon} />
+      <StyledCloseIcon src={color === 'dark' ? CloseIcon : WhiteCloseIcon} />
     </StyledCloseButton>
   )
 }

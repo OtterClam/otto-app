@@ -9,7 +9,7 @@ import Fullscreen from 'components/Fullscreen'
 import PlaceholderImg from './tmp.png'
 import ItemCell from './ItemCell'
 import ItemDetails from './ItemDetails'
-import UseItemPopup from './UseItemPopup'
+import UseItemPopup from './use-item/UseItemPopup'
 
 const StyledMyItemsPage = styled.div`
   height: 100%;
@@ -199,7 +199,7 @@ export default function MyItemsPage() {
           </StyledItemList>
           {isMobile ? (
             selectedItem && (
-              <Fullscreen show>
+              <Fullscreen show background="white">
                 <ItemDetails
                   item={selectedItem}
                   onClose={() => setSelectedItem(null)}
@@ -226,7 +226,7 @@ export default function MyItemsPage() {
             </StyledItemDetails>
           )}
         </StyledItemSection>
-        {useItem && <UseItemPopup item={useItem} />}
+        {useItem && <UseItemPopup item={useItem} onClose={() => setUseItem(null)} />}
       </StyledMyItemsPage>
     </Layout>
   )

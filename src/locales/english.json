@@ -227,7 +227,12 @@
     "no_selected_item": "Select an item to view the detail.",
     "use": "Use",
     "use_item": {
-      "title": "Select an Otto to use this item"
+      "title": "Select an Otto to use this item",
+      "processing": "Processing...\nThe transaction will be finished soon.",
+      "completed_title": "Ta-da! Your Otto seems to have changed a bit.",
+      "completed_subtitle": "Does it look better or worse? idk.",
+      "receive_item": "Received Items"
     }
-  }
+  },
+  "close": "Close"
 }

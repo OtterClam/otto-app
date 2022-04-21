@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import NoOttoView from './NoOttoView'
-import OttoCard from './OttoCard'
+import OttoCard from '../../../components/OttoCard'
 
 const StyledMyOttosPage = styled.div`
   width: 100%;

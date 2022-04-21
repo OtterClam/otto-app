@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 import { ContentLarge, Note } from 'styles/typography'
 import SelectedFrame from './selected-frame.svg'
 
-const StyledItemCell = styled.div<{ rarity: string; selected: boolean }>`
+const StyledItemCell = styled.button<{ rarity: string; selected: boolean; canClick: boolean }>`
   --selected-bg: radial-gradient(63.75% 63.75% at 50% 50%, rgba(116, 205, 255, 0) 56.25%, #74cdff 100%);
   width: 115px;
   height: 115px;
@@ -11,11 +11,11 @@ const StyledItemCell = styled.div<{ rarity: string; selected: boolean }>`
   border-radius: 5px;
   position: relative;
 
-  background: ${({ selected }) => (selected ? 'var(--selected-bg)' : 'transparent')};
+  background: ${({ canClick, selected }) => (canClick ? (selected ? 'var(--selected-bg)' : 'white') : 'white')};
 };
 
   &:hover {
-    background: var(--selected-bg)
+    background: ${({ canClick }) => (canClick ? 'var(--selected-bg)' : 'white')}
   }
 
   &:before {
@@ -84,13 +84,20 @@ const StyledAmount = styled.div`
 interface Props {
   item: Item
   amount: number
-  selected: boolean
-  onClick: () => void
+  selected?: boolean
+  onClick?: () => void
+  className?: string
 }
 
-export default function ItemCell({ item: { image, rarity }, amount, selected, onClick }: Props) {
+export default function ItemCell({ item: { image, rarity }, amount, selected = false, onClick, className }: Props) {
   return (
-    <StyledItemCell rarity={rarity} selected={selected} onClick={onClick}>
+    <StyledItemCell
+      rarity={rarity}
+      selected={selected}
+      canClick={Boolean(onClick)}
+      className={className}
+      onClick={onClick}
+    >
       <StyledImage src={image} />
       <StyledRarity rarity={rarity}>
         <Note>{rarity}</Note>

@@ -18,6 +18,7 @@ const StyledApp = styled.div`
   height: 100vh;
   background-image: url(${bg});
   background-size: cover;
+  color: ${({ theme }) => theme.colors.otterBlack};
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     height: auto;

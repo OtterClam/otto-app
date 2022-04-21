@@ -37,7 +37,7 @@ const Container = styled.div`
   }
 `
 
-const StyledInnerContainer = styled.div`
+const StyledInnerContainer = styled.div<{ background?: string }>`
   border-radius: 10px;
   width: 100%;
   height: 100%;
@@ -46,6 +46,7 @@ const StyledInnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: ${({ background }) => background || 'transparent'};
 `
 
 const Content = styled.div`
@@ -56,17 +57,20 @@ const Content = styled.div`
 
 interface Props {
   show: boolean
-  children?: ReactNode
+  background?: string
+  children: ReactNode
 }
 
-const Fullscreen = ({ show, children }: Props) => {
+const Fullscreen = ({ show, background, children }: Props) => {
   if (!show) return null
 
   return (
     <StyledPopup>
       <Background />
       <Container>
-        <StyledInnerContainer>{children && <Content>{children}</Content>}</StyledInnerContainer>
+        <StyledInnerContainer background={background}>
+          <Content>{children}</Content>
+        </StyledInnerContainer>
       </Container>
     </StyledPopup>
   )
