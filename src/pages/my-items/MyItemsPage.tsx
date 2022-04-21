@@ -8,8 +8,8 @@ import { useBreakPoints } from 'hooks/useMediaQuery'
 import Fullscreen from 'components/Fullscreen'
 import PlaceholderImg from './tmp.png'
 import ItemCell from './ItemCell'
-import ItemDetails from './ItemDetails'
-import UseItemPopup from './use-item/UseItemPopup'
+import ItemDetails from './use-item/ItemDetails'
+import UseItemPopup from './use-item/ItemPopup'
 
 const StyledMyItemsPage = styled.div`
   height: 100%;
@@ -93,8 +93,10 @@ const items: Item[] = [
     name: 'Vaccine',
     type: 'Consumable',
     rarity: 'R3',
+    wearable: true,
     description:
       'Only the Otto with genetic face masks can take Potion BB. After being taken, the face mask will be taken off and return to your item inventory.\n\n There’s a 10% chance that the Otto will have a side effect: INT-1.',
+    attrs: [{ type: 'STR', value: '1' }],
   },
   {
     id: '123',
@@ -102,8 +104,11 @@ const items: Item[] = [
     name: 'Vaccine',
     type: 'Consumable',
     rarity: 'R3',
+    wearable: false,
     description:
       'Only the Otto with genetic face masks can take Potion BB. After being taken, the face mask will be taken off and return to your item inventory.\n\n There’s a 10% chance that the Otto will have a side effect: INT-1.',
+
+    attrs: [{ type: 'STR', value: '1' }],
   },
   {
     id: '123',
@@ -111,9 +116,10 @@ const items: Item[] = [
     name: 'Vaccine',
     type: 'Consumable',
     rarity: 'R2',
-
+    wearable: false,
     description:
       'Only the Otto with genetic face masks can take Potion BB. After being taken, the face mask will be taken off and return to your item inventory.\n\n There’s a 10% chance that the Otto will have a side effect: INT-1.',
+    attrs: [{ type: 'STR', value: '1' }],
   },
   {
     id: '123',
@@ -121,9 +127,10 @@ const items: Item[] = [
     name: 'Vaccine',
     type: 'Consumable',
     rarity: 'E1',
-
+    wearable: false,
     description:
       'Only the Otto with genetic face masks can take Potion BB. After being taken, the face mask will be taken off and return to your item inventory.\n\n There’s a 10% chance that the Otto will have a side effect: INT-1.',
+    attrs: [{ type: 'STR', value: '1' }],
   },
   {
     id: '123',
@@ -131,9 +138,10 @@ const items: Item[] = [
     name: 'Vaccine',
     type: 'Headwear',
     rarity: 'R1',
-
+    wearable: false,
     description:
       'Only the Otto with genetic face masks can take Potion BB. After being taken, the face mask will be taken off and return to your item inventory.\n\n There’s a 10% chance that the Otto will have a side effect: INT-1.',
+    attrs: [{ type: 'STR', value: '1' }],
   },
   {
     id: '123',
@@ -141,8 +149,10 @@ const items: Item[] = [
     name: 'Vaccine',
     type: 'Holding',
     rarity: 'C3',
+    wearable: false,
     description:
       'Only the Otto with genetic face masks can take Potion BB. After being taken, the face mask will be taken off and return to your item inventory.\n\n There’s a 10% chance that the Otto will have a side effect: INT-1.',
+    attrs: [{ type: 'STR', value: '1' }],
   },
   {
     id: '123',
@@ -150,9 +160,10 @@ const items: Item[] = [
     name: 'Vaccine',
     type: 'Consumable',
     rarity: 'R3',
-
+    wearable: false,
     description:
       'Only the Otto with genetic face masks can take Potion BB. After being taken, the face mask will be taken off and return to your item inventory.\n\n There’s a 10% chance that the Otto will have a side effect: INT-1.',
+    attrs: [{ type: 'STR', value: '1' }],
   },
 ]
 

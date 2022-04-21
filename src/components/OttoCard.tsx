@@ -1,4 +1,5 @@
 import BorderContainer from 'components/BorderContainer'
+import Item from 'models/Item'
 import Otto from 'models/Otto'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -69,9 +70,10 @@ interface Props {
   className?: string
   otto: Otto
   oldOtto?: Otto
+  item?: Item
 }
 
-export default function OttoCard({ otto, oldOtto, className }: Props) {
+export default function OttoCard({ otto, oldOtto, item, className }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
   const diffAttrs = useMemo(() => {
@@ -83,8 +85,13 @@ export default function OttoCard({ otto, oldOtto, className }: Props) {
         diff[trait_type] = String(diffValue > 0 ? `+${diffValue}` : diffValue)
       })
     }
+    if (item) {
+      item.attrs.forEach(({ type, value }) => {
+        diff[type] = String(Number(value) > 0 ? `+${value}` : value)
+      })
+    }
     return diff
-  }, [otto, oldOtto])
+  }, [otto, oldOtto, item])
   return (
     <StyledOttoCard borderColor={theme.colors.lightGray400} className={className}>
       <StyledOttoImage src={otto.image} />

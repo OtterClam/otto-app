@@ -83,13 +83,13 @@ const StyledAmount = styled.div`
 
 interface Props {
   item: Item
-  amount: number
+  amount?: number
   selected?: boolean
   onClick?: () => void
   className?: string
 }
 
-export default function ItemCell({ item: { image, rarity }, amount, selected = false, onClick, className }: Props) {
+export default function ItemCell({ item: { image, rarity }, amount = 1, selected = false, onClick, className }: Props) {
   return (
     <StyledItemCell
       rarity={rarity}

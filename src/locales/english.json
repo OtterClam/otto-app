@@ -232,6 +232,11 @@
       "completed_title": "Ta-da! Your Otto seems to have changed a bit.",
       "completed_subtitle": "Does it look better or worse? idk.",
       "receive_item": "Received Items"
+    },
+    "wear_item": {
+      "title": "Select an Otto to wear this item",
+      "current_equipped": "Currently Equipped",
+      "replaced": "Replaced With..."
     }
   },
   "close": "Close"
