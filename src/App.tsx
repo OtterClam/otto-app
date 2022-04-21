@@ -3,6 +3,7 @@ import { ChainId, Config, DAppProvider, useEthers } from '@usedapp/core'
 import MintPopup from 'components/MintPopup'
 import SideMenu from 'components/SideMenu'
 import useApollo from 'hooks/useApollo'
+import MyOttosProvider from 'MyOttosProvider'
 import { Outlet } from 'react-router-dom'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
@@ -39,13 +40,15 @@ const ApolloApp = () => {
   return (
     <ApolloProvider client={apollo}>
       <ThemeProvider theme={theme}>
-        <StyledApp>
-          <Outlet />
-          <Error />
-          <WalletSelector />
-          <MintPopup />
-          <SideMenu />
-        </StyledApp>
+        <MyOttosProvider>
+          <StyledApp>
+            <Outlet />
+            <Error />
+            <WalletSelector />
+            <MintPopup />
+            <SideMenu />
+          </StyledApp>
+        </MyOttosProvider>
       </ThemeProvider>
     </ApolloProvider>
   )

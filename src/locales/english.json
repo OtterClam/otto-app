@@ -224,6 +224,10 @@
       "Clothes": "Clothes",
       "Background": "Backgrounds"
     },
-    "no_selected_item": "Select an item to view the detail."
+    "no_selected_item": "Select an item to view the detail.",
+    "use": "Use",
+    "use_item": {
+      "title": "Select an Otto to use this item"
+    }
   }
 }

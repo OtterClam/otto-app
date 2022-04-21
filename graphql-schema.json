@@ -33,42 +33,22 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "Block_height",
-        "description": "The block at which the query should be executed.",
+        "name": "BlockChangedFilter",
+        "description": null,
         "specifiedByUrl": null,
         "fields": null,
         "inputFields": [
           {
-            "name": "hash",
-            "description": "Value containing a block hash",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Bytes",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "number",
-            "description": "Value containing a block number",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "number_gte",
-            "description": "Value containing the minimum block number. \nIn the case of `number_gte`, the query will be executed on the latest block only if\nthe subgraph has progressed to or past the minimum block number.\nDefaults to the latest block when omitted.",
+            "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -86,6 +66,54 @@
         "specifiedByUrl": null,
         "fields": null,
         "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "Block_height",
+        "description": null,
+        "specifiedByUrl": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "hash",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Bytes",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "number",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "number_gte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
@@ -1620,6 +1648,18 @@
                   "ofType": null
                 }
               }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "_change_block",
+            "description": "Filter for the block changed event.",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BlockChangedFilter",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,

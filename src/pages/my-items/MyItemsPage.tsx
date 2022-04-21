@@ -5,9 +5,11 @@ import Item from 'models/Item'
 import { ContentSmall } from 'styles/typography'
 import { useMemo, useState } from 'react'
 import { useBreakPoints } from 'hooks/useMediaQuery'
+import Fullscreen from 'components/Fullscreen'
 import PlaceholderImg from './tmp.png'
 import ItemCell from './ItemCell'
 import ItemDetails from './ItemDetails'
+import UseItemPopup from './UseItemPopup'
 
 const StyledMyItemsPage = styled.div`
   height: 100%;
@@ -159,13 +161,15 @@ export default function MyItemsPage() {
   const { isMobile } = useBreakPoints()
   const [selectedSection, setSelectedSection] = useState<Section>('All')
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
+  const [useItem, setUseItem] = useState<Item | null>(null)
+
   const displayItems = useMemo(
     () => (selectedSection === 'All' ? items : items.filter(i => i.type === selectedSection)),
     [items, selectedSection]
   )
 
   return (
-    <Layout title={t('my_items.title')}>
+    <Layout title={t('my_items.title')} requireConnect>
       <StyledMyItemsPage>
         <StyledSectionTabContainer>
           <StyledSectionTabs>
@@ -194,11 +198,26 @@ export default function MyItemsPage() {
             ))}
           </StyledItemList>
           {isMobile ? (
-            <>mobile</>
+            selectedItem && (
+              <Fullscreen show>
+                <ItemDetails
+                  item={selectedItem}
+                  onClose={() => setSelectedItem(null)}
+                  onUse={() => {
+                    setUseItem(selectedItem)
+                    setSelectedItem(null)
+                  }}
+                />
+              </Fullscreen>
+            )
           ) : (
             <StyledItemDetails>
               {selectedItem ? (
-                <ItemDetails item={selectedItem} />
+                <ItemDetails
+                  item={selectedItem}
+                  onClose={() => setSelectedItem(null)}
+                  onUse={() => setUseItem(selectedItem)}
+                />
               ) : (
                 <StyledNoSelectedItem>
                   <ContentSmall>{t('my_items.no_selected_item')}</ContentSmall>
@@ -207,6 +226,7 @@ export default function MyItemsPage() {
             </StyledItemDetails>
           )}
         </StyledItemSection>
+        {useItem && <UseItemPopup item={useItem} />}
       </StyledMyItemsPage>
     </Layout>
   )

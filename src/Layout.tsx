@@ -1,3 +1,5 @@
+import { useEthers } from '@usedapp/core'
+import ConnectView from 'components/ConnectView'
 import { PropsWithChildren } from 'react'
 import styled from 'styled-components/macro'
 import Footer from './components/Footer'
@@ -54,9 +56,17 @@ interface Props {
   title: string
   noBorder?: boolean
   background?: Background
+  requireConnect?: boolean
 }
 
-export default function Layout({ title, noBorder = false, background = 'white', children }: PropsWithChildren<Props>) {
+export default function Layout({
+  title,
+  noBorder = false,
+  background = 'white',
+  requireConnect = false,
+  children,
+}: PropsWithChildren<Props>) {
+  const { account } = useEthers()
   return (
     <>
       <Header title={title} />
@@ -65,7 +75,9 @@ export default function Layout({ title, noBorder = false, background = 'white', 
       ) : (
         <StyledBorder>
           <StyledInnerBorder>
-            <StyledContainer background={background}>{children}</StyledContainer>
+            <StyledContainer background={background}>
+              {requireConnect && !account ? <ConnectView /> : children}
+            </StyledContainer>
           </StyledInnerBorder>
         </StyledBorder>
       )}

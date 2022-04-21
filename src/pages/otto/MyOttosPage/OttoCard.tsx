@@ -1,6 +1,6 @@
 import BorderContainer from 'components/BorderContainer'
 import useOtto from 'hooks/useOtto'
-import { RawOtto } from 'models/Otto'
+import Otto, { RawOtto } from 'models/Otto'
 import { useTranslation } from 'react-i18next'
 import styled, { useTheme } from 'styled-components/macro'
 import { Caption, ContentMedium, ContentSmall } from 'styles/typography'
@@ -62,13 +62,12 @@ const StyledAttr = styled.div`
 `
 
 interface Props {
-  rawOtto: RawOtto
+  otto: Otto
 }
 
-export default function OttoCard({ rawOtto }: Props) {
+export default function OttoCard({ otto }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { loading, otto } = useOtto(rawOtto, false)
   return (
     <StyledOttoCard borderColor={theme.colors.lightGray400}>
       <StyledOttoImage src={otto?.image} />

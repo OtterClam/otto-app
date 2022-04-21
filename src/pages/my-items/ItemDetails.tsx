@@ -1,3 +1,5 @@
+import CloseButton from 'components/CloseButton'
+import Button from 'components/Button'
 import { t } from 'i18next'
 import Item from 'models/Item'
 import styled from 'styled-components/macro'
@@ -8,6 +10,21 @@ const StyledItemDetails = styled.section`
   flex-direction: column;
   padding: 30px;
   gap: 10px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    align-items: center;
+    border: 2px solid ${({ theme }) => theme.colors.otterBlack};
+    border-radius: 10px;
+  }
+`
+
+const StyledCloseButton = styled(CloseButton)`
+  position: relative;
+  left: calc(100% - 44px);
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    left: 50%;
+  }
 `
 
 const StyledItemImageContainer = styled.div<{ rarity: string }>`
@@ -78,6 +95,7 @@ const StyledTag = styled.div<{ type: string }>`
 `
 
 const StyledTitleContainer = styled.div`
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -95,13 +113,23 @@ const StyledRarityLabel = styled.div<{ rarity: string }>`
 
 const StyledDesc = styled.div``
 
+const StyledButton = styled(Button)`
+  width: 100%;
+  height: 100%;
+`
+
 interface Props {
   item: Item
+  onClose?: () => void
+  onUse?: (item: Item) => void
+  className?: string
 }
 
-export default function ItemDetails({ item: { name, image, rarity, type, description } }: Props) {
+export default function ItemDetails({ item, onClose, onUse, className }: Props) {
+  const { name, image, rarity, type, description } = item
   return (
-    <StyledItemDetails>
+    <StyledItemDetails className={className}>
+      {onClose && <StyledCloseButton onClose={onClose} />}
       <StyledItemImageContainer rarity={rarity}>
         <StyledItemImage src={image} />
         <StyledRarity rarity={rarity}>
@@ -120,6 +148,11 @@ export default function ItemDetails({ item: { name, image, rarity, type, descrip
       <StyledDesc>
         <ContentSmall>{description}</ContentSmall>
       </StyledDesc>
+      {onUse && (
+        <StyledButton onClick={() => onUse(item)}>
+          <Headline>{t('my_items.use')}</Headline>
+        </StyledButton>
+      )}
     </StyledItemDetails>
   )
 }

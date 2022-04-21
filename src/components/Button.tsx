@@ -68,6 +68,7 @@ interface InnerButtonProps {
 const StyledInnerButton = styled.div<InnerButtonProps>`
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
   height: calc(100% - 6px);
   color: ${({ primaryColor }) => buttonColors[primaryColor].text};
