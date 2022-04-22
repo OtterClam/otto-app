@@ -113,6 +113,19 @@ const StyledRarityLabel = styled.div<{ rarity: string }>`
 
 const StyledDesc = styled.div``
 
+const StyledRarityScore = styled.p``
+
+const StyledAttrs = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 90px);
+  column-gap: 12px;
+`
+
+const StyledAttr = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
 const StyledButton = styled(Button)`
   width: 100%;
   height: 100%;
@@ -148,9 +161,22 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
       <StyledDesc>
         <ContentSmall>{description}</ContentSmall>
       </StyledDesc>
+      <StyledRarityScore>
+        <ContentSmall>{t('my_items.base_rarity_score', { score: item.baseRarityScore })}</ContentSmall>
+      </StyledRarityScore>
+      <StyledAttrs>
+        {item.attrs.map(({ name, value }, i) => (
+          <StyledAttr key={i}>
+            <ContentSmall>{name}</ContentSmall>
+            <ContentSmall>{value}</ContentSmall>
+          </StyledAttr>
+        ))}
+      </StyledAttrs>
       {onUse && (
         <StyledButton onClick={() => onUse(item)}>
-          <Headline>{t('my_items.use')}</Headline>
+          <Headline>
+            {item.wearable ? (item.equipped ? t('my_items.take_off') : t('my_items.wear')) : t('my_items.use')}
+          </Headline>
         </StyledButton>
       )}
     </StyledItemDetails>

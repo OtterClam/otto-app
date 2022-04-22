@@ -1,5 +1,7 @@
 import CloseButton from 'components/CloseButton'
 import Fullscreen from 'components/Fullscreen'
+import { takeOffItem, useItem } from 'contracts/functions'
+import useOtto from 'hooks/useOtto'
 import Item from 'models/Item'
 import Otto from 'models/Otto'
 import { MyOttosContext } from 'MyOttosProvider'
@@ -7,10 +9,11 @@ import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { ContentLarge } from 'styles/typography'
+import NutrientAnimation from './NutrientAnimation'
+import TakeOffItemView from './TakeOffItemView'
+import UseItemComplete from './UseItemComplete'
 import UseItemView from './UseItemView'
 import WearItemView from './WearItemView'
-import NutrientAnimation from './NutrientAnimation'
-import UseItemComplete from './UseItemComplete'
 
 const StyledItemPopup = styled.div`
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
@@ -62,14 +65,44 @@ interface Props {
 
 export default function ItemPopup({ item, onClose }: Props) {
   const { t } = useTranslation()
+  const { useItemState, use, resetUse } = useItem()
+  const { takeOffState, takeOff, resetTakeOff } = takeOffItem()
   const [state, setState] = useState(State.Idle)
   const { ottos } = useContext(MyOttosContext)
   const [selectedOtto, setSelectedOtto] = useState<Otto | null>(null)
+
+  const onUse = () => {
+    use(item.id, selectedOtto?.tokenId || '')
+  }
+  const onTakeOff = () => {
+    takeOff(item.id, item.parentTokenId || '')
+  }
   useEffect(() => {
     if (ottos.length > 0) {
       setSelectedOtto(ottos[0])
     }
   }, [ottos])
+  useEffect(() => {
+    if (useItemState.status === 'Mining' || takeOffState.status === 'Mining') {
+      setState(State.Using)
+    }
+    if (useItemState.status === 'Success' || takeOffState.status === 'Success') {
+      setState(State.Complete)
+      resetUse()
+      resetTakeOff()
+    }
+    if (
+      useItemState.status === 'Fail' ||
+      useItemState.status === 'Exception' ||
+      takeOffState.status === 'Fail' ||
+      takeOffState.status === 'Exception'
+    ) {
+      alert(useItemState.errorMessage || '')
+      setState(State.Idle)
+      resetUse()
+      resetTakeOff()
+    }
+  }, [useItemState, takeOffState])
 
   const render = () => {
     switch (state) {
@@ -85,32 +118,25 @@ export default function ItemPopup({ item, onClose }: Props) {
       case State.Complete:
         return selectedOtto ? (
           <StyledCompletedContainer>
-            <UseItemComplete otto={selectedOtto} receivedItem={item} onClose={onClose} />
+            <UseItemComplete otto={selectedOtto} newOtto={selectedOtto} receivedItem={item} onClose={onClose} />
           </StyledCompletedContainer>
         ) : null
-
       case State.Idle:
       default:
         return (
           <StyledItemPopup>
             {item.wearable ? (
-              <UseItemView
-                item={item}
-                selectedOtto={selectedOtto}
-                onSelect={setSelectedOtto}
-                onUse={() => {
-                  console.log('use')
-                }}
-              />
+              item.equipped ? (
+                <TakeOffItemView
+                  item={item}
+                  otto={ottos.find(p => p.tokenId === item.parentTokenId)!}
+                  onUse={onTakeOff}
+                />
+              ) : (
+                <WearItemView item={item} selectedOtto={selectedOtto} onSelect={setSelectedOtto} onUse={onUse} />
+              )
             ) : (
-              <WearItemView
-                item={item}
-                selectedOtto={selectedOtto}
-                onSelect={setSelectedOtto}
-                onUse={() => {
-                  console.log('use')
-                }}
-              />
+              <UseItemView item={item} selectedOtto={selectedOtto} onSelect={setSelectedOtto} onUse={onUse} />
             )}
             <StyledCloseButton onClose={onClose} />
           </StyledItemPopup>

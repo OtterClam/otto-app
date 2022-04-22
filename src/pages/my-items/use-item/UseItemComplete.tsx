@@ -77,11 +77,12 @@ const CloseButtonLarge = styled(Button)``
 
 interface Props {
   otto: Otto
+  newOtto: Otto
   receivedItem?: Item
   onClose: () => void
 }
 
-export default function UseItemComplete({ otto, receivedItem, onClose }: Props) {
+export default function UseItemComplete({ otto, newOtto, receivedItem, onClose }: Props) {
   const { t } = useTranslation()
   return (
     <StyledUseItemComplete>
@@ -93,7 +94,7 @@ export default function UseItemComplete({ otto, receivedItem, onClose }: Props) 
       <StyledOttoResult>
         <StyledOttoCard otto={otto} />
         <StyledArrow src={Arrow} />
-        <StyledOttoCard otto={otto} />
+        <StyledOttoCard otto={newOtto} />
       </StyledOttoResult>
       {receivedItem && (
         <StyledReceivedItem>
@@ -102,7 +103,7 @@ export default function UseItemComplete({ otto, receivedItem, onClose }: Props) 
           </StyledReceivedItemText>
           <StyledReceivedItemContainer>
             <StyledItemCellBg src={Star} />
-            <StyledReceivedItemCell item={receivedItem} amount={1} />
+            <StyledReceivedItemCell item={receivedItem} />
           </StyledReceivedItemContainer>
         </StyledReceivedItem>
       )}

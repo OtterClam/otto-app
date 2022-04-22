@@ -3,13 +3,17 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import Item from 'models/Item'
 import { ContentSmall } from 'styles/typography'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useBreakPoints } from 'hooks/useMediaQuery'
 import Fullscreen from 'components/Fullscreen'
+import { gql, useQuery } from '@apollo/client'
+import { useEthers } from '@usedapp/core'
+import axios from 'axios'
 import PlaceholderImg from './tmp.png'
 import ItemCell from './ItemCell'
 import ItemDetails from './use-item/ItemDetails'
 import UseItemPopup from './use-item/ItemPopup'
+import { ListItems, ListItemsVariables } from './__generated__/ListItems'
 
 const StyledMyItemsPage = styled.div`
   height: 100%;
@@ -86,98 +90,71 @@ const sections = ['All', 'Consumable', 'Holding', 'Headwear', 'Facial Accessorie
 
 type Section = typeof sections[number]
 
-const items: Item[] = [
-  {
-    id: '123',
-    image: PlaceholderImg,
-    name: 'Vaccine',
-    type: 'Consumable',
-    rarity: 'R3',
-    wearable: true,
-    description:
-      'Only the Otto with genetic face masks can take Potion BB. After being taken, the face mask will be taken off and return to your item inventory.\n\n There’s a 10% chance that the Otto will have a side effect: INT-1.',
-    attrs: [{ type: 'STR', value: '1' }],
-  },
-  {
-    id: '123',
-    image: PlaceholderImg,
-    name: 'Vaccine',
-    type: 'Consumable',
-    rarity: 'R3',
-    wearable: false,
-    description:
-      'Only the Otto with genetic face masks can take Potion BB. After being taken, the face mask will be taken off and return to your item inventory.\n\n There’s a 10% chance that the Otto will have a side effect: INT-1.',
+const SlotMapping: Record<number, string> = {
+  0: 'Background',
+  6: 'Facial Accessories',
+  7: 'Headwear',
+  8: 'Holding',
+  255: 'Consumable',
+}
 
-    attrs: [{ type: 'STR', value: '1' }],
-  },
-  {
-    id: '123',
-    image: PlaceholderImg,
-    name: 'Vaccine',
-    type: 'Consumable',
-    rarity: 'R2',
-    wearable: false,
-    description:
-      'Only the Otto with genetic face masks can take Potion BB. After being taken, the face mask will be taken off and return to your item inventory.\n\n There’s a 10% chance that the Otto will have a side effect: INT-1.',
-    attrs: [{ type: 'STR', value: '1' }],
-  },
-  {
-    id: '123',
-    image: PlaceholderImg,
-    name: 'Vaccine',
-    type: 'Consumable',
-    rarity: 'E1',
-    wearable: false,
-    description:
-      'Only the Otto with genetic face masks can take Potion BB. After being taken, the face mask will be taken off and return to your item inventory.\n\n There’s a 10% chance that the Otto will have a side effect: INT-1.',
-    attrs: [{ type: 'STR', value: '1' }],
-  },
-  {
-    id: '123',
-    image: PlaceholderImg,
-    name: 'Vaccine',
-    type: 'Headwear',
-    rarity: 'R1',
-    wearable: false,
-    description:
-      'Only the Otto with genetic face masks can take Potion BB. After being taken, the face mask will be taken off and return to your item inventory.\n\n There’s a 10% chance that the Otto will have a side effect: INT-1.',
-    attrs: [{ type: 'STR', value: '1' }],
-  },
-  {
-    id: '123',
-    image: PlaceholderImg,
-    name: 'Vaccine',
-    type: 'Holding',
-    rarity: 'C3',
-    wearable: false,
-    description:
-      'Only the Otto with genetic face masks can take Potion BB. After being taken, the face mask will be taken off and return to your item inventory.\n\n There’s a 10% chance that the Otto will have a side effect: INT-1.',
-    attrs: [{ type: 'STR', value: '1' }],
-  },
-  {
-    id: '123',
-    image: PlaceholderImg,
-    name: 'Vaccine',
-    type: 'Consumable',
-    rarity: 'R3',
-    wearable: false,
-    description:
-      'Only the Otto with genetic face masks can take Potion BB. After being taken, the face mask will be taken off and return to your item inventory.\n\n There’s a 10% chance that the Otto will have a side effect: INT-1.',
-    attrs: [{ type: 'STR', value: '1' }],
-  },
-]
+const LIST_MY_ITEMS = gql`
+  query ListItems($owner: Bytes!) {
+    ottoItems(where: { rootOwner: $owner, amount_gt: 0 }) {
+      id
+      owner
+      rootOwner
+      slot
+      tokenId
+      tokenURI
+      wearable
+      amount
+      parentTokenId
+    }
+  }
+`
 
 export default function MyItemsPage() {
   const { t } = useTranslation()
+  const { account } = useEthers()
   const { isMobile } = useBreakPoints()
   const [selectedSection, setSelectedSection] = useState<Section>('All')
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
   const [useItem, setUseItem] = useState<Item | null>(null)
-
+  const [items, setItems] = useState<Item[]>([])
+  const { data, loading } = useQuery<ListItems, ListItemsVariables>(LIST_MY_ITEMS, {
+    variables: { owner: account || '' },
+    skip: !account,
+  })
   const displayItems = useMemo(
     () => (selectedSection === 'All' ? items : items.filter(i => i.type === selectedSection)),
     [items, selectedSection]
   )
+
+  useEffect(() => {
+    if (data) {
+      Promise.all(
+        data.ottoItems.map(rawItem =>
+          axios
+            .get(rawItem.tokenURI)
+            .then(res => res.data)
+            .then(({ name, image, details: { rarity, stats, base_rarity_score } }) => ({
+              ...rawItem,
+              id: rawItem.tokenId,
+              name,
+              type: SlotMapping[rawItem.slot] || 'Consumable',
+              rarity,
+              description: '',
+              attrs: stats,
+              image,
+              equipped: Boolean(rawItem.parentTokenId),
+              parentTokenId: rawItem.parentTokenId?.toString(),
+              baseRarityScore: base_rarity_score,
+            }))
+        )
+      ).then(items => setItems(items))
+    }
+  }, [data])
 
   return (
     <Layout title={t('my_items.title')} requireConnect>
@@ -202,7 +179,6 @@ export default function MyItemsPage() {
               <ItemCell
                 key={index}
                 item={item}
-                amount={3}
                 selected={item === selectedItem}
                 onClick={() => setSelectedItem(item)}
               />

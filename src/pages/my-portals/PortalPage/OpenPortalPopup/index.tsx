@@ -23,6 +23,7 @@ const StyledOpenPortalPopup = styled.div`
   text-align: center;
   gap: 10px;
   color: white;
+  background-color: ${({ theme }) => theme.colors.otterBlack};
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     padding: 20px 0;

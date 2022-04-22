@@ -1,7 +1,7 @@
 import { useContractFunction, useEthers } from '@usedapp/core'
 import { Contract } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
-import { ERC20, OttopiaPortalCreator, OttoSummoner } from './abis'
+import { ERC20, Otto, OttoItem, OttopiaPortalCreator, OttoSummoner } from './abis'
 
 type Token = 'clam' | 'eth'
 
@@ -36,4 +36,22 @@ export const useSummonOtto = () => {
   const { state: summonState, send, resetState: resetSummon } = useContractFunction(summoner, 'summon')
   const summon = (tokenId: string, index: number) => send(tokenId, index)
   return { summonState, summon, resetSummon }
+}
+
+export const useItem = () => {
+  const { OTTO, OTTO_ITEM } = useContractAddresses()
+  const { account, library } = useEthers()
+  const item = new Contract(OTTO_ITEM, OttoItem, library)
+  const { state: useItemState, send, resetState: resetUse } = useContractFunction(item, 'transferToParent')
+  const use = (itemId: string, ottoId: string) => send(account, OTTO, ottoId, itemId, [])
+  return { useItemState, use, resetUse }
+}
+
+export const takeOffItem = () => {
+  const { OTTO, OTTO_ITEM } = useContractAddresses()
+  const { account, library } = useEthers()
+  const otto = new Contract(OTTO, Otto, library)
+  const { state: takeOffState, send, resetState: resetTakeOff } = useContractFunction(otto, 'transferChild')
+  const takeOff = (itemId: string, ottoId: string) => send(ottoId, account, OTTO_ITEM, itemId, [])
+  return { takeOffState, takeOff, resetTakeOff }
 }

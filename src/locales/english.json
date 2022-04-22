@@ -148,7 +148,8 @@
       "Skin color": "Skin Color",
       "Skin type": "Skin Type",
       "Voice": "Voice",
-      "title": "{{type}}: {{name}}"
+      "title": "{{type}}: {{name}}",
+      "Holding": "Holding"
     },
     "voice": "Voice: {{voice}}",
     "wearable_traits_tab": "Wearable Traits"
@@ -226,6 +227,10 @@
     },
     "no_selected_item": "Select an item to view the detail.",
     "use": "Use",
+    "wear": "Wear",
+    "equipped": "Equipped",
+    "take_off": "Take Off",
+    "base_rarity_score": "Base Rarity Score: {{score}}",
     "use_item": {
       "title": "Select an Otto to use this item",
       "processing": "Processing...\nThe transaction will be finished soon.",
@@ -237,6 +242,9 @@
       "title": "Select an Otto to wear this item",
       "current_equipped": "Currently Equipped",
       "replaced": "Replaced With..."
+    },
+    "take_off_item": {
+      "title": "Take off the item from your Otto"
     }
   },
   "close": "Close"

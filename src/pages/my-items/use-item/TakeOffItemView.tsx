@@ -56,29 +56,27 @@ const StyledPickerTitle = styled.section``
 
 interface Props {
   item: Item
-  selectedOtto: Otto | null
-  onSelect: (otto: Otto) => void
+  otto: Otto | null
   onUse: () => void
 }
 
-export default function WearItemView({ item, selectedOtto, onSelect, onUse }: Props) {
+export default function TakeOffItemView({ item, otto, onUse }: Props) {
   const { t } = useTranslation()
   return (
     <StyledWearItemView>
       <StyledPickerTitle>
-        <Headline>{t('my_items.wear_item.title')}</Headline>
+        <Headline>{t('my_items.take_off_item.title')}</Headline>
       </StyledPickerTitle>
-      <OttoList selectedOtto={selectedOtto} onSelect={onSelect} />
       <StyledBottomContainer>
-        {selectedOtto && <StyledOttoCard otto={selectedOtto} item={item} />}
+        {otto && <StyledOttoCard otto={otto} item={item} />}
         <StyledOttoPreviewContainer>
           <StyledItemPreview>
             <ItemPreviewCard title={t('my_items.wear_item.current_equipped')} item={item} />
             <img width={30} src={Arrow} alt="arrow" />
-            <ItemPreviewCard title={t('my_items.wear_item.replaced')} item={item} />
+            <ItemPreviewCard title={t('my_items.wear_item.replaced')} />
           </StyledItemPreview>
           <StyledUseButton onClick={onUse}>
-            <Headline>{t('my_items.wear')}</Headline>
+            <Headline>{t('my_items.take_off')}</Headline>
           </StyledUseButton>
         </StyledOttoPreviewContainer>
       </StyledBottomContainer>

@@ -1,4 +1,5 @@
 import Item from 'models/Item'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { ContentLarge, Note } from 'styles/typography'
 import SelectedFrame from './selected-frame.svg'
@@ -81,15 +82,32 @@ const StyledAmount = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
 `
 
+const StyledEquipped = styled.div`
+  position: absolute;
+  left: -2px;
+  bottom: -2px;
+  padding: 2px 6px;
+  z-index: 13;
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.darkGray300};
+  border: 2px solid ${({ theme }) => theme.colors.otterBlack};
+  border-radius: 5px;
+`
+
 interface Props {
   item: Item
-  amount?: number
   selected?: boolean
   onClick?: () => void
   className?: string
 }
 
-export default function ItemCell({ item: { image, rarity }, amount = 1, selected = false, onClick, className }: Props) {
+export default function ItemCell({
+  item: { image, rarity, equipped, amount },
+  selected = false,
+  onClick,
+  className,
+}: Props) {
+  const { t } = useTranslation()
   return (
     <StyledItemCell
       rarity={rarity}
@@ -106,6 +124,11 @@ export default function ItemCell({ item: { image, rarity }, amount = 1, selected
         <StyledAmount>
           <ContentLarge>{amount}</ContentLarge>
         </StyledAmount>
+      )}
+      {equipped && (
+        <StyledEquipped>
+          <Note>{t('my_items.equipped')}</Note>
+        </StyledEquipped>
       )}
       {selected && <StyledSelectedFrame src={SelectedFrame} />}
     </StyledItemCell>

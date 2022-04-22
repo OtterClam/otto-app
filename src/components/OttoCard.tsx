@@ -86,8 +86,8 @@ export default function OttoCard({ otto, oldOtto, item, className }: Props) {
       })
     }
     if (item) {
-      item.attrs.forEach(({ type, value }) => {
-        diff[type] = String(Number(value) > 0 ? `+${value}` : value)
+      item.attrs.forEach(({ name, value }) => {
+        diff[name] = String(Number(value) > 0 ? `+${value}` : value)
       })
     }
     return diff
