@@ -1,5 +1,6 @@
 {
   "button_processing": "處理中...",
+  "close": "Close",
   "connect_help_text": "請連接你的錢包來參與阿獺王國吧",
   "connect_wallet": "連接錢包",
   "header": {
@@ -88,6 +89,29 @@
     "para1": "進入",
     "para2": "阿獺王國！"
   },
+  "my_items": {
+    "section_title": {
+      "All": "All",
+      "Consumable": "Other Items",
+      "Holding": "Holdings"
+    },
+    "take_off_item": {
+      "title": "Take off the item from your Otto"
+    },
+    "title": "My Items",
+    "use_item": {
+      "completed_subtitle": "Does it look better or worse? idk.",
+      "completed_title": "Ta-da! Your Otto seems to have changed a bit.",
+      "processing": "Processing...\nThe transaction will be finished soon.",
+      "receive_item": "Received Items",
+      "title": "Select an Otto to use this item"
+    },
+    "wear_item": {
+      "current_equipped": "Currently Equipped",
+      "replaced": "Replaced With...",
+      "title": "Select an Otto to wear this item"
+    }
+  },
   "my_ottos": {
     "mint_portal": "鑄造傳送門",
     "no_otto": "你還沒有任何阿獺。",
@@ -143,6 +167,7 @@
       "Eyes": "眼睛",
       "Facial Accessories": "臉部裝飾",
       "Headwear": "頭飾",
+      "Holding": "Holding",
       "Mouth": "嘴部",
       "Personality": "個性",
       "Skin color": "毛皮顏色",
