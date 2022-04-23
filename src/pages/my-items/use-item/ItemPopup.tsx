@@ -69,7 +69,7 @@ export default function ItemPopup({ item, onClose }: Props) {
   const [state, setState] = useState(State.Idle)
   const { ottos, reload } = useContext(MyOttosContext)
   const [selectedOtto, setSelectedOtto] = useState<Otto | null>(null)
-  const takeOffOtto = ottos.find(p => p.tokenId === item.parentTokenId)!
+  const takeOffOtto = ottos.find(p => p.tokenId === item.parentTokenId) || null
 
   const onUse = () => {
     use(item.id, selectedOtto?.tokenId || '')

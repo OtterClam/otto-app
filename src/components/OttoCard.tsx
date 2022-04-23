@@ -87,7 +87,7 @@ export default function OttoCard({ otto, oldOtto, item, takeOff = false, classNa
       })
     }
     if (item) {
-      const originTrait = otto.wearableTraits.find(p => p.type === item!.type)
+      const originTrait = otto.wearableTraits.find(p => p.type === item?.type || '')
       let originItem = takeOff ? item : originTrait ? traitToItem(originTrait) : EmptyItem
       if (takeOff) {
         originItem = item

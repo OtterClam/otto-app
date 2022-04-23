@@ -78,7 +78,7 @@ const StyledItemCellBg = styled.img`
 const CloseButtonLarge = styled(Button)``
 
 interface Props {
-  otto: Otto
+  otto: Otto | null
   receivedItem?: Item
   onClose: () => void
 }
@@ -86,9 +86,9 @@ interface Props {
 export default function UseItemCompleteView({ otto, receivedItem, onClose }: Props) {
   const { t } = useTranslation()
   const [newOttoReady, setNewOttoReady] = useState(false)
-  const { otto: newOtto, refetch } = useOtto(otto.raw, true)
+  const { otto: newOtto, refetch } = useOtto(otto?.raw, true)
   useEffect(() => {
-    if (newOtto?.image === otto.image) {
+    if (newOtto?.image === otto?.image) {
       setTimeout(() => refetch(), 5000)
     } else {
       setNewOttoReady(true)
@@ -102,7 +102,7 @@ export default function UseItemCompleteView({ otto, receivedItem, onClose }: Pro
         <ContentSmall>{t('my_items.use_item.completed_subtitle')}</ContentSmall>
       </StyledTitle>
       <StyledOttoResult>
-        <StyledOttoCard otto={otto} />
+        {otto && <StyledOttoCard otto={otto} />}
         <StyledArrow src={Arrow} />
         {newOttoReady && newOtto && <StyledOttoCard otto={newOtto} />}
       </StyledOttoResult>
