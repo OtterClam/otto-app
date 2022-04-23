@@ -7,6 +7,7 @@ import HomePage from 'pages/home/HomePage'
 import MyOttosPage from 'pages/otto/MyOttosPage/MyOttosPage'
 import NotFoundPage from 'pages/not-found/NotFoundPage'
 import OttoPage from 'pages/otto/OttoPage'
+import MyItemsPage from 'pages/my-items/MyItemsPage'
 import App from './App'
 
 const Routing = () => {
@@ -26,7 +27,10 @@ const Routing = () => {
             <Route path=":ottoId" element={<OttoPage />} />
           </Route>
           <Route path="ottos/:ottoId" element={<OttoPage />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="my-items">
+            <Route index element={<MyItemsPage />} />
+          </Route>
+          <Route path="*" element={<HomePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

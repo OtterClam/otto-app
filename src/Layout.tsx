@@ -1,7 +1,11 @@
+import { useEthers } from '@usedapp/core'
+import ConnectView from 'components/ConnectView'
 import { PropsWithChildren } from 'react'
 import styled from 'styled-components/macro'
 import Footer from './components/Footer'
 import Header from './components/Header'
+
+type Background = 'white' | 'dark'
 
 const StyledBorder = styled.div`
   max-width: 1200px;
@@ -39,19 +43,30 @@ const StyledInnerBorder = styled.div`
   height: 100%;
 `
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ background: Background }>`
   overflow-x: hidden;
   overflow-y: auto;
   width: 100%;
   height: 100%;
-  background-color: ${({ theme }) => theme.colors.otterBlack};
+  background-color: ${({ theme, background }) =>
+    background === 'white' ? theme.colors.white : theme.colors.otterBlack};
 `
+
+interface Props {
+  title: string
+  noBorder?: boolean
+  background?: Background
+  requireConnect?: boolean
+}
 
 export default function Layout({
   title,
   noBorder = false,
+  background = 'white',
+  requireConnect = false,
   children,
-}: PropsWithChildren<{ title: string; noBorder?: boolean }>) {
+}: PropsWithChildren<Props>) {
+  const { account } = useEthers()
   return (
     <>
       <Header title={title} />
@@ -60,7 +75,9 @@ export default function Layout({
       ) : (
         <StyledBorder>
           <StyledInnerBorder>
-            <StyledContainer>{children}</StyledContainer>
+            <StyledContainer background={background}>
+              {requireConnect && !account ? <ConnectView /> : children}
+            </StyledContainer>
           </StyledInnerBorder>
         </StyledBorder>
       )}

@@ -1,5 +1,6 @@
 {
   "button_processing": "處理中...",
+  "close": "Close",
   "connect_help_text": "請連接你的錢包來參與阿獺王國吧",
   "connect_wallet": "連接錢包",
   "header": {
@@ -88,6 +89,39 @@
     "para1": "進入",
     "para2": "阿獺王國！"
   },
+  "my_items": {
+    "base_rarity_score": "Base Rarity Score: {{score}}",
+    "equipped": "Equipped",
+    "no_selected_item": "Select an item to view the detail.",
+    "section_title": {
+      "All": "全部",
+      "Consumable": "消耗物品",
+      "Holding": "手持物",
+      "Background": "背景",
+      "Clothes": "服裝",
+      "Facial Accessories": "臉部配件",
+      "Headwear": "頭飾"
+    },
+    "take_off": "脫掉",
+    "take_off_item": {
+      "title": "從你的阿獺身上脫掉裝備"
+    },
+    "title": "我的道具",
+    "use": "使用",
+    "use_item": {
+      "completed_subtitle": "看起來有變更好嗎？見仁見智囉>.^",
+      "completed_title": "完成啦！你的阿獺看起來有些改變了呢。",
+      "processing": "處理中...\n請不要關閉這個視窗。交易通常很快會完成。",
+      "receive_item": "得到物品",
+      "title": "選擇一隻阿獺來使用此物品"
+    },
+    "wear": "Wear",
+    "wear_item": {
+      "current_equipped": "目前裝備",
+      "replaced": "被取代成...",
+      "title": "選擇一隻阿獺來裝備此物品"
+    }
+  },
   "my_ottos": {
     "mint_portal": "鑄造傳送門",
     "no_otto": "你還沒有任何阿獺。",
@@ -141,8 +175,9 @@
       "Background": "背景",
       "Clothes": "服裝",
       "Eyes": "眼睛",
-      "Facial Accessories": "臉部裝飾",
+      "Facial Accessories": "臉部配件",
       "Headwear": "頭飾",
+      "Holding": "手持物",
       "Mouth": "嘴部",
       "Personality": "個性",
       "Skin color": "毛皮顏色",

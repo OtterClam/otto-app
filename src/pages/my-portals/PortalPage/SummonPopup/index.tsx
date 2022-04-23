@@ -24,6 +24,7 @@ const StyledSummonPopup = styled.div`
   text-align: center;
   gap: 10px;
   color: white;
+  background: ${({ theme }) => theme.colors.otterBlack};
 `
 
 const StyledCloseButton = styled.button`

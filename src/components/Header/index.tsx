@@ -1,17 +1,16 @@
-import { useMediaQuery } from 'hooks/useMediaQuery'
-import styled from 'styled-components/macro'
-import { breakpoints } from 'styles/breakpoints'
-import { Display3 } from 'styles/typography'
-import Button from 'components/Button'
-import { useDispatch } from 'react-redux'
-import { showSideMenu } from 'store/uiSlice'
-import { Link } from 'react-router-dom'
 import { useEthers } from '@usedapp/core'
-import Connector from './Connector'
+import Button from 'components/Button'
+import { useBreakPoints } from 'hooks/useMediaQuery'
+import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { showSideMenu } from 'store/uiSlice'
+import styled from 'styled-components/macro'
+import { Display3 } from 'styles/typography'
 import ClamBalance from './ClamBalance'
+import Connector from './Connector'
+import iconHamburger from './icon-hamburger.svg'
 import logoLarge from './logo-large.png'
 import logoSmall from './logo-small.png'
-import iconHamburger from './icon-hamburger.svg'
 
 const StyledHeader = styled.div`
   width: 90%;
@@ -73,7 +72,7 @@ const StyledIcon = styled.img``
 
 export default function Header({ title }: { title: string }) {
   const dispatch = useDispatch()
-  const isMobile = useMediaQuery(breakpoints.mobile)
+  const { isMobile } = useBreakPoints()
   const { account } = useEthers()
   const hideConnector = isMobile && Boolean(account)
 

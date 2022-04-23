@@ -52,7 +52,6 @@ export const LIST_MY_PORTALS = gql`
 `
 
 enum State {
-  NoConnect,
   Loading,
   NoPortals,
   HasPortals,
@@ -67,9 +66,6 @@ export default function MyPortalsPage() {
     skip: !account,
   })
   const state = useMemo(() => {
-    if (!account) {
-      return State.NoConnect
-    }
     if (loading) {
       return State.Loading
     }
@@ -102,13 +98,12 @@ export default function MyPortalsPage() {
             ))}
           </StyledMyPortals>
         )
-      case State.NoConnect:
       default:
         return <ConnectView />
     }
   }, [state, data])
   return (
-    <Layout title={t('my_portals.title')}>
+    <Layout title={t('my_portals.title')} requireConnect>
       <StyledMyPortalsPage>{renderContent()}</StyledMyPortalsPage>
     </Layout>
   )

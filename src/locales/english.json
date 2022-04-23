@@ -1,5 +1,6 @@
 {
   "button_processing": "Processing...",
+  "close": "Close",
   "connect_help_text": "Please connect wallet to continue playing.",
   "connect_wallet": "Connect Wallet",
   "header": {
@@ -88,6 +89,39 @@
     "para1": "DIVE INTO THE",
     "para2": "OTTERVERSE!"
   },
+  "my_items": {
+    "base_rarity_score": "Base Rarity Score: {{score}}",
+    "equipped": "Equipped",
+    "no_selected_item": "Select an item to view the detail.",
+    "section_title": {
+      "All": "All",
+      "Background": "Backgrounds",
+      "Clothes": "Clothes",
+      "Consumable": "Other Items",
+      "Facial Accessories": "Facial Accessories ",
+      "Headwear": "Headwears",
+      "Holding": "Holdings"
+    },
+    "take_off": "Take Off",
+    "take_off_item": {
+      "title": "Take off the item from your Otto"
+    },
+    "title": "My Items",
+    "use": "Use",
+    "use_item": {
+      "completed_subtitle": "Does it look better or worse? idk.",
+      "completed_title": "Ta-da! Your Otto seems to have changed a bit.",
+      "processing": "Processing...\nThe transaction will be finished soon.",
+      "receive_item": "Received Items",
+      "title": "Select an Otto to use this item"
+    },
+    "wear": "Wear",
+    "wear_item": {
+      "current_equipped": "Currently Equipped",
+      "replaced": "Replaced With...",
+      "title": "Select an Otto to wear this item"
+    }
+  },
   "my_ottos": {
     "mint_portal": "Mint Portal",
     "no_otto": "You don't have any otto yet.",
@@ -143,6 +177,7 @@
       "Eyes": "Eyes",
       "Facial Accessories": "Facial Accessories",
       "Headwear": "Headwear",
+      "Holding": "Holding",
       "Mouth": "Mouth",
       "Personality": "Personality",
       "Skin color": "Skin Color",

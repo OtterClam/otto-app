@@ -1,21 +1,20 @@
-import styled from 'styled-components/macro'
-import { useTranslation } from 'react-i18next'
-import Layout from 'Layout'
+import Button from 'components/Button'
 import MenuButton from 'components/MenuButton'
 import { BUY_CLAM_LINK, DAO_LINK, DISCORD_LINK, TREASURY_LINK, WHITE_PAPER_LINK } from 'constant'
+import { useBreakPoints } from 'hooks/useMediaQuery'
+import Layout from 'Layout'
 import { useMemo } from 'react'
-import Button from 'components/Button'
-import { Display3 } from 'styles/typography'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { useMediaQuery } from 'hooks/useMediaQuery'
-import { breakpoints } from 'styles/breakpoints'
-import PortalIcon from './icons/portal.png'
+import styled from 'styled-components/macro'
+import { Display3 } from 'styles/typography'
 import BuyCLAMIcon from './icons/buy-clam.png'
 import DAOIcon from './icons/dao.png'
 import JoinDiscordIcon from './icons/join-discord.png'
+import PortalLarge from './icons/portal-large.png'
+import PortalIcon from './icons/portal.png'
 import TreasuryIcon from './icons/treasury.png'
 import WhitePaperIcon from './icons/whitepaper.png'
-import PortalLarge from './icons/portal-large.png'
 
 const StyledHomePage = styled.div`
   width: 80%;
@@ -82,7 +81,7 @@ interface Menu {
 
 const HomePage = () => {
   const { t } = useTranslation()
-  const isMobile = useMediaQuery(breakpoints.mobile)
+  const { isMobile } = useBreakPoints()
 
   const leftMenus: Menu[] = useMemo(
     () => [

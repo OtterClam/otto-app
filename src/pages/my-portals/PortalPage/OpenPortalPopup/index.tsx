@@ -1,6 +1,4 @@
 import { useQuery } from '@apollo/client'
-import LegendaryPortal from 'assets/legendary_portal.png'
-import SuccessPortal from 'assets/success-portal.png'
 import CloseIcon from 'assets/ui/close_icon.svg'
 import Button from 'components/Button'
 import Fullscreen from 'components/Fullscreen'
@@ -25,6 +23,7 @@ const StyledOpenPortalPopup = styled.div`
   text-align: center;
   gap: 10px;
   color: white;
+  background-color: ${({ theme }) => theme.colors.otterBlack};
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     padding: 20px 0;

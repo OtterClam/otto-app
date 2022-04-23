@@ -39,7 +39,7 @@ export interface OttoMeta {
 }
 
 export default class Otto {
-  private raw: RawOtto
+  public raw: RawOtto
 
   private voice: HTMLAudioElement
 

@@ -5,14 +5,13 @@ import { LoadingView } from 'components/LoadingView'
 import MintBanner from 'components/MintBanner'
 import { ottoClick } from 'constant'
 import Layout from 'Layout'
-import { useCallback, useMemo } from 'react'
+import { MyOttosContext } from 'MyOttosProvider'
+import { useCallback, useContext, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components/macro'
-import { LIST_MY_OTTOS } from '../queries'
-import { ListMyOttos, ListMyOttosVariables } from '../__generated__/ListMyOttos'
 import NoOttoView from './NoOttoView'
-import OttoCard from './OttoCard'
+import OttoCard from '../../../components/OttoCard'
 
 const StyledMyOttosPage = styled.div`
   width: 100%;
@@ -43,7 +42,6 @@ const StyledMintBanner = styled.div`
 `
 
 enum State {
-  NoConnect,
   Loading,
   NoOttos,
   HasOttos,
@@ -53,22 +51,16 @@ export default function MyOttosPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { account } = useEthers()
-  const { data, loading } = useQuery<ListMyOttos, ListMyOttosVariables>(LIST_MY_OTTOS, {
-    variables: { owner: account || '' },
-    skip: !account,
-  })
+  const { ottos, loading } = useContext(MyOttosContext)
   const state = useMemo(() => {
-    if (!account) {
-      return State.NoConnect
-    }
     if (loading) {
       return State.Loading
     }
-    if ((data?.ottos.length || 0) > 0) {
+    if ((ottos.length || 0) > 0) {
       return State.HasOttos
     }
     return State.NoOttos
-  }, [account, loading, data])
+  }, [account, loading, ottos])
   const renderContent = useCallback(() => {
     switch (state) {
       case State.Loading:
@@ -79,7 +71,7 @@ export default function MyOttosPage() {
         return (
           <>
             <StyledMyOttos>
-              {data?.ottos.map((otto, index) => (
+              {ottos.map((otto, index) => (
                 <a
                   key={index}
                   href={otto.tokenId}
@@ -89,7 +81,7 @@ export default function MyOttosPage() {
                     navigate(otto.tokenId)
                   }}
                 >
-                  <OttoCard rawOtto={otto} />
+                  <OttoCard otto={otto} />
                 </a>
               ))}
             </StyledMyOttos>
@@ -98,13 +90,12 @@ export default function MyOttosPage() {
             </StyledMintBanner>
           </>
         )
-      case State.NoConnect:
       default:
         return <ConnectView />
     }
-  }, [state, data])
+  }, [state, ottos])
   return (
-    <Layout title={t('my_ottos.title')}>
+    <Layout title={t('my_ottos.title')} requireConnect>
       <StyledMyOttosPage>{renderContent()}</StyledMyOttosPage>
     </Layout>
   )

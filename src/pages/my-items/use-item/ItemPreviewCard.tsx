@@ -1,0 +1,56 @@
+import Item, { EmptyItem } from 'models/Item'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
+import { Caption } from 'styles/typography'
+import ItemCell from '../ItemCell'
+
+const StyledItemPreviewCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  padding: 20px;
+  background: ${({ theme }) => theme.colors.lightGray200};
+  gap: 10px;
+  align-items: center;
+`
+
+const StyledItemCell = styled(ItemCell)``
+
+const StyledRarityScore = styled.p``
+
+const StyledAttrs = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 50px);
+  column-gap: 10px;
+`
+
+const StyledAttr = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+interface Props {
+  title: string
+  item?: Item
+}
+
+export default function ItemPreviewCard({ title, item = EmptyItem }: Props) {
+  const { t } = useTranslation()
+  return (
+    <StyledItemPreviewCard>
+      <Caption>{title}</Caption>
+      <StyledItemCell item={item} />
+      <StyledRarityScore>
+        <Caption>{t('my_items.base_rarity_score', { score: item.baseRarityScore })}</Caption>
+      </StyledRarityScore>
+      <StyledAttrs>
+        {item.stats.map(({ name, value }, i) => (
+          <StyledAttr key={i}>
+            <Caption>{name}</Caption>
+            <Caption>{value}</Caption>
+          </StyledAttr>
+        ))}
+      </StyledAttrs>
+    </StyledItemPreviewCard>
+  )
+}

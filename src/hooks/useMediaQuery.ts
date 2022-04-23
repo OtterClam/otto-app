@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { breakpoints } from 'styles/breakpoints'
 
 export const useMediaQuery = (query: string) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches)
@@ -11,4 +12,9 @@ export const useMediaQuery = (query: string) => {
   }, [query])
 
   return matches
+}
+
+export const useBreakPoints = () => {
+  const isMobile = useMediaQuery(breakpoints.mobile)
+  return { isMobile }
 }

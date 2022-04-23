@@ -10,14 +10,3 @@ export const GET_OTTO = gql`
     }
   }
 `
-
-export const LIST_MY_OTTOS = gql`
-  query ListMyOttos($owner: Bytes!) {
-    ottos(where: { owner: $owner, portalStatus: SUMMONED }, orderBy: tokenId) {
-      tokenId
-      tokenURI
-      mintAt
-      legendary
-    }
-  }
-`
