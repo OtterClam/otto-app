@@ -1,5 +1,5 @@
 import BorderContainer from 'components/BorderContainer'
-import Item from 'models/Item'
+import Item, { EmptyItem, traitToItem } from 'models/Item'
 import Otto from 'models/Otto'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -71,9 +71,10 @@ interface Props {
   otto: Otto
   oldOtto?: Otto
   item?: Item
+  takeOff?: boolean
 }
 
-export default function OttoCard({ otto, oldOtto, item, className }: Props) {
+export default function OttoCard({ otto, oldOtto, item, takeOff = false, className }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
   const diffAttrs = useMemo(() => {
@@ -86,9 +87,19 @@ export default function OttoCard({ otto, oldOtto, item, className }: Props) {
       })
     }
     if (item) {
-      item.attrs.forEach(({ name, value }) => {
-        diff[name] = String(Number(value) > 0 ? `+${value}` : value)
+      const originTrait = otto.wearableTraits.find(p => p.type === item!.type)
+      let originItem = takeOff ? item : originTrait ? traitToItem(originTrait) : EmptyItem
+      if (takeOff) {
+        originItem = item
+        item = EmptyItem
+      }
+      item.stats.forEach(({ name, value: strValue }) => {
+        const oldValue = Number(originItem.stats.find(({ name: n }) => n === name)?.value || 0)
+        const value = Number(strValue) - oldValue
+        diff[name] = String(value < 0 ? '-' : '+') + Math.abs(value)
       })
+      const brs = item.baseRarityScore - originItem.baseRarityScore
+      diff.BRS = String((brs < 0 ? '-' : '+') + Math.abs(brs))
     }
     return diff
   }, [otto, oldOtto, item])

@@ -1,16 +1,23 @@
 import { gql, useQuery } from '@apollo/client'
-import { useEthers } from '@usedapp/core'
+import { useCall, useEthers } from '@usedapp/core'
 import { useOttos } from 'hooks/useOtto'
 import Otto from 'models/Otto'
-import { createContext, PropsWithChildren, useMemo } from 'react'
+import { createContext, PropsWithChildren, useCallback, useMemo } from 'react'
 import { ListMyOttos, ListMyOttosVariables } from './__generated__/ListMyOttos'
 
 interface MyOttos {
   loading: boolean
   ottos: Otto[]
+  reload: () => void
 }
 
-export const MyOttosContext = createContext<MyOttos>({ loading: false, ottos: [] })
+export const MyOttosContext = createContext<MyOttos>({
+  loading: false,
+  ottos: [],
+  reload: () => {
+    // noop
+  },
+})
 
 export const LIST_MY_OTTOS = gql`
   query ListMyOttos($owner: Bytes!) {
@@ -25,17 +32,19 @@ export const LIST_MY_OTTOS = gql`
 
 export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
   const { account } = useEthers()
-  const { data, loading } = useQuery<ListMyOttos, ListMyOttosVariables>(LIST_MY_OTTOS, {
+  const { data, loading, refetch } = useQuery<ListMyOttos, ListMyOttosVariables>(LIST_MY_OTTOS, {
     variables: { owner: account || '' },
     skip: !account,
   })
-  const { ottos, loading: loadingMeta } = useOttos(data?.ottos, true)
-  const myOtto = useMemo(
+  const { ottos, loading: loadingMeta, refetch: refetchMeta } = useOttos(data?.ottos, true)
+  const reload = useCallback(() => refetch().then(refetchMeta), [refetch, refetchMeta])
+  const myOttos = useMemo(
     () => ({
       loading: loading || loadingMeta,
       ottos,
+      reload,
     }),
-    [loading, loadingMeta, ottos]
+    [loading, loadingMeta, ottos, reload]
   )
-  return <MyOttosContext.Provider value={myOtto}>{children}</MyOttosContext.Provider>
+  return <MyOttosContext.Provider value={myOttos}>{children}</MyOttosContext.Provider>
 }

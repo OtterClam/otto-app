@@ -7,6 +7,8 @@ import { ContentSmall, Headline } from 'styles/typography'
 import Arrow from 'assets/ui/arrow-right-yellow.svg'
 import Button from 'components/Button'
 import Item from 'models/Item'
+import useOtto from 'hooks/useOtto'
+import { useEffect, useState } from 'react'
 import ItemCell from '../ItemCell'
 import Ribbon from './ribbon.svg'
 import Star from './star.svg'
@@ -77,13 +79,21 @@ const CloseButtonLarge = styled(Button)``
 
 interface Props {
   otto: Otto
-  newOtto: Otto
   receivedItem?: Item
   onClose: () => void
 }
 
-export default function UseItemComplete({ otto, newOtto, receivedItem, onClose }: Props) {
+export default function UseItemCompleteView({ otto, receivedItem, onClose }: Props) {
   const { t } = useTranslation()
+  const [newOttoReady, setNewOttoReady] = useState(false)
+  const { otto: newOtto, refetch } = useOtto(otto.raw, true)
+  useEffect(() => {
+    if (newOtto?.image === otto.image) {
+      setTimeout(() => refetch(), 5000)
+    } else {
+      setNewOttoReady(true)
+    }
+  }, [newOtto, otto])
   return (
     <StyledUseItemComplete>
       <StyledCloseButton color="white" onClose={onClose} />
@@ -94,7 +104,7 @@ export default function UseItemComplete({ otto, newOtto, receivedItem, onClose }
       <StyledOttoResult>
         <StyledOttoCard otto={otto} />
         <StyledArrow src={Arrow} />
-        <StyledOttoCard otto={newOtto} />
+        {newOttoReady && newOtto && <StyledOttoCard otto={newOtto} />}
       </StyledOttoResult>
       {receivedItem && (
         <StyledReceivedItem>

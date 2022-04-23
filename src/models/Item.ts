@@ -1,8 +1,9 @@
 import NonItem from './non-item.jpg'
+import { Trait } from './Otto'
 
-export interface ItemAttr {
+export interface ItemStat {
   name: string
-  value: number
+  value: string
 }
 
 export default interface Item {
@@ -13,11 +14,22 @@ export default interface Item {
   image: string
   rarity: string
   description: string
-  attrs: ItemAttr[]
+  stats: ItemStat[]
   equipped: boolean
   amount: number
   parentTokenId?: string
   baseRarityScore: number
+}
+
+export function traitToItem(trait: Trait): Item {
+  return {
+    ...trait,
+    id: '',
+    description: '',
+    equipped: false,
+    amount: 1,
+    baseRarityScore: trait.base_rarity_score,
+  }
 }
 
 export const EmptyItem: Item = {
@@ -28,16 +40,16 @@ export const EmptyItem: Item = {
   wearable: true,
   rarity: 'C3',
   description: '',
-  attrs: [
-    { name: 'STR', value: 0 },
-    { name: 'DEF', value: 0 },
-    { name: 'DEX', value: 0 },
-    { name: 'INT', value: 0 },
-    { name: 'LUK', value: 0 },
-    { name: 'CON', value: 0 },
-    { name: 'CUTE', value: 0 },
+  stats: [
+    { name: 'STR', value: '0' },
+    { name: 'DEF', value: '0' },
+    { name: 'DEX', value: '0' },
+    { name: 'INT', value: '0' },
+    { name: 'LUK', value: '0' },
+    { name: 'CON', value: '0' },
+    { name: 'CUTE', value: '0' },
   ],
   equipped: false,
-  amount: 0,
+  amount: 1,
   baseRarityScore: 0,
 }

@@ -47,7 +47,7 @@ const StyledSelectedFrame = styled.img`
   position: absolute;
   top: -4px;
   left: -4px;
-  z-index: 11;
+  z-index: 15;
 `
 
 const StyledImage = styled.img`

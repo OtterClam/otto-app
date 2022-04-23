@@ -1,7 +1,7 @@
 import Button from 'components/Button'
 import OttoCard from 'components/OttoCard'
 import { t } from 'i18next'
-import Item from 'models/Item'
+import Item, { EmptyItem, traitToItem } from 'models/Item'
 import Otto from 'models/Otto'
 import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
@@ -63,17 +63,19 @@ interface Props {
 
 export default function WearItemView({ item, selectedOtto, onSelect, onUse }: Props) {
   const { t } = useTranslation()
+  const originTrait = selectedOtto?.wearableTraits.find(p => p.type === item.type)
+  const originItem = originTrait ? traitToItem(originTrait) : EmptyItem
   return (
     <StyledWearItemView>
       <StyledPickerTitle>
         <Headline>{t('my_items.wear_item.title')}</Headline>
       </StyledPickerTitle>
-      <OttoList selectedOtto={selectedOtto} onSelect={onSelect} />
+      <OttoList itemId={item.id} selectedOtto={selectedOtto} onSelect={onSelect} />
       <StyledBottomContainer>
         {selectedOtto && <StyledOttoCard otto={selectedOtto} item={item} />}
         <StyledOttoPreviewContainer>
           <StyledItemPreview>
-            <ItemPreviewCard title={t('my_items.wear_item.current_equipped')} item={item} />
+            <ItemPreviewCard title={t('my_items.wear_item.current_equipped')} item={originItem} />
             <img width={30} src={Arrow} alt="arrow" />
             <ItemPreviewCard title={t('my_items.wear_item.replaced')} item={item} />
           </StyledItemPreview>

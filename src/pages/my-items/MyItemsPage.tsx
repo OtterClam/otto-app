@@ -9,6 +9,7 @@ import Fullscreen from 'components/Fullscreen'
 import { gql, useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
 import axios from 'axios'
+import useApi from 'hooks/useApi'
 import PlaceholderImg from './tmp.png'
 import ItemCell from './ItemCell'
 import ItemDetails from './use-item/ItemDetails'
@@ -115,14 +116,15 @@ const LIST_MY_ITEMS = gql`
 `
 
 export default function MyItemsPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { account } = useEthers()
   const { isMobile } = useBreakPoints()
+  const api = useApi()
   const [selectedSection, setSelectedSection] = useState<Section>('All')
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
   const [useItem, setUseItem] = useState<Item | null>(null)
   const [items, setItems] = useState<Item[]>([])
-  const { data, loading } = useQuery<ListItems, ListItemsVariables>(LIST_MY_ITEMS, {
+  const { data, refetch } = useQuery<ListItems, ListItemsVariables>(LIST_MY_ITEMS, {
     variables: { owner: account || '' },
     skip: !account,
   })
@@ -135,22 +137,12 @@ export default function MyItemsPage() {
     if (data) {
       Promise.all(
         data.ottoItems.map(rawItem =>
-          axios
-            .get(rawItem.tokenURI)
-            .then(res => res.data)
-            .then(({ name, image, details: { rarity, stats, base_rarity_score } }) => ({
-              ...rawItem,
-              id: rawItem.tokenId,
-              name,
-              type: SlotMapping[rawItem.slot] || 'Consumable',
-              rarity,
-              description: '',
-              attrs: stats,
-              image,
-              equipped: Boolean(rawItem.parentTokenId),
-              parentTokenId: rawItem.parentTokenId?.toString(),
-              baseRarityScore: base_rarity_score,
-            }))
+          api.getItem(rawItem.tokenId, i18n.resolvedLanguage).then(item => ({
+            ...item,
+            amount: rawItem.amount,
+            equipped: Boolean(rawItem.parentTokenId),
+            parentTokenId: rawItem.parentTokenId?.toString(),
+          }))
         )
       ).then(items => setItems(items))
     }
@@ -203,7 +195,10 @@ export default function MyItemsPage() {
                 <ItemDetails
                   item={selectedItem}
                   onClose={() => setSelectedItem(null)}
-                  onUse={() => setUseItem(selectedItem)}
+                  onUse={() => {
+                    setUseItem(selectedItem)
+                    setSelectedItem(null)
+                  }}
                 />
               ) : (
                 <StyledNoSelectedItem>
@@ -213,7 +208,15 @@ export default function MyItemsPage() {
             </StyledItemDetails>
           )}
         </StyledItemSection>
-        {useItem && <UseItemPopup item={useItem} onClose={() => setUseItem(null)} />}
+        {useItem && (
+          <UseItemPopup
+            item={useItem}
+            onClose={() => {
+              refetch()
+              setUseItem(null)
+            }}
+          />
+        )}
       </StyledMyItemsPage>
     </Layout>
   )

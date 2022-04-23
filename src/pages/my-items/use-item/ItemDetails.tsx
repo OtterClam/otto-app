@@ -165,7 +165,7 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
         <ContentSmall>{t('my_items.base_rarity_score', { score: item.baseRarityScore })}</ContentSmall>
       </StyledRarityScore>
       <StyledAttrs>
-        {item.attrs.map(({ name, value }, i) => (
+        {item.stats.map(({ name, value }, i) => (
           <StyledAttr key={i}>
             <ContentSmall>{name}</ContentSmall>
             <ContentSmall>{value}</ContentSmall>

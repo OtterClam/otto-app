@@ -1,3 +1,4 @@
+import { useItemApplicable } from 'contracts/views'
 import Otto from 'models/Otto'
 import { MyOttosContext } from 'MyOttosProvider'
 import { useContext } from 'react'
@@ -44,18 +45,38 @@ const StyledOttoImage = styled.img`
   background-size: 50px 50px;
 `
 
+const StyledDisableMask = styled.div`
+  width: 50px;
+  height: 53px;
+  background: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  top: 0;
+  left: 0;
+`
+
 interface Props {
+  itemId: string
   selectedOtto: Otto | null
   onSelect: (otto: Otto) => void
 }
 
-export default function OttoList({ selectedOtto, onSelect }: Props) {
+export default function OttoList({ itemId, selectedOtto, onSelect }: Props) {
   const { ottos } = useContext(MyOttosContext)
+  const applicable = useItemApplicable(
+    itemId,
+    ottos.map(otto => otto.tokenId)
+  )
   return (
     <StyledOttoList>
-      {ottos.map((o, index) => (
-        <StyledOttoCell key={index} selected={selectedOtto === o} onClick={() => onSelect(o)}>
-          <StyledOttoImage src={o.image} />
+      {ottos.map((otto, index) => (
+        <StyledOttoCell
+          key={index}
+          selected={selectedOtto === otto}
+          disabled={!applicable[index]}
+          onClick={() => onSelect(otto)}
+        >
+          <StyledOttoImage src={otto.image} />
+          {!applicable[index] && <StyledDisableMask />}
         </StyledOttoCell>
       ))}
     </StyledOttoList>

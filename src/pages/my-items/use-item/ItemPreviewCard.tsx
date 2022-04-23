@@ -44,7 +44,7 @@ export default function ItemPreviewCard({ title, item = EmptyItem }: Props) {
         <Caption>{t('my_items.base_rarity_score', { score: item.baseRarityScore })}</Caption>
       </StyledRarityScore>
       <StyledAttrs>
-        {item.attrs.map(({ name, value }, i) => (
+        {item.stats.map(({ name, value }, i) => (
           <StyledAttr key={i}>
             <Caption>{name}</Caption>
             <Caption>{value}</Caption>

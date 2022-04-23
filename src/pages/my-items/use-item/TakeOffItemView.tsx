@@ -1,14 +1,12 @@
+import Arrow from 'assets/ui/arrow-right-yellow.svg'
 import Button from 'components/Button'
 import OttoCard from 'components/OttoCard'
-import { t } from 'i18next'
 import Item from 'models/Item'
 import Otto from 'models/Otto'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
-import Arrow from 'assets/ui/arrow-right-yellow.svg'
-import { useTranslation } from 'react-i18next'
 import ItemPreviewCard from './ItemPreviewCard'
-import OttoList from './OttoList'
 
 const StyledWearItemView = styled.div`
   padding: 20px;
@@ -68,7 +66,7 @@ export default function TakeOffItemView({ item, otto, onUse }: Props) {
         <Headline>{t('my_items.take_off_item.title')}</Headline>
       </StyledPickerTitle>
       <StyledBottomContainer>
-        {otto && <StyledOttoCard otto={otto} item={item} />}
+        {otto && <StyledOttoCard otto={otto} item={item} takeOff />}
         <StyledOttoPreviewContainer>
           <StyledItemPreview>
             <ItemPreviewCard title={t('my_items.wear_item.current_equipped')} item={item} />

@@ -10,6 +10,7 @@ export default function useOtto(rawOtto: RawOtto | Falsy, details: boolean) {
   const { i18n } = useTranslation()
   const [error, setError] = useState<any | null>(null)
   const [loading, setLoading] = useState(true)
+  const [fetchCount, setFetchCount] = useState(0)
   const [metadata, setMetadata] = useState<OttoMeta | null>(null)
   const otto = useMemo(() => (rawOtto && metadata ? new Otto(rawOtto, metadata) : null), [rawOtto, metadata])
   useEffect(() => {
@@ -29,8 +30,9 @@ export default function useOtto(rawOtto: RawOtto | Falsy, details: boolean) {
         })
         .finally(() => setLoading(false))
     }
-  }, [rawOtto, i18n.resolvedLanguage])
-  return { loading, otto, error }
+  }, [rawOtto, i18n.resolvedLanguage, fetchCount])
+  const refetch = () => setFetchCount(fetchCount + 1)
+  return { loading, otto, error, refetch }
 }
 
 export function useOttos(rawOttos: RawOtto[] | Falsy, details: boolean) {
@@ -39,6 +41,7 @@ export function useOttos(rawOttos: RawOtto[] | Falsy, details: boolean) {
   const [error, setError] = useState<any | null>(null)
   const [loading, setLoading] = useState(true)
   const [ottos, setOttos] = useState<Otto[]>([])
+  const [fetchCount, setFetchCount] = useState(0)
   useEffect(() => {
     if (rawOttos) {
       setLoading(true)
@@ -59,6 +62,7 @@ export function useOttos(rawOttos: RawOtto[] | Falsy, details: boolean) {
         .then(ottos => setOttos(ottos.filter((o): o is Otto => Boolean(o))))
         .finally(() => setLoading(false))
     }
-  }, [rawOttos, i18n.resolvedLanguage])
-  return { loading, ottos, error }
+  }, [rawOttos, i18n.resolvedLanguage, fetchCount])
+  const refetch = () => setFetchCount(fetchCount + 1)
+  return { loading, ottos, error, refetch }
 }
