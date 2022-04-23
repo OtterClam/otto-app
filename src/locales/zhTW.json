@@ -91,25 +91,25 @@
   },
   "my_items": {
     "section_title": {
-      "All": "All",
-      "Consumable": "Other Items",
-      "Holding": "Holdings"
+      "All": "全部",
+      "Consumable": "消耗物品",
+      "Holding": "手持物品"
     },
     "take_off_item": {
-      "title": "Take off the item from your Otto"
+      "title": "從你的阿獺身上脫掉裝備"
     },
-    "title": "My Items",
+    "title": "我的道具",
     "use_item": {
-      "completed_subtitle": "Does it look better or worse? idk.",
-      "completed_title": "Ta-da! Your Otto seems to have changed a bit.",
-      "processing": "Processing...\nThe transaction will be finished soon.",
-      "receive_item": "Received Items",
-      "title": "Select an Otto to use this item"
+      "completed_subtitle": "看起來有變更好嗎？見仁見智囉>.^",
+      "completed_title": "完成啦！你的阿獺看起來有些改變了呢。",
+      "processing": "處理中...\n請不要關閉這個視窗。交易通常很快會完成。",
+      "receive_item": "得到物品",
+      "title": "選擇一隻阿獺來使用此物品"
     },
     "wear_item": {
-      "current_equipped": "Currently Equipped",
-      "replaced": "Replaced With...",
-      "title": "Select an Otto to wear this item"
+      "current_equipped": "目前裝備",
+      "replaced": "被取代成...",
+      "title": "選擇一隻阿獺來裝備此物品"
     }
   },
   "my_ottos": {
