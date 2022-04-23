@@ -21,8 +21,9 @@ const StyledApp = styled.div`
   color: ${({ theme }) => theme.colors.otterBlack};
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    height: auto;
+    min-height: 100vh;
     background-position: center;
+    background-size: cover;
   }
 `
 

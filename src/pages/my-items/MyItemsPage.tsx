@@ -1,16 +1,14 @@
-import Layout from 'Layout'
-import { useTranslation } from 'react-i18next'
-import styled from 'styled-components/macro'
-import Item from 'models/Item'
-import { ContentSmall } from 'styles/typography'
-import { useEffect, useMemo, useState } from 'react'
-import { useBreakPoints } from 'hooks/useMediaQuery'
-import Fullscreen from 'components/Fullscreen'
 import { gql, useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
-import axios from 'axios'
+import Fullscreen from 'components/Fullscreen'
 import useApi from 'hooks/useApi'
-import PlaceholderImg from './tmp.png'
+import { useBreakPoints } from 'hooks/useMediaQuery'
+import Layout from 'Layout'
+import Item from 'models/Item'
+import { useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components/macro'
+import { ContentSmall } from 'styles/typography'
 import ItemCell from './ItemCell'
 import ItemDetails from './use-item/ItemDetails'
 import UseItemPopup from './use-item/ItemPopup'
@@ -26,12 +24,12 @@ const StyledMyItemsPage = styled.div`
 const StyledSectionTabContainer = styled.div`
   min-height: 90px;
   overflow: scroll;
+  border-bottom: 4px solid ${({ theme }) => theme.colors.otterBlack};
 `
 
 const StyledSectionTabs = styled.div`
   display: flex;
   height: 100%;
-  border-bottom: 4px solid ${({ theme }) => theme.colors.otterBlack};
 `
 
 const StyledSectionTab = styled.button<{ section: string; selected: boolean }>`
@@ -85,6 +83,11 @@ const StyledNoSelectedItem = styled.div`
   justify-content: center;
   align-items: center;
   color: ${({ theme }) => theme.colors.darkGray100};
+`
+
+const StyledMobileItemDetailsContainer = styled.div`
+  height: 90vh;
+  overflow-y: scroll;
 `
 
 const sections = ['All', 'Consumable', 'Holding', 'Headwear', 'Facial Accessories', 'Clothes', 'Background'] as const
@@ -179,14 +182,16 @@ export default function MyItemsPage() {
           {isMobile ? (
             selectedItem && (
               <Fullscreen show background="white">
-                <ItemDetails
-                  item={selectedItem}
-                  onClose={() => setSelectedItem(null)}
-                  onUse={() => {
-                    setUseItem(selectedItem)
-                    setSelectedItem(null)
-                  }}
-                />
+                <StyledMobileItemDetailsContainer>
+                  <ItemDetails
+                    item={selectedItem}
+                    onClose={() => setSelectedItem(null)}
+                    onUse={() => {
+                      setUseItem(selectedItem)
+                      setSelectedItem(null)
+                    }}
+                  />
+                </StyledMobileItemDetailsContainer>
               </Fullscreen>
             )
           ) : (

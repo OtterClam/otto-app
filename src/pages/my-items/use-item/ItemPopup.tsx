@@ -15,9 +15,11 @@ import UseItemView from './UseItemView'
 import WearItemView from './WearItemView'
 
 const StyledItemPopup = styled.div`
+  height: 90vh;
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
   background: ${({ theme }) => theme.colors.white};
+  overflow-y: scroll;
 `
 
 const StyledCloseButton = styled(CloseButton)`
