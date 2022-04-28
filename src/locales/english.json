@@ -199,7 +199,8 @@
       "my_items": "My Items",
       "my_ottos": "My Ottos",
       "my_portals": "My Portals",
-      "otto_market": "Otto Market"
+      "otto_market": "Otto Market",
+      "otto_store": "Otto Store"
     },
     "title": "Play"
   },
@@ -247,5 +248,24 @@
     "desc": "Only Polygon Mainnet are supported.",
     "title": "Unsupported Network"
   },
-  "wallet_selector_head": "Connect to a wallet"
+  "wallet_selector_head": "Connect to a wallet",
+  "store": {
+    "title": "Store",
+    "hero": "Welcome to Otto Store!",
+    "subtitle": "Buy the Shell Chests that contain more than 600+ special wearable equipment. Now on sale. Buy more and save more!",
+    "shell_chest": "Shell Chest",
+    "chest_desc": "There are 3 different types of Shell Chest you can purchase. You are more likely to find Epic/Legendary equipment at a higher level Shell Chest!",
+    "product_card": {
+      "select": "Select",
+      "airdrop": "You have {{amount}} for free. Claim now!"
+    },
+    "popup": {
+      "choose_package": "Choose your package",
+      "discount": "Saved {{discount}}%",
+      "buy_now": "Buy",
+      "free": "FREE",
+      "claim_title": "You have {{amount}} for FREE!",
+      "claim": "Claim Now"
+    }
+  }
 }

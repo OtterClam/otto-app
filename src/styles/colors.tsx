@@ -13,6 +13,8 @@ export const colors = {
   darkGray200: '#5E6E99',
   darkGray300: '#434E77',
   seaweedGreen: '#38D075',
+  legendary: '#C2FFA5',
+  legendaryGradient: 'linear-gradient(180deg, #C2FFA5 0%, #FCD0FD 53.12%, #AAB3FF 100%);',
   rarity: {
     C3: '#7DEA88',
     C2: '#ADF989',

@@ -12,7 +12,7 @@ import MissionsIcon from './icons/missions.png'
 import MyItemsIcon from './icons/my-items.png'
 import MyOttosIcon from './icons/my-ottos.png'
 import MyPortalIcon from './icons/my-portal.png'
-import OttoMarketIcon from './icons/otto-market.png'
+import OttoStoreIcon from './icons/otto-store.png'
 
 const StyledPlayPage = styled.div`
   width: 80%;
@@ -58,7 +58,7 @@ const PlayPage = () => {
       { title: t('play.menu.my_portals'), icon: MyPortalIcon, href: '/my-portals' },
       { title: t('play.menu.my_ottos'), icon: MyOttosIcon, href: '/my-ottos' },
       { title: t('play.menu.my_items'), icon: MyItemsIcon, href: '/my-items' },
-      { title: t('play.menu.otto_market'), icon: OttoMarketIcon },
+      { title: t('play.menu.otto_store'), icon: OttoStoreIcon, href: '/store' },
       { title: t('play.menu.forge_house'), icon: ForgeHouseIcon },
       { title: t('play.menu.auction_house'), icon: AuctionHouseIcon },
       { title: t('play.menu.missions'), icon: MissionsIcon },
