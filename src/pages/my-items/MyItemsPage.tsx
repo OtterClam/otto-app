@@ -1,18 +1,15 @@
-import { gql, useQuery } from '@apollo/client'
-import { useEthers } from '@usedapp/core'
 import Fullscreen from 'components/Fullscreen'
-import useApi from 'hooks/useApi'
 import { useBreakPoints } from 'hooks/useMediaQuery'
+import useMyItems from 'hooks/useMyItems'
 import Layout from 'Layout'
 import Item from 'models/Item'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall } from 'styles/typography'
 import ItemCell from './ItemCell'
 import ItemDetails from './use-item/ItemDetails'
 import UseItemPopup from './use-item/ItemPopup'
-import { ListItems, ListItemsVariables } from './__generated__/ListItems'
 
 const StyledMyItemsPage = styled.div`
   height: 100%;
@@ -94,63 +91,17 @@ const sections = ['All', 'Consumable', 'Holding', 'Headwear', 'Facial Accessorie
 
 type Section = typeof sections[number]
 
-const SlotMapping: Record<number, string> = {
-  0: 'Background',
-  6: 'Facial Accessories',
-  7: 'Headwear',
-  8: 'Holding',
-  255: 'Consumable',
-}
-
-const LIST_MY_ITEMS = gql`
-  query ListItems($owner: Bytes!) {
-    ottoItems(where: { rootOwner: $owner, amount_gt: 0 }) {
-      id
-      owner
-      rootOwner
-      slot
-      tokenId
-      tokenURI
-      wearable
-      amount
-      parentTokenId
-    }
-  }
-`
-
 export default function MyItemsPage() {
-  const { t, i18n } = useTranslation()
-  const { account } = useEthers()
+  const { t } = useTranslation()
   const { isMobile } = useBreakPoints()
-  const api = useApi()
   const [selectedSection, setSelectedSection] = useState<Section>('All')
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
   const [useItem, setUseItem] = useState<Item | null>(null)
-  const [items, setItems] = useState<Item[]>([])
-  const { data, refetch } = useQuery<ListItems, ListItemsVariables>(LIST_MY_ITEMS, {
-    variables: { owner: account || '' },
-    skip: !account,
-  })
+  const { items, refetch } = useMyItems()
   const displayItems = useMemo(
     () => (selectedSection === 'All' ? items : items.filter(i => i.type === selectedSection)),
     [items, selectedSection]
   )
-
-  useEffect(() => {
-    if (data) {
-      Promise.all(
-        data.ottoItems.map(rawItem =>
-          api.getItem(rawItem.tokenId, i18n.resolvedLanguage).then(item => ({
-            ...item,
-            amount: rawItem.amount,
-            equipped: Boolean(rawItem.parentTokenId),
-            parentTokenId: rawItem.parentTokenId?.toString(),
-          }))
-        )
-      ).then(items => setItems(items))
-    }
-  }, [data])
-
   return (
     <Layout title={t('my_items.title')} requireConnect>
       <StyledMyItemsPage>
