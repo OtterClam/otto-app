@@ -4,11 +4,13 @@ import CloseButton from 'components/CloseButton'
 import Fullscreen from 'components/Fullscreen'
 import ItemCell from 'components/ItemCell'
 import Item from 'models/Item'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
 import Star from './large-star.svg'
+import OpenItemAnimation from './OpenItemAnimation'
 
 const StyledOpenItemView = styled.div`
   color: ${({ theme }) => theme.colors.white};
@@ -98,6 +100,10 @@ const StyledItemList = styled.div<{ count: number }>`
 
 const StyledCheckOutButton = styled(Button)``
 
+const StyledOpenItemAnimation = styled(OpenItemAnimation)`
+  margin-top: 50px;
+`
+
 enum State {
   Playing,
   Finished,
@@ -110,28 +116,52 @@ interface Props {
 
 export default function OpenItemView({ items, onClose }: Props) {
   const { t } = useTranslation()
-  // const [state, setState] = useState(State.Playing)
+  const [state, setState] = useState(items.length > 1 ? State.Playing : State.Finished)
+  const [current, setCurrent] = useState(0)
+  useEffect(() => {
+    if (state === State.Playing) {
+      setTimeout(() => {
+        if (current === items.length - 1) {
+          setState(State.Finished)
+        } else {
+          setCurrent(current => current + 1)
+        }
+      }, 3000)
+    }
+  }, [state, current])
   return (
     <Fullscreen>
       <StyledOpenItemView>
         <StyledBackgroundContainer>
           <StyledBackground />
         </StyledBackgroundContainer>
-        <StyledTitle>{t('store.popup.open_title')}</StyledTitle>
-        <StyledRibbonText>
-          <ContentSmall>{t('store.popup.received_items', { count: items.length })}</ContentSmall>
-        </StyledRibbonText>
-        <StyledItemList count={items.length}>
-          {items.map((item, index) => (
-            <ItemCell key={index} item={item} />
-          ))}
-        </StyledItemList>
+        {state === State.Playing && items.length > 0 && (
+          <>
+            <StyledOpenItemAnimation key={current} current={current + 1} total={items.length} item={items[current]} />
+            <Button primaryColor="white" onClick={() => setState(State.Finished)}>
+              <Headline>{t('store.popup.skip')}</Headline>
+            </Button>
+          </>
+        )}
+        {state === State.Finished && (
+          <>
+            <StyledTitle>{t('store.popup.open_title')}</StyledTitle>
+            <StyledRibbonText>
+              <ContentSmall>{t('store.popup.received_items', { count: items.length })}</ContentSmall>
+            </StyledRibbonText>
+            <StyledItemList count={items.length}>
+              {items.map((item, index) => (
+                <ItemCell key={index} item={item} />
+              ))}
+            </StyledItemList>
+            <Link to="/my-items">
+              <StyledCheckOutButton>
+                <Headline>{t('store.popup.check_out')}</Headline>
+              </StyledCheckOutButton>
+            </Link>
+          </>
+        )}
         <StyledCloseButton color="white" onClose={onClose} />
-        <Link to="/my-items">
-          <StyledCheckOutButton>
-            <Headline>{t('store.popup.check_out')}</Headline>
-          </StyledCheckOutButton>
-        </Link>
       </StyledOpenItemView>
     </Fullscreen>
   )

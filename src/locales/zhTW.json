@@ -272,7 +272,8 @@
       "open_title": "太蚌了！這裝備真酷，迫不及待看到你的阿獺換上這些裝配了！",
       "processing": "交易處理中…\n\n這可能會需要幾分鐘的時間，請勿關閉視窗並耐心等候\n\n感謝 ʕ•̫͡•ʔ b",
       "received_items_one": "你得到 ({{count}}) 個物品",
-      "received_items_other": "你得到 ({{count}}) 個物品"
+      "received_items_other": "你得到 ({{count}}) 個物品",
+      "found_items": "{{current}} 之 {{total}}"
     },
     "product_card": {
       "airdrop": "恭喜，你有 {{amount}} 個免費寶箱，立即領取開箱吧!",

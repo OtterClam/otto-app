@@ -272,7 +272,9 @@
       "open_title": "Clamazing!! What a great selection! Your Otto is going to look so cool!",
       "processing": "Processing...\nIt might take a few minutes to finish the transaction. Please do not close the window! Thanks for your patience ʕ•̫͡•ʔ b",
       "received_items_one": "You found ({{count}}) Item",
-      "received_items_other": "You found ({{count}}) Items"
+      "received_items_other": "You found ({{count}}) Items",
+      "found_items": "{{current}} of {{total}}",
+      "skip": "Skip to show all"
     },
     "product_card": {
       "airdrop": "You have {{amount}} for free. Claim now!",
