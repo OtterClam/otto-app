@@ -151,7 +151,7 @@ export const useBuyProduct = () => {
     const clamAllowance = await clam.allowance(account, OTTOPIA_STORE)
     const noAllowance = clamAllowance.lt(discountPrice)
     if (noAllowance) {
-      await clam.approve(factoryAddr, constants.MaxUint256)
+      await (await clam.approve(OTTOPIA_STORE, constants.MaxUint256)).wait()
     }
     send(account, id, '1')
   }
@@ -175,8 +175,8 @@ export const useBuyProduct = () => {
       if (orderId && factory) {
         const event = factory.filters.ShipOrder(orderId)
         factory.once(event, async (orderId, buyer, event) => {
-          console.log(`==== order shipped ${orderId} ====`)
-          console.log(event)
+          // console.log(`==== order shipped ${orderId} ====`)
+          // console.log(event)
           const IItem = new utils.Interface(OttoItemAbi)
           const receipt = (await event.getTransactionReceipt()) as ContractReceipt
           const receivedItems = await Promise.all(
@@ -198,9 +198,6 @@ export const useBuyProduct = () => {
             receivedItems,
           })
         })
-        // api
-        //   .getItem(receivedItemId, i18n.resolvedLanguage)
-        //   .then(receivedItem => setUseItemState({ state: 'Success', status: state, receivedItem }))
       }
     } else {
       setBuyState({ state: state.status, status: state })
