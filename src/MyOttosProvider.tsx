@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client'
 import { useCall, useEthers } from '@usedapp/core'
 import { useOttos } from 'hooks/useOtto'
 import Otto from 'models/Otto'
-import { createContext, PropsWithChildren, useCallback, useMemo } from 'react'
+import { createContext, PropsWithChildren, useCallback, useContext, useMemo } from 'react'
 import { ListMyOttos, ListMyOttosVariables } from './__generated__/ListMyOttos'
 
 interface MyOttos {
@@ -12,12 +12,17 @@ interface MyOttos {
 }
 
 export const MyOttosContext = createContext<MyOttos>({
-  loading: false,
+  loading: true,
   ottos: [],
   reload: () => {
     // noop
   },
 })
+
+export function useMyOttos() {
+  const { loading, ottos, reload } = useContext(MyOttosContext)
+  return { loading, ottos, reload }
+}
 
 export const LIST_MY_OTTOS = gql`
   query ListMyOttos($owner: Bytes!) {

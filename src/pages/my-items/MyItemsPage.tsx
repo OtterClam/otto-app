@@ -59,6 +59,11 @@ const StyledItemSection = styled.div`
   min-height: 0;
 `
 
+const StyledItemScrollContainer = styled.div`
+  overflow-y: auto;
+  flex: 1;
+`
+
 const StyledItemList = styled.div`
   display: flex;
   height: fit-content;
@@ -120,16 +125,18 @@ export default function MyItemsPage() {
           </StyledSectionTabs>
         </StyledSectionTabContainer>
         <StyledItemSection>
-          <StyledItemList>
-            {displayItems.map((item, index) => (
-              <ItemCell
-                key={index}
-                item={item}
-                selected={item === selectedItem}
-                onClick={() => setSelectedItem(item)}
-              />
-            ))}
-          </StyledItemList>
+          <StyledItemScrollContainer>
+            <StyledItemList>
+              {displayItems.map((item, index) => (
+                <ItemCell
+                  key={index}
+                  item={item}
+                  selected={item === selectedItem}
+                  onClick={() => setSelectedItem(item)}
+                />
+              ))}
+            </StyledItemList>
+          </StyledItemScrollContainer>
           {isMobile ? (
             selectedItem && (
               <Fullscreen show background="white">

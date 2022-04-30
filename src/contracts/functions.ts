@@ -129,7 +129,7 @@ interface OttoBuyTransactionState {
   receivedItems?: Item[]
 }
 
-export const useBuyProduct = () => {
+export const useBuyProduct = (claim: boolean) => {
   const { CLAM, OTTOPIA_STORE } = useContractAddresses()
   const { account, library } = useEthers()
   const { i18n } = useTranslation()
@@ -137,23 +137,27 @@ export const useBuyProduct = () => {
   const [factory, setFactory] = useState<Contract | undefined>()
   const clam = new Contract(CLAM, ERC20, library?.getSigner())
   const store = new Contract(OTTOPIA_STORE, OttopiaStoreAbi, library)
-  const { state, send, resetState } = useContractFunction(store, 'buy')
+  const { state, send, resetState } = useContractFunction(store, claim ? 'claim' : 'buy')
   const [buyState, setBuyState] = useState<OttoBuyTransactionState>({
     state: 'None',
     status: state,
   })
-  const buy = async ({ id, discountPrice, factory: factoryAddr }: Product) => {
+  const buy = async ({ id, discountPrice, factory: factoryAddr }: Product, ottoIds?: string[]) => {
     setBuyState({
       state: 'PendingSignature',
       status: state,
     })
     setFactory(new Contract(factoryAddr, IOttoItemFactory, library))
-    const clamAllowance = await clam.allowance(account, OTTOPIA_STORE)
-    const noAllowance = clamAllowance.lt(discountPrice)
-    if (noAllowance) {
-      await (await clam.approve(OTTOPIA_STORE, constants.MaxUint256)).wait()
+    if (claim) {
+      send(id, ottoIds)
+    } else {
+      const clamAllowance = await clam.allowance(account, OTTOPIA_STORE)
+      const noAllowance = clamAllowance.lt(discountPrice)
+      if (noAllowance) {
+        await (await clam.approve(OTTOPIA_STORE, constants.MaxUint256)).wait()
+      }
+      send(account, id, '1')
     }
-    send(account, id, '1')
   }
   const resetBuy = () => {
     resetState()

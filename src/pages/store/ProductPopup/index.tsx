@@ -2,6 +2,7 @@ import CloseButton from 'components/CloseButton'
 import Fullscreen from 'components/Fullscreen'
 import { useBuyProduct } from 'contracts/functions'
 import Product from 'models/store/Product'
+import { useMyOttos } from 'MyOttosProvider'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { useTheme } from 'styled-components/macro'
@@ -109,9 +110,11 @@ interface Props {
 export default function ProductPopup({ product: { main, all }, onClose }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const [state, setState] = useState<State>(State.ChoosePackage)
-  const { buy, buyState, resetBuy } = useBuyProduct()
+  const { ottos } = useMyOttos()
   const { name, desc, airdropAmount } = main
+  const [state, setState] = useState<State>(State.ChoosePackage)
+  const [mode] = useState<'buy' | 'claim'>(airdropAmount > 0 ? 'claim' : 'buy')
+  const { buy, buyState, resetBuy } = useBuyProduct(mode === 'claim')
   useEffect(() => {
     if (buyState.state === 'Success') {
       setState(State.Success)
@@ -145,8 +148,11 @@ export default function ProductPopup({ product: { main, all }, onClose }: Props)
             <AirdropProductCard
               product={main}
               onClick={() => {
-                // setState(PopupState.Loading)
-                // TODO: claim airdrop
+                setState(State.Loading)
+                buy(
+                  main,
+                  ottos.map(o => o.tokenId)
+                )
               }}
             />
           </StyledAirdropContainer>
