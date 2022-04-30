@@ -1,16 +1,13 @@
 import Layout from 'Layout'
-import { Product } from 'models/Product'
+import useProducts from 'models/store/useProducts'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { ContentMedium, Display2, Display3 } from 'styles/typography'
-import { useMemo, useState } from 'react'
-import CurtainImage from './curtain.png'
-import ProductCard from './ProductCard'
+import Curtain from './Curtain'
 import GemLeft from './gem-left.png'
 import GemRight from './gem-right.png'
-import Diamond from './tmp/diamond.png'
-import Golden from './tmp/golden.png'
-import Sliver from './tmp/sliver.png'
+import ProductCard from './ProductCard'
 import ProductPopup, { GroupedProduct } from './ProductPopup'
 
 const StyledStorePage = styled.div`
@@ -35,12 +32,8 @@ const StyledSubtitle = styled.p``
 
 const StyledHeroImg = styled.img``
 
-const StyledCurtain = styled.div`
+const StyledCurtain = styled(Curtain)`
   width: calc(100% + 2px);
-  height: 73px;
-  background-image: url(${CurtainImage});
-  background-repeat: repeat-x;
-  background-size: 112px 73px;
   transform: translateX(-2px);
 `
 

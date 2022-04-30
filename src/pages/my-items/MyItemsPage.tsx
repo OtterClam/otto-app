@@ -7,7 +7,7 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall } from 'styles/typography'
-import ItemCell from './ItemCell'
+import ItemCell from 'components/ItemCell'
 import ItemDetails from './use-item/ItemDetails'
 import UseItemPopup from './use-item/ItemPopup'
 

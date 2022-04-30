@@ -265,7 +265,25 @@
       "buy_now": "Buy",
       "free": "FREE",
       "claim_title": "You have {{amount}} for FREE!",
-      "claim": "Claim Now"
+      "claim": "Claim Now",
+      "processing": "Processing...\nIt might take a few minutes to finish the transaction. Please do not close the window! Thanks for your patience ʕ•̫͡•ʔ b",
+      "open_title": "Clamastic! They look so cool. Can’t wait to see them being equipped on your Otto.",
+      "received_items": "Received Items ({{count}})",
+      "check_out": "Check Out My Items"
+    }
+  },
+  "product": {
+    "sliver": {
+      "name": "Sliver Chest",
+      "desc": "A description of the Sliver Chest"
+    },
+    "golden": {
+      "name": "Golden Chest",
+      "desc": "A description of the Golden Chest"
+    },
+    "diamond": {
+      "name": "Diamond Chest",
+      "desc": "A description of the Diamond Chest"
     }
   }
 }
