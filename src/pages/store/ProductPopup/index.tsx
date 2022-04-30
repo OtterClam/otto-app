@@ -125,7 +125,7 @@ export default function ProductPopup({ product: { main, all }, onClose }: Props)
     }
   }, [buyState])
 
-  if (state === State.Loading) return <LoadingView image={main.image} />
+  if (state === State.Loading) return <LoadingView product={main} />
   if (state === State.Success) return <OpenItemView items={buyState.receivedItems || []} onClose={onClose} />
   return (
     <Fullscreen background={theme.colors.white}>

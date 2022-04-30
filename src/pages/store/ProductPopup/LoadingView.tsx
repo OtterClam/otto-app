@@ -1,4 +1,5 @@
 import Fullscreen from 'components/Fullscreen'
+import Product from 'models/store/Product'
 import { useTranslation } from 'react-i18next'
 import styled, { keyframes, useTheme } from 'styled-components/macro'
 import { ContentLarge } from 'styles/typography'
@@ -17,6 +18,20 @@ const StyledLoadingView = styled.div`
 const Spin = keyframes`
 	from{transform:rotate(0deg)}
 	to{transform:rotate(360deg)}
+`
+
+const GifProcessing = keyframes`
+  0%   {opacity: 1;}
+  7%  {opacity: 1;}
+  14%  {opacity: 0;}
+  100% {opacity: 0;}
+`
+
+const Stable = keyframes`
+  0%   {opacity: 0;}
+  32.5%  {opacity: 0;}
+  37.5%  {opacity: 1;}
+  100% {opacity: 1;}
 `
 
 const StyledImageContainer = styled.div`
@@ -44,6 +59,15 @@ const StyledImageContainer = styled.div`
   }
 `
 
+const StyledImg = styled.img<{ delay: number }>`
+  animation: ${GifProcessing} 3.2s infinite;
+  animation-delay: ${({ delay }) => delay}ms;
+`
+
+const StyledStableImg = styled.img`
+  animation: ${Stable} 3.2s infinite;
+`
+
 const StyledProcessing = styled(ContentLarge)`
   margin: 0 60px;
   white-space: pre-wrap;
@@ -51,17 +75,22 @@ const StyledProcessing = styled(ContentLarge)`
 `
 
 interface Props {
-  image: string
+  product: Product
 }
 
-export default function LoadingView({ image }: Props) {
+export default function LoadingView({ product: { type } }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
   return (
     <Fullscreen background={theme.colors.otterBlack}>
       <StyledLoadingView>
         <StyledImageContainer>
-          <img src={image} alt="loading" />
+          {Array(7)
+            .fill(0)
+            .map((_, i) => (
+              <StyledImg key={i} src={`/chest-loadings/${type}-loading-${i + 1}.png`} delay={i * 150} />
+            ))}
+          <StyledStableImg src={`/chest-loadings/${type}-loading-8.png`} />
         </StyledImageContainer>
         <StyledProcessing as="p">{t('store.popup.processing')}</StyledProcessing>
       </StyledLoadingView>

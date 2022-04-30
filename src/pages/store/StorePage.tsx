@@ -35,7 +35,7 @@ const StyledHeroSection = styled.section`
 const StyledProductBody = styled.div`
   width: 80%;
   max-width: 870px;
-  padding: 40px 0;
+  padding-bottom: 40px;
   @media ${({ theme }) => theme.breakpoints.mobile} {
     padding: 24px 0;
   }
