@@ -1,9 +1,10 @@
+import { WHITE_PAPER_LINK } from 'constant'
 import Layout from 'Layout'
 import useProducts from 'models/store/useProducts'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
-import { Display3 } from 'styles/typography'
+import { ContentMedium, Display3 } from 'styles/typography'
 import Curtain from './Curtain'
 import GemLeft from './gem-left.png'
 import GemRight from './gem-right.png'
@@ -33,9 +34,13 @@ const StyledHeroSection = styled.section`
 `
 
 const StyledProductBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   width: 80%;
   max-width: 870px;
   padding-bottom: 40px;
+
   @media ${({ theme }) => theme.breakpoints.mobile} {
     padding: 24px 0;
   }
@@ -69,6 +74,14 @@ const StyledShellChestTitle = styled.h2`
       }
     }
   }
+`
+
+const StyledChestDesc = styled(ContentMedium)`
+  text-align: center;
+`
+
+const StyledDocLink = styled.a`
+  color: ${({ theme }) => theme.colors.clamPink};
 `
 
 const StyledProductList = styled.div`
@@ -116,6 +129,12 @@ export default function StorePage() {
             <Display3>{t('store.shell_chest')}</Display3>
             <img src={GemRight} alt="Gem Left" />
           </StyledShellChestTitle>
+          <StyledChestDesc as="p">
+            {t('store.chest_desc')}
+            <StyledDocLink href={WHITE_PAPER_LINK} target="_blank" rel="noreferrer">
+              {t('store.chest_link_part2')}
+            </StyledDocLink>
+          </StyledChestDesc>
           <StyledProductList>
             {groupedProducts.map((p, index) => (
               <ProductCard key={index} product={p.main} onClick={() => setSelectedProduct(p)} />

@@ -66,7 +66,7 @@ export default function StoreHero() {
   const { t } = useTranslation()
   const [state, setState] = useState(1)
   useEffect(() => {
-    const interval = setInterval(() => setState(state => (state === 1 ? 2 : 1)), 3000)
+    const interval = setInterval(() => setState(state => (state === 1 ? 2 : 1)), 5000)
     return () => clearInterval(interval)
   }, [])
   return (

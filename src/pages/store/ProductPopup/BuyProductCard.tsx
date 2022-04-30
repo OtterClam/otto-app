@@ -70,10 +70,6 @@ const StyledDiscount = styled(Caption)`
   color: ${({ theme }) => theme.colors.clamPink};
 `
 
-const StyledAirdropAmount = styled.p`
-  color: ${({ theme }) => theme.colors.crownYellow};
-`
-
 interface Props {
   product: Product
   onClick: () => void
