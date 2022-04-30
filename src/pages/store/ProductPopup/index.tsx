@@ -1,6 +1,7 @@
 import CloseButton from 'components/CloseButton'
 import Fullscreen from 'components/Fullscreen'
-import { Product } from 'models/store/Product'
+import { useBuyProduct } from 'contracts/functions'
+import Product from 'models/store/Product'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { useTheme } from 'styled-components/macro'
@@ -8,9 +9,9 @@ import { ContentSmall, Display3, Headline } from 'styles/typography'
 import Curtain from '../Curtain'
 import AirdropProductCard from './AirdropProductCard'
 import BuyProductCard from './BuyProductCard'
+import HeroImage from './hero.png'
 import LoadingView from './LoadingView'
 import OpenItemView from './OpenItemView'
-import HeroImage from './hero.png'
 
 const StyledProductPopup = styled.div`
   color: ${({ theme }) => theme.colors.white};
@@ -94,7 +95,7 @@ export interface GroupedProduct {
   all: Product[]
 }
 
-enum PopupState {
+enum State {
   ChoosePackage,
   Loading,
   Success,
@@ -108,17 +109,21 @@ interface Props {
 export default function ProductPopup({ product: { main, all }, onClose }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const [state, setState] = useState<PopupState>(PopupState.ChoosePackage)
+  const [state, setState] = useState<State>(State.ChoosePackage)
+  const { buy, buyState, resetBuy } = useBuyProduct()
   const { name, desc, airdropAmount } = main
   useEffect(() => {
-    if (state === PopupState.Loading) {
-      setTimeout(() => {
-        setState(PopupState.Success)
-      }, 2000)
+    if (buyState.state === 'Success') {
+      setState(State.Success)
+    } else if (buyState.state === 'Fail' || buyState.state === 'Exception') {
+      alert(buyState.status.errorMessage || '')
+      setState(State.ChoosePackage)
+      resetBuy()
     }
-  }, [state])
-  if (state === PopupState.Loading) return <LoadingView image={main.image} />
-  if (state === PopupState.Success) return <OpenItemView onClose={onClose} />
+  }, [buyState])
+
+  if (state === State.Loading) return <LoadingView image={main.image} />
+  if (state === State.Success) return <OpenItemView items={buyState.receivedItems || []} onClose={onClose} />
   return (
     <Fullscreen background={theme.colors.white}>
       <StyledProductPopup>
@@ -140,7 +145,7 @@ export default function ProductPopup({ product: { main, all }, onClose }: Props)
             <AirdropProductCard
               product={main}
               onClick={() => {
-                setState(PopupState.Loading)
+                // setState(PopupState.Loading)
                 // TODO: claim airdrop
               }}
             />
@@ -153,7 +158,8 @@ export default function ProductPopup({ product: { main, all }, onClose }: Props)
                 key={index}
                 product={p}
                 onClick={() => {
-                  // TODO: buy product
+                  setState(State.Loading)
+                  buy(p)
                 }}
               />
             ))}

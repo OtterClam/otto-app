@@ -1,7 +1,8 @@
 import CLAM from 'assets/clam.png'
 import BorderContainer from 'components/BorderContainer'
 import Button from 'components/Button'
-import { Product } from 'models/store/Product'
+import { trim } from 'helpers/trim'
+import Product from 'models/store/Product'
 import { useTranslation } from 'react-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { Caption, ContentLarge, Headline } from 'styles/typography'
@@ -69,7 +70,10 @@ interface Props {
   onClick: () => void
 }
 
-export default function ProductCard({ product: { type, name, image, price, airdropAmount }, onClick }: Props) {
+export default function ProductCard({
+  product: { type, name, image, displayPrice, price, airdropAmount },
+  onClick,
+}: Props) {
   const { t } = useTranslation()
   const borderColor = useProductBorderColor(type)
   return (
@@ -79,7 +83,7 @@ export default function ProductCard({ product: { type, name, image, price, airdr
         <img src={image} alt={name} width="100%" />
       </StyledImage>
       <StyledPrice>
-        <ContentLarge>{price}</ContentLarge>
+        <ContentLarge>{trim(displayPrice, 2)}</ContentLarge>
       </StyledPrice>
       <Button onClick={onClick}>
         <Headline>{t('store.product_card.select')}</Headline>

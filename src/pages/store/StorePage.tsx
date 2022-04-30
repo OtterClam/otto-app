@@ -1,9 +1,13 @@
 import Layout from 'Layout'
-import useProducts from 'models/store/useProducts'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { ContentMedium, Display2, Display3 } from 'styles/typography'
+import Diamond from 'models/store/images/diamond.png'
+import Golden from 'models/store/images/golden.png'
+import Sliver from 'models/store/images/sliver.png'
+import Product from 'models/store/Product'
+import useProducts from 'models/store/useProducts'
 import Curtain from './Curtain'
 import GemLeft from './gem-left.png'
 import GemRight from './gem-right.png'
@@ -87,111 +91,10 @@ const StyledProductList = styled.div`
   }
 `
 
-const products: Product[] = [
-  {
-    id: '1',
-    name: 'Sliver Shell',
-    desc: 'A beautiful shell with a silver finish.',
-    price: '1.00',
-    discountPrice: '1.00',
-    airdropAmount: 3,
-    amount: 1,
-    type: 'sliver',
-    image: Sliver,
-  },
-  {
-    id: '2',
-    name: 'Sliver Shell * 3',
-    desc: 'A beautiful shell with a silver finish.',
-    price: '3.00',
-    discountPrice: '2.50',
-    airdropAmount: 0,
-    amount: 3,
-    type: 'sliver',
-    image: Sliver,
-  },
-  {
-    id: '3',
-    name: 'Sliver Shell * 10',
-    desc: 'A beautiful shell with a silver finish.',
-    price: '10.00',
-    discountPrice: '5.00',
-    airdropAmount: 0,
-    amount: 10,
-    type: 'sliver',
-    image: Sliver,
-  },
-  {
-    id: '4',
-    name: 'Golden Shell',
-    desc: 'A beautiful shell with a golden finish.',
-    price: '2.0',
-    discountPrice: '2.0',
-    airdropAmount: 1,
-    amount: 1,
-    type: 'golden',
-    image: Golden,
-  },
-  {
-    id: '5',
-    name: 'Golden Shell * 3',
-    desc: 'A beautiful shell with a golden finish.',
-    price: '6.00',
-    discountPrice: '5.00',
-    airdropAmount: 0,
-    amount: 3,
-    type: 'golden',
-    image: Golden,
-  },
-  {
-    id: '6',
-    name: 'Golden Shell * 10',
-    desc: 'A beautiful shell with a golden finish.',
-    price: '20.00',
-    discountPrice: '15.00',
-    airdropAmount: 0,
-    amount: 10,
-    type: 'golden',
-    image: Golden,
-  },
-  {
-    id: '7',
-    name: 'Diamond Shell',
-    desc: 'A beautiful shell with a diamond finish.',
-    price: '3.00',
-    discountPrice: '3.00',
-    airdropAmount: 0,
-    amount: 1,
-    type: 'diamond',
-    image: Diamond,
-  },
-  {
-    id: '8',
-    name: 'Diamond Shell * 3',
-    desc: 'A beautiful shell with a diamond finish.',
-    price: '9.00',
-    discountPrice: '8.10',
-    airdropAmount: 0,
-    amount: 3,
-    type: 'diamond',
-    image: Diamond,
-  },
-  {
-    id: '9',
-    name: 'Diamond Shell * 10',
-    desc: 'A beautiful shell with a silver finish.',
-    price: '30.00',
-    discountPrice: '24.00',
-    airdropAmount: 0,
-    amount: 10,
-    type: 'diamond',
-    image: Diamond,
-  },
-]
-
 export default function StorePage() {
   const { t } = useTranslation()
   const [selectedProduct, setSelectedProduct] = useState<GroupedProduct | null>(null)
+  const { products } = useProducts()
   const groupedProducts = useMemo(() => {
     const grouped = products.reduce<Record<string, GroupedProduct>>((acc, product) => {
       if (!acc[product.type]) {
@@ -208,7 +111,7 @@ export default function StorePage() {
       return acc
     }, {})
     return Object.values(grouped).sort((a, b) => a.main.id.localeCompare(b.main.id))
-  }, [])
+  }, [products])
   return (
     <Layout title={t('store.title')}>
       <StyledStorePage>

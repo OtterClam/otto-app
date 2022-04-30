@@ -1,7 +1,7 @@
 import CLAM from 'assets/clam.png'
 import BorderContainer from 'components/BorderContainer'
 import Button from 'components/Button'
-import { Product } from 'models/store/Product'
+import Product from 'models/store/Product'
 import { useTranslation } from 'react-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { Caption, ContentLarge, Headline } from 'styles/typography'

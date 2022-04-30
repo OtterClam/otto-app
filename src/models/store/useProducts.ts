@@ -1,10 +1,11 @@
 import { gql, useQuery } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
-import { Product } from './Product'
+import { utils } from 'ethers'
+import Product from './Product'
 import { GetProducts } from './__generated__/GetProducts'
 import Diamond from './images/diamond.png'
 import Golden from './images/golden.png'
-import Sliver from './images/sliver.png'
+import Silver from './images/silver.png'
 
 const GET_PRODUCTS = gql`
   query GetProducts {
@@ -20,10 +21,10 @@ const GET_PRODUCTS = gql`
 `
 
 const Preset: Record<string, any> = {
-  sliver: {
-    1: Sliver,
-    3: Sliver,
-    10: Sliver,
+  silver: {
+    1: Silver,
+    3: Silver,
+    10: Silver,
   },
   golden: {
     1: Golden,
@@ -44,10 +45,12 @@ export default function useProducts() {
     data?.ottoProducts.map(p => ({
       ...p,
       id: p.productId,
-      image: Preset[p.type][p.amount],
       name: t(`product.${p.type}.name`),
       desc: t(`product.${p.type}.name`),
+      image: Preset[p.type][p.amount],
       airdropAmount: 0,
+      displayPrice: utils.formatUnits(p.price, 9),
+      displayDiscountPrice: utils.formatUnits(p.discountPrice, 9),
     })) || []
   return { products }
 }

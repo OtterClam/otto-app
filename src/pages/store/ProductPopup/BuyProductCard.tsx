@@ -1,7 +1,7 @@
 import CLAM from 'assets/clam.png'
 import BorderContainer from 'components/BorderContainer'
 import Button from 'components/Button'
-import { Product } from 'models/store/Product'
+import Product from 'models/store/Product'
 import { useTranslation } from 'react-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { Caption, ContentLarge, Headline } from 'styles/typography'
@@ -80,7 +80,7 @@ interface Props {
 }
 
 export default function BuyProductCard({
-  product: { type, name, image, price, discountPrice, amount },
+  product: { type, name, image, price, displayPrice, discountPrice, displayDiscountPrice, amount },
   onClick,
 }: Props) {
   const { t } = useTranslation()
@@ -94,10 +94,10 @@ export default function BuyProductCard({
         <img src={image} alt={name} width="100%" />
       </StyledImage>
       <StyledPrice>
-        {hasDiscount && <StyledOriginPrice>{price}</StyledOriginPrice>}
-        <ContentLarge>{discountPrice}</ContentLarge>
+        {hasDiscount && <StyledOriginPrice>{displayPrice}</StyledOriginPrice>}
+        <ContentLarge>{displayDiscountPrice}</ContentLarge>
       </StyledPrice>
-      {hasDiscount && <StyledDiscount>{t('store.popup.discount', { discount })}%</StyledDiscount>}
+      {hasDiscount && <StyledDiscount>{t('store.popup.discount', { discount })}</StyledDiscount>}
       <Button onClick={onClick}>
         <Headline>{t('store.popup.buy_now')}</Headline>
       </Button>

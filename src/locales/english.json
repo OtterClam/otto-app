@@ -273,8 +273,8 @@
     }
   },
   "product": {
-    "sliver": {
-      "name": "Sliver Chest",
+    "silver": {
+      "name": "Silver Chest",
       "desc": "A description of the Sliver Chest"
     },
     "golden": {
