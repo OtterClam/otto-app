@@ -9,8 +9,8 @@ import Button from 'components/Button'
 import Item from 'models/Item'
 import useOtto from 'hooks/useOtto'
 import { useEffect, useState } from 'react'
-import ItemCell from '../ItemCell'
-import Ribbon from './ribbon.svg'
+import Ribbon from 'assets/ui/ribbon.svg'
+import ItemCell from 'components/ItemCell'
 import Star from './star.svg'
 
 const StyledUseItemComplete = styled.div`

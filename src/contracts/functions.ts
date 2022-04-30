@@ -1,17 +1,12 @@
-import {
-  getStoredTransactionState,
-  TransactionState,
-  TransactionStatus,
-  useContractFunction,
-  useEthers,
-} from '@usedapp/core'
-import { Contract } from 'ethers'
+import { TransactionState, TransactionStatus, useContractFunction, useEthers } from '@usedapp/core'
+import { Contract, ContractReceipt, utils, constants } from 'ethers'
 import useApi from 'hooks/useApi'
 import useContractAddresses from 'hooks/useContractAddresses'
 import Item from 'models/Item'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ERC20, Otto, OttoItemAbi, OttopiaPortalCreator, OttoSummoner } from './abis'
+import Product from 'models/store/Product'
+import { ERC20, IOttoItemFactory, Otto, OttoItemAbi, OttopiaPortalCreator, OttopiaStoreAbi, OttoSummoner } from './abis'
 
 type Token = 'clam' | 'eth'
 
@@ -126,4 +121,91 @@ export const takeOffItem = () => {
     }
   }, [state, receivedItem])
   return { takeOffState, takeOff, resetTakeOff }
+}
+
+interface OttoBuyTransactionState {
+  state: TransactionState
+  status: TransactionStatus
+  receivedItems?: Item[]
+}
+
+export const useBuyProduct = (claim: boolean) => {
+  const { CLAM, OTTOPIA_STORE } = useContractAddresses()
+  const { account, library } = useEthers()
+  const { i18n } = useTranslation()
+  const api = useApi()
+  const [factory, setFactory] = useState<Contract | undefined>()
+  const clam = new Contract(CLAM, ERC20, library?.getSigner())
+  const store = new Contract(OTTOPIA_STORE, OttopiaStoreAbi, library)
+  const { state, send, resetState } = useContractFunction(store, claim ? 'claim' : 'buy')
+  const [buyState, setBuyState] = useState<OttoBuyTransactionState>({
+    state: 'None',
+    status: state,
+  })
+  const buy = async ({ id, discountPrice, factory: factoryAddr }: Product, ottoIds?: string[]) => {
+    setBuyState({
+      state: 'PendingSignature',
+      status: state,
+    })
+    setFactory(new Contract(factoryAddr, IOttoItemFactory, library))
+    if (claim) {
+      send(id, ottoIds)
+    } else {
+      const clamAllowance = await clam.allowance(account, OTTOPIA_STORE)
+      const noAllowance = clamAllowance.lt(discountPrice)
+      if (noAllowance) {
+        await (await clam.approve(OTTOPIA_STORE, constants.MaxUint256)).wait()
+      }
+      send(account, id, '1')
+    }
+  }
+  const resetBuy = () => {
+    resetState()
+    setBuyState({ state: 'None', status: state })
+  }
+  useEffect(() => {
+    if (state.status === 'Success') {
+      const orderId = state.receipt?.logs
+        .map(log => {
+          try {
+            return factory?.interface.parseLog(log)
+          } catch (err) {
+            // skip
+          }
+          return null
+        })
+        .find(e => e?.name === 'CreateOrder')?.args[0]
+      console.log(`order id: ${orderId}`)
+      if (orderId && factory) {
+        const event = factory.filters.ShipOrder(orderId)
+        factory.once(event, async (orderId, buyer, event) => {
+          // console.log(`==== order shipped ${orderId} ====`)
+          // console.log(event)
+          const IItem = new utils.Interface(OttoItemAbi)
+          const receipt = (await event.getTransactionReceipt()) as ContractReceipt
+          const receivedItems = await Promise.all(
+            receipt.logs
+              .map(log => {
+                try {
+                  return IItem.parseLog(log)
+                } catch (err) {
+                  // skip
+                }
+                return null
+              })
+              .filter(e => e?.name === 'TransferSingle' && e.args[2] === account)
+              .map(e => api.getItem(e?.args[3], i18n.resolvedLanguage))
+          )
+          setBuyState({
+            state: 'Success',
+            status: state,
+            receivedItems,
+          })
+        })
+      }
+    } else {
+      setBuyState({ state: state.status, status: state })
+    }
+  }, [state, i18n, factory])
+  return { buyState, buy, resetBuy }
 }

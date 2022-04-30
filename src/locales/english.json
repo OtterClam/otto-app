@@ -199,7 +199,8 @@
       "my_items": "My Items",
       "my_ottos": "My Ottos",
       "my_portals": "My Portals",
-      "otto_market": "Otto Market"
+      "otto_market": "Otto Market",
+      "otto_store": "Ottopia Store"
     },
     "title": "Play"
   },
@@ -238,9 +239,51 @@
       "view_my_otto": "View My Otto"
     }
   },
+  "product": {
+    "diamond": {
+      "desc": "From armor that can stand the mightiest of blows, to hats that'll catch even the sleepiest Otters attention, Shell Chests hold the equipment you need to make your dream come true!",
+      "name": "Diamond Chest"
+    },
+    "golden": {
+      "desc": "Golden Shell Chests offer a great chance to receive high tier equipment. Though not as lucky as a Diamond Shell Chests, it's brimming with potential!",
+      "name": "Golden Chest"
+    },
+    "silver": {
+      "desc": "While not as lucky as the Golden/Diamond Shell Chests, Silver Shell Chests contain rare and powerful equipment worthy of admiration!",
+      "name": "Silver Chest"
+    }
+  },
   "side_menu": {
     "follow_us": "Follow us",
     "select_language": "Select Language"
+  },
+  "store": {
+    "chest_desc": "The store is stocked with 3 types of Shell Chests for purchase! Your chances of finding Epic/Legendary equipment increases with each level of Shell Chest! To see the probability of obtaining different rarities with each Chest, please visit ",
+    "chest_link_part2": "here.",
+    "hero": "Welcome to Ottopia Store!",
+    "popup": {
+      "buy_now": "Buy",
+      "check_out": "Check Out My Items",
+      "choose_package": "Choose your package",
+      "claim": "Claim Now",
+      "claim_title": "You have {{amount}} for FREE!",
+      "discount": "Saved {{discount}}%",
+      "free": "FREE",
+      "open_title": "Clamazing!! What a great selection! Your Otto is going to look so cool!",
+      "processing": "Processing...\nIt might take a few minutes to finish the transaction. Please do not close the window! Thanks for your patience ʕ•̫͡•ʔ b",
+      "received_items_one": "You found ({{count}}) Item",
+      "received_items_other": "You found ({{count}}) Items",
+      "found_items": "{{current}} of {{total}}",
+      "skip": "Skip to show all"
+    },
+    "product_card": {
+      "airdrop": "You have {{amount}} for free. Claim now!",
+      "select": "Select"
+    },
+    "shell_chest": "Shell Chest",
+    "subtitle_1": "These Shell Chests contain more than 600+ pieces of special, wearable equipment, and they're on sale! The more you buy, the more you save! Each Chest holds 1 item!",
+    "subtitle_2": "Good things come to Otters who wait, unless they're on sale! These Shell Chests are a deal worth running for!",
+    "title": "Ottopia Store"
   },
   "unsupported_network": {
     "action": "Switch to Polygon",

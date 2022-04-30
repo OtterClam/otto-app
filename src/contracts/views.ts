@@ -1,7 +1,7 @@
 import { useBlockNumber, useCall, useCalls, useEtherBalance, useEthers } from '@usedapp/core'
 import { Contract, BigNumber } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
-import { Otto, OttoItemAbi, OttopiaPortalCreator } from './abis'
+import { Otto, OttoItemAbi, OttopiaPortalCreator, OttopiaStoreAbi } from './abis'
 
 export const useMintInfo = () => {
   const { PORTAL_CREATOR } = useContractAddresses()
@@ -94,4 +94,23 @@ export const useItemApplicable = (itemId: string, ottoIds: string[]) => {
     }
   })
   return results.map(result => Boolean(result?.value?.[0] || false))
+}
+
+export const useStoreAirdropAmounts = (productIds: string[], ottoIds: string[]) => {
+  const { OTTOPIA_STORE } = useContractAddresses()
+  const { library } = useEthers()
+  const contract = new Contract(OTTOPIA_STORE, OttopiaStoreAbi, library)
+  const results = useCalls(
+    productIds.map(productId => ({
+      contract,
+      method: 'airdropClaimableAmount',
+      args: [productId, ottoIds],
+    }))
+  )
+  results.forEach((result, idx) => {
+    if (result && result.error) {
+      console.error(`Error encountered  ${result.error.message}`)
+    }
+  })
+  return results.map(result => Number(result?.value?.[0] || 0))
 }

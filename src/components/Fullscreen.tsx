@@ -56,12 +56,12 @@ const Content = styled.div`
 `
 
 interface Props {
-  show: boolean
+  show?: boolean
   background?: string
   children: ReactNode
 }
 
-const Fullscreen = ({ show, background, children }: Props) => {
+const Fullscreen = ({ show = true, background, children }: Props) => {
   if (!show) return null
 
   return (
