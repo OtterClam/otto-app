@@ -252,7 +252,8 @@
   "store": {
     "title": "Ottopia Store",
     "hero": "Welcome to Ottopia Store!",
-    "subtitle": "These Shell Chests contain more than 600+ pieces of special, wearable equipment, and they're on sale! The more you buy, the more you save! Each Chest holds 1 item!",
+    "subtitle_1": "These Shell Chests contain more than 600+ pieces of special, wearable equipment, and they're on sale! The more you buy, the more you save! Each Chest holds 1 item!",
+    "subtitle_2": "Good things come to Otters who wait, unless they're on sale! These Shell Chests are a deal worth running for!",
     "shell_chest": "Shell Chest",
     "chest_desc": "There are 3 different types of Shell Chest you can purchase. You are more likely to find Epic/Legendary equipment at a higher level Shell Chest!",
     "product_card": {
@@ -267,8 +268,9 @@
       "claim_title": "You have {{amount}} for FREE!",
       "claim": "Claim Now",
       "processing": "Processing...\nIt might take a few minutes to finish the transaction. Please do not close the window! Thanks for your patience ʕ•̫͡•ʔ b",
-      "open_title": "Clamastic! They look so cool. Can’t wait to see them being equipped on your Otto.",
-      "received_items": "Received Items ({{count}})",
+      "open_title": "Clamazing!! What a great selection! Your Otto is going to look so cool!",
+      "received_items_one": "You found ({{count}}) Item",
+      "received_items_other": "You found ({{count}}) Items",
       "check_out": "Check Out My Items"
     }
   },
