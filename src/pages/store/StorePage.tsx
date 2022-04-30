@@ -104,7 +104,7 @@ export default function StorePage() {
     return Object.values(grouped).sort((a, b) => a.main.id.localeCompare(b.main.id))
   }, [products])
   return (
-    <Layout title={t('store.title')}>
+    <Layout title={t('store.title')} background="dark">
       <StyledStorePage>
         <StyledCurtain />
         <StyledHeroSection>
