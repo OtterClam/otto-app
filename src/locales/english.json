@@ -277,15 +277,15 @@
   "product": {
     "silver": {
       "name": "Silver Chest",
-      "desc": "A description of the Sliver Chest"
+      "desc": "While not as lucky as the Golden/Diamond Shell Chests, Silver Shell Chests contain rare and powerful equipment worthy of admiration!"
     },
     "golden": {
       "name": "Golden Chest",
-      "desc": "A description of the Golden Chest"
+      "desc": "Golden Shell Chests offer a great chance to receive high tier equipment. Though not as lucky as a Diamond Shell Chests, it's brimming with potential!"
     },
     "diamond": {
       "name": "Diamond Chest",
-      "desc": "A description of the Diamond Chest"
+      "desc": "From armor that can stand the mightiest of blows, to hats that'll catch even the sleepiest Otters attention, Shell Chests hold the equipment you need to make your dream come true!"
     }
   }
 }

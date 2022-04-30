@@ -61,7 +61,7 @@ export default function useProducts() {
       ...p,
       id: p.productId,
       name: t(`product.${p.type}.name`),
-      desc: t(`product.${p.type}.name`),
+      desc: t(`product.${p.type}.desc`),
       image: Preset[p.type][p.amount],
       airdropAmount: airdropAmounts[idx],
       displayPrice: utils.formatUnits(p.price, 9),
