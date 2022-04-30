@@ -90,9 +90,9 @@
     "para2": "阿獺王國！"
   },
   "my_items": {
-    "base_rarity_score": "Base Rarity Score: {{score}}",
-    "equipped": "Equipped",
-    "no_selected_item": "Select an item to view the detail.",
+    "base_rarity_score": "基本稀有分數： {{score}}",
+    "equipped": "已裝備",
+    "no_selected_item": "請選擇物品檢視詳細資訊",
     "section_title": {
       "All": "全部",
       "Background": "背景",
@@ -115,7 +115,7 @@
       "receive_item": "得到物品",
       "title": "選擇一隻阿獺來使用此物品"
     },
-    "wear": "Wear",
+    "wear": "穿著裝備",
     "wear_item": {
       "current_equipped": "目前裝備",
       "replaced": "被取代成...",
@@ -200,7 +200,7 @@
       "my_ottos": "我的阿獺",
       "my_portals": "我的傳送門",
       "otto_market": "市集",
-      "otto_store": "Ottopia Store"
+      "otto_store": "商店"
     },
     "title": "開始遊玩"
   },
@@ -241,16 +241,16 @@
   },
   "product": {
     "diamond": {
-      "desc": "From armor that can stand the mightiest of blows, to hats that'll catch even the sleepiest Otters attention, Shell Chests hold the equipment you need to make your dream come true!",
-      "name": "Diamond Chest"
+      "desc": "鑽石寶箱是 3 種寶箱中最高級的寶箱，有最大的機率可以開啟 傳奇 (E2) 稀有度的裝備。想要你的阿獺擁有最稀有、最高端的裝備嗎？來購買最閃亮的鑽石寶箱吧！",
+      "name": "鑽石寶箱"
     },
     "golden": {
-      "desc": "Golden Shell Chests offer a great chance to receive high tier equipment. Though not as lucky as a Diamond Shell Chests, it's brimming with potential!",
-      "name": "Golden Chest"
+      "desc": "黃金寶箱是 3 種寶箱中位於中間等級的寶箱，雖然沒有鑽石寶箱擁有最高機率的裝備掉落率，但其潛力也是不容小覷，可以有機會得到最高稀有度為 史詩 (E1) 稀有度的裝備。來試試手氣吧，稀有裝備的幸運得主搞不好就是你！",
+      "name": "黃金寶箱"
     },
     "silver": {
-      "desc": "While not as lucky as the Golden/Diamond Shell Chests, Silver Shell Chests contain rare and powerful equipment worthy of admiration!",
-      "name": "Silver Chest"
+      "desc": "最初階的寶箱，可以有機會得到最高稀有度為 非常稀有 (R3) 的裝備。如果不想花大錢衝稀有度，或是只想幫自己的阿獺多增添不同裝備和飾品，白銀寶箱也是不錯的選擇呢！",
+      "name": "白銀寶箱"
     }
   },
   "side_menu": {
@@ -258,29 +258,29 @@
     "select_language": "選擇語言"
   },
   "store": {
-    "chest_desc": "There are 3 different types of Shell Chest you can purchase. You are more likely to find Epic/Legendary equipment at a higher level Shell Chest!",
-    "hero": "Welcome to Ottopia Store!",
+    "chest_desc": "阿獺王國的商店目前提供三種貝殼寶箱，每個寶箱都會開啟一個裝備，越高級的寶箱擁有越高機率的裝備掉落率喔！",
+    "hero": "歡迎進入阿獺王國商店!",
     "popup": {
-      "buy_now": "Buy",
-      "check_out": "Check Out My Items",
-      "choose_package": "Choose your package",
-      "claim": "Claim Now",
-      "claim_title": "You have {{amount}} for FREE!",
-      "discount": "Saved {{discount}}%",
-      "free": "FREE",
-      "open_title": "Clamazing!! What a great selection! Your Otto is going to look so cool!",
-      "processing": "Processing...\nIt might take a few minutes to finish the transaction. Please do not close the window! Thanks for your patience ʕ•̫͡•ʔ b",
-      "received_items_one": "You found ({{count}}) Item",
-      "received_items_other": "You found ({{count}}) Items"
+      "buy_now": "購買",
+      "check_out": "查看我的物品",
+      "choose_package": "選擇你要的數量",
+      "claim": "立即領取",
+      "claim_title": "恭喜，你有 {{amount}} 個免費寶箱可領取!",
+      "discount": "省下 {{discount}}%",
+      "free": "免費",
+      "open_title": "太蚌了！這裝備真酷，迫不及待看到你的阿獺換上這些裝配了！",
+      "processing": "交易處理中…\n\n這可能會需要幾分鐘的時間，請勿關閉視窗並耐心等候\n\n感謝 ʕ•̫͡•ʔ b",
+      "received_items_one": "你得到 ({{count}}) 個物品",
+      "received_items_other": "你得到 ({{count}}) 個物品"
     },
     "product_card": {
-      "airdrop": "You have {{amount}} for free. Claim now!",
-      "select": "Select"
+      "airdrop": "恭喜，你有 {{amount}} 個免費寶箱，立即領取開箱吧!",
+      "select": "選擇"
     },
-    "shell_chest": "Shell Chest",
-    "subtitle_1": "These Shell Chests contain more than 600+ pieces of special, wearable equipment, and they're on sale! The more you buy, the more you save! Each Chest holds 1 item!",
-    "subtitle_2": "Good things come to Otters who wait, unless they're on sale! These Shell Chests are a deal worth running for!",
-    "title": "Ottopia Store"
+    "shell_chest": "貝殼寶箱",
+    "subtitle_1": "這些寶箱可開啟多達 600 多個特殊道具，且寶箱現正特價中，買越多省越多，嗚獺！一個寶箱可以開啟一個道具，嗚獺！",
+    "subtitle_2": "走過路過千萬別錯過！這些寶箱裡的道具可以讓阿獺變得更強，趁打折期間快來增強戰力，嗚獺！",
+    "title": "阿獺王國商店"
   },
   "unsupported_network": {
     "action": "切換到 Polygon",
