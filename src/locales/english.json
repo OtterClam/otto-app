@@ -250,9 +250,9 @@
   },
   "wallet_selector_head": "Connect to a wallet",
   "store": {
-    "title": "Store",
-    "hero": "Welcome to Otto Store!",
-    "subtitle": "Buy the Shell Chests that contain more than 600+ special wearable equipment. Now on sale. Buy more and save more!",
+    "title": "Ottopia Store",
+    "hero": "Welcome to Ottopia Store!",
+    "subtitle": "These Shell Chests contain more than 600+ pieces of special, wearable equipment, and they're on sale! The more you buy, the more you save! Each Chest holds 1 item!",
     "shell_chest": "Shell Chest",
     "chest_desc": "There are 3 different types of Shell Chest you can purchase. You are more likely to find Epic/Legendary equipment at a higher level Shell Chest!",
     "product_card": {

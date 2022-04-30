@@ -1,44 +1,35 @@
 import Layout from 'Layout'
+import useProducts from 'models/store/useProducts'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
-import { ContentMedium, Display2, Display3 } from 'styles/typography'
-import Diamond from 'models/store/images/diamond.png'
-import Golden from 'models/store/images/golden.png'
-import Sliver from 'models/store/images/sliver.png'
-import Product from 'models/store/Product'
-import useProducts from 'models/store/useProducts'
+import { Display3 } from 'styles/typography'
 import Curtain from './Curtain'
 import GemLeft from './gem-left.png'
 import GemRight from './gem-right.png'
 import ProductCard from './ProductCard'
 import ProductPopup, { GroupedProduct } from './ProductPopup'
+import StoreHero from './StoreHero'
 
 const StyledStorePage = styled.div`
+  color: ${({ theme }) => theme.colors.white};
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: ${({ theme }) => theme.colors.otterBlack};
 `
-
-const StyledHeroSection = styled.section`
-  padding: 48px 80px;
-  color: ${({ theme }) => theme.colors.white};
-  background: ${({ theme }) => theme.colors.otterBlack};
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    padding: 48px 24px;
-  }
-`
-
-const StyledHeroText = styled.h1``
-
-const StyledSubtitle = styled.p``
-
-const StyledHeroImg = styled.img``
 
 const StyledCurtain = styled(Curtain)`
   width: calc(100% + 2px);
-  transform: translateX(-2px);
+  transform: translate(-2px, -4px);
+  z-index: 1;
+`
+
+const StyledHeroSection = styled.section`
+  width: 100%;
+  color: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.otterBlack};
+  margin-top: -20px;
 `
 
 const StyledProductBody = styled.div`
@@ -115,16 +106,10 @@ export default function StorePage() {
   return (
     <Layout title={t('store.title')}>
       <StyledStorePage>
-        <StyledHeroSection>
-          <StyledHeroText>
-            <Display2>{t('store.hero')}</Display2>
-          </StyledHeroText>
-          <StyledSubtitle>
-            <ContentMedium>{t('store.subtitle')}</ContentMedium>
-          </StyledSubtitle>
-          <StyledHeroImg />
-        </StyledHeroSection>
         <StyledCurtain />
+        <StyledHeroSection>
+          <StoreHero />
+        </StyledHeroSection>
         <StyledProductBody>
           <StyledShellChestTitle>
             <img src={GemLeft} alt="Gem Left" />

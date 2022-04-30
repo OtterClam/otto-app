@@ -16,7 +16,7 @@ const StyledProductCard = styled(BorderContainer)`
   padding: 15px;
   align-items: center;
   color: ${({ theme }) => theme.colors.white};
-  background-color: ${({ theme }) => theme.colors.otterBlack};
+  background-color: ${({ theme }) => theme.colors.darkGray400};
 `
 
 const Spin = keyframes`
