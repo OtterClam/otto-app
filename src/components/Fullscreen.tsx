@@ -28,6 +28,7 @@ const Container = styled.div`
   width: 80%;
   background-color: ${({ theme }) => theme.colors.crownYellow};
   padding: 6px;
+  max-width: 880px;
 
   border: 4px solid ${props => props.theme.colors.otterBlack};
   border-radius: 20px;

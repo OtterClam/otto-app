@@ -38,7 +38,7 @@ const StyledProductBody = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 80%;
-  max-width: 870px;
+  max-width: 880px;
   padding-bottom: 40px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {

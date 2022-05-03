@@ -283,6 +283,10 @@ const StyledOpenSeaHint = styled.div`
   border-radius: 20px;
   padding: 20px;
   gap: 10px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    flex-direction: column;
+  }
 `
 
 const StyledSmallPortal = styled.img`

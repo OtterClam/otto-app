@@ -2,6 +2,9 @@ import { Trait } from 'models/Otto'
 import styled from 'styled-components/macro'
 import { useTranslation } from 'react-i18next'
 import { ContentLarge, ContentSmall, Note } from 'styles/typography'
+import ItemCell from 'components/ItemCell'
+import { useMemo } from 'react'
+import { traitToItem } from 'models/Item'
 
 const StyledTraitCard = styled.div`
   display: flex;
@@ -45,42 +48,6 @@ const StyledBottomContainer = styled.div`
   gap: 20px;
 `
 
-const StyledImageContainer = styled.div<{ rarity: string }>`
-  width: 120px;
-  height: 120px;
-  border: 2px solid ${({ theme }) => theme.colors.otterBlack};
-  border-radius: 5px;
-  position: relative;
-
-  &:before {
-    content: ' ';
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    border: 5px solid ${({ theme, rarity }) => (theme.colors.rarity as any)[rarity]};
-    border-radius: 5px;
-    pointer-events: none;
-  }
-
-  &:after {
-    content: ' ';
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    right: 3px;
-    bottom: 3px;
-    border: 2px solid ${({ theme }) => theme.colors.otterBlack};
-    pointer-events: none;
-  }
-`
-
-const StyledImage = styled.img`
-  width: 100%;
-  border-radius: 5px;
-`
-
 const StyledInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -100,13 +67,19 @@ const StyledStat = styled.p`
   justify-content: space-between;
 `
 
+const StyledUnreturnable = styled(Note)`
+  color: ${({ theme }) => theme.colors.darkGray100};
+`
+
 export interface Props {
   trait: Trait
 }
 
-export default function TraitCard({ trait: { type, name, image, stats, rarity, total_rarity_score } }: Props) {
+export default function TraitCard({ trait }: Props) {
   const { t } = useTranslation()
+  const { type, name, image, stats, rarity, total_rarity_score } = trait
   const title = t(`otto.traits.title`, { type: t(`otto.traits.${type}`), name })
+  const item = useMemo(() => traitToItem(trait), [trait])
   return (
     <StyledTraitCard>
       <StyledTopContainer>
@@ -118,11 +91,7 @@ export default function TraitCard({ trait: { type, name, image, stats, rarity, t
         </StyledRarityBadge>
       </StyledTopContainer>
       <StyledBottomContainer>
-        {image && (
-          <StyledImageContainer rarity={rarity}>
-            <StyledImage src={image} />
-          </StyledImageContainer>
-        )}
+        {image && <ItemCell item={item} />}
         <StyledInfoContainer>
           <StyledRarityScore>
             <ContentSmall>{t('otto.rarity_score', { score: total_rarity_score })}</ContentSmall>
@@ -137,6 +106,7 @@ export default function TraitCard({ trait: { type, name, image, stats, rarity, t
           </StyledStats>
         </StyledInfoContainer>
       </StyledBottomContainer>
+      <StyledUnreturnable as="p">{t('otto.unreturnable')}</StyledUnreturnable>
     </StyledTraitCard>
   )
 }
