@@ -137,7 +137,7 @@ export const useBuyProduct = (claim: boolean) => {
   const [factory, setFactory] = useState<Contract | undefined>()
   const clam = new Contract(CLAM, ERC20, library?.getSigner())
   const store = new Contract(OTTOPIA_STORE, OttopiaStoreAbi, library)
-  const { state, send, resetState } = useContractFunction(store, claim ? 'claim' : 'buy')
+  const { state, send, resetState } = useContractFunction(store, claim ? 'claimNoChainlink' : 'buyNoChainlink')
   const [buyState, setBuyState] = useState<OttoBuyTransactionState>({
     state: 'None',
     status: state,
@@ -149,14 +149,18 @@ export const useBuyProduct = (claim: boolean) => {
     })
     setFactory(new Contract(factoryAddr, IOttoItemFactory, library))
     if (claim) {
-      send(id, ottoIds)
+      send(id, ottoIds, {
+        gasLimit: 1000000,
+      })
     } else {
       const clamAllowance = await clam.allowance(account, OTTOPIA_STORE)
       const noAllowance = clamAllowance.lt(discountPrice)
       if (noAllowance) {
         await (await clam.approve(OTTOPIA_STORE, constants.MaxUint256)).wait()
       }
-      send(account, id, '1')
+      send(account, id, '1', {
+        gasLimit: 1000000,
+      })
     }
   }
   const resetBuy = () => {
@@ -165,44 +169,26 @@ export const useBuyProduct = (claim: boolean) => {
   }
   useEffect(() => {
     if (state.status === 'Success') {
-      const orderId = state.receipt?.logs
-        .map(log => {
-          try {
-            return factory?.interface.parseLog(log)
-          } catch (err) {
-            // skip
-          }
-          return null
-        })
-        .find(e => e?.name === 'CreateOrder')?.args[0]
-      console.log(`order id: ${orderId}`)
-      if (orderId && factory) {
-        const event = factory.filters.ShipOrder(orderId)
-        factory.once(event, async (orderId, buyer, event) => {
-          // console.log(`==== order shipped ${orderId} ====`)
-          // console.log(event)
-          const IItem = new utils.Interface(OttoItemAbi)
-          const receipt = (await event.getTransactionReceipt()) as ContractReceipt
-          const receivedItems = await Promise.all(
-            receipt.logs
-              .map(log => {
-                try {
-                  return IItem.parseLog(log)
-                } catch (err) {
-                  // skip
-                }
-                return null
-              })
-              .filter(e => e?.name === 'TransferSingle' && e.args[2] === account)
-              .map(e => api.getItem(e?.args[3], i18n.resolvedLanguage))
-          )
-          setBuyState({
-            state: 'Success',
-            status: state,
-            receivedItems,
+      const IItem = new utils.Interface(OttoItemAbi)
+      Promise.all(
+        (state.receipt?.logs || [])
+          .map(log => {
+            try {
+              return IItem.parseLog(log)
+            } catch (err) {
+              // skip
+            }
+            return null
           })
+          .filter(e => e?.name === 'TransferSingle' && e.args[2] === account)
+          .map(e => api.getItem(e?.args[3], i18n.resolvedLanguage))
+      ).then(receivedItems =>
+        setBuyState({
+          state: 'Success',
+          status: state,
+          receivedItems,
         })
-      }
+      )
     } else {
       setBuyState({ state: state.status, status: state })
     }
