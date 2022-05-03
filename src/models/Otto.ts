@@ -20,6 +20,8 @@ export interface Trait {
   total_rarity_score: number
   wearable: boolean
   stats: [Stat]
+  unreturnable: boolean
+  equippable_gender: string
 }
 
 export interface Stat {

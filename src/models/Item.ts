@@ -19,6 +19,7 @@ export default interface Item {
   amount: number
   parentTokenId?: string
   baseRarityScore: number
+  equippable_gender: string
 }
 
 export function traitToItem(trait: Trait): Item {
@@ -52,4 +53,5 @@ export const EmptyItem: Item = {
   equipped: false,
   amount: 1,
   baseRarityScore: 0,
+  equippable_gender: 'both',
 }

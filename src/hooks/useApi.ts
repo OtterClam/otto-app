@@ -33,19 +33,27 @@ export class Api {
     return this.axios
       .get(`/items/metadata/${itemId}`, { params: { lang } })
       .then(res => res.data)
-      .then(({ name, image, description, details: { type, rarity, stats, wearable, base_rarity_score } }) => ({
-        id: itemId,
-        name,
-        type,
-        rarity,
-        description,
-        stats,
-        image,
-        equipped: false,
-        baseRarityScore: base_rarity_score,
-        wearable,
-        amount: 1,
-      }))
+      .then(
+        ({
+          name,
+          image,
+          description,
+          details: { type, rarity, stats, wearable, base_rarity_score, equippable_gender },
+        }) => ({
+          id: itemId,
+          name,
+          type,
+          rarity,
+          description,
+          stats,
+          image,
+          equipped: false,
+          baseRarityScore: base_rarity_score,
+          wearable,
+          amount: 1,
+          equippable_gender,
+        })
+      )
   }
 }
 

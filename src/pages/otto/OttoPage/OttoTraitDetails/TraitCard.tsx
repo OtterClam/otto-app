@@ -5,6 +5,7 @@ import { ContentLarge, ContentSmall, Note } from 'styles/typography'
 import ItemCell from 'components/ItemCell'
 import { useMemo } from 'react'
 import { traitToItem } from 'models/Item'
+import GenderSpecific from 'components/GenderSpecific'
 
 const StyledTraitCard = styled.div`
   display: flex;
@@ -77,7 +78,7 @@ export interface Props {
 
 export default function TraitCard({ trait }: Props) {
   const { t } = useTranslation()
-  const { type, name, image, stats, rarity, total_rarity_score } = trait
+  const { type, name, image, stats, rarity, total_rarity_score, equippable_gender } = trait
   const title = t(`otto.traits.title`, { type: t(`otto.traits.${type}`), name })
   const item = useMemo(() => traitToItem(trait), [trait])
   return (
@@ -104,6 +105,7 @@ export default function TraitCard({ trait }: Props) {
               </StyledStat>
             ))}
           </StyledStats>
+          <GenderSpecific equippableGender={equippable_gender} />
         </StyledInfoContainer>
       </StyledBottomContainer>
       {/* <StyledUnreturnable as="p">{t('otto.unreturnable')}</StyledUnreturnable> */}

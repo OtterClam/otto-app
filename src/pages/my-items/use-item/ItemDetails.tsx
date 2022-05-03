@@ -4,6 +4,7 @@ import { t } from 'i18next'
 import Item from 'models/Item'
 import styled from 'styled-components/macro'
 import { Caption, ContentSmall, Headline, Note } from 'styles/typography'
+import GenderSpecific from 'components/GenderSpecific'
 
 const StyledItemDetails = styled.section`
   display: flex;
@@ -146,7 +147,7 @@ interface Props {
 }
 
 export default function ItemDetails({ item, onClose, onUse, className }: Props) {
-  const { name, image, rarity, type, description } = item
+  const { name, image, rarity, type, description, equippable_gender } = item
   return (
     <StyledItemDetails className={className}>
       {onClose && <StyledCloseButton onClose={onClose} />}
@@ -165,6 +166,7 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
           <ContentSmall>{rarity}</ContentSmall>
         </StyledRarityLabel>
       </StyledTitleContainer>
+      <GenderSpecific equippableGender={equippable_gender} />
       <StyledDesc>
         <ContentSmall>{description}</ContentSmall>
       </StyledDesc>
