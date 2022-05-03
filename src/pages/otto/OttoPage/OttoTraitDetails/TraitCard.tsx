@@ -106,7 +106,7 @@ export default function TraitCard({ trait }: Props) {
           </StyledStats>
         </StyledInfoContainer>
       </StyledBottomContainer>
-      <StyledUnreturnable as="p">{t('otto.unreturnable')}</StyledUnreturnable>
+      {/* <StyledUnreturnable as="p">{t('otto.unreturnable')}</StyledUnreturnable> */}
     </StyledTraitCard>
   )
 }
