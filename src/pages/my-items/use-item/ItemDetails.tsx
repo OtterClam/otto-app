@@ -12,18 +12,20 @@ const StyledItemDetails = styled.section`
   gap: 10px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    align-items: center;
+    padding: 20px;
     border: 2px solid ${({ theme }) => theme.colors.otterBlack};
     border-radius: 10px;
   }
 `
 
 const StyledCloseButton = styled(CloseButton)`
+  display: none;
   position: relative;
   left: calc(100% - 44px);
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    left: 50%;
+    display: block;
+    right: 0;
   }
 `
 
@@ -33,6 +35,11 @@ const StyledItemImageContainer = styled.div<{ rarity: string }>`
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 5px;
   position: relative;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 100%;
+    height: auto;
+  }
 
   &:before {
     content: ' ';
