@@ -188,7 +188,7 @@
       "title": "{{type}}: {{name}}"
     },
     "unreturnable": "Unreturnable",
-    "unreturnable_desc": "This item came along with the Otto the monent it was minted, so it cannot be detached and returned to your item inventory. You can still wear another wearale item to replace and hide it. If the other wearable item is taken off, this item will be visible again on the Otter.",
+    "unreturnable_hint": "This item came along with the Otto the moment it was minted, so it cannot be detached and returned to your item inventory. You can still wear another wearable item to replace and hide it. If the other wearable item is taken off, this item will be visible again on the Otter.",
     "voice": "Voice: {{voice}}",
     "wearable_traits_tab": "Wearable Traits"
   },
