@@ -42,7 +42,7 @@
     },
     "eth_balance": "你的 ETH:",
     "hero": {
-      "desc": "鑄造阿獺傳送門來召喚獨一無二的阿獺。Otto? Lottie? Cleo? 都有可能出現在你的阿獺傳送門中。",
+      "desc": "鑄造阿獺傳送門來召喚獨一無二的阿獺。阿獺? 蘿提? 克蕾歐? 都有可能出現在你的阿獺傳送門中。",
       "limit": "限量 5,000 個傳送門",
       "subtitle": "召喚你專屬的阿獺 NFTs",
       "title": "阿獺傳送門",
@@ -152,8 +152,8 @@
     "first_gen": "第一代阿獺",
     "first_gen_desc": "為第一代先驅者，總共會有 5000 隻阿獺傳送到阿獺王國。",
     "gender": "性別： {{gender}}",
-    "gender_specific_female": "Gender-specific: Lottie, Cleo",
-    "gender_specific_male": "Gender-specific: Otto, Cleo",
+    "gender_specific_female": "限定性別: 蘿提, 克蕾歐",
+    "gender_specific_male": "限定性別: 阿獺, 克蕾歐",
     "genetic_traits_tab": "生物特徵",
     "legendary": "超傳奇",
     "legendary_note": "絕無僅有，為藝術家欽定的傳奇夢幻阿獺。",
@@ -187,8 +187,8 @@
       "Voice": "聲音",
       "title": "{{type}}: {{name}}"
     },
-    "unreturnable": "Unreturnable",
-    "unreturnable_desc": "This item came along with the Otto the monent it was minted, so it cannot be detached and returned to your item inventory. You can still wear another wearale item to replace and hide it. If the other wearable item is taken off, this item will be visible again on the Otter.",
+    "unreturnable": "靈魂綁定",
+    "unreturnable_desc": "此為靈魂綁定物品，意即阿獺鑄造出來時就已經存在，所以無法脫下它。你仍然可以穿上其他道具來覆蓋並隱藏此物品，當覆蓋的裝備卸下時，此物品會再次出現在阿獺上。",
     "voice": "聲音： {{voice}}",
     "wearable_traits_tab": "可穿脫特徵"
   },
@@ -275,10 +275,10 @@
       "found_items": "{{current}} 之 {{total}}",
       "free": "免費",
       "open_title": "太蚌了！這裝備真酷，迫不及待看到你的阿獺換上這些裝配了！",
-      "processing": "交易處理中…\n\n這可能會需要幾分鐘的時間，請勿關閉視窗並耐心等候\n\n感謝 ʕ•̫͡•ʔ b",
+      "processing": "交易處理中…\n\n這可能會需要幾秒鐘的時間，請勿關閉視窗並耐心等候\n\n感謝 ʕ•̫͡•ʔ b",
       "received_items_one": "你得到 ({{count}}) 個物品",
       "received_items_other": "你得到 ({{count}}) 個物品",
-      "skip": "Skip to show all"
+      "skip": "略過動畫"
     },
     "product_card": {
       "airdrop": "恭喜，你有 {{amount}} 個免費寶箱，立即領取開箱吧!",
