@@ -52,6 +52,7 @@ export class Api {
           wearable,
           amount: 1,
           equippable_gender,
+          unreturnable: false,
         })
       )
   }

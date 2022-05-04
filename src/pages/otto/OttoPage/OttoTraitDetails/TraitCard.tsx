@@ -6,6 +6,7 @@ import ItemCell from 'components/ItemCell'
 import { useMemo } from 'react'
 import { traitToItem } from 'models/Item'
 import GenderSpecific from 'components/GenderSpecific'
+import UnreturnableHint from 'components/UnreturnableHint'
 
 const StyledTraitCard = styled.div`
   display: flex;
@@ -78,7 +79,7 @@ export interface Props {
 
 export default function TraitCard({ trait }: Props) {
   const { t } = useTranslation()
-  const { type, name, image, stats, rarity, total_rarity_score, equippable_gender } = trait
+  const { type, name, image, stats, rarity, total_rarity_score, equippable_gender, unreturnable, wearable } = trait
   const title = t(`otto.traits.title`, { type: t(`otto.traits.${type}`), name })
   const item = useMemo(() => traitToItem(trait), [trait])
   return (
@@ -108,7 +109,7 @@ export default function TraitCard({ trait }: Props) {
           <GenderSpecific equippableGender={equippable_gender} />
         </StyledInfoContainer>
       </StyledBottomContainer>
-      {/* <StyledUnreturnable as="p">{t('otto.unreturnable')}</StyledUnreturnable> */}
+      {wearable && unreturnable && <UnreturnableHint />}
     </StyledTraitCard>
   )
 }

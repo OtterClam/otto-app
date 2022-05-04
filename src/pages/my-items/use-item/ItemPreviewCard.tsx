@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Caption } from 'styles/typography'
 import ItemCell from 'components/ItemCell'
+import UnreturnableHint from 'components/UnreturnableHint'
 
 const StyledItemPreviewCard = styled.div`
   display: flex;
@@ -51,6 +52,7 @@ export default function ItemPreviewCard({ title, item = EmptyItem }: Props) {
           </StyledAttr>
         ))}
       </StyledAttrs>
+      {item.unreturnable && <UnreturnableHint />}
     </StyledItemPreviewCard>
   )
 }
