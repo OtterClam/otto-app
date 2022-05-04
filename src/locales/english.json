@@ -152,6 +152,8 @@
     "first_gen": "1st generation Otto",
     "first_gen_desc": "Total 5,000 Ottos for the 1st generation in the kingdom.",
     "gender": "Gender: {{gender}}",
+    "gender_specific_female": "Gender-specific: Lottie, Cleo",
+    "gender_specific_male": "Gender-specific: Otto, Cleo",
     "genetic_traits_tab": "Genetic Traits",
     "legendary": "Legendary",
     "legendary_note": "Artist chosen Otto that is super rare and unique.",
@@ -185,12 +187,10 @@
       "Voice": "Voice",
       "title": "{{type}}: {{name}}"
     },
-    "voice": "Voice: {{voice}}",
-    "wearable_traits_tab": "Wearable Traits",
     "unreturnable": "Unreturnable",
     "unreturnable_desc": "This item came along with the Otto the monent it was minted, so it cannot be detached and returned to your item inventory. You can still wear another wearale item to replace and hide it. If the other wearable item is taken off, this item will be visible again on the Otter.",
-    "gender_specific_male": "Gender-specific: Otto, Cleo",
-    "gender_specific_female": "Gender-specific: Lottie, Cleo"
+    "voice": "Voice: {{voice}}",
+    "wearable_traits_tab": "Wearable Traits"
   },
   "otto_one": "{{count}} Otto",
   "otto_other": "{{count}} Ottos",
@@ -272,12 +272,12 @@
       "claim": "Claim Now",
       "claim_title": "You have {{amount}} for FREE!",
       "discount": "Saved {{discount}}%",
+      "found_items": "{{current}} of {{total}}",
       "free": "FREE",
       "open_title": "Clamazing!! What a great selection! Your Otto is going to look so cool!",
       "processing": "Processing...\nIt might take a few minutes to finish the transaction. Please do not close the window! Thanks for your patience ʕ•̫͡•ʔ b",
       "received_items_one": "You found ({{count}}) Item",
       "received_items_other": "You found ({{count}}) Items",
-      "found_items": "{{current}} of {{total}}",
       "skip": "Skip to show all"
     },
     "product_card": {
