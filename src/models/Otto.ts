@@ -3,6 +3,9 @@ export interface RawOtto {
   tokenURI: string
   mintAt: any
   legendary: boolean
+  brs?: number
+  rrs?: number
+  rarityScore?: number
 }
 
 export interface Attr {
@@ -36,7 +39,7 @@ export interface OttoMeta {
   attributes: [Attr]
   otto_attrs: [Attr]
   otto_traits: [Attr]
-  otto_details: [Trait]
+  otto_details?: [Trait]
   animation_url: string
 }
 
@@ -48,6 +51,10 @@ export default class Otto {
   public metadata: OttoMeta
 
   public readonly baseRarityScore: number = 0
+
+  public readonly relativeRarityScore: number = 0
+
+  public readonly totalRarityScore: number = 0
 
   public readonly gender: string = ''
 
@@ -70,18 +77,14 @@ export default class Otto {
     this.metadata = metadata
     this.voice = new Audio(this.metadata.animation_url)
     this.voice.load()
+    this.baseRarityScore = this.raw.brs || -1
+    this.relativeRarityScore = this.raw.rrs || -1
+    this.totalRarityScore = this.raw.rarityScore || -1
 
     for (let idx = 0; idx < this.metadata.attributes.length; idx++) {
       const { trait_type, value } = this.metadata.attributes[idx]
       if (trait_type === 'Coat of Arms') {
         this.armsImage = String(value)
-      }
-    }
-
-    for (let idx = 0; idx < this.metadata.otto_attrs.length; idx++) {
-      const { trait_type, value } = this.metadata.otto_attrs[idx]
-      if (trait_type === 'BRS') {
-        this.baseRarityScore = Number(value)
       }
     }
 
@@ -100,12 +103,14 @@ export default class Otto {
       }
     }
 
-    for (let idx = 0; idx < this.metadata.otto_details.length; idx++) {
-      const trait = this.metadata.otto_details[idx]
-      if (trait.wearable) {
-        this.wearableTraits.push(trait)
-      } else {
-        this.geneticTraits.push(trait)
+    if (this.metadata.otto_details) {
+      for (let idx = 0; idx < this.metadata.otto_details.length; idx++) {
+        const trait = this.metadata.otto_details[idx]
+        if (trait.wearable) {
+          this.wearableTraits.push(trait)
+        } else {
+          this.geneticTraits.push(trait)
+        }
       }
     }
   }

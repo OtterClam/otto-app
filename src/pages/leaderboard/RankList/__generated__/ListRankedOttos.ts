@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ListMyOttos
+// GraphQL query operation: ListRankedOttos
 // ====================================================
 
-export interface ListMyOttos_ottos {
+export interface ListRankedOttos_ottos {
   __typename: "Otto";
   tokenId: any;
   tokenURI: string;
@@ -18,10 +18,11 @@ export interface ListMyOttos_ottos {
   rarityScore: number;
 }
 
-export interface ListMyOttos {
-  ottos: ListMyOttos_ottos[];
+export interface ListRankedOttos {
+  ottos: ListRankedOttos_ottos[];
 }
 
-export interface ListMyOttosVariables {
-  owner: any;
+export interface ListRankedOttosVariables {
+  first: number;
+  skip: number;
 }
