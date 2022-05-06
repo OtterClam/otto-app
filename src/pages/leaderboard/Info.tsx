@@ -9,10 +9,17 @@ const StyledInfo = styled.div`
   background: ${({ theme }) => theme.colors.darkGray400};
   padding: 20px 40px;
   gap: 10px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    padding: 10px;
+  }
 `
 
 const StyledImage = styled.img`
   width: 134px;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 80px;
+  }
 `
 
 const StyledContent = styled.div`
@@ -25,6 +32,7 @@ const StyledDesc = styled(ContentMedium)``
 
 const StyledLinks = styled.div`
   display: flex;
+  justify-content: space-evenly;
 `
 
 const StyledLink = styled(Link)`

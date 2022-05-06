@@ -5,19 +5,31 @@ import styled from 'styled-components/macro'
 import { ContentSmall, Display1, Headline } from 'styles/typography'
 import Ribbon from 'assets/ui/ribbon.png'
 import InfoIcon from 'assets/ui/info.svg'
-import Left from './left.png'
-import Right from './right.png'
+import StreamerRight from './streamer_right.png'
+import StreamerLeft from './streamer_left.png'
+import Rewards from './rewards.png'
+import Ottos from './ottos.png'
+import Background from './background.png'
+import Clams from './clams.png'
 
 const StyledHero = styled.div`
   width: 100%;
+  height: 404px;
   padding: 25px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 15px;
   position: relative;
   background: ${({ theme }) => theme.colors.darkGray400};
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    flex-direction: column;
+    height: auto;
+    padding: 25px 5px;
+    align-items: center;
+  }
 
   &:before {
     content: ' ';
@@ -44,15 +56,44 @@ const StyledHero = styled.div`
   }
 `
 
-const StyledImg = styled.img`
-  width: 20%;
-  /* height: fit-content; */
+const StyledStreamerLeft = styled.img`
+  position: absolute;
+  left: 7px;
+  top: 7px;
+  width: 294px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 162px;
+  }
+`
+
+const StyledRewardImg = styled.img`
+  position: absolute;
+  width: 35vw;
+  max-width: 500px;
+  left: 0;
+  bottom: 15px;
+  z-index: 995;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    position: static;
+  }
 `
 
 const StyledCenterContainer = styled.div`
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
+  right: 10%;
+  z-index: 1000;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    padding: 5px;
+    position: static;
+    text-align: center;
+    right: unset;
+  }
 `
 
 const StyledTitle = styled(ContentSmall)`
@@ -83,11 +124,63 @@ const StyledRewardAt = styled(ContentSmall)`
   }
 `
 
+const StyledStreamRight = styled.img`
+  position: absolute;
+  width: 294px;
+  top: 5px;
+  right: 5px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 162px;
+  }
+`
+
+const StyledOttos = styled.img`
+  position: absolute;
+  width: 710px;
+  bottom: 5px;
+  right: 0;
+  z-index: 997;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    display: none;
+  }
+`
+
+const StyledBackground = styled.img`
+  position: absolute;
+  width: calc(100% - 10px);
+  bottom: 5px;
+  left: 5px;
+  border-radius: 12px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    display: none;
+  }
+`
+
+const StyledClam = styled.img`
+  width: 136px;
+  position: absolute;
+  left: -40px;
+  bottom: -40px;
+  z-index: 999;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    display: none;
+  }
+`
+
 export default function Hero() {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.hero' })
   return (
     <StyledHero>
-      <StyledImg src={Left} />
+      <StyledBackground src={Background} />
+      <StyledStreamerLeft src={StreamerLeft} />
+      <StyledStreamRight src={StreamerRight} />
+      <StyledClam src={Clams} />
+      <StyledOttos src={Ottos} />
+      <StyledRewardImg src={Rewards} />
       <StyledCenterContainer>
         <StyledTitle as="h2">{t('title')}</StyledTitle>
         <StyledComingSoon>{t('coming_soon')}</StyledComingSoon>
@@ -98,7 +191,6 @@ export default function Hero() {
           </Button>
         </a>
       </StyledCenterContainer>
-      <StyledImg src={Right} />
     </StyledHero>
   )
 }

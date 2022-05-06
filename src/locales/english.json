@@ -319,8 +319,8 @@
       "your_rank": "Your Ottos’ rank currently:",
       "expand": "Expand all your {{count}} Ottos",
       "show_less": "Show less",
-      "prev": "< Previous Page",
-      "next": "Next Page >"
+      "prev": "< Previous",
+      "next": "Next >"
     }
   }
 }

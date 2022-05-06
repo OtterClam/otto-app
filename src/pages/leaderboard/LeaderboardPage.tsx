@@ -15,6 +15,10 @@ const StyledLeaderboardPage = styled.div`
   color: ${({ theme }) => theme.colors.white};
   padding: 40px 70px;
   gap: 40px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    padding: 40px 5px;
+  }
 `
 
 const StyledHead = styled(Display3)``
@@ -24,6 +28,10 @@ const StyledHero = styled(Hero)``
 const StyledInfos = styled.div`
   display: flex;
   gap: 20px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    flex-direction: column;
+  }
 `
 
 const StyledRankList = styled(RankList)`

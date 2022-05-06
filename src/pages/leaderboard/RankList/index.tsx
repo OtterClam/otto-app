@@ -1,18 +1,19 @@
-import MyOttosProvider, { useMyOttos } from 'MyOttosProvider'
-import { useTranslation } from 'react-i18next'
-import styled from 'styled-components/macro'
-import { ContentLarge, ContentMedium, Headline, Note } from 'styles/typography'
-import CLAM from 'assets/clam.png'
-import { useEffect, useMemo, useState } from 'react'
-import ArrowDown from 'assets/ui/arrow_down.svg'
 import { gql, useQuery } from '@apollo/client'
+import CLAM from 'assets/clam.png'
 import cursorPointer from 'assets/cursor-pointer.png'
-import { useOttos } from 'hooks/useOtto'
+import ArrowDown from 'assets/ui/arrow_down.svg'
 import Button from 'components/Button'
-import Otto from 'models/Otto'
-import { useLocation, Link } from 'react-router-dom'
-import { ListRankedOttos, ListRankedOttosVariables } from './__generated__/ListRankedOttos'
+import { useMediaQuery } from 'hooks/useMediaQuery'
+import { useOttos } from 'hooks/useOtto'
+import { useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Link, useLocation } from 'react-router-dom'
+import styled from 'styled-components/macro'
+import { breakpoints } from 'styles/breakpoints'
+import { ContentLarge, ContentMedium, Headline } from 'styles/typography'
 import LoadingGif from './loading.gif'
+import RarityScore from './rarity_score.png'
+import { ListRankedOttos, ListRankedOttosVariables } from './__generated__/ListRankedOttos'
 
 export const LIST_RANKED_OTTOS = gql`
   query ListRankedOttos($first: Int!, $skip: Int!) {
@@ -75,6 +76,10 @@ const StyledTableHead = styled(StyledRow)`
   height: 47px;
   background: ${({ theme }) => theme.colors.lightGray200};
   padding: 10px 40px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    display: none;
+  }
 `
 
 const StyledOttoRow = styled(StyledRow)`
@@ -82,6 +87,9 @@ const StyledOttoRow = styled(StyledRow)`
   width: 100%;
   position: relative;
   padding: 10px 40px;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    padding: 10px;
+  }
 
   &:hover {
     background: ${({ theme }) => theme.colors.lightGray100};
@@ -163,16 +171,41 @@ const StyledTh = styled(ContentMedium)``
 
 const StyledTd = styled(ContentLarge)``
 
-const StyledAvatarName = styled.div`
+const StyledRarityScore = styled(ContentLarge).attrs({
+  as: 'div',
+})`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  &:before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    background-image: url(${RarityScore});
+    background-size: 100%;
+  }
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    justify-content: start;
+  }
+`
+
+const StyledAvatarName = styled(ContentLarge)`
   flex: 1;
   display: flex;
   align-items: center;
   gap: 20px;
+  grid-column-start: span 2;
 `
 
 const StyledOttoAvatar = styled.img`
   width: 100px;
   height: 100px;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 60px;
+    height: 60px;
+  }
 `
 
 const StyledReward = styled(ContentLarge)`
@@ -187,17 +220,48 @@ const StyledReward = styled(ContentLarge)`
     background-image: url(${CLAM});
     background-size: 100%;
   }
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    justify-content: start;
+  }
+`
+
+const StyledMobileRow = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  color: ${({ theme }) => theme.colors.otterBlack};
+  gap: 10px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray200};
+`
+
+const StyledMobileContent = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  width: 100%;
 `
 
 const StyledPagination = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 20px;
   margin: 20px 40px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    margin: 20px;
+    gap: 20px;
+  }
 `
 
-const StyledPaginationButton = styled(Button)<{ show: boolean }>`
+const StyledPaginationLink = styled(Link)<{ show: boolean }>`
   opacity: ${({ show }) => (show ? 1 : 0)};
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    flex: 1;
+    width: 100%;
+  }
+`
+
+const StyledButton = styled(Button)`
+  width: 100%;
 `
 
 interface Props {
@@ -225,6 +289,7 @@ export default function RankList({ className }: Props) {
   // const { ottos: myOttos } = useMyOttos()
   const myOttos: any[] = []
   const [expand, setExpand] = useState(false)
+  const isMobile = useMediaQuery(breakpoints.mobile)
   useEffect(() => {
     refetch({ skip: page * PAGE, first: PAGE })
   }, [page])
@@ -239,7 +304,7 @@ export default function RankList({ className }: Props) {
               <StyledMyOttoRow key={index}>
                 <StyledTd as="div">{index + 1}</StyledTd>
                 <StyledTd as="div">
-                  <StyledAvatarName>
+                  <StyledAvatarName as="div">
                     <StyledMyOttoAvatar src={image} />
                     {name}
                   </StyledAvatarName>
@@ -273,36 +338,48 @@ export default function RankList({ className }: Props) {
         {!loading &&
           ottos.map(({ tokenId, name, image, baseRarityScore, relativeRarityScore, totalRarityScore }, index) => (
             <a key={page * PAGE + index} href={`/ottos/${tokenId}`} target="_blank" rel="noreferrer">
-              <StyledOttoRow>
-                <StyledTd as="div">{page * PAGE + index + 1}</StyledTd>
-                <StyledTd as="div">
-                  <StyledAvatarName>
-                    <StyledOttoAvatar src={image} />
-                    {name}
-                  </StyledAvatarName>
-                </StyledTd>
-                <StyledTd as="div">
-                  <StyledReward>TBD</StyledReward>
-                </StyledTd>
-                <StyledTd as="div">{totalRarityScore}</StyledTd>
-                <StyledTd as="div">{baseRarityScore}</StyledTd>
-                <StyledTd as="div">{relativeRarityScore}</StyledTd>
-              </StyledOttoRow>
+              {isMobile ? (
+                <StyledMobileRow>
+                  <StyledTd as="div">{page * PAGE + index + 1}</StyledTd>
+                  <StyledOttoAvatar src={image} />
+                  <StyledMobileContent>
+                    <StyledAvatarName as="div">{name}</StyledAvatarName>
+                    <StyledReward as="div">TBD</StyledReward>
+                    <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
+                  </StyledMobileContent>
+                </StyledMobileRow>
+              ) : (
+                <StyledOttoRow>
+                  <StyledTd as="div">{page * PAGE + index + 1}</StyledTd>
+                  <StyledTd as="div">
+                    <StyledAvatarName>
+                      <StyledOttoAvatar src={image} />
+                      {name}
+                    </StyledAvatarName>
+                  </StyledTd>
+                  <StyledTd as="div">
+                    <StyledReward>TBD</StyledReward>
+                  </StyledTd>
+                  <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
+                  <StyledTd as="div">{baseRarityScore}</StyledTd>
+                  <StyledTd as="div">{relativeRarityScore}</StyledTd>
+                </StyledOttoRow>
+              )}
             </a>
           ))}
       </StyledTable>
       {!loading && (
         <StyledPagination>
-          <Link to={`?page=${page - 1}`}>
-            <StyledPaginationButton primaryColor="white" show={page > 0}>
+          <StyledPaginationLink to={`?page=${page - 1}`} show={page > 0}>
+            <StyledButton primaryColor="white" padding="20px">
               <Headline>{t('prev')}</Headline>
-            </StyledPaginationButton>
-          </Link>
-          <Link to={`?page=${page + 1}`}>
-            <Button primaryColor="white">
+            </StyledButton>
+          </StyledPaginationLink>
+          <StyledPaginationLink to={`?page=${page + 1}`} show>
+            <StyledButton primaryColor="white" padding="20px">
               <Headline>{t('next')}</Headline>
-            </Button>
-          </Link>
+            </StyledButton>
+          </StyledPaginationLink>
         </StyledPagination>
       )}
     </StyledRankList>
