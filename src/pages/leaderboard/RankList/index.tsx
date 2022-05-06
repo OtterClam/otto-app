@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { ContentLarge, ContentMedium, Headline, Note } from 'styles/typography'
 import CLAM from 'assets/clam.png'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import ArrowDown from 'assets/ui/arrow_down.svg'
 import { gql, useQuery } from '@apollo/client'
 import cursorPointer from 'assets/cursor-pointer.png'
 import { useOttos } from 'hooks/useOtto'
 import Button from 'components/Button'
 import Otto from 'models/Otto'
+import { useLocation, Link } from 'react-router-dom'
 import { ListRankedOttos, ListRankedOttosVariables } from './__generated__/ListRankedOttos'
 import LoadingGif from './loading.gif'
 
@@ -205,9 +206,14 @@ interface Props {
 
 const PAGE = 20
 
+function useQueryString() {
+  const { search } = useLocation()
+  return useMemo(() => new URLSearchParams(search), [search])
+}
+
 export default function RankList({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.rank_list' })
-  const [page, setPage] = useState(0)
+  const page = Number(useQueryString().get('page')) || 0
   const {
     data,
     loading: loadingGraph,
@@ -287,12 +293,16 @@ export default function RankList({ className }: Props) {
       </StyledTable>
       {!loading && (
         <StyledPagination>
-          <StyledPaginationButton primaryColor="white" onClick={() => setPage(p => p - 1)} show={page > 0}>
-            <Headline>{t('prev')}</Headline>
-          </StyledPaginationButton>
-          <Button primaryColor="white" onClick={() => setPage(p => p + 1)}>
-            <Headline>{t('next')}</Headline>
-          </Button>
+          <Link to={`?page=${page - 1}`}>
+            <StyledPaginationButton primaryColor="white" show={page > 0}>
+              <Headline>{t('prev')}</Headline>
+            </StyledPaginationButton>
+          </Link>
+          <Link to={`?page=${page + 1}`}>
+            <Button primaryColor="white">
+              <Headline>{t('next')}</Headline>
+            </Button>
+          </Link>
         </StyledPagination>
       )}
     </StyledRankList>
