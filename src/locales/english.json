@@ -18,6 +18,34 @@
     "play": "Play",
     "title": "Welcome to Ottopia"
   },
+  "leaderboard": {
+    "head": "Be the rarest to win the prize!",
+    "hero": {
+      "coming_soon": "COMING SOON!",
+      "get_updated": "Get updated on Discord",
+      "reward_at": "Rewarding at: Coming soon!",
+      "title": "Total Rewards this Round"
+    },
+    "item_desc": "Increase your Otto’s rarity by equipping the epic items, or you can summon a genetically rare Otto!",
+    "mint_portal_link": "Mint Portal >",
+    "rank_list": {
+      "brs": "BRS",
+      "est_reward": "Est. Reward",
+      "expand": "Expand all your {{count}} Ottos",
+      "name": "Otto Name",
+      "next": "Next >",
+      "prev": "< Previous",
+      "rank": "Rank#",
+      "rarity_score": "Rarity Score",
+      "rrs": "RRS",
+      "show_less": "Show less",
+      "your_rank": "Your Ottos’ rank currently:"
+    },
+    "reward_desc": "The higher your rank, the more prize you will win! All top 50% Ottos can win the rewards.",
+    "reward_link": "See how the rank vs prize works >",
+    "shell_chest_link": "Buy Shell Chest >",
+    "title": "Leaderboard"
+  },
   "mint": {
     "approve_button": "Approve",
     "buy": "Buy",
@@ -294,33 +322,5 @@
     "desc": "Only Polygon Mainnet are supported.",
     "title": "Unsupported Network"
   },
-  "wallet_selector_head": "Connect to a wallet",
-  "leaderboard": {
-    "title": "Leaderboard",
-    "head": "Be the rarest to win the prize!",
-    "hero": {
-      "title": "Total Rewards this Round",
-      "coming_soon": "COMING SOON!",
-      "get_updated": "Get updated on Discord",
-      "reward_at": "Rewarding at: Coming soon!"
-    },
-    "reward_desc": "The higher your rank, the more prize you will win! All top 50% Ottos can win the rewards.",
-    "reward_link": "See how the rank vs prize works >",
-    "item_desc": "Increase your Otto’s rarity by equipping the epic items, or you can summon a genetically rare Otto!",
-    "shell_chest_link": "Buy Shell Chest >",
-    "mint_portal_link": "Mint Portal >",
-    "rank_list": {
-      "rank": "Rank#",
-      "name": "Otto Name",
-      "est_reward": "Est. Reward",
-      "rarity_score": "Rarity Score",
-      "brs": "BRS",
-      "rrs": "RRS",
-      "your_rank": "Your Ottos’ rank currently:",
-      "expand": "Expand all your {{count}} Ottos",
-      "show_less": "Show less",
-      "prev": "< Previous",
-      "next": "Next >"
-    }
-  }
+  "wallet_selector_head": "Connect to a wallet"
 }
