@@ -263,14 +263,12 @@ export default function OttoPage() {
             </StyledDescription>
 
             <StyledAttrs>
-              {otto?.metadata?.otto_attrs
-                ?.filter(p => p.trait_type !== 'BRS')
-                .map(({ trait_type, value }, index) => (
-                  <StyledAttr key={index}>
-                    <ContentLarge>{trait_type}</ContentLarge>
-                    <ContentLarge>{value}</ContentLarge>
-                  </StyledAttr>
-                ))}
+              {otto?.displayAttrs.map(({ trait_type, value }, index) => (
+                <StyledAttr key={index}>
+                  <ContentLarge>{trait_type}</ContentLarge>
+                  <ContentLarge>{value}</ContentLarge>
+                </StyledAttr>
+              ))}
             </StyledAttrs>
 
             {otto && (

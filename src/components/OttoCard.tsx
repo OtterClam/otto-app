@@ -116,17 +116,15 @@ export default function OttoCard({ otto, oldOtto, item, takeOff = false, classNa
         </ContentSmall>
       </StyledRarityScore>
       <StyledAttrs>
-        {otto.metadata.otto_attrs
-          ?.filter(p => p.trait_type !== 'BRS')
-          .map(({ trait_type, value }, index) => (
-            <StyledAttr key={index}>
-              <Caption>{trait_type}</Caption>
-              <Caption>
-                {value}
-                {diffAttrs[trait_type] && <StyledDiffAttr>({diffAttrs[trait_type]})</StyledDiffAttr>}
-              </Caption>
-            </StyledAttr>
-          ))}
+        {otto.displayAttrs.map(({ trait_type, value }, index) => (
+          <StyledAttr key={index}>
+            <Caption>{trait_type}</Caption>
+            <Caption>
+              {value}
+              {diffAttrs[trait_type] && <StyledDiffAttr>({diffAttrs[trait_type]})</StyledDiffAttr>}
+            </Caption>
+          </StyledAttr>
+        ))}
       </StyledAttrs>
     </StyledOttoCard>
   )

@@ -139,6 +139,12 @@ export default class Otto {
     return this.raw.legendary
   }
 
+  get displayAttrs() {
+    return this.metadata.otto_attrs.filter(
+      p => p.trait_type !== 'BRS' && p.trait_type !== 'TRS' && p.trait_type !== 'RRS'
+    )
+  }
+
   public playVoice() {
     this.voice.play()
   }
