@@ -29,7 +29,7 @@
     "item_desc": "裝備稀有物品讓你的阿獺擁有更高的稀有值，或者你也可以直接鑄造傳送門招喚一隻全新的阿獺！",
     "mint_portal_link": "鑄造傳送門 >",
     "rank_list": {
-      "brs": "基本稀有值",
+      "brs": "BRS",
       "est_reward": "估計獎金",
       "expand": "展開顯示所有 {{count}} 隻阿獺",
       "name": "阿獺名稱",
@@ -37,8 +37,8 @@
       "prev": "上一頁",
       "rank": "排名#",
       "rarity_score": "稀有度",
-      "rrs": "相對稀有直",
-      "show_less": "顯示更少",
+      "rrs": "RRS",
+      "show_less": "收合",
       "your_rank": "你的阿獺目前稀有度排名:"
     },
     "reward_desc": "稀有度排名越高，得到的獎金就會越豐厚。排名前 50% 的阿獺都可以得到獎金呦！",
