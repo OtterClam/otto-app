@@ -19,18 +19,18 @@
     "title": "阿獺王國"
   },
   "leaderboard": {
-    "head": "Be the rarest to win the prize!",
+    "head": "成為最稀有的阿獺來贏得獎金!",
     "hero": {
-      "coming_soon": "COMING SOON!",
-      "get_updated": "Get updated on Discord",
-      "reward_at": "Rewarding at: Coming soon!",
-      "title": "Total Rewards this Round"
+      "coming_soon": "即將登場!",
+      "get_updated": "在 Discord 獲得最新情報",
+      "reward_at": "獎金發放時間: 即將登場!",
+      "title": "這一輪比賽總獎金"
     },
     "item_desc": "裝備稀有物品讓你的阿獺擁有更高的稀有值，或者你也可以直接鑄造傳送門招喚一隻全新的阿獺！",
     "mint_portal_link": "鑄造傳送門 >",
     "rank_list": {
       "brs": "BRS",
-      "est_reward": "估計獎金",
+      "est_reward": "預估獎金",
       "expand": "展開顯示所有 {{count}} 隻阿獺",
       "name": "阿獺名稱",
       "next": "下一頁",
