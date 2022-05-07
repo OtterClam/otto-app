@@ -18,6 +18,34 @@
     "play": "Play",
     "title": "Welcome to Ottopia"
   },
+  "leaderboard": {
+    "head": "Be the rarest to win the prize!",
+    "hero": {
+      "coming_soon": "COMING SOON!",
+      "get_updated": "Get updated on Discord",
+      "reward_at": "Rewarding at: Coming soon!",
+      "title": "Total Rewards this Round"
+    },
+    "item_desc": "Increase your Otto’s rarity by equipping the epic items, or you can summon a genetically rare Otto!",
+    "mint_portal_link": "Mint Portal >",
+    "rank_list": {
+      "brs": "BRS",
+      "est_reward": "Est. Reward",
+      "expand": "Expand all your {{count}} Ottos",
+      "name": "Otto Name",
+      "next": "Next >",
+      "prev": "< Previous",
+      "rank": "Rank#",
+      "rarity_score": "Rarity Score",
+      "rrs": "RRS",
+      "show_less": "Show less",
+      "your_rank": "Your Ottos’ rank currently:"
+    },
+    "reward_desc": "The higher your rank, the more prize you will win! All top 50% Ottos can win the rewards.",
+    "reward_link": "See how the rank vs prize works >",
+    "shell_chest_link": "Buy Shell Chest >",
+    "title": "Leaderboard"
+  },
   "mint": {
     "approve_button": "Approve",
     "buy": "Buy",
@@ -125,7 +153,7 @@
   "my_ottos": {
     "mint_portal": "Mint Portal",
     "no_otto": "You don't have any otto yet.",
-    "rarity_score": "Base Rarity Score: {{score}}",
+    "rarity_score": "Rarity Score: {{score}}",
     "title": "My Ottos"
   },
   "my_portals": {
@@ -171,7 +199,7 @@
       "R2": "Super Rare",
       "R3": "Rare"
     },
-    "rarity_score": "Base Rarity Score: {{score}}",
+    "rarity_score": "Rarity Score: {{score}} (BRS: {{brs}} + RRS: {{rrs}})",
     "title": "Otto Details",
     "traits": {
       "Background": "Background",

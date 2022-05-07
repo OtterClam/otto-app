@@ -18,6 +18,34 @@
     "play": "開始玩",
     "title": "阿獺王國"
   },
+  "leaderboard": {
+    "head": "Be the rarest to win the prize!",
+    "hero": {
+      "coming_soon": "COMING SOON!",
+      "get_updated": "Get updated on Discord",
+      "reward_at": "Rewarding at: Coming soon!",
+      "title": "Increase your Otto’s rarity by equipping the epic items, or you can summon a genetically rare Otto!"
+    },
+    "item_desc": "Increase your Otto’s rarity by equipping the epic items, or you can summon a genetically rare Otto!",
+    "mint_portal_link": "Mint Portal >",
+    "rank_list": {
+      "brs": "BRS",
+      "est_reward": "Est. Reward",
+      "expand": "Expand all your {{count}} Ottos",
+      "name": "Otto Name",
+      "next": "下一頁",
+      "prev": "上一頁",
+      "rank": "Rank#",
+      "rarity_score": "稀有度",
+      "rrs": "RRS",
+      "show_less": "Show less",
+      "your_rank": "Your Ottos’ rank currently:"
+    },
+    "reward_desc": "The higher your rank, the more prize you will win! All top 50% Ottos can win the rewards.",
+    "reward_link": "See how the rank vs prize works >",
+    "shell_chest_link": "Buy Shell Chest >",
+    "title": "排行榜"
+  },
   "mint": {
     "approve_button": "允許花費",
     "buy": "購買",
@@ -90,7 +118,7 @@
     "para2": "阿獺王國！"
   },
   "my_items": {
-    "base_rarity_score": "基本稀有分數： {{score}}",
+    "base_rarity_score": "稀有度: {{score}} (BRS: {{brs}} + RRS: {{rrs}})",
     "equipped": "已裝備",
     "no_selected_item": "請選擇物品檢視詳細資訊",
     "section_title": {
