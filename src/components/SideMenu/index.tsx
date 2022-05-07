@@ -20,7 +20,7 @@ const StyledSideMenu = styled.div<StyledProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: ${({ show }) => (show ? 100 : -1)};
+  z-index: ${({ show }) => (show ? 99999 : -1)};
   transition: all 0.25s;
 `
 
