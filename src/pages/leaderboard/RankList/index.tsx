@@ -11,6 +11,7 @@ import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import { breakpoints } from 'styles/breakpoints'
 import { ContentLarge, ContentMedium, Headline } from 'styles/typography'
+import OttOLoading from 'assets/ui/otto-loading.jpg'
 import LoadingGif from './loading.gif'
 import RarityScore from './rarity_score.png'
 import { ListRankedOttos, ListRankedOttosVariables } from './__generated__/ListRankedOttos'
@@ -206,6 +207,9 @@ const StyledOttoAvatar = styled.img`
     width: 60px;
     height: 60px;
   }
+
+  background: url(${OttOLoading});
+  background-size: 100% 100%;
 `
 
 const StyledReward = styled(ContentLarge)`
