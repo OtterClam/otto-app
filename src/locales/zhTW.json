@@ -118,7 +118,7 @@
     "para2": "阿獺王國！"
   },
   "my_items": {
-    "base_rarity_score": "稀有度: {{score}} (BRS: {{brs}} + RRS: {{rrs}})",
+    "base_rarity_score": "基礎稀有度: {{score}}",
     "equipped": "已裝備",
     "no_selected_item": "請選擇物品檢視詳細資訊",
     "section_title": {
@@ -153,7 +153,7 @@
   "my_ottos": {
     "mint_portal": "鑄造傳送門",
     "no_otto": "你還沒有任何阿獺。",
-    "rarity_score": "基本稀有分數： {{score}}",
+    "rarity_score": "稀有度： {{score}}",
     "title": "我的阿獺"
   },
   "my_portals": {
@@ -199,7 +199,7 @@
       "R2": "非常稀有",
       "R3": "稀有"
     },
-    "rarity_score": "基本稀有分數： {{score}}",
+    "rarity_score": "稀有度: {{score}} (BRS: {{brs}} + RRS: {{rrs}})",
     "title": "詳細資訊",
     "traits": {
       "Background": "背景",
