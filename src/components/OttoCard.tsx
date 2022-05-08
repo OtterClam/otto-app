@@ -111,7 +111,7 @@ export default function OttoCard({ otto, oldOtto, item, takeOff = false, classNa
       </StyledOttoName>
       <StyledRarityScore>
         <ContentSmall>
-          {t('my_ottos.rarity_score', { score: otto.baseRarityScore })}
+          {t('my_ottos.rarity_score', { score: otto.totalRarityScore })}
           {diffAttrs.BRS && <StyledDiffAttr>({diffAttrs.BRS})</StyledDiffAttr>}
         </ContentSmall>
       </StyledRarityScore>

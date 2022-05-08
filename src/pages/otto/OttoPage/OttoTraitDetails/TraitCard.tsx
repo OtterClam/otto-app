@@ -56,7 +56,7 @@ const StyledInfoContainer = styled.div`
   gap: 5px;
 `
 
-const StyledRarityScore = styled.p``
+const StyledRarityScore = styled(ContentSmall)``
 
 const StyledStats = styled.div`
   display: grid;
@@ -79,7 +79,19 @@ export interface Props {
 
 export default function TraitCard({ trait }: Props) {
   const { t } = useTranslation()
-  const { type, name, image, stats, rarity, total_rarity_score, equippable_gender, unreturnable, wearable } = trait
+  const {
+    type,
+    name,
+    image,
+    stats,
+    rarity,
+    total_rarity_score,
+    base_rarity_score,
+    relative_rarity_score,
+    equippable_gender,
+    unreturnable,
+    wearable,
+  } = trait
   const title = t(`otto.traits.title`, { type: t(`otto.traits.${type}`), name })
   const item = useMemo(() => traitToItem(trait), [trait])
   return (
@@ -95,8 +107,8 @@ export default function TraitCard({ trait }: Props) {
       <StyledBottomContainer>
         {image && <ItemCell item={item} />}
         <StyledInfoContainer>
-          <StyledRarityScore>
-            <ContentSmall>{t('otto.rarity_score', { score: total_rarity_score })}</ContentSmall>
+          <StyledRarityScore as="p">
+            {t('otto.rarity_score', { score: total_rarity_score, brs: base_rarity_score, rrs: relative_rarity_score })}
           </StyledRarityScore>
           <StyledStats>
             {stats.map(({ name, value }, i) => (
