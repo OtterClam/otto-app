@@ -7,9 +7,6 @@ export const GET_OTTO = gql`
       tokenURI
       mintAt
       legendary
-      brs
-      rrs
-      rarityScore
     }
   }
 `

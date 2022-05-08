@@ -13,9 +13,6 @@ export interface GetOtto_ottos {
   tokenURI: string;
   mintAt: any;
   legendary: boolean;
-  brs: number;
-  rrs: number;
-  rarityScore: number;
 }
 
 export interface GetOtto {

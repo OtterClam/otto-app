@@ -18,34 +18,6 @@
     "play": "開始玩",
     "title": "阿獺王國"
   },
-  "leaderboard": {
-    "head": "成為最稀有的阿獺來贏得獎金!",
-    "hero": {
-      "coming_soon": "即將登場!",
-      "get_updated": "在 Discord 獲得最新情報",
-      "reward_at": "獎金發放時間: 即將登場!",
-      "title": "這一輪比賽總獎金"
-    },
-    "item_desc": "裝備稀有物品讓你的阿獺擁有更高的稀有值，或者你也可以直接鑄造傳送門招喚一隻全新的阿獺！",
-    "mint_portal_link": "鑄造傳送門 >",
-    "rank_list": {
-      "brs": "BRS",
-      "est_reward": "預估獎金",
-      "expand": "展開顯示所有 {{count}} 隻阿獺",
-      "name": "阿獺名稱",
-      "next": "下一頁",
-      "prev": "上一頁",
-      "rank": "排名#",
-      "rarity_score": "稀有度",
-      "rrs": "RRS",
-      "show_less": "收合",
-      "your_rank": "你的阿獺目前稀有度排名:"
-    },
-    "reward_desc": "稀有度排名越高，得到的獎金就會越豐厚。排名前 50% 的阿獺都可以得到獎金呦！",
-    "reward_link": "看看排名機制及獎金制度 >",
-    "shell_chest_link": "購買貝殼寶箱 >",
-    "title": "排行榜"
-  },
   "mint": {
     "approve_button": "允許花費",
     "buy": "購買",
@@ -118,7 +90,7 @@
     "para2": "阿獺王國！"
   },
   "my_items": {
-    "base_rarity_score": "基礎稀有度: {{score}}",
+    "base_rarity_score": "基本稀有分數： {{score}}",
     "equipped": "已裝備",
     "no_selected_item": "請選擇物品檢視詳細資訊",
     "section_title": {
@@ -153,7 +125,7 @@
   "my_ottos": {
     "mint_portal": "鑄造傳送門",
     "no_otto": "你還沒有任何阿獺。",
-    "rarity_score": "稀有度： {{score}}",
+    "rarity_score": "基本稀有分數： {{score}}",
     "title": "我的阿獺"
   },
   "my_portals": {
@@ -199,7 +171,7 @@
       "R2": "非常稀有",
       "R3": "稀有"
     },
-    "rarity_score": "稀有度: {{score}} (BRS: {{brs}} + RRS: {{rrs}})",
+    "rarity_score": "基本稀有分數： {{score}}",
     "title": "詳細資訊",
     "traits": {
       "Background": "背景",

@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
-import { useEthers } from '@usedapp/core'
+import { useCall, useEthers } from '@usedapp/core'
 import { useOttos } from 'hooks/useOtto'
 import Otto from 'models/Otto'
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo } from 'react'
@@ -31,9 +31,6 @@ export const LIST_MY_OTTOS = gql`
       tokenURI
       mintAt
       legendary
-      brs
-      rrs
-      rarityScore
     }
   }
 `

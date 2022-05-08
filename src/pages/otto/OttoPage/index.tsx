@@ -236,13 +236,7 @@ export default function OttoPage() {
               {!otto ? (
                 <Loading width="260px" height="36px" />
               ) : (
-                <Headline>
-                  {t('otto.rarity_score', {
-                    score: otto.totalRarityScore,
-                    brs: otto.baseRarityScore,
-                    rrs: otto.relativeRarityScore,
-                  })}
-                </Headline>
+                <Headline>{t('otto.rarity_score', { score: otto.baseRarityScore })}</Headline>
               )}
             </StyledRarityScore>
             <StyledInfos>

@@ -1,14 +1,14 @@
-import HomePage from 'pages/home/HomePage'
-import LeaderboardPage from 'pages/leaderboard/LeaderboardPage'
 import MintPage from 'pages/mint/MintPage'
-import MyItemsPage from 'pages/my-items/MyItemsPage'
 import MyPortalsPage from 'pages/my-portals/MyPortalsPage'
 import PortalPage from 'pages/my-portals/PortalPage'
-import MyOttosPage from 'pages/otto/MyOttosPage/MyOttosPage'
-import OttoPage from 'pages/otto/OttoPage'
 import PlayPage from 'pages/play/PlayPage'
-import StorePage from 'pages/store/StorePage'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import HomePage from 'pages/home/HomePage'
+import MyOttosPage from 'pages/otto/MyOttosPage/MyOttosPage'
+import NotFoundPage from 'pages/not-found/NotFoundPage'
+import OttoPage from 'pages/otto/OttoPage'
+import MyItemsPage from 'pages/my-items/MyItemsPage'
+import StorePage from 'pages/store/StorePage'
 import App from './App'
 
 const Routing = () => {
@@ -33,9 +33,6 @@ const Routing = () => {
           </Route>
           <Route path="store">
             <Route index element={<StorePage />} />
-          </Route>
-          <Route path="leaderboard">
-            <Route index element={<LeaderboardPage />} />
           </Route>
           <Route path="*" element={<HomePage />} />
         </Route>
