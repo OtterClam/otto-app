@@ -1,5 +1,5 @@
-import { useBlockNumber, useCall, useCalls, useEtherBalance, useEthers } from '@usedapp/core'
-import { Contract, BigNumber } from 'ethers'
+import { useCall, useCalls, useEthers } from '@usedapp/core'
+import { BigNumber, Contract } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { Otto, OttoItemAbi, OttopiaPortalCreator, OttopiaStoreAbi } from './abis'
 
@@ -11,17 +11,7 @@ export const useMintInfo = () => {
     useCalls([
       {
         contract,
-        method: 'priceInWETH',
-        args: [],
-      },
-      {
-        contract,
         method: 'priceInCLAM',
-        args: [],
-      },
-      {
-        contract,
-        method: 'clamPerWETH',
         args: [],
       },
       { contract, method: 'saleStage', args: [] },
