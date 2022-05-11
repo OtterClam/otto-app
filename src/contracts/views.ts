@@ -14,7 +14,6 @@ export const useMintInfo = () => {
         method: 'priceInCLAM',
         args: [],
       },
-      { contract, method: 'saleStage', args: [] },
     ]) || {}
   results.forEach((result, idx) => {
     if (result && result.error) {
@@ -52,11 +51,6 @@ export const useOttoInfo = () => {
       contract,
       method: 'totalSupply',
       args: [],
-    },
-    {
-      contract,
-      method: 'balanceOf',
-      args: [account],
     },
   ])
   results.forEach((result, idx) => {

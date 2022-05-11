@@ -3,7 +3,7 @@ import CLAM from 'assets/clam.png'
 import Button from 'components/Button'
 import { BUY_CLAM_LINK } from 'constant'
 import { useApprove, useMint } from 'contracts/functions'
-import { useMintInfo, useOttoInfo, useOttolisted } from 'contracts/views'
+import { useMintInfo, useOttoInfo } from 'contracts/views'
 import { ethers } from 'ethers'
 import { trim } from 'helpers/trim'
 import useContractAddresses from 'hooks/useContractAddresses'
@@ -13,9 +13,8 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { connectWallet, mintFailed, mintStart, mintSuccess } from 'store/uiSlice'
 import styled from 'styled-components/macro'
-import { Caption, ContentLarge, ContentMedium, ContentSmall, Display2, Headline, Note } from 'styles/typography'
+import { Caption, ContentLarge, ContentMedium, ContentSmall, Display2, Headline } from 'styles/typography'
 import PortalPreviewImage from './portal-preview.png'
-import SmallPortalImage from './portal-small.png'
 
 const StyledMint = styled.section`
   width: 90%;
@@ -160,20 +159,6 @@ interface SelectorProps {
   selected: boolean
 }
 
-const StyledSelector = styled.button<SelectorProps>`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  text-align: left;
-  border: 4px solid ${({ theme, selected }) => (selected ? theme.colors.otterBlue : theme.colors.lightGray300)};
-  border-radius: 10px;
-  padding: 20px;
-`
-
-const StyledSelectorText = styled(ContentLarge)`
-  flex: 1;
-`
-
 const StyledSummary = styled.div`
   display: flex;
   flex-direction: column;
@@ -241,11 +226,10 @@ export default function Mint() {
   const dispatch = useDispatch()
   const { PORTAL_CREATOR, CLAM } = useContractAddresses()
   const { account, chainId } = useEthers()
-  const [clamPrice, saleStage] = useMintInfo()
-  const ottolisted = useOttolisted()
-  const maxCanMint = saleStage.lte(1) ? ottolisted : 6
+  const [clamPrice] = useMintInfo()
+  const maxCanMint = 6
   const [quantity, setQuantity] = useState(maxCanMint || 0)
-  const [ottoSupply, ottoBalance] = useOttoInfo()
+  const [ottoSupply] = useOttoInfo()
   const clamBalance = useTokenBalance(CLAM, account, { chainId }) || 0
   const clamAllowance = useTokenAllowance(CLAM, account, PORTAL_CREATOR, { chainId })
   const { approveState, approve } = useApprove('clam')
@@ -293,7 +277,6 @@ export default function Mint() {
               <StyledCardBottomContainer>
                 <StyledButtons>
                   <Button
-                    disabled={maxCanMint === 0}
                     padding={isMobile ? '8px 16px' : '4px 20px'}
                     onClick={() => setQuantity(Math.max(quantity - 1, 1))}
                   >
@@ -303,7 +286,6 @@ export default function Mint() {
                     <ContentLarge>{quantity}</ContentLarge>
                   </StyledQuantity>
                   <Button
-                    disabled={maxCanMint === 0}
                     padding={isMobile ? '8px 16px' : '4px 20px'}
                     onClick={() => setQuantity(Math.min(quantity + 1, maxCanMint))}
                   >
@@ -349,8 +331,8 @@ export default function Mint() {
                 <Headline>{t('mint.connect')}</Headline>
               </Button>
             )}
-            {account && hasAllowance && saleStage.toNumber() > 0 && (
-              <Button onClick={onMint} disabled={maxCanMint === 0}>
+            {account && hasAllowance && (
+              <Button onClick={onMint}>
                 <Headline>{t('mint.mint_button')}</Headline>
               </Button>
             )}
