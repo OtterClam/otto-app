@@ -25,7 +25,7 @@ const StyledOttoPage = styled.div`
   background: white;
   padding: 30px;
   color: ${({ theme }) => theme.colors.otterBlack};
-  
+
   @media ${({ theme }) => theme.breakpoints.mobile} {
     padding: 20px;
   }
