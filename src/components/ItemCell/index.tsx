@@ -65,6 +65,7 @@ const StyledRarity = styled.div<{ rarity: string }>`
   border-left: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-bottom: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 1px;
+  color: ${({ theme }) => theme.colors.otterBlack};
 `
 
 const StyledAmount = styled.div`
