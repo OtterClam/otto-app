@@ -15,7 +15,9 @@ const StyledItemPreviewCard = styled.div`
   align-items: center;
 `
 
-const StyledItemCell = styled(ItemCell)``
+const StyledItemCell = styled(ItemCell)`
+  flex: none;
+`
 
 const StyledRarityScore = styled.p``
 
