@@ -43,6 +43,7 @@ const StyledRarityBadge = styled.div<{ rarity: string }>`
   padding: 0 10px;
   background-color: ${({ theme, rarity }) => (theme.colors.rarity as any)[rarity]};
   border-radius: 6px;
+  height: fit-content;
 `
 
 const StyledBottomContainer = styled.div`
