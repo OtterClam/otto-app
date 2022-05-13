@@ -50,11 +50,11 @@ export default class Otto {
 
   public metadata: OttoMeta
 
-  public readonly baseRarityScore: number = 0
+  public readonly baseRarityScore: string = ''
 
-  public readonly relativeRarityScore: number = 0
+  public readonly relativeRarityScore: string = ''
 
-  public readonly totalRarityScore: number = 0
+  public readonly totalRarityScore: string = ''
 
   public readonly gender: string = ''
 
@@ -77,9 +77,9 @@ export default class Otto {
     this.metadata = metadata
     this.voice = new Audio(this.metadata.animation_url)
     this.voice.load()
-    this.baseRarityScore = this.raw.brs || -1
-    this.relativeRarityScore = this.raw.rrs || -1
-    this.totalRarityScore = this.raw.rarityScore || -1
+    this.baseRarityScore = this.raw.brs ? String(this.raw.brs) : '?'
+    this.relativeRarityScore = this.raw.rrs ? String(this.raw.rrs) : '?'
+    this.totalRarityScore = this.raw.rarityScore ? String(this.raw.rarityScore) : '?'
 
     for (let idx = 0; idx < this.metadata.attributes.length; idx++) {
       const { trait_type, value } = this.metadata.attributes[idx]
