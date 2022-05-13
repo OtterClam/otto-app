@@ -26,6 +26,7 @@ const StyledHeader = styled.div`
     width: 95%;
     height: 48px;
     margin: 10px 0;
+    gap: 5px;
   }
 `
 
@@ -68,6 +69,15 @@ const StyledTitle = styled.div`
   }
 `
 
+const StyledHamburger = styled(Button)`
+  width: 68px;
+  height: 100%;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 48px;
+  }
+`
+
 const StyledIcon = styled.img``
 
 export default function Header({ title }: { title: string }) {
@@ -91,9 +101,9 @@ export default function Header({ title }: { title: string }) {
       </StyledTitle>
       {!isMobile && <ClamBalance />}
       {!hideConnector && <Connector />}
-      <Button primaryColor="white" height="100%" padding="0 4px" onClick={() => dispatch(showSideMenu())}>
+      <StyledHamburger primaryColor="white" padding="0 4px" onClick={() => dispatch(showSideMenu())}>
         <StyledIcon src={iconHamburger} />
-      </Button>
+      </StyledHamburger>
     </StyledHeader>
   )
 }
