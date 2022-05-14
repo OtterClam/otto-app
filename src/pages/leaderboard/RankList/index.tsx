@@ -12,8 +12,9 @@ import styled from 'styled-components/macro'
 import { breakpoints } from 'styles/breakpoints'
 import { ContentLarge, ContentMedium, Headline } from 'styles/typography'
 import OttOLoading from 'assets/ui/otto-loading.jpg'
-import LoadingGif from './loading.gif'
+import { useMyOttos } from 'MyOttosProvider'
 import RarityScore from './rarity_score.png'
+import LoadingGif from './loading.gif'
 import { ListRankedOttos, ListRankedOttosVariables } from './__generated__/ListRankedOttos'
 
 export const LIST_RANKED_OTTOS = gql`
@@ -112,14 +113,20 @@ const StyledMyOttoSection = styled.section`
   display: flex;
   flex-direction: column;
 
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    padding: 10px;
+  }
+
   > * {
     &:nth-child(2) {
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;
+      overflow: hidden;
     }
     &:nth-last-child(2) {
       border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;
+      overflow: hidden;
     }
   }
 `
@@ -132,6 +139,10 @@ const StyledMyOttoRow = styled(StyledRow)`
   background: ${({ theme }) => theme.colors.white};
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   padding: 10px 0px;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.lightGray100};
+  }
 `
 
 const StyledExpandColumn = styled(ContentMedium)<{ expand: boolean }>`
@@ -234,6 +245,7 @@ const StyledMobileRow = styled.div`
   align-items: center;
   padding: 10px;
   color: ${({ theme }) => theme.colors.otterBlack};
+  background: ${({ theme }) => theme.colors.white};
   gap: 10px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray200};
 `
@@ -290,8 +302,8 @@ export default function RankList({ className }: Props) {
     variables: { skip: page * PAGE, first: PAGE },
   })
   const { ottos, loading: loadingApi } = useOttos(data?.ottos, false)
-  // const { ottos: myOttos } = useMyOttos()
-  const myOttos: any[] = []
+  const { ottos: myOttos } = useMyOttos()
+  const sortedMyOttos = useMemo(() => myOttos.sort((a, b) => a.ranking - b.ranking), [myOttos])
   const [expand, setExpand] = useState(false)
   const isMobile = useMediaQuery(breakpoints.mobile)
   useEffect(() => {
@@ -304,23 +316,39 @@ export default function RankList({ className }: Props) {
         {myOttos.length > 0 && (
           <StyledMyOttoSection>
             <StyledHint>{t('your_rank')}</StyledHint>
-            {(expand ? myOttos : myOttos.slice(0, 1)).map(({ name, image, baseRarityScore }, index) => (
-              <StyledMyOttoRow key={index}>
-                <StyledTd as="div">{index + 1}</StyledTd>
-                <StyledTd as="div">
-                  <StyledAvatarName as="div">
-                    <StyledMyOttoAvatar src={image} />
-                    {name}
-                  </StyledAvatarName>
-                </StyledTd>
-                <StyledTd as="div">
-                  <StyledReward>TBD</StyledReward>
-                </StyledTd>
-                <StyledTd as="div">{baseRarityScore}</StyledTd>
-                <StyledTd as="div">{baseRarityScore}</StyledTd>
-                <StyledTd as="div">{baseRarityScore}</StyledTd>
-              </StyledMyOttoRow>
-            ))}
+            {(expand ? sortedMyOttos : sortedMyOttos.slice(0, 1)).map(
+              ({ tokenId, name, image, ranking, totalRarityScore, baseRarityScore, relativeRarityScore }, index) => (
+                <a key={index} href={`/my-ottos/${tokenId}`} target="_blank" rel="noreferrer">
+                  {isMobile ? (
+                    <StyledMobileRow>
+                      <StyledTd as="div">{ranking}</StyledTd>
+                      <StyledOttoAvatar src={image} />
+                      <StyledMobileContent>
+                        <StyledAvatarName as="div">{name}</StyledAvatarName>
+                        <StyledReward as="div">TBD</StyledReward>
+                        <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
+                      </StyledMobileContent>
+                    </StyledMobileRow>
+                  ) : (
+                    <StyledMyOttoRow>
+                      <StyledTd as="div">{ranking}</StyledTd>
+                      <StyledTd as="div">
+                        <StyledAvatarName as="div">
+                          <StyledMyOttoAvatar src={image} />
+                          {name}
+                        </StyledAvatarName>
+                      </StyledTd>
+                      <StyledTd as="div">
+                        <StyledReward>TBD</StyledReward>
+                      </StyledTd>
+                      <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
+                      <StyledTd as="div">{baseRarityScore}</StyledTd>
+                      <StyledTd as="div">{relativeRarityScore}</StyledTd>
+                    </StyledMyOttoRow>
+                  )}
+                </a>
+              )
+            )}
             <StyledExpandColumn as="div" expand={expand} onClick={() => setExpand(expand => !expand)}>
               {expand ? t('show_less') : t('expand', { count: myOttos.length })}
             </StyledExpandColumn>

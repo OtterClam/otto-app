@@ -68,6 +68,8 @@ export default class Otto {
 
   public readonly armsImage: string = ''
 
+  public readonly ranking: number = 0
+
   public readonly geneticTraits: Trait[] = []
 
   public readonly wearableTraits: Trait[] = []
@@ -100,6 +102,8 @@ export default class Otto {
         this.voiceName = String(value)
       } else if (trait_type === 'Coat of Arms') {
         this.coatOfArms = String(value)
+      } else if (trait_type === 'Ranking') {
+        this.ranking = Number(value)
       }
     }
 

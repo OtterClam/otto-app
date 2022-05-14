@@ -30,6 +30,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     a {
+        color: unset;
         text-decoration: none;
         cursor: url(${cursorPointer}) 7 0 ,auto;
     }

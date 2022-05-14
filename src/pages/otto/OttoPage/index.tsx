@@ -12,6 +12,7 @@ import ReactMarkdown from 'react-markdown'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Display3, Headline, Note } from 'styles/typography'
+import RankingIcon from 'assets/ranking.png'
 import { GET_OTTO } from '../queries'
 import { GetOtto, GetOttoVariables } from '../__generated__/GetOtto'
 import ClassicIcon from './badge/classic.png'
@@ -183,6 +184,32 @@ const StyledStatDesc = styled.p`
   text-align: center;
 `
 
+const StyledRarityContainer = styled(Headline).attrs({ as: 'div' })`
+  display: flex;
+  gap: 20px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`
+
+const StyledRanking = styled(Headline).attrs({
+  as: 'div',
+})`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  &:before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    background-image: url(${RankingIcon});
+    background-size: 100%;
+  }
+`
+
 export default function OttoPage() {
   const { t } = useTranslation()
   const { ottoId = '0' } = useParams()
@@ -240,13 +267,14 @@ export default function OttoPage() {
               {!otto ? (
                 <Loading width="260px" height="36px" />
               ) : (
-                <Headline>
+                <StyledRarityContainer>
                   {t('otto.rarity_score', {
                     score: otto.totalRarityScore,
                     brs: otto.baseRarityScore,
                     rrs: otto.relativeRarityScore,
                   })}
-                </Headline>
+                  <StyledRanking>{otto.ranking}</StyledRanking>
+                </StyledRarityContainer>
               )}
             </StyledRarityScore>
             <StyledInfos>

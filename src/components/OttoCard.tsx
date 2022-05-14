@@ -1,3 +1,4 @@
+import RankingIcon from 'assets/ranking.png'
 import BorderContainer from 'components/BorderContainer'
 import Item, { EmptyItem, traitToItem } from 'models/Item'
 import Otto from 'models/Otto'
@@ -19,7 +20,7 @@ const StyledOttoCard = styled(BorderContainer)`
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 100%;
     height: 363px;
-    padding: 8px 5px;
+    /* padding: 8px 5px; */
     gap: 8px;
     align-items: center;
   }
@@ -49,7 +50,35 @@ const StyledOttoName = styled.h2`
   text-align: center;
 `
 
-const StyledRarityScore = styled.p``
+const StyledOttoRarity = styled.div`
+  display: flex;
+  gap: 5px;
+  align-items: center;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`
+
+const StyledRarityScore = styled(ContentSmall).attrs({ as: 'p' })``
+
+const StyledRanking = styled(ContentSmall).attrs({
+  as: 'div',
+})`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  &:before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    background-image: url(${RankingIcon});
+    background-size: 100%;
+  }
+`
 
 const StyledAttrs = styled.div`
   display: grid;
@@ -109,12 +138,13 @@ export default function OttoCard({ otto, oldOtto, item, takeOff = false, classNa
       <StyledOttoName>
         <ContentMedium>{otto.name}</ContentMedium>
       </StyledOttoName>
-      <StyledRarityScore>
-        <ContentSmall>
+      <StyledOttoRarity>
+        <StyledRarityScore>
           {t('my_ottos.rarity_score', { score: otto.totalRarityScore })}
           {diffAttrs.BRS && <StyledDiffAttr>({diffAttrs.BRS})</StyledDiffAttr>}
-        </ContentSmall>
-      </StyledRarityScore>
+        </StyledRarityScore>
+        <StyledRanking>{`#${otto.ranking}`}</StyledRanking>
+      </StyledOttoRarity>
       <StyledAttrs>
         {otto.displayAttrs.map(({ trait_type, value }, index) => (
           <StyledAttr key={index}>
