@@ -28,7 +28,7 @@ const GET_PRODUCTS = gql`
   }
 `
 
-const Preset: Record<string, any> = {
+const PresetImages: Record<string, any> = {
   silver: {
     1: Silver,
     3: Silver3,
@@ -62,7 +62,8 @@ export default function useProducts() {
       id: p.productId,
       name: t(`product.${p.type}.name`),
       desc: t(`product.${p.type}.desc`),
-      image: Preset[p.type][p.amount],
+      mustDesc: p.amount === 10 ? t(`product.${p.type}.must_desc`) : undefined,
+      image: PresetImages[p.type][p.amount],
       airdropAmount: airdropAmounts[idx],
       displayPrice: utils.formatUnits(p.price, 9),
       displayDiscountPrice: utils.formatUnits(p.discountPrice, 9),
