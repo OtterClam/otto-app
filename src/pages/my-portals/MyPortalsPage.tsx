@@ -39,7 +39,7 @@ const StyledMyPortals = styled.div`
 
 export const LIST_MY_PORTALS = gql`
   query ListMyPortals($owner: Bytes!) {
-    ottos(where: { owner: $owner, portalStatus_not: SUMMONED }, orderBy: tokenId) {
+    ottos(where: { owner: $owner, portalStatus_not: SUMMONED, epoch: -1 }, orderBy: tokenId) {
       tokenId
       tokenURI
       portalStatus
