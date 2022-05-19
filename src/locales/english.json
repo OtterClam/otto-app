@@ -274,15 +274,18 @@
   "product": {
     "diamond": {
       "desc": "From armor that can stand the mightiest of blows, to hats that'll catch even the sleepiest Otters attention, Shell Chests hold the equipment you need to make your dream come true!",
-      "name": "Diamond Chest"
+      "name": "Diamond Chest",
+      "must_desc": "E3 Item Guaranteed!"
     },
     "golden": {
       "desc": "Golden Shell Chests offer a great chance to receive high tier equipment. Though not as lucky as a Diamond Shell Chests, it's brimming with potential!",
-      "name": "Golden Chest"
+      "name": "Golden Chest",
+      "must_desc": "R1 Item Guaranteed!"
     },
     "silver": {
       "desc": "While not as lucky as the Golden/Diamond Shell Chests, Silver Shell Chests contain rare and powerful equipment worthy of admiration!",
-      "name": "Silver Chest"
+      "name": "Silver Chest",
+      "must_desc": "R3 Item Guaranteed!"
     }
   },
   "side_menu": {

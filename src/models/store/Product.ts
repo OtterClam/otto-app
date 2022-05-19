@@ -11,4 +11,5 @@ export default interface Product {
   type: string
   image: string
   factory: string
+  mustDesc?: string
 }

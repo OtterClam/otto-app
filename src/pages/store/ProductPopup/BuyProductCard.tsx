@@ -4,7 +4,8 @@ import Button from 'components/Button'
 import Product from 'models/store/Product'
 import { useTranslation } from 'react-i18next'
 import styled, { keyframes } from 'styled-components/macro'
-import { Caption, ContentLarge, Headline } from 'styles/typography'
+import { Caption, ContentLarge, Headline, Note } from 'styles/typography'
+import YellowRibbonXL from 'assets/ui/ribbon-yellow-xl.svg'
 import Star from '../ProductCard/star.svg'
 import useProductBorderColor from '../useProductBorderColor'
 
@@ -70,13 +71,28 @@ const StyledDiscount = styled(Caption)`
   color: ${({ theme }) => theme.colors.clamPink};
 `
 
+const StyledMustItemRibbon = styled(Note).attrs({ as: 'div' })`
+  position: absolute;
+  width: 100%;
+  height: 45px;
+  top: -22.5px;
+  left: 0;
+  background: url(${YellowRibbonXL}) no-repeat;
+  background-size: 100% 100%;
+  z-index: 10;
+  display: flex;
+  padding-top: 8px;
+  align-items: flex-start;
+  justify-content: center;
+`
+
 interface Props {
   product: Product
   onClick: () => void
 }
 
 export default function BuyProductCard({
-  product: { type, name, image, price, displayPrice, discountPrice, displayDiscountPrice, amount },
+  product: { type, name, image, price, displayPrice, discountPrice, displayDiscountPrice, amount, mustDesc },
   onClick,
 }: Props) {
   const { t } = useTranslation()
@@ -97,6 +113,7 @@ export default function BuyProductCard({
       <Button onClick={onClick}>
         <Headline>{t('store.popup.buy_now')}</Headline>
       </Button>
+      {mustDesc && <StyledMustItemRibbon>{mustDesc}</StyledMustItemRibbon>}
     </StyledProductCard>
   )
 }
