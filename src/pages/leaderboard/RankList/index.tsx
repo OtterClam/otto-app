@@ -19,7 +19,7 @@ import { ListRankedOttos, ListRankedOttosVariables } from './__generated__/ListR
 
 export const LIST_RANKED_OTTOS = gql`
   query ListRankedOttos($first: Int!, $skip: Int!) {
-    ottos(orderBy: rarityScore, orderDirection: desc, first: $first, skip: $skip) {
+    ottos(orderBy: rarityScore, orderDirection: desc, first: $first, skip: $skip, where: { epoch: -1 }) {
       tokenId
       tokenURI
       mintAt
