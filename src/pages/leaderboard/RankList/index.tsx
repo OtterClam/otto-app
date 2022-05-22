@@ -234,13 +234,15 @@ const StyledAvatarName = styled(ContentLarge)`
 const StyledOttoAvatar = styled.img`
   width: 100px;
   height: 100px;
+  min-width: 100px;
+  background: url(${OttOLoading});
+  background-size: 100% 100%;
+
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 60px;
     height: 60px;
+    min-width: 60px;
   }
-
-  background: url(${OttOLoading});
-  background-size: 100% 100%;
 `
 
 const StyledReward = styled(ContentLarge).attrs({ as: 'div' })`
