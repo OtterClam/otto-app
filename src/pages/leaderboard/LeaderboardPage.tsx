@@ -21,7 +21,7 @@ const StyledLeaderboardPage = styled.div`
   }
 `
 
-const StyledHead = styled(Display3)``
+const StyledHead = styled(Display3).attrs({ as: 'h1' })``
 
 const StyledHero = styled(Hero)``
 
@@ -43,7 +43,7 @@ export default function LeaderboardPage() {
   return (
     <Layout title={t('title')} background="dark">
       <StyledLeaderboardPage>
-        <StyledHead as="p">{t('head')}</StyledHead>
+        <StyledHead>{t('head')}</StyledHead>
         <StyledHero />
         <StyledInfos>
           <Info image={RewardInfo} desc={t('reward_desc')} links={[]} />

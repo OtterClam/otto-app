@@ -44,7 +44,7 @@ export const useOttolisted = () => {
 
 export const useOttoInfo = () => {
   const { OTTO } = useContractAddresses()
-  const { library, account } = useEthers()
+  const { library } = useEthers()
   const contract = new Contract(OTTO, Otto, library)
   const results = useCalls([
     {
@@ -58,7 +58,7 @@ export const useOttoInfo = () => {
       console.error(`Error encountered  ${result.error.message}`)
     }
   })
-  return results.map(result => BigNumber.from(result?.value?.[0] || '0'))
+  return results.map(result => Number(result?.value?.[0].toNumber() || 0))
 }
 
 export const useItemApplicable = (itemId: string, ottoIds: string[]) => {
