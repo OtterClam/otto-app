@@ -16,6 +16,9 @@ export interface GetOtto_ottos {
   brs: number;
   rrs: number;
   rarityScore: number;
+  epoch: number;
+  constellationBoost: number;
+  legendaryBoost: number;
 }
 
 export interface GetOtto {

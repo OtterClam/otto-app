@@ -6,6 +6,7 @@ export interface RawOtto {
   brs?: number
   rrs?: number
   rarityScore?: number
+  constellationBoost?: number
 }
 
 export interface Attr {
@@ -68,6 +69,8 @@ export default class Otto {
 
   public readonly armsImage: string = ''
 
+  public readonly constellation: string = ''
+
   public readonly ranking: number = 0
 
   public readonly geneticTraits: Trait[] = []
@@ -104,6 +107,8 @@ export default class Otto {
         this.coatOfArms = String(value)
       } else if (trait_type === 'Ranking') {
         this.ranking = Number(value)
+      } else if (trait_type === 'Constellation') {
+        this.constellation = String(value)
       }
     }
 

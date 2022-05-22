@@ -174,9 +174,11 @@
   },
   "otto": {
     "birthday": "Birthday: {{birthday}}",
+    "chosen_one": "This Otto is the chosen one!\nThe upcoming epoch falls to {{birthday}}. All Otto, Lotties and Cleo that the Birthday is same to the date are blessed with special boosts!",
     "classic": "Classic",
     "classic_note": "A general Otto that shares the peace all over the Otter Kingdom.",
     "coatOfArms": "This Otter’s coat of arms is {{arms}}",
+    "constellation_boost": "The upcoming epoch falls to {{constellation}}. The god of {{constellation}} has blessed every {{constellation}} Otto, Lottie and Cleo with glory and power!",
     "first_gen": "1st generation Otto",
     "first_gen_desc": "Total 5,000 Ottos for the 1st generation in the kingdom.",
     "gender": "Gender: {{gender}}",
@@ -218,7 +220,8 @@
     "unreturnable": "Unreturnable",
     "unreturnable_hint": "This item came along with the Otto the moment it was minted, so it cannot be detached and returned to your item inventory. You can still wear another wearable item to replace and hide it. If the other wearable item is taken off, this item will be visible again on the Otter.",
     "voice": "Voice: {{voice}}",
-    "wearable_traits_tab": "Wearable Traits"
+    "wearable_traits_tab": "Wearable Traits",
+    "zodiac_sign": "Zodiac sign: {{constellation}}"
   },
   "otto_one": "{{count}} Otto",
   "otto_other": "{{count}} Ottos",
@@ -274,18 +277,18 @@
   "product": {
     "diamond": {
       "desc": "From armor that can stand the mightiest of blows, to hats that'll catch even the sleepiest Otters attention, Shell Chests hold the equipment you need to make your dream come true!",
-      "name": "Diamond Chest",
-      "must_desc": "E3 Item Guaranteed!"
+      "must_desc": "E3 Item Guaranteed!",
+      "name": "Diamond Chest"
     },
     "golden": {
       "desc": "Golden Shell Chests offer a great chance to receive high tier equipment. Though not as lucky as a Diamond Shell Chests, it's brimming with potential!",
-      "name": "Golden Chest",
-      "must_desc": "R1 Item Guaranteed!"
+      "must_desc": "R1 Item Guaranteed!",
+      "name": "Golden Chest"
     },
     "silver": {
       "desc": "While not as lucky as the Golden/Diamond Shell Chests, Silver Shell Chests contain rare and powerful equipment worthy of admiration!",
-      "name": "Silver Chest",
-      "must_desc": "R3 Item Guaranteed!"
+      "must_desc": "R3 Item Guaranteed!",
+      "name": "Silver Chest"
     }
   },
   "side_menu": {

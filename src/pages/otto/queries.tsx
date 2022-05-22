@@ -10,6 +10,9 @@ export const GET_OTTO = gql`
       brs
       rrs
       rarityScore
+      epoch
+      constellationBoost
+      legendaryBoost
     }
   }
 `

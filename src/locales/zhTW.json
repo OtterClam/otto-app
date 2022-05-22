@@ -174,9 +174,11 @@
   },
   "otto": {
     "birthday": "生日： {{birthday}}",
+    "chosen_one": "This Otto is the chosen one!\nThe upcoming epoch falls to {{birthday}}. All Otto, Lotties and Cleo that the Birthday is same to the date are blessed with special boosts!",
     "classic": "經典",
     "classic_note": "經典阿獺是阿獺王國裡最大宗、且最人見人愛的王國居民。",
     "coatOfArms": "阿獺王國共有 5 大家族，這隻阿獺是屬於{{arms}}，快尋找同樣家徽的阿獺吧！",
+    "constellation_boost": "The upcoming epoch falls to {{constellation}}. The god of {{constellation}} has blessed every {{constellation}} Otto, Lottie and Cleo with glory and power!",
     "first_gen": "第一代阿獺",
     "first_gen_desc": "為第一代先驅者，總共會有 5000 隻阿獺傳送到阿獺王國。",
     "gender": "性別： {{gender}}",
@@ -218,7 +220,8 @@
     "unreturnable": "靈魂綁定",
     "unreturnable_hint": "此為靈魂綁定物品，意即阿獺鑄造出來時就已經存在，所以無法脫下它。你仍然可以穿上其他道具來覆蓋並隱藏此物品，當覆蓋的裝備卸下時，此物品會再次出現在阿獺上。",
     "voice": "聲音： {{voice}}",
-    "wearable_traits_tab": "可穿脫特徵"
+    "wearable_traits_tab": "可穿脫特徵",
+    "zodiac_sign": "星座： {{constellation}}"
   },
   "otto_one": "{{count}} 隻阿獺",
   "otto_other": "{{count}} 隻阿獺",
@@ -274,14 +277,17 @@
   "product": {
     "diamond": {
       "desc": "鑽石寶箱是 3 種寶箱中最高級的寶箱，有最大的機率可以開啟 傳奇 (E2) 稀有度的裝備。想要你的阿獺擁有最稀有、最高端的裝備嗎？來購買最閃亮的鑽石寶箱吧！",
+      "must_desc": "E3 道具保證！",
       "name": "鑽石寶箱"
     },
     "golden": {
       "desc": "黃金寶箱是 3 種寶箱中位於中間等級的寶箱，雖然沒有鑽石寶箱擁有最高機率的裝備掉落率，但其潛力也是不容小覷，可以有機會得到最高稀有度為 史詩 (E3) 稀有度的裝備。來試試手氣吧，稀有裝備的幸運得主搞不好就是你！",
+      "must_desc": "R1 道具保證！",
       "name": "黃金寶箱"
     },
     "silver": {
       "desc": "最初階的寶箱，可以有機會得到最高稀有度為 非常稀有 (R3) 的裝備。如果不想花大錢衝稀有度，或是只想幫自己的阿獺多增添不同裝備和飾品，白銀寶箱也是不錯的選擇呢！",
+      "must_desc": "R3 道具保證！",
       "name": "白銀寶箱"
     }
   },

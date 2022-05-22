@@ -20,6 +20,7 @@ import LegendaryIcon from './badge/legendary.png'
 import FirstGenIcon from './badge/first-gen.png'
 import PlayIcon from './icons/play-voice.svg'
 import OttoTraitDetails from './OttoTraitDetails'
+import TheOtter from './icons/the_otter.png'
 
 const StyledOttoPage = styled.div`
   min-height: 100%;
@@ -210,6 +211,30 @@ const StyledRanking = styled(Headline).attrs({
   }
 `
 
+const StyledBoostBox = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+  background: ${({ theme }) => theme.colors.lightGray100};
+  border: 2px solid ${({ theme }) => theme.colors.lightGray400};
+  border-radius: 15px;
+  white-space: pre;
+
+  img {
+    width: 80px;
+
+    @media ${({ theme }) => theme.breakpoints.mobile} {
+      width: 80px;
+    }
+  }
+`
+
+const StyledBoost = styled.span`
+  color: ${({ theme }) => theme.colors.clamPink};
+  margin-left: 10px;
+`
+
 export default function OttoPage() {
   const { t } = useTranslation()
   const { ottoId = '0' } = useParams()
@@ -236,6 +261,10 @@ export default function OttoPage() {
             {
               icon: '/trait-icons/Voice.png',
               text: t('otto.voice', { voice: otto.voiceName }),
+            },
+            {
+              icon: '/trait-icons/Constellation.png',
+              text: t('otto.zodiac_sign', { constellation: otto.constellation }),
             },
           ]
         : null,
@@ -284,6 +313,18 @@ export default function OttoPage() {
                 </StyledInfo>
               ))}
             </StyledInfos>
+            {otto && (otto.raw.constellationBoost || 0) > 0 && (
+              <StyledBoostBox>
+                <img src={TheOtter} alt="the Otter" />
+                <ContentSmall>
+                  {t(otto?.raw.constellationBoost === 150 ? 'otto.chosen_one' : 'otto.constellation_boost', {
+                    birthday: format(otto.birthday, 'MMM d'),
+                    constellation: otto.constellation,
+                  })}
+                  <StyledBoost>BRS+{otto.raw.constellationBoost}!</StyledBoost>
+                </ContentSmall>
+              </StyledBoostBox>
+            )}
             <StyledDescription>
               {!otto ? (
                 <Loading width="100%" height="260px" />
