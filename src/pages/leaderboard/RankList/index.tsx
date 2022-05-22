@@ -13,9 +13,16 @@ import { breakpoints } from 'styles/breakpoints'
 import { ContentLarge, ContentMedium, Headline } from 'styles/typography'
 import OttOLoading from 'assets/ui/otto-loading.jpg'
 import { useMyOttos } from 'MyOttosProvider'
+import { useOttoInfo } from 'contracts/views'
+import { trim } from 'helpers/trim'
+import Otto from 'models/Otto'
+import { TOTAL_RARITY_REWARD } from 'constant'
 import RarityScore from './rarity_score.png'
 import LoadingGif from './loading.gif'
 import { ListRankedOttos, ListRankedOttosVariables } from './__generated__/ListRankedOttos'
+import FirstRank from './Icon/Rank/1st.png'
+import SecondRank from './Icon/Rank/2nd.png'
+import ThirdRank from './Icon/Rank/3rd.png'
 
 export const LIST_RANKED_OTTOS = gql`
   query ListRankedOttos($first: Int!, $skip: Int!) {
@@ -179,9 +186,22 @@ const StyledLoading = styled.div`
   }
 `
 
-const StyledTh = styled(ContentMedium)``
+const StyledTh = styled(ContentMedium).attrs({ as: 'div' })``
 
-const StyledTd = styled(ContentLarge)``
+const StyledTd = styled(ContentLarge).attrs({ as: 'div' })``
+
+const StyledRank = styled(ContentLarge).attrs({ as: 'div' })<{ rank: number }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 42px;
+  color: ${({ rank, theme }) => (rank <= 3 ? 'transparent' : theme.colors.otterBlack)};
+  background: url(${({ rank }) => (rank === 1 ? FirstRank : rank === 2 ? SecondRank : rank === 3 ? ThirdRank : '')})
+    no-repeat;
+  background-size: 42px 42px;
+  background-position: center;
+`
 
 const StyledRarityScore = styled(ContentLarge).attrs({
   as: 'div',
@@ -214,16 +234,18 @@ const StyledAvatarName = styled(ContentLarge)`
 const StyledOttoAvatar = styled.img`
   width: 100px;
   height: 100px;
+  min-width: 100px;
+  background: url(${OttOLoading});
+  background-size: 100% 100%;
+
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 60px;
     height: 60px;
+    min-width: 60px;
   }
-
-  background: url(${OttOLoading});
-  background-size: 100% 100%;
 `
 
-const StyledReward = styled(ContentLarge)`
+const StyledReward = styled(ContentLarge).attrs({ as: 'div' })`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -294,6 +316,7 @@ function useQueryString() {
 export default function RankList({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.rank_list' })
   const page = Number(useQueryString().get('page')) || 0
+  const [totalSupply] = useOttoInfo()
   const {
     data,
     loading: loadingGraph,
@@ -301,6 +324,15 @@ export default function RankList({ className }: Props) {
   } = useQuery<ListRankedOttos, ListRankedOttosVariables>(LIST_RANKED_OTTOS, {
     variables: { skip: page * PAGE, first: PAGE },
   })
+  const prizeCount = Math.floor((totalSupply - 250) /* exclude reserve Ottos */ * 0.5)
+  const topReward = useMemo(() => {
+    let sum = 0
+    for (let i = 1; i <= prizeCount; i++) {
+      sum += 1 / i
+    }
+    return TOTAL_RARITY_REWARD / sum
+  }, [prizeCount])
+  const getEstimatedReward = (rank: number) => (rank <= prizeCount ? trim((topReward * (1 / rank)) / 4, 2) : '-')
   const { ottos, loading: loadingApi } = useOttos(data?.ottos, false)
   const { ottos: myOttos } = useMyOttos()
   const sortedMyOttos = useMemo(() => myOttos.sort((a, b) => a.ranking - b.ranking), [myOttos])
@@ -310,6 +342,47 @@ export default function RankList({ className }: Props) {
     refetch({ skip: page * PAGE, first: PAGE })
   }, [page])
   const loading = loadingGraph || loadingApi
+  const renderRow = (
+    rank: number,
+    { tokenId, image, name, totalRarityScore, baseRarityScore, relativeRarityScore }: Otto
+  ) => {
+    return (
+      <a key={rank} href={`/ottos/${tokenId}`} target="_blank" rel="noreferrer">
+        {isMobile ? (
+          <StyledMobileRow>
+            <StyledTd>
+              <StyledRank rank={rank}>{rank}</StyledRank>
+            </StyledTd>
+            <StyledOttoAvatar src={image} />
+            <StyledMobileContent>
+              <StyledAvatarName as="div">{name}</StyledAvatarName>
+              <StyledReward as="div">{getEstimatedReward(rank)}</StyledReward>
+              <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
+            </StyledMobileContent>
+          </StyledMobileRow>
+        ) : (
+          <StyledOttoRow>
+            <StyledTd>
+              <StyledRank rank={rank}>{rank}</StyledRank>
+            </StyledTd>
+            <StyledTd>
+              <StyledAvatarName>
+                <StyledOttoAvatar src={image} />
+                {name}
+              </StyledAvatarName>
+            </StyledTd>
+            <StyledTd>
+              <StyledReward>{getEstimatedReward(rank)}</StyledReward>
+            </StyledTd>
+            <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
+            <StyledTd>{baseRarityScore}</StyledTd>
+            <StyledTd>{relativeRarityScore}</StyledTd>
+          </StyledOttoRow>
+        )}
+      </a>
+    )
+  }
+
   return (
     <StyledRankList className={className}>
       <StyledTable>
@@ -321,29 +394,29 @@ export default function RankList({ className }: Props) {
                 <a key={index} href={`/my-ottos/${tokenId}`} target="_blank" rel="noreferrer">
                   {isMobile ? (
                     <StyledMobileRow>
-                      <StyledTd as="div">{ranking}</StyledTd>
+                      <StyledRank rank={ranking}>{ranking}</StyledRank>
                       <StyledOttoAvatar src={image} />
                       <StyledMobileContent>
                         <StyledAvatarName as="div">{name}</StyledAvatarName>
-                        <StyledReward as="div">TBD</StyledReward>
+                        <StyledReward as="div">{getEstimatedReward(ranking)}</StyledReward>
                         <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
                       </StyledMobileContent>
                     </StyledMobileRow>
                   ) : (
                     <StyledMyOttoRow>
-                      <StyledTd as="div">{ranking}</StyledTd>
-                      <StyledTd as="div">
+                      <StyledRank rank={ranking}>{ranking}</StyledRank>
+                      <StyledTd>
                         <StyledAvatarName as="div">
                           <StyledMyOttoAvatar src={image} />
                           {name}
                         </StyledAvatarName>
                       </StyledTd>
-                      <StyledTd as="div">
-                        <StyledReward>TBD</StyledReward>
+                      <StyledTd>
+                        <StyledReward>{getEstimatedReward(ranking)}</StyledReward>
                       </StyledTd>
                       <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
-                      <StyledTd as="div">{baseRarityScore}</StyledTd>
-                      <StyledTd as="div">{relativeRarityScore}</StyledTd>
+                      <StyledTd>{baseRarityScore}</StyledTd>
+                      <StyledTd>{relativeRarityScore}</StyledTd>
                     </StyledMyOttoRow>
                   )}
                 </a>
@@ -355,50 +428,19 @@ export default function RankList({ className }: Props) {
           </StyledMyOttoSection>
         )}
         <StyledTableHead>
-          <StyledTh as="div">{t('rank')}</StyledTh>
-          <StyledTh as="div">{t('name')}</StyledTh>
-          <StyledTh as="div">{t('est_reward')}</StyledTh>
-          <StyledTh as="div">{t('rarity_score')}</StyledTh>
-          <StyledTh as="div">{t('brs')}</StyledTh>
-          <StyledTh as="div">{t('rrs')}</StyledTh>
+          <StyledTh>{t('rank')}</StyledTh>
+          <StyledTh>{t('name')}</StyledTh>
+          <StyledTh>{t('est_reward')}</StyledTh>
+          <StyledTh>{t('rarity_score')}</StyledTh>
+          <StyledTh>{t('brs')}</StyledTh>
+          <StyledTh>{t('rrs')}</StyledTh>
         </StyledTableHead>
         {loading && (
           <StyledLoading>
             <img src={LoadingGif} alt="loading" />
           </StyledLoading>
         )}
-        {!loading &&
-          ottos.map(({ tokenId, name, image, baseRarityScore, relativeRarityScore, totalRarityScore }, index) => (
-            <a key={page * PAGE + index} href={`/ottos/${tokenId}`} target="_blank" rel="noreferrer">
-              {isMobile ? (
-                <StyledMobileRow>
-                  <StyledTd as="div">{page * PAGE + index + 1}</StyledTd>
-                  <StyledOttoAvatar src={image} />
-                  <StyledMobileContent>
-                    <StyledAvatarName as="div">{name}</StyledAvatarName>
-                    <StyledReward as="div">TBD</StyledReward>
-                    <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
-                  </StyledMobileContent>
-                </StyledMobileRow>
-              ) : (
-                <StyledOttoRow>
-                  <StyledTd as="div">{page * PAGE + index + 1}</StyledTd>
-                  <StyledTd as="div">
-                    <StyledAvatarName>
-                      <StyledOttoAvatar src={image} />
-                      {name}
-                    </StyledAvatarName>
-                  </StyledTd>
-                  <StyledTd as="div">
-                    <StyledReward>TBD</StyledReward>
-                  </StyledTd>
-                  <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
-                  <StyledTd as="div">{baseRarityScore}</StyledTd>
-                  <StyledTd as="div">{relativeRarityScore}</StyledTd>
-                </StyledOttoRow>
-              )}
-            </a>
-          ))}
+        {!loading && ottos.map((otto, index) => renderRow(page * PAGE + index + 1, otto))}
       </StyledTable>
       {!loading && (
         <StyledPagination>

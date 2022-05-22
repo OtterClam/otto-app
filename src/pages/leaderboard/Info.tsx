@@ -35,14 +35,14 @@ const StyledLinks = styled.div`
   justify-content: space-evenly;
 `
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(ContentSmall).attrs({ as: 'div' })`
   color: ${({ theme }) => theme.colors.seaweedGreen};
 `
 
 interface Props {
   image: string
   desc: string
-  links: { text: string; href: string }[]
+  links: { text: string; href: string; internal?: boolean }[]
 }
 
 export default function Info({ image, desc, links }: Props) {
@@ -52,11 +52,17 @@ export default function Info({ image, desc, links }: Props) {
       <StyledContent>
         <StyledDesc as="p">{desc}</StyledDesc>
         <StyledLinks>
-          {links.map((link, index) => (
-            <StyledLink key={index} to={link.href}>
-              <ContentSmall>{link.text}</ContentSmall>
-            </StyledLink>
-          ))}
+          {links.map((link, index) =>
+            link.internal ? (
+              <Link key={index} to={link.href}>
+                <StyledLink>{link.text}</StyledLink>
+              </Link>
+            ) : (
+              <a key={index} href={link.href} target="_blank" rel="noreferrer">
+                <StyledLink>{link.text}</StyledLink>
+              </a>
+            )
+          )}
         </StyledLinks>
       </StyledContent>
     </StyledInfo>

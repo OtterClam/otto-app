@@ -1,16 +1,21 @@
-import Button from 'components/Button'
-import { DISCORD_LINK } from 'constant'
+import InfoIcon from 'assets/ui/info.svg'
+import Ribbon from 'assets/ui/ribbon.png'
+import Countdown from 'components/Countdown'
+import { TOTAL_RARITY_REWARD } from 'constant'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
-import { ContentSmall, Display1, Headline } from 'styles/typography'
-import Ribbon from 'assets/ui/ribbon.png'
-import InfoIcon from 'assets/ui/info.svg'
-import StreamerRight from './streamer_right.png'
-import StreamerLeft from './streamer_left.png'
-import Rewards from './rewards.png'
-import Ottos from './ottos.png'
+import { ContentSmall, Display1 } from 'styles/typography'
 import Background from './background.png'
 import Clams from './clams.png'
+import Ottos from './ottos.png'
+import Rewards from './rewards.png'
+import StreamerLeft from './streamer_left.png'
+import StreamerRight from './streamer_right.png'
+
+const Round1 = {
+  start: new Date('2022-05-23'),
+  end: new Date('2022-06-06'),
+}
 
 const StyledHero = styled.div`
   width: 100%;
@@ -96,7 +101,7 @@ const StyledCenterContainer = styled.div`
   }
 `
 
-const StyledTitle = styled(ContentSmall)`
+const StyledTitle = styled(ContentSmall).attrs({ as: 'h2' })`
   text-align: center;
   height: 53px;
   color: ${({ theme }) => theme.colors.white};
@@ -106,11 +111,11 @@ const StyledTitle = styled(ContentSmall)`
   padding: 6px 45px 0 45px;
 `
 
-const StyledComingSoon = styled(Display1)`
+const StyledTotalReward = styled(Display1).attrs({ as: 'h2' })`
   color: ${({ theme }) => theme.colors.crownYellow};
 `
 
-const StyledRewardAt = styled(ContentSmall)`
+const StyledRewardAt = styled(ContentSmall).attrs({ as: 'p' })`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -173,6 +178,8 @@ const StyledClam = styled.img`
 
 export default function Hero() {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.hero' })
+  const started = Date.now() > Round1.start.valueOf()
+  const target = started ? Round1.end : Round1.start
   return (
     <StyledHero>
       <StyledBackground src={Background} />
@@ -182,14 +189,13 @@ export default function Hero() {
       <StyledOttos src={Ottos} />
       <StyledRewardImg src={Rewards} />
       <StyledCenterContainer>
-        <StyledTitle as="h2">{t('title')}</StyledTitle>
-        <StyledComingSoon>{t('coming_soon')}</StyledComingSoon>
-        <StyledRewardAt as="p">{t('reward_at')}</StyledRewardAt>
-        <a href={DISCORD_LINK} target="_blank" rel="noreferrer">
-          <Button>
-            <Headline>{t('get_updated')}</Headline>
-          </Button>
-        </a>
+        <StyledTitle>{t('title')}</StyledTitle>
+        <StyledTotalReward>
+          {new Intl.NumberFormat('en', {}).format(TOTAL_RARITY_REWARD)}
+          <ContentSmall>CLAM</ContentSmall>
+        </StyledTotalReward>
+        <StyledRewardAt>{t('reward_at', { time: Round1.end.toLocaleString() })}</StyledRewardAt>
+        <Countdown target={target} />
       </StyledCenterContainer>
     </StyledHero>
   )

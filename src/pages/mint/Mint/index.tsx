@@ -269,7 +269,7 @@ export default function Mint() {
                   <StyledPortalInfoTitle>{t('mint.mint.portal')}</StyledPortalInfoTitle>
                   <StyledPortalInfoDesc>{t('mint.mint.info_desc')}</StyledPortalInfoDesc>
                   <StyledPortalInfoAmountLeft>
-                    {t('mint.mint.amount_left', { amount: 5000 - ottoSupply.toNumber() })}
+                    {t('mint.mint.amount_left', { amount: 5000 - ottoSupply })}
                   </StyledPortalInfoAmountLeft>
                   <StyledCLAMMintPrice>{ethers.utils.formatUnits(clamPrice, 9)}</StyledCLAMMintPrice>
                 </StyledPortalInfo>

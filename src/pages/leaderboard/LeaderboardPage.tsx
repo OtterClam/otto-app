@@ -21,7 +21,7 @@ const StyledLeaderboardPage = styled.div`
   }
 `
 
-const StyledHead = styled(Display3)``
+const StyledHead = styled(Display3).attrs({ as: 'h1' })``
 
 const StyledHero = styled(Hero)``
 
@@ -43,17 +43,20 @@ export default function LeaderboardPage() {
   return (
     <Layout title={t('title')} background="dark">
       <StyledLeaderboardPage>
-        <StyledHead as="p">{t('head')}</StyledHead>
+        <StyledHead>{t('head')}</StyledHead>
         <StyledHero />
         <StyledInfos>
-          <Info image={RewardInfo} desc={t('reward_desc')} links={[]} />
-          {/* <Info image={RewardInfo} desc={t('reward_desc')} links={[{ text: t('reward_link'), href: '' }]} /> */}
+          <Info
+            image={RewardInfo}
+            desc={t('reward_desc')}
+            links={[{ text: t('reward_link'), href: 'https://otterclam.medium.com/raking-for-rarity-8e1ac83588d3' }]}
+          />
           <Info
             image={M4Carbin}
             desc={t('item_desc')}
             links={[
-              { text: t('shell_chest_link'), href: '/store' },
-              { text: t('mint_portal_link'), href: '/mint' },
+              { text: t('shell_chest_link'), href: '/store', internal: true },
+              { text: t('mint_portal_link'), href: '/mint', internal: true },
             ]}
           />
         </StyledInfos>
