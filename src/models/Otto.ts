@@ -7,6 +7,7 @@ export interface RawOtto {
   rrs?: number
   rarityScore?: number
   constellationBoost?: number
+  legendaryBoost?: number
 }
 
 export interface Attr {

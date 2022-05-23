@@ -178,11 +178,15 @@ const StyledStatIcon = styled.img`
   width: 49px;
 `
 
-const StyledStatTitle = styled.p``
+const StyledStatTitle = styled(ContentSmall).attrs({ as: 'p' })``
 
-const StyledStatDesc = styled.p`
+const StyledStatDesc = styled(Note).attrs({ as: 'p' })`
   color: ${({ theme }) => theme.colors.darkGray100};
   text-align: center;
+`
+
+const StyledLegendaryBoost = styled(Note).attrs({ as: 'p' })`
+  color: ${({ theme }) => theme.colors.clamPink};
 `
 
 const StyledRarityContainer = styled(Headline).attrs({ as: 'div' })`
@@ -349,30 +353,25 @@ export default function OttoPage() {
                 <StyledStatsContainer>
                   <StyledStat>
                     <StyledStatIcon src={otto.legendary ? LegendaryIcon : ClassicIcon} />
-                    <StyledStatTitle>
-                      <ContentSmall>{t(otto.legendary ? 'otto.legendary' : 'otto.classic')}</ContentSmall>
-                    </StyledStatTitle>
-                    <StyledStatDesc>
-                      <Note>{t(otto.legendary ? 'otto.legendary_note' : 'otto.classic_note')}</Note>
-                    </StyledStatDesc>
+                    <StyledStatTitle>{t(otto.legendary ? 'otto.legendary' : 'otto.classic')}</StyledStatTitle>
+                    <StyledStatDesc>{t(otto.legendary ? 'otto.legendary_note' : 'otto.classic_note')}</StyledStatDesc>
+                    {otto.legendary && (
+                      <StyledLegendaryBoost>
+                        {t('otto.legendary_boost', {
+                          context: (otto.raw.legendaryBoost || 0) > 0 ? 'added' : 'removed',
+                        })}
+                      </StyledLegendaryBoost>
+                    )}
                   </StyledStat>
                   <StyledStat>
                     <StyledStatIcon src={`/arms/${otto.armsImage}.png`} />
-                    <StyledStatTitle>
-                      <ContentSmall>{otto.coatOfArms}</ContentSmall>
-                    </StyledStatTitle>
-                    <StyledStatDesc>
-                      <Note>{t('otto.coatOfArms', { arms: otto.coatOfArms })}</Note>
-                    </StyledStatDesc>
+                    <StyledStatTitle>{otto.coatOfArms}</StyledStatTitle>
+                    <StyledStatDesc>{t('otto.coatOfArms', { arms: otto.coatOfArms })}</StyledStatDesc>
                   </StyledStat>
                   <StyledStat>
                     <StyledStatIcon src={FirstGenIcon} />
-                    <StyledStatTitle>
-                      <ContentSmall>{t('otto.first_gen')}</ContentSmall>
-                    </StyledStatTitle>
-                    <StyledStatDesc>
-                      <Note>{t('otto.first_gen_desc')}</Note>
-                    </StyledStatDesc>
+                    <StyledStatTitle>{t('otto.first_gen')}</StyledStatTitle>
+                    <StyledStatDesc>{t('otto.first_gen_desc')}</StyledStatDesc>
                   </StyledStat>
                 </StyledStatsContainer>
                 <OttoTraitDetails otto={otto} />

@@ -186,6 +186,8 @@
     "gender_specific_male": "限定性別: 阿獺, 克蕾歐",
     "genetic_traits_tab": "生物特徵",
     "legendary": "超傳奇",
+    "legendary_boost_added": "BRS+100",
+    "legendary_boost_removed": "BRS+0\n（初始配置已被替換）",
     "legendary_note": "絕無僅有，為藝術家欽定的傳奇夢幻阿獺。",
     "opensea_link": "在 OpenSea 上瞧瞧",
     "personality": "個性： {{personality}}",
