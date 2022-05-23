@@ -37,38 +37,33 @@ export class Api {
     return this.axios
       .get(`/items/metadata/${itemId}`, { params: { lang } })
       .then(res => res.data)
-      .then(
-        ({
+      .then(({ name, image, description, details }) => ({
+        id: itemId,
+        name,
+        description,
+        image,
+        equipped: false,
+        amount: 1,
+        unreturnable: false,
+        ...details,
+      }))
+  }
+
+  public async getItems(ids: string[], lang: string): Promise<Item[]> {
+    return this.axios
+      .get(`/items/metadata?ids=${ids.join(',')}`, { params: { lang } })
+      .then(res => res.data)
+      .then((data: any[]) =>
+        data.map(({ name, image, description, details }, i) => ({
+          id: ids[i],
           name,
-          image,
           description,
-          details: {
-            type,
-            rarity,
-            stats,
-            wearable,
-            base_rarity_score,
-            relative_rarity_score,
-            equipped_count,
-            equippable_gender,
-          },
-        }) => ({
-          id: itemId,
-          name,
-          type,
-          rarity,
-          description,
-          stats,
           image,
           equipped: false,
-          baseRarityScore: base_rarity_score,
-          relativeRarityScore: relative_rarity_score,
-          equippedCount: equipped_count,
-          wearable,
           amount: 1,
-          equippable_gender,
           unreturnable: false,
-        })
+          ...details,
+        }))
       )
   }
 }

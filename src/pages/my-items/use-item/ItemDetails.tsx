@@ -176,12 +176,12 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
       <StyledDesc>{description}</StyledDesc>
       <StyledRarityScore>
         {t('total_rarity_score', {
-          total: item.baseRarityScore + item.relativeRarityScore,
-          brs: item.baseRarityScore,
-          rrs: item.relativeRarityScore,
+          total: item.base_rarity_score + item.relative_rarity_score,
+          brs: item.base_rarity_score,
+          rrs: item.relative_rarity_score,
         })}
       </StyledRarityScore>
-      <StyledWearCount>{t('wear_count', { count: item.equippedCount })}</StyledWearCount>
+      <StyledWearCount>{t('wear_count', { count: item.equipped_count })}</StyledWearCount>
       <StyledAttrs>
         {item.stats.map(({ name, value }, i) => (
           <StyledAttr key={i}>

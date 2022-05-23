@@ -127,7 +127,7 @@ export default function OttoCard({ otto, oldOtto, item, takeOff = false, classNa
         const value = Number(strValue) - oldValue
         diff[name] = String(value < 0 ? '-' : '+') + Math.abs(value)
       })
-      const brs = item.baseRarityScore - originItem.baseRarityScore
+      const brs = item.base_rarity_score - originItem.base_rarity_score
       diff.BRS = String((brs < 0 ? '-' : '+') + Math.abs(brs))
     }
     return diff

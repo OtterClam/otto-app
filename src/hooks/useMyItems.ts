@@ -33,16 +33,18 @@ export default function useMyItems() {
   })
   useEffect(() => {
     if (data) {
-      Promise.all(
-        data.ottoItems.map(rawItem =>
-          api.getItem(rawItem.tokenId, i18n.resolvedLanguage).then(item => ({
+      const ids = data.ottoItems.map(item => String(item.tokenId))
+      api
+        .getItems(ids, i18n.resolvedLanguage)
+        .then(items =>
+          items.map((item, i) => ({
             ...item,
-            amount: rawItem.amount,
-            equipped: Boolean(rawItem.parentTokenId),
-            parentTokenId: rawItem.parentTokenId?.toString(),
+            amount: data.ottoItems[i].amount,
+            equipped: Boolean(data.ottoItems[i].parentTokenId),
+            parentTokenId: data.ottoItems[i].parentTokenId?.toString(),
           }))
         )
-      ).then(items => setItems(items))
+        .then(items => setItems(items))
     }
   }, [data])
   return { items, refetch }
