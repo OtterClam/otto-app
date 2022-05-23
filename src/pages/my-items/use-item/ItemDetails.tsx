@@ -1,10 +1,10 @@
 import CloseButton from 'components/CloseButton'
 import Button from 'components/Button'
-import { t } from 'i18next'
 import Item from 'models/Item'
 import styled from 'styled-components/macro'
 import { Caption, ContentSmall, Headline, Note } from 'styles/typography'
 import GenderSpecific from 'components/GenderSpecific'
+import { useTranslation } from 'react-i18next'
 
 const StyledItemDetails = styled.section`
   display: flex;
@@ -119,9 +119,13 @@ const StyledRarityLabel = styled.div<{ rarity: string }>`
   border-radius: 6px;
 `
 
-const StyledDesc = styled.div``
+const StyledDesc = styled(ContentSmall).attrs({ as: 'p' })``
 
-const StyledRarityScore = styled.p``
+const StyledRarityScore = styled(ContentSmall).attrs({ as: 'p' })``
+
+const StyledWearCount = styled(Caption).attrs({ as: 'p' })`
+  color: ${({ theme }) => theme.colors.darkGray100};
+`
 
 const StyledAttrs = styled.div`
   display: grid;
@@ -147,7 +151,9 @@ interface Props {
 }
 
 export default function ItemDetails({ item, onClose, onUse, className }: Props) {
-  const { name, image, rarity, type, description, equippable_gender } = item
+  const { t } = useTranslation('', { keyPrefix: 'my_items' })
+  const { id, name, image, rarity, type, description, equippable_gender } = item
+  console.log(`item id: ${id}`)
   return (
     <StyledItemDetails className={className}>
       {onClose && <StyledCloseButton onClose={onClose} />}
@@ -158,7 +164,7 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
         </StyledRarity>
       </StyledItemImageContainer>
       <StyledTag type={type}>
-        <Caption>{t(`my_items.section_title.${type}`)}</Caption>
+        <Caption>{t(`section_title.${type}`)}</Caption>
       </StyledTag>
       <StyledTitleContainer>
         <Headline>{name}</Headline>
@@ -167,12 +173,15 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
         </StyledRarityLabel>
       </StyledTitleContainer>
       <GenderSpecific equippableGender={equippable_gender} />
-      <StyledDesc>
-        <ContentSmall>{description}</ContentSmall>
-      </StyledDesc>
+      <StyledDesc>{description}</StyledDesc>
       <StyledRarityScore>
-        <ContentSmall>{t('my_items.base_rarity_score', { score: item.baseRarityScore })}</ContentSmall>
+        {t('total_rarity_score', {
+          total: item.baseRarityScore + item.relativeRarityScore,
+          brs: item.baseRarityScore,
+          rrs: item.relativeRarityScore,
+        })}
       </StyledRarityScore>
+      <StyledWearCount>{t('wear_count', { count: item.equippedCount })}</StyledWearCount>
       <StyledAttrs>
         {item.stats.map(({ name, value }, i) => (
           <StyledAttr key={i}>
@@ -183,9 +192,7 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
       </StyledAttrs>
       {onUse && (
         <StyledButton onClick={() => onUse(item)}>
-          <Headline>
-            {item.wearable ? (item.equipped ? t('my_items.take_off') : t('my_items.wear')) : t('my_items.use')}
-          </Headline>
+          <Headline>{item.wearable ? (item.equipped ? t('take_off') : t('wear')) : t('use')}</Headline>
         </StyledButton>
       )}
     </StyledItemDetails>

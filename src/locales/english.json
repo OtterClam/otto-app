@@ -118,9 +118,10 @@
     "para2": "OTTERVERSE!"
   },
   "my_items": {
-    "base_rarity_score": "Base Rarity Score: {{score}}",
     "equipped": "Equipped",
+    "legendary_warning": "Warning: If you add or replace any items to the Legendary Otto, the Legendary frame will be removed and the BRS +100 bonus will be withdrawn.",
     "no_selected_item": "Select an item to view the detail.",
+    "rarity_score": "Rarity score: {{score}}",
     "section_title": {
       "All": "All",
       "Background": "Backgrounds",
@@ -135,6 +136,7 @@
       "title": "Take off the item from your Otto"
     },
     "title": "My Items",
+    "total_rarity_score": "Rarity Score: {{total}} (BRS {{brs}} + RRS {{rrs}})",
     "use": "Use",
     "use_item": {
       "completed_subtitle": "Does it look better or worse? idk.",
@@ -144,12 +146,12 @@
       "title": "Select an Otto to use this item"
     },
     "wear": "Wear",
+    "wear_count": "{{count}} are wearing this item",
     "wear_item": {
       "current_equipped": "Currently Equipped",
       "replaced": "Replaced With...",
       "title": "Select an Otto to wear this item"
-    },
-    "legendary_warning": "Warning: If you add or replace any items to the Legendary Otto, the Legendary frame will be removed and the BRS +100 bonus will be withdrawn."
+    }
   },
   "my_ottos": {
     "mint_portal": "Mint Portal",
@@ -206,6 +208,8 @@
     },
     "rarity_score": "Rarity Score: {{score}} (BRS: {{brs}} + RRS: {{rrs}})",
     "title": "Otto Details",
+    "trait_count_one": "{{count}} Otto has this trait",
+    "trait_count_other": "{{count}} Ottos have this trait",
     "traits": {
       "Background": "Background",
       "Clothes": "Clothes",

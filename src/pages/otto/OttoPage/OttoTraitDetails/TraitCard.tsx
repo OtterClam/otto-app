@@ -1,7 +1,7 @@
 import { Trait } from 'models/Otto'
 import styled from 'styled-components/macro'
 import { useTranslation } from 'react-i18next'
-import { ContentLarge, ContentSmall, Note } from 'styles/typography'
+import { Caption, ContentLarge, ContentSmall, Note } from 'styles/typography'
 import ItemCell from 'components/ItemCell'
 import { useMemo } from 'react'
 import { traitToItem } from 'models/Item'
@@ -70,7 +70,7 @@ const StyledStat = styled.p`
   justify-content: space-between;
 `
 
-const StyledUnreturnable = styled(Note)`
+const StyledWearCount = styled(Caption).attrs({ as: 'p' })`
   color: ${({ theme }) => theme.colors.darkGray100};
 `
 
@@ -89,6 +89,7 @@ export default function TraitCard({ trait }: Props) {
     total_rarity_score,
     base_rarity_score,
     relative_rarity_score,
+    equipped_count,
     equippable_gender,
     unreturnable,
     wearable,
@@ -111,6 +112,7 @@ export default function TraitCard({ trait }: Props) {
           <StyledRarityScore as="p">
             {t('otto.rarity_score', { score: total_rarity_score, brs: base_rarity_score, rrs: relative_rarity_score })}
           </StyledRarityScore>
+          <StyledWearCount>{t('otto.trait_count', { count: equipped_count })}</StyledWearCount>
           <StyledStats>
             {stats.map(({ name, value }, i) => (
               <StyledStat key={i}>

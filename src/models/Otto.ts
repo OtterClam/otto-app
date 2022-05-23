@@ -23,6 +23,7 @@ export interface Trait {
   base_rarity_score: number
   relative_rarity_score: number
   total_rarity_score: number
+  equipped_count: number
   wearable: boolean
   stats: [Stat]
   unreturnable: boolean

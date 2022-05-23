@@ -44,7 +44,7 @@ export default function ItemPreviewCard({ title, item = EmptyItem }: Props) {
       <Caption>{title}</Caption>
       <StyledItemCell item={item} />
       <StyledRarityScore>
-        <Caption>{t('my_items.base_rarity_score', { score: item.baseRarityScore })}</Caption>
+        <Caption>{t('my_items.rarity_score', { score: item.baseRarityScore + item.relativeRarityScore })}</Caption>
       </StyledRarityScore>
       <StyledAttrs>
         {item.stats.map(({ name, value }, i) => (
