@@ -148,7 +148,8 @@
       "current_equipped": "Currently Equipped",
       "replaced": "Replaced With...",
       "title": "Select an Otto to wear this item"
-    }
+    },
+    "legendary_warning": "Warning: If you add or replace any items to the Legendary Otto, the Legendary frame will be removed and the BRS +100 bonus will be withdrawn."
   },
   "my_ottos": {
     "mint_portal": "Mint Portal",
