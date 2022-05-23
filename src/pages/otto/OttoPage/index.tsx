@@ -186,6 +186,8 @@ const StyledStatDesc = styled(Note).attrs({ as: 'p' })`
 `
 
 const StyledLegendaryBoost = styled(Note).attrs({ as: 'p' })`
+  text-align: center;
+  white-space: pre;
   color: ${({ theme }) => theme.colors.clamPink};
 `
 
