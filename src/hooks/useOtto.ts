@@ -46,20 +46,15 @@ export function useOttos(rawOttos: RawOtto[] | Falsy, details: boolean) {
     if (rawOttos) {
       setLoading(true)
       setError(null)
-      Promise.all(
-        rawOttos.map(raw =>
-          api
-            .getOttoMeta(raw.tokenId, i18n.resolvedLanguage, details)
-            .then(data => {
-              return new Otto(raw, data)
-            })
-            .catch(err => {
-              setError(err)
-              console.error('fetch otto meta failed', err)
-            })
-        )
-      )
+      const ids = rawOttos.map(raw => String(raw.tokenId))
+      api
+        .getOttoMetas(ids, i18n.resolvedLanguage, details)
+        .then(data => data.map((meta, i) => new Otto(rawOttos[i], meta)))
         .then(ottos => setOttos(ottos.filter((o): o is Otto => Boolean(o))))
+        .catch(err => {
+          setError(err)
+          console.error('fetch otto meta failed', err)
+        })
         .finally(() => setLoading(false))
     }
   }, [rawOttos, i18n.resolvedLanguage, fetchCount])
