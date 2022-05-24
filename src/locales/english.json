@@ -78,14 +78,14 @@
     },
     "intro": {
       "step1": "Step 1",
-      "step1_desc": "We accept $CLAM for Otto Portal minting.\n\n1 Portal = 50 CLAM",
+      "step1_desc": "We accept $CLAM for Otto Portal purchase. This is a simple way to join the continued growth of the Otter Kingdom.\n\n1 Portal = 50 CLAM",
       "step1_title": "Mint Otto Portal with CLAM",
       "step2": "Step 2",
-      "step2_desc": "Otto Portals need time to power up. Once they are ready, you will be able to summon your Otto.",
-      "step2_title": "Wait for your Otto Portal to activate",
+      "step2_desc": "One portal opens randomly from 1 to 8 Ottos, but only 1 can proceed to go through the portal. For this reason, the user will still need to choose 1 Otto to get through the portal and become an Otto NFT. Once it’s confirmed, the portal NFT’s appearance will be changed to the Otto’s!",
+      "step2_title": "Open Otto Portal and get Otto candidates",
       "step3": "Step 3",
-      "step3_desc": "When the time is up, you will be able to summon your Otto.\n\n1 portal can only summon 1 Otto. The traits will be randomly generated the moment you summon a Otto. If you're lucky, you'll summon an Otto that possesses rare, or super rare traits that greatly increase your Otto's value.",
-      "step3_title": "Summon your Ottos",
+      "step3_desc": "After deciding your favorite Otto NFT, you have to summon the one you picked to get to the portal and formally join the Otter Kingdom. This process will trigger another transaction to update the NFT appearance.",
+      "step3_title": "Summon your Otto",
       "title": "How do Otto Portals work?"
     },
     "mint": {
