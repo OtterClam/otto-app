@@ -16,6 +16,7 @@ import RankingIcon from 'assets/ranking.png'
 import ClassicIcon from 'assets/badge/classic.png'
 import LegendaryIcon from 'assets/badge/legendary.png'
 import FirstGenIcon from 'assets/badge/first-gen.png'
+import Constellations from 'assets/constellations'
 import { GetOtto, GetOttoVariables } from '../__generated__/GetOtto'
 import { GET_OTTO } from '../queries'
 import PlayIcon from './icons/play-voice.svg'
@@ -269,8 +270,8 @@ export default function OttoPage() {
               text: t('otto.voice', { voice: otto.voiceName }),
             },
             {
-              icon: '/trait-icons/Constellation.png',
-              text: t('otto.zodiac_sign', { constellation: otto.constellation }),
+              icon: Constellations[otto.zodiacSign],
+              text: t('otto.zodiac_sign', { constellation: otto.zodiacSign }),
             },
           ]
         : null,
@@ -319,15 +320,15 @@ export default function OttoPage() {
                 </StyledInfo>
               ))}
             </StyledInfos>
-            {otto && (otto.raw.constellationBoost || 0) > 0 && (
+            {otto && (otto.zodiacBoost || 0) > 0 && (
               <StyledBoostBox>
                 <img src={TheOtter} alt="the Otter" />
                 <ContentSmall>
-                  {t(otto?.raw.constellationBoost === 150 ? 'otto.chosen_one' : 'otto.constellation_boost', {
+                  {t(otto?.isChosenOne ? 'otto.chosen_one' : 'otto.constellation_boost', {
                     birthday: format(otto.birthday, 'MMM d'),
-                    constellation: otto.constellation,
+                    constellation: otto.zodiacSign,
                   })}
-                  <StyledBoost>BRS+{otto.raw.constellationBoost}!</StyledBoost>
+                  <StyledBoost>BRS+{otto.zodiacBoost}!</StyledBoost>
                 </ContentSmall>
               </StyledBoostBox>
             )}

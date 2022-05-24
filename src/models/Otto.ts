@@ -71,7 +71,7 @@ export default class Otto {
 
   public readonly armsImage: string = ''
 
-  public readonly constellation: string = ''
+  public readonly zodiacSign: string = ''
 
   public readonly ranking: number = 0
 
@@ -109,8 +109,8 @@ export default class Otto {
         this.coatOfArms = String(value)
       } else if (trait_type === 'Ranking') {
         this.ranking = Number(value)
-      } else if (trait_type === 'Constellation') {
-        this.constellation = String(value)
+      } else if (trait_type === 'Zodiac Sign') {
+        this.zodiacSign = String(value)
       }
     }
 
@@ -154,6 +154,14 @@ export default class Otto {
     return this.metadata.otto_attrs.filter(
       p => p.trait_type !== 'BRS' && p.trait_type !== 'TRS' && p.trait_type !== 'RRS'
     )
+  }
+
+  get isChosenOne(): boolean {
+    return this.raw.constellationBoost === 150
+  }
+
+  get zodiacBoost(): number {
+    return this.raw.constellationBoost || 0
   }
 
   public playVoice() {
