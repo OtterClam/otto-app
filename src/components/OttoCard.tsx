@@ -140,7 +140,7 @@ export default function OttoCard({ otto, oldOtto, item, takeOff = false, classNa
       </StyledOttoName>
       <StyledOttoRarity>
         <StyledRarityScore>
-          {t('my_ottos.total_rarity_score', { score: otto.totalRarityScore })}
+          {t('my_ottos.rarity_score', { score: otto.totalRarityScore })}
           {diffAttrs.BRS && <StyledDiffAttr>({diffAttrs.BRS})</StyledDiffAttr>}
         </StyledRarityScore>
         <StyledRanking>{`#${otto.ranking}`}</StyledRanking>
