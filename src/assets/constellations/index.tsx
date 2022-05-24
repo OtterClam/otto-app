@@ -11,7 +11,7 @@ import Scorpio from './Scorpio.png'
 import Taurus from './Taurus.png'
 import Virgo from './Virgo.png'
 
-const mapping: Record<string, string> = {
+const Constellations: Record<string, string> = {
   Aquarius,
   Aries,
   Cancer,
@@ -26,4 +26,4 @@ const mapping: Record<string, string> = {
   Virgo,
 }
 
-export default mapping
+export default Constellations

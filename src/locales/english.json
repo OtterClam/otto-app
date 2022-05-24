@@ -39,7 +39,9 @@
       "rarity_score": "Rarity Score",
       "rrs": "RRS",
       "show_less": "Show less",
-      "your_rank": "Your Ottos’ rank currently:"
+      "your_rank": "Your Ottos’ rank currently:",
+      "chosen_one": "The Chosen Otto (BRS+150)",
+      "zodiac_boost": "{{zodiac}} (BRS+50)"
     },
     "reward_desc": "The higher your rank, the more prize you will win! All top 50% Ottos can win the rewards.",
     "reward_link": "See how the rank vs prize works >",

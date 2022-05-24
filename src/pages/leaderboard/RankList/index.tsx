@@ -10,13 +10,14 @@ import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import { breakpoints } from 'styles/breakpoints'
-import { ContentLarge, ContentMedium, Headline } from 'styles/typography'
+import { Caption, ContentLarge, ContentMedium, Headline } from 'styles/typography'
 import OttOLoading from 'assets/ui/otto-loading.jpg'
 import { useMyOttos } from 'MyOttosProvider'
 import { useOttoInfo } from 'contracts/views'
 import { trim } from 'helpers/trim'
 import Otto from 'models/Otto'
 import { TOTAL_RARITY_REWARD } from 'constant'
+import Constellations from 'assets/constellations'
 import RarityScore from './rarity_score.png'
 import LoadingGif from './loading.gif'
 import { ListRankedOttos, ListRankedOttosVariables } from './__generated__/ListRankedOttos'
@@ -34,6 +35,7 @@ export const LIST_RANKED_OTTOS = gql`
       brs
       rrs
       rarityScore
+      constellationBoost
     }
   }
 `
@@ -223,12 +225,47 @@ const StyledRarityScore = styled(ContentLarge).attrs({
   }
 `
 
-const StyledAvatarName = styled(ContentLarge)`
+const StyledAvatarName = styled(ContentLarge).attrs({ as: 'div' })`
   flex: 1;
   display: flex;
   align-items: center;
   gap: 20px;
   grid-column-start: span 2;
+`
+
+const StyledNameColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`
+
+const StyledChosenOne = styled(Caption).attrs({ as: 'div' })`
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  gap: 5px;
+  background: ${({ theme }) => theme.colors.crownYellow};
+  border-radius: 5px;
+  grid-column-start: span 2;
+  img {
+    width: 21px;
+    height: 21px;
+  }
+`
+
+const StyledZodiacSignBonus = styled(Caption).attrs({ as: 'div' })`
+  width: fit-content;
+  display: flex;
+  padding: 5px;
+  gap: 5px;
+  background: ${({ theme }) => theme.colors.lightGray300};
+  border-radius: 5px;
+  grid-column-start: span 2;
+  img {
+    width: 21px;
+    height: 21px;
+  }
 `
 
 const StyledOttoAvatar = styled.img`
@@ -275,7 +312,7 @@ const StyledMobileRow = styled.div`
 const StyledMobileContent = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-row-gap: 5px;
   width: 100%;
 `
 
@@ -333,7 +370,7 @@ export default function RankList({ className }: Props) {
     return TOTAL_RARITY_REWARD / sum
   }, [prizeCount])
   const getEstimatedReward = (rank: number) => (rank <= prizeCount ? trim((topReward * (1 / rank)) / 4, 2) : '-')
-  const { ottos, loading: loadingApi } = useOttos(data?.ottos, false)
+  const { ottos, loading: loadingApi } = useOttos(data?.ottos, true)
   const { ottos: myOttos } = useMyOttos()
   const sortedMyOttos = useMemo(() => myOttos.sort((a, b) => a.ranking - b.ranking), [myOttos])
   const [expand, setExpand] = useState(false)
@@ -344,7 +381,17 @@ export default function RankList({ className }: Props) {
   const loading = loadingGraph || loadingApi
   const renderRow = (
     rank: number,
-    { tokenId, image, name, totalRarityScore, baseRarityScore, relativeRarityScore }: Otto
+    {
+      tokenId,
+      image,
+      name,
+      totalRarityScore,
+      baseRarityScore,
+      relativeRarityScore,
+      zodiacBoost,
+      isChosenOne,
+      zodiacSign,
+    }: Otto
   ) => {
     return (
       <a key={rank} href={`/ottos/${tokenId}`} target="_blank" rel="noreferrer">
@@ -355,7 +402,19 @@ export default function RankList({ className }: Props) {
             </StyledTd>
             <StyledOttoAvatar src={image} />
             <StyledMobileContent>
-              <StyledAvatarName as="div">{name}</StyledAvatarName>
+              <StyledAvatarName>{name}</StyledAvatarName>
+              {zodiacBoost > 0 &&
+                (isChosenOne ? (
+                  <StyledChosenOne>
+                    <img src="/trait-icons/Birthday.png" alt="The Otter" />
+                    {t('chosen_one')}
+                  </StyledChosenOne>
+                ) : (
+                  <StyledZodiacSignBonus>
+                    <img src={Constellations[zodiacSign]} alt={zodiacSign} />
+                    {t('zodiac_boost', { zodiac: zodiacSign })}
+                  </StyledZodiacSignBonus>
+                ))}
               <StyledReward as="div">{getEstimatedReward(rank)}</StyledReward>
               <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
             </StyledMobileContent>
@@ -368,7 +427,21 @@ export default function RankList({ className }: Props) {
             <StyledTd>
               <StyledAvatarName>
                 <StyledOttoAvatar src={image} />
-                {name}
+                <StyledNameColumn>
+                  {name}
+                  {zodiacBoost > 0 &&
+                    (isChosenOne ? (
+                      <StyledChosenOne>
+                        <img src="/trait-icons/Birthday.png" alt="The Otter" />
+                        {t('chosen_one')}
+                      </StyledChosenOne>
+                    ) : (
+                      <StyledZodiacSignBonus>
+                        <img src={Constellations[zodiacSign]} alt={zodiacSign} />
+                        {t('zodiac_boost', { zodiac: zodiacSign })}
+                      </StyledZodiacSignBonus>
+                    ))}
+                </StyledNameColumn>
               </StyledAvatarName>
             </StyledTd>
             <StyledTd>
@@ -397,7 +470,7 @@ export default function RankList({ className }: Props) {
                       <StyledRank rank={ranking}>{ranking}</StyledRank>
                       <StyledOttoAvatar src={image} />
                       <StyledMobileContent>
-                        <StyledAvatarName as="div">{name}</StyledAvatarName>
+                        <StyledAvatarName>{name}</StyledAvatarName>
                         <StyledReward as="div">{getEstimatedReward(ranking)}</StyledReward>
                         <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
                       </StyledMobileContent>
@@ -406,9 +479,9 @@ export default function RankList({ className }: Props) {
                     <StyledMyOttoRow>
                       <StyledRank rank={ranking}>{ranking}</StyledRank>
                       <StyledTd>
-                        <StyledAvatarName as="div">
+                        <StyledAvatarName>
                           <StyledMyOttoAvatar src={image} />
-                          {name}
+                          <StyledNameColumn>{name}</StyledNameColumn>
                         </StyledAvatarName>
                       </StyledTd>
                       <StyledTd>
