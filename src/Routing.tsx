@@ -1,3 +1,4 @@
+import GiveawayPage from 'pages/giveaway/GiveawayPage'
 import HomePage from 'pages/home/HomePage'
 import LeaderboardPage from 'pages/leaderboard/LeaderboardPage'
 import MintPage from 'pages/mint/MintPage'
@@ -8,6 +9,7 @@ import MyOttosPage from 'pages/otto/MyOttosPage/MyOttosPage'
 import OttoPage from 'pages/otto/OttoPage'
 import PlayPage from 'pages/play/PlayPage'
 import StorePage from 'pages/store/StorePage'
+import TwitterCallback from 'pages/TwitterCallback'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import App from './App'
 
@@ -37,6 +39,10 @@ const Routing = () => {
           <Route path="leaderboard">
             <Route index element={<LeaderboardPage />} />
           </Route>
+          <Route path="giveaway">
+            <Route index element={<GiveawayPage />} />
+          </Route>
+          <Route path="twitter-callback" element={<TwitterCallback />} />
           <Route path="*" element={<HomePage />} />
         </Route>
       </Routes>
