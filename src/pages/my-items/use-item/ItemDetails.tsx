@@ -186,14 +186,16 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
           <StyledWearCount>{t('wear_count', { count: item.equipped_count })}</StyledWearCount>
         </>
       )}
-      <StyledAttrs>
-        {item.stats.map(({ name, value }, i) => (
-          <StyledAttr key={i}>
-            <ContentSmall>{name}</ContentSmall>
-            <ContentSmall>{value}</ContentSmall>
-          </StyledAttr>
-        ))}
-      </StyledAttrs>
+      {!item.isCoupon && (
+        <StyledAttrs>
+          {item.stats.map(({ name, value }, i) => (
+            <StyledAttr key={i}>
+              <ContentSmall>{name}</ContentSmall>
+              <ContentSmall>{value}</ContentSmall>
+            </StyledAttr>
+          ))}
+        </StyledAttrs>
+      )}
       {onUse && (
         <StyledButton onClick={() => onUse(item)}>
           <Headline>
