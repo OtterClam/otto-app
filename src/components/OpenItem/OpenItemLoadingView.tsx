@@ -78,7 +78,7 @@ interface Props {
   product: Product
 }
 
-export default function LoadingView({ product: { type } }: Props) {
+export default function OpenItemLoadingView({ product: { type } }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
   return (

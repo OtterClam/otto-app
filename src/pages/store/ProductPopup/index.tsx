@@ -7,12 +7,12 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { useTheme } from 'styled-components/macro'
 import { ContentSmall, Display3, Headline } from 'styles/typography'
+import LoadingView from 'components/OpenItem/OpenItemLoadingView'
+import OpenItemView from 'components/OpenItem/OpenItemView'
 import Curtain from '../Curtain'
 import AirdropProductCard from './AirdropProductCard'
 import BuyProductCard from './BuyProductCard'
 import HeroImage from './hero.png'
-import LoadingView from './LoadingView'
-import OpenItemView from './OpenItemView'
 
 const StyledProductPopup = styled.div`
   color: ${({ theme }) => theme.colors.white};
