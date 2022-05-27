@@ -75,10 +75,10 @@ const StyledProcessing = styled(ContentLarge)`
 `
 
 interface Props {
-  product: Product
+  type: string
 }
 
-export default function OpenItemLoadingView({ product: { type } }: Props) {
+export default function OpenItemLoadingView({ type }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
   return (

@@ -1,4 +1,5 @@
 import Fullscreen from 'components/Fullscreen'
+import ItemCell from 'components/ItemCell'
 import { useBreakPoints } from 'hooks/useMediaQuery'
 import useMyItems from 'hooks/useMyItems'
 import Layout from 'Layout'
@@ -7,9 +8,7 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall } from 'styles/typography'
-import ItemCell from 'components/ItemCell'
-import { useRedeemProduct } from 'contracts/functions'
-import { useCouponFactory } from 'contracts/views'
+import RedeemCouponPopup from './RedeemCouponPopup'
 import ItemDetails from './use-item/ItemDetails'
 import UseItemPopup from './use-item/ItemPopup'
 
@@ -132,17 +131,16 @@ export default function MyItemsPage() {
   const [selectedSection, setSelectedSection] = useState<SectionKey>('All')
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
   const [usingItem, setUsingItem] = useState<Item | null>(null)
-  const { redeem } = useRedeemProduct()
+  const [redeemingCoupon, setRedeemingCoupon] = useState<Item | null>(null)
   const { items, refetch } = useMyItems()
   const displayItems = useMemo(
     () => items.filter(i => Sections[selectedSection].isSection(i.type)),
     [items, selectedSection]
   )
-  const couponFactory = useCouponFactory(selectedItem?.isCoupon ? selectedItem.id : '')
   const onUse = () => {
     if (selectedItem) {
       if (selectedItem.isCoupon) {
-        redeem(selectedItem.id, couponFactory)
+        setRedeemingCoupon(selectedItem)
       } else {
         setUsingItem(selectedItem)
       }
@@ -207,6 +205,9 @@ export default function MyItemsPage() {
               setUsingItem(null)
             }}
           />
+        )}
+        {redeemingCoupon && (
+          <RedeemCouponPopup couponId={redeemingCoupon.id} onClose={() => setRedeemingCoupon(null)} />
         )}
       </StyledMyItemsPage>
     </Layout>
