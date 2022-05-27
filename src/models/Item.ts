@@ -25,6 +25,8 @@ export default interface Item {
   equippable_gender: string
   unreturnable: boolean
   isCoupon: boolean
+  product_factory: string
+  product_type: string
 }
 
 export function traitToItem(trait: Trait): Item {
@@ -34,6 +36,8 @@ export function traitToItem(trait: Trait): Item {
     amount: 1,
     equipped: false,
     isCoupon: false,
+    product_factory: '',
+    product_type: '',
     ...trait,
   }
 }
@@ -64,4 +68,6 @@ export const EmptyItem: Item = {
   equippable_gender: 'both',
   unreturnable: true,
   isCoupon: false,
+  product_factory: '',
+  product_type: '',
 }
