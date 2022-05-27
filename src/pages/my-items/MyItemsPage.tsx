@@ -206,7 +206,15 @@ export default function MyItemsPage() {
             }}
           />
         )}
-        {redeemingCoupon && <RedeemCouponPopup coupon={redeemingCoupon} onClose={() => setRedeemingCoupon(null)} />}
+        {redeemingCoupon && (
+          <RedeemCouponPopup
+            coupon={redeemingCoupon}
+            onClose={() => {
+              refetch()
+              setRedeemingCoupon(null)
+            }}
+          />
+        )}
       </StyledMyItemsPage>
     </Layout>
   )
