@@ -8,6 +8,8 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall } from 'styles/typography'
 import ItemCell from 'components/ItemCell'
+import { useRedeemProduct } from 'contracts/functions'
+import { useCouponFactory } from 'contracts/views'
 import ItemDetails from './use-item/ItemDetails'
 import UseItemPopup from './use-item/ItemPopup'
 
@@ -92,27 +94,67 @@ const StyledMobileItemDetailsContainer = styled.div`
   overflow-y: scroll;
 `
 
-const sections = ['All', 'Consumable', 'Holding', 'Headwear', 'Facial Accessories', 'Clothes', 'Background'] as const
+const sectionKeys = ['All', 'Holding', 'Headwear', 'Facial Accessories', 'Clothes', 'Background', 'Other'] as const
 
-type Section = typeof sections[number]
+type SectionKey = typeof sectionKeys[number]
+
+interface Section {
+  isSection: (t: string) => boolean
+}
+
+const Sections: Record<SectionKey, Section> = {
+  All: {
+    isSection: (t: string) => true,
+  },
+  Holding: {
+    isSection: (t: string) => t === 'Holding',
+  },
+  Headwear: {
+    isSection: (t: string) => t === 'Headwear',
+  },
+  'Facial Accessories': {
+    isSection: (t: string) => t === 'Facial Accessories',
+  },
+  Clothes: {
+    isSection: (t: string) => t === 'Clothes',
+  },
+  Background: {
+    isSection: (t: string) => t === 'Background',
+  },
+  Other: {
+    isSection: (t: string) => t === 'Coupon' || t === 'Consumable',
+  },
+}
 
 export default function MyItemsPage() {
   const { t } = useTranslation()
   const { isMobile } = useBreakPoints()
-  const [selectedSection, setSelectedSection] = useState<Section>('All')
+  const [selectedSection, setSelectedSection] = useState<SectionKey>('All')
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
-  const [useItem, setUseItem] = useState<Item | null>(null)
+  const [usingItem, setUsingItem] = useState<Item | null>(null)
+  const { redeem } = useRedeemProduct()
   const { items, refetch } = useMyItems()
   const displayItems = useMemo(
-    () => (selectedSection === 'All' ? items : items.filter(i => i.type === selectedSection)),
+    () => items.filter(i => Sections[selectedSection].isSection(i.type)),
     [items, selectedSection]
   )
+  const couponFactory = useCouponFactory(selectedItem?.isCoupon ? selectedItem.id : '')
+  const onUse = () => {
+    if (selectedItem) {
+      if (selectedItem.isCoupon) {
+        redeem(selectedItem.id, couponFactory)
+      } else {
+        setUsingItem(selectedItem)
+      }
+    }
+    setSelectedItem(null)
+  }
   return (
     <Layout title={t('my_items.title')} requireConnect>
       <StyledMyItemsPage>
         <StyledSectionTabContainer>
           <StyledSectionTabs>
-            {sections.map((section, index) => (
+            {sectionKeys.map((section, index) => (
               <StyledSectionTab
                 key={index}
                 section={section}
@@ -141,28 +183,14 @@ export default function MyItemsPage() {
             selectedItem && (
               <Fullscreen show background="white">
                 <StyledMobileItemDetailsContainer>
-                  <ItemDetails
-                    item={selectedItem}
-                    onClose={() => setSelectedItem(null)}
-                    onUse={() => {
-                      setUseItem(selectedItem)
-                      setSelectedItem(null)
-                    }}
-                  />
+                  <ItemDetails item={selectedItem} onClose={() => setSelectedItem(null)} onUse={onUse} />
                 </StyledMobileItemDetailsContainer>
               </Fullscreen>
             )
           ) : (
             <StyledItemDetails>
               {selectedItem ? (
-                <ItemDetails
-                  item={selectedItem}
-                  onClose={() => setSelectedItem(null)}
-                  onUse={() => {
-                    setUseItem(selectedItem)
-                    setSelectedItem(null)
-                  }}
-                />
+                <ItemDetails item={selectedItem} onClose={() => setSelectedItem(null)} onUse={onUse} />
               ) : (
                 <StyledNoSelectedItem>
                   <ContentSmall>{t('my_items.no_selected_item')}</ContentSmall>
@@ -171,12 +199,12 @@ export default function MyItemsPage() {
             </StyledItemDetails>
           )}
         </StyledItemSection>
-        {useItem && (
+        {usingItem && (
           <UseItemPopup
-            item={useItem}
+            item={usingItem}
             onClose={() => {
               refetch()
-              setUseItem(null)
+              setUsingItem(null)
             }}
           />
         )}

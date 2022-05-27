@@ -195,3 +195,56 @@ export const useBuyProduct = (claim: boolean) => {
   }, [state, i18n, factory])
   return { buyState, buy, resetBuy }
 }
+
+export const useRedeemProduct = () => {
+  const { OTTOPIA_STORE, OTTO_ITEM } = useContractAddresses()
+  const { account, library } = useEthers()
+  const { i18n } = useTranslation()
+  const api = useApi()
+  const [factory, setFactory] = useState<Contract | undefined>()
+  const item = new Contract(OTTO_ITEM, OttoItemAbi, library)
+  const { state, send, resetState } = useContractFunction(item, 'safeTransferFrom')
+  const [redeemState, setRedeemState] = useState<OttoBuyTransactionState>({
+    state: 'None',
+    status: state,
+  })
+  const redeem = async (couponId: string, factoryAddr: string) => {
+    setRedeemState({
+      state: 'PendingSignature',
+      status: state,
+    })
+    setFactory(new Contract(factoryAddr, IOttoItemFactory, library))
+    send(account, OTTOPIA_STORE, couponId, 1, [])
+  }
+  const resetRedeem = () => {
+    resetState()
+    setRedeemState({ state: 'None', status: state })
+  }
+  useEffect(() => {
+    if (state.status === 'Success') {
+      const IItem = new utils.Interface(OttoItemAbi)
+      Promise.all(
+        (state.receipt?.logs || [])
+          .map(log => {
+            try {
+              return IItem.parseLog(log)
+            } catch (err) {
+              // skip
+            }
+            return null
+          })
+          .filter(e => e?.name === 'TransferSingle' && e.args[2] === account)
+          .map(e => api.getItem(e?.args[3], i18n.resolvedLanguage))
+      ).then(receivedItems =>
+        setRedeemState({
+          state: 'Success',
+          status: state,
+          receivedItems,
+        })
+      )
+    } else {
+      setRedeemState({ state: state.status, status: state })
+    }
+  }, [state, i18n, factory])
+  return { redeemState, redeem, resetRedeem }
+}

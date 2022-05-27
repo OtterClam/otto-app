@@ -98,3 +98,25 @@ export const useStoreAirdropAmounts = (productIds: string[], ottoIds: string[]) 
   })
   return results.map(result => Number(result?.value?.[0] || 0))
 }
+
+export const useCouponFactory = (couponId: string) => {
+  const { OTTOPIA_STORE } = useContractAddresses()
+  const { library } = useEthers()
+  const contract = new Contract(OTTOPIA_STORE, OttopiaStoreAbi, library)
+  const result = useCall(
+    couponId && {
+      contract,
+      method: 'coupons',
+      args: [couponId],
+    }
+  )
+  const productId = result?.value[0]
+  const factoryResult = useCall(
+    productId && {
+      contract,
+      method: 'factories',
+      args: [productId],
+    }
+  )
+  return factoryResult?.value[0] || ''
+}

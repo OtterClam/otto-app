@@ -152,7 +152,7 @@ interface Props {
 
 export default function ItemDetails({ item, onClose, onUse, className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
-  const { id, name, image, rarity, type, description, equippable_gender } = item
+  const { id, name, image, rarity, type, description, equippable_gender, wearable } = item
   console.log(`item id: ${id}`)
   return (
     <StyledItemDetails className={className}>
@@ -174,14 +174,18 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
       </StyledTitleContainer>
       <GenderSpecific equippableGender={equippable_gender} />
       <StyledDesc>{description}</StyledDesc>
-      <StyledRarityScore>
-        {t('total_rarity_score', {
-          total: item.base_rarity_score + item.relative_rarity_score,
-          brs: item.base_rarity_score,
-          rrs: item.relative_rarity_score,
-        })}
-      </StyledRarityScore>
-      <StyledWearCount>{t('wear_count', { count: item.equipped_count })}</StyledWearCount>
+      {wearable && (
+        <>
+          <StyledRarityScore>
+            {t('total_rarity_score', {
+              total: item.base_rarity_score + item.relative_rarity_score,
+              brs: item.base_rarity_score,
+              rrs: item.relative_rarity_score,
+            })}
+          </StyledRarityScore>
+          <StyledWearCount>{t('wear_count', { count: item.equipped_count })}</StyledWearCount>
+        </>
+      )}
       <StyledAttrs>
         {item.stats.map(({ name, value }, i) => (
           <StyledAttr key={i}>
@@ -192,7 +196,9 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
       </StyledAttrs>
       {onUse && (
         <StyledButton onClick={() => onUse(item)}>
-          <Headline>{item.wearable ? (item.equipped ? t('take_off') : t('wear')) : t('use')}</Headline>
+          <Headline>
+            {item.wearable ? (item.equipped ? t('take_off') : t('wear')) : item.isCoupon ? t('open') : t('use')}
+          </Headline>
         </StyledButton>
       )}
     </StyledItemDetails>

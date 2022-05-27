@@ -24,15 +24,17 @@ export default interface Item {
   equipped_count: number
   equippable_gender: string
   unreturnable: boolean
+  isCoupon: boolean
 }
 
 export function traitToItem(trait: Trait): Item {
   return {
-    ...trait,
     id: '',
     description: '',
-    equipped: false,
     amount: 1,
+    equipped: false,
+    isCoupon: false,
+    ...trait,
   }
 }
 
@@ -61,4 +63,5 @@ export const EmptyItem: Item = {
   equipped_count: 0,
   equippable_gender: 'both',
   unreturnable: true,
+  isCoupon: false,
 }
