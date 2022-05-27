@@ -37,34 +37,28 @@ export class Api {
     return this.axios
       .get(`/items/metadata/${itemId}`, { params: { lang } })
       .then(res => res.data)
-      .then(({ name, image, description, details }) => ({
-        id: itemId,
-        name,
-        description,
-        image,
-        equipped: false,
-        amount: 1,
-        unreturnable: false,
-        ...details,
-      }))
+      .then((data: any) => this.toItem(itemId, data))
   }
 
   public async getItems(ids: string[], lang: string): Promise<Item[]> {
     return this.axios
       .get(`/items/metadata?ids=${ids.join(',')}`, { params: { lang } })
       .then(res => res.data)
-      .then((data: any[]) =>
-        data.map(({ name, image, description, details }, i) => ({
-          id: ids[i],
-          name,
-          description,
-          image,
-          equipped: false,
-          amount: 1,
-          unreturnable: false,
-          ...details,
-        }))
-      )
+      .then((data: any[]) => data.map((d, i) => this.toItem(ids[i], d)))
+  }
+
+  private toItem(id: string, { name, description, image, details }: any): Item {
+    return {
+      id,
+      name,
+      description,
+      image,
+      equipped: false,
+      amount: 1,
+      unreturnable: false,
+      isCoupon: details.type === 'Coupon',
+      ...details,
+    }
   }
 }
 

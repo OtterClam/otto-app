@@ -126,9 +126,10 @@
     "rarity_score": "Rarity score: {{score}}",
     "section_title": {
       "All": "All",
+      "Coupon": "Coupon",
       "Background": "Backgrounds",
       "Clothes": "Clothes",
-      "Consumable": "Other Items",
+      "Other": "Other Items",
       "Facial Accessories": "Facial Accessories ",
       "Headwear": "Headwears",
       "Holding": "Holdings"
@@ -153,7 +154,8 @@
       "current_equipped": "Currently Equipped",
       "replaced": "Replaced With...",
       "title": "Select an Otto to wear this item"
-    }
+    },
+    "open": "Open"
   },
   "my_ottos": {
     "mint_portal": "Mint Portal",
