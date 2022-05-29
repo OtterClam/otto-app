@@ -57,6 +57,7 @@ export class Api {
       amount: 1,
       unreturnable: false,
       isCoupon: details.type === 'Coupon',
+      total_rarity_score: details.base_rarity_score + details.relative_rarity_score,
       ...details,
     }
   }

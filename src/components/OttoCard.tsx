@@ -127,8 +127,8 @@ export default function OttoCard({ otto, oldOtto, item, takeOff = false, classNa
         const value = Number(strValue) - oldValue
         diff[name] = String(value < 0 ? '-' : '+') + Math.abs(value)
       })
-      const brs = item.base_rarity_score - originItem.base_rarity_score
-      diff.BRS = String((brs < 0 ? '-' : '+') + Math.abs(brs))
+      const rarityScore = item.total_rarity_score - originItem.total_rarity_score
+      diff.rarityScore = String((rarityScore < 0 ? '-' : '+') + Math.abs(rarityScore))
     }
     return diff
   }, [otto, oldOtto, item])
@@ -141,7 +141,7 @@ export default function OttoCard({ otto, oldOtto, item, takeOff = false, classNa
       <StyledOttoRarity>
         <StyledRarityScore>
           {t('my_ottos.rarity_score', { score: otto.totalRarityScore })}
-          {diffAttrs.BRS && <StyledDiffAttr>({diffAttrs.BRS})</StyledDiffAttr>}
+          {diffAttrs.rarityScore && <StyledDiffAttr>({diffAttrs.rarityScore})</StyledDiffAttr>}
         </StyledRarityScore>
         <StyledRanking>{`#${otto.ranking}`}</StyledRanking>
       </StyledOttoRarity>
