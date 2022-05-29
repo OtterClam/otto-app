@@ -1,35 +1,36 @@
 import { TransactionState, TransactionStatus, useContractFunction, useEthers } from '@usedapp/core'
-import { Contract, ContractReceipt, utils, constants } from 'ethers'
+import { constants, Contract, utils } from 'ethers'
 import useApi from 'hooks/useApi'
 import useContractAddresses from 'hooks/useContractAddresses'
 import Item from 'models/Item'
+import Product from 'models/store/Product'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import Product from 'models/store/Product'
-import { ERC20, IOttoItemFactory, Otto, OttoItemAbi, OttopiaPortalCreator, OttopiaStoreAbi, OttoSummoner } from './abis'
+import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
+import {
+  useERC20,
+  useItemContract,
+  useOttoContract,
+  useOttoSummonerContract,
+  usePortalCreatorContract,
+  useStoreContract,
+} from './contracts'
 
-type Token = 'clam' | 'eth'
-
-export const useApprove = (token: Token) => {
-  const { WETH, CLAM } = useContractAddresses()
-  const { library } = useEthers()
-  const erc20 = new Contract(token === 'clam' ? CLAM : WETH, ERC20, library)
+export const useApprove = () => {
+  const { CLAM } = useContractAddresses()
+  const erc20 = useERC20(CLAM)
   const { state: approveState, send: approve, resetState: resetApprove } = useContractFunction(erc20, 'approve')
   return { approveState, approve, resetApprove }
 }
 
 export const useMint = () => {
-  const { PORTAL_CREATOR } = useContractAddresses()
-  const { library } = useEthers()
-  const portal = new Contract(PORTAL_CREATOR, OttopiaPortalCreator, library)
+  const portal = usePortalCreatorContract()
   const { state: mintState, send: mint, resetState: resetMint } = useContractFunction(portal, 'mint')
   return { mintState, mint, resetMint }
 }
 
 export const useOpenPortal = () => {
-  const { SUMMONER } = useContractAddresses()
-  const { library } = useEthers()
-  const summoner = new Contract(SUMMONER, OttoSummoner, library)
+  const summoner = useOttoSummonerContract()
   const { state: openState, send: open, resetState: resetOpen } = useContractFunction(summoner, 'requestOpen')
   return { openState, open, resetOpen }
 }
@@ -37,7 +38,7 @@ export const useOpenPortal = () => {
 export const useSummonOtto = () => {
   const { SUMMONER } = useContractAddresses()
   const { library } = useEthers()
-  const summoner = new Contract(SUMMONER, OttoSummoner, library)
+  const summoner = useOttoSummonerContract()
   const { state: summonState, send, resetState: resetSummon } = useContractFunction(summoner, 'summon')
   const summon = (tokenId: string, index: number) => send(tokenId, index)
   return { summonState, summon, resetSummon }
@@ -50,17 +51,17 @@ interface OttoTransactionState {
 }
 
 export const useItem = () => {
-  const { OTTO, OTTO_ITEM } = useContractAddresses()
-  const { account, library } = useEthers()
+  const { OTTO } = useContractAddresses()
+  const { account } = useEthers()
   const { i18n } = useTranslation()
   const api = useApi()
-  const item = new Contract(OTTO_ITEM, OttoItemAbi, library)
+  const item = useItemContract()
   const { state, send, resetState } = useContractFunction(item, 'transferToParent')
   const [useItemState, setUseItemState] = useState<OttoTransactionState>({
     state: 'None',
     status: state,
   })
-  const use = (itemId: string, ottoId: string) => send(account, OTTO, ottoId, itemId, [])
+  const use = (itemId: string, ottoId: string) => send(account || '', OTTO, ottoId, itemId, [])
   const resetUse = () => {
     resetState()
     setUseItemState({ state: 'None', status: state })
@@ -92,9 +93,9 @@ export const useItem = () => {
 }
 
 export const takeOffItem = () => {
-  const { OTTO, OTTO_ITEM } = useContractAddresses()
-  const { account, library } = useEthers()
-  const otto = new Contract(OTTO, Otto, library)
+  const { OTTO_ITEM } = useContractAddresses()
+  const { account } = useEthers()
+  const otto = useOttoContract()
   const { state, send, resetState } = useContractFunction(otto, 'transferChild')
   const [receivedItem, setReceivedItem] = useState<Item | undefined>()
   const [takeOffState, setTakeOffState] = useState<OttoTransactionState>({
@@ -103,7 +104,7 @@ export const takeOffItem = () => {
   })
   const takeOff = (item: Item, ottoId: string) => {
     setReceivedItem(item)
-    send(ottoId, account, OTTO_ITEM, item.id, [])
+    send(ottoId, account || '', OTTO_ITEM, item.id)
   }
   const resetTakeOff = () => {
     resetState()
@@ -135,19 +136,19 @@ export const useBuyProduct = (claim: boolean) => {
   const { i18n } = useTranslation()
   const api = useApi()
   const [factory, setFactory] = useState<Contract | undefined>()
-  const clam = new Contract(CLAM, ERC20, library?.getSigner())
-  const store = new Contract(OTTOPIA_STORE, OttopiaStoreAbi, library)
+  const clam = new Contract(CLAM, ERC20Abi, library?.getSigner())
+  const store = useStoreContract()
   const { state, send, resetState } = useContractFunction(store, claim ? 'claimNoChainlink' : 'buyNoChainlink')
   const [buyState, setBuyState] = useState<OttoBuyTransactionState>({
     state: 'None',
     status: state,
   })
-  const buy = async ({ id, discountPrice, factory: factoryAddr }: Product, ottoIds?: string[]) => {
+  const buy = async ({ id, discountPrice, factory: factoryAddr }: Product, ottoIds: string[]) => {
     setBuyState({
       state: 'PendingSignature',
       status: state,
     })
-    setFactory(new Contract(factoryAddr, IOttoItemFactory, library))
+    setFactory(new Contract(factoryAddr, IOttoItemFactoryAbi, library))
     if (claim) {
       send(id, ottoIds, {
         gasLimit: 1000000,
@@ -158,7 +159,7 @@ export const useBuyProduct = (claim: boolean) => {
       if (noAllowance) {
         await (await clam.approve(OTTOPIA_STORE, constants.MaxUint256)).wait()
       }
-      send(account, id, '1', {
+      send(account || '', id, '1', {
         gasLimit: 1000000,
       })
     }
@@ -197,24 +198,26 @@ export const useBuyProduct = (claim: boolean) => {
 }
 
 export const useRedeemProduct = () => {
-  const { OTTOPIA_STORE, OTTO_ITEM } = useContractAddresses()
+  const { OTTOPIA_STORE } = useContractAddresses()
   const { account, library } = useEthers()
   const { i18n } = useTranslation()
   const api = useApi()
   const [factory, setFactory] = useState<Contract | undefined>()
-  const item = new Contract(OTTO_ITEM, OttoItemAbi, library)
+  const item = useItemContract()
   const { state, send, resetState } = useContractFunction(item, 'safeTransferFrom')
   const [redeemState, setRedeemState] = useState<OttoBuyTransactionState>({
     state: 'None',
     status: state,
   })
   const redeem = async (couponId: string, factoryAddr: string) => {
-    setRedeemState({
-      state: 'PendingSignature',
-      status: state,
-    })
-    setFactory(new Contract(factoryAddr, IOttoItemFactory, library))
-    send(account, OTTOPIA_STORE, couponId, 1, [])
+    if (account) {
+      setRedeemState({
+        state: 'PendingSignature',
+        status: state,
+      })
+      setFactory(new Contract(factoryAddr, IOttoItemFactoryAbi, library))
+      send(account, OTTOPIA_STORE, couponId, 1, [])
+    }
   }
   const resetRedeem = () => {
     resetState()

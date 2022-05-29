@@ -1,7 +1,6 @@
 import LoadingView from 'components/OpenItem/OpenItemLoadingView'
 import OpenItemView from 'components/OpenItem/OpenItemView'
 import { useRedeemProduct } from 'contracts/functions'
-import { useCouponProduct } from 'contracts/views'
 import Item from 'models/Item'
 import { useEffect, useState } from 'react'
 

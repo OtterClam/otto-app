@@ -1,12 +1,10 @@
 import { useCall, useCalls, useEthers } from '@usedapp/core'
 import { BigNumber, Contract } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
-import { Otto, OttoItemAbi, OttopiaPortalCreator, OttopiaStoreAbi } from './abis'
+import { useItemContract, useOttoContract, usePortalCreatorContract, useStoreContract } from './contracts'
 
 export const useMintInfo = () => {
-  const { PORTAL_CREATOR } = useContractAddresses()
-  const { library } = useEthers()
-  const contract = new Contract(PORTAL_CREATOR, OttopiaPortalCreator, library)
+  const contract = usePortalCreatorContract()
   const results =
     useCalls([
       {
@@ -23,29 +21,8 @@ export const useMintInfo = () => {
   return results.map(result => BigNumber.from(result?.value?.[0] || '0'))
 }
 
-export const useOttolisted = () => {
-  const { PORTAL_CREATOR } = useContractAddresses()
-  const { account, library } = useEthers()
-  const contract = new Contract(PORTAL_CREATOR, OttopiaPortalCreator, library)
-  const { value, error } =
-    useCall(
-      account && {
-        contract,
-        method: 'ottolisted',
-        args: [account],
-      }
-    ) || {}
-  if (error) {
-    console.error(error)
-    return 0
-  }
-  return value ? value[0].toNumber() : null
-}
-
 export const useOttoInfo = () => {
-  const { OTTO } = useContractAddresses()
-  const { library } = useEthers()
-  const contract = new Contract(OTTO, Otto, library)
+  const contract = useOttoContract()
   const results = useCalls([
     {
       contract,
@@ -62,9 +39,7 @@ export const useOttoInfo = () => {
 }
 
 export const useItemApplicable = (itemId: string, ottoIds: string[]) => {
-  const { OTTO_ITEM } = useContractAddresses()
-  const { library } = useEthers()
-  const contract = new Contract(OTTO_ITEM, OttoItemAbi, library)
+  const contract = useItemContract()
   const results = useCalls(
     ottoIds.map(ottoId => ({
       contract,
@@ -81,9 +56,7 @@ export const useItemApplicable = (itemId: string, ottoIds: string[]) => {
 }
 
 export const useStoreAirdropAmounts = (productIds: string[], ottoIds: string[]) => {
-  const { OTTOPIA_STORE } = useContractAddresses()
-  const { library } = useEthers()
-  const contract = new Contract(OTTOPIA_STORE, OttopiaStoreAbi, library)
+  const contract = useStoreContract()
   const results = useCalls(
     productIds.map(productId => ({
       contract,
@@ -97,34 +70,4 @@ export const useStoreAirdropAmounts = (productIds: string[], ottoIds: string[]) 
     }
   })
   return results.map(result => Number(result?.value?.[0] || 0))
-}
-
-export const useCouponProduct = (couponId: string) => {
-  const { OTTOPIA_STORE } = useContractAddresses()
-  const { library } = useEthers()
-  const contract = new Contract(OTTOPIA_STORE, OttopiaStoreAbi, library)
-  const result = useCall(
-    couponId && {
-      contract,
-      method: 'coupons',
-      args: [couponId],
-    }
-  )
-  const productId = result?.value[0]
-  const productResults = useCalls([
-    productId && {
-      contract,
-      method: 'factories',
-      args: [productId],
-    },
-    productId && {
-      contract,
-      method: 'products',
-      args: [productId],
-    },
-  ])
-  return {
-    factory: productResults[0]?.value[0],
-    type: productResults[1]?.value.typ,
-  }
 }

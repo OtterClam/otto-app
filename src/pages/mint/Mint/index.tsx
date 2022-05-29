@@ -232,7 +232,7 @@ export default function Mint() {
   const [ottoSupply] = useOttoInfo()
   const clamBalance = useTokenBalance(CLAM, account, { chainId }) || 0
   const clamAllowance = useTokenAllowance(CLAM, account, PORTAL_CREATOR, { chainId })
-  const { approveState, approve } = useApprove('clam')
+  const { approveState, approve } = useApprove()
   const { mintState, mint, resetMint } = useMint()
   const totalPaymentCLAM = clamPrice.mul(quantity)
   const hasAllowance = clamAllowance?.gte(totalPaymentCLAM)
@@ -240,7 +240,9 @@ export default function Mint() {
     approve(PORTAL_CREATOR, ethers.utils.parseUnits('10000', 9))
   }, [totalPaymentCLAM, approve])
   const onMint = useCallback(() => {
-    mint(account, quantity, totalPaymentCLAM, true)
+    if (account) {
+      mint(account, quantity, totalPaymentCLAM, true)
+    }
   }, [account, quantity, totalPaymentCLAM, mint])
 
   useEffect(() => {

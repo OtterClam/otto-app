@@ -165,7 +165,7 @@ export default function ProductPopup({ product: { main, all }, onClose }: Props)
                 product={p}
                 onClick={() => {
                   setState(State.Loading)
-                  buy(p)
+                  buy(p, [])
                 }}
               />
             ))}

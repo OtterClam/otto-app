@@ -28,6 +28,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.10",
     "@reduxjs/toolkit": "^1.8.1",
+    "@typechain/ethers-v5": "^10.0.0",
     "@usedapp/core": "^1.0.0",
     "@web3-react/walletconnect-connector": "^6.2.10",
     "@web3-react/walletlink-connector": "^6.2.13",
@@ -44,7 +45,8 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^6.2.1",
     "react-scripts": "4.0.3",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "typechain": "^8.0.0"
   },
   "devDependencies": {
     "@types/graphql": "14.5.0",
