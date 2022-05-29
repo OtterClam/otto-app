@@ -16,6 +16,7 @@ export interface ListRankedOttos_ottos {
   brs: number;
   rrs: number;
   rarityScore: number;
+  constellationBoost: number;
 }
 
 export interface ListRankedOttos {
