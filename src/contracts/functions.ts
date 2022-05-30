@@ -216,7 +216,7 @@ export const useRedeemProduct = () => {
         status: state,
       })
       setFactory(new Contract(factoryAddr, IOttoItemFactoryAbi, library))
-      send(account, OTTOPIA_STORE, couponId, 1, [])
+      send(account, OTTOPIA_STORE, couponId, 1, [], { gasLimit: 1000000 })
     }
   }
   const resetRedeem = () => {
