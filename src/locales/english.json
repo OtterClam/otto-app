@@ -339,5 +339,38 @@
     "desc": "Only Polygon Mainnet are supported.",
     "title": "Unsupported Network"
   },
-  "wallet_selector_head": "Connect to a wallet"
+  "wallet_selector_head": "Connect to a wallet",
+  "giveaway": {
+    "title": "Giveaway",
+    "headline": "Silver Shell Chest Giveaway",
+    "subtitle": "Follow the 4 easy steps to complete the mission, and you will get a Silver Shell Chest FOR FREE!",
+    "steps": {
+      "headline": "Complete the following 4 steps to get reward:",
+      "wallet": {
+        "desc": "Connect Your Wallet",
+        "action": "Connect",
+        "desc_completed": "Your Wallet: "
+      },
+      "twitter": {
+        "desc": "Follow @OtterClam on Twitter",
+        "follow": "Follow",
+        "verify": "Verify",
+        "verify_desc": "Verify yourself on Twitter"
+      },
+      "discord": {
+        "desc": "Join Our Discord Community",
+        "join": "Join",
+        "verify": "Verify",
+        "verify_desc": "Verify yourself On Discord",
+        "welcome": "Welcome, "
+      },
+      "invitation": {
+        "desc": "Enter the Invitation Code",
+        "placeholder": "Enter code",
+        "apply": "Apply"
+      },
+      "complete": "Complete ({{count}}/4)",
+      "claim": "Claim Free Silver Chest!"
+    }
+  }
 }

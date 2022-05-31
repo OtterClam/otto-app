@@ -43,7 +43,7 @@ export function useOttos(rawOttos: RawOtto[] | Falsy, details: boolean) {
   const [ottos, setOttos] = useState<Otto[]>([])
   const [fetchCount, setFetchCount] = useState(0)
   useEffect(() => {
-    if (rawOttos) {
+    if (rawOttos && rawOttos.length > 0) {
       setLoading(true)
       setError(null)
       const ids = rawOttos.map(raw => String(raw.tokenId))

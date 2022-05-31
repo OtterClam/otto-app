@@ -11,6 +11,7 @@ import { selectError } from '../store/errorSlice'
 export type ButtonColor = 'blue' | 'white' | 'pink'
 
 interface StyledButtonProps {
+  width?: string
   height?: string
   primaryColor: ButtonColor
   padding?: string
@@ -39,6 +40,7 @@ const buttonColors = {
 
 const StyledButton = styled.button<StyledButtonProps>`
   display: inline-block;
+  width: ${props => props.width};
   height: ${props => props.height};
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
@@ -90,6 +92,7 @@ const StyledInnerButton = styled.div<InnerButtonProps>`
 `
 
 interface Props {
+  width?: string
   height?: string
   onClick?: () => void
   primaryColor?: ButtonColor
@@ -104,6 +107,7 @@ interface Props {
 
 const Button = ({
   children,
+  width,
   height,
   className,
   onClick,
@@ -130,6 +134,7 @@ const Button = ({
       className={className}
       primaryColor={primaryColor}
       disabled={_disabled}
+      width={width}
       height={height}
       onClick={() => {
         if (onClick) {

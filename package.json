@@ -49,8 +49,9 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "4.0.3",
     "styled-components": "^5.3.3",
-    "typechain": "^8.0.0",
-    "twitter-api-sdk": "^1.0.7"
+    "twitter-api-sdk": "^1.0.7",
+    "twitter-lite": "^1.1.0",
+    "typechain": "^8.0.0"
   },
   "devDependencies": {
     "@types/graphql": "14.5.0",
