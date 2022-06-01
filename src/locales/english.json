@@ -292,12 +292,12 @@
       "name": "Diamond Chest"
     },
     "golden": {
-      "desc": "Golden Shell Chests offer a great chance to receive high tier equipment. Though not as lucky as a Diamond Shell Chests, it's brimming with potential!",
+      "desc": "Gold Shell Chests offer a great chance to receive high tier equipment. Though not as lucky as a Diamond Shell Chests, it's brimming with potential!",
       "must_desc": "R1 Item Guaranteed!",
-      "name": "Golden Chest"
+      "name": "Gold Chest"
     },
     "silver": {
-      "desc": "While not as lucky as the Golden/Diamond Shell Chests, Silver Shell Chests contain rare and powerful equipment worthy of admiration!",
+      "desc": "While not as lucky as the Gold/Diamond Shell Chests, Silver Shell Chests contain rare and powerful equipment worthy of admiration!",
       "must_desc": "R3 Item Guaranteed!",
       "name": "Silver Chest"
     }
