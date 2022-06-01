@@ -287,17 +287,17 @@
   },
   "product": {
     "diamond": {
-      "desc": "From armor that can stand the mightiest of blows, to hats that'll catch even the sleepiest Otters attention, Shell Chests hold the equipment you need to make your dream come true!",
+      "desc": "From armor that can stand the mightiest of blows, to hats that'll catch even the sleepiest Otters attention, Shell Chests hold the equipment you need to make your dream come true! A diamond chest has a 87% chance to open R-level items, and a 3% chance to open E-level items.",
       "must_desc": "E3 Item Guaranteed!",
       "name": "Diamond Chest"
     },
     "golden": {
-      "desc": "Gold Shell Chests offer a great chance to receive high tier equipment. Though not as lucky as a Diamond Shell Chests, it's brimming with potential!",
+      "desc": "Gold Shell Chests offer a great chance to receive high tier equipment. Though not as lucky as a Diamond Shell Chests, it's brimming with potential! A gold chest has a 69.2% chance to open R-level items, and a 0.8% chance to open E-level items.",
       "must_desc": "R1 Item Guaranteed!",
       "name": "Gold Chest"
     },
     "silver": {
-      "desc": "While not as lucky as the Gold/Diamond Shell Chests, Silver Shell Chests contain rare and powerful equipment worthy of admiration!",
+      "desc": "While not as lucky as the Gold/Diamond Shell Chests, Silver Shell Chests contain rare and powerful equipment worthy of admiration! A silver chest has a 5.7% chance to open R-level items, and a 0.3% chance to open E-level items.",
       "must_desc": "R3 Item Guaranteed!",
       "name": "Silver Chest"
     }
