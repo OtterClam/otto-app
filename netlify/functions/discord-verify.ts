@@ -13,6 +13,7 @@ const handler: Handler = async (event, context) => {
     await axios.get('https://api-testnet.otterclam.finance/giveaway/verifications/discord', {
       headers: {
         cookie: `discord_token=${token}`,
+        'X-DISCORD-ACCESS-TOKEN': token,
       },
     })
     verified = true
@@ -34,9 +35,6 @@ const handler: Handler = async (event, context) => {
   }
   return {
     statusCode: 200,
-    headers: {
-      'set-cookie': `discord_token=${token}; Path=/; HttpOnly; Max-Age=7200`,
-    },
     body: JSON.stringify({
       ...res.data,
       verified,

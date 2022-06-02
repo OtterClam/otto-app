@@ -32,7 +32,7 @@ const StyledIcon = styled.img.attrs({ src: Twitter })`
   height: 24px;
 `
 
-const StyledDesc = styled(ContentSmall).attrs({ as: 'p' })`
+const StyledDesc = styled(ContentSmall).attrs({ as: 'section' })`
   flex: 1;
   white-space: pre;
 `
@@ -44,6 +44,12 @@ const StyledVerifyArea = styled.div`
   padding: 20px;
   border: 4px solid ${({ theme }) => theme.colors.lightGray400};
   border-radius: 10px;
+`
+
+const StyledVerifyMessage = styled(ContentSmall).attrs({ as: 'div' })``
+
+const StyledUserName = styled.span`
+  color: ${({ theme }) => theme.colors.otterBlue};
 `
 
 interface Props {
@@ -63,8 +69,6 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
   const [state, setState] = useState(State.Follow)
   const [twitterUser, setTwitterUser] = useState<string | null>(null)
   const verify = useCallback(async () => {
-    // setState(State.Verified)
-    // onComplete()
     axios
       .get('/.netlify/functions/twitter-verify')
       .then(res => {
@@ -72,6 +76,8 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
         if (res.data.verified) {
           setState(State.Verified)
           onComplete()
+        } else {
+          setState(State.Verify)
         }
       })
       .catch(err => console.warn(err))
@@ -85,7 +91,15 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
     <StyledStep className={className}>
       <StyledActionContainer>
         <StyledIcon />
-        <StyledDesc>{t('desc')}</StyledDesc>
+        <StyledDesc>
+          <p> {t('desc')} </p>
+          {twitterUser && (
+            <p>
+              {t('welcome')}
+              <StyledUserName>{twitterUser}</StyledUserName>
+            </p>
+          )}
+        </StyledDesc>
         {locked && <LockedButton />}
         {state === State.Follow && (
           <a href={TWITTER_LINK} target="_blank" rel="noreferrer">
@@ -98,12 +112,26 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
       </StyledActionContainer>
       {state === State.Verify && (
         <StyledVerifyArea>
-          <ContentSmall>{t('verify_desc')}</ContentSmall>
-          <a href="/.netlify/functions/twitter-login">
-            <Button>
+          <StyledVerifyMessage>
+            {twitterUser && (
+              <p>
+                {t('welcome')}
+                <StyledUserName>{twitterUser}!</StyledUserName>
+              </p>
+            )}
+            <p>{t('verify_desc')}</p>
+          </StyledVerifyMessage>
+          {twitterUser ? (
+            <Button onClick={verify}>
               <Headline>{t('verify')}</Headline>
             </Button>
-          </a>
+          ) : (
+            <a href="/.netlify/functions/twitter-login">
+              <Button>
+                <Headline>{t('verify')}</Headline>
+              </Button>
+            </a>
+          )}
         </StyledVerifyArea>
       )}
     </StyledStep>

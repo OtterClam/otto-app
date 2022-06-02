@@ -99,7 +99,7 @@ export default function DiscordStep({ locked, onComplete, className }: Props) {
           {discordUser && (
             <p>
               {t('welcome')}
-              <StyledUserName>{discordUser}</StyledUserName>
+              <StyledUserName>{discordUser}!</StyledUserName>
             </p>
           )}
           <p>{t('desc')} </p>

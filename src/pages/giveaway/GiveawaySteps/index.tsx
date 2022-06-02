@@ -1,4 +1,5 @@
 import Button from 'components/Button'
+import { useClaimGiveaway } from 'contracts/functions'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
@@ -7,7 +8,7 @@ import ArrowDown from './arrow-down.svg'
 import ConnectStep from './ConnectStep'
 import DiscordStep from './DiscordStep'
 import Draw from './draw.png'
-import InvitationCodeStep from './InvitationCodeStep'
+import InvitationCodeStep, { SuccessResponse } from './InvitationCodeStep'
 import TwitterStep from './TwitterStep'
 
 const StyledSteps = styled.section`
@@ -53,7 +54,14 @@ enum Steps {
 
 export default function GiveawaySteps() {
   const { t } = useTranslation('', { keyPrefix: 'giveaway.steps' })
+  const [giveawayData, setGiveawayData] = useState<SuccessResponse | null>(null)
   const [step, setStep] = useState(Steps.ConnectWallet)
+  const { claimState, claim, resetClaim } = useClaimGiveaway()
+  const onClaim = () => {
+    if (giveawayData) {
+      claim({ itemId: giveawayData?.item_id, ...giveawayData })
+    }
+  }
   return (
     <StyledSteps>
       <StyledDrawing />
@@ -79,11 +87,14 @@ export default function GiveawaySteps() {
       <StyledStepContainer>
         <InvitationCodeStep
           locked={step < Steps.InputInvitationCode}
-          onComplete={() => setStep(prev => (prev === Steps.InputInvitationCode ? Steps.Completed : prev))}
+          onComplete={data => {
+            setGiveawayData(data)
+            setStep(prev => (prev === Steps.InputInvitationCode ? Steps.Completed : prev))
+          }}
         />
       </StyledStepContainer>
       <StyledArrowDown />
-      <Button width="fit-content" disabled={step !== Steps.Completed}>
+      <Button width="fit-content" disabled={step !== Steps.Completed} onClick={onClaim}>
         <Headline>{step === Steps.Completed ? t('claim') : t('complete', { count: step })}</Headline>
       </Button>
     </StyledSteps>

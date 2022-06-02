@@ -1,6 +1,6 @@
 import { Handler } from '@netlify/functions'
 import redis from '../libs/redis'
-import { getAuthToken, getOAuthToken } from '../libs/twitter'
+import { getOAuthToken } from '../libs/twitter'
 
 const handler: Handler = async (event, context) => {
   const { oauth_token, oauth_verifier } = event.queryStringParameters

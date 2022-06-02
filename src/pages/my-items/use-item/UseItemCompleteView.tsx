@@ -11,7 +11,7 @@ import useOtto from 'hooks/useOtto'
 import { useEffect, useState } from 'react'
 import Ribbon from 'assets/ui/ribbon.svg'
 import ItemCell from 'components/ItemCell'
-import Star from './star.svg'
+import Star from 'assets/ui/star.svg'
 
 const StyledUseItemComplete = styled.div`
   display: flex;

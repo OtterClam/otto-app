@@ -5,7 +5,7 @@ import Product from 'models/store/Product'
 import { useTranslation } from 'react-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { Caption, ContentLarge, Headline } from 'styles/typography'
-import Star from '../ProductCard/star.svg'
+import Star from 'assets/ui/star.svg'
 import useProductBorderColor from '../useProductBorderColor'
 
 const StyledProductCard = styled(BorderContainer)`

@@ -9,6 +9,7 @@ import {
   OttopiaStoreAbi,
   OttopiaPortalCreatorAbi,
   OttoSummonerAbi,
+  OttoItemGiveawayAbi,
 } from './abis'
 import { OttoItem } from './__generated__/OttoItem'
 import { OttopiaStore } from './__generated__/OttopiaStore'
@@ -16,6 +17,7 @@ import { Otto } from './__generated__/Otto'
 import { OttopiaPortalCreator } from './__generated__/OttopiaPortalCreator'
 import { IOttoItemFactory } from './__generated__/IOttoItemFactory'
 import { Erc20 } from './__generated__'
+import { OttoItemGiveaway } from './__generated__/OttoItemGiveaway'
 
 export function useERC20(address: string) {
   const { library } = useEthers()
@@ -55,4 +57,10 @@ export function useStoreContract() {
 export function useItemFactoryContract(address: string) {
   const { library } = useEthers()
   return new Contract(address, IOttoItemFactoryAbi, library) as IOttoItemFactory
+}
+
+export function useItemGiveaway() {
+  const { OTTO_ITEM_GIVEAWAY } = useContractAddresses()
+  const { library } = useEthers()
+  return new Contract(OTTO_ITEM_GIVEAWAY, OttoItemGiveawayAbi, library) as OttoItemGiveaway
 }

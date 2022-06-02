@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { Caption, ContentLarge, Headline, Note } from 'styles/typography'
 import YellowRibbonXL from 'assets/ui/ribbon-yellow-xl.svg'
-import Star from '../ProductCard/star.svg'
+import Star from 'assets/ui/star.svg'
 import useProductBorderColor from '../useProductBorderColor'
 
 const StyledProductCard = styled(BorderContainer)`

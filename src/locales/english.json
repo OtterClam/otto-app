@@ -353,16 +353,17 @@
       },
       "twitter": {
         "desc": "Follow @OtterClam on Twitter",
+        "welcome": "Welcome, ",
         "follow": "Follow",
         "verify": "Verify",
         "verify_desc": "Verify yourself on Twitter"
       },
       "discord": {
         "desc": "Join Our Discord Community",
+        "welcome": "Welcome, ",
         "join": "Join",
         "verify": "Verify",
-        "verify_desc": "Verify yourself On Discord",
-        "welcome": "Welcome, "
+        "verify_desc": "Verify yourself On Discord"
       },
       "invitation": {
         "desc": "Enter the Invitation Code",

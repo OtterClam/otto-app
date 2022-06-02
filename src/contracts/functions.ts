@@ -10,6 +10,7 @@ import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
 import {
   useERC20,
   useItemContract,
+  useItemGiveaway,
   useOttoContract,
   useOttoSummonerContract,
   usePortalCreatorContract,
@@ -36,8 +37,6 @@ export const useOpenPortal = () => {
 }
 
 export const useSummonOtto = () => {
-  const { SUMMONER } = useContractAddresses()
-  const { library } = useEthers()
   const summoner = useOttoSummonerContract()
   const { state: summonState, send, resetState: resetSummon } = useContractFunction(summoner, 'summon')
   const summon = (tokenId: string, index: number) => send(tokenId, index)
@@ -250,4 +249,25 @@ export const useRedeemProduct = () => {
     }
   }, [state, i18n, factory])
   return { redeemState, redeem, resetRedeem }
+}
+
+export const useClaimGiveaway = () => {
+  const giveaway = useItemGiveaway()
+  const { state: claimState, send, resetState: resetClaim } = useContractFunction(giveaway, 'claimGiveaway')
+  const claim = ({
+    itemId,
+    amount,
+    code,
+    nonce,
+    digest,
+    signature,
+  }: {
+    itemId: number
+    amount: number
+    code: string
+    nonce: string
+    digest: string
+    signature: string
+  }) => send(itemId, amount, code, nonce, digest, signature)
+  return { claimState, claim, resetClaim }
 }

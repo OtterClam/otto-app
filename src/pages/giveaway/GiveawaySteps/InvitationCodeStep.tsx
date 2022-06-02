@@ -1,11 +1,25 @@
 import { CheckedIcon } from 'assets/icons'
 import Invitation from 'assets/ui/invitation.svg'
-import { useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
 import Button from 'components/Button'
+import axios from 'axios'
+import { useLocation } from 'react-router-dom'
+import { useEthers } from '@usedapp/core'
 import LockedButton from './LockedButton'
+
+export interface SuccessResponse {
+  item_id: number
+  amount: number
+  nonce: string
+  contract: string
+  wallet: string
+  code: string
+  digest: string
+  signature: string
+}
 
 const StyledStep = styled.div`
   display: flex;
@@ -42,7 +56,7 @@ const StyledInput = styled.input`
 
 interface Props {
   locked: boolean
-  onComplete: () => void
+  onComplete: (data: SuccessResponse) => void
   className?: string
 }
 
@@ -55,9 +69,30 @@ enum State {
 export default function InvitationCodeStep({ locked, onComplete, className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'giveaway.steps.invitation' })
   const [state, setState] = useState(State.Follow)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const { account } = useEthers()
+  const location = useLocation()
+  const params = useMemo(() => new URLSearchParams(location.hash), [location.hash])
   const onVerify = () => {
-    setState(State.Verified)
-    onComplete()
+    if (inputRef.current?.value) {
+      axios
+        .post(
+          '/.netlify/functions/submit-giveaway',
+          {
+            code: inputRef.current?.value,
+            wallet: account,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${params.get('access_token')}`,
+            },
+          }
+        )
+        .then(res => {
+          setState(State.Verified)
+          onComplete(res.data)
+        })
+    }
   }
   return (
     <StyledStep className={className}>
@@ -67,7 +102,7 @@ export default function InvitationCodeStep({ locked, onComplete, className }: Pr
         {locked && <LockedButton />}
         {!locked && state === State.Follow && (
           <>
-            <StyledInput placeholder={t('placeholder')} />
+            <StyledInput ref={inputRef} placeholder={t('placeholder')} />
             <Button padding="6px 10px" onClick={onVerify}>
               <Headline>{t('apply')}</Headline>
             </Button>
