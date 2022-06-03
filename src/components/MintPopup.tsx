@@ -55,12 +55,13 @@ export default function MintPopup() {
             <Headline>Clamtastic!</Headline>
             <Display3>{t('mint.popup.success_msg', { mintNumber })}</Display3>
             <Button
+              Typography={Headline}
               onClick={() => {
                 dispatch(mintReset())
                 navigate('/my-portals')
               }}
             >
-              <Headline>{t('mint.popup.view_my_portals')}</Headline>
+              {t('mint.popup.view_my_portals')}
             </Button>
           </>
         )}

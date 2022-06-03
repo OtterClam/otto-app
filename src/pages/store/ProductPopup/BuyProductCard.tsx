@@ -110,8 +110,8 @@ export default function BuyProductCard({
         <ContentLarge>{displayDiscountPrice}</ContentLarge>
       </StyledPrice>
       {hasDiscount && <StyledDiscount>{t('store.popup.discount', { discount })}</StyledDiscount>}
-      <Button onClick={onClick}>
-        <Headline>{t('store.popup.buy_now')}</Headline>
+      <Button Typography={Headline} onClick={onClick}>
+        {t('store.popup.buy_now')}
       </Button>
       {mustDesc && <StyledMustItemRibbon>{mustDesc}</StyledMustItemRibbon>}
     </StyledProductCard>

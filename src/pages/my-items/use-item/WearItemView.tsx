@@ -100,8 +100,8 @@ export default function WearItemView({ item, selectedOtto, onSelect, onUse }: Pr
               {t('my_items.legendary_warning')}
             </StyledLegendaryWarning>
           )}
-          <StyledUseButton onClick={onUse}>
-            <Headline>{t('my_items.wear')}</Headline>
+          <StyledUseButton Typography={Headline} onClick={onUse}>
+            {t('my_items.wear')}
           </StyledUseButton>
         </StyledOttoPreviewContainer>
       </StyledBottomContainer>

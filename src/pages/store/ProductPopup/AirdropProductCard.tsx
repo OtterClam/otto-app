@@ -91,8 +91,8 @@ export default function AirdropProductCard({ product: { type, name, image, airdr
       <StyledPrice>
         <ContentLarge>{t('store.popup.free')}</ContentLarge>
       </StyledPrice>
-      <Button onClick={onClick}>
-        <Headline>{t('store.popup.claim')}</Headline>
+      <Button Typography={Headline} onClick={onClick}>
+        {t('store.popup.claim')}
       </Button>
     </StyledProductCard>
   )

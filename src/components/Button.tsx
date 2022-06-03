@@ -1,12 +1,10 @@
 import { useEthers } from '@usedapp/core'
 import { ottoClick } from 'constant'
-import { Component, ComponentType, ReactChild, ReactComponentElement, ReactNode, useEffect, useState } from 'react'
+import { ComponentType, ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ReactElement } from 'react-markdown/lib/react-markdown'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 import { theme } from 'styles'
-import { Display3 } from 'styles/typography'
 import { selectError } from '../store/errorSlice'
 
 export type ButtonColor = 'blue' | 'white' | 'pink'
@@ -104,7 +102,7 @@ interface Props {
   padding?: string
   className?: string
   disableSound?: boolean
-  Typography?: ComponentType
+  Typography: ComponentType
 }
 
 const Button = ({
@@ -119,7 +117,7 @@ const Button = ({
   loading,
   padding,
   disableSound = false,
-  Typography = Display3,
+  Typography,
 }: Props) => {
   const { account, activateBrowserWallet } = useEthers()
   const error = useSelector(selectError)

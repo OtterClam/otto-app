@@ -1,13 +1,11 @@
-import axios from 'axios'
+import Star from 'assets/ui/star.svg'
 import BorderContainer from 'components/BorderContainer'
 import Layout from 'Layout'
-import { useEffect, useState } from 'react'
+import Silver from 'models/store/images/silver.png'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentMedium, Display2 } from 'styles/typography'
-import Silver from 'models/store/images/silver.png'
-import Star from 'assets/ui/star.svg'
+import GiveawayFAQ from './GiveawayFAQ'
 import GiveawaySteps from './GiveawaySteps'
 import HeroBg from './hero-bg.png'
 
@@ -93,6 +91,7 @@ export default function GiveawayPage() {
         </StyledHero>
         <StyledBody>
           <GiveawaySteps />
+          <GiveawayFAQ />
         </StyledBody>
       </StyledGiveawayPage>
     </Layout>

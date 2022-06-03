@@ -62,8 +62,8 @@ export default function ConnectStep({ onComplete, className }: Props) {
       {account ? (
         <CheckedIcon />
       ) : (
-        <Button height="60px" padding="0 10px" onClick={() => dispatch(connectWallet())}>
-          <Headline>{t('action')}</Headline>
+        <Button height="60px" padding="0 10px" Typography={Headline} onClick={() => dispatch(connectWallet())}>
+          {t('action')}
         </Button>
       )}
     </StyledStep>

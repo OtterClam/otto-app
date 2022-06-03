@@ -103,8 +103,8 @@ const Popup = ({ show, close, header, subHeader, buttonText, buttonAction, child
           {subHeader && <SubHeader>{subHeader}</SubHeader>}
           {children && <Content>{children}</Content>}
           {buttonText && buttonAction && (
-            <Button onClick={buttonAction}>
-              <Headline>{buttonText}</Headline>
+            <Button onClick={buttonAction} Typography={Headline}>
+              {buttonText}
             </Button>
           )}
         </StyledInnerContainer>

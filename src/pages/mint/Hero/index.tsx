@@ -74,8 +74,8 @@ export default function Hero() {
           <ContentMedium>{t('mint.hero.limit')}</ContentMedium>
         </StyledPink>
         <StyledLink href={WHITE_PAPER_LINK} target="_blank">
-          <Button primaryColor="white">
-            <Headline>{t('mint.hero.whitepaper')}</Headline>
+          <Button primaryColor="white" Typography={Headline}>
+            {t('mint.hero.whitepaper')}
           </Button>
         </StyledLink>
       </StyledContainer>

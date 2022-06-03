@@ -73,8 +73,8 @@ export default function TakeOffItemView({ item, otto, onUse }: Props) {
             <img width={30} src={Arrow} alt="arrow" />
             <ItemPreviewCard title={t('my_items.wear_item.replaced')} />
           </StyledItemPreview>
-          <StyledUseButton onClick={onUse}>
-            <Headline>{t('my_items.take_off')}</Headline>
+          <StyledUseButton Typography={Headline} onClick={onUse}>
+            {t('my_items.take_off')}
           </StyledUseButton>
         </StyledOttoPreviewContainer>
       </StyledBottomContainer>

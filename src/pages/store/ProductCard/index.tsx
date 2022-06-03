@@ -85,8 +85,8 @@ export default function ProductCard({
       <StyledPrice>
         <ContentLarge>{trim(displayPrice, 2)}</ContentLarge>
       </StyledPrice>
-      <Button onClick={onClick}>
-        <Headline>{t('store.product_card.select')}</Headline>
+      <Button Typography={Headline} onClick={onClick}>
+        {t('store.product_card.select')}
       </Button>
       {airdropAmount > 0 && (
         <StyledAirdropAmount>

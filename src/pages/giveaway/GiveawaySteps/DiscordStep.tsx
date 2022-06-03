@@ -110,7 +110,7 @@ export default function DiscordStep({ locked, onComplete, className }: Props) {
         {locked && <LockedButton />}
         {!locked && state === State.Join && (
           <a href={DISCORD_LINK} target="_blank" rel="noreferrer">
-            <Button height="60px" padding="0 10px" onClick={() => setState(State.Verify)}>
+            <Button height="60px" padding="0 10px" Typography={Headline} onClick={() => setState(State.Verify)}>
               {t('join')}
             </Button>
           </a>
@@ -121,8 +121,8 @@ export default function DiscordStep({ locked, onComplete, className }: Props) {
         <StyledVerifyArea>
           <ContentSmall>{t('verify_desc')}</ContentSmall>
           <a href={DISCORD_OAUTH_LINK}>
-            <Button padding="0px 10px">
-              <Headline>{t('verify')}</Headline>
+            <Button padding="0px 10px" Typography={Headline}>
+              {t('verify')}
             </Button>
           </a>
         </StyledVerifyArea>

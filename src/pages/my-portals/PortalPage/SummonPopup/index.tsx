@@ -108,11 +108,12 @@ export default function SummonPopup({ show, portalId, onClose }: Props) {
               <ContentLarge>{t('portal.summon_popup.desc')}</ContentLarge>
             </StyledDesc>
             <Button
+              Typography={Headline}
               onClick={() => {
                 navigate(`/my-ottos/${portalId}`)
               }}
             >
-              <Headline>{t('portal.summon_popup.view_my_otto')}</Headline>
+              {t('portal.summon_popup.view_my_otto')}
             </Button>
           </>
         )}

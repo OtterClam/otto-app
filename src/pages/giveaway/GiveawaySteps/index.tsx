@@ -133,8 +133,13 @@ export default function GiveawaySteps() {
         />
       </StyledStepContainer>
       <StyledArrowDown />
-      <StyledCompleteButton width="fit-content" disabled={step !== Steps.Completed} onClick={onClaim}>
-        <Headline>{step === Steps.Completed ? t('claim') : t('complete', { count: step })}</Headline>
+      <StyledCompleteButton
+        Typography={Headline}
+        width="fit-content"
+        disabled={step !== Steps.Completed}
+        onClick={onClaim}
+      >
+        {step === Steps.Completed ? t('claim') : t('complete', { count: step })}
       </StyledCompleteButton>
       {claimState.status !== 'None' && (
         <GiveawayPopup status={claimState.status === 'Success' ? 'success' : 'loading'} />

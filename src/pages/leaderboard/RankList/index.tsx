@@ -514,13 +514,13 @@ export default function RankList({ className }: Props) {
       {!loading && (
         <StyledPagination>
           <StyledPaginationLink to={`?page=${page - 1}`} show={page > 0}>
-            <StyledButton primaryColor="white" padding="20px">
-              <Headline>{t('prev')}</Headline>
+            <StyledButton primaryColor="white" padding="20px" Typography={Headline}>
+              {t('prev')}
             </StyledButton>
           </StyledPaginationLink>
           <StyledPaginationLink to={`?page=${page + 1}`} show>
-            <StyledButton primaryColor="white" padding="20px">
-              <Headline>{t('next')}</Headline>
+            <StyledButton primaryColor="white" padding="20px" Typography={Headline}>
+              {t('next')}
             </StyledButton>
           </StyledPaginationLink>
         </StyledPagination>

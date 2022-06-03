@@ -123,13 +123,13 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
             <p>{t('verify_desc')}</p>
           </StyledVerifyMessage>
           {twitterUser ? (
-            <Button padding="0px 10px" onClick={verify}>
-              <Headline>{t('verify')}</Headline>
+            <Button padding="0px 10px" onClick={verify} Typography={Headline}>
+              {t('verify')}
             </Button>
           ) : (
             <a href="/.netlify/functions/twitter-login">
-              <Button padding="0px 10px">
-                <Headline>{t('verify')}</Headline>
+              <Button padding="0px 10px" Typography={Headline}>
+                {t('verify')}
               </Button>
             </a>
           )}

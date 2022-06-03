@@ -42,8 +42,8 @@ export default function ClamBalance() {
     <a href={BUY_CLAM_LINK} target="_blank" rel="noreferrer">
       <StyledClamBalance>
         <StyledClamBalanceText>{account ? trim(utils.formatUnits(clamBalance, 9), 2) : '-'}</StyledClamBalanceText>
-        <Button padding="0px 10px" primaryColor="pink">
-          <ContentLarge>+</ContentLarge>
+        <Button padding="0px 10px" primaryColor="pink" Typography={ContentLarge}>
+          +
         </Button>
       </StyledClamBalance>
     </a>

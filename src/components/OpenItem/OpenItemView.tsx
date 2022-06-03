@@ -138,8 +138,8 @@ export default function OpenItemView({ items, onClose }: Props) {
         {state === State.Playing && items.length > 0 && (
           <>
             <StyledOpenItemAnimation key={current} current={current + 1} total={items.length} item={items[current]} />
-            <Button primaryColor="white" onClick={() => setState(State.Finished)}>
-              <Headline>{t('store.popup.skip')}</Headline>
+            <Button primaryColor="white" onClick={() => setState(State.Finished)} Typography={Headline}>
+              {t('store.popup.skip')}
             </Button>
           </>
         )}
@@ -155,8 +155,8 @@ export default function OpenItemView({ items, onClose }: Props) {
               ))}
             </StyledItemList>
             <Link to="/my-items">
-              <StyledCheckOutButton onClick={onClose}>
-                <Headline>{t('store.popup.check_out')}</Headline>
+              <StyledCheckOutButton Typography={Headline} onClick={onClose}>
+                {t('store.popup.check_out')}
               </StyledCheckOutButton>
             </Link>
           </>

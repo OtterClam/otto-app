@@ -28,8 +28,13 @@ const Connector = () => {
       <ContentLarge>{shortenAddress(account)}</ContentLarge>
     </StyledAccount>
   ) : (
-    <Button height="100%" padding={isMobile ? '0 2px' : '0 45px'} onClick={() => dispatch(connectWallet())}>
-      <ContentLarge>{t('header.connect')}</ContentLarge>
+    <Button
+      height="100%"
+      padding={isMobile ? '0 2px' : '0 45px'}
+      Typography={ContentLarge}
+      onClick={() => dispatch(connectWallet())}
+    >
+      {t('header.connect')}
     </Button>
   )
 }

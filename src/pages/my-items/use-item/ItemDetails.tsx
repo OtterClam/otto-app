@@ -197,10 +197,8 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
         </StyledAttrs>
       )}
       {onUse && (
-        <StyledButton onClick={() => onUse(item)}>
-          <Headline>
-            {item.wearable ? (item.equipped ? t('take_off') : t('wear')) : item.isCoupon ? t('open') : t('use')}
-          </Headline>
+        <StyledButton Typography={Headline} onClick={() => onUse(item)}>
+          {item.wearable ? (item.equipped ? t('take_off') : t('wear')) : item.isCoupon ? t('open') : t('use')}
         </StyledButton>
       )}
     </StyledItemDetails>

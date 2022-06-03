@@ -117,8 +117,8 @@ export default function UseItemCompleteView({ otto, receivedItem, onClose }: Pro
           </StyledReceivedItemContainer>
         </StyledReceivedItem>
       )}
-      <CloseButtonLarge primaryColor="white" onClick={onClose}>
-        <Headline>{t('close')}</Headline>
+      <CloseButtonLarge primaryColor="white" Typography={Headline} onClick={onClose}>
+        {t('close')}
       </CloseButtonLarge>
     </StyledUseItemComplete>
   )
