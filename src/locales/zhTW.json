@@ -1,8 +1,68 @@
 {
   "button_processing": "處理中...",
-  "close": "Close",
+  "close": "關閉",
   "connect_help_text": "請連接你的錢包來參與阿獺王國吧",
   "connect_wallet": "連接錢包",
+  "giveaway": {
+    "faq": {
+      "a1": "貝殼寶箱是類似 \"福袋\" 的概念，開啟 1 寶箱後可以得到 1 個隨機的裝備，裝備可以穿戴在阿獺身上。快來領取免費的貝殼寶箱來開啟稀有裝備吧!",
+      "a2": "白銀貝殼寶箱是阿獺王國裡最常見且最便宜的寶箱；黃金貝殼寶箱是上一級的寶箱，有更多機會可以開啟稀有裝備；鑽石貝殼寶箱是最高級且最貴的寶箱，但是擁有最高機率可以開啟超級稀有且強大的裝備！想了解各稀有度裝備在不同種類寶箱的開啟機率，可前往： [白皮書](https://docs.ottopia.app/ottopia/gameplay/store#what-does-a-shell-chest-contain)了解更多。",
+      "a3": "透過寶箱裡的物品，你可以裝備到你的阿獺 - 阿獺王國的第一代先驅者 身上，裝備物品是強化你的阿獺、或提升阿獺的稀有度最快且最好的方式。當阿獺的稀有度及其他屬性因裝備而提升時，你就越有機會讓阿獺贏得未來的比賽或任務，並賺取額外的 CLAM!\n\n想要了解更多關於裝備和相關屬性，可以到 [白皮書](https://docs.ottopia.app/ottopia/) 了解更多。",
+      "a4": "阿獺王國裡共有 5000 個傳送門，因此只有 5000 隻阿獺可以進入阿獺王國。當你鑄造一個傳送門，就代表你購買了一隻阿獺 NFT。\n\n當你開啟傳送門時，會有 1-8 隻隨機的阿獺候選者聚集在傳送門前，你必須要選擇一隻並召喚他，才通過傳送門變成阿獺 NFT。\n\n一個傳送門 = 50 CLAM [馬上鑄造傳送門！>](/mint)",
+      "a5": "在阿獺王國裡，CLAM 是唯一的指定流通虛擬幣，所以錢包裡一定要有 CLAM 喔！\n注意：已質押或鎖倉中的 CLAM 無法交易。\n\n怎麼購買 CLAM? 請前往此頁： [How to Buy and Stake CLAM](https://docs.ottopia.app/treasury/tutorials/how-to-buy-and-stake-clam)",
+      "a6": "一個錢包地址可以領取一個白銀貝殼寶箱。\n白銀貝殼寶箱也是 NFT，因此你可以在二級市場上做販售或購買。\n如果你想要更多寶箱，歡迎到阿踏王國商店去購買，那裡可以無限次購買任何寶箱！",
+      "a7": "一旦完成上面所有任務步驟，你就可以馬上自動獲取白銀貝殼寶箱。",
+      "a8": "你可以到 [我的物品](/my-items) 頁面開啟寶箱來獲取裝備。",
+      "a9": "別擔心，阿獺王國是個溫暖的大家庭， [加入 Discord](https://discord.gg/otterclam) 就可以在上面聊天打屁或提出任何問題，我們隨時邊迎新夥伴的加入！",
+      "q1": "貝殼寶箱是什麼?",
+      "q2": "白銀、黃金跟鑽石的貝殼寶箱差別在哪?",
+      "q3": "我可以拿寶箱裡的裝備來做什麼?",
+      "q4": "該怎麼購買阿獺 NFT?",
+      "q5": "這裡是用什麼幣?該怎麼買幣？",
+      "q6": "我可以拿多少個白銀貝殼寶箱?",
+      "q7": "我何時可以拿到白銀寶箱?",
+      "q8": "我可以從哪裡看到我得到的白銀寶箱?",
+      "q9": "如果我有其他問題的話?",
+      "title": "常見問題"
+    },
+    "headline": "領取免費白銀貝殼寶箱！",
+    "popup": {
+      "checkout_link": "查看我的物品",
+      "processing": "處理中...請不要關閉這個視窗。交易通常很快會完成。",
+      "success_msg": "太蚌了!!你得到了一個白銀貝殼寶箱！\n前往 “我的物品” 頁並開啟寶箱吧～"
+    },
+    "steps": {
+      "claim": "獲取免費的白銀貝殼寶箱",
+      "complete": "已完成 ({{count}}/4)",
+      "discord": {
+        "desc": "加入我們的 Dicord 社群",
+        "join": "加入",
+        "verify": "驗證",
+        "verify_desc": "驗證你在 Discord 的身份",
+        "welcome": "歡迎, "
+      },
+      "headline": "完成 4 個步驟來領取寶箱:",
+      "invitation": {
+        "apply": "套用",
+        "desc": "輸入邀請碼",
+        "placeholder": "輸入邀請碼"
+      },
+      "twitter": {
+        "desc": "在 Twitter 上追蹤 @OtterClam",
+        "follow": "追蹤",
+        "verify": "驗證",
+        "verify_desc": "驗證你在 Twitter 的身份",
+        "welcome": "歡迎, "
+      },
+      "wallet": {
+        "action": "連接",
+        "desc": "連接你的錢包",
+        "desc_completed": "你的錢包: "
+      }
+    },
+    "subtitle": "只需要完成 4 步驟，就可以免費領取白銀貝殼寶箱！",
+    "title": "免費活動"
+  },
   "header": {
     "connect": "連接"
   },
@@ -30,6 +90,7 @@
     "mint_portal_link": "鑄造傳送門 >",
     "rank_list": {
       "brs": "BRS",
+      "chosen_one": "天選之獺 (BRS+150)",
       "est_reward": "預估獎金",
       "expand": "展開顯示所有 {{count}} 隻阿獺",
       "name": "阿獺名稱",
@@ -39,7 +100,8 @@
       "rarity_score": "稀有度",
       "rrs": "RRS",
       "show_less": "收合",
-      "your_rank": "你的阿獺目前稀有度排名:"
+      "your_rank": "你的阿獺目前稀有度排名:",
+      "zodiac_boost": "{{zodiac}} (BRS+50)"
     },
     "reward_desc": "稀有度排名越高，得到的獎金就會越豐厚。排名前 50% 的阿獺都可以得到獎金呦！",
     "reward_link": "看看排名機制及獎金制度 >",
@@ -121,15 +183,18 @@
     "equipped": "已裝備",
     "legendary_warning": "警告：如果你裝備/更換其他物品到傳奇阿獺身上，傳奇外框將會隱藏，且會扣除額外的傳奇加成：基本稀有度 (BRS) +100。",
     "no_selected_item": "請選擇物品檢視詳細資訊",
+    "open": "Open",
     "rarity_score": "稀有度：{{score}}",
     "section_title": {
       "All": "全部",
       "Background": "背景",
       "Clothes": "服裝",
       "Consumable": "消耗物品",
+      "Coupon": "Coupon",
       "Facial Accessories": "臉部配件",
       "Headwear": "頭飾",
-      "Holding": "手持物"
+      "Holding": "手持物",
+      "Other": "Other Items"
     },
     "take_off": "脫掉",
     "take_off_item": {

@@ -11,7 +11,7 @@ import useOtto from 'hooks/useOtto'
 import { useEffect, useState } from 'react'
 import Ribbon from 'assets/ui/ribbon.svg'
 import ItemCell from 'components/ItemCell'
-import Star from './star.svg'
+import Star from 'assets/ui/star.svg'
 
 const StyledUseItemComplete = styled.div`
   display: flex;
@@ -117,8 +117,8 @@ export default function UseItemCompleteView({ otto, receivedItem, onClose }: Pro
           </StyledReceivedItemContainer>
         </StyledReceivedItem>
       )}
-      <CloseButtonLarge primaryColor="white" onClick={onClose}>
-        <Headline>{t('close')}</Headline>
+      <CloseButtonLarge primaryColor="white" Typography={Headline} onClick={onClose}>
+        {t('close')}
       </CloseButtonLarge>
     </StyledUseItemComplete>
   )

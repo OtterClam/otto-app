@@ -288,8 +288,13 @@ export default function OttoPage() {
         <StyledOttoContainer>
           <StyledLeftContainer>
             <StyledOttoImage src={otto?.image} />
-            <StyledPlayButton primaryColor="white" disableSound onClick={() => otto?.playVoice()}>
-              <StyledPlayButtonText>{t('otto.play_voice')}</StyledPlayButtonText>
+            <StyledPlayButton
+              primaryColor="white"
+              Typography={StyledPlayButtonText}
+              disableSound
+              onClick={() => otto?.playVoice()}
+            >
+              {t('otto.play_voice')}
             </StyledPlayButton>
           </StyledLeftContainer>
           <StyledContentContainer>

@@ -280,9 +280,10 @@ export default function Mint() {
                 <StyledButtons>
                   <Button
                     padding={isMobile ? '8px 16px' : '4px 20px'}
+                    Typography={Headline}
                     onClick={() => setQuantity(Math.max(quantity - 1, 1))}
                   >
-                    <Headline>-</Headline>
+                    -
                   </Button>
                   <StyledQuantity>
                     <ContentLarge>{quantity}</ContentLarge>
@@ -290,15 +291,17 @@ export default function Mint() {
                   <Button
                     padding={isMobile ? '8px 16px' : '4px 20px'}
                     onClick={() => setQuantity(Math.min(quantity + 1, maxCanMint))}
+                    Typography={Headline}
                   >
-                    <Headline>+</Headline>
+                    +
                   </Button>
                   <Button
                     primaryColor="white"
                     padding={isMobile ? '8px 10px' : '4px 20px'}
                     onClick={() => setQuantity(maxCanMint)}
+                    Typography={Headline}
                   >
-                    <Headline>Max</Headline>
+                    Max
                   </Button>
                 </StyledButtons>
               </StyledCardBottomContainer>
@@ -329,18 +332,18 @@ export default function Mint() {
               {!account && <ContentSmall>{t('mint.please_connect')}</ContentSmall>}
             </StyledSummary>
             {!account && (
-              <Button onClick={() => dispatch(connectWallet())}>
-                <Headline>{t('mint.connect')}</Headline>
+              <Button Typography={Headline} onClick={() => dispatch(connectWallet())}>
+                {t('mint.connect')}
               </Button>
             )}
             {account && hasAllowance && (
-              <Button onClick={onMint}>
-                <Headline>{t('mint.mint_button')}</Headline>
+              <Button Typography={Headline} onClick={onMint}>
+                {t('mint.mint_button')}
               </Button>
             )}
             {account && !hasAllowance && (
-              <Button onClick={onApprove} loading={approveState.status === 'Mining'}>
-                <Headline>{t('mint.approve_button')}</Headline>
+              <Button Typography={Headline} onClick={onApprove} loading={approveState.status === 'Mining'}>
+                {t('mint.approve_button')}
               </Button>
             )}
             <StyledBuyCLAM>

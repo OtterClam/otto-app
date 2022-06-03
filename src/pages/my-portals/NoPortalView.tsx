@@ -39,9 +39,7 @@ export default function NoPortalView() {
           <ContentSmall>{t('my_portals.no_portal')}</ContentSmall>
         </StyledHelpText>
         <Link to="/mint">
-          <Button>
-            <Headline>{t('my_portals.mint_portal')}</Headline>
-          </Button>
+          <Button Typography={Headline}>{t('my_portals.mint_portal')}</Button>
         </Link>
       </StyledInnerContainer>
     </StyledNoPortalView>

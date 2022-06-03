@@ -19,6 +19,8 @@ const StyledMintPopup = styled.div`
   text-align: center;
   gap: 10px;
   color: white;
+  background-color: ${({ theme }) => theme.colors.otterBlack};
+  border-radius: 10px;
 `
 
 const StyledLoadingOtter = styled.img`
@@ -53,12 +55,13 @@ export default function MintPopup() {
             <Headline>Clamtastic!</Headline>
             <Display3>{t('mint.popup.success_msg', { mintNumber })}</Display3>
             <Button
+              Typography={Headline}
               onClick={() => {
                 dispatch(mintReset())
                 navigate('/my-portals')
               }}
             >
-              <Headline>{t('mint.popup.view_my_portals')}</Headline>
+              {t('mint.popup.view_my_portals')}
             </Button>
           </>
         )}

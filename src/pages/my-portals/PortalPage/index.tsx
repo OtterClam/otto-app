@@ -204,8 +204,12 @@ export default function PortalPage() {
                           )}
                         </StyledStatusContainer>
                         <ProgressBar height="20px" progress={progress} />
-                        <Button disabled={state === PortalState.CHARGING} onClick={() => open(portalId)}>
-                          <Headline>{t('my_portals.open_now')}</Headline>
+                        <Button
+                          disabled={state === PortalState.CHARGING}
+                          onClick={() => open(portalId)}
+                          Typography={Headline}
+                        >
+                          {t('my_portals.open_now')}
                         </Button>
                       </>
                     )}

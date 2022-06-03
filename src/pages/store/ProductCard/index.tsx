@@ -6,8 +6,8 @@ import Product from 'models/store/Product'
 import { useTranslation } from 'react-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { Caption, ContentLarge, Headline } from 'styles/typography'
+import Star from 'assets/ui/star.svg'
 import useProductBorderColor from '../useProductBorderColor'
-import Star from './star.svg'
 
 const StyledProductCard = styled(BorderContainer)`
   display: flex;
@@ -85,8 +85,8 @@ export default function ProductCard({
       <StyledPrice>
         <ContentLarge>{trim(displayPrice, 2)}</ContentLarge>
       </StyledPrice>
-      <Button onClick={onClick}>
-        <Headline>{t('store.product_card.select')}</Headline>
+      <Button Typography={Headline} onClick={onClick}>
+        {t('store.product_card.select')}
       </Button>
       {airdropAmount > 0 && (
         <StyledAirdropAmount>

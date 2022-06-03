@@ -1,11 +1,12 @@
 import { useEthers } from '@usedapp/core'
 import Button from 'components/Button'
 import { useBreakPoints } from 'hooks/useMediaQuery'
+import { Fragment } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { showSideMenu } from 'store/uiSlice'
 import styled from 'styled-components/macro'
-import { Display3 } from 'styles/typography'
+import { Display3, Headline } from 'styles/typography'
 import ClamBalance from './ClamBalance'
 import Connector from './Connector'
 import iconHamburger from './icon-hamburger.svg'
@@ -101,7 +102,12 @@ export default function Header({ title }: { title: string }) {
       </StyledTitle>
       {!isMobile && <ClamBalance />}
       {!hideConnector && <Connector />}
-      <StyledHamburger primaryColor="white" padding="0 4px" onClick={() => dispatch(showSideMenu())}>
+      <StyledHamburger
+        primaryColor="white"
+        padding="0 4px"
+        onClick={() => dispatch(showSideMenu())}
+        Typography={Fragment}
+      >
         <StyledIcon src={iconHamburger} />
       </StyledHamburger>
     </StyledHeader>

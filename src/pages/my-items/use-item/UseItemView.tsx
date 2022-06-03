@@ -67,8 +67,8 @@ export default function UseItemView({ item, selectedOtto, onSelect, onUse }: Pro
         </StyledPickerTitle>
         <OttoList itemId={item.id} selectedOtto={selectedOtto} onSelect={onSelect} />
         {selectedOtto && <StyledOttoCard otto={selectedOtto} />}
-        <StyledUseButton onClick={onUse}>
-          <Headline>{t('my_items.use')}</Headline>
+        <StyledUseButton Typography={Headline} onClick={onUse}>
+          {t('my_items.use')}
         </StyledUseButton>
       </StyledOttoPicker>
     </StyledUseItemView>

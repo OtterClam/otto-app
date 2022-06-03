@@ -59,8 +59,8 @@ export default function OttoCandidateCard({ name, gender, image, onSummon }: Pro
       <StyledDesc>
         <Note>{t('portal.otto_candidate_desc')}</Note>
       </StyledDesc>
-      <Button onClick={() => onSummon()}>
-        <Headline>{t('portal.summon_otto_button')}</Headline>
+      <Button Typography={Headline} onClick={() => onSummon()}>
+        {t('portal.summon_otto_button')}
       </Button>
     </StyledOttoCandidate>
   )

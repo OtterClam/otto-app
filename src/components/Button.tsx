@@ -1,16 +1,16 @@
 import { useEthers } from '@usedapp/core'
 import { ottoClick } from 'constant'
-import { ReactNode, useEffect, useState } from 'react'
+import { ComponentType, ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 import { theme } from 'styles'
-import { Display3 } from 'styles/typography'
 import { selectError } from '../store/errorSlice'
 
 export type ButtonColor = 'blue' | 'white' | 'pink'
 
 interface StyledButtonProps {
+  width?: string
   height?: string
   primaryColor: ButtonColor
   padding?: string
@@ -39,6 +39,7 @@ const buttonColors = {
 
 const StyledButton = styled.button<StyledButtonProps>`
   display: inline-block;
+  width: ${props => props.width};
   height: ${props => props.height};
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
@@ -90,6 +91,7 @@ const StyledInnerButton = styled.div<InnerButtonProps>`
 `
 
 interface Props {
+  width?: string
   height?: string
   onClick?: () => void
   primaryColor?: ButtonColor
@@ -100,10 +102,12 @@ interface Props {
   padding?: string
   className?: string
   disableSound?: boolean
+  Typography: ComponentType
 }
 
 const Button = ({
   children,
+  width,
   height,
   className,
   onClick,
@@ -113,6 +117,7 @@ const Button = ({
   loading,
   padding,
   disableSound = false,
+  Typography,
 }: Props) => {
   const { account, activateBrowserWallet } = useEthers()
   const error = useSelector(selectError)
@@ -130,6 +135,7 @@ const Button = ({
       className={className}
       primaryColor={primaryColor}
       disabled={_disabled}
+      width={width}
       height={height}
       onClick={() => {
         if (onClick) {
@@ -144,13 +150,9 @@ const Button = ({
       }}
     >
       <StyledInnerButton primaryColor={primaryColor} padding={padding} disabled={disabled || loading || pending}>
-        {isWeb3 && !account ? (
-          <Display3>{t('connect_wallet')}</Display3>
-        ) : loading ? (
-          <Display3>{t('button_processing')}</Display3>
-        ) : (
-          children
-        )}
+        <Typography>
+          {isWeb3 && !account ? t('connect_wallet') : loading ? t('button_processing') : children}
+        </Typography>
       </StyledInnerButton>
     </StyledButton>
   )

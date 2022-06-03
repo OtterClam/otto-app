@@ -120,8 +120,8 @@ const HomePage = () => {
     <StyledPortalContainer>
       <StyledPortalImage src={PortalLarge} />
       <Link to="/play">
-        <StyledButton primaryColor="white">
-          <Display3>{t('home.play')}</Display3>
+        <StyledButton primaryColor="white" Typography={Display3}>
+          {t('home.play')}
         </StyledButton>
       </Link>
     </StyledPortalContainer>

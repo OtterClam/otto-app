@@ -199,8 +199,8 @@ export default function OpenPortalPopup({ show, portalId, onClose }: Props) {
             <StyledDesc>
               <Caption>{t('portal.open_popup.desc', { count })}</Caption>
             </StyledDesc>
-            <Button onClick={onClose}>
-              <Headline>{t('portal.open_popup.back_to_summon')}</Headline>
+            <Button Typography={Headline} onClick={onClose}>
+              {t('portal.open_popup.back_to_summon')}
             </Button>
           </>
         )}

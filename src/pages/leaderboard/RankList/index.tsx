@@ -18,6 +18,7 @@ import { trim } from 'helpers/trim'
 import Otto from 'models/Otto'
 import { TOTAL_RARITY_REWARD } from 'constant'
 import Constellations from 'assets/constellations'
+import useQueryString from 'hooks/useQueryString'
 import RarityScore from './rarity_score.png'
 import LoadingGif from './loading.gif'
 import { ListRankedOttos, ListRankedOttosVariables } from './__generated__/ListRankedOttos'
@@ -345,11 +346,6 @@ interface Props {
 
 const PAGE = 20
 
-function useQueryString() {
-  const { search } = useLocation()
-  return useMemo(() => new URLSearchParams(search), [search])
-}
-
 export default function RankList({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.rank_list' })
   const page = Number(useQueryString().get('page')) || 0
@@ -518,13 +514,13 @@ export default function RankList({ className }: Props) {
       {!loading && (
         <StyledPagination>
           <StyledPaginationLink to={`?page=${page - 1}`} show={page > 0}>
-            <StyledButton primaryColor="white" padding="20px">
-              <Headline>{t('prev')}</Headline>
+            <StyledButton primaryColor="white" padding="20px" Typography={Headline}>
+              {t('prev')}
             </StyledButton>
           </StyledPaginationLink>
           <StyledPaginationLink to={`?page=${page + 1}`} show>
-            <StyledButton primaryColor="white" padding="20px">
-              <Headline>{t('next')}</Headline>
+            <StyledButton primaryColor="white" padding="20px" Typography={Headline}>
+              {t('next')}
             </StyledButton>
           </StyledPaginationLink>
         </StyledPagination>
