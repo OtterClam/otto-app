@@ -1,8 +1,10 @@
 import { Handler } from '@netlify/functions'
-import axios from 'axios'
+import { getApi } from 'libs/api'
 
 const handler: Handler = async (event, context) => {
-  const token = event.headers.authorization.split(' ')[1]
+  const chainId = Number(event.queryStringParameters?.chainId || 137)
+  const token = event.headers.authorization?.split(' ')[1] || ''
+  const axios = getApi(chainId)
   const res = await axios.get('https://discord.com/api/users/@me', {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -10,14 +12,13 @@ const handler: Handler = async (event, context) => {
   })
   let verified = false
   try {
-    await axios.get('https://api-testnet.otterclam.finance/giveaway/verifications/discord', {
+    await axios.get('/giveaway/verifications/discord', {
       headers: {
-        cookie: `discord_token=${token}`,
         'X-DISCORD-ACCESS-TOKEN': token,
       },
     })
     verified = true
-  } catch (error) {
+  } catch (error: any) {
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx

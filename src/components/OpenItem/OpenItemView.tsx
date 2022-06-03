@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
-import Star from './large-star.svg'
+import Star from 'assets/ui/large-star.svg'
 import OpenItemAnimation from './OpenItemAnimation'
 
 const StyledOpenItemView = styled.div`

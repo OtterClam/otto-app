@@ -1,9 +1,8 @@
 import Fullscreen from 'components/Fullscreen'
-import Product from 'models/store/Product'
 import { useTranslation } from 'react-i18next'
 import styled, { keyframes, useTheme } from 'styled-components/macro'
 import { ContentLarge } from 'styles/typography'
-import Star from './large-star.svg'
+import Star from 'assets/ui/large-star.svg'
 
 const StyledLoadingView = styled.div`
   height: calc(80vh);

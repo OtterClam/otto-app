@@ -20,9 +20,13 @@ const StyledGiveawayPage = styled.div`
   color: ${({ theme }) => theme.colors.white};
 `
 
-const StyledHeadline = styled(Display2).attrs({ as: 'h1' })``
+const StyledHeadline = styled(Display2).attrs({ as: 'h1' })`
+  text-align: center;
+`
 
-const StyledSubtitle = styled(ContentMedium).attrs({ as: 'h2' })``
+const StyledSubtitle = styled(ContentMedium).attrs({ as: 'h2' })`
+  text-align: center;
+`
 
 const StyledHero = styled.div`
   display: flex;
@@ -62,13 +66,17 @@ const StyledSliverChestContainer = styled.div`
 `
 
 const StyledBody = styled(BorderContainer)`
-  width: 640px;
+  width: 95%;
+  max-width: 640px;
   background: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.otterBlack};
   padding: 42px 35px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (${({ theme }) => theme.breakpoints.mobile}) {
+    padding: 42px 15px;
+  }
 `
 
 export default function GiveawayPage() {

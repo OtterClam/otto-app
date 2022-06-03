@@ -1,8 +1,8 @@
+import { useEthers } from '@usedapp/core'
 import { CheckedIcon } from 'assets/icons'
 import axios from 'axios'
 import Button from 'components/Button'
 import { TWITTER_LINK } from 'constant'
-import useApi from 'hooks/useApi'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
@@ -34,7 +34,7 @@ const StyledIcon = styled.img.attrs({ src: Twitter })`
 
 const StyledDesc = styled(ContentSmall).attrs({ as: 'section' })`
   flex: 1;
-  white-space: pre;
+  white-space: pre-wrap;
 `
 
 const StyledVerifyArea = styled.div`
@@ -66,11 +66,12 @@ enum State {
 
 export default function TwitterStep({ locked, onComplete, className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'giveaway.steps.twitter' })
+  const { chainId } = useEthers()
   const [state, setState] = useState(State.Follow)
   const [twitterUser, setTwitterUser] = useState<string | null>(null)
   const verify = useCallback(async () => {
     axios
-      .get('/.netlify/functions/twitter-verify')
+      .get('/.netlify/functions/twitter-verify', { params: { chainId } })
       .then(res => {
         setTwitterUser(res.data.username)
         if (res.data.verified) {
@@ -103,7 +104,7 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
         {locked && <LockedButton />}
         {state === State.Follow && (
           <a href={TWITTER_LINK} target="_blank" rel="noreferrer">
-            <Button height="60px" padding="0 10px" onClick={() => setState(State.Verify)}>
+            <Button height="60px" padding="0 10px" onClick={() => setState(State.Verify)} Typography={Headline}>
               {t('follow')}
             </Button>
           </a>
@@ -122,12 +123,12 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
             <p>{t('verify_desc')}</p>
           </StyledVerifyMessage>
           {twitterUser ? (
-            <Button onClick={verify}>
+            <Button padding="0px 10px" onClick={verify}>
               <Headline>{t('verify')}</Headline>
             </Button>
           ) : (
             <a href="/.netlify/functions/twitter-login">
-              <Button>
+              <Button padding="0px 10px">
                 <Headline>{t('verify')}</Headline>
               </Button>
             </a>

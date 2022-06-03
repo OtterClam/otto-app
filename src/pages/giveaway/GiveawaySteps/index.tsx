@@ -1,6 +1,6 @@
 import Button from 'components/Button'
 import { useClaimGiveaway } from 'contracts/functions'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { ContentLarge, Headline } from 'styles/typography'
@@ -8,8 +8,11 @@ import ArrowDown from './arrow-down.svg'
 import ConnectStep from './ConnectStep'
 import DiscordStep from './DiscordStep'
 import Draw from './draw.png'
+import BottomLeftDraw from './draw-bottom-left.jpg'
+import BottomRightDraw from './draw-bottom-right.jpg'
 import InvitationCodeStep, { SuccessResponse } from './InvitationCodeStep'
 import TwitterStep from './TwitterStep'
+import GiveawayPopup from '../GiveawayPopup'
 
 const StyledSteps = styled.section`
   width: 100%;
@@ -25,6 +28,29 @@ const StyledDrawing = styled.img.attrs({ src: Draw })`
   top: 5px;
   right: 5px;
   z-index: 1;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    display: none;
+  }
+`
+
+const StyledBottomLeftDrawing = styled.img.attrs({ src: BottomLeftDraw })`
+  width: 153px;
+  height: 97px;
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  z-index: 1;
+  border-bottom-left-radius: 10px;
+`
+
+const StyledBottomRightDrawing = styled.img.attrs({ src: BottomRightDraw })`
+  width: 151px;
+  height: 65px;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  z-index: 1;
+  border-bottom-right-radius: 10px;
 `
 
 const StyledHeadline = styled(ContentLarge).attrs({ as: 'h2' })`
@@ -42,6 +68,11 @@ const StyledArrowDown = styled.img.attrs({ src: ArrowDown })`
   width: 30px;
   height: 15px;
   margin: 10px 0;
+`
+
+const StyledCompleteButton = styled(Button)`
+  position: relative;
+  z-index: 2;
 `
 
 enum Steps {
@@ -62,9 +93,17 @@ export default function GiveawaySteps() {
       claim({ itemId: giveawayData?.item_id, ...giveawayData })
     }
   }
+  useEffect(() => {
+    if (claimState.status === 'Exception' || claimState.status === 'Fail') {
+      window.alert(claimState.errorMessage)
+      resetClaim()
+    }
+  }, [claimState])
   return (
     <StyledSteps>
       <StyledDrawing />
+      <StyledBottomLeftDrawing />
+      <StyledBottomRightDrawing />
       <StyledHeadline>{t('headline')}</StyledHeadline>
       <StyledStepContainer>
         <ConnectStep onComplete={() => setStep(prev => (prev === Steps.ConnectWallet ? Steps.FollowTwitter : prev))} />
@@ -94,9 +133,12 @@ export default function GiveawaySteps() {
         />
       </StyledStepContainer>
       <StyledArrowDown />
-      <Button width="fit-content" disabled={step !== Steps.Completed} onClick={onClaim}>
+      <StyledCompleteButton width="fit-content" disabled={step !== Steps.Completed} onClick={onClaim}>
         <Headline>{step === Steps.Completed ? t('claim') : t('complete', { count: step })}</Headline>
-      </Button>
+      </StyledCompleteButton>
+      {claimState.status !== 'None' && (
+        <GiveawayPopup status={claimState.status === 'Success' ? 'success' : 'loading'} />
+      )}
     </StyledSteps>
   )
 }

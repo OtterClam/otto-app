@@ -7,6 +7,7 @@ import { ContentSmall, Headline } from 'styles/typography'
 import { CheckedIcon } from 'assets/icons'
 import axios from 'axios'
 import { useLocation } from 'react-router-dom'
+import { useEthers } from '@usedapp/core'
 import LockedButton from './LockedButton'
 import Discord from './discord.svg'
 
@@ -34,7 +35,7 @@ const StyledIcon = styled.img.attrs({ src: Discord })`
 
 const StyledDesc = styled(ContentSmall).attrs({ as: 'div' })`
   flex: 1;
-  white-space: pre;
+  white-space: pre-wrap;
 `
 
 const StyledUserName = styled.span`
@@ -67,6 +68,7 @@ const DISCORD_OAUTH_LINK = `https://discord.com/api/oauth2/authorize?response_ty
 
 export default function DiscordStep({ locked, onComplete, className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'giveaway.steps.discord' })
+  const { chainId } = useEthers()
   const [state, setState] = useState(State.Join)
   const [discordUser, setDiscordUser] = useState<string | null>(null)
   const location = useLocation()
@@ -77,6 +79,7 @@ export default function DiscordStep({ locked, onComplete, className }: Props) {
         headers: {
           Authorization: `Bearer ${params.get('access_token')}`,
         },
+        params: { chainId },
       })
       .then(res => {
         setDiscordUser(res.data.username)
@@ -118,7 +121,7 @@ export default function DiscordStep({ locked, onComplete, className }: Props) {
         <StyledVerifyArea>
           <ContentSmall>{t('verify_desc')}</ContentSmall>
           <a href={DISCORD_OAUTH_LINK}>
-            <Button>
+            <Button padding="0px 10px">
               <Headline>{t('verify')}</Headline>
             </Button>
           </a>

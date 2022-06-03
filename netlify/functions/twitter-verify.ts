@@ -1,19 +1,21 @@
 import { Handler } from '@netlify/functions'
 import axios from 'axios'
+import { getApi } from 'libs/api'
 import Twitter from 'twitter-lite'
 import redis from '../libs/redis'
 import { consumer_key, consumer_secret } from '../libs/twitter'
 
 const handler: Handler = async event => {
-  const part = event.headers.cookie.split('twitter_token=')
+  const chainId = Number(event.queryStringParameters?.chainId || 137)
+  const part = event.headers.cookie?.split('twitter_token=') || []
   if (part.length < 2) {
     return {
       statusCode: 401,
       body: 'Missing twitter token',
     }
   }
-  const access_token_key = event.headers.cookie.split('twitter_token=')[1].split(';')[0]
-  const access_token_secret = await redis.get(access_token_key)
+  const access_token_key = event.headers.cookie?.split('twitter_token=')[1].split(';')[0] || ''
+  const access_token_secret = (await redis.get(access_token_key)) || ''
   const client = new Twitter({
     consumer_key,
     consumer_secret,
@@ -31,14 +33,15 @@ const handler: Handler = async event => {
     }
   }
   try {
-    await axios.get('https://api-testnet.otterclam.finance/giveaway/verifications/twitter', {
+    const api = getApi(chainId)
+    await api.get('/giveaway/verifications/twitter', {
       headers: {
         'X-TWITTER-ACCESS-TOKEN-KEY': access_token_key,
         'X-TWITTER-ACCESS-TOKEN-SECRET': access_token_secret,
       },
     })
     verified = true
-  } catch (error) {
+  } catch (error: any) {
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx

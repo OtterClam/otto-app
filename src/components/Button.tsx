@@ -1,7 +1,8 @@
 import { useEthers } from '@usedapp/core'
 import { ottoClick } from 'constant'
-import { ReactNode, useEffect, useState } from 'react'
+import { Component, ComponentType, ReactChild, ReactComponentElement, ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { ReactElement } from 'react-markdown/lib/react-markdown'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 import { theme } from 'styles'
@@ -103,6 +104,7 @@ interface Props {
   padding?: string
   className?: string
   disableSound?: boolean
+  Typography?: ComponentType
 }
 
 const Button = ({
@@ -117,6 +119,7 @@ const Button = ({
   loading,
   padding,
   disableSound = false,
+  Typography = Display3,
 }: Props) => {
   const { account, activateBrowserWallet } = useEthers()
   const error = useSelector(selectError)
@@ -149,13 +152,9 @@ const Button = ({
       }}
     >
       <StyledInnerButton primaryColor={primaryColor} padding={padding} disabled={disabled || loading || pending}>
-        {isWeb3 && !account ? (
-          <Display3>{t('connect_wallet')}</Display3>
-        ) : loading ? (
-          <Display3>{t('button_processing')}</Display3>
-        ) : (
-          children
-        )}
+        <Typography>
+          {isWeb3 && !account ? t('connect_wallet') : loading ? t('button_processing') : children}
+        </Typography>
       </StyledInnerButton>
     </StyledButton>
   )

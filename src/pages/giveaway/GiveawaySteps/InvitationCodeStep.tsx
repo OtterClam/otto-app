@@ -45,13 +45,18 @@ const StyledIcon = styled.img.attrs({ src: Invitation })`
 
 const StyledDesc = styled(ContentSmall).attrs({ as: 'p' })`
   flex: 1;
-  white-space: pre;
+  white-space: pre-wrap;
 `
 
 const StyledInput = styled.input`
+  width: 160px;
   padding: 10px;
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 30%;
+  }
 `
 
 interface Props {
@@ -61,26 +66,28 @@ interface Props {
 }
 
 enum State {
-  Follow,
   Verify,
   Verified,
 }
 
 export default function InvitationCodeStep({ locked, onComplete, className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'giveaway.steps.invitation' })
-  const [state, setState] = useState(State.Follow)
+  const [state, setState] = useState(State.Verify)
+  const [loading, setLoading] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
-  const { account } = useEthers()
+  const { account, chainId } = useEthers()
   const location = useLocation()
   const params = useMemo(() => new URLSearchParams(location.hash), [location.hash])
   const onVerify = () => {
     if (inputRef.current?.value) {
+      setLoading(true)
       axios
         .post(
           '/.netlify/functions/submit-giveaway',
           {
             code: inputRef.current?.value,
             wallet: account,
+            chainId,
           },
           {
             headers: {
@@ -92,6 +99,14 @@ export default function InvitationCodeStep({ locked, onComplete, className }: Pr
           setState(State.Verified)
           onComplete(res.data)
         })
+        .catch(err => {
+          if (err.response) {
+            window.alert(err.response.data.error)
+          } else {
+            window.alert(err.message)
+          }
+        })
+        .finally(() => setLoading(false))
     }
   }
   return (
@@ -100,11 +115,11 @@ export default function InvitationCodeStep({ locked, onComplete, className }: Pr
         <StyledIcon />
         <StyledDesc>{t('desc')}</StyledDesc>
         {locked && <LockedButton />}
-        {!locked && state === State.Follow && (
+        {!locked && state === State.Verify && (
           <>
             <StyledInput ref={inputRef} placeholder={t('placeholder')} />
-            <Button padding="6px 10px" onClick={onVerify}>
-              <Headline>{t('apply')}</Headline>
+            <Button padding="6px 10px" loading={loading} onClick={onVerify} Typography={Headline}>
+              {t('apply')}
             </Button>
           </>
         )}

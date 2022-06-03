@@ -1,14 +1,9 @@
-import styled, { keyframes } from 'styled-components/macro'
 import Ribbon from 'assets/ui/ribbon.svg'
-import Button from 'components/Button'
-import CloseButton from 'components/CloseButton'
-import Fullscreen from 'components/Fullscreen'
 import ItemCell from 'components/ItemCell'
 import Item from 'models/Item'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
-import { ContentMedium, ContentSmall, Headline } from 'styles/typography'
-import Star from './large-star.svg'
+import styled, { keyframes } from 'styled-components/macro'
+import { ContentMedium, ContentSmall } from 'styles/typography'
 
 const ZoomInUp = keyframes`
   from {

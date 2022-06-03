@@ -372,6 +372,11 @@
       },
       "complete": "Complete ({{count}}/4)",
       "claim": "Claim Free Silver Chest!"
+    },
+    "popup": {
+      "processing": "Processing...\nThe transaction will be finished soon.",
+      "success_msg": "Clamazing!! You found 1 Silver Shell Chest.\nCheck out “My Items” page and open the chest now!",
+      "checkout_link": "Check out My Items"
     }
   }
 }
