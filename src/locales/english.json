@@ -193,7 +193,8 @@
       "Facial Accessories": "Facial Accessories ",
       "Headwear": "Headwears",
       "Holding": "Holdings",
-      "Other": "Other Items"
+      "Other": "Other Items",
+      "Consumable": "Consumable"
     },
     "take_off": "Take Off",
     "take_off_item": {

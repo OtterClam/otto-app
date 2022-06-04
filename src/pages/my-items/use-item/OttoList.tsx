@@ -7,11 +7,8 @@ import styled from 'styled-components/macro'
 const StyledOttoList = styled.div`
   display: flex;
   gap: 8px;
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    width: 95%;
-    overflow-x: scroll;
-  }
+  width: 100%;
+  overflow-x: scroll;
 `
 
 const StyledOttoCell = styled.button<{ selected: boolean }>`

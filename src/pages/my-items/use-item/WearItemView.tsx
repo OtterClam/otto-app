@@ -1,13 +1,12 @@
+import LegendaryIcon from 'assets/badge/legendary.png'
+import Arrow from 'assets/ui/arrow-right-yellow.svg'
 import Button from 'components/Button'
 import OttoCard from 'components/OttoCard'
-import { t } from 'i18next'
 import Item, { EmptyItem, traitToItem } from 'models/Item'
 import Otto from 'models/Otto'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { Headline, Note } from 'styles/typography'
-import Arrow from 'assets/ui/arrow-right-yellow.svg'
-import { useTranslation } from 'react-i18next'
-import LegendaryIcon from 'assets/badge/legendary.png'
 import ItemPreviewCard from './ItemPreviewCard'
 import OttoList from './OttoList'
 
@@ -28,6 +27,11 @@ const StyledWearItemView = styled.div`
 const StyledBottomContainer = styled.div`
   display: flex;
   gap: 40px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    flex-direction: column;
+    align-items: center;
+  }
 `
 
 const StyledOttoPreviewContainer = styled.div`
