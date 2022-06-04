@@ -8,7 +8,7 @@ import useApi from './useApi'
 
 const LIST_MY_ITEMS = gql`
   query ListItems($owner: Bytes!) {
-    ottoItems(where: { rootOwner: $owner, amount_gt: 0 }) {
+    ottoItems(where: { rootOwner: $owner, amount_gt: 0 }, first: 1000) {
       id
       owner
       rootOwner
