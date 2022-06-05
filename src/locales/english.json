@@ -84,7 +84,8 @@
       "coming_soon": "COMING SOON!",
       "get_updated": "Get updated on Discord",
       "reward_at": "Rewarding at: {{time}}!",
-      "title": "Total Rewards this Round"
+      "title": "Total Rewards this Round",
+      "tooltip": "The ranking and estimated rewards on the leaderboard will change until the displayed time. The final ranking and prizes will be determined by the snapshot of at that time."
     },
     "item_desc": "Increase your Otto’s rarity by equipping the epic items, or you can summon a genetically rare Otto!",
     "mint_portal_link": "Mint Portal >",

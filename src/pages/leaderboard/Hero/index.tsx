@@ -4,7 +4,7 @@ import Countdown from 'components/Countdown'
 import { TOTAL_RARITY_REWARD } from 'constant'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
-import { ContentSmall, Display1 } from 'styles/typography'
+import { ContentSmall, Display1, Note } from 'styles/typography'
 import Background from './background.png'
 import Clams from './clams.png'
 import Ottos from './ottos.png'
@@ -115,17 +115,58 @@ const StyledTotalReward = styled(Display1).attrs({ as: 'h2' })`
   color: ${({ theme }) => theme.colors.crownYellow};
 `
 
-const StyledRewardAt = styled(ContentSmall).attrs({ as: 'p' })`
+const StyledRewardAt = styled(ContentSmall).attrs({ as: 'div' })`
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 20px;
+  position: relative;
+
   &:after {
     content: ' ';
     width: 18px;
     height: 18px;
     background-image: url(${InfoIcon});
     background-size: 100%;
+  }
+`
+
+const StyledHint = styled(Note)`
+  display: none;
+  /* display: block; */
+  position: absolute;
+  color: ${({ theme }) => theme.colors.otterBlack};
+
+  /* vertically center */
+  top: 100%;
+  transform: translateY(-50%);
+  left: 20%;
+
+  margin-top: 60px; /* and add a small left margin */
+
+  /* basic styles */
+  width: 300px;
+  padding: 10px;
+  border-radius: 10px;
+  background: ${({ theme }) => theme.colors.white};
+  text-align: center;
+
+  filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
+
+  ${StyledRewardAt}:hover & {
+    display: block;
+  }
+
+  /* the arrow */
+  &:before {
+    content: '';
+    position: absolute;
+    left: 80%;
+    top: -20px;
+    transform: rotate(90deg);
+
+    border: 10px solid ${({ theme }) => theme.colors.white};
+    border-color: transparent ${({ theme }) => theme.colors.white} transparent transparent;
   }
 `
 
@@ -194,7 +235,10 @@ export default function Hero() {
           {new Intl.NumberFormat('en', {}).format(TOTAL_RARITY_REWARD)}
           <ContentSmall>CLAM</ContentSmall>
         </StyledTotalReward>
-        <StyledRewardAt>{t('reward_at', { time: Round1.end.toLocaleString() })}</StyledRewardAt>
+        <StyledRewardAt>
+          {t('reward_at', { time: Round1.end.toLocaleString() })}
+          <StyledHint>{t('tooltip')}</StyledHint>
+        </StyledRewardAt>
         <Countdown target={target} />
       </StyledCenterContainer>
     </StyledHero>
