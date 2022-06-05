@@ -29,7 +29,7 @@ const StyledNumbers = styled.p`
   gap: 6px;
 `
 
-const StyledNumber = styled.p`
+const StyledNumber = styled.span`
   width: 28px;
   height: 36px;
   border-radius: 8px;
@@ -67,12 +67,12 @@ function NumberSlot({ num, unit }: { num: number; unit: string }) {
 }
 
 interface Props {
-  target: Date
+  target: number
 }
 
 export default function Countdown({ target }: Props) {
   const { t } = useTranslation()
-  const [countdown, setCountdown] = useState(target.valueOf() - Date.now())
+  const [countdown, setCountdown] = useState(target - Date.now())
   const days = Math.floor(countdown / (1000 * 60 * 60 * 24))
   const hours = Math.floor((countdown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
   const minutes = Math.floor((countdown % (1000 * 60 * 60)) / (1000 * 60))

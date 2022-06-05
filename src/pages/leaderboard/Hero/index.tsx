@@ -1,10 +1,13 @@
 import InfoIcon from 'assets/ui/info.svg'
 import Ribbon from 'assets/ui/ribbon.png'
+import Button from 'components/Button'
 import Countdown from 'components/Countdown'
 import { TOTAL_RARITY_REWARD } from 'constant'
+import useRarityEpoch from 'hooks/useRarityEpoch'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
-import { ContentSmall, Display1, Note } from 'styles/typography'
+import { Headline, ContentSmall, Display1, Note } from 'styles/typography'
 import Background from './background.png'
 import Clams from './clams.png'
 import Ottos from './ottos.png'
@@ -217,10 +220,16 @@ const StyledClam = styled.img`
   }
 `
 
+const StyledRoundEnd = styled(ContentSmall).attrs({ as: 'div' })`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: ${({ theme }) => theme.colors.clamPink};
+`
+
 export default function Hero() {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.hero' })
-  const started = Date.now() > Round1.start.valueOf()
-  const target = started ? Round1.end : Round1.start
+  const { isLatestEpoch, epochEnd } = useRarityEpoch()
   return (
     <StyledHero>
       <StyledBackground src={Background} />
@@ -239,7 +248,18 @@ export default function Hero() {
           {t('reward_at', { time: Round1.end.toLocaleString() })}
           <StyledHint>{t('tooltip')}</StyledHint>
         </StyledRewardAt>
-        <Countdown target={target} />
+        {isLatestEpoch ? (
+          <Countdown target={epochEnd} />
+        ) : (
+          <StyledRoundEnd>
+            {t('round_end')}
+            <Link to="?epoch=-1">
+              <Button primaryColor="white" width="fit-content" Typography={Headline}>
+                {t('back_to_current')}
+              </Button>
+            </Link>
+          </StyledRoundEnd>
+        )}
       </StyledCenterContainer>
     </StyledHero>
   )

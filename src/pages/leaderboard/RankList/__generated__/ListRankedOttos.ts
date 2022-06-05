@@ -24,6 +24,7 @@ export interface ListRankedOttos {
 }
 
 export interface ListRankedOttosVariables {
+  epoch: number;
   first: number;
   skip: number;
 }

@@ -28,7 +28,7 @@ const StyledContent = styled.div`
   gap: 10px;
 `
 
-const StyledDesc = styled(ContentMedium)``
+const StyledDesc = styled(ContentMedium).attrs({ as: 'p' })``
 
 const StyledLinks = styled.div`
   display: flex;
@@ -50,7 +50,7 @@ export default function Info({ image, desc, links }: Props) {
     <StyledInfo>
       <StyledImage src={image} />
       <StyledContent>
-        <StyledDesc as="p">{desc}</StyledDesc>
+        <StyledDesc>{desc}</StyledDesc>
         <StyledLinks>
           {links.map((link, index) =>
             link.internal ? (

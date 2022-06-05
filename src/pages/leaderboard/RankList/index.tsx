@@ -7,7 +7,7 @@ import { useMediaQuery } from 'hooks/useMediaQuery'
 import { useOttos } from 'hooks/useOtto'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useLocation } from 'react-router-dom'
+import { createSearchParams, Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import { breakpoints } from 'styles/breakpoints'
 import { Caption, ContentLarge, ContentMedium, Headline } from 'styles/typography'
@@ -19,6 +19,7 @@ import Otto from 'models/Otto'
 import { TOTAL_RARITY_REWARD } from 'constant'
 import Constellations from 'assets/constellations'
 import useQueryString from 'hooks/useQueryString'
+import useRarityEpoch from 'hooks/useRarityEpoch'
 import RarityScore from './rarity_score.png'
 import LoadingGif from './loading.gif'
 import { ListRankedOttos, ListRankedOttosVariables } from './__generated__/ListRankedOttos'
@@ -27,8 +28,8 @@ import SecondRank from './Icon/Rank/2nd.png'
 import ThirdRank from './Icon/Rank/3rd.png'
 
 export const LIST_RANKED_OTTOS = gql`
-  query ListRankedOttos($first: Int!, $skip: Int!) {
-    ottos(orderBy: rarityScore, orderDirection: desc, first: $first, skip: $skip, where: { epoch: -1 }) {
+  query ListRankedOttos($epoch: Int!, $first: Int!, $skip: Int!) {
+    ottos(orderBy: rarityScore, orderDirection: desc, first: $first, skip: $skip, where: { epoch: $epoch }) {
       tokenId
       tokenURI
       mintAt
@@ -117,9 +118,10 @@ const StyledOttoRow = styled(StyledRow)`
   }
 `
 
-const StyledMyOttoSection = styled.section`
+const StyledMyOttoSection = styled.section<{ isLatestEpoch: boolean }>`
   padding: 10px 40px;
-  background-color: ${({ theme }) => theme.colors.crownYellow};
+  background-color: ${({ isLatestEpoch, theme }) =>
+    isLatestEpoch ? theme.colors.crownYellow : theme.colors.lightGray400};
   display: flex;
   flex-direction: column;
 
@@ -349,13 +351,14 @@ const PAGE = 20
 export default function RankList({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.rank_list' })
   const page = Number(useQueryString().get('page')) || 0
+  const { epoch, isLatestEpoch } = useRarityEpoch()
   const [totalSupply] = useOttoInfo()
   const {
     data,
     loading: loadingGraph,
     refetch,
   } = useQuery<ListRankedOttos, ListRankedOttosVariables>(LIST_RANKED_OTTOS, {
-    variables: { skip: page * PAGE, first: PAGE },
+    variables: { skip: page * PAGE, first: PAGE, epoch },
   })
   const prizeCount = Math.floor((totalSupply - 250) /* exclude reserve Ottos */ * 0.5)
   const topReward = useMemo(() => {
@@ -456,7 +459,7 @@ export default function RankList({ className }: Props) {
     <StyledRankList className={className}>
       <StyledTable>
         {myOttos.length > 0 && (
-          <StyledMyOttoSection>
+          <StyledMyOttoSection isLatestEpoch={isLatestEpoch}>
             <StyledHint>{t('your_rank')}</StyledHint>
             {(expand ? sortedMyOttos : sortedMyOttos.slice(0, 1)).map(
               ({ tokenId, name, image, ranking, totalRarityScore, baseRarityScore, relativeRarityScore }, index) => (
@@ -513,12 +516,24 @@ export default function RankList({ className }: Props) {
       </StyledTable>
       {!loading && (
         <StyledPagination>
-          <StyledPaginationLink to={`?page=${page - 1}`} show={page > 0}>
+          <StyledPaginationLink
+            to={{
+              pathname: '.',
+              search: `?${createSearchParams({ page: String(page - 1), epoch: String(epoch) })}`,
+            }}
+            show={page > 0}
+          >
             <StyledButton primaryColor="white" padding="20px" Typography={Headline}>
               {t('prev')}
             </StyledButton>
           </StyledPaginationLink>
-          <StyledPaginationLink to={`?page=${page + 1}`} show>
+          <StyledPaginationLink
+            to={{
+              pathname: '.',
+              search: `?${createSearchParams({ page: String(page + 1), epoch: String(epoch) })}`,
+            }}
+            show
+          >
             <StyledButton primaryColor="white" padding="20px" Typography={Headline}>
               {t('next')}
             </StyledButton>

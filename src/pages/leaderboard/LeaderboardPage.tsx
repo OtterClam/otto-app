@@ -1,7 +1,12 @@
+import Button from 'components/Button'
+import useQueryString from 'hooks/useQueryString'
+import useRarityEpoch from 'hooks/useRarityEpoch'
 import Layout from 'Layout'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { createSearchParams, Link, useParams } from 'react-router-dom'
 import styled from 'styled-components/macro'
-import { Display3 } from 'styles/typography'
+import { Display3, Headline } from 'styles/typography'
 import Hero from './Hero'
 import Info from './Info'
 import M4Carbin from './m4-carbin.png'
@@ -21,7 +26,17 @@ const StyledLeaderboardPage = styled.div`
   }
 `
 
-const StyledHead = styled(Display3).attrs({ as: 'h1' })``
+const StyledHead = styled(Display3).attrs({ as: 'h1' })`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+
+  > * {
+    flex: 1;
+  }
+`
 
 const StyledHero = styled(Hero)``
 
@@ -40,10 +55,41 @@ const StyledRankList = styled(RankList)`
 
 export default function LeaderboardPage() {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard' })
+  const { epoch, latestEpoch, hasPrevEpoch, hasNextEpoch } = useRarityEpoch()
   return (
     <Layout title={t('title')} background="dark">
       <StyledLeaderboardPage>
-        <StyledHead>{t('head')}</StyledHead>
+        <StyledHead>
+          {hasPrevEpoch ? (
+            <Link
+              to={{
+                pathname: '.',
+                search: `?${createSearchParams({ epoch: String(epoch === -1 ? latestEpoch - 1 : epoch - 1) })}`,
+              }}
+            >
+              <Button padding="0 6px" Typography={Headline}>
+                {t('prev')}
+              </Button>
+            </Link>
+          ) : (
+            <div />
+          )}
+          {t('head')}
+          {hasNextEpoch ? (
+            <Link
+              to={{
+                pathname: '.',
+                search: `?${createSearchParams({ epoch: String(epoch + 1 === latestEpoch ? -1 : epoch + 1) })}`,
+              }}
+            >
+              <Button padding="0 6px" Typography={Headline}>
+                {t('next')}
+              </Button>
+            </Link>
+          ) : (
+            <div />
+          )}
+        </StyledHead>
         <StyledHero />
         <StyledInfos>
           <Info
