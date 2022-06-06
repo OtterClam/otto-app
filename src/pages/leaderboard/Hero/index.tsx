@@ -245,7 +245,7 @@ export default function Hero() {
           <ContentSmall>CLAM</ContentSmall>
         </StyledTotalReward>
         <StyledRewardAt>
-          {t('reward_at', { time: Round1.end.toLocaleString() })}
+          {t('reward_at', { time: new Date(epochEnd).toLocaleString() })}
           <StyledHint>{t('tooltip')}</StyledHint>
         </StyledRewardAt>
         {isLatestEpoch ? (
