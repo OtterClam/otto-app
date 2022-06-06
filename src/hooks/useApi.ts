@@ -29,8 +29,14 @@ export class Api {
     return this.axios.get(`/ottos/metadata/${ottoId}`, { params: { details, lang } }).then(res => res.data)
   }
 
-  public async getOttoMetas(ids: string[], lang: string, details: boolean): Promise<OttoMeta[]> {
-    return this.axios.get(`/ottos/metadata?ids=${ids.join(',')}`, { params: { details, lang } }).then(res => res.data)
+  public async getOttoMetas(
+    ids: string[],
+    lang: string,
+    { details, epoch }: { details: boolean; epoch?: number }
+  ): Promise<OttoMeta[]> {
+    return this.axios
+      .get(`/ottos/metadata?ids=${ids.join(',')}`, { params: { details, lang, epoch } })
+      .then(res => res.data)
   }
 
   public async getItem(itemId: string, lang: string): Promise<Item> {

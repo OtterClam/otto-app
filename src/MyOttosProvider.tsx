@@ -44,7 +44,7 @@ export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
     variables: { owner: account || '' },
     skip: !account,
   })
-  const { ottos, loading: loadingMeta, refetch: refetchMeta } = useOttos(data?.ottos, true)
+  const { ottos, loading: loadingMeta, refetch: refetchMeta } = useOttos(data?.ottos, { details: true })
   const reload = useCallback(() => refetch().then(refetchMeta), [refetch, refetchMeta])
   const myOttos = useMemo(
     () => ({

@@ -369,7 +369,7 @@ export default function RankList({ className }: Props) {
     return TOTAL_RARITY_REWARD / sum
   }, [prizeCount])
   const getEstimatedReward = (rank: number) => (rank <= prizeCount ? trim((topReward * (1 / rank)) / 4, 2) : '-')
-  const { ottos, loading: loadingApi } = useOttos(data?.ottos, true)
+  const { ottos, loading: loadingApi } = useOttos(data?.ottos, { details: true, epoch })
   const { ottos: myOttos } = useMyOttos()
   const sortedMyOttos = useMemo(() => myOttos.sort((a, b) => a.ranking - b.ranking), [myOttos])
   const [expand, setExpand] = useState(false)

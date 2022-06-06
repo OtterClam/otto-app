@@ -35,7 +35,7 @@ export default function useOtto(rawOtto: RawOtto | Falsy, details: boolean) {
   return { loading, otto, error, refetch }
 }
 
-export function useOttos(rawOttos: RawOtto[] | Falsy, details: boolean) {
+export function useOttos(rawOttos: RawOtto[] | Falsy, { details, epoch }: { details: boolean; epoch?: number }) {
   const api = useApi()
   const { i18n } = useTranslation()
   const [error, setError] = useState<any | null>(null)
@@ -48,7 +48,7 @@ export function useOttos(rawOttos: RawOtto[] | Falsy, details: boolean) {
       setError(null)
       const ids = rawOttos.map(raw => String(raw.tokenId))
       api
-        .getOttoMetas(ids, i18n.resolvedLanguage, details)
+        .getOttoMetas(ids, i18n.resolvedLanguage, { details, epoch })
         .then(data => data.map((meta, i) => new Otto(rawOttos[i], meta)))
         .then(ottos => setOttos(ottos.filter((o): o is Otto => Boolean(o))))
         .catch(err => {
