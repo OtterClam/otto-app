@@ -24,6 +24,13 @@ export function useMyOttos() {
   return { loading, ottos, reload }
 }
 
+export function useIsMyOttos(ottoTokenId?: string): boolean {
+  const { ottos } = useMyOttos()
+  return useMemo(() => {
+    return Boolean(ottos.find(otto => otto.tokenId === ottoTokenId))
+  }, [ottos, ottoTokenId])
+}
+
 export const LIST_MY_OTTOS = gql`
   query ListMyOttos($owner: Bytes!) {
     ottos(where: { owner: $owner, portalStatus: SUMMONED, epoch: -1 }, orderBy: tokenId) {

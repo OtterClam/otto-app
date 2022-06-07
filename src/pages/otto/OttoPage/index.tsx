@@ -17,6 +17,8 @@ import ClassicIcon from 'assets/badge/classic.png'
 import LegendaryIcon from 'assets/badge/legendary.png'
 import FirstGenIcon from 'assets/badge/first-gen.png'
 import Constellations from 'assets/constellations'
+import { useIsMyOttos } from 'MyOttosProvider'
+import { DiceBanner } from 'components/DiceBanner'
 import { GetOtto, GetOttoVariables } from '../__generated__/GetOtto'
 import { GET_OTTO } from '../queries'
 import PlayIcon from './icons/play-voice.svg'
@@ -249,6 +251,7 @@ export default function OttoPage() {
     variables: { ottoId },
   })
   const { otto } = useOtto(data?.ottos[0], true)
+  const isMyOtto = useIsMyOttos(otto?.tokenId)
   const infos = useMemo(
     () =>
       otto
@@ -325,6 +328,7 @@ export default function OttoPage() {
                 </StyledInfo>
               ))}
             </StyledInfos>
+
             {otto && (otto.zodiacBoost || 0) > 0 && (
               <StyledBoostBox>
                 <img src={TheOtter} alt="the Otter" />
@@ -337,6 +341,9 @@ export default function OttoPage() {
                 </ContentSmall>
               </StyledBoostBox>
             )}
+
+            {otto && isMyOtto && <DiceBanner otto={otto} />}
+
             <StyledDescription>
               {!otto ? (
                 <Loading width="100%" height="260px" />
