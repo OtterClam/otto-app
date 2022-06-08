@@ -1,5 +1,7 @@
+import Dropdown from 'components/Dropdown'
 import Fullscreen from 'components/Fullscreen'
 import ItemCell from 'components/ItemCell'
+import { LoadingView } from 'components/LoadingView'
 import { useBreakPoints } from 'hooks/useMediaQuery'
 import useMyItems from 'hooks/useMyItems'
 import Layout from 'Layout'
@@ -8,6 +10,7 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall } from 'styles/typography'
+import EmptyStatus from './empty.png'
 import RedeemCouponPopup from './RedeemCouponPopup'
 import ItemDetails from './use-item/ItemDetails'
 import UseItemPopup from './use-item/ItemPopup'
@@ -60,6 +63,26 @@ const StyledItemSection = styled.div`
   min-height: 0;
 `
 
+const StyledLeftContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
+`
+
+const StyledMenuBar = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 30px;
+`
+
+const StyledMenuItem = styled(ContentSmall).attrs({ as: 'div' })`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`
+
 const StyledItemScrollContainer = styled.div`
   overflow-y: auto;
   flex: 1;
@@ -72,6 +95,7 @@ const StyledItemList = styled.div`
   gap: 10px;
   flex: 1;
   padding: 26px;
+  padding-top: 0;
 `
 
 const StyledItemDetails = styled.section`
@@ -91,6 +115,18 @@ const StyledNoSelectedItem = styled.div`
 const StyledMobileItemDetailsContainer = styled.div`
   height: 90vh;
   overflow-y: scroll;
+`
+
+const StyledEmptySlate = styled(ContentSmall).attrs({ as: 'div' })`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  img {
+    width: 220px;
+    height: 192px;
+  }
 `
 
 const sectionKeys = ['All', 'Holding', 'Headwear', 'Facial Accessories', 'Clothes', 'Background', 'Other'] as const
@@ -125,17 +161,50 @@ const Sections: Record<SectionKey, Section> = {
   },
 }
 
+const SortedByOptions = ['latest_received', 'rarity_desc', 'rarity_asc']
+const Filters = ['none', 'not_equipped', 'equipped', 'otto_specific', 'lottie_specific']
+
 export default function MyItemsPage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('', { keyPrefix: 'my_items' })
   const { isMobile } = useBreakPoints()
   const [selectedSection, setSelectedSection] = useState<SectionKey>('All')
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
   const [usingItem, setUsingItem] = useState<Item | null>(null)
   const [redeemingCoupon, setRedeemingCoupon] = useState<Item | null>(null)
-  const { items, refetch } = useMyItems()
+  const sortedByOptions = useMemo(() => SortedByOptions.map(key => ({ key, text: t(`sorted_by_options.${key}`) })), [t])
+  const [sortedBy, setSortedBy] = useState(sortedByOptions[0])
+  const filters = useMemo(() => Filters.map(key => ({ key, text: t(`filters.${key}`) })), [t])
+  const [filter, setFilter] = useState(filters[0])
+  const { items, loading, refetch } = useMyItems()
   const displayItems = useMemo(
-    () => items.filter(i => Sections[selectedSection].isSection(i.type)),
-    [items, selectedSection]
+    () =>
+      items
+        .filter(i => {
+          let result = Sections[selectedSection].isSection(i.type)
+          if (filter.key === 'not_equipped') {
+            result = result && !i.equipped
+          } else if (filter.key === 'equipped') {
+            result = result && i.equipped
+          } else if (filter.key === 'otto_specific') {
+            result = result && i.equippable_gender === 'Male'
+          } else if (filter.key === 'lottie_specific') {
+            result = result && i.equippable_gender === 'Female'
+          }
+          return result
+        })
+        .sort((a, b) => {
+          if (sortedBy.key === 'latest_received') {
+            return b.update_at - a.update_at
+          }
+          if (sortedBy.key === 'rarity_desc') {
+            return b.total_rarity_score - a.total_rarity_score
+          }
+          if (sortedBy.key === 'rarity_asc') {
+            return a.total_rarity_score - b.total_rarity_score
+          }
+          return 0
+        }),
+    [items, selectedSection, sortedBy, filter]
   )
   const onUse = () => {
     if (selectedItem) {
@@ -148,7 +217,7 @@ export default function MyItemsPage() {
     setSelectedItem(null)
   }
   return (
-    <Layout title={t('my_items.title')} requireConnect>
+    <Layout title={t('title')} requireConnect>
       <StyledMyItemsPage>
         <StyledSectionTabContainer>
           <StyledSectionTabs>
@@ -159,24 +228,52 @@ export default function MyItemsPage() {
                 selected={selectedSection === section}
                 onClick={() => setSelectedSection(section)}
               >
-                <ContentSmall>{t(`my_items.section_title.${section}`)}</ContentSmall>
+                <ContentSmall>{t(`section_title.${section}`)}</ContentSmall>
               </StyledSectionTab>
             ))}
           </StyledSectionTabs>
         </StyledSectionTabContainer>
         <StyledItemSection>
-          <StyledItemScrollContainer>
-            <StyledItemList>
-              {displayItems.map((item, index) => (
-                <ItemCell
-                  key={index}
-                  item={item}
-                  selected={item === selectedItem}
-                  onClick={() => setSelectedItem(item)}
+          <StyledLeftContainer>
+            <StyledMenuBar>
+              <StyledMenuItem>
+                <p>{t('sorted_by')}</p>
+                <Dropdown
+                  selected={sortedBy.text}
+                  options={sortedByOptions.map(({ text }) => text)}
+                  onSelect={text => setSortedBy(sortedByOptions.find(o => o.text === text) || sortedByOptions[0])}
                 />
-              ))}
-            </StyledItemList>
-          </StyledItemScrollContainer>
+              </StyledMenuItem>
+              <StyledMenuItem>
+                <p>{t('filter')}</p>
+                <Dropdown
+                  selected={filter.text}
+                  options={filters.map(({ text }) => text)}
+                  onSelect={text => setFilter(filters.find(o => o.text === text) || filters[0])}
+                />
+              </StyledMenuItem>
+            </StyledMenuBar>
+            <StyledItemScrollContainer>
+              {loading && <LoadingView />}
+              {displayItems.length === 0 ? (
+                <StyledEmptySlate>
+                  <img src={EmptyStatus} alt="Empty Status" />
+                  <p>{t('empty')}</p>
+                </StyledEmptySlate>
+              ) : (
+                <StyledItemList>
+                  {displayItems.map((item, index) => (
+                    <ItemCell
+                      key={item.id + index}
+                      item={item}
+                      selected={item === selectedItem}
+                      onClick={() => setSelectedItem(item)}
+                    />
+                  ))}
+                </StyledItemList>
+              )}
+            </StyledItemScrollContainer>
+          </StyledLeftContainer>
           {isMobile ? (
             selectedItem && (
               <Fullscreen show background="white">
@@ -191,7 +288,7 @@ export default function MyItemsPage() {
                 <ItemDetails item={selectedItem} onClose={() => setSelectedItem(null)} onUse={onUse} />
               ) : (
                 <StyledNoSelectedItem>
-                  <ContentSmall>{t('my_items.no_selected_item')}</ContentSmall>
+                  <ContentSmall>{t('no_selected_item')}</ContentSmall>
                 </StyledNoSelectedItem>
               )}
             </StyledItemDetails>

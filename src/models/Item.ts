@@ -27,6 +27,7 @@ export default interface Item {
   isCoupon: boolean
   product_factory: string
   product_type: string
+  update_at: number
 }
 
 export function traitToItem(trait: Trait): Item {
@@ -38,6 +39,7 @@ export function traitToItem(trait: Trait): Item {
     isCoupon: false,
     product_factory: '',
     product_type: '',
+    update_at: 0,
     ...trait,
   }
 }
@@ -70,4 +72,5 @@ export const EmptyItem: Item = {
   isCoupon: false,
   product_factory: '',
   product_type: '',
+  update_at: 0,
 }
