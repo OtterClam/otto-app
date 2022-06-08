@@ -9,15 +9,10 @@
 
 export interface ListItems_ottoItems {
   __typename: "OttoItem";
-  id: string;
-  owner: any;
-  rootOwner: any;
-  slot: number;
   tokenId: any;
-  tokenURI: string;
-  wearable: boolean;
   amount: number;
   parentTokenId: any | null;
+  updateAt: any;
 }
 
 export interface ListItems {

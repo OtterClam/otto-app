@@ -191,6 +191,12 @@
     "no_selected_item": "Select an item to view the detail.",
     "open": "Open",
     "rarity_score": "Rarity score: {{score}}",
+    "sorted_by": "Sorted By",
+    "sorted_by_options": {
+      "latest_received": "Latest Received",
+      "rarity_desc": "Rarity  (From highest)",
+      "rarity_asc": "Rarity  (From lowest)"
+    },
     "section_title": {
       "All": "All",
       "Background": "Backgrounds",
