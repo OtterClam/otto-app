@@ -80,19 +80,19 @@
   },
   "leaderboard": {
     "head": "Be the rarest Otto to win the prize!",
-    "prev": "< Previous Round",
-    "next": "Next Round >",
     "hero": {
+      "back_to_current": "Back to Current Round >>",
       "coming_soon": "COMING SOON!",
       "get_updated": "Get updated on Discord",
       "reward_at": "Rewarding at: {{time}}!",
-      "title": "Total Rewards this Round",
-      "tooltip": "The ranking and estimated rewards on the leaderboard will change until the displayed time. The final ranking and prizes will be determined by the snapshot of at that time.",
       "round_end": "This round has ended and the rewards have been granted.",
-      "back_to_current": "Back to Current Round >>"
+      "title": "Total Rewards this Round",
+      "tooltip": "The ranking and estimated rewards on the leaderboard will change until the displayed time. The final ranking and prizes will be determined by the snapshot of at that time."
     },
     "item_desc": "Increase your Otto’s rarity by equipping the epic items, or you can summon a genetically rare Otto!",
     "mint_portal_link": "Mint Portal >",
+    "next": "Next Round >",
+    "prev": "< Previous Round",
     "rank_list": {
       "brs": "BRS",
       "chosen_one": "The Chosen Otto (BRS+150)",
@@ -187,26 +187,34 @@
   "my_items": {
     "empty": "You don't have any items.",
     "equipped": "Equipped",
+    "filter": "Filter",
+    "filters": {
+      "equipped": "Equipped",
+      "lottie_specific": "Lottie Specific",
+      "none": "None",
+      "not_equipped": "Not Equipped",
+      "otto_specific": "Otto Specific"
+    },
     "legendary_warning": "Warning: If you add or replace any items to the Legendary Otto, the Legendary frame will be removed and the BRS +100 bonus will be withdrawn.",
     "no_selected_item": "Select an item to view the detail.",
     "open": "Open",
     "rarity_score": "Rarity score: {{score}}",
-    "sorted_by": "Sorted By",
-    "sorted_by_options": {
-      "latest_received": "Latest Received",
-      "rarity_desc": "Rarity  (From highest)",
-      "rarity_asc": "Rarity  (From lowest)"
-    },
     "section_title": {
       "All": "All",
       "Background": "Backgrounds",
       "Clothes": "Clothes",
+      "Consumable": "Consumable",
       "Coupon": "Coupon",
       "Facial Accessories": "Facial Accessories ",
       "Headwear": "Headwears",
       "Holding": "Holdings",
-      "Other": "Other Items",
-      "Consumable": "Consumable"
+      "Other": "Other Items"
+    },
+    "sorted_by": "Sorted By",
+    "sorted_by_options": {
+      "latest_received": "Latest Received",
+      "rarity_asc": "Rarity  (From lowest)",
+      "rarity_desc": "Rarity  (From highest)"
     },
     "take_off": "Take Off",
     "take_off_item": {

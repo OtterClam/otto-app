@@ -74,7 +74,7 @@ const StyledMenuBar = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin: 20px 30px;
+  padding: 20px 30px;
 `
 
 const StyledMenuItem = styled(ContentSmall).attrs({ as: 'div' })`
@@ -162,7 +162,7 @@ const Sections: Record<SectionKey, Section> = {
 }
 
 const SortedByOptions = ['latest_received', 'rarity_desc', 'rarity_asc']
-// const Filters = ['none', 'not_equipped', 'equipped', 'otto_specific', 'lottie_specific']
+const Filters = ['none', 'not_equipped', 'equipped', 'otto_specific', 'lottie_specific']
 
 export default function MyItemsPage() {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
@@ -171,26 +171,40 @@ export default function MyItemsPage() {
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
   const [usingItem, setUsingItem] = useState<Item | null>(null)
   const [redeemingCoupon, setRedeemingCoupon] = useState<Item | null>(null)
-  const sortedByOptions = useMemo(() => SortedByOptions.map(k => t(`sorted_by_options.${k}`)), [t])
+  const sortedByOptions = useMemo(() => SortedByOptions.map(key => ({ key, text: t(`sorted_by_options.${key}`) })), [t])
   const [sortedBy, setSortedBy] = useState(sortedByOptions[0])
+  const filters = useMemo(() => Filters.map(key => ({ key, text: t(`filters.${key}`) })), [t])
+  const [filter, setFilter] = useState(filters[0])
   const { items, loading, refetch } = useMyItems()
   const displayItems = useMemo(
     () =>
       items
-        .filter(i => Sections[selectedSection].isSection(i.type))
+        .filter(i => {
+          let result = Sections[selectedSection].isSection(i.type)
+          if (filter.key === 'not_equipped') {
+            result = result && !i.equipped
+          } else if (filter.key === 'equipped') {
+            result = result && i.equipped
+          } else if (filter.key === 'otto_specific') {
+            result = result && i.equippable_gender === 'Male'
+          } else if (filter.key === 'lottie_specific') {
+            result = result && i.equippable_gender === 'Female'
+          }
+          return result
+        })
         .sort((a, b) => {
-          if (sortedBy === t('sorted_by_options.latest_received')) {
+          if (sortedBy.key === 'latest_received') {
             return b.update_at - a.update_at
           }
-          if (sortedBy === t('sorted_by_options.rarity_desc')) {
+          if (sortedBy.key === 'rarity_desc') {
             return b.total_rarity_score - a.total_rarity_score
           }
-          if (sortedBy === t('sorted_by_options.rarity_asc')) {
+          if (sortedBy.key === 'rarity_asc') {
             return a.total_rarity_score - b.total_rarity_score
           }
           return 0
         }),
-    [items, selectedSection, sortedBy]
+    [items, selectedSection, sortedBy, filter]
   )
   const onUse = () => {
     if (selectedItem) {
@@ -224,7 +238,19 @@ export default function MyItemsPage() {
             <StyledMenuBar>
               <StyledMenuItem>
                 <p>{t('sorted_by')}</p>
-                <Dropdown selected={sortedBy} options={sortedByOptions} onSelect={setSortedBy} />
+                <Dropdown
+                  selected={sortedBy.text}
+                  options={sortedByOptions.map(({ text }) => text)}
+                  onSelect={text => setSortedBy(sortedByOptions.find(o => o.text === text) || sortedByOptions[0])}
+                />
+              </StyledMenuItem>
+              <StyledMenuItem>
+                <p>{t('filter')}</p>
+                <Dropdown
+                  selected={filter.text}
+                  options={filters.map(({ text }) => text)}
+                  onSelect={text => setFilter(filters.find(o => o.text === text) || filters[0])}
+                />
               </StyledMenuItem>
             </StyledMenuBar>
             <StyledItemScrollContainer>
@@ -238,7 +264,7 @@ export default function MyItemsPage() {
                 <StyledItemList>
                   {displayItems.map((item, index) => (
                     <ItemCell
-                      key={index}
+                      key={item.id + index}
                       item={item}
                       selected={item === selectedItem}
                       onClick={() => setSelectedItem(item)}

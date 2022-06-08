@@ -81,13 +81,18 @@
   "leaderboard": {
     "head": "成為最稀有的阿獺來贏得獎金!",
     "hero": {
+      "back_to_current": "回到現在",
       "coming_soon": "即將登場!",
       "get_updated": "在 Discord 獲得最新情報",
       "reward_at": "獎金發放時間: 即將登場!",
-      "title": "這一輪比賽總獎金"
+      "round_end": "This round has ended and the rewards have been granted.",
+      "title": "這一輪比賽總獎金",
+      "tooltip": "The ranking and estimated rewards on the leaderboard will change until the displayed time. The final ranking and prizes will be determined by the snapshot of at that time."
     },
     "item_desc": "裝備稀有物品讓你的阿獺擁有更高的稀有值，或者你也可以直接鑄造傳送門招喚一隻全新的阿獺！",
     "mint_portal_link": "鑄造傳送門 >",
+    "next": "下一回合 >",
+    "prev": "< 前一回合",
     "rank_list": {
       "brs": "BRS",
       "chosen_one": "天選之獺 (BRS+150)",
@@ -180,7 +185,16 @@
     "para2": "阿獺王國！"
   },
   "my_items": {
+    "empty": "你沒有任何物品",
     "equipped": "已裝備",
+    "filter": "過濾",
+    "filters": {
+      "equipped": "已裝備",
+      "lottie_specific": "Lottie 專用",
+      "none": "無",
+      "not_equipped": "未裝備",
+      "otto_specific": "Otto 專用"
+    },
     "legendary_warning": "警告：如果你裝備/更換其他物品到傳奇阿獺身上，傳奇外框將會隱藏，且會扣除額外的傳奇加成：基本稀有度 (BRS) +100。",
     "no_selected_item": "請選擇物品檢視詳細資訊",
     "open": "Open",
@@ -195,6 +209,12 @@
       "Headwear": "頭飾",
       "Holding": "手持物",
       "Other": "Other Items"
+    },
+    "sorted_by": "排序",
+    "sorted_by_options": {
+      "latest_received": "收到時間",
+      "rarity_asc": "稀有度（從低到高）",
+      "rarity_desc": "稀有度（從高到低）"
     },
     "take_off": "脫掉",
     "take_off_item": {
