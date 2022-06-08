@@ -31,7 +31,6 @@ const StyledCloseButton = styled.button`
   position: absolute;
   top: 35px;
   right: 35px;
-  color: #fff;
 `
 
 const StyledCloseIcon = styled.img`
