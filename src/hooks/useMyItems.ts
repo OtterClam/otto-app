@@ -24,6 +24,7 @@ const LIST_MY_ITEMS = gql`
 
 export default function useMyItems() {
   const [items, setItems] = useState<Item[]>([])
+  const [loading, setLoading] = useState(true)
   const api = useApi()
   const { i18n } = useTranslation()
   const { account } = useEthers()
@@ -45,7 +46,15 @@ export default function useMyItems() {
           }))
         )
         .then(items => setItems(items))
+        .then(() => setLoading(false))
     }
   }, [data])
-  return { items, refetch }
+  return {
+    items,
+    loading,
+    refetch: () => {
+      setLoading(true)
+      refetch()
+    },
+  }
 }

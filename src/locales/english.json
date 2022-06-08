@@ -185,6 +185,7 @@
     "para2": "OTTERVERSE!"
   },
   "my_items": {
+    "empty": "You don't have any items.",
     "equipped": "Equipped",
     "legendary_warning": "Warning: If you add or replace any items to the Legendary Otto, the Legendary frame will be removed and the BRS +100 bonus will be withdrawn.",
     "no_selected_item": "Select an item to view the detail.",

@@ -8,9 +8,12 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall } from 'styles/typography'
+import Loading from 'components/Loading'
+import { LoadingView } from 'components/LoadingView'
 import RedeemCouponPopup from './RedeemCouponPopup'
 import ItemDetails from './use-item/ItemDetails'
 import UseItemPopup from './use-item/ItemPopup'
+import EmptyStatus from './empty.png'
 
 const StyledMyItemsPage = styled.div`
   height: 100%;
@@ -93,6 +96,18 @@ const StyledMobileItemDetailsContainer = styled.div`
   overflow-y: scroll;
 `
 
+const StyledEmptySlate = styled(ContentSmall).attrs({ as: 'div' })`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  img {
+    width: 220px;
+    height: 192px;
+  }
+`
+
 const sectionKeys = ['All', 'Holding', 'Headwear', 'Facial Accessories', 'Clothes', 'Background', 'Other'] as const
 
 type SectionKey = typeof sectionKeys[number]
@@ -132,7 +147,7 @@ export default function MyItemsPage() {
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
   const [usingItem, setUsingItem] = useState<Item | null>(null)
   const [redeemingCoupon, setRedeemingCoupon] = useState<Item | null>(null)
-  const { items, refetch } = useMyItems()
+  const { items, loading, refetch } = useMyItems()
   const displayItems = useMemo(
     () => items.filter(i => Sections[selectedSection].isSection(i.type)),
     [items, selectedSection]
@@ -166,16 +181,24 @@ export default function MyItemsPage() {
         </StyledSectionTabContainer>
         <StyledItemSection>
           <StyledItemScrollContainer>
-            <StyledItemList>
-              {displayItems.map((item, index) => (
-                <ItemCell
-                  key={index}
-                  item={item}
-                  selected={item === selectedItem}
-                  onClick={() => setSelectedItem(item)}
-                />
-              ))}
-            </StyledItemList>
+            {loading && <LoadingView />}
+            {displayItems.length === 0 ? (
+              <StyledEmptySlate>
+                <img src={EmptyStatus} alt="Empty Status" />
+                <p>{t('my_items.empty')}</p>
+              </StyledEmptySlate>
+            ) : (
+              <StyledItemList>
+                {displayItems.map((item, index) => (
+                  <ItemCell
+                    key={index}
+                    item={item}
+                    selected={item === selectedItem}
+                    onClick={() => setSelectedItem(item)}
+                  />
+                ))}
+              </StyledItemList>
+            )}
           </StyledItemScrollContainer>
           {isMobile ? (
             selectedItem && (
