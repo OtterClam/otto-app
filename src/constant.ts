@@ -25,3 +25,7 @@ export const ottoClick = new Audio('https://ottopia.app/ottoclick.mp3')
 ottoClick.load()
 
 export const TOTAL_RARITY_REWARD = 10000
+
+export enum Token {
+  Clam = 'CLAM',
+}

@@ -29,6 +29,9 @@ const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.crownYellow};
   padding: 6px;
   max-width: 880px;
+  max-height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
 
   border: 4px solid ${props => props.theme.colors.otterBlack};
   border-radius: 20px;

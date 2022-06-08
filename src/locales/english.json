@@ -405,5 +405,42 @@
     "desc": "Only Polygon Mainnet are supported.",
     "title": "Unsupported Network"
   },
-  "wallet_selector_head": "Connect to a wallet"
+  "wallet_selector_head": "Connect to a wallet",
+  "dice_banner": {
+    "badge": "Special Offer",
+    "title": "Roll a Dice of Destiny!",
+    "description": "The Dice of Destiny gives a chance to temporarily boost your BRS for the current epoch in Rarity Competition, but there’s a possibility that your BRS score will be lowered.\n* The Dice of Destiny was rolled <strong>x1</strong> and has blessed this Otto with <strong>BRS +20</strong>\n* The dice effect will clear and reset on June 8 at 0:00 (UTC+0)"
+  },
+  "dice_popup": {
+    "play_again_button": "Roll the Dice",
+    "intro": {
+      "title": "Roll the Dice of Destiny!",
+      "description": "The Dice of Destiny gives a chance to temporarily boost up your BRS for the current epoch in Rarity Competition, but there’s possibility that you will lose some BRS as well.\n\n* Each roll produces a single, randomized result out of dozens of possible results.\n* Some of the results have a positive effect on your Otto’s BRS, While some have a negative effect on your Otto’s BRS.\n* Some results require an additional selection. Your choice will determine the fate of your Otto.\n* The BRS effect from rolling the Dice of Destiny only lasts for the current epoch, and will be removed as soon as it ends.\n* The Dice results only affect the Otto you choose to roll a dice for.",
+      "call_to_action": "Get ready to face your destiny?",
+      "start_button": "Roll the Dice"
+    },
+    "processing": {
+      "content": "Processing...\n\nIt might take a few minutes to finish the transaction. Please do not close the window! Thanks for your patience ʕ•̫͡•ʔ b"
+    },
+    "result": {
+      "title": "Event ({{index}}/2)",
+      "subtitle": {
+        "good": "Your otto found a shining clam.",
+        "bad": "Ouch! Otto was attacked by a jellyfish while diving!",
+        "question": "An Event Occurred..."
+      },
+      "description": {
+        "good": "You're on a roll!",
+        "bad": "Today isn’t your lucky day, but things could turn around...",
+        "question": "Although your otto dropped something, who was lucky enough to meet the god Hermes. And Hermes dived into the water and returned with..\n\nHey, you dropped this… "
+      },
+      "result": {
+        "rarity_score": "Rarity score: {{ score }} <strong>({{ effect }})</strong>",
+        "ranking": "{{ ranking }} <strong>({{ effect }})</strong>"
+      }
+    }
+  },
+  "question": {
+    "submit_button": "Confirm"
+  }
 }

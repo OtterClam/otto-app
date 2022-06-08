@@ -1,9 +1,14 @@
 import Otto from 'models/Otto'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components/macro'
+import hell from 'assets/hell.png'
 import bg from 'assets/dice-of-destiny-bg.jpg'
 import { ContentSmall, Headline } from 'styles/typography'
 import Button from 'components/Button'
-import hell from './hell.png'
+import { useBreakPoints } from 'hooks/useMediaQuery'
+import { showDicePopup } from 'store/uiSlice'
+import { useTranslation } from 'react-i18next'
+import MarkdownWithHtml from './MarkdownWithHtml'
 
 const StyledContainer = styled.div`
   position: relative;
@@ -12,6 +17,11 @@ const StyledContainer = styled.div`
   border-radius: 15px;
   padding: 20px 20px 20px 220px;
   overflow: hidden;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    background: no-repeat center 20px / 100px 100px url(${hell}), no-repeat center / 870px 867px url(${bg});
+    padding: 130px 20px 20px;
+  }
 `
 
 const StyledBadgeContainer = styled.div`
@@ -50,10 +60,11 @@ const StyledTitle = styled(Headline)`
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     font-size: 20px !important;
+    text-align: center;
   }
 `
 
-const StyledContent = styled(ContentSmall.withComponent('p'))`
+const StyledContent = styled(ContentSmall.withComponent('div'))`
   display: block;
   font-size: 16px !important;
   color: ${props => props.theme.colors.white};
@@ -64,29 +75,36 @@ const StyledContent = styled(ContentSmall.withComponent('p'))`
   }
 `
 
+const StyledButtonContainer = styled.div`
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    text-align: center;
+  }
+`
+
 export interface DiceBannerProps {
   otto: Otto
 }
 
 export function DiceBanner({ otto }: DiceBannerProps) {
+  const { isMobile } = useBreakPoints()
+  const dispatch = useDispatch()
+  const openPopup = () => dispatch(showDicePopup(otto.toJSON()))
+  const { t } = useTranslation()
+
   return (
     <StyledContainer>
       <StyledBadgeContainer>
-        <StyledBadge>Special Offer</StyledBadge>
+        <StyledBadge>{t('dice_banner.badge')}</StyledBadge>
       </StyledBadgeContainer>
-      <StyledTitle>Roll a Dice of Destiny!</StyledTitle>
+      <StyledTitle>{t('dice_banner.title')}</StyledTitle>
       <StyledContent>
-        The Dice of Destiny gives a chance to temporarily boost up your BRS for the current epoch in Rarity Competition,
-        but there’s possibility that you will lose some BRS as well.
+        <MarkdownWithHtml>{t('dice_banner.description')}</MarkdownWithHtml>
       </StyledContent>
-      <StyledContent>
-        The Dice of Destiny has blessed you with BRS +20 The dice effect will clear and reset on June 8 at 0:00 (UTC+0)
-      </StyledContent>
-      <div>
-        <Button padding="6px 18px" Typography={Headline}>
+      <StyledButtonContainer>
+        <Button padding={isMobile ? undefined : '6px 18px'} Typography={Headline} onClick={openPopup}>
           Give It a Try
         </Button>
-      </div>
+      </StyledButtonContainer>
     </StyledContainer>
   )
 }

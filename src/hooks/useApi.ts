@@ -1,5 +1,6 @@
 import { ChainId, useEthers } from '@usedapp/core'
 import axios, { Axios } from 'axios'
+import { Dice } from 'models/Dice'
 import Item from 'models/Item'
 import { OttoMeta } from 'models/Otto'
 import { useMemo } from 'react'
@@ -66,6 +67,35 @@ export class Api {
       total_rarity_score: details.base_rarity_score + details.relative_rarity_score,
       ...details,
     }
+  }
+
+  public async rollTheDice(): Promise<Dice> {
+    await new Promise(resolve => {
+      setTimeout(() => {
+        resolve(1)
+      }, 1000)
+    })
+    return new Dice({
+      id: 'test',
+      status: 'waiting_anwser',
+      events: [{ effect: { brs: 100, ranking: 10 } }, { questions: ['test1', 'abc', '222'] }],
+    })
+  }
+
+  public async getDice(id?: string): Promise<Dice> {
+    return this.rollTheDice()
+  }
+
+  public async answerDiceQuestion(diceId: string, index: number, answer: number): Promise<Dice> {
+    return new Dice({
+      id: 'test',
+      status: 'waiting_anwser',
+      events: [{ effect: { brs: 100, ranking: 10 } }, { effect: { brs: -100, ranking: -10 } }],
+    })
+  }
+
+  public async retryADice(diceId: string): Promise<Dice> {
+    return this.rollTheDice()
   }
 }
 

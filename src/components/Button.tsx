@@ -90,7 +90,7 @@ const StyledInnerButton = styled.div<InnerButtonProps>`
   }
 `
 
-interface Props {
+export interface ButtonProps {
   width?: string
   height?: string
   onClick?: () => void
@@ -118,7 +118,7 @@ const Button = ({
   padding,
   disableSound = false,
   Typography,
-}: Props) => {
+}: ButtonProps) => {
   const { account, activateBrowserWallet } = useEthers()
   const error = useSelector(selectError)
   const [pending, setPending] = useState(false)
