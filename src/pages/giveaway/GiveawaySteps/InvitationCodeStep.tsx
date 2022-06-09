@@ -55,6 +55,12 @@ const StyledContainer = styled.div`
   }
 `
 
+const StyledDescContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+`
+
 const StyledDesc = styled(ContentSmall).attrs({ as: 'p' })`
   flex: 1;
   white-space: pre-wrap;
@@ -133,11 +139,11 @@ export default function InvitationCodeStep({ locked, onComplete, className }: Pr
       <StyledActionContainer>
         <StyledIcon />
         <StyledContainer>
-          <div>
+          <StyledDescContainer>
             <StyledDesc>{t('desc')}</StyledDesc>
             {locked && <LockedButton />}
             {!locked && state === State.Verified && <CheckedIcon />}
-          </div>
+          </StyledDescContainer>
           {!locked && state === State.Verify && (
             <StyledInputContainer>
               <StyledInput ref={inputRef} placeholder={t('placeholder')} />
