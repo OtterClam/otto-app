@@ -86,7 +86,7 @@ enum Steps {
 export default function GiveawaySteps() {
   const { t } = useTranslation('', { keyPrefix: 'giveaway.steps' })
   const [giveawayData, setGiveawayData] = useState<SuccessResponse | null>(null)
-  const [step, setStep] = useState(Steps.InputInvitationCode)
+  const [step, setStep] = useState(Steps.ConnectWallet)
   const { claimState, claim, resetClaim } = useClaimGiveaway()
   const onClaim = () => {
     if (giveawayData) {
