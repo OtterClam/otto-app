@@ -43,19 +43,38 @@ const StyledIcon = styled.img.attrs({ src: Invitation })`
   height: 24px;
 `
 
+const StyledContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 10px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`
+
 const StyledDesc = styled(ContentSmall).attrs({ as: 'p' })`
   flex: 1;
   white-space: pre-wrap;
 `
 
-const StyledInput = styled.input`
-  width: 160px;
+const StyledInputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 10px;
+`
+
+const StyledInput = styled(ContentSmall).attrs({ as: 'input' })`
+  width: 100%;
   padding: 10px;
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    width: 30%;
+  ::placeholder {
+    color: ${({ theme }) => theme.colors.lightGray400};
+    opacity: 1;
   }
 `
 
@@ -113,17 +132,21 @@ export default function InvitationCodeStep({ locked, onComplete, className }: Pr
     <StyledStep className={className}>
       <StyledActionContainer>
         <StyledIcon />
-        <StyledDesc>{t('desc')}</StyledDesc>
-        {locked && <LockedButton />}
-        {!locked && state === State.Verify && (
-          <>
-            <StyledInput ref={inputRef} placeholder={t('placeholder')} />
-            <Button padding="6px 10px" loading={loading} onClick={onVerify} Typography={Headline}>
-              {t('apply')}
-            </Button>
-          </>
-        )}
-        {!locked && state === State.Verified && <CheckedIcon />}
+        <StyledContainer>
+          <div>
+            <StyledDesc>{t('desc')}</StyledDesc>
+            {locked && <LockedButton />}
+            {!locked && state === State.Verified && <CheckedIcon />}
+          </div>
+          {!locked && state === State.Verify && (
+            <StyledInputContainer>
+              <StyledInput ref={inputRef} placeholder={t('placeholder')} />
+              <Button padding="6px 10px" loading={loading} onClick={onVerify} Typography={Headline}>
+                {t('apply')}
+              </Button>
+            </StyledInputContainer>
+          )}
+        </StyledContainer>
       </StyledActionContainer>
     </StyledStep>
   )
