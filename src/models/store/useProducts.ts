@@ -57,16 +57,18 @@ export default function useProducts() {
     ottos?.map(o => o.tokenId) || []
   )
   const products: Product[] =
-    data?.ottoProducts.map((p, idx) => ({
-      ...p,
-      id: p.productId,
-      name: t(`product.${p.type}.name`),
-      desc: t(`product.${p.type}.desc`),
-      mustDesc: p.amount === 10 ? t(`product.${p.type}.must_desc`) : undefined,
-      image: PresetImages[p.type][p.amount],
-      airdropAmount: airdropAmounts[idx],
-      displayPrice: utils.formatUnits(p.price, 9),
-      displayDiscountPrice: utils.formatUnits(p.discountPrice, 9),
-    })) || []
+    data?.ottoProducts
+      .filter(p => Object.keys(PresetImages).includes(p.type))
+      .map((p, idx) => ({
+        ...p,
+        id: p.productId,
+        name: t(`product.${p.type}.name`),
+        desc: t(`product.${p.type}.desc`),
+        mustDesc: p.amount === 10 ? t(`product.${p.type}.must_desc`) : undefined,
+        image: PresetImages[p.type][p.amount],
+        airdropAmount: airdropAmounts[idx],
+        displayPrice: utils.formatUnits(p.price, 9),
+        displayDiscountPrice: utils.formatUnits(p.discountPrice, 9),
+      })) || []
   return { products }
 }
