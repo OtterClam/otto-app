@@ -236,19 +236,15 @@ function ResultState({ diceRoller, otto }: StateProps) {
   const { t } = useTranslation()
   const { HELL_DICE } = useContractAddresses()
   const eventIndex = diceRoller.state === State.FirstResult ? 0 : 1
-  const event = diceRoller.dice!.events[eventIndex]
+  const event = diceRoller.dice?.events[eventIndex] ?? { type: EventType.Good }
   const bg = {
     [EventType.Good]: good,
     [EventType.Bad]: bad,
     [EventType.Question]: question,
   }[event.type]
   const ranking =
-    // current ranking
-    otto.ranking +
-    // + effect of the current event
-    (event.effect?.ranking ?? 0) +
-    // + effect of the previous event
-    (eventIndex === 1 ? diceRoller.dice!.events[0].effect?.ranking ?? 0 : 0)
+    // current ranking + effect of the previous event
+    otto.ranking + (eventIndex === 1 ? diceRoller.dice?.events[0].effect?.ranking ?? 0 : 0)
 
   const answerQuestion = (optionIndex: number) => diceRoller.answerQuestion(eventIndex, optionIndex)
 
@@ -263,24 +259,24 @@ function ResultState({ diceRoller, otto }: StateProps) {
       </Headline>
       <StyledResultImage background={bg} />
       {event.effect && (
-        <StyledRibbonText Typography={ContentExtraSmall}>BRS {numberWithSign(event.effect!.brs)}</StyledRibbonText>
+        <StyledRibbonText Typography={ContentExtraSmall}>BRS {numberWithSign(event.effect.brs)}</StyledRibbonText>
       )}
-      {event.type !== EventType.Question && (
+      {event.type !== EventType.Question && event.effect && (
         <>
           <StyledEventEffect image={otto.image}>
             <StyledEventEffectContent eventType={event.type}>
               <MarkdownWithHtml>
                 {t('dice_popup.result.result.rarity_score', {
                   score: otto.baseRarityScore,
-                  effect: numberWithSign(event.effect!.brs),
+                  effect: numberWithSign(event.effect.brs),
                 })}
               </MarkdownWithHtml>
               <StyledResultEffect>
                 <StyledRankingBadge />
                 <MarkdownWithHtml>
                   {t('dice_popup.result.result.ranking', {
-                    ranking: otto.ranking,
-                    effect: numberWithDirection(event.effect!.ranking),
+                    ranking,
+                    effect: numberWithDirection(event.effect.ranking),
                   })}
                 </MarkdownWithHtml>
               </StyledResultEffect>
