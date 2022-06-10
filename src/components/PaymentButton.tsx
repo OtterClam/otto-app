@@ -4,7 +4,7 @@ import TxButton, { TxButtonProps } from 'components/TxButton'
 import Price, { PriceProps } from 'components/Price'
 import { useApprove } from 'contracts/functions'
 import useContractAddresses from 'hooks/useContractAddresses'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ethers, BigNumber } from 'ethers'
 
@@ -22,6 +22,11 @@ const StyledButtonText = styled.span`
   margin-left: 20px;
 `
 
+enum BtnState {
+  WaitingClick,
+  WaitingApprove,
+}
+
 export default function PaymentButton({
   children,
   spenderAddress,
@@ -36,12 +41,14 @@ export default function PaymentButton({
   const tokenAddress = addresses[token]
   assert(tokenAddress, `unknown token: ${token}`)
 
+  const [btnState, setBtnState] = useState(BtnState.WaitingClick)
   const { account, chainId } = useEthers()
   const allowance = useTokenAllowance(tokenAddress, account, spenderAddress, { chainId })
   const { approve } = useApprove(tokenAddress)
 
   const pay = useCallback(() => {
     if (!allowance || BigNumber.from(amount).gt(allowance)) {
+      setBtnState(BtnState.WaitingApprove)
       approve(spenderAddress, ethers.constants.MaxUint256)
       return
     }
@@ -49,6 +56,15 @@ export default function PaymentButton({
       onClick()
     }
   }, [onClick, amount, allowance, spenderAddress])
+
+  useEffect(() => {
+    if (btnState === BtnState.WaitingApprove && allowance && BigNumber.from(amount).gt(allowance)) {
+      setBtnState(BtnState.WaitingClick)
+      if (onClick) {
+        onClick()
+      }
+    }
+  }, [btnState, allowance])
 
   return (
     <TxButton onClick={pay} {...btnProps}>
