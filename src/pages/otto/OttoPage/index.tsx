@@ -19,6 +19,7 @@ import FirstGenIcon from 'assets/badge/first-gen.png'
 import Constellations from 'assets/constellations'
 import { useIsMyOttos } from 'MyOttosProvider'
 import { DiceBanner } from 'components/DiceBanner'
+import { DicePopup } from 'components/DicePopup'
 import { GetOtto, GetOttoVariables } from '../__generated__/GetOtto'
 import { GET_OTTO } from '../queries'
 import PlayIcon from './icons/play-voice.svg'
@@ -395,6 +396,7 @@ export default function OttoPage() {
           </StyledContentContainer>
         </StyledOttoContainer>
       </StyledOttoPage>
+      <DicePopup />
     </Layout>
   )
 }

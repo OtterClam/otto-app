@@ -1,6 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
 import { ChainId, Config, DAppProvider, useEthers } from '@usedapp/core'
-import { DicePopup } from 'components/DicePopup'
 import MintPopup from 'components/MintPopup'
 import SideMenu from 'components/SideMenu'
 import useApollo from 'hooks/useApollo'
@@ -50,7 +49,6 @@ const ApolloApp = () => {
             <Error />
             <WalletSelector />
             <MintPopup />
-            <DicePopup />
             <SideMenu />
           </StyledApp>
         </MyOttosProvider>
