@@ -235,31 +235,28 @@ function ResultState({ diceRoller, otto }: StateProps) {
   }[event.type]
   const ranking =
     // current ranking + effect of the previous event
-    otto.ranking + (eventIndex === 1 ? diceRoller.dice?.events[0].effect?.ranking ?? 0 : 0)
+    otto.ranking + (eventIndex === 1 ? diceRoller.dice?.events[0].effects?.ranking ?? 0 : 0)
 
   const answerQuestion = (optionIndex: number) => diceRoller.answerQuestion(eventIndex, optionIndex)
 
   return (
     <StyledResultStateContainer>
       <Headline>
-        <StyledResultTitleInner>
-          {`${t('dice_popup.result.title', { index: eventIndex + 1 })}\n\n${t(
-            `dice_popup.result.subtitle.${event.type}`
-          )}`}
-        </StyledResultTitleInner>
+        <StyledResultTitleInner>{t('dice_popup.result.title', { index: eventIndex + 1 })}</StyledResultTitleInner>
+        <StyledResultTitleInner>{event.event}</StyledResultTitleInner>
       </Headline>
       <StyledResultImage background={bg} />
-      {event.effect && (
-        <StyledRibbonText Typography={ContentExtraSmall}>BRS {numberWithSign(event.effect.brs)}</StyledRibbonText>
+      {event.effects && (
+        <StyledRibbonText Typography={ContentExtraSmall}>BRS {numberWithSign(event.effects.brs)}</StyledRibbonText>
       )}
-      {event.type !== EventType.Question && event.effect && (
+      {event.type !== EventType.Question && event.effects && (
         <>
           <StyledEventEffect image={otto.image}>
             <StyledEventEffectContent eventType={event.type}>
               <MarkdownWithHtml>
                 {t('dice_popup.result.result.rarity_score', {
                   score: otto.baseRarityScore,
-                  effect: numberWithSign(event.effect.brs),
+                  effect: numberWithSign(event.effects.brs),
                 })}
               </MarkdownWithHtml>
               <StyledResultEffect>
@@ -267,7 +264,7 @@ function ResultState({ diceRoller, otto }: StateProps) {
                 <MarkdownWithHtml>
                   {t('dice_popup.result.result.ranking', {
                     ranking,
-                    effect: numberWithDirection(event.effect.ranking),
+                    effect: numberWithDirection(event.effects.ranking),
                   })}
                 </MarkdownWithHtml>
               </StyledResultEffect>
@@ -299,7 +296,7 @@ function ResultState({ diceRoller, otto }: StateProps) {
       {event.type === EventType.Question && (
         <Question options={event.options ?? []} onChange={answerQuestion}>
           <ContentLarge>
-            <StyledQuestionContent>{t('dice_popup.result.description.question')}</StyledQuestionContent>
+            <StyledQuestionContent>{event.question ?? ''}</StyledQuestionContent>
           </ContentLarge>
         </Question>
       )}

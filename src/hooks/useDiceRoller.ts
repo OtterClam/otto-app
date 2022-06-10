@@ -50,9 +50,11 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
     try {
       setState(State.Processing)
       const tx = await connectContractToSigner(store, {}, library).buyNoChainlink(account, product?.id, 1)
+      await tx.wait()
       setDice(await api.rollTheDice(otto.tokenId, tx.hash))
       setState(State.FirstResult)
     } catch (err) {
+      setState(State.Intro)
       dispatch(setError(err as any))
     }
   }, [otto, account, product, library])

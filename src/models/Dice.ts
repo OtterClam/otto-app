@@ -8,7 +8,7 @@ export interface RawEvent {
   event: string
   question?: string
   options?: string[]
-  effect?: {
+  effects?: {
     brs: number
     ranking: number
   }
@@ -32,7 +32,7 @@ export class Dice {
     this.tx = raw.tx
     this.events = raw.events.map(rawEvent => ({
       ...rawEvent,
-      type: rawEvent.effect ? (rawEvent.effect.brs > 0 ? EventType.Good : EventType.Bad) : EventType.Question,
+      type: rawEvent.effects ? (rawEvent.effects.brs > 0 ? EventType.Good : EventType.Bad) : EventType.Question,
     }))
   }
 }

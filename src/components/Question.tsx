@@ -36,10 +36,11 @@ const StyledOption = styled(ContentLarge.withComponent('button'))<StyledOptionPr
   border: 1px ${props => props.theme.colors.white} solid;
   border-radius: 8px;
   color: ${props => props.theme.colors.white};
-  padding: 0 50px 0 10px;
+  padding: 6px 50px 6px 10px;
+  box-sizing: border-box;
   display: inline-block;
   align-items: center;
-  height: 50px;
+  min-height: 50px;
   display: flex;
   align-items: center;
 

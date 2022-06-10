@@ -439,11 +439,6 @@
     },
     "result": {
       "title": "Event ({{index}}/2)",
-      "subtitle": {
-        "good": "Your otto found a shining clam.",
-        "bad": "Ouch! Otto was attacked by a jellyfish while diving!",
-        "question": "An Event Occurred..."
-      },
       "description": {
         "good": "You're on a roll!",
         "bad": "Today isn’t your lucky day, but things could turn around...",

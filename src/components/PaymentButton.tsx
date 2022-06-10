@@ -35,6 +35,7 @@ export default function PaymentButton({
   amount,
   // TxButtonProps
   onClick,
+  disabled,
   ...btnProps
 }: PaymentButtonProps) {
   const addresses = useContractAddresses()
@@ -44,7 +45,8 @@ export default function PaymentButton({
   const [btnState, setBtnState] = useState(BtnState.WaitingClick)
   const { account, chainId } = useEthers()
   const allowance = useTokenAllowance(tokenAddress, account, spenderAddress, { chainId })
-  const { approve } = useApprove(tokenAddress)
+  const { approve, approveState } = useApprove(tokenAddress)
+  const loading = btnState === BtnState.WaitingApprove
 
   const pay = useCallback(() => {
     if (!allowance || BigNumber.from(amount).gt(allowance)) {
@@ -58,7 +60,7 @@ export default function PaymentButton({
   }, [onClick, amount, allowance, spenderAddress])
 
   useEffect(() => {
-    if (btnState === BtnState.WaitingApprove && allowance && BigNumber.from(amount).gt(allowance)) {
+    if (btnState === BtnState.WaitingApprove && allowance && BigNumber.from(amount).lte(allowance)) {
       setBtnState(BtnState.WaitingClick)
       if (onClick) {
         onClick()
@@ -66,8 +68,14 @@ export default function PaymentButton({
     }
   }, [btnState, allowance])
 
+  useEffect(() => {
+    if (approveState.status === 'Exception') {
+      setBtnState(BtnState.WaitingClick)
+    }
+  }, [approveState.status])
+
   return (
-    <TxButton onClick={pay} {...btnProps}>
+    <TxButton onClick={pay} loading={loading} {...btnProps}>
       <StyledWrapper>
         <Price token={token} amount={amount} />
         {children && <StyledButtonText>{children}</StyledButtonText>}
