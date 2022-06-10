@@ -8,6 +8,7 @@ import Otto from 'models/Otto'
 import { useEthers } from '@usedapp/core'
 import Product from 'models/store/Product'
 import { connectContractToSigner } from '@usedapp/core/dist/esm/src/hooks'
+import { useTranslation } from 'react-i18next'
 import useApi from './useApi'
 
 export enum State {
@@ -41,6 +42,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
   const product = useHellDiceProduct()
   const store = useStoreContract()
   const { library } = useEthers()
+  const { i18n } = useTranslation()
 
   const rollTheDice = useCallback(async () => {
     if (!otto || !account || !product || !library) {
@@ -51,7 +53,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
       setState(State.Processing)
       const tx = await connectContractToSigner(store, {}, library).buyNoChainlink(account, product?.id, 1)
       await tx.wait()
-      setDice(await api.rollTheDice(otto.tokenId, tx.hash))
+      setDice(await api.rollTheDice(otto.tokenId, tx.hash, i18n.resolvedLanguage))
       setState(State.FirstResult)
     } catch (err) {
       setState(State.Intro)
@@ -65,7 +67,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
         return
       }
       api
-        .answerDiceQuestion(otto.tokenId, dice.tx, index, answer)
+        .answerDiceQuestion(otto.tokenId, dice.tx, index, answer, i18n.resolvedLanguage)
         .then(setDice)
         .catch(err => dispatch(setError(err)))
     },
