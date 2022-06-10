@@ -2,7 +2,7 @@ import Fullscreen from 'components/Fullscreen'
 import { useDispatch, useSelector } from 'react-redux'
 import bg from 'assets/dice-of-destiny-bg.jpg'
 import hell from 'assets/hell.png'
-import loading from 'assets/dice-loading.png'
+import DiceLoading from 'components/DiceLoading'
 import styled from 'styled-components/macro'
 import { hideDicePopup, selectOttoInTheHell } from 'store/uiSlice'
 import { ContentLarge, ContentExtraSmall, Display3, Headline, ContentSmall, ContentMedium } from 'styles/typography'
@@ -63,13 +63,6 @@ const StyledCloseButton = styled(CloseButton)`
   position: absolute;
   top: 20px;
   right: 20px;
-`
-
-const StyledProcessingImage = styled.div`
-  width: 440px;
-  height: 320px;
-  background: no-repeat right top / 266px 266px url(${loading}), no-repeat left bottom / 266px 266px url(${loading});
-  margin-bottom: 20px;
 `
 
 const StyledProcessingContent = styled(ContentLarge)`
@@ -222,7 +215,7 @@ function ProcessingState() {
 
   return (
     <StyledProcessingStateContainer>
-      <StyledProcessingImage />
+      <DiceLoading />
       <StyledProcessingContent>
         <StyledProcessingContentInner>{t('dice_popup.processing.content')}</StyledProcessingContentInner>
       </StyledProcessingContent>
