@@ -1,5 +1,4 @@
 import { Handler } from '@netlify/functions'
-import axios from 'axios'
 import { getApi } from 'libs/api'
 import Twitter from 'twitter-lite'
 import redis from '../libs/redis'

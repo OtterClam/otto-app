@@ -72,7 +72,8 @@ const StyledBody = styled(BorderContainer)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  @media (${({ theme }) => theme.breakpoints.mobile}) {
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
     padding: 42px 15px;
   }
 `

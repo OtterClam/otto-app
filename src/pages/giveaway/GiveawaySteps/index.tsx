@@ -1,6 +1,6 @@
 import Button from 'components/Button'
 import { useClaimGiveaway } from 'contracts/functions'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { ContentLarge, Headline } from 'styles/typography'
@@ -88,6 +88,7 @@ export default function GiveawaySteps() {
   const [giveawayData, setGiveawayData] = useState<SuccessResponse | null>(null)
   const [step, setStep] = useState(Steps.ConnectWallet)
   const { claimState, claim, resetClaim } = useClaimGiveaway()
+  const stepsRef = useRef<HTMLDivElement>(null)
   const onClaim = () => {
     if (giveawayData) {
       claim({ itemId: giveawayData?.item_id, ...giveawayData })
@@ -99,8 +100,13 @@ export default function GiveawaySteps() {
       resetClaim()
     }
   }, [claimState])
+  useEffect(() => {
+    if (step === Steps.JoinDiscord || step === Steps.InputInvitationCode) {
+      stepsRef.current?.scrollIntoView()
+    }
+  }, [step])
   return (
-    <StyledSteps>
+    <StyledSteps ref={stepsRef}>
       <StyledDrawing />
       <StyledBottomLeftDrawing />
       <StyledBottomRightDrawing />
