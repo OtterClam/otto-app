@@ -1,11 +1,3 @@
-import assert from 'assert'
-
-export enum DiceStatus {
-  WaitingAnswer = 'waiting_anwser',
-  Success = 'success',
-  Pending = 'pending',
-}
-
 export enum EventType {
   Good = 'good',
   Bad = 'bad',
@@ -13,11 +5,13 @@ export enum EventType {
 }
 
 export interface RawEvent {
+  event: string
+  question?: string
+  options?: string[]
   effect?: {
     brs: number
     ranking: number
   }
-  questions?: string[]
 }
 
 export interface Event extends RawEvent {
@@ -25,22 +19,17 @@ export interface Event extends RawEvent {
 }
 
 export interface RawDice {
-  id: string
-  status: string
+  tx: string
   events: RawEvent[]
 }
 
 export class Dice {
-  public readonly id: string
-
-  public readonly status: DiceStatus
+  public readonly tx: string
 
   public readonly events: Event[]
 
   constructor(raw: RawDice) {
-    assert(Object.values(DiceStatus).includes(raw.status as DiceStatus), `unknown status: ${raw.status}`)
-    this.id = raw.id
-    this.status = raw.status as DiceStatus
+    this.tx = raw.tx
     this.events = raw.events.map(rawEvent => ({
       ...rawEvent,
       type: rawEvent.effect ? (rawEvent.effect.brs > 0 ? EventType.Good : EventType.Bad) : EventType.Question,

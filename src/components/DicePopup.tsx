@@ -9,7 +9,6 @@ import { ContentLarge, ContentExtraSmall, Display3, Headline, ContentSmall, Cont
 import CloseButton from 'components/CloseButton'
 import { FC } from 'react'
 import { DiceRoller, State, useDiceRoller } from 'hooks/useDiceRoller'
-import { ethers } from 'ethers'
 import { Token } from 'constant'
 import useContractAddresses from 'hooks/useContractAddresses'
 import good from 'assets/dice-result-good.png'
@@ -26,8 +25,6 @@ import Button from 'components/Button'
 import MarkdownWithHtml from 'components/MarkdownWithHtml'
 import skull from 'assets/skull.png'
 import rankingBadge from 'assets/ranking.png'
-
-const DicePrice = ethers.utils.parseUnits('1', 9)
 
 const StyledHellImage = styled.div`
   background: no-repeat center center / 180px 180px url(${hell});
@@ -193,7 +190,7 @@ interface StateProps {
 }
 
 function IntroState({ diceRoller, otto }: StateProps) {
-  const { HELL_DICE } = useContractAddresses()
+  const { OTTOPIA_STORE } = useContractAddresses()
   const { t } = useTranslation()
 
   return (
@@ -207,10 +204,11 @@ function IntroState({ diceRoller, otto }: StateProps) {
       <StyledIntroCallToAction>{t('dice_popup.intro.call_to_action')}</StyledIntroCallToAction>
       <PaymentButton
         padding="6px 12px 3px"
-        spenderAddress={HELL_DICE}
+        spenderAddress={OTTOPIA_STORE}
         Typography={Headline}
         token={Token.Clam}
-        amount={DicePrice}
+        disabled={!diceRoller.product?.price}
+        amount={diceRoller.product?.price ?? '0'}
         onClick={diceRoller.rollTheDice}
       >
         {t('dice_popup.intro.start_button')}
@@ -234,9 +232,9 @@ function ProcessingState() {
 
 function ResultState({ diceRoller, otto }: StateProps) {
   const { t } = useTranslation()
-  const { HELL_DICE } = useContractAddresses()
+  const { OTTOPIA_STORE } = useContractAddresses()
   const eventIndex = diceRoller.state === State.FirstResult ? 0 : 1
-  const event = diceRoller.dice?.events[eventIndex] ?? { type: EventType.Good }
+  const event = diceRoller.dice?.events[eventIndex] ?? { event: '', type: EventType.Good }
   const bg = {
     [EventType.Good]: good,
     [EventType.Bad]: bad,
@@ -293,10 +291,11 @@ function ResultState({ diceRoller, otto }: StateProps) {
           {diceRoller.state === State.SecondResult && (
             <PaymentButton
               padding="6px 12px 3px"
-              spenderAddress={HELL_DICE}
+              spenderAddress={OTTOPIA_STORE}
               Typography={Headline}
               token={Token.Clam}
-              amount={DicePrice}
+              disabled={!diceRoller.product?.price}
+              amount={diceRoller.product?.price ?? '0'}
               onClick={diceRoller.rollTheDice}
             >
               {t('dice_popup.play_again_button')}
@@ -305,7 +304,7 @@ function ResultState({ diceRoller, otto }: StateProps) {
         </>
       )}
       {event.type === EventType.Question && (
-        <Question options={event.questions ?? []} onChange={answerQuestion}>
+        <Question options={event.options ?? []} onChange={answerQuestion}>
           <ContentLarge>
             <StyledQuestionContent>{t('dice_popup.result.description.question')}</StyledQuestionContent>
           </ContentLarge>
@@ -324,7 +323,7 @@ const stateView: { [key: string]: FC<StateProps> } = {
 
 export function DicePopup() {
   const otto = useSelector(selectOttoInTheHell)
-  const diceRoller = useDiceRoller()
+  const diceRoller = useDiceRoller(otto)
   const StateView = stateView[diceRoller.state]
   const dispatch = useDispatch()
   const close = () => {

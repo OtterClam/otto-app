@@ -6,7 +6,7 @@ import { useApprove } from 'contracts/functions'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useCallback } from 'react'
 import styled from 'styled-components'
-import { ethers } from 'ethers'
+import { ethers, BigNumber } from 'ethers'
 
 export interface PaymentButtonProps extends PriceProps, TxButtonProps {
   spenderAddress: string
@@ -41,7 +41,7 @@ export default function PaymentButton({
   const { approve } = useApprove(tokenAddress)
 
   const pay = useCallback(() => {
-    if (allowance && allowance.gte(amount)) {
+    if (!allowance || BigNumber.from(amount).gt(allowance)) {
       approve(spenderAddress, ethers.constants.MaxUint256)
       return
     }

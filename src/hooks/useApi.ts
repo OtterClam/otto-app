@@ -69,33 +69,16 @@ export class Api {
     }
   }
 
-  public async rollTheDice(): Promise<Dice> {
-    await new Promise(resolve => {
-      setTimeout(() => {
-        resolve(1)
-      }, 1000)
-    })
-    return new Dice({
-      id: 'test',
-      status: 'waiting_anwser',
-      events: [{ effect: { brs: 100, ranking: 10 } }, { questions: ['test1', 'abc', '222'] }],
-    })
+  public async rollTheDice(ottoId: string, tx: string): Promise<Dice> {
+    return this.axios.post(`/ottos/${ottoId}/helldice/${tx}`).then(res => res.data)
   }
 
-  public async getDice(id?: string): Promise<Dice> {
-    return this.rollTheDice()
+  public async getDice(ottoId: string, tx = ''): Promise<Dice> {
+    return this.axios.get(`/ottos/${ottoId}/helldice/${tx}`).then(res => res.data)
   }
 
-  public async answerDiceQuestion(diceId: string, index: number, answer: number): Promise<Dice> {
-    return new Dice({
-      id: 'test',
-      status: 'waiting_anwser',
-      events: [{ effect: { brs: 100, ranking: 10 } }, { effect: { brs: -100, ranking: -10 } }],
-    })
-  }
-
-  public async retryADice(diceId: string): Promise<Dice> {
-    return this.rollTheDice()
+  public async answerDiceQuestion(ottoId: string, tx: string, index: number, answer: number): Promise<Dice> {
+    return this.axios.put(`/ottos/${ottoId}/helldice/${tx}/events/${index}`, { answer }).then(res => res.data)
   }
 }
 

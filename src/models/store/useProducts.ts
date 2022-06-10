@@ -44,6 +44,7 @@ const PresetImages: Record<string, any> = {
     3: Diamond3,
     10: Diamond10,
   },
+  helldice: {},
 }
 
 export default function useProducts() {
