@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react'
 import { Dice, EventEffects } from 'models/Dice'
 import { setError } from 'store/errorSlice'
 import useRarityEpoch from 'hooks/useRarityEpoch'
+import { numberWithSign } from 'helpers/number'
 import MarkdownWithHtml from './MarkdownWithHtml'
 import StyledRichContent from './RichContent'
 
@@ -141,7 +142,9 @@ export function DiceBanner({ otto }: DiceBannerProps) {
         <ul>
           {dices.length > 0 && (
             <li>
-              <MarkdownWithHtml>{t('dice_banner.effects', { times: dices.length, brs: effects.brs })}</MarkdownWithHtml>
+              <MarkdownWithHtml>
+                {t('dice_banner.effects', { times: dices.length, brs: numberWithSign(effects.brs) })}
+              </MarkdownWithHtml>
             </li>
           )}
           <li>
