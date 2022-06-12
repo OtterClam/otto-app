@@ -1,14 +1,20 @@
 import Otto from 'models/Otto'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 import hell from 'assets/hell.png'
 import bg from 'assets/dice-of-destiny-bg.jpg'
 import { ContentSmall, Headline } from 'styles/typography'
 import Button from 'components/Button'
+import useApi from 'hooks/useApi'
 import { useBreakPoints } from 'hooks/useMediaQuery'
-import { showDicePopup } from 'store/uiSlice'
+import { selectOttoInTheHell, showDicePopup } from 'store/uiSlice'
 import { useTranslation } from 'react-i18next'
+import { useEffect, useState } from 'react'
+import { Dice, EventEffects } from 'models/Dice'
+import { setError } from 'store/errorSlice'
+import useRarityEpoch from 'hooks/useRarityEpoch'
 import MarkdownWithHtml from './MarkdownWithHtml'
+import StyledRichContent from './RichContent'
 
 const StyledContainer = styled.div`
   position: relative;
@@ -64,7 +70,7 @@ const StyledTitle = styled(Headline)`
   }
 `
 
-const StyledContent = styled(ContentSmall.withComponent('div'))`
+const StyledContent = styled(ContentSmall.withComponent(StyledRichContent))`
   display: block;
   font-size: 16px !important;
   color: ${props => props.theme.colors.white};
@@ -85,11 +91,44 @@ export interface DiceBannerProps {
   otto: Otto
 }
 
+const useAllDice = (ottoId: string) => {
+  const ottoInTheHell = useSelector(selectOttoInTheHell)
+  const api = useApi()
+  const { i18n } = useTranslation()
+  const [diceList, setDiceList] = useState<Dice[]>([])
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (!ottoId) {
+      return
+    }
+    api
+      .getAllDice(ottoId, i18n.resolvedLanguage)
+      .then(diceList => setDiceList(diceList))
+      .catch(err => dispatch(setError(err)))
+  }, [api, ottoId, i18n.resolvedLanguage, ottoInTheHell])
+
+  return diceList
+}
+
 export function DiceBanner({ otto }: DiceBannerProps) {
   const { isMobile } = useBreakPoints()
   const dispatch = useDispatch()
   const openPopup = () => dispatch(showDicePopup(otto.toJSON()))
   const { t } = useTranslation()
+  const dices = useAllDice(otto.tokenId)
+  const { epochEnd } = useRarityEpoch()
+  const effects = dices
+    .map(dice => dice.events)
+    .reduce(
+      (effects, events) =>
+        events.reduce((effects, event) => {
+          effects.brs += event.effects?.brs ?? 0
+          effects.ranking += event.effects?.ranking ?? 0
+          return effects
+        }, effects),
+      { brs: 0, ranking: 0 } as EventEffects
+    )
 
   return (
     <StyledContainer>
@@ -99,10 +138,22 @@ export function DiceBanner({ otto }: DiceBannerProps) {
       <StyledTitle>{t('dice_banner.title')}</StyledTitle>
       <StyledContent>
         <MarkdownWithHtml>{t('dice_banner.description')}</MarkdownWithHtml>
+        <ul>
+          {dices.length > 0 && (
+            <li>
+              <MarkdownWithHtml>{t('dice_banner.effects', { items: dices.length, brs: effects.brs })}</MarkdownWithHtml>
+            </li>
+          )}
+          <li>
+            <MarkdownWithHtml>
+              {t('dice_banner.endTime', { time: new Date(epochEnd).toLocaleString() })}
+            </MarkdownWithHtml>
+          </li>
+        </ul>
       </StyledContent>
       <StyledButtonContainer>
         <Button padding={isMobile ? undefined : '6px 18px'} Typography={Headline} onClick={openPopup}>
-          Give It a Try
+          {t('dice_banner.button')}
         </Button>
       </StyledButtonContainer>
     </StyledContainer>

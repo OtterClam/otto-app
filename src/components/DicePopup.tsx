@@ -25,6 +25,7 @@ import Button from 'components/Button'
 import MarkdownWithHtml from 'components/MarkdownWithHtml'
 import skull from 'assets/skull.png'
 import rankingBadge from 'assets/ranking.png'
+import StyledRichContent from './RichContent'
 
 const StyledHellImage = styled.div`
   background: no-repeat center center / 180px 180px url(${hell});
@@ -191,7 +192,9 @@ function IntroState({ diceRoller, otto }: StateProps) {
       <StyledHellImage />
       <StyledIntroTitle>{t('dice_popup.intro.title')}</StyledIntroTitle>
       <ContentExtraSmall>
-        <MarkdownWithHtml>{t('dice_popup.intro.description')}</MarkdownWithHtml>
+        <StyledRichContent>
+          <MarkdownWithHtml>{t('dice_popup.intro.description')}</MarkdownWithHtml>
+        </StyledRichContent>
       </ContentExtraSmall>
       <StyledSkullImage src={skull} />
       <StyledIntroCallToAction>{t('dice_popup.intro.call_to_action')}</StyledIntroCallToAction>

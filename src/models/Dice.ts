@@ -8,10 +8,12 @@ export interface RawEvent {
   event: string
   question?: string
   options?: string[]
-  effects?: {
-    brs: number
-    ranking: number
-  }
+  effects?: EventEffects
+}
+
+export interface EventEffects {
+  brs: number
+  ranking: number
 }
 
 export interface Event extends RawEvent {

@@ -79,6 +79,12 @@ export class Api {
     return this.axios.get(`/ottos/${ottoId}/helldice/${tx}`, { params: { lang } }).then(res => new Dice(res.data))
   }
 
+  public async getAllDice(ottoId: string, lang = ''): Promise<Dice[]> {
+    return this.axios
+      .get(`/ottos/${ottoId}/helldice`, { params: { lang } })
+      .then(res => res.data.map((rawData: any) => new Dice(rawData)))
+  }
+
   public async answerDiceQuestion(
     ottoId: string,
     tx: string,

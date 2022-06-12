@@ -424,7 +424,10 @@
   "dice_banner": {
     "badge": "Special Offer",
     "title": "Roll a Dice of Destiny!",
-    "description": "The Dice of Destiny gives a chance to temporarily boost your BRS for the current epoch in Rarity Competition, but there’s a possibility that your BRS score will be lowered.\n* The Dice of Destiny was rolled <strong>x1</strong> and has blessed this Otto with <strong>BRS +20</strong>\n* The dice effect will clear and reset on June 8 at 0:00 (UTC+0)"
+    "button": "Give It a Try",
+    "description": "The Dice of Destiny gives a chance to temporarily boost your BRS for the current epoch in Rarity Competition, but there’s a possibility that your BRS score will be lowered.",
+    "effects": "he Dice of Destiny was rolled x{{ times }} and has blessed this Otto with BRS {{ brs }}",
+    "endTime": "The dice effect will clear and reset at {{ time }}"
   },
   "dice_popup": {
     "play_again_button": "Roll the Dice",
