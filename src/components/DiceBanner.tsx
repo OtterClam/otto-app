@@ -141,7 +141,7 @@ export function DiceBanner({ otto }: DiceBannerProps) {
         <ul>
           {dices.length > 0 && (
             <li>
-              <MarkdownWithHtml>{t('dice_banner.effects', { items: dices.length, brs: effects.brs })}</MarkdownWithHtml>
+              <MarkdownWithHtml>{t('dice_banner.effects', { times: dices.length, brs: effects.brs })}</MarkdownWithHtml>
             </li>
           )}
           <li>
