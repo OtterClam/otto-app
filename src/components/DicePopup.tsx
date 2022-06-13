@@ -262,7 +262,7 @@ function ResultState({ diceRoller, otto }: StateProps) {
             <StyledResultTitleInner>{event.response}</StyledResultTitleInner>
           </>
         )}
-        <StyledResultTitleInner>{event.event}</StyledResultTitleInner>
+        {!event.answer && <StyledResultTitleInner>{event.event}</StyledResultTitleInner>}
       </Headline>
       <StyledResultImage background={bg} />
       {event.effects && (
