@@ -36,6 +36,9 @@ const StyledHellImage = styled.div`
 const StyledContainer = styled.div`
   padding: 35px 75px;
   color: ${props => props.theme.colors.white};
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    padding: 25px 45px;
+  }
 `
 
 const StyledIntroStateContainer = styled.div`
@@ -325,7 +328,7 @@ export function DicePopup() {
   }
 
   return (
-    <Fullscreen show={Boolean(otto)} background={`no-repeat center center / 870px 867px url(${bg})`}>
+    <Fullscreen show={Boolean(otto)} background={`no-repeat center center / cover url(${bg})`}>
       {diceRoller.state !== State.Processing}
       <StyledCloseButton color="white" onClose={close} />
       <StyledContainer>{otto && <StateView otto={otto} diceRoller={diceRoller} />}</StyledContainer>
