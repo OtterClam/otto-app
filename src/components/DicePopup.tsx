@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import bg from 'assets/dice-of-destiny-bg.jpg'
 import hell from 'assets/hell.png'
 import DiceLoading from 'components/DiceLoading'
-import styled from 'styled-components/macro'
+import styled, { useTheme } from 'styled-components/macro'
 import { hideDicePopup, selectOttoInTheHell } from 'store/uiSlice'
 import { ContentLarge, ContentExtraSmall, Display3, Headline, ContentSmall, ContentMedium } from 'styles/typography'
 import CloseButton from 'components/CloseButton'
@@ -181,6 +181,10 @@ const StyledQuestionContent = styled(MarkdownWithHtml)`
   margin-bottom: 20px;
 `
 
+const StyledFullscreenContainer = styled.div`
+  box-shadow: 0px 0px 0px 6px ${props => props.theme.colors.crownYellow} inset;
+`
+
 interface StateProps {
   otto: Otto
   diceRoller: DiceRoller
@@ -326,6 +330,7 @@ const stateView: { [key: string]: FC<StateProps> } = {
 }
 
 export function DicePopup() {
+  const theme = useTheme()
   const otto = useSelector(selectOttoInTheHell)
   const diceRoller = useDiceRoller(otto)
   const StateView = stateView[diceRoller.state]
@@ -336,10 +341,15 @@ export function DicePopup() {
   }
 
   return (
-    <Fullscreen show={Boolean(otto)} background={`no-repeat center center / cover url(${bg})`}>
-      {diceRoller.state !== State.Processing}
-      <StyledCloseButton color="white" onClose={close} />
-      <StyledContainer>{otto && <StateView otto={otto} diceRoller={diceRoller} />}</StyledContainer>
+    <Fullscreen
+      show={Boolean(otto)}
+      background={`no-repeat center center / cover url(${bg}), ${theme.colors.otterBlack}`}
+    >
+      <StyledFullscreenContainer>
+        {diceRoller.state !== State.Processing}
+        <StyledCloseButton color="white" onClose={close} />
+        <StyledContainer>{otto && <StateView otto={otto} diceRoller={diceRoller} />}</StyledContainer>
+      </StyledFullscreenContainer>
     </Fullscreen>
   )
 }
