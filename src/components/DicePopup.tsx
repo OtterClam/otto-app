@@ -365,7 +365,9 @@ export function DicePopup() {
     >
       <StyledFullscreenContainer>
         {diceRoller.state !== State.Processing && <StyledCloseButton color="white" onClose={close} />}
-        <StyledContainer>{otto && <StateView otto={otto} diceRoller={diceRoller} />}</StyledContainer>
+        <StyledContainer>
+          {otto && <StateView key={diceRoller.state} otto={otto} diceRoller={diceRoller} />}
+        </StyledContainer>
       </StyledFullscreenContainer>
     </Fullscreen>
   )
