@@ -4,36 +4,36 @@
   "connect_help_text": "請連接你的錢包來參與阿獺王國吧",
   "connect_wallet": "連接錢包",
   "dice_banner": {
-    "badge": "Special Offer",
-    "button": "Give It a Try",
-    "description": "The Dice of Destiny gives a chance to temporarily boost your BRS for the current epoch in Rarity Competition, but there’s a possibility that your BRS score will be lowered.",
-    "effects": "he Dice of Destiny was rolled <strong>x{{ times }}</strong> and has blessed this Otto with BRS <strong>{{ brs }}</strong>",
-    "endTime": "The dice effect will clear and reset at {{ time }}",
-    "title": "Roll a Dice of Destiny!"
+    "badge": "特殊活動",
+    "button": "試試手氣！",
+    "description": "地獄骰子有機會暫時提升你的阿獺在這輪稀有度比賽的稀有度；但如果你很衰，也有可能會讓稀有度更低。",
+    "effects": "地獄骰子已被骰 <strong>x{{ times }}</strong> 次，且已影響 BRS <strong>{{ brs }}</strong>",
+    "endTime": "地獄骰子的稀有度影響在 {{ time }} 將會重置",
+    "title": "稀有度地獄骰子"
   },
   "dice_popup": {
     "intro": {
-      "call_to_action": "Get ready to face your destiny?",
-      "description": "The Dice of Destiny gives a chance to temporarily boost up your BRS for the current epoch in Rarity Competition, but there’s possibility that you will lose some BRS as well.\n\n* Each roll produces a single, randomized result out of dozens of possible results.\n* Some of the results have a positive effect on your Otto’s BRS, While some have a negative effect on your Otto’s BRS.\n* Some results require an additional selection. Your choice will determine the fate of your Otto.\n* The BRS effect from rolling the Dice of Destiny only lasts for the current epoch, and will be removed as soon as it ends.\n* The Dice results only affect the Otto you choose to roll a dice for.",
-      "start_button": "Roll the Dice",
-      "title": "Roll the Dice of Destiny!"
+      "call_to_action": "準備好要面對你的命運了嗎？",
+      "description": "地獄骰子每輪會骰出兩個事件，有的事件會暫時提升你的阿獺在這輪稀有度比賽的稀有度，但也有些事件會讓阿獺的稀有度變得更低。\n* 地獄骰子爾偶也會骰出命運選擇題，有的選項會讓阿獺獲得稀有度；但假如你選錯了選項，你的阿獺將會厄運纏身並掉稀有度。\n* 地獄骰子的稀有度加成僅會影響此輪稀有度比賽，此輪結束後，稀有度加成即會移除（不管是加分或扣分）。\n* 地獄骰子僅會影響你選擇的這隻阿獺。",
+      "start_button": "骰骰子！",
+      "title": "機會！命運？交給地獄骰子吧"
     },
-    "play_again_button": "Roll the Dice",
+    "play_again_button": "骰骰子！",
     "processing": {
-      "content": "Processing...\n\nIt might take a few minutes to finish the transaction. Please do not close the window! Thanks for your patience ʕ•̫͡•ʔ b"
+      "content": "處理中...\n\n請不要關閉這個視窗。交易通常很快會完成 ʕ•̫͡•ʔ b"
     },
     "result": {
       "answer": "你選擇了{{ answer }}",
       "description": {
-        "bad": "Today isn’t your lucky day, but things could turn around...",
-        "good": "You're on a roll!",
+        "bad": "你真夠衰，要不要再試一次手氣呢...",
+        "good": "你真幸運！",
         "question": "Although your otto dropped something, who was lucky enough to meet the god Hermes. And Hermes dived into the water and returned with..\n\nHey, you dropped this… "
       },
       "result": {
         "ranking": "{{ ranking }} <strong>({{ effect }})</strong>",
         "rarity_score": "稀有度： {{ score }} <strong>({{ effect }})</strong>"
       },
-      "title": "Event ({{index}}/2)"
+      "title": "事件 ({{index}}/2)"
     }
   },
   "giveaway": {
