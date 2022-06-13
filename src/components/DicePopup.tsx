@@ -183,6 +183,7 @@ const StyledQuestionContent = styled(MarkdownWithHtml)`
 
 const StyledFullscreenContainer = styled.div`
   box-shadow: 0px 0px 0px 6px ${props => props.theme.colors.crownYellow} inset;
+  border-radius: 10px;
 `
 
 interface StateProps {
