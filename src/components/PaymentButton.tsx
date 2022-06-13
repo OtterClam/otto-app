@@ -46,7 +46,7 @@ export default function PaymentButton({
   const { account, chainId } = useEthers()
   const allowance = useTokenAllowance(tokenAddress, account, spenderAddress, { chainId })
   const { approve, approveState } = useApprove(tokenAddress)
-  const loading = btnState === BtnState.WaitingApprove
+  const loading = allowance === undefined || btnState === BtnState.WaitingApprove
 
   const pay = useCallback(() => {
     if (!allowance || BigNumber.from(amount).gt(allowance)) {

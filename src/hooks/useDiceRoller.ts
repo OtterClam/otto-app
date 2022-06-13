@@ -1,6 +1,6 @@
 import { Dice } from 'models/Dice'
-import { useCallback, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { setError } from 'store/errorSlice'
 import useProducts from 'models/store/useProducts'
 import { useStoreContract } from 'contracts/contracts'
@@ -9,6 +9,7 @@ import { useEthers } from '@usedapp/core'
 import Product from 'models/store/Product'
 import { connectContractToSigner } from '@usedapp/core/dist/esm/src/hooks'
 import { useTranslation } from 'react-i18next'
+import { selectOttoInTheHell } from 'store/uiSlice'
 import useApi from './useApi'
 
 export enum State {
@@ -26,6 +27,7 @@ export interface DiceRoller {
   answerQuestion: (index: number, answer: number) => void
   nextEvent: () => void
   reset: () => void
+  loading: boolean
 }
 
 const useHellDiceProduct = () => {
@@ -33,9 +35,35 @@ const useHellDiceProduct = () => {
   return products.find(product => product?.type === 'helldice')
 }
 
+const useUnfinishDice = (ottoId?: string) => {
+  const ottoInTheHell = useSelector(selectOttoInTheHell)
+  const api = useApi()
+  const { i18n } = useTranslation()
+  const [diceList, setDiceList] = useState<Dice[]>([])
+  const [loading, setLoading] = useState(true)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (!ottoId) {
+      return
+    }
+    api
+      .getAllDice(ottoId, i18n.resolvedLanguage)
+      .then(diceList => setDiceList(diceList))
+      .catch(err => dispatch(setError(err)))
+      .then(() => setLoading(true))
+  }, [api, ottoId, i18n.resolvedLanguage, ottoInTheHell])
+
+  return {
+    loading,
+    unfinishDice: diceList.find(dice => dice.events.find(event => !event.effects)),
+  }
+}
+
 export const useDiceRoller = (otto?: Otto): DiceRoller => {
   const api = useApi()
   const dispatch = useDispatch()
+  const { loading, unfinishDice } = useUnfinishDice(otto?.tokenId)
   const [state, setState] = useState(State.Intro)
   const [dice, setDice] = useState<Dice>()
   const { account } = useEthers()
@@ -43,6 +71,13 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
   const store = useStoreContract()
   const { library } = useEthers()
   const { i18n } = useTranslation()
+
+  useEffect(() => {
+    if (unfinishDice) {
+      setDice(unfinishDice)
+      setState(State.FirstResult)
+    }
+  }, [unfinishDice, api])
 
   const rollTheDice = useCallback(async () => {
     if (!otto || !account || !product || !library) {
@@ -91,5 +126,6 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
     nextEvent,
     reset,
     product,
+    loading,
   }
 }

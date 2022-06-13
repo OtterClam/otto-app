@@ -206,7 +206,7 @@ function IntroState({ diceRoller, otto }: StateProps) {
         spenderAddress={OTTOPIA_STORE}
         Typography={Headline}
         token={Token.Clam}
-        disabled={!diceRoller.product?.price}
+        disabled={!diceRoller.product?.price || diceRoller.loading}
         amount={diceRoller.product?.price ?? '0'}
         onClick={diceRoller.rollTheDice}
       >
