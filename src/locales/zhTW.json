@@ -85,9 +85,9 @@
       "coming_soon": "即將登場!",
       "get_updated": "在 Discord 獲得最新情報",
       "reward_at": "獎金發放時間: 即將登場!",
-      "round_end": "This round has ended and the rewards have been granted.",
+      "round_end": "此輪比賽已結束且獎勵已發送。",
       "title": "這一輪比賽總獎金",
-      "tooltip": "The ranking and estimated rewards on the leaderboard will change until the displayed time. The final ranking and prizes will be determined by the snapshot of at that time."
+      "tooltip": "排行榜上的名次及預估獎金會持續變動直到顯示時間歸零，而最終名次及獎勵會透過結束當下的截圖畫面決定。"
     },
     "item_desc": "裝備稀有物品讓你的阿獺擁有更高的稀有值，或者你也可以直接鑄造傳送門招喚一隻全新的阿獺！",
     "mint_portal_link": "鑄造傳送門 >",
