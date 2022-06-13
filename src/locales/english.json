@@ -3,6 +3,39 @@
   "close": "Close",
   "connect_help_text": "Please connect wallet to continue playing.",
   "connect_wallet": "Connect Wallet",
+  "dice_banner": {
+    "badge": "Special Offer",
+    "button": "Give It a Try",
+    "description": "The Dice of Destiny gives a chance to temporarily boost your BRS for the current epoch in Rarity Competition, but there’s a possibility that your BRS score will be lowered.",
+    "effects": "he Dice of Destiny was rolled <strong>x{{ times }}</strong> and has blessed this Otto with BRS <strong>{{ brs }}</strong>",
+    "endTime": "The dice effect will clear and reset at {{ time }}",
+    "title": "Roll a Dice of Destiny!"
+  },
+  "dice_popup": {
+    "intro": {
+      "call_to_action": "Get ready to face your destiny?",
+      "description": "The Dice of Destiny gives a chance to temporarily boost up your BRS for the current epoch in Rarity Competition, but there’s possibility that you will lose some BRS as well.\n\n* Each roll produces a single, randomized result out of dozens of possible results.\n* Some of the results have a positive effect on your Otto’s BRS, While some have a negative effect on your Otto’s BRS.\n* Some results require an additional selection. Your choice will determine the fate of your Otto.\n* The BRS effect from rolling the Dice of Destiny only lasts for the current epoch, and will be removed as soon as it ends.\n* The Dice results only affect the Otto you choose to roll a dice for.",
+      "start_button": "Roll the Dice",
+      "title": "Roll the Dice of Destiny!"
+    },
+    "play_again_button": "Roll the Dice",
+    "processing": {
+      "content": "Processing...\n\nIt might take a few minutes to finish the transaction. Please do not close the window! Thanks for your patience ʕ•̫͡•ʔ b"
+    },
+    "result": {
+      "answer": "You choose {{ answer }}",
+      "description": {
+        "bad": "Today isn’t your lucky day, but things could turn around...",
+        "good": "You're on a roll!",
+        "question": "Although your otto dropped something, who was lucky enough to meet the god Hermes. And Hermes dived into the water and returned with..\n\nHey, you dropped this… "
+      },
+      "result": {
+        "ranking": "{{ ranking }} <strong>({{ effect }})</strong>",
+        "rarity_score": "Rarity score: {{ score }} <strong>({{ effect }})</strong>"
+      },
+      "title": "Event ({{index}}/2)"
+    }
+  },
   "giveaway": {
     "faq": {
       "a1": "A Shell Chest is a \"loot\" box that randomly generates equipment that can be applied to (worn by) your Otto NFT. Each Shell Chest contains one piece of wearable equipment. Each Shell Chest generates one of over several hundred different pieces of equipment. Get a Shell Chest to see what kind of cool, powerful equipment awaits your Otto!",
@@ -383,6 +416,9 @@
       "name": "Silver Chest"
     }
   },
+  "question": {
+    "submit_button": "Confirm"
+  },
   "side_menu": {
     "follow_us": "Follow us",
     "select_language": "Select Language"
@@ -420,41 +456,5 @@
     "desc": "Only Polygon Mainnet are supported.",
     "title": "Unsupported Network"
   },
-  "wallet_selector_head": "Connect to a wallet",
-  "dice_banner": {
-    "badge": "Special Offer",
-    "title": "Roll a Dice of Destiny!",
-    "button": "Give It a Try",
-    "description": "The Dice of Destiny gives a chance to temporarily boost your BRS for the current epoch in Rarity Competition, but there’s a possibility that your BRS score will be lowered.",
-    "effects": "he Dice of Destiny was rolled <strong>x{{ times }}</strong> and has blessed this Otto with BRS <strong>{{ brs }}</strong>",
-    "endTime": "The dice effect will clear and reset at {{ time }}"
-  },
-  "dice_popup": {
-    "play_again_button": "Roll the Dice",
-    "intro": {
-      "title": "Roll the Dice of Destiny!",
-      "description": "The Dice of Destiny gives a chance to temporarily boost up your BRS for the current epoch in Rarity Competition, but there’s possibility that you will lose some BRS as well.\n\n* Each roll produces a single, randomized result out of dozens of possible results.\n* Some of the results have a positive effect on your Otto’s BRS, While some have a negative effect on your Otto’s BRS.\n* Some results require an additional selection. Your choice will determine the fate of your Otto.\n* The BRS effect from rolling the Dice of Destiny only lasts for the current epoch, and will be removed as soon as it ends.\n* The Dice results only affect the Otto you choose to roll a dice for.",
-      "call_to_action": "Get ready to face your destiny?",
-      "start_button": "Roll the Dice"
-    },
-    "processing": {
-      "content": "Processing...\n\nIt might take a few minutes to finish the transaction. Please do not close the window! Thanks for your patience ʕ•̫͡•ʔ b"
-    },
-    "result": {
-      "title": "Event ({{index}}/2)",
-      "description": {
-        "good": "You're on a roll!",
-        "bad": "Today isn’t your lucky day, but things could turn around...",
-        "question": "Although your otto dropped something, who was lucky enough to meet the god Hermes. And Hermes dived into the water and returned with..\n\nHey, you dropped this… "
-      },
-      "result": {
-        "rarity_score": "Rarity score: {{ score }} <strong>({{ effect }})</strong>",
-        "ranking": "{{ ranking }} <strong>({{ effect }})</strong>"
-      },
-      "answer": "You choose {{ answer }}"
-    }
-  },
-  "question": {
-    "submit_button": "Confirm"
-  }
+  "wallet_selector_head": "Connect to a wallet"
 }

@@ -3,6 +3,39 @@
   "close": "關閉",
   "connect_help_text": "請連接你的錢包來參與阿獺王國吧",
   "connect_wallet": "連接錢包",
+  "dice_banner": {
+    "badge": "Special Offer",
+    "button": "Give It a Try",
+    "description": "The Dice of Destiny gives a chance to temporarily boost your BRS for the current epoch in Rarity Competition, but there’s a possibility that your BRS score will be lowered.",
+    "effects": "he Dice of Destiny was rolled <strong>x{{ times }}</strong> and has blessed this Otto with BRS <strong>{{ brs }}</strong>",
+    "endTime": "The dice effect will clear and reset at {{ time }}",
+    "title": "Roll a Dice of Destiny!"
+  },
+  "dice_popup": {
+    "intro": {
+      "call_to_action": "Get ready to face your destiny?",
+      "description": "The Dice of Destiny gives a chance to temporarily boost up your BRS for the current epoch in Rarity Competition, but there’s possibility that you will lose some BRS as well.\n\n* Each roll produces a single, randomized result out of dozens of possible results.\n* Some of the results have a positive effect on your Otto’s BRS, While some have a negative effect on your Otto’s BRS.\n* Some results require an additional selection. Your choice will determine the fate of your Otto.\n* The BRS effect from rolling the Dice of Destiny only lasts for the current epoch, and will be removed as soon as it ends.\n* The Dice results only affect the Otto you choose to roll a dice for.",
+      "start_button": "Roll the Dice",
+      "title": "Roll the Dice of Destiny!"
+    },
+    "play_again_button": "Roll the Dice",
+    "processing": {
+      "content": "Processing...\n\nIt might take a few minutes to finish the transaction. Please do not close the window! Thanks for your patience ʕ•̫͡•ʔ b"
+    },
+    "result": {
+      "answer": "你選擇了{{ answer }}",
+      "description": {
+        "bad": "Today isn’t your lucky day, but things could turn around...",
+        "good": "You're on a roll!",
+        "question": "Although your otto dropped something, who was lucky enough to meet the god Hermes. And Hermes dived into the water and returned with..\n\nHey, you dropped this… "
+      },
+      "result": {
+        "ranking": "{{ ranking }} <strong>({{ effect }})</strong>",
+        "rarity_score": "稀有度： {{ score }} <strong>({{ effect }})</strong>"
+      },
+      "title": "Event ({{index}}/2)"
+    }
+  },
   "giveaway": {
     "faq": {
       "a1": "貝殼寶箱是類似 \"福袋\" 的概念，開啟 1 寶箱後可以得到 1 個隨機的裝備，裝備可以穿戴在阿獺身上。快來領取免費的貝殼寶箱來開啟稀有裝備吧!",
@@ -382,6 +415,9 @@
       "must_desc": "R3 道具保證！",
       "name": "白銀寶箱"
     }
+  },
+  "question": {
+    "submit_button": "確認"
   },
   "side_menu": {
     "follow_us": "關注我們",
