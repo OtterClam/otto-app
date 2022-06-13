@@ -1,30 +1,30 @@
-import Fullscreen from 'components/Fullscreen'
-import { useDispatch, useSelector } from 'react-redux'
 import bg from 'assets/dice-of-destiny-bg.jpg'
-import hell from 'assets/hell.png'
-import DiceLoading from 'components/DiceLoading'
-import styled, { useTheme } from 'styled-components/macro'
-import { hideDicePopup, selectOttoInTheHell } from 'store/uiSlice'
-import { ContentLarge, ContentExtraSmall, Display3, Headline, ContentSmall, ContentMedium } from 'styles/typography'
-import CloseButton from 'components/CloseButton'
-import { FC } from 'react'
-import { DiceRoller, State, useDiceRoller } from 'hooks/useDiceRoller'
-import { Token } from 'constant'
-import useContractAddresses from 'hooks/useContractAddresses'
-import good from 'assets/dice-result-good.png'
 import bad from 'assets/dice-result-bad.png'
+import good from 'assets/dice-result-good.png'
 import question from 'assets/dice-result-question.png'
+import hell from 'assets/hell.png'
+import rankingBadge from 'assets/ranking.png'
+import skull from 'assets/skull.png'
+import Button from 'components/Button'
+import CloseButton from 'components/CloseButton'
+import DiceLoading from 'components/DiceLoading'
+import Fullscreen from 'components/Fullscreen'
+import MarkdownWithHtml from 'components/MarkdownWithHtml'
+import PaymentButton from 'components/PaymentButton'
+import { Question } from 'components/Question'
+import RibbonText from 'components/RibbonText'
+import { Token } from 'constant'
+import { numberWithDirection, numberWithSign } from 'helpers/number'
+import useContractAddresses from 'hooks/useContractAddresses'
+import { DiceRoller, State, useDiceRoller } from 'hooks/useDiceRoller'
 import { EventType } from 'models/Dice'
 import Otto from 'models/Otto'
-import { numberWithDirection, numberWithSign } from 'helpers/number'
-import PaymentButton from 'components/PaymentButton'
-import RibbonText from 'components/RibbonText'
+import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Question } from 'components/Question'
-import Button from 'components/Button'
-import MarkdownWithHtml from 'components/MarkdownWithHtml'
-import skull from 'assets/skull.png'
-import rankingBadge from 'assets/ranking.png'
+import { useDispatch, useSelector } from 'react-redux'
+import { hideDicePopup, selectOttoInTheHell } from 'store/uiSlice'
+import styled, { useTheme } from 'styled-components/macro'
+import { ContentExtraSmall, ContentLarge, ContentMedium, ContentSmall, Display3, Headline } from 'styles/typography'
 import StyledRichContent from './RichContent'
 
 const StyledHellImage = styled.div`
@@ -238,7 +238,7 @@ function ResultState({ diceRoller, otto }: StateProps) {
   const { t } = useTranslation()
   const { OTTOPIA_STORE } = useContractAddresses()
   const eventIndex = diceRoller.state === State.FirstResult ? 0 : 1
-  const event = diceRoller.dice?.events[eventIndex] ?? { event: '', type: EventType.Good }
+  const event = diceRoller.dice?.events[eventIndex] ?? { event: '', image: '', type: EventType.Good }
   const bg = {
     [EventType.Good]: good,
     [EventType.Bad]: bad,
@@ -254,7 +254,7 @@ function ResultState({ diceRoller, otto }: StateProps) {
     <StyledResultStateContainer>
       <Headline>
         <StyledResultTitleInner>{t('dice_popup.result.title', { index: eventIndex + 1 })}</StyledResultTitleInner>
-        {event.response && event.answer && (
+        {event.response && event.answer !== undefined && (
           <>
             <StyledResultTitleInner>
               {t('dice_popup.result.answer', { answer: (event.options ?? [])[event.answer] })}
@@ -262,9 +262,9 @@ function ResultState({ diceRoller, otto }: StateProps) {
             <StyledResultTitleInner>{event.response}</StyledResultTitleInner>
           </>
         )}
-        {!event.answer && <StyledResultTitleInner>{event.event}</StyledResultTitleInner>}
+        {!event.response && <StyledResultTitleInner>{event.event}</StyledResultTitleInner>}
       </Headline>
-      <StyledResultImage background={bg} />
+      <StyledResultImage background={event.response ? bg : event.image} />
       {event.effects && (
         <StyledRibbonText Typography={ContentExtraSmall}>BRS {numberWithSign(event.effects.brs)}</StyledRibbonText>
       )}
@@ -294,7 +294,7 @@ function ResultState({ diceRoller, otto }: StateProps) {
           </StyledEventDesc>
           {diceRoller.state === State.FirstResult && (
             <Button padding="6px 48px" Typography={Headline} onClick={diceRoller.nextEvent}>
-              Next
+              {t('dice_popup.result.next_button')}
             </Button>
           )}
           {diceRoller.state === State.SecondResult && (

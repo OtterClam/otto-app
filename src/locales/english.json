@@ -33,7 +33,8 @@
         "ranking": "{{ ranking }} <strong>({{ effect }})</strong>",
         "rarity_score": "Rarity score: {{ score }} <strong>({{ effect }})</strong>"
       },
-      "title": "Event ({{index}}/2)"
+      "title": "Event ({{index}}/2)",
+      "next_button": "Next"
     }
   },
   "giveaway": {

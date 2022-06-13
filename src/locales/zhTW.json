@@ -33,7 +33,8 @@
         "ranking": "{{ ranking }} <strong>({{ effect }})</strong>",
         "rarity_score": "稀有度： {{ score }} <strong>({{ effect }})</strong>"
       },
-      "title": "事件 ({{index}}/2)"
+      "title": "事件 ({{index}}/2)",
+      "next_button": "下一個事件"
     }
   },
   "giveaway": {

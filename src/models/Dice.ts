@@ -6,6 +6,7 @@ export enum EventType {
 
 export interface RawEvent {
   event: string
+  image: string
   question?: string
   options?: string[]
   effects?: EventEffects
