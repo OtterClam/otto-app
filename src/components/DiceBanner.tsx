@@ -14,6 +14,7 @@ import { Dice, EventEffects } from 'models/Dice'
 import { setError } from 'store/errorSlice'
 import useRarityEpoch from 'hooks/useRarityEpoch'
 import { numberWithSign } from 'helpers/number'
+import { useIsMyOttos } from 'MyOttosProvider'
 import MarkdownWithHtml from './MarkdownWithHtml'
 import StyledRichContent from './RichContent'
 
@@ -119,6 +120,7 @@ export function DiceBanner({ otto }: DiceBannerProps) {
   const { t } = useTranslation()
   const dices = useAllDice(otto.tokenId)
   const { epochEnd } = useRarityEpoch()
+  const isMyOtto = useIsMyOttos(otto.tokenId)
   const effects = dices
     .map(dice => dice.events)
     .reduce(
@@ -133,12 +135,14 @@ export function DiceBanner({ otto }: DiceBannerProps) {
 
   return (
     <StyledContainer>
-      <StyledBadgeContainer>
-        <StyledBadge>{t('dice_banner.badge')}</StyledBadge>
-      </StyledBadgeContainer>
+      {isMyOtto && (
+        <StyledBadgeContainer>
+          <StyledBadge>{t('dice_banner.badge')}</StyledBadge>
+        </StyledBadgeContainer>
+      )}
       <StyledTitle>{t('dice_banner.title')}</StyledTitle>
       <StyledContent>
-        <MarkdownWithHtml>{t('dice_banner.description')}</MarkdownWithHtml>
+        {isMyOtto && <MarkdownWithHtml>{t('dice_banner.description')}</MarkdownWithHtml>}
         <ul>
           {dices.length > 0 && (
             <li>
@@ -154,11 +158,13 @@ export function DiceBanner({ otto }: DiceBannerProps) {
           </li>
         </ul>
       </StyledContent>
-      <StyledButtonContainer>
-        <Button padding={isMobile ? undefined : '6px 18px'} Typography={Headline} onClick={openPopup}>
-          {t('dice_banner.button')}
-        </Button>
-      </StyledButtonContainer>
+      {isMyOtto && (
+        <StyledButtonContainer>
+          <Button padding={isMobile ? undefined : '6px 18px'} Typography={Headline} onClick={openPopup}>
+            {t('dice_banner.button')}
+          </Button>
+        </StyledButtonContainer>
+      )}
     </StyledContainer>
   )
 }

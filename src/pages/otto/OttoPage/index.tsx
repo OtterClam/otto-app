@@ -252,7 +252,6 @@ export default function OttoPage() {
     variables: { ottoId },
   })
   const { otto } = useOtto(data?.ottos[0], true)
-  const isMyOtto = useIsMyOttos(otto?.tokenId)
   const infos = useMemo(
     () =>
       otto
@@ -343,7 +342,7 @@ export default function OttoPage() {
               </StyledBoostBox>
             )}
 
-            {otto && isMyOtto && <DiceBanner otto={otto} />}
+            {otto && <DiceBanner otto={otto} />}
 
             <StyledDescription>
               {!otto ? (
