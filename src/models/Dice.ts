@@ -9,6 +9,7 @@ export interface RawEvent {
   question?: string
   options?: string[]
   effects?: EventEffects
+  response?: string
 }
 
 export interface EventEffects {

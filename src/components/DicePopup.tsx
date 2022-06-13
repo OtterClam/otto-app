@@ -249,6 +249,11 @@ function ResultState({ diceRoller, otto }: StateProps) {
     <StyledResultStateContainer>
       <Headline>
         <StyledResultTitleInner>{t('dice_popup.result.title', { index: eventIndex + 1 })}</StyledResultTitleInner>
+        {event.response && (
+          <StyledResultTitleInner>
+            {t('dice_popup.result.response', { response: event.response })}
+          </StyledResultTitleInner>
+        )}
         <StyledResultTitleInner>{event.event}</StyledResultTitleInner>
       </Headline>
       <StyledResultImage background={bg} />

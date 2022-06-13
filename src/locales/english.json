@@ -450,7 +450,8 @@
       "result": {
         "rarity_score": "Rarity score: {{ score }} <strong>({{ effect }})</strong>",
         "ranking": "{{ ranking }} <strong>({{ effect }})</strong>"
-      }
+      },
+      "response": "You choose {{ response }}"
     }
   },
   "question": {
