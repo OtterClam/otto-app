@@ -3,6 +3,40 @@
   "close": "關閉",
   "connect_help_text": "請連接你的錢包來參與阿獺王國吧",
   "connect_wallet": "連接錢包",
+  "dice_banner": {
+    "badge": "特殊活動",
+    "button": "試試手氣！",
+    "description": "地獄骰子有機會暫時提升你的阿獺在這輪稀有度比賽的稀有度；但如果你很衰，也有可能會讓稀有度更低。",
+    "effects": "地獄骰子已被骰 <strong>x{{ times }}</strong> 次，且已影響 BRS <strong>{{ brs }}</strong>",
+    "endTime": "地獄骰子的稀有度影響在 {{ time }} 將會重置",
+    "title": "稀有度地獄骰子"
+  },
+  "dice_popup": {
+    "intro": {
+      "call_to_action": "準備好要面對你的命運了嗎？",
+      "description": "地獄骰子每輪會骰出兩個事件，有的事件會暫時提升你的阿獺在這輪稀有度比賽的稀有度，但也有些事件會讓阿獺的稀有度變得更低。\n* 地獄骰子爾偶也會骰出命運選擇題，有的選項會讓阿獺獲得稀有度；但假如你選錯了選項，你的阿獺將會厄運纏身並掉稀有度。\n* 地獄骰子的稀有度加成僅會影響此輪稀有度比賽，此輪結束後，稀有度加成即會移除（不管是加分或扣分）。\n* 地獄骰子僅會影響你選擇的這隻阿獺。",
+      "start_button": "骰骰子！",
+      "title": "機會！命運？交給地獄骰子吧"
+    },
+    "play_again_button": "骰骰子！",
+    "processing": {
+      "content": "處理中...\n\n請不要關閉這個視窗。交易通常很快會完成 ʕ•̫͡•ʔ b"
+    },
+    "result": {
+      "answer": "你選擇了{{ answer }}",
+      "description": {
+        "bad": "你真夠衰，要不要再試一次手氣呢...",
+        "good": "你真幸運！",
+        "question": "Although your otto dropped something, who was lucky enough to meet the god Hermes. And Hermes dived into the water and returned with..\n\nHey, you dropped this… "
+      },
+      "result": {
+        "ranking": "{{ ranking }} <strong>({{ effect }})</strong>",
+        "rarity_score": "稀有度： {{ score }} <strong>({{ effect }})</strong>"
+      },
+      "title": "事件 ({{index}}/2)",
+      "next_button": "下一個事件"
+    }
+  },
   "giveaway": {
     "faq": {
       "a1": "貝殼寶箱是類似 \"福袋\" 的概念，開啟 1 寶箱後可以得到 1 個隨機的裝備，裝備可以穿戴在阿獺身上。快來領取免費的貝殼寶箱來開啟稀有裝備吧!",
@@ -382,6 +416,9 @@
       "must_desc": "R3 道具保證！",
       "name": "白銀寶箱"
     }
+  },
+  "question": {
+    "submit_button": "確認"
   },
   "side_menu": {
     "follow_us": "關注我們",

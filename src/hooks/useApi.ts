@@ -1,5 +1,6 @@
 import { ChainId, useEthers } from '@usedapp/core'
 import axios, { Axios } from 'axios'
+import { Dice } from 'models/Dice'
 import Item from 'models/Item'
 import { OttoMeta } from 'models/Otto'
 import { useMemo } from 'react'
@@ -66,6 +67,34 @@ export class Api {
       total_rarity_score: details.base_rarity_score + details.relative_rarity_score,
       ...details,
     }
+  }
+
+  public async rollTheDice(ottoId: string, tx: string, lang?: string): Promise<Dice> {
+    return this.axios
+      .post(`/ottos/${ottoId}/helldice/${tx}`, null, { params: { lang } })
+      .then(res => new Dice(res.data))
+  }
+
+  public async getDice(ottoId: string, tx = '', lang = ''): Promise<Dice> {
+    return this.axios.get(`/ottos/${ottoId}/helldice/${tx}`, { params: { lang } }).then(res => new Dice(res.data))
+  }
+
+  public async getAllDice(ottoId: string, lang = ''): Promise<Dice[]> {
+    return this.axios
+      .get(`/ottos/${ottoId}/helldice`, { params: { lang } })
+      .then(res => res.data.map((rawData: any) => new Dice(rawData)))
+  }
+
+  public async answerDiceQuestion(
+    ottoId: string,
+    tx: string,
+    index: number,
+    answer: number,
+    lang?: string
+  ): Promise<Dice> {
+    return this.axios
+      .put(`/ottos/${ottoId}/helldice/${tx}/events/${index}`, { answer }, { params: { lang } })
+      .then(res => new Dice(res.data))
   }
 }
 

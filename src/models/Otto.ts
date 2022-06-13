@@ -88,14 +88,17 @@ export default class Otto {
     this.relativeRarityScore = this.raw.rrs ? String(this.raw.rrs) : '?'
     this.totalRarityScore = this.raw.rarityScore ? String(this.raw.rarityScore) : '?'
 
-    for (let idx = 0; idx < this.metadata.attributes.length; idx++) {
+    for (let idx = 0; idx < this.metadata.attributes?.length ?? 0; idx++) {
       const { trait_type, value } = this.metadata.attributes[idx]
       if (trait_type === 'Coat of Arms') {
         this.armsImage = String(value)
       }
     }
 
-    for (let idx = 0; idx < this.metadata.otto_traits.length; idx++) {
+    if (!this.metadata.otto_traits) {
+      console.log(this.metadata)
+    }
+    for (let idx = 0; idx < this.metadata.otto_traits?.length ?? 0; idx++) {
       const { trait_type, value } = this.metadata.otto_traits[idx]
       if (trait_type === 'Gender') {
         this.gender = String(value)
@@ -115,7 +118,7 @@ export default class Otto {
     }
 
     if (this.metadata.otto_details) {
-      for (let idx = 0; idx < this.metadata.otto_details.length; idx++) {
+      for (let idx = 0; idx < this.metadata.otto_details?.length ?? 0; idx++) {
         const trait = this.metadata.otto_details[idx]
         if (trait.wearable) {
           this.wearableTraits.push(trait)
@@ -151,7 +154,7 @@ export default class Otto {
   }
 
   get displayAttrs() {
-    return this.metadata.otto_attrs.filter(
+    return (this.metadata.otto_attrs ?? []).filter(
       p => p.trait_type !== 'BRS' && p.trait_type !== 'TRS' && p.trait_type !== 'RRS'
     )
   }
@@ -165,6 +168,17 @@ export default class Otto {
   }
 
   public playVoice() {
-    this.voice.play()
+    this.voice?.play()
+  }
+
+  toJSON() {
+    return {
+      raw: this.raw,
+      metadata: this.metadata,
+    }
+  }
+
+  static fromJSON({ raw, metadata }: ReturnType<Otto['toJSON']>) {
+    return new Otto(raw, metadata)
   }
 }

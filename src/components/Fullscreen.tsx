@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 import styled from 'styled-components/macro'
 
 const StyledPopup = styled.div`
@@ -29,6 +29,9 @@ const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.crownYellow};
   padding: 6px;
   max-width: 880px;
+  max-height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
 
   border: 4px solid ${props => props.theme.colors.otterBlack};
   border-radius: 20px;
@@ -63,6 +66,16 @@ interface Props {
 }
 
 const Fullscreen = ({ show = true, background, children }: Props) => {
+  useEffect(() => {
+    if (show) {
+      document.body.style.overflow = 'hidden'
+
+      return () => {
+        document.body.style.overflow = ''
+      }
+    }
+  }, [show])
+
   if (!show) return null
 
   return (

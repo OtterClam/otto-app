@@ -71,6 +71,16 @@ export const ContentSmall = styled.span`
   }
 `
 
+export const ContentExtraSmall = styled.span`
+  font-family: 'Pangolin', 'naikaifont';
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    font-size: 14px;
+  }
+`
+
 export const Caption = styled.span`
   font-family: 'Pangolin', 'naikaifont';
   font-size: 14px;

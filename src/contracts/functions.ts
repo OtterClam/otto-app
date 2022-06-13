@@ -17,9 +17,9 @@ import {
   useStoreContract,
 } from './contracts'
 
-export const useApprove = () => {
+export const useApprove = (tokenAddress?: string) => {
   const { CLAM } = useContractAddresses()
-  const erc20 = useERC20(CLAM)
+  const erc20 = useERC20(tokenAddress ?? CLAM)
   const { state: approveState, send: approve, resetState: resetApprove } = useContractFunction(erc20, 'approve')
   return { approveState, approve, resetApprove }
 }
