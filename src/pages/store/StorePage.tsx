@@ -100,20 +100,22 @@ export default function StorePage() {
   const [selectedProduct, setSelectedProduct] = useState<GroupedProduct | null>(null)
   const { products } = useProducts()
   const groupedProducts = useMemo(() => {
-    const grouped = products.reduce<Record<string, GroupedProduct>>((acc, product) => {
-      if (!acc[product.type]) {
-        acc[product.type] = {
-          main: product,
-          all: [product],
+    const grouped = products
+      .filter(p => p.type !== 'helldice')
+      .reduce<Record<string, GroupedProduct>>((acc, product) => {
+        if (!acc[product.type]) {
+          acc[product.type] = {
+            main: product,
+            all: [product],
+          }
+        } else {
+          if (product.amount === 1) {
+            acc[product.type].main = product
+          }
+          acc[product.type].all.push(product)
         }
-      } else {
-        if (product.amount === 1) {
-          acc[product.type].main = product
-        }
-        acc[product.type].all.push(product)
-      }
-      return acc
-    }, {})
+        return acc
+      }, {})
     return Object.values(grouped).sort((a, b) => a.main.id.localeCompare(b.main.id))
   }, [products])
   return (
