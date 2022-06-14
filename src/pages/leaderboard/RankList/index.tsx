@@ -268,25 +268,21 @@ const StyledChosenOne = styled(Caption).attrs({ as: 'div' })`
     width: 21px;
     height: 21px;
   }
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    img {
+      width: 18px;
+      height: 18px;
+    }
+  }
 `
 
 const StyledHelldiceBoost = styled(StyledChosenOne)`
   background: ${({ theme }) => theme.colors.lightGray300};
 `
 
-const StyledZodiacSignBonus = styled(Caption).attrs({ as: 'div' })`
-  width: fit-content;
-  display: flex;
-  padding: 5px;
-  gap: 5px;
+const StyledZodiacSignBonus = styled(StyledChosenOne)`
   background: ${({ theme }) => theme.colors.lightGray300};
-  border-radius: 5px;
-  align-items: center;
-
-  img {
-    width: 21px;
-    height: 21px;
-  }
 `
 
 const StyledOttoAvatar = styled.img`
