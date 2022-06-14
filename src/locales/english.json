@@ -140,7 +140,8 @@
       "rrs": "RRS",
       "show_less": "Show less",
       "your_rank": "Your Ottos’ rank currently:",
-      "zodiac_boost": "{{zodiac}} (BRS+50)"
+      "zodiac_boost": "{{zodiac}} (BRS+50)",
+      "hell_dice": "Dice X{{ diceCount }} (BRS{{ boost }})"
     },
     "reward_desc": "The higher your rank, the more prize you will win! All top 50% Ottos can win the rewards.",
     "reward_link": "See how the rank vs prize works >",

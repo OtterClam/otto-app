@@ -1,8 +1,6 @@
 import Button from 'components/Button'
-import useQueryString from 'hooks/useQueryString'
 import useRarityEpoch from 'hooks/useRarityEpoch'
 import Layout from 'Layout'
-import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { createSearchParams, Link, useParams } from 'react-router-dom'
 import styled from 'styled-components/macro'

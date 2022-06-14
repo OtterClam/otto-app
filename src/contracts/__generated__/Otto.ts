@@ -39,13 +39,14 @@ export interface OttoInterface extends utils.Interface {
     "candidates(uint256,uint256)": FunctionFragment;
     "candidatesOf(uint256)": FunctionFragment;
     "decayTarget()": FunctionFragment;
-    "devClose(uint256)": FunctionFragment;
     "devSummon(uint256,uint256,uint256,bool)": FunctionFragment;
+    "epochBoostOf(uint256,uint32)": FunctionFragment;
+    "epochBoosts(uint256,uint32,uint256)": FunctionFragment;
+    "equipable(uint256,uint256)": FunctionFragment;
     "exists(uint256)": FunctionFragment;
+    "genderOf(uint256)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
-    "grantManager(address)": FunctionFragment;
-    "grantMinter(address)": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
     "infos(uint256)": FunctionFragment;
@@ -69,8 +70,6 @@ export interface OttoInterface extends utils.Interface {
     "rawTraitsOf(uint256)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "renounceRole(bytes32,address)": FunctionFragment;
-    "revokeManager(address)": FunctionFragment;
-    "revokeMinter(address)": FunctionFragment;
     "revokeRole(bytes32,address)": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "safeTransferFrom(address,address,uint256,bytes)": FunctionFragment;
@@ -93,6 +92,8 @@ export interface OttoInterface extends utils.Interface {
     "transferChild(uint256,address,address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
+    "updateBaseAttributes(uint256,int16[8])": FunctionFragment;
+    "updateEpochBoost(uint256,uint32,int16[8])": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
     "upgradeV3(address)": FunctionFragment;
@@ -110,13 +111,14 @@ export interface OttoInterface extends utils.Interface {
       | "candidates"
       | "candidatesOf"
       | "decayTarget"
-      | "devClose"
       | "devSummon"
+      | "epochBoostOf"
+      | "epochBoosts"
+      | "equipable"
       | "exists"
+      | "genderOf"
       | "getApproved"
       | "getRoleAdmin"
-      | "grantManager"
-      | "grantMinter"
       | "grantRole"
       | "hasRole"
       | "infos"
@@ -140,8 +142,6 @@ export interface OttoInterface extends utils.Interface {
       | "rawTraitsOf"
       | "renounceOwnership"
       | "renounceRole"
-      | "revokeManager"
-      | "revokeMinter"
       | "revokeRole"
       | "safeTransferFrom(address,address,uint256)"
       | "safeTransferFrom(address,address,uint256,bytes)"
@@ -164,6 +164,8 @@ export interface OttoInterface extends utils.Interface {
       | "transferChild"
       | "transferFrom"
       | "transferOwnership"
+      | "updateBaseAttributes"
+      | "updateEpochBoost"
       | "upgradeTo"
       | "upgradeToAndCall"
       | "upgradeV3"
@@ -207,15 +209,27 @@ export interface OttoInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "devClose",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "devSummon",
     values: [BigNumberish, BigNumberish, BigNumberish, boolean]
   ): string;
   encodeFunctionData(
+    functionFragment: "epochBoostOf",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "epochBoosts",
+    values: [BigNumberish, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "equipable",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "exists",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "genderOf",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -226,11 +240,6 @@ export interface OttoInterface extends utils.Interface {
     functionFragment: "getRoleAdmin",
     values: [BytesLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "grantManager",
-    values: [string]
-  ): string;
-  encodeFunctionData(functionFragment: "grantMinter", values: [string]): string;
   encodeFunctionData(
     functionFragment: "grantRole",
     values: [BytesLike, string]
@@ -310,14 +319,6 @@ export interface OttoInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "renounceRole",
     values: [BytesLike, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "revokeManager",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "revokeMinter",
-    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "revokeRole",
@@ -401,6 +402,14 @@ export interface OttoInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
+  encodeFunctionData(
+    functionFragment: "updateBaseAttributes",
+    values: [BigNumberish, BigNumberish[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateEpochBoost",
+    values: [BigNumberish, BigNumberish, BigNumberish[]]
+  ): string;
   encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
   encodeFunctionData(
     functionFragment: "upgradeToAndCall",
@@ -436,23 +445,24 @@ export interface OttoInterface extends utils.Interface {
     functionFragment: "decayTarget",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "devClose", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "devSummon", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "epochBoostOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "epochBoosts",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "equipable", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "exists", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "genderOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getApproved",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "grantManager",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "grantMinter",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
@@ -509,14 +519,6 @@ export interface OttoInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "renounceRole",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "revokeManager",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "revokeMinter",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
@@ -589,6 +591,14 @@ export interface OttoInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateBaseAttributes",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateEpochBoost",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
@@ -600,10 +610,10 @@ export interface OttoInterface extends utils.Interface {
     "AdminChanged(address,address)": EventFragment;
     "Approval(address,address,uint256)": EventFragment;
     "ApprovalForAll(address,address,bool)": EventFragment;
-    "AttributesChanged(uint256,int16[8])": EventFragment;
     "BaseAttributesChanged(uint256,int16[8])": EventFragment;
     "BaseURIChanged(address,string)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
+    "EpochBoostsChanged(uint256,uint32,int16[9])": EventFragment;
     "ItemEquipped(uint256,uint256)": EventFragment;
     "ItemTookOff(uint256,uint256)": EventFragment;
     "ItemUsed(uint256,uint256)": EventFragment;
@@ -621,10 +631,10 @@ export interface OttoInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ApprovalForAll"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "AttributesChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BaseAttributesChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BaseURIChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "EpochBoostsChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ItemEquipped"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ItemTookOff"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ItemUsed"): EventFragment;
@@ -674,18 +684,6 @@ export type ApprovalForAllEvent = TypedEvent<
 
 export type ApprovalForAllEventFilter = TypedEventFilter<ApprovalForAllEvent>;
 
-export interface AttributesChangedEventObject {
-  tokenId_: BigNumber;
-  attrs_: number[];
-}
-export type AttributesChangedEvent = TypedEvent<
-  [BigNumber, number[]],
-  AttributesChangedEventObject
->;
-
-export type AttributesChangedEventFilter =
-  TypedEventFilter<AttributesChangedEvent>;
-
 export interface BaseAttributesChangedEventObject {
   ottoId_: BigNumber;
   attrs_: number[];
@@ -718,6 +716,19 @@ export type BeaconUpgradedEvent = TypedEvent<
 >;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
+
+export interface EpochBoostsChangedEventObject {
+  ottoId_: BigNumber;
+  epoch_: number;
+  attrs_: number[];
+}
+export type EpochBoostsChangedEvent = TypedEvent<
+  [BigNumber, number, number[]],
+  EpochBoostsChangedEventObject
+>;
+
+export type EpochBoostsChangedEventFilter =
+  TypedEventFilter<EpochBoostsChangedEvent>;
 
 export interface ItemEquippedEventObject {
   ottoId_: BigNumber;
@@ -919,11 +930,6 @@ export interface Otto extends BaseContract {
 
     decayTarget(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    devClose(
-      tokenId_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     devSummon(
       tokenId_: BigNumberish,
       traits_: BigNumberish,
@@ -932,10 +938,34 @@ export interface Otto extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    epochBoostOf(
+      ottoId_: BigNumberish,
+      epoch_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number[]]>;
+
+    epochBoosts(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      arg2: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number]>;
+
+    equipable(
+      ottoId_: BigNumberish,
+      itemId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     exists(
       tokenId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    genderOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number]>;
 
     getApproved(
       tokenId: BigNumberish,
@@ -943,16 +973,6 @@ export interface Otto extends BaseContract {
     ): Promise<[string]>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
-
-    grantManager(
-      manager_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    grantMinter(
-      minter_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
 
     grantRole(
       role: BytesLike,
@@ -1086,16 +1106,6 @@ export interface Otto extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    revokeManager(
-      manager_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    revokeMinter(
-      minter_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     revokeRole(
       role: BytesLike,
       account: string,
@@ -1215,6 +1225,19 @@ export interface Otto extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    updateBaseAttributes(
+      ottoId_: BigNumberish,
+      delta_: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    updateEpochBoost(
+      ottoId_: BigNumberish,
+      epoch_: BigNumberish,
+      delta_: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     upgradeTo(
       newImplementation: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1269,11 +1292,6 @@ export interface Otto extends BaseContract {
 
   decayTarget(overrides?: CallOverrides): Promise<BigNumber>;
 
-  devClose(
-    tokenId_: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   devSummon(
     tokenId_: BigNumberish,
     traits_: BigNumberish,
@@ -1282,7 +1300,28 @@ export interface Otto extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  epochBoostOf(
+    ottoId_: BigNumberish,
+    epoch_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<number[]>;
+
+  epochBoosts(
+    arg0: BigNumberish,
+    arg1: BigNumberish,
+    arg2: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<number>;
+
+  equipable(
+    ottoId_: BigNumberish,
+    itemId_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   exists(tokenId_: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
+  genderOf(tokenId_: BigNumberish, overrides?: CallOverrides): Promise<number>;
 
   getApproved(
     tokenId: BigNumberish,
@@ -1290,16 +1329,6 @@ export interface Otto extends BaseContract {
   ): Promise<string>;
 
   getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
-
-  grantManager(
-    manager_: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  grantMinter(
-    minter_: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
 
   grantRole(
     role: BytesLike,
@@ -1422,16 +1451,6 @@ export interface Otto extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  revokeManager(
-    manager_: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  revokeMinter(
-    minter_: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   revokeRole(
     role: BytesLike,
     account: string,
@@ -1548,6 +1567,19 @@ export interface Otto extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  updateBaseAttributes(
+    ottoId_: BigNumberish,
+    delta_: BigNumberish[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  updateEpochBoost(
+    ottoId_: BigNumberish,
+    epoch_: BigNumberish,
+    delta_: BigNumberish[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   upgradeTo(
     newImplementation: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -1602,8 +1634,6 @@ export interface Otto extends BaseContract {
 
     decayTarget(overrides?: CallOverrides): Promise<BigNumber>;
 
-    devClose(tokenId_: BigNumberish, overrides?: CallOverrides): Promise<void>;
-
     devSummon(
       tokenId_: BigNumberish,
       traits_: BigNumberish,
@@ -1612,7 +1642,31 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    epochBoostOf(
+      ottoId_: BigNumberish,
+      epoch_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<number[]>;
+
+    epochBoosts(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      arg2: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<number>;
+
+    equipable(
+      ottoId_: BigNumberish,
+      itemId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     exists(tokenId_: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
+    genderOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<number>;
 
     getApproved(
       tokenId: BigNumberish,
@@ -1620,10 +1674,6 @@ export interface Otto extends BaseContract {
     ): Promise<string>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
-
-    grantManager(manager_: string, overrides?: CallOverrides): Promise<void>;
-
-    grantMinter(minter_: string, overrides?: CallOverrides): Promise<void>;
 
     grantRole(
       role: BytesLike,
@@ -1752,10 +1802,6 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    revokeManager(manager_: string, overrides?: CallOverrides): Promise<void>;
-
-    revokeMinter(minter_: string, overrides?: CallOverrides): Promise<void>;
-
     revokeRole(
       role: BytesLike,
       account: string,
@@ -1866,6 +1912,19 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    updateBaseAttributes(
+      ottoId_: BigNumberish,
+      delta_: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updateEpochBoost(
+      ottoId_: BigNumberish,
+      epoch_: BigNumberish,
+      delta_: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     upgradeTo(
       newImplementation: string,
       overrides?: CallOverrides
@@ -1912,15 +1971,6 @@ export interface Otto extends BaseContract {
       approved?: null
     ): ApprovalForAllEventFilter;
 
-    "AttributesChanged(uint256,int16[8])"(
-      tokenId_?: BigNumberish | null,
-      attrs_?: null
-    ): AttributesChangedEventFilter;
-    AttributesChanged(
-      tokenId_?: BigNumberish | null,
-      attrs_?: null
-    ): AttributesChangedEventFilter;
-
     "BaseAttributesChanged(uint256,int16[8])"(
       ottoId_?: BigNumberish | null,
       attrs_?: null
@@ -1943,6 +1993,17 @@ export interface Otto extends BaseContract {
       beacon?: string | null
     ): BeaconUpgradedEventFilter;
     BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
+
+    "EpochBoostsChanged(uint256,uint32,int16[9])"(
+      ottoId_?: BigNumberish | null,
+      epoch_?: BigNumberish | null,
+      attrs_?: null
+    ): EpochBoostsChangedEventFilter;
+    EpochBoostsChanged(
+      ottoId_?: BigNumberish | null,
+      epoch_?: BigNumberish | null,
+      attrs_?: null
+    ): EpochBoostsChangedEventFilter;
 
     "ItemEquipped(uint256,uint256)"(
       ottoId_?: BigNumberish | null,
@@ -2097,11 +2158,6 @@ export interface Otto extends BaseContract {
 
     decayTarget(overrides?: CallOverrides): Promise<BigNumber>;
 
-    devClose(
-      tokenId_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     devSummon(
       tokenId_: BigNumberish,
       traits_: BigNumberish,
@@ -2110,7 +2166,31 @@ export interface Otto extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    epochBoostOf(
+      ottoId_: BigNumberish,
+      epoch_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    epochBoosts(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      arg2: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    equipable(
+      ottoId_: BigNumberish,
+      itemId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     exists(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    genderOf(
       tokenId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -2123,16 +2203,6 @@ export interface Otto extends BaseContract {
     getRoleAdmin(
       role: BytesLike,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    grantManager(
-      manager_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    grantMinter(
-      minter_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     grantRole(
@@ -2243,16 +2313,6 @@ export interface Otto extends BaseContract {
     renounceRole(
       role: BytesLike,
       account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    revokeManager(
-      manager_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    revokeMinter(
-      minter_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -2375,6 +2435,19 @@ export interface Otto extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    updateBaseAttributes(
+      ottoId_: BigNumberish,
+      delta_: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    updateEpochBoost(
+      ottoId_: BigNumberish,
+      epoch_: BigNumberish,
+      delta_: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     upgradeTo(
       newImplementation: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -2435,11 +2508,6 @@ export interface Otto extends BaseContract {
 
     decayTarget(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    devClose(
-      tokenId_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     devSummon(
       tokenId_: BigNumberish,
       traits_: BigNumberish,
@@ -2448,7 +2516,31 @@ export interface Otto extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    epochBoostOf(
+      ottoId_: BigNumberish,
+      epoch_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    epochBoosts(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      arg2: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    equipable(
+      ottoId_: BigNumberish,
+      itemId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     exists(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    genderOf(
       tokenId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -2461,16 +2553,6 @@ export interface Otto extends BaseContract {
     getRoleAdmin(
       role: BytesLike,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    grantManager(
-      manager_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    grantMinter(
-      minter_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     grantRole(
@@ -2586,16 +2668,6 @@ export interface Otto extends BaseContract {
     renounceRole(
       role: BytesLike,
       account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    revokeManager(
-      manager_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    revokeMinter(
-      minter_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -2715,6 +2787,19 @@ export interface Otto extends BaseContract {
 
     transferOwnership(
       newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateBaseAttributes(
+      ottoId_: BigNumberish,
+      delta_: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateEpochBoost(
+      ottoId_: BigNumberish,
+      epoch_: BigNumberish,
+      delta_: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

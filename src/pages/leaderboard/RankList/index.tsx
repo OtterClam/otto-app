@@ -3,6 +3,7 @@ import CLAM from 'assets/clam.png'
 import cursorPointer from 'assets/cursor-pointer.png'
 import ArrowDown from 'assets/ui/arrow_down.svg'
 import Button from 'components/Button'
+import { numberWithSign } from 'helpers/number'
 import { useMediaQuery } from 'hooks/useMediaQuery'
 import { useOttos } from 'hooks/useOtto'
 import { useEffect, useMemo, useState } from 'react'
@@ -38,6 +39,8 @@ export const LIST_RANKED_OTTOS = gql`
       rrs
       rarityScore
       constellationBoost
+      epochRarityBoost
+      diceCount
     }
   }
 `
@@ -176,6 +179,11 @@ const StyledExpandColumn = styled(ContentMedium)<{ expand: boolean }>`
   }
 `
 
+const StyledTags = styled.div`
+  display: flex;
+  gap: 5px;
+`
+
 const StyledMyOttoAvatar = styled.img`
   width: 60px;
   height: 60px;
@@ -255,6 +263,10 @@ const StyledChosenOne = styled(Caption).attrs({ as: 'div' })`
     width: 21px;
     height: 21px;
   }
+`
+
+const StyledHelldiceBoost = styled(StyledChosenOne)`
+  background: ${({ theme }) => theme.colors.lightGray300};
 `
 
 const StyledZodiacSignBonus = styled(Caption).attrs({ as: 'div' })`
@@ -389,6 +401,8 @@ export default function RankList({ className }: Props) {
       zodiacBoost,
       isChosenOne,
       zodiacSign,
+      epochRarityBoost,
+      diceCount,
     }: Otto
   ) => {
     return (
@@ -401,18 +415,26 @@ export default function RankList({ className }: Props) {
             <StyledOttoAvatar src={image} />
             <StyledMobileContent>
               <StyledAvatarName>{name}</StyledAvatarName>
-              {zodiacBoost > 0 &&
-                (isChosenOne ? (
-                  <StyledChosenOne>
-                    <img src="/trait-icons/Birthday.png" alt="The Otter" />
-                    {t('chosen_one')}
-                  </StyledChosenOne>
-                ) : (
-                  <StyledZodiacSignBonus>
-                    <img src={Constellations[zodiacSign]} alt={zodiacSign} />
-                    {t('zodiac_boost', { zodiac: zodiacSign })}
-                  </StyledZodiacSignBonus>
-                ))}
+              <StyledTags>
+                {zodiacBoost > 0 &&
+                  (isChosenOne ? (
+                    <StyledChosenOne>
+                      <img src="/trait-icons/Birthday.png" alt="The Otter" />
+                      {t('chosen_one')}
+                    </StyledChosenOne>
+                  ) : (
+                    <StyledZodiacSignBonus>
+                      <img src={Constellations[zodiacSign]} alt={zodiacSign} />
+                      {t('zodiac_boost', { zodiac: zodiacSign })}
+                    </StyledZodiacSignBonus>
+                  ))}
+                {(diceCount ?? 0) > 0 && (
+                  <StyledHelldiceBoost>
+                    <img src="/trait-icons/Dice.png" alt="Hell Dice" />
+                    {t('hell_dice', { diceCount, boost: numberWithSign(epochRarityBoost ?? 0) })}
+                  </StyledHelldiceBoost>
+                )}
+              </StyledTags>
               <StyledReward as="div">{getEstimatedReward(rank)}</StyledReward>
               <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
             </StyledMobileContent>
@@ -427,18 +449,26 @@ export default function RankList({ className }: Props) {
                 <StyledOttoAvatar src={image} />
                 <StyledNameColumn>
                   {name}
-                  {zodiacBoost > 0 &&
-                    (isChosenOne ? (
-                      <StyledChosenOne>
-                        <img src="/trait-icons/Birthday.png" alt="The Otter" />
-                        {t('chosen_one')}
-                      </StyledChosenOne>
-                    ) : (
-                      <StyledZodiacSignBonus>
-                        <img src={Constellations[zodiacSign]} alt={zodiacSign} />
-                        {t('zodiac_boost', { zodiac: zodiacSign })}
-                      </StyledZodiacSignBonus>
-                    ))}
+                  <StyledTags>
+                    {zodiacBoost > 0 &&
+                      (isChosenOne ? (
+                        <StyledChosenOne>
+                          <img src="/trait-icons/Birthday.png" alt="The Otter" />
+                          {t('chosen_one')}
+                        </StyledChosenOne>
+                      ) : (
+                        <StyledZodiacSignBonus>
+                          <img src={Constellations[zodiacSign]} alt={zodiacSign} />
+                          {t('zodiac_boost', { zodiac: zodiacSign })}
+                        </StyledZodiacSignBonus>
+                      ))}
+                    {(diceCount ?? 0) > 0 && (
+                      <StyledHelldiceBoost>
+                        <img src="/trait-icons/Dice.png" alt="Hell Dice" />
+                        {t('hell_dice', { diceCount, boost: numberWithSign(epochRarityBoost ?? 0) })}
+                      </StyledHelldiceBoost>
+                    )}
+                  </StyledTags>
                 </StyledNameColumn>
               </StyledAvatarName>
             </StyledTd>
