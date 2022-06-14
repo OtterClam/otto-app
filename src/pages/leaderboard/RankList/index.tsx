@@ -182,6 +182,11 @@ const StyledExpandColumn = styled(ContentMedium)<{ expand: boolean }>`
 const StyledTags = styled.div`
   display: flex;
   gap: 5px;
+  grid-column-start: span 2;
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    flex-direction: column;
+  }
 `
 
 const StyledMyOttoAvatar = styled.img`
@@ -258,10 +263,17 @@ const StyledChosenOne = styled(Caption).attrs({ as: 'div' })`
   gap: 5px;
   background: ${({ theme }) => theme.colors.crownYellow};
   border-radius: 5px;
-  grid-column-start: span 2;
+
   img {
     width: 21px;
     height: 21px;
+  }
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    img {
+      width: 18px;
+      height: 18px;
+    }
   }
 `
 
@@ -269,18 +281,8 @@ const StyledHelldiceBoost = styled(StyledChosenOne)`
   background: ${({ theme }) => theme.colors.lightGray300};
 `
 
-const StyledZodiacSignBonus = styled(Caption).attrs({ as: 'div' })`
-  width: fit-content;
-  display: flex;
-  padding: 5px;
-  gap: 5px;
+const StyledZodiacSignBonus = styled(StyledChosenOne)`
   background: ${({ theme }) => theme.colors.lightGray300};
-  border-radius: 5px;
-  grid-column-start: span 2;
-  img {
-    width: 21px;
-    height: 21px;
-  }
 `
 
 const StyledOttoAvatar = styled.img`
