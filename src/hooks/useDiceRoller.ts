@@ -91,6 +91,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
       setDice(await api.rollTheDice(otto.tokenId, tx.hash, i18n.resolvedLanguage))
       setState(State.FirstResult)
     } catch (err) {
+      window.alert(JSON.stringify(err))
       setState(State.Intro)
       dispatch(setError(err as any))
     }
