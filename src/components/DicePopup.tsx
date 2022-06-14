@@ -261,7 +261,7 @@ function ResultState({ diceRoller, otto }: StateProps) {
   }[event.type]
   const ranking =
     // current ranking + effect of the previous event
-    otto.ranking + (eventIndex === 1 ? diceRoller.dice?.events[0].effects?.ranking ?? 0 : 0)
+    otto.ranking + (eventIndex === 1 ? diceRoller.dice?.events[0].effects?.ranking ?? 0 : 0) * -1
 
   const answerQuestion = (optionIndex: number) => diceRoller.answerQuestion(eventIndex, optionIndex)
 
