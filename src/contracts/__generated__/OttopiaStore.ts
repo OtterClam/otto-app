@@ -60,7 +60,6 @@ export interface OttopiaStoreInterface extends utils.Interface {
     "airdropClaimableAmount(uint256,uint256[])": FunctionFragment;
     "airdropInfos(uint256)": FunctionFragment;
     "amountOf(uint256)": FunctionFragment;
-    "buy(address,uint256,uint256)": FunctionFragment;
     "buyNoChainlink(address,uint256,uint256)": FunctionFragment;
     "claim(uint256,uint256[])": FunctionFragment;
     "claimNoChainlink(uint256,uint256[])": FunctionFragment;
@@ -109,7 +108,6 @@ export interface OttopiaStoreInterface extends utils.Interface {
       | "airdropClaimableAmount"
       | "airdropInfos"
       | "amountOf"
-      | "buy"
       | "buyNoChainlink"
       | "claim"
       | "claimNoChainlink"
@@ -170,10 +168,6 @@ export interface OttopiaStoreInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "amountOf",
     values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "buy",
-    values: [string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "buyNoChainlink",
@@ -319,7 +313,6 @@ export interface OttopiaStoreInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "amountOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "buy", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "buyNoChainlink",
     data: BytesLike
@@ -640,13 +633,6 @@ export interface OttopiaStore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    buy(
-      to_: string,
-      id_: BigNumberish,
-      amount_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     buyNoChainlink(
       to_: string,
       id_: BigNumberish,
@@ -873,13 +859,6 @@ export interface OttopiaStore extends BaseContract {
 
   amountOf(id_: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-  buy(
-    to_: string,
-    id_: BigNumberish,
-    amount_: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   buyNoChainlink(
     to_: string,
     id_: BigNumberish,
@@ -1103,13 +1082,6 @@ export interface OttopiaStore extends BaseContract {
     >;
 
     amountOf(id_: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-
-    buy(
-      to_: string,
-      id_: BigNumberish,
-      amount_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     buyNoChainlink(
       to_: string,
@@ -1417,13 +1389,6 @@ export interface OttopiaStore extends BaseContract {
 
     amountOf(id_: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-    buy(
-      to_: string,
-      id_: BigNumberish,
-      amount_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     buyNoChainlink(
       to_: string,
       id_: BigNumberish,
@@ -1639,13 +1604,6 @@ export interface OttopiaStore extends BaseContract {
     amountOf(
       id_: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    buy(
-      to_: string,
-      id_: BigNumberish,
-      amount_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     buyNoChainlink(

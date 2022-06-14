@@ -8,6 +8,8 @@ export interface RawOtto {
   rarityScore?: number
   constellationBoost?: number
   legendaryBoost?: number
+  epochRarityBoost?: number
+  diceCount?: number
 }
 
 export interface Attr {
@@ -79,6 +81,10 @@ export default class Otto {
 
   public readonly wearableTraits: Trait[] = []
 
+  public readonly epochRarityBoost?: number
+
+  public readonly diceCount?: number
+
   constructor(raw: RawOtto, metadata: OttoMeta) {
     this.raw = raw
     this.metadata = metadata
@@ -87,6 +93,8 @@ export default class Otto {
     this.baseRarityScore = this.raw.brs ? String(this.raw.brs) : '?'
     this.relativeRarityScore = this.raw.rrs ? String(this.raw.rrs) : '?'
     this.totalRarityScore = this.raw.rarityScore ? String(this.raw.rarityScore) : '?'
+    this.epochRarityBoost = this.raw.epochRarityBoost
+    this.diceCount = this.raw.diceCount
 
     for (let idx = 0; idx < this.metadata.attributes?.length ?? 0; idx++) {
       const { trait_type, value } = this.metadata.attributes[idx]

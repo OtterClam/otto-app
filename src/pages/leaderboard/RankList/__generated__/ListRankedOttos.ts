@@ -17,6 +17,8 @@ export interface ListRankedOttos_ottos {
   rrs: number;
   rarityScore: number;
   constellationBoost: number;
+  epochRarityBoost: number;
+  diceCount: number;
 }
 
 export interface ListRankedOttos {
