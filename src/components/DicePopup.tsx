@@ -15,16 +15,19 @@ import { Question } from 'components/Question'
 import RibbonText from 'components/RibbonText'
 import { Token } from 'constant'
 import { numberWithDirection, numberWithSign } from 'helpers/number'
+import useAudio from 'hooks/useAudio'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { DiceRoller, State, useDiceRoller } from 'hooks/useDiceRoller'
 import { EventType } from 'models/Dice'
 import Otto from 'models/Otto'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { hideDicePopup, selectOttoInTheHell } from 'store/uiSlice'
 import styled, { keyframes, useTheme } from 'styled-components/macro'
 import { ContentExtraSmall, ContentLarge, ContentMedium, ContentSmall, Display3, Headline } from 'styles/typography'
+import rollingDiceAudioSrc from 'assets/audio/rolling_dice.mp3'
+import rolledAudioSrc from 'assets/audio/rolled.mp3'
 import StyledRichContent from './RichContent'
 
 const zoomInUp = keyframes`
@@ -236,8 +239,22 @@ function IntroState({ diceRoller, otto }: StateProps) {
   )
 }
 
-function ProcessingState() {
+function ProcessingState({ diceRoller, otto }: StateProps) {
   const { t } = useTranslation()
+  const rollingDiceAudio = useAudio(rollingDiceAudioSrc)
+  const rolledAudio = useAudio(rolledAudioSrc)
+
+  useEffect(() => {
+    rollingDiceAudio.audio.loop = true
+    rollingDiceAudio.audio.play()
+
+    return () => {
+      rollingDiceAudio.audio.pause()
+      if (diceRoller.state === State.FirstResult) {
+        rolledAudio.audio.play()
+      }
+    }
+  }, [])
 
   return (
     <StyledProcessingStateContainer>
