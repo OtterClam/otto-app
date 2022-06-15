@@ -7,7 +7,8 @@
     "badge": "特殊活動",
     "button": "試試手氣！",
     "description": "地獄骰子有機會暫時提升你的阿獺在這輪稀有度比賽的稀有度；但如果你很衰，也有可能會讓稀有度更低。",
-    "effects": "地獄骰子已被骰 <strong>x{{ times }}</strong> 次，且已影響 BRS <strong>{{ brs }}</strong>",
+    "times": "地獄骰子已被骰 <strong>x{{ times }}</strong> 次",
+    "effects": "地獄骰子已影響 BRS <strong>{{ brs }}</strong>",
     "endTime": "地獄骰子的稀有度影響在 {{ time }} 將會重置",
     "title": "稀有度地獄骰子"
   },
