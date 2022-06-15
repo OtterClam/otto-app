@@ -72,17 +72,19 @@ interface Props {
 
 export default function Countdown({ target }: Props) {
   const { t } = useTranslation()
-  const [countdown, setCountdown] = useState(target - Date.now())
+  const [countdown, setCountdown] = useState(Math.max(target - Date.now(), 0))
   const days = Math.floor(countdown / (1000 * 60 * 60 * 24))
   const hours = Math.floor((countdown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
   const minutes = Math.floor((countdown % (1000 * 60 * 60)) / (1000 * 60))
   const seconds = Math.floor((countdown % (1000 * 60)) / 1000)
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setCountdown(target.valueOf() - Date.now())
+      setCountdown(Math.max(target.valueOf() - Date.now(), 0))
     }, 1000)
     return () => clearInterval(interval)
-  }, [])
+  }, [target])
+
   return (
     <StyledCountdown>
       <NumberSlot num={days} unit={t('mint.countdown.days')} />

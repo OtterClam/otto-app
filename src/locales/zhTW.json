@@ -118,7 +118,7 @@
       "back_to_current": "回到現在",
       "coming_soon": "即將登場!",
       "get_updated": "在 Discord 獲得最新情報",
-      "reward_at": "獎金發放時間: 即將登場!",
+      "reward_at": "獎金發放時間: {{time}}!",
       "round_end": "此輪比賽已結束且獎勵已發送。",
       "title": "這一輪比賽總獎金",
       "tooltip": "排行榜上的名次及預估獎金會持續變動直到顯示時間歸零，而最終名次及獎勵會透過結束當下的截圖畫面決定。"
