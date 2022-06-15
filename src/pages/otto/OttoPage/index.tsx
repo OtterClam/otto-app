@@ -290,7 +290,7 @@ export default function OttoPage() {
       <StyledOttoPage>
         <StyledOttoContainer>
           <StyledLeftContainer>
-            <StyledOttoImage src={otto?.image} />
+            <StyledOttoImage src={otto?.largeImage} />
             <StyledPlayButton
               primaryColor="white"
               Typography={StyledPlayButtonText}

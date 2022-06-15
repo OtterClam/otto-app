@@ -395,7 +395,7 @@ export default function RankList({ className }: Props) {
     rank: number,
     {
       tokenId,
-      image,
+      mediumImage: image,
       name,
       totalRarityScore,
       baseRarityScore,
@@ -493,7 +493,10 @@ export default function RankList({ className }: Props) {
           <StyledMyOttoSection isLatestEpoch={isLatestEpoch}>
             <StyledHint>{t('your_rank')}</StyledHint>
             {(expand ? sortedMyOttos : sortedMyOttos.slice(0, 1)).map(
-              ({ tokenId, name, image, ranking, totalRarityScore, baseRarityScore, relativeRarityScore }, index) => (
+              (
+                { tokenId, name, smallImage: image, ranking, totalRarityScore, baseRarityScore, relativeRarityScore },
+                index
+              ) => (
                 <a key={index} href={`/my-ottos/${tokenId}`} target="_blank" rel="noreferrer">
                   {isMobile ? (
                     <StyledMobileRow>
