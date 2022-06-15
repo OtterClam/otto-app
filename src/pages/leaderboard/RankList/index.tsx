@@ -395,7 +395,7 @@ export default function RankList({ className }: Props) {
     rank: number,
     {
       tokenId,
-      mediumImage: image,
+      smallImage: image,
       name,
       totalRarityScore,
       baseRarityScore,

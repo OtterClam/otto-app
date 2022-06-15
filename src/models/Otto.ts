@@ -148,15 +148,15 @@ export default class Otto {
   }
 
   get largeImage(): string {
-    return getCroppedImageUrl(this.image, { w: 440, h: 440 })
+    return getCroppedImageUrl(this.image, { w: 900, h: 900 })
   }
 
   get mediumImage(): string {
-    return getCroppedImageUrl(this.image, { w: 200, h: 200 })
+    return getCroppedImageUrl(this.image, { w: 400, h: 400 })
   }
 
   get smallImage(): string {
-    return getCroppedImageUrl(this.image, { w: 100, h: 100 })
+    return getCroppedImageUrl(this.image, { w: 200, h: 200 })
   }
 
   get description(): string {
