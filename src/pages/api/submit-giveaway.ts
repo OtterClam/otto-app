@@ -35,10 +35,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (error.response) {
       res.status(error.response.status).json(error.response.data)
       return
-    } else {
-      console.error('Error', error.message)
-      res.status(500).json({ error: error.message })
-      return
     }
+    console.error('Error', error.message)
+    res.status(500).json({ error: error.message })
   }
 }

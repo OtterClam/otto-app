@@ -110,11 +110,7 @@ interface Props {
 
 export default function MenuButton({ padding, title, icon, className, disabled }: Props) {
   return (
-    <StyledButton
-      className={className}
-      disabled={disabled}
-      onClick={() => audio.play()}
-    >
+    <StyledButton className={className} disabled={disabled} onClick={() => audio.play()}>
       <StyledInnerButton padding={padding}>
         <StyledContainer>
           <StyledImg src={icon} alt={title} />

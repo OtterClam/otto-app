@@ -11,7 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(401).send('Missing twitter token')
     return
   }
-  
+
   const access_token_key = req.headers.cookie?.split('twitter_token=')[1].split(';')[0] || ''
   const access_token_secret = (await redis.get(access_token_key)) || ''
   const client = new Twitter({

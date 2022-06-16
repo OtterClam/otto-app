@@ -246,7 +246,8 @@ const StyledBoost = styled.span`
 
 export default function OttoPage() {
   const { t } = useTranslation()
-  const { query: { ottoId = '0' } } = useRouter()
+  const router = useRouter()
+  const ottoId = router.query.ottoId as string
   const { data } = useQuery<GetOtto, GetOttoVariables>(GET_OTTO, {
     variables: { ottoId },
   })

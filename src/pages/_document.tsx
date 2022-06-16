@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
@@ -10,11 +11,18 @@ export default function Document() {
         <link rel="preconnect" href="https://api.thegraph.com" />
         <link rel="preconnect" href="https://cdn.jsdelivr.net" />
 
-        <link rel="preload" href="https://cdn.jsdelivr.net/gh/max32002/naikaifont@1.0/webfont/NaikaiFont-Regular-Lite.woff2" as="font" type="font/woff2" crossOrigin="" />
+        <link
+          rel="preload"
+          href="https://cdn.jsdelivr.net/gh/max32002/naikaifont@1.0/webfont/NaikaiFont-Regular-Lite.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin=""
+        />
         <link rel="preload" href="/fonts/Pangolin-Regular.ttf" as="font" type="font/woff2" crossOrigin="" />
         <link rel="preload" href="/ottoclick.mp3" as="audio" type="audio/mpeg" crossOrigin="" />
 
-        <script>{`
+        <script>
+          {`
           ;(function (w, d, s, l, i) {
             w[l] = w[l] || []
             w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
@@ -55,7 +63,8 @@ export default function Document() {
             style={{
               display: 'none',
               visibility: 'hidden',
-            }} />
+            }}
+          />
         </noscript>
         <Main />
         <NextScript />
