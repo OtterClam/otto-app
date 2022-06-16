@@ -76,7 +76,7 @@ export default function DiscordStep({ locked, onComplete, className }: Props) {
   const params = useMemo(() => new URLSearchParams(hash), [hash])
   const onVerify = useCallback(() => {
     axios
-      .get('/.netlify/functions/discord-verify', {
+      .get('/api/discord-verify', {
         headers: {
           Authorization: `Bearer ${params.get('access_token')}`,
         },

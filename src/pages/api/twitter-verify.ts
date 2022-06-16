@@ -1,19 +1,18 @@
-import { Handler } from '@netlify/functions'
-import { getApi } from 'libs/api'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { getApi } from 'pages/api/_libs/api'
 import Twitter from 'twitter-lite'
-import redis from '../libs/redis'
-import { consumer_key, consumer_secret } from '../libs/twitter'
+import redis from 'pages/api/_libs/redis'
+import { consumer_key, consumer_secret } from 'pages/api/_libs/twitter'
 
-const handler: Handler = async event => {
-  const chainId = Number(event.queryStringParameters?.chainId || 137)
-  const part = event.headers.cookie?.split('twitter_token=') || []
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  const chainId = Number(req.query.chainId || 137)
+  const part = req.headers.cookie?.split('twitter_token=') || []
   if (part.length < 2) {
-    return {
-      statusCode: 401,
-      body: 'Missing twitter token',
-    }
+    res.status(401).send('Missing twitter token')
+    return
   }
-  const access_token_key = event.headers.cookie?.split('twitter_token=')[1].split(';')[0] || ''
+  
+  const access_token_key = req.headers.cookie?.split('twitter_token=')[1].split(';')[0] || ''
   const access_token_secret = (await redis.get(access_token_key)) || ''
   const client = new Twitter({
     consumer_key,
@@ -27,9 +26,8 @@ const handler: Handler = async event => {
     result = await client.get('account/verify_credentials')
   } catch (err) {
     console.error('verify credentials error', err)
-    return {
-      statusCode: 401,
-    }
+    res.status(401).json({})
+    return
   }
   try {
     const api = getApi(chainId)
@@ -56,13 +54,8 @@ const handler: Handler = async event => {
       console.log('Error', error.message)
     }
   }
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      username: result.screen_name,
-      verified,
-    }),
-  }
+  res.status(200).json({
+    username: result.screen_name,
+    verified,
+  })
 }
-
-export { handler }

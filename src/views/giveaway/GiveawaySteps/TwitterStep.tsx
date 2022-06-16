@@ -71,7 +71,7 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
   const [twitterUser, setTwitterUser] = useState<string | null>(null)
   const verify = useCallback(async () => {
     axios
-      .get('/.netlify/functions/twitter-verify', { params: { chainId } })
+      .get('/api/twitter-verify', { params: { chainId } })
       .then(res => {
         setTwitterUser(res.data.username)
         if (res.data.verified) {
@@ -127,7 +127,7 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
               {t('verify')}
             </Button>
           ) : (
-            <a href="/.netlify/functions/twitter-login">
+            <a href="/api/twitter-login">
               <Button padding="0px 10px" Typography={Headline}>
                 {t('verify')}
               </Button>

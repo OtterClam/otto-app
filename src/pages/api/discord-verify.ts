@@ -1,11 +1,11 @@
-import { Handler } from '@netlify/functions'
-import { getApi } from 'libs/api'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { getApi } from 'pages/api/_libs/api'
 
-const handler: Handler = async (event, context) => {
-  const chainId = Number(event.queryStringParameters?.chainId || 137)
-  const token = event.headers.authorization?.split(' ')[1] || ''
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  const chainId = Number(req.query.chainId || 137)
+  const token = req.headers.authorization?.split(' ')[1] || ''
   const axios = getApi(chainId)
-  const res = await axios.get('https://discord.com/api/users/@me', {
+  const discordRes = await axios.get('https://discord.com/api/users/@me', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -34,13 +34,8 @@ const handler: Handler = async (event, context) => {
       console.log('Error', error.message)
     }
   }
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      ...res.data,
-      verified,
-    }),
-  }
+  res.status(200).json({
+    ...discordRes.data,
+    verified,
+  })
 }
-
-export { handler }

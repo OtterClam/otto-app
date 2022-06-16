@@ -108,7 +108,7 @@ export default function InvitationCodeStep({ locked, onComplete, className }: Pr
       setLoading(true)
       axios
         .post(
-          '/.netlify/functions/submit-giveaway',
+          '/api/submit-giveaway',
           {
             code: inputRef.current?.value,
             wallet: account,
