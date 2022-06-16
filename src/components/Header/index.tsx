@@ -32,7 +32,7 @@ const StyledHeader = styled.div`
   }
 `
 
-const StyledLogoLink = styled(Link)`
+const StyledLogoLink = styled.a`
   width: 251px;
   height: 68px;
 
@@ -97,11 +97,11 @@ export default function Header({ title }: { title: string }) {
 
   return (
     <StyledHeader>
-      <StyledLogoLink href="/">
-        <a>
+      <Link href="/">
+        <StyledLogoLink>
           <StyledLogo src={isMobile ? logoSmall.src : logoLarge.src} alt="logo" />
-        </a>
-      </StyledLogoLink>
+        </StyledLogoLink>
+      </Link>
       {showBackBtn && (
         <StyledBackButton onClick={() => window.history.back()}>
           <Display3>{'<'}</Display3>

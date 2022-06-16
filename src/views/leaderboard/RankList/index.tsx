@@ -345,7 +345,7 @@ const StyledPagination = styled.div`
   }
 `
 
-const StyledPaginationLink = styled(Link)<{ show: boolean }>`
+const StyledPaginationLink = styled.a<{ show: boolean }>`
   opacity: ${({ show }) => (show ? 1 : 0)};
   @media ${({ theme }) => theme.breakpoints.mobile} {
     flex: 1;
@@ -552,32 +552,30 @@ export default function RankList({ className }: Props) {
       </StyledTable>
       {!loading && (
         <StyledPagination>
-          <StyledPaginationLink
+          <Link
             href={{
               pathname: '/leaderboard',
               search: `?${createSearchParams({ page: String(page - 1), epoch: String(epoch) })}`,
             }}
-            show={page > 0}
           >
-            <a>
+            <StyledPaginationLink show={page > 0}>
               <StyledButton primaryColor="white" padding="20px" Typography={Headline}>
                 {t('prev')}
               </StyledButton>
-            </a>
-          </StyledPaginationLink>
-          <StyledPaginationLink
+            </StyledPaginationLink>
+          </Link>
+          <Link
             href={{
               pathname: '/leaderboard',
               search: `?${createSearchParams({ page: String(page + 1), epoch: String(epoch) })}`,
             }}
-            show
           >
-            <a>
+            <StyledPaginationLink show>
               <StyledButton primaryColor="white" padding="20px" Typography={Headline}>
                 {t('next')}
               </StyledButton>
-            </a>
-          </StyledPaginationLink>
+            </StyledPaginationLink>
+          </Link>
         </StyledPagination>
       )}
     </StyledRankList>
