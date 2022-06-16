@@ -254,9 +254,11 @@ export default function Hero() {
           <StyledRoundEnd>
             {t('round_end')}
             <Link href="?epoch=-1">
-              <Button primaryColor="white" width="fit-content" Typography={Headline}>
-                {t('back_to_current')}
-              </Button>
+              <a>
+                <Button primaryColor="white" width="fit-content" Typography={Headline}>
+                  {t('back_to_current')}
+                </Button>
+              </a>
             </Link>
           </StyledRoundEnd>
         )}

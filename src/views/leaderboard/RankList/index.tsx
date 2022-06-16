@@ -554,25 +554,29 @@ export default function RankList({ className }: Props) {
         <StyledPagination>
           <StyledPaginationLink
             href={{
-              pathname: '.',
+              pathname: '/leaderboard',
               search: `?${createSearchParams({ page: String(page - 1), epoch: String(epoch) })}`,
             }}
             show={page > 0}
           >
-            <StyledButton primaryColor="white" padding="20px" Typography={Headline}>
-              {t('prev')}
-            </StyledButton>
+            <a>
+              <StyledButton primaryColor="white" padding="20px" Typography={Headline}>
+                {t('prev')}
+              </StyledButton>
+            </a>
           </StyledPaginationLink>
           <StyledPaginationLink
             href={{
-              pathname: '.',
+              pathname: '/leaderboard',
               search: `?${createSearchParams({ page: String(page + 1), epoch: String(epoch) })}`,
             }}
             show
           >
-            <StyledButton primaryColor="white" padding="20px" Typography={Headline}>
-              {t('next')}
-            </StyledButton>
+            <a>
+              <StyledButton primaryColor="white" padding="20px" Typography={Headline}>
+                {t('next')}
+              </StyledButton>
+            </a>
           </StyledPaginationLink>
         </StyledPagination>
       )}

@@ -98,7 +98,9 @@ export default function Header({ title }: { title: string }) {
   return (
     <StyledHeader>
       <StyledLogoLink href="/">
-        <StyledLogo src={isMobile ? logoSmall.src : logoLarge.src} alt="logo" />
+        <a>
+          <StyledLogo src={isMobile ? logoSmall.src : logoLarge.src} alt="logo" />
+        </a>
       </StyledLogoLink>
       {showBackBtn && (
         <StyledBackButton onClick={() => window.history.back()}>

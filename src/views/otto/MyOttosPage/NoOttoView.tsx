@@ -39,7 +39,9 @@ export default function NoOttoView() {
           <ContentSmall>{t('my_ottos.no_otto')}</ContentSmall>
         </StyledHelpText>
         <Link href="/mint">
-          <Button Typography={Headline}>{t('my_ottos.mint_portal')}</Button>
+          <a>
+            <Button Typography={Headline}>{t('my_ottos.mint_portal')}</Button>
+          </a>
         </Link>
       </StyledInnerContainer>
     </StyledNoOttoView>

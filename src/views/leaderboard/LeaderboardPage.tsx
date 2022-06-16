@@ -61,13 +61,15 @@ export default function LeaderboardPage() {
           {hasPrevEpoch ? (
             <Link
               href={{
-                pathname: '.',
+                pathname: '/leaderboard',
                 search: `?epoch=${epoch === -1 ? latestEpoch - 1 : epoch - 1}`,
               }}
             >
-              <Button padding="0 6px" Typography={Headline}>
-                {t('prev')}
-              </Button>
+              <a>
+                <Button padding="0 6px" Typography={Headline}>
+                  {t('prev')}
+                </Button>
+              </a>
             </Link>
           ) : (
             <div />
@@ -75,14 +77,16 @@ export default function LeaderboardPage() {
           {t('head')}
           {hasNextEpoch ? (
             <Link
-            href={{
-                pathname: '.',
+              href={{
+                pathname: '/leaderboard',
                 search: `?epoch=${epoch + 1 === latestEpoch ? -1 : epoch + 1}`,
               }}
             >
-              <Button padding="0 6px" Typography={Headline}>
-                {t('next')}
-              </Button>
+              <a>
+                <Button padding="0 6px" Typography={Headline}>
+                  {t('next')}
+                </Button>
+              </a>
             </Link>
           ) : (
             <div />

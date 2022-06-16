@@ -55,7 +55,9 @@ export default function Info({ image, desc, links }: Props) {
           {links.map((link, index) =>
             link.internal ? (
               <Link key={index} href={link.href}>
-                <StyledLink>{link.text}</StyledLink>
+                <a>
+                  <StyledLink>{link.text}</StyledLink>
+                </a>
               </Link>
             ) : (
               <a key={index} href={link.href} target="_blank" rel="noreferrer">

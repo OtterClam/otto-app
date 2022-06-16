@@ -112,7 +112,9 @@ export default function GiveawayPopup({ status }: Props) {
               <StyledStableImg src="/chest-loadings/silver-loading-8.png" />
             </StyledImageContainer>
             <Link href="/my-items" style={{ zIndex: 1 }}>
-              <Button Typography={Headline}>{t('checkout_link')}</Button>
+              <a>
+                <Button Typography={Headline}>{t('checkout_link')}</Button>
+              </a>
             </Link>
           </>
         )}
