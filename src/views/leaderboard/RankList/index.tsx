@@ -215,7 +215,8 @@ const StyledRank = styled(ContentLarge).attrs({ as: 'div' })<{ rank: number }>`
   width: 52px;
   height: 42px;
   color: ${({ rank, theme }) => (rank <= 3 ? 'transparent' : theme.colors.otterBlack)};
-  background: url(${({ rank }) => (rank === 1 ? FirstRank : rank === 2 ? SecondRank : rank === 3 ? ThirdRank : '')})
+  background: url(${({ rank }) =>
+      rank === 1 ? FirstRank.src : rank === 2 ? SecondRank.src : rank === 3 ? ThirdRank.src : ''})
     no-repeat;
   background-size: 42px 42px;
   background-position: center;
