@@ -242,18 +242,11 @@ function IntroState({ diceRoller, otto }: StateProps) {
 function ProcessingState({ diceRoller, otto }: StateProps) {
   const { t } = useTranslation()
   const rollingDiceAudio = useAudio(rollingDiceAudioSrc)
-  const rolledAudio = useAudio(rolledAudioSrc)
 
   useEffect(() => {
     rollingDiceAudio.audio.loop = true
     rollingDiceAudio.audio.play()
-
-    return () => {
-      rollingDiceAudio.audio.pause()
-      if (diceRoller.state === State.FirstResult) {
-        rolledAudio.audio.play()
-      }
-    }
+    return () => rollingDiceAudio.audio.pause()
   }, [])
 
   return (
@@ -269,6 +262,7 @@ function ProcessingState({ diceRoller, otto }: StateProps) {
 function ResultState({ diceRoller, otto }: StateProps) {
   const { t } = useTranslation()
   const { OTTOPIA_STORE } = useContractAddresses()
+  const rolledAudio = useAudio(rolledAudioSrc)
   const eventIndex = diceRoller.state === State.FirstResult ? 0 : 1
   const event = diceRoller.dice?.events[eventIndex] ?? { event: '', image: '', type: EventType.Good }
   const bg = {
@@ -281,6 +275,12 @@ function ResultState({ diceRoller, otto }: StateProps) {
     otto.ranking + (eventIndex === 1 ? diceRoller.dice?.events[0].effects?.ranking ?? 0 : 0) * -1
 
   const answerQuestion = (optionIndex: number) => diceRoller.answerQuestion(eventIndex, optionIndex)
+
+  useEffect(() => {
+    if (diceRoller.state === State.FirstResult) {
+      rolledAudio.audio.play()
+    }
+  }, [diceRoller.state])
 
   return (
     <StyledResultStateContainer>

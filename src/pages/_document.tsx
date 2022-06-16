@@ -4,6 +4,16 @@ export default function Document() {
   return (
     <Html>
       <Head>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://polygon-rpc.com" />
+        <link rel="preconnect" href="https://api.otterclam.finance" />
+        <link rel="preconnect" href="https://api.thegraph.com" />
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+
+        <link rel="preload" href="https://cdn.jsdelivr.net/gh/max32002/naikaifont@1.0/webfont/NaikaiFont-Regular-Lite.woff2" as="font" type="font/woff2" crossOrigin="" />
+        <link rel="preload" href="/fonts/Pangolin-Regular.ttf" as="font" type="font/woff2" crossOrigin="" />
+        <link rel="preload" href="/ottoclick.mp3" as="audio" type="audio/mpeg" crossOrigin="" />
+
         <script>{`
           ;(function (w, d, s, l, i) {
             w[l] = w[l] || []
