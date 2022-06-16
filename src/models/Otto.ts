@@ -1,3 +1,5 @@
+import { getCroppedImageUrl } from 'utils/image'
+
 export interface RawOtto {
   tokenId: any
   tokenURI: string
@@ -143,6 +145,18 @@ export default class Otto {
 
   get image(): string {
     return this.metadata.image
+  }
+
+  get largeImage(): string {
+    return getCroppedImageUrl(this.image, { w: 900, h: 900 })
+  }
+
+  get mediumImage(): string {
+    return getCroppedImageUrl(this.image, { w: 400, h: 400 })
+  }
+
+  get smallImage(): string {
+    return getCroppedImageUrl(this.image, { w: 200, h: 200 })
   }
 
   get description(): string {

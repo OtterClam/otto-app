@@ -77,7 +77,7 @@ export default function OttoList({ itemId, selectedOtto, onSelect }: Props) {
           disabled={!applicable[index]}
           onClick={() => onSelect(otto)}
         >
-          <StyledOttoImage src={otto.image} />
+          <StyledOttoImage src={otto.mediumImage} />
           {!applicable[index] && <StyledDisableMask />}
         </StyledOttoCell>
       ))}

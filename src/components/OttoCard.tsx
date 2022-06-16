@@ -134,7 +134,7 @@ export default function OttoCard({ otto, oldOtto, item, takeOff = false, classNa
   }, [otto, oldOtto, item])
   return (
     <StyledOttoCard borderColor={theme.colors.lightGray400} className={className}>
-      <StyledOttoImage src={otto.image} />
+      <StyledOttoImage src={otto.largeImage} />
       <StyledOttoName>
         <ContentMedium>{otto.name}</ContentMedium>
       </StyledOttoName>
