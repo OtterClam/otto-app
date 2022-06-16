@@ -1,4 +1,5 @@
 import Button from 'components/Button'
+import GiveawayFloatingButton from 'components/GiveawayFloatingButton'
 import MenuButton from 'components/MenuButton'
 import { BUY_CLAM_LINK, DAO_LINK, DISCORD_LINK, TREASURY_LINK, WHITE_PAPER_LINK } from 'constant'
 import { useBreakPoints } from 'hooks/useMediaQuery'
@@ -145,6 +146,7 @@ const HomePage = () => {
           {renderMenus(rightMenus)}
         </StyledHomePage>
       )}
+      <GiveawayFloatingButton />
     </Layout>
   )
 }

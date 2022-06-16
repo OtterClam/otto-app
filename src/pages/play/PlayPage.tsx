@@ -1,3 +1,4 @@
+import GiveawayFloatingButton from 'components/GiveawayFloatingButton'
 import MenuButton from 'components/MenuButton'
 import MintBanner from 'components/MintBanner'
 import Layout from 'Layout'
@@ -76,6 +77,7 @@ const PlayPage = () => {
             <StyledMenuButton title={title} icon={icon} disabled={!href} />
           </Link>
         ))}
+        <GiveawayFloatingButton />
       </StyledPlayPage>
     </Layout>
   )
