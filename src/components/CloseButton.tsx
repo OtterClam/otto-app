@@ -27,7 +27,7 @@ export default function CloseButton({ className, color = 'dark', onClose }: Prop
         onClose()
       }}
     >
-      <StyledCloseIcon src={color === 'dark' ? CloseIcon : WhiteCloseIcon} />
+      <StyledCloseIcon src={color === 'dark' ? CloseIcon.src : WhiteCloseIcon.src} />
     </StyledCloseButton>
   )
 }

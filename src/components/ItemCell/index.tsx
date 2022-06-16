@@ -131,7 +131,7 @@ export default function ItemCell({
           <Note>{t('my_items.equipped')}</Note>
         </StyledEquipped>
       )}
-      {selected && <StyledSelectedFrame src={SelectedFrame} />}
+      {selected && <StyledSelectedFrame src={SelectedFrame.src} />}
     </StyledItemCell>
   )
 }

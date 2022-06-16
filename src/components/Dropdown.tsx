@@ -5,7 +5,7 @@ import { ContentSmall } from 'styles/typography'
 
 const StyledDropdown = styled.div`
   position: relative;
-  cursor: url(${cursorPointer}) 7 0, auto;
+  cursor: url(${cursorPointer.src}) 7 0, auto;
 `
 
 const StyledSelected = styled.div`

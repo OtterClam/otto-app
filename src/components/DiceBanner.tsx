@@ -20,14 +20,14 @@ import StyledRichContent from './RichContent'
 
 const StyledContainer = styled.div`
   position: relative;
-  background: no-repeat 20px center / 180px 180px url(${hell}), no-repeat center / 870px 867px url(${bg});
+  background: no-repeat 20px center / 180px 180px url(${hell.src}), no-repeat center / 870px 867px url(${bg.src});
   border: 2px solid ${props => props.theme.colors.otterBlack};
   border-radius: 15px;
   padding: 20px 20px 20px 220px;
   overflow: hidden;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    background: no-repeat center 20px / 100px 100px url(${hell}), no-repeat center / 870px 867px url(${bg});
+    background: no-repeat center 20px / 100px 100px url(${hell.src}), no-repeat center / 870px 867px url(${bg.src});
     padding: 130px 20px 20px;
   }
 `

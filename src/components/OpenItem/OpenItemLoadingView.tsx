@@ -50,7 +50,7 @@ const StyledImageContainer = styled.div`
     position: absolute;
     width: 908px;
     height: 908px;
-    background: url(${Star}) no-repeat;
+    background: url(${Star.src}) no-repeat;
     background-size: 100% 100%;
     top: calc(40% - 454px);
     left: calc(50% - 454px);

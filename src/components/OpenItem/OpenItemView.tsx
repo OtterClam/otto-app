@@ -6,7 +6,7 @@ import ItemCell from 'components/ItemCell'
 import Item from 'models/Item'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
 import Star from 'assets/ui/large-star.svg'
@@ -67,7 +67,7 @@ const StyledBackgroundContainer = styled.div`
 const StyledBackground = styled.div`
   width: 908px;
   height: 908px;
-  background: url(${Star}) no-repeat;
+  background: url(${Star.src}) no-repeat;
   background-size: 100% 100%;
   animation: ${Spin} 12s linear infinite;
 `
@@ -77,7 +77,7 @@ const StyledRibbonText = styled.div`
   min-height: 53px;
   text-align: center;
   color: ${({ theme }) => theme.colors.white};
-  background-image: url(${Ribbon});
+  background-image: url(${Ribbon.src});
   padding-top: 6px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -154,7 +154,7 @@ export default function OpenItemView({ items, onClose }: Props) {
                 <ItemCell key={index} item={item} />
               ))}
             </StyledItemList>
-            <Link to="/my-items">
+            <Link href="/my-items">
               <StyledCheckOutButton Typography={Headline} onClick={onClose}>
                 {t('store.popup.check_out')}
               </StyledCheckOutButton>

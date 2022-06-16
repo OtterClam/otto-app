@@ -66,7 +66,7 @@ const StyledUnreturnableText = styled(Note)`
     content: '';
     width: 18px;
     height: 18px;
-    background-image: url(${UnreturnableIcon});
+    background-image: url(${UnreturnableIcon.src});
     background-size: 100% 100%;
   }
 
@@ -74,7 +74,7 @@ const StyledUnreturnableText = styled(Note)`
     content: '';
     width: 18px;
     height: 18px;
-    background-image: url(${InfoIcon});
+    background-image: url(${InfoIcon.src});
     background-size: 100% 100%;
   }
 `

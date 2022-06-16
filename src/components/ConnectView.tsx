@@ -36,7 +36,7 @@ export default function ConnectView() {
   return (
     <StyledConnectView>
       <StyledInnerContainer>
-        <StyledConnectImage src={WhiteBlankPortal} />
+        <StyledConnectImage src={WhiteBlankPortal.src} />
         <StyledHelpText>
           <ContentSmall>{t('connect_help_text')}</ContentSmall>
         </StyledHelpText>

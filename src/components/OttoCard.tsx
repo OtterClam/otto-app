@@ -75,7 +75,7 @@ const StyledRanking = styled(ContentSmall).attrs({
     content: '';
     width: 24px;
     height: 24px;
-    background-image: url(${RankingIcon});
+    background-image: url(${RankingIcon.src});
     background-size: 100%;
   }
 `

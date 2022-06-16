@@ -78,7 +78,7 @@ export default function SideMenu() {
     <StyledSideMenu show={show}>
       <Background show={show} onClick={() => dispatch(hideSideMenu())} />
       <Container show={show}>
-        <StyledLogo src={Logo} />
+        <StyledLogo src={Logo.src} />
         {account && (
           <StyledAccountContainer>
             <ContentSmall>{shortenAddress(account)}</ContentSmall>

@@ -47,7 +47,7 @@ const StyledRibbonText = styled.div`
   min-height: 53px;
   text-align: center;
   color: ${({ theme }) => theme.colors.white};
-  background-image: url(${Ribbon});
+  background-image: url(${Ribbon.src});
   padding-top: 6px;
 
   animation: ${ZoomInUp} 1.5s;

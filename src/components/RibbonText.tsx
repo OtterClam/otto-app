@@ -24,7 +24,7 @@ const StyledContainer = styled.div`
     position: absolute;
     z-index: -1;
     bottom: 0;
-    background: center / auto 53px url(${ribbon});
+    background: center / auto 53px url(${ribbon.src});
     height: 53px;
     width: 40px;
   }

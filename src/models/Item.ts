@@ -47,7 +47,7 @@ export function traitToItem(trait: Trait): Item {
 export const EmptyItem: Item = {
   id: '',
   name: '',
-  image: NonItem,
+  image: NonItem.src,
   type: '',
   wearable: true,
   rarity: 'C3',

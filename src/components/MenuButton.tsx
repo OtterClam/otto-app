@@ -1,5 +1,6 @@
 import styled from 'styled-components/macro'
 import { ContentMedium } from 'styles/typography'
+import { ottoClick as audio } from 'constant'
 
 interface ButtonProps {
   padding?: string
@@ -107,17 +108,12 @@ interface Props {
   disabled?: boolean
 }
 
-const audio = new Audio('https://ottopia.app/ottoclick.mp3')
-
 export default function MenuButton({ padding, title, icon, className, disabled }: Props) {
   return (
     <StyledButton
       className={className}
       disabled={disabled}
-      onClick={() => {
-        audio.load()
-        audio.play()
-      }}
+      onClick={() => audio.play()}
     >
       <StyledInnerButton padding={padding}>
         <StyledContainer>

@@ -24,7 +24,7 @@ const StyledClamBalanceText = styled(ContentLarge)`
   align-items: center;
   &:before {
     content: '';
-    background-image: url(${CLAM});
+    background-image: url(${CLAM.src});
     background-size: contain;
     background-repeat: no-repeat;
     width: 40px;

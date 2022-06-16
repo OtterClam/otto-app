@@ -29,7 +29,7 @@ export default function SelectButton({ title, selected, onClick }: Props) {
   return (
     <StyledButton selected={selected} onClick={onClick}>
       <ContentSmall>{title}</ContentSmall>
-      <StyledBox src={selected ? CheckedBox : UncheckedBox} />
+      <StyledBox src={selected ? CheckedBox.src : UncheckedBox.src} />
     </StyledButton>
   )
 }

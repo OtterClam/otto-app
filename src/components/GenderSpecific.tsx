@@ -11,7 +11,7 @@ const StyledGenderSpecific = styled(Caption)<{ gender: string }>`
     display: block;
     width: 18px;
     height: 18px;
-    background-image: url(${Lock});
+    background-image: url(${Lock.src});
     background-size: 100% 100%;
     margin-right: 10px;
   }
