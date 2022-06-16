@@ -21,20 +21,23 @@ export default function Document() {
         <link rel="preload" href="/fonts/Pangolin-Regular.ttf" as="font" type="font/woff2" crossOrigin="" />
         <link rel="preload" href="/ottoclick.mp3" as="audio" type="audio/mpeg" crossOrigin="" />
 
-        <script>
-          {`
-          ;(function (w, d, s, l, i) {
-            w[l] = w[l] || []
-            w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
-            var f = d.getElementsByTagName(s)[0],
-              j = d.createElement(s),
-              dl = l != 'dataLayer' ? '&l=' + l : ''
-            j.async = true
-            j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
-            f.parentNode.insertBefore(j, f)
-          })(window, document, 'script', 'dataLayer', 'GTM-W4MP2GV')
-        `}
-        </script>
+        <script
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: `
+              ;(function (w, d, s, l, i) {
+                w[l] = w[l] || []
+                w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
+                var f = d.getElementsByTagName(s)[0],
+                  j = d.createElement(s),
+                  dl = l != 'dataLayer' ? '&l=' + l : ''
+                j.async = true
+                j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
+                f.parentNode.insertBefore(j, f)
+              })(window, document, 'script', 'dataLayer', 'GTM-W4MP2GV')
+            `,
+          }}
+        />
         <title>Otto | The first official citizen of the Otter Kingdom</title>
         <meta charSet="utf-8" />
         <link rel="icon" href="/favicon.ico" />
@@ -50,9 +53,9 @@ export default function Document() {
           content=" Otto is the first official citizen of the Otter Kingdom. Each Otto is an ERC721 NFT with unique traits and attributes. These NFTs are not only irresistibly cute, but they also happen to be the main characters of OtterClam’s first adventure game – Ottopia."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="%PUBLIC_URL%/og.jpg" />
-        <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+        <meta property="og:image" content="/og.jpg" />
+        <link rel="apple-touch-icon" href="/logo192.png" />
+        <link rel="manifest" href="/manifest.json" />
       </Head>
       <body>
         <noscript>
