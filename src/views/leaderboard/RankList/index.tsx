@@ -19,14 +19,14 @@ import Otto from 'models/Otto'
 import { TOTAL_RARITY_REWARD } from 'constant'
 import Constellations from 'assets/constellations'
 import useRarityEpoch from 'hooks/useRarityEpoch'
+import { createSearchParams } from 'utils/url'
+import { useRouter } from 'next/router'
 import RarityScore from './rarity_score.png'
 import LoadingGif from './loading.gif'
 import { ListRankedOttos, ListRankedOttosVariables } from './__generated__/ListRankedOttos'
 import FirstRank from './Icon/Rank/1st.png'
 import SecondRank from './Icon/Rank/2nd.png'
 import ThirdRank from './Icon/Rank/3rd.png'
-import { createSearchParams } from 'utils/url'
-import { useRouter } from 'next/router'
 
 export const LIST_RANKED_OTTOS = gql`
   query ListRankedOttos($epoch: Int!, $first: Int!, $skip: Int!) {

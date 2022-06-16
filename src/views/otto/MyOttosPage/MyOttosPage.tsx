@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useEthers } from '@usedapp/core'
 import ConnectView from 'components/ConnectView'
 import { LoadingView } from 'components/LoadingView'
@@ -9,6 +12,7 @@ import { useCallback, useContext, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import NoOttoView from './NoOttoView'
 import OttoCard from '../../../components/OttoCard'
 
@@ -71,17 +75,11 @@ export default function MyOttosPage() {
           <>
             <StyledMyOttos>
               {ottos.map((otto, index) => (
-                <a
-                  key={index}
-                  href={otto.tokenId}
-                  onClick={async e => {
-                    e.preventDefault()
-                    ottoClick.play()
-                    router.push(`/my-ottos/${otto.tokenId}`)
-                  }}
-                >
-                  <OttoCard otto={otto} />
-                </a>
+                <Link key={index} href={`/my-ottos/${otto.tokenId}`}>
+                  <a onClick={() => ottoClick.play()}>
+                    <OttoCard otto={otto} />
+                  </a>
+                </Link>
               ))}
             </StyledMyOttos>
             <StyledMintBanner>
