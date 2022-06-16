@@ -8,9 +8,9 @@ import { MyOttosContext } from 'MyOttosProvider'
 import { useCallback, useContext, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
+import { useRouter } from 'next/router'
 import NoOttoView from './NoOttoView'
 import OttoCard from '../../../components/OttoCard'
-import { useRouter } from 'next/router'
 
 const StyledMyOttosPage = styled.div`
   width: 100%;

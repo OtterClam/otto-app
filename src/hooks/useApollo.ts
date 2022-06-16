@@ -4,9 +4,9 @@ import { useMemo } from 'react'
 
 export default function useApollo() {
   const { chainId } = useEthers()
-  let uri = process.env.REACT_APP_GRAPH_ENDPOINT_MAINNET
+  let uri = process.env.NEXT_PUBLIC_GRAPH_ENDPOINT_MAINNET
   if (chainId === ChainId.Mumbai) {
-    uri = process.env.REACT_APP_GRAPH_ENDPOINT_MUMBAI
+    uri = process.env.NEXT_PUBLIC_GRAPH_ENDPOINT_MUMBAI
   }
   const client = useMemo(
     () =>

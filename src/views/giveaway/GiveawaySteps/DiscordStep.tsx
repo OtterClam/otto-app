@@ -7,10 +7,10 @@ import { ContentSmall, Headline } from 'styles/typography'
 import { CheckedIcon } from 'assets/icons'
 import axios from 'axios'
 import { useEthers } from '@usedapp/core'
-import LockedButton from './LockedButton'
-import Discord from './discord.svg'
 import { useRouter } from 'next/router'
 import useUrlHash from 'hooks/useUrlHash'
+import LockedButton from './LockedButton'
+import Discord from './discord.svg'
 
 const StyledStep = styled.div`
   display: flex;
@@ -65,7 +65,7 @@ enum State {
 }
 
 const DISCORD_OAUTH_STATE = 'discord-ottopia'
-const DISCORD_OAUTH_LINK = `https://discord.com/api/oauth2/authorize?response_type=token&client_id=${process.env.REACT_APP_DISCORD_CLIENT_ID}&state=${DISCORD_OAUTH_STATE}&scope=identify guilds.members.read`
+const DISCORD_OAUTH_LINK = `https://discord.com/api/oauth2/authorize?response_type=token&client_id=${process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID}&state=${DISCORD_OAUTH_STATE}&scope=identify guilds.members.read`
 
 export default function DiscordStep({ locked, onComplete, className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'giveaway.steps.discord' })
