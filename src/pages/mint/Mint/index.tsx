@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { connectWallet, mintFailed, mintStart, mintSuccess } from 'store/uiSlice'
 import styled from 'styled-components/macro'
-import { Caption, ContentLarge, ContentMedium, ContentSmall, Display2, Headline } from 'styles/typography'
+import { Caption, ContentLarge, ContentMedium, ContentSmall, Display2, Headline, Note } from 'styles/typography'
 import PortalPreviewImage from './portal-preview.png'
 
 const StyledMint = styled.section`
@@ -120,7 +120,7 @@ const StyledPortalInfoAmountLeft = styled(Caption).attrs({ as: 'p' })`
   color: ${({ theme }) => theme.colors.clamPink};
 `
 
-const StyledCLAMMintPrice = styled(ContentLarge).attrs({ as: 'p' })`
+const StyledCLAMMintPrice = styled(ContentLarge).attrs({ as: 'div' })`
   display: flex;
   justify-content: right;
   align-items: center;
@@ -132,7 +132,21 @@ const StyledCLAMMintPrice = styled(ContentLarge).attrs({ as: 'p' })`
     background: url(${CLAM});
     display: inline-block;
     background-size: 24px 24px;
-  }
+    margin-right: 5px; */
+
+`
+
+const StyledOriginPrice = styled(ContentLarge)`
+  text-decoration: line-through;
+  margin-right: 5px;
+`
+
+const StyledDiscount = styled(Note).attrs({ as: 'p' })`
+  color: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.clamPink};
+  padding: 5px;
+  border-radius: 5px;
+  margin-left: 5px;
 `
 
 const StyledButtons = styled.div`
@@ -154,10 +168,6 @@ const StyledQuantity = styled.div`
     width: 62px;
   }
 `
-
-interface SelectorProps {
-  selected: boolean
-}
 
 const StyledSummary = styled.div`
   display: flex;
@@ -220,6 +230,12 @@ const StyledBuyCLAMLink = styled(ContentSmall)`
   }
 `
 
+const ORIGIN_PRICE = ethers.utils.parseUnits('50', 9)
+
+const percentFormatter = new Intl.NumberFormat('en-US', {
+  style: 'percent',
+})
+
 export default function Mint() {
   const { t } = useTranslation()
   const { isMobile } = useBreakPoints()
@@ -236,6 +252,7 @@ export default function Mint() {
   const { mintState, mint, resetMint } = useMint()
   const totalPaymentCLAM = clamPrice.mul(quantity)
   const hasAllowance = clamAllowance?.gte(totalPaymentCLAM)
+  const hasDiscount = clamPrice.lt(ORIGIN_PRICE)
   const onApprove = useCallback(() => {
     approve(PORTAL_CREATOR, ethers.utils.parseUnits('10000', 9))
   }, [totalPaymentCLAM, approve])
@@ -273,7 +290,19 @@ export default function Mint() {
                   <StyledPortalInfoAmountLeft>
                     {t('mint.mint.amount_left', { amount: 5000 - ottoSupply })}
                   </StyledPortalInfoAmountLeft>
-                  <StyledCLAMMintPrice>{ethers.utils.formatUnits(clamPrice, 9)}</StyledCLAMMintPrice>
+                  {clamPrice.gt(0) && (
+                    <StyledCLAMMintPrice>
+                      {hasDiscount && (
+                        <StyledOriginPrice>{ethers.utils.formatUnits(ORIGIN_PRICE, 9)}</StyledOriginPrice>
+                      )}
+                      {ethers.utils.formatUnits(clamPrice, 9)}
+                      {hasDiscount && (
+                        <StyledDiscount>
+                          {percentFormatter.format(ORIGIN_PRICE.sub(clamPrice).toNumber() / ORIGIN_PRICE.toNumber())}
+                        </StyledDiscount>
+                      )}
+                    </StyledCLAMMintPrice>
+                  )}
                 </StyledPortalInfo>
               </StyledCardTopContainer>
               <StyledCardBottomContainer>

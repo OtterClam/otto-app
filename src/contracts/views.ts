@@ -1,6 +1,5 @@
 import { useCall, useCalls, useEthers } from '@usedapp/core'
 import { BigNumber, Contract } from 'ethers'
-import useContractAddresses from 'hooks/useContractAddresses'
 import { useItemContract, useOttoContract, usePortalCreatorContract, useStoreContract } from './contracts'
 
 export const useMintInfo = () => {
