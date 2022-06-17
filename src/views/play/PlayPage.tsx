@@ -1,3 +1,4 @@
+import GiveawayFloatingButton from 'components/GiveawayFloatingButton'
 import MenuButton from 'components/MenuButton'
 import MintBanner from 'components/MintBanner'
 import Layout from 'Layout'
@@ -78,6 +79,7 @@ const PlayPage = () => {
             </a>
           </Link>
         ))}
+        <GiveawayFloatingButton />
       </StyledPlayPage>
     </Layout>
   )

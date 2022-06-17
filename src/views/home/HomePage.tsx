@@ -1,4 +1,5 @@
 import Button from 'components/Button'
+import GiveawayFloatingButton from 'components/GiveawayFloatingButton'
 import MenuButton from 'components/MenuButton'
 import { BUY_CLAM_LINK, DAO_LINK, DISCORD_LINK, TREASURY_LINK, WHITE_PAPER_LINK } from 'constant'
 import Layout from 'Layout'
@@ -134,6 +135,7 @@ const HomePage = () => {
         {renderPortals()}
         {renderMenus(rightMenus, 'right-menu')}
       </StyledHomePage>
+      <GiveawayFloatingButton />
     </Layout>
   )
 }
