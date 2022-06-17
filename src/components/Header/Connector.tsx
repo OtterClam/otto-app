@@ -22,7 +22,7 @@ const Connector = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { account } = useEthers()
-  const isMobile = useMediaQuery(breakpoints.mobile)
+  const isMobile = useMediaQuery({ query: breakpoints.mobile })
   return account ? (
     <StyledAccount>
       <ContentLarge>{shortenAddress(account)}</ContentLarge>

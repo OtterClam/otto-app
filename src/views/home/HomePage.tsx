@@ -1,7 +1,6 @@
 import Button from 'components/Button'
 import MenuButton from 'components/MenuButton'
 import { BUY_CLAM_LINK, DAO_LINK, DISCORD_LINK, TREASURY_LINK, WHITE_PAPER_LINK } from 'constant'
-import { useBreakPoints } from 'hooks/useMediaQuery'
 import Layout from 'Layout'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -18,27 +17,24 @@ import WhitePaperIcon from './icons/whitepaper.png'
 
 const StyledHomePage = styled.div`
   width: 80%;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  display: grid;
+  grid-template: 'left-menu portal right-menu' / 168px auto 168px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    max-width: 356px;
+    width: 100%;
+    grid-template:
+      'portal    portal'
+      'left-menu right-menu' / 168px 168px;
+    gap: 0 20px;
+  }
 `
 
-const StyledMobileHomePage = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
-
-const StyledMobileMenuContainers = styled.div`
-  display: flex;
-  gap: 20px;
-`
-
-const StyledMenus = styled.div`
+const StyledMenus = styled.div<{ area: string }>`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  grid-area: ${props => props.area};
 `
 
 const StyledMenuButton = styled(MenuButton)`
@@ -52,6 +48,7 @@ const StyledPortalContainer = styled.div`
   flex: 1;
   align-items: center;
   justify-content: space-around;
+  grid-area: portal;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     max-height: 375px;
@@ -81,7 +78,6 @@ interface Menu {
 
 const HomePage = () => {
   const { t } = useTranslation()
-  const { isMobile } = useBreakPoints()
 
   const leftMenus: Menu[] = useMemo(
     () => [
@@ -100,8 +96,8 @@ const HomePage = () => {
     [t]
   )
 
-  const renderMenus = (menus: Menu[]) => (
-    <StyledMenus>
+  const renderMenus = (menus: Menu[], area: string) => (
+    <StyledMenus area={area}>
       {menus.map(({ title, icon, href, internal }, i) =>
         internal ? (
           <Link key={i} href={href} rel="noreferrer">
@@ -133,22 +129,11 @@ const HomePage = () => {
 
   return (
     <Layout title={t('home.title')} noBorder>
-      {isMobile && (
-        <StyledMobileHomePage>
-          {renderPortals()}
-          <StyledMobileMenuContainers>
-            {renderMenus(leftMenus)}
-            {renderMenus(rightMenus)}
-          </StyledMobileMenuContainers>
-        </StyledMobileHomePage>
-      )}
-      {!isMobile && (
-        <StyledHomePage>
-          {renderMenus(leftMenus)}
-          {renderPortals()}
-          {renderMenus(rightMenus)}
-        </StyledHomePage>
-      )}
+      <StyledHomePage>
+        {renderMenus(leftMenus, 'left-menu')}
+        {renderPortals()}
+        {renderMenus(rightMenus, 'right-menu')}
+      </StyledHomePage>
     </Layout>
   )
 }

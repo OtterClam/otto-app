@@ -388,7 +388,7 @@ export default function RankList({ className }: Props) {
   const { ottos: myOttos } = useMyOttos()
   const sortedMyOttos = useMemo(() => myOttos.sort((a, b) => a.ranking - b.ranking), [myOttos])
   const [expand, setExpand] = useState(false)
-  const isMobile = useMediaQuery(breakpoints.mobile)
+  const isMobile = useMediaQuery({ query: breakpoints.mobile })
   useEffect(() => {
     refetch({ skip: page * PAGE, first: PAGE })
   }, [page])
