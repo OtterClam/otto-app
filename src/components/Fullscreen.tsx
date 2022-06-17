@@ -28,6 +28,7 @@ const Container = styled.div`
   width: 80%;
   background-color: ${({ theme }) => theme.colors.crownYellow};
   padding: 6px;
+  margin: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   max-width: 880px;
   max-height: 100vh;
   overflow-y: scroll;
