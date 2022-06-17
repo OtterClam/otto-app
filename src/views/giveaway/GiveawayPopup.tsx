@@ -3,7 +3,7 @@ import Star from 'assets/ui/large-star.svg'
 import Button from 'components/Button'
 import Link from 'next/link'
 import Fullscreen from 'components/Fullscreen'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentLarge, Headline } from 'styles/typography'
 

@@ -3,7 +3,7 @@ import BorderContainer from 'components/BorderContainer'
 import Item, { EmptyItem, traitToItem } from 'models/Item'
 import Otto from 'models/Otto'
 import { useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled, { useTheme } from 'styled-components/macro'
 import { Caption, ContentMedium, ContentSmall } from 'styles/typography'
 

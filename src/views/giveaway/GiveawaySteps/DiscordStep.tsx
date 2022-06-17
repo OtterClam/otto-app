@@ -1,7 +1,7 @@
 import Button from 'components/Button'
 import { DISCORD_LINK } from 'constant'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
 import { CheckedIcon } from 'assets/icons'

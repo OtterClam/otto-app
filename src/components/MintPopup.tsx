@@ -1,6 +1,6 @@
 import Button from 'components/Button'
 import Fullscreen from 'components/Fullscreen'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { mintReset, selectMintNumber, selectMintStatus } from 'store/uiSlice'
 import styled from 'styled-components/macro'

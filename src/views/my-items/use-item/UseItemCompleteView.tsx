@@ -1,7 +1,7 @@
 import CloseButton from 'components/CloseButton'
 import OttoCard from 'components/OttoCard'
 import Otto from 'models/Otto'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
 import Arrow from 'assets/ui/arrow-right-yellow.svg'

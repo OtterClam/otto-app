@@ -4,14 +4,14 @@ import { LoadingView } from 'components/LoadingView'
 import { ottoClick } from 'constant'
 import Layout from 'Layout'
 import { useCallback, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import ConnectView from 'components/ConnectView'
+import { useRouter } from 'next/router'
 import NoPortalView from './NoPortalView'
 import PortalCard from './PortalCard'
 import PortalContainer from './PortalContainer'
 import { ListMyPortals, ListMyPortalsVariables } from './__generated__/ListMyPortals'
-import { useRouter } from 'next/router'
 
 const StyledMyPortalsPage = styled.div`
   width: 100%;
@@ -90,7 +90,7 @@ export default function MyPortalsPage() {
                 onClick={e => {
                   e.preventDefault()
                   ottoClick.play()
-                  router.push('/my-portals/' + portal.tokenId)
+                  router.push(`/my-portals/${portal.tokenId}`)
                 }}
               >
                 <PortalContainer rawPortal={portal}>{props => <PortalCard {...props} />}</PortalContainer>

@@ -1,5 +1,5 @@
 import Item from 'models/Item'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentLarge, Note } from 'styles/typography'
 import SelectedFrame from './selected-frame.svg'

@@ -1,5 +1,5 @@
 import Fullscreen from 'components/Fullscreen'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled, { keyframes, useTheme } from 'styled-components/macro'
 import { ContentLarge } from 'styles/typography'
 import Star from 'assets/ui/large-star.svg'

@@ -1,4 +1,5 @@
-const withTM = require('next-transpile-modules')(['@usedapp/core']);
+const { i18n } = require('./next-i18next.config')
+const withTM = require('next-transpile-modules')(['@usedapp/core'])
 
 module.exports = withTM({
   webpack: config => {
@@ -8,4 +9,5 @@ module.exports = withTM({
     })
     return config
   },
+  i18n,
 })

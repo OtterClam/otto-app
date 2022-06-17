@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
 import Item from 'models/Item'
 import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { ListItems, ListItemsVariables } from './__generated__/ListItems'
 import useApi from './useApi'
 

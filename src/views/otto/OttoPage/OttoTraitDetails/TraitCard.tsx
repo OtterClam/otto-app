@@ -1,6 +1,6 @@
 import { Trait } from 'models/Otto'
 import styled from 'styled-components/macro'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { Caption, ContentLarge, ContentSmall, Note } from 'styles/typography'
 import ItemCell from 'components/ItemCell'
 import { useMemo } from 'react'

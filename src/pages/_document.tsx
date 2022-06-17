@@ -2,7 +2,7 @@
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 
-export default class MyDocument extends Document {
+export default class MyDocument extends Document<{ asPath: string }> {
   static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet()
     const originalRenderPage = ctx.renderPage
@@ -15,6 +15,7 @@ export default class MyDocument extends Document {
       const initialProps = await Document.getInitialProps(ctx)
       return {
         ...initialProps,
+        asPath: ctx.asPath,
         styles: (
           <>
             {initialProps.styles}
@@ -67,6 +68,7 @@ export default class MyDocument extends Document {
           <title>Otto | The first official citizen of the Otter Kingdom</title>
           <meta charSet="utf-8" />
           <link rel="icon" href="/favicon.ico" />
+          <link rel="canonical" href={this.props.asPath} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="theme-color" content="#000000" />
           <meta property="og:title" content="Otto | The first official citizen of the Otter Kingdom" />

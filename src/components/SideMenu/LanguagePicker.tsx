@@ -1,5 +1,6 @@
-import { languages } from 'i18n'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import styled from 'styled-components/macro'
 import { ContentSmall } from 'styles/typography'
 import SelectButton from './SelectButton'
@@ -12,21 +13,32 @@ const StyledLanguagePicker = styled.div`
 `
 
 const StyledHeader = styled.p``
+const languages = ['en', 'zh-tw']
 
 export default function LanguagePicker() {
+  const router = useRouter()
   const { t, i18n } = useTranslation()
+
   return (
     <StyledLanguagePicker>
       <StyledHeader>
         <ContentSmall>{t('side_menu.select_language')}</ContentSmall>
       </StyledHeader>
-      {languages.map(({ name, locale }) => (
-        <SelectButton
+      {languages.map(locale => (
+        <Link
           key={locale}
-          title={name}
-          selected={i18n.resolvedLanguage === locale}
-          onClick={() => i18n.changeLanguage(locale)}
-        />
+          href={{
+            pathname: router.pathname,
+            query: router.query,
+          }}
+          locale={locale}
+        >
+          <SelectButton
+            title={t(`languages.${locale}`)}
+            selected={i18n.resolvedLanguage === locale}
+            onClick={() => i18n.changeLanguage(locale)}
+          />
+        </Link>
       ))}
     </StyledLanguagePicker>
   )

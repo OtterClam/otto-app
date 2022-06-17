@@ -1,7 +1,7 @@
 import { CheckedIcon } from 'assets/icons'
 import Invitation from 'assets/ui/invitation.svg'
 import { useMemo, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
 import Button from 'components/Button'

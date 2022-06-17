@@ -1,7 +1,7 @@
 import { useEthers } from '@usedapp/core'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 import { ContentLarge } from 'styles/typography'

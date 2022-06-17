@@ -1,4 +1,8 @@
 {
+  "languages": {
+    "en": "English",
+    "zh-tw": "中文"
+  },
   "button_processing": "Processing...",
   "close": "Close",
   "connect_help_text": "Please connect wallet to continue playing.",

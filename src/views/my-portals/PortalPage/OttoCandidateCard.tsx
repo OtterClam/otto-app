@@ -1,6 +1,6 @@
 import BorderContainer from 'components/BorderContainer'
 import Button from 'components/Button'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled, { useTheme } from 'styled-components/macro'
 import { ContentMedium, ContentSmall, Headline, Note } from 'styles/typography'
 

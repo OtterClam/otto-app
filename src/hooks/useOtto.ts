@@ -1,7 +1,7 @@
 import Otto, { OttoMeta, RawOtto } from 'models/Otto'
 import { MyOttosContext } from 'MyOttosProvider'
 import { useContext, useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import useApi from './useApi'
 
 type Falsy = false | 0 | '' | null | undefined

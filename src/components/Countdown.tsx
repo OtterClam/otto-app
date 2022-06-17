@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Caption, Headline } from 'styles/typography'
 

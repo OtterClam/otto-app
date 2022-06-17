@@ -5,7 +5,7 @@ import useContractAddresses from 'hooks/useContractAddresses'
 import Item from 'models/Item'
 import Product from 'models/store/Product'
 import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
 import {
   useERC20,

@@ -4,7 +4,7 @@ import Button from 'components/Button'
 import { useState } from 'react'
 import checked from 'assets/icons/CheckedWhite.svg'
 import noop from 'lodash/noop'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 
 interface StyledOptionProps {
   checked: boolean

@@ -4,7 +4,7 @@ import Item from 'models/Item'
 import styled from 'styled-components/macro'
 import { Caption, ContentSmall, Headline, Note } from 'styles/typography'
 import GenderSpecific from 'components/GenderSpecific'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 
 const StyledItemDetails = styled.section`
   display: flex;

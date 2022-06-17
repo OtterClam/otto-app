@@ -1,7 +1,7 @@
 import Button from 'components/Button'
 import useRarityEpoch from 'hooks/useRarityEpoch'
 import Layout from 'Layout'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import styled from 'styled-components/macro'
 import { Display3, Headline } from 'styles/typography'

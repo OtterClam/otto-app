@@ -1,7 +1,7 @@
 import Button from 'components/Button'
 import { useClaimGiveaway } from 'contracts/functions'
 import { useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentLarge, Headline } from 'styles/typography'
 import ArrowDown from './arrow-down.svg'
