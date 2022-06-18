@@ -194,7 +194,8 @@
       "info_desc": "一個傳送門只能召喚一隻阿獺。鑄造傳送門來召喚你的阿獺，一起加入阿獺王國的家庭吧！",
       "mint_summary": "鑄造資訊({{address}})",
       "portal": "阿獺傳送門",
-      "title": "鑄造傳送門"
+      "title": "鑄造傳送門",
+      "discount": "節省 {{discount}}"
     },
     "mint_button": "鑄造",
     "minted_desc": "你已經鑄造了",

@@ -195,7 +195,8 @@
       "info_desc": "One portal mints one Otto. Mint portals to summon your Otto and begin your Otterverse adventure!",
       "mint_summary": "Mint Summary({{address}})",
       "portal": "Otto Portal",
-      "title": "Mint Portal"
+      "title": "Mint Portal",
+      "discount": "Save {{discount}}"
     },
     "mint_button": "Mint",
     "minted_desc": "You have already minted",

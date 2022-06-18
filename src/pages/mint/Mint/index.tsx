@@ -298,7 +298,11 @@ export default function Mint() {
                       {ethers.utils.formatUnits(clamPrice, 9)}
                       {hasDiscount && (
                         <StyledDiscount>
-                          {percentFormatter.format(ORIGIN_PRICE.sub(clamPrice).toNumber() / ORIGIN_PRICE.toNumber())}
+                          {t('mint.mint.discount', {
+                            discount: percentFormatter.format(
+                              ORIGIN_PRICE.sub(clamPrice).toNumber() / ORIGIN_PRICE.toNumber()
+                            ),
+                          })}
                         </StyledDiscount>
                       )}
                     </StyledCLAMMintPrice>
