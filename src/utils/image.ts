@@ -4,6 +4,10 @@ export interface CropImageOptions {
 }
 
 export const getCroppedImageUrl = (url: string, options: CropImageOptions = {}): string => {
+  if (process.env.REACT_APP_DISABLE_IMAGE_RESIZE_SERVICE === 'true') {
+    return url
+  }
+
   const croppedUrl = new URL('https://images.weserv.nl')
 
   croppedUrl.searchParams.set('url', url)
