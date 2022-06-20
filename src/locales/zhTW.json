@@ -233,7 +233,7 @@
     },
     "legendary_warning": "警告：如果你裝備/更換其他物品到傳奇阿獺身上，傳奇外框將會隱藏，且會扣除額外的傳奇加成：基本稀有度 (BRS) +100。",
     "no_selected_item": "請選擇物品檢視詳細資訊",
-    "open": "Open",
+    "open": "打開",
     "rarity_score": "稀有度：{{score}}",
     "section_title": {
       "All": "全部",
