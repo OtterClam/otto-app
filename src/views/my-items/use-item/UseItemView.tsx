@@ -1,8 +1,8 @@
 import Button from 'components/Button'
 import OttoCard from 'components/OttoCard'
-import { t } from 'next-i18next'
 import Item from 'models/Item'
 import Otto from 'models/Otto'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
 import ItemDetails from './ItemDetails'
@@ -58,6 +58,7 @@ interface Props {
 }
 
 export default function UseItemView({ item, selectedOtto, onSelect, onUse }: Props) {
+  const { t } = useTranslation()
   return (
     <StyledUseItemView>
       <StyledItemDetails item={item} />
