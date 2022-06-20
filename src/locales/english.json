@@ -7,7 +7,9 @@
     "badge": "Special Offer",
     "button": "Give It a Try",
     "description": "The Dice of Destiny gives a chance to temporarily boost your BRS for the current epoch in Rarity Competition, but there’s a possibility that your BRS score will be lowered.",
-    "effects": "The Dice of Destiny was rolled <strong>x{{ times }}</strong> and has blessed this Otto with BRS <strong>{{ brs }}</strong>",
+    "times": "The Dice of Destiny was rolled <strong>x{{ times }}</strong>",
+    "effects_blessed": "The fate has blessed this Otto with BRS <strong>{{ brs }}</strong>",
+    "effects_cursed": "The fate has cursed this Otto with BRS <strong>{{ brs }}</strong>",
     "endTime": "The dice effect will clear and reset at {{ time }}",
     "title": "Roll a Dice of Destiny!"
   },

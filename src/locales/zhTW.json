@@ -7,7 +7,9 @@
     "badge": "特殊活動",
     "button": "試試手氣！",
     "description": "你夠幸運嗎？地獄骰子有機會暫時提升你的阿獺在這輪稀有度比賽的稀有度；但如果你很衰，也有可能會讓稀有度更低。",
-    "effects": "地獄骰子已被骰 <strong>x{{ times }}</strong> 次，且已影響 BRS <strong>{{ brs }}</strong>",
+    "times": "地獄骰子已被骰 <strong>x{{ times }}</strong> 次",
+    "effects_blessed": "命運已改變你的阿獺 BRS <strong>{{ brs }}</strong>",
+    "effects_cursed": "命運已改變你的阿獺 BRS <strong>{{ brs }}</strong>",
     "endTime": "地獄骰子的稀有度影響在 {{ time }} 將會重置",
     "title": "地獄骰子"
   },
@@ -232,7 +234,7 @@
     },
     "legendary_warning": "警告：如果你裝備/更換其他物品到傳奇阿獺身上，傳奇外框將會隱藏，且會扣除額外的傳奇加成：基本稀有度 (BRS) +100。",
     "no_selected_item": "請選擇物品檢視詳細資訊",
-    "open": "Open",
+    "open": "打開",
     "rarity_score": "稀有度：{{score}}",
     "section_title": {
       "All": "全部",

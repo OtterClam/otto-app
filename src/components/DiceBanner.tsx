@@ -146,8 +146,20 @@ export function DiceBanner({ otto }: DiceBannerProps) {
         <ul>
           {dices.length > 0 && (
             <li>
+              <MarkdownWithHtml>{t('dice_banner.times', { times: dices.length })}</MarkdownWithHtml>
+            </li>
+          )}
+          {effects.brs > 0 && (
+            <li>
               <MarkdownWithHtml>
-                {t('dice_banner.effects', { times: dices.length, brs: numberWithSign(effects.brs) })}
+                {t('dice_banner.effects_blessed', { brs: numberWithSign(effects.brs) })}
+              </MarkdownWithHtml>
+            </li>
+          )}
+          {effects.brs < 0 && (
+            <li>
+              <MarkdownWithHtml>
+                {t('dice_banner.effects_cursed', { brs: numberWithSign(effects.brs) })}
               </MarkdownWithHtml>
             </li>
           )}
