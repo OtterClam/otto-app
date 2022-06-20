@@ -32,7 +32,13 @@ const StyledHeader = styled.div`
 `
 
 const StyledLogoLink = styled(Link)`
-  height: 100%;
+  width: 251px;
+  height: 68px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 48px;
+    height: 48px;
+  }
 `
 
 const StyledLogo = styled.img`
