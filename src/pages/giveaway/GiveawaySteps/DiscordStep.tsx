@@ -11,11 +11,11 @@ import { useEthers } from '@usedapp/core'
 import LockedButton from './LockedButton'
 import Discord from './discord.svg'
 
-const StyledStep = styled.div`
+const StyledStep = styled.div<{ locked: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border: 4px solid ${({ theme }) => theme.colors.otterBlue};
+  border: 4px solid ${({ theme, locked }) => (locked ? theme.colors.lightGray400 : theme.colors.otterBlue)};
   border-radius: 10px;
   padding: 20px;
   background: ${({ theme }) => theme.colors.white};
@@ -95,7 +95,7 @@ export default function DiscordStep({ locked, onComplete, className }: Props) {
     }
   }, [locked, params])
   return (
-    <StyledStep className={className}>
+    <StyledStep className={className} locked={locked}>
       <StyledActionContainer>
         <StyledIcon />
         <StyledDesc>

@@ -31,16 +31,17 @@
         "good": "你真幸運！",
         "question": "Although your otto dropped something, who was lucky enough to meet the god Hermes. And Hermes dived into the water and returned with..\n\nHey, you dropped this… "
       },
+      "next_button": "下一個事件",
       "result": {
         "ranking": "{{ ranking }} <strong>({{ effect }})</strong>",
         "rarity_score": "稀有度： {{ score }} <strong>({{ effect }})</strong>"
       },
-      "title": "事件 ({{index}}/2)",
-      "next_button": "下一個事件"
+      "title": "事件 ({{index}}/2)"
     }
   },
   "giveaway": {
     "faq": {
+      "a0": "邀請碼會由阿獺王國內部活動或是與項目聯名合作時提供。邀請碼皆有兌換數量及兌換時間限制，詳請請根據該活動公布內容為主。加入我們的 Discord 社群以得到最新邀請碼活動情報。",
       "a1": "貝殼寶箱是類似 \"福袋\" 的概念，開啟 1 寶箱後可以得到 1 個隨機的裝備，裝備可以穿戴在阿獺身上。快來領取免費的貝殼寶箱來開啟稀有裝備吧!",
       "a2": "白銀貝殼寶箱是阿獺王國裡最常見且最便宜的寶箱；黃金貝殼寶箱是上一級的寶箱，有更多機會可以開啟稀有裝備；鑽石貝殼寶箱是最高級且最貴的寶箱，但是擁有最高機率可以開啟超級稀有且強大的裝備！想了解各稀有度裝備在不同種類寶箱的開啟機率，可前往： [白皮書](https://docs.ottopia.app/ottopia/gameplay/store#what-does-a-shell-chest-contain)了解更多。",
       "a3": "透過寶箱裡的物品，你可以裝備到你的阿獺 - 阿獺王國的第一代先驅者 身上，裝備物品是強化你的阿獺、或提升阿獺的稀有度最快且最好的方式。當阿獺的稀有度及其他屬性因裝備而提升時，你就越有機會讓阿獺贏得未來的比賽或任務，並賺取額外的 CLAM!\n\n想要了解更多關於裝備和相關屬性，可以到 [白皮書](https://docs.ottopia.app/ottopia/) 了解更多。",
@@ -50,6 +51,7 @@
       "a7": "一旦完成上面所有任務步驟，你就可以馬上自動獲取白銀貝殼寶箱。",
       "a8": "你可以到 [我的物品](/my-items) 頁面開啟寶箱來獲取裝備。",
       "a9": "別擔心，阿獺王國是個溫暖的大家庭， [加入 Discord](https://discord.gg/otterclam) 就可以在上面聊天打屁或提出任何問題，我們隨時邊迎新夥伴的加入！",
+      "q0": "什麼是邀請碼？我該如何取得邀請碼？",
       "q1": "貝殼寶箱是什麼?",
       "q2": "白銀、黃金跟鑽石的貝殼寶箱差別在哪?",
       "q3": "我可以拿寶箱裡的裝備來做什麼?",
@@ -81,6 +83,7 @@
       "invitation": {
         "apply": "套用",
         "desc": "輸入邀請碼",
+        "note": "* 阿獺王國內部活動或是與項目聯名合作時才會釋出邀請碼。",
         "placeholder": "輸入邀請碼"
       },
       "twitter": {
@@ -97,7 +100,7 @@
       }
     },
     "subtitle": "只需要完成 4 步驟，就可以免費領取白銀貝殼寶箱！",
-    "title": "免費活動"
+    "title": "邀請碼好禮"
   },
   "header": {
     "connect": "連接"
@@ -134,6 +137,7 @@
       "chosen_one": "天選之獺 (BRS+150)",
       "est_reward": "預估獎金",
       "expand": "展開顯示所有 {{count}} 隻阿獺",
+      "hell_dice": "Dice X{{ diceCount }} (BRS{{ boost }})",
       "name": "阿獺名稱",
       "next": "下一頁",
       "prev": "上一頁",
@@ -193,11 +197,11 @@
     },
     "mint": {
       "amount_left": "剩餘： {{amount}} 阿獺傳送門",
+      "discount": "節省 {{discount}}",
       "info_desc": "一個傳送門只能召喚一隻阿獺。鑄造傳送門來召喚你的阿獺，一起加入阿獺王國的家庭吧！",
       "mint_summary": "鑄造資訊({{address}})",
       "portal": "阿獺傳送門",
-      "title": "鑄造傳送門",
-      "discount": "節省 {{discount}}"
+      "title": "鑄造傳送門"
     },
     "mint_button": "鑄造",
     "minted_desc": "你已經鑄造了",
