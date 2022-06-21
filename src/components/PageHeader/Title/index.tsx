@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react'
 import styled from 'styled-components/macro'
 import { ContentMedium } from 'styles/typography'
+import useGoBack from 'hooks/useGoBack'
 import LargeButtonBg from './large-button.png'
 import SmallButtonBg from './small-button.png'
 import LargeCenterBg from './large-center.png'
@@ -8,12 +9,13 @@ import SmallCenterBg from './small-center.png'
 import LargeRightBg from './large-right.png'
 import SmallRightBg from './small-right.png'
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ showLeftBg: boolean }>`
   flex: 1;
   display: flex;
   height: 48px;
   align-items: stretch;
 
+  &::before,
   &::after {
     flex: 0 14px;
     content: '';
@@ -21,16 +23,23 @@ const StyledContainer = styled.div`
     background: left / 14px 48px url(${LargeRightBg.src});
   }
 
+  &::before {
+    display: ${props => (props.showLeftBg ? 'block' : 'none')};
+    transform: rotateY(180deg);
+  }
+
   @media ${({ theme }) => theme.breakpoints.mobile} {
     height: 40px;
 
-    &::after {
+    &::after,
+    &::before {
       background: left / 14px 40px url(${SmallRightBg.src});
     }
   }
 `
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<{ show: boolean }>`
+  display: ${props => (props.show ? 'block' : 'none')};
   flex: 0 63px;
   background: left / 189px 48px url(${LargeButtonBg.src});
 
@@ -61,9 +70,11 @@ const StyledText = styled(ContentMedium)`
 `
 
 export default function Title({ children }: PropsWithChildren<object>) {
+  const { goBack, historyLength } = useGoBack()
+
   return (
-    <StyledContainer>
-      <StyledButton />
+    <StyledContainer showLeftBg={historyLength <= 1}>
+      <StyledButton show={historyLength > 1} onClick={goBack} />
       <StyledText>{children}</StyledText>
     </StyledContainer>
   )
