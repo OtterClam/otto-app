@@ -22,7 +22,7 @@ export default function GiveawayFAQ() {
       {Array(9)
         .fill(0)
         .map((_, i) => (
-          <FAQ key={i} question={t(`q${i + 1}`)} answer={t(`a${i + 1}`)} />
+          <FAQ key={i} question={t(`q${i}`)} answer={t(`a${i}`)} />
         ))}
     </StyledGiveawayFAQ>
   )

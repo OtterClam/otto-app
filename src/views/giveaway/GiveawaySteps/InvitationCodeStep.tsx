@@ -3,7 +3,7 @@ import Invitation from 'assets/ui/invitation.svg'
 import { useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
-import { ContentSmall, Headline } from 'styles/typography'
+import { Caption, ContentSmall, Headline } from 'styles/typography'
 import Button from 'components/Button'
 import axios from 'axios'
 import { useEthers } from '@usedapp/core'
@@ -21,11 +21,11 @@ export interface SuccessResponse {
   signature: string
 }
 
-const StyledStep = styled.div`
+const StyledStep = styled.div<{ locked: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border: 4px solid ${({ theme }) => theme.colors.otterBlue};
+  border: 4px solid ${({ theme, locked }) => (locked ? theme.colors.lightGray400 : theme.colors.otterBlue)};
   border-radius: 10px;
   padding: 20px;
   background: ${({ theme }) => theme.colors.white};
@@ -84,6 +84,11 @@ const StyledInput = styled(ContentSmall).attrs({ as: 'input' })`
   }
 `
 
+const StyledNote = styled(Caption).attrs({ as: 'p' })`
+  margin-top: 10px;
+  text-align: center;
+`
+
 interface Props {
   locked: boolean
   onComplete: (data: SuccessResponse) => void
@@ -135,25 +140,28 @@ export default function InvitationCodeStep({ locked, onComplete, className }: Pr
     }
   }
   return (
-    <StyledStep className={className}>
-      <StyledActionContainer>
-        <StyledIcon />
-        <StyledContainer>
-          <StyledDescContainer>
-            <StyledDesc>{t('desc')}</StyledDesc>
-            {locked && <LockedButton />}
-            {!locked && state === State.Verified && <CheckedIcon />}
-          </StyledDescContainer>
-          {!locked && state === State.Verify && (
-            <StyledInputContainer>
-              <StyledInput ref={inputRef} placeholder={t('placeholder')} />
-              <Button padding="6px 10px" loading={loading} onClick={onVerify} Typography={Headline}>
-                {t('apply')}
-              </Button>
-            </StyledInputContainer>
-          )}
-        </StyledContainer>
-      </StyledActionContainer>
-    </StyledStep>
+    <>
+      <StyledStep className={className} locked={locked}>
+        <StyledActionContainer>
+          <StyledIcon />
+          <StyledContainer>
+            <StyledDescContainer>
+              <StyledDesc>{t('desc')}</StyledDesc>
+              {locked && <LockedButton />}
+              {!locked && state === State.Verified && <CheckedIcon />}
+            </StyledDescContainer>
+            {!locked && state === State.Verify && (
+              <StyledInputContainer>
+                <StyledInput ref={inputRef} placeholder={t('placeholder')} />
+                <Button padding="6px 10px" loading={loading} onClick={onVerify} Typography={Headline}>
+                  {t('apply')}
+                </Button>
+              </StyledInputContainer>
+            )}
+          </StyledContainer>
+        </StyledActionContainer>
+      </StyledStep>
+      <StyledNote>{t('note')}</StyledNote>
+    </>
   )
 }

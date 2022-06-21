@@ -23,12 +23,12 @@ export default function useMyItems() {
   const api = useApi()
   const { i18n } = useTranslation()
   const { account } = useEthers()
-  const { data, refetch } = useQuery<ListItems, ListItemsVariables>(LIST_MY_ITEMS, {
+  const { refetch } = useQuery<ListItems, ListItemsVariables>(LIST_MY_ITEMS, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'network-only',
     variables: { owner: account || '' },
     skip: !account,
-  })
-  useEffect(() => {
-    if (data) {
+    onCompleted: data => {
       const ids = data.ottoItems.map(item => String(item.tokenId))
       api
         .getItems(ids, i18n.resolvedLanguage)
@@ -42,13 +42,14 @@ export default function useMyItems() {
           }))
         )
         .then(items => setItems(items))
-        .then(() => setLoading(false))
-    }
-  }, [data])
+        .finally(() => setLoading(false))
+    },
+  })
+
   return {
-    items,
+    items: loading ? [] : items,
     loading,
-    refetch: () => {
+    refetch() {
       setLoading(true)
       refetch()
     },

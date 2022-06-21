@@ -141,6 +141,16 @@ const StyledRibbonText = styled(RibbonText)`
   animation: ${zoomInUp} 2s;
 `
 
+const StyledIntroDesc = styled(StyledRichContent)`
+  strong {
+    color: ${props => props.theme.colors.crownYellow};
+  }
+
+  a {
+    color: ${props => props.theme.colors.seaweedGreen};
+  }
+`
+
 interface StyledEventEffectProps {
   image: string
 }
@@ -218,9 +228,9 @@ function IntroState({ diceRoller, otto }: StateProps) {
       <StyledHellImage />
       <StyledIntroTitle>{t('dice_popup.intro.title')}</StyledIntroTitle>
       <ContentExtraSmall>
-        <StyledRichContent>
+        <StyledIntroDesc>
           <MarkdownWithHtml>{t('dice_popup.intro.description')}</MarkdownWithHtml>
-        </StyledRichContent>
+        </StyledIntroDesc>
       </ContentExtraSmall>
       <StyledSkullImage src={skull.src} />
       <StyledIntroCallToAction>{t('dice_popup.intro.call_to_action')}</StyledIntroCallToAction>

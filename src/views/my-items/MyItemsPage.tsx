@@ -255,7 +255,7 @@ export default function MyItemsPage() {
             </StyledMenuBar>
             <StyledItemScrollContainer>
               {loading && <LoadingView />}
-              {displayItems.length === 0 ? (
+              {!loading && displayItems.length === 0 ? (
                 <StyledEmptySlate>
                   <img src={EmptyStatus.src} alt="Empty Status" />
                   <p>{t('empty')}</p>
