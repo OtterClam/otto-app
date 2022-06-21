@@ -2,6 +2,7 @@ import { ApolloProvider } from '@apollo/client'
 import { ChainId, Config, DAppProvider } from '@usedapp/core'
 import MintPopup from 'components/MintPopup'
 import SideMenu from 'components/SideMenu'
+import { BreakpointsProvider } from 'contexts/Breakpoints'
 import useApollo from 'hooks/useApollo'
 import MyOttosProvider from 'MyOttosProvider'
 import { PropsWithChildren } from 'react'
@@ -43,15 +44,17 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
   return (
     <ApolloProvider client={apollo}>
       <ThemeProvider theme={theme}>
-        <MyOttosProvider>
-          <StyledApp>
-            {children}
-            <Error />
-            <WalletSelector />
-            <MintPopup />
-            <SideMenu />
-          </StyledApp>
-        </MyOttosProvider>
+        <BreakpointsProvider>
+          <MyOttosProvider>
+            <StyledApp>
+              {children}
+              <Error />
+              <WalletSelector />
+              <MintPopup />
+              <SideMenu />
+            </StyledApp>
+          </MyOttosProvider>
+        </BreakpointsProvider>
       </ThemeProvider>
     </ApolloProvider>
   )
