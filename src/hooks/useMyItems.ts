@@ -23,34 +23,43 @@ export default function useMyItems() {
   const api = useApi()
   const { i18n } = useTranslation()
   const { account } = useEthers()
-  const { data, refetch } = useQuery<ListItems, ListItemsVariables>(LIST_MY_ITEMS, {
+  const {
+    data,
+    refetch,
+    loading: graphLoading,
+  } = useQuery<ListItems, ListItemsVariables>(LIST_MY_ITEMS, {
     variables: { owner: account || '' },
     skip: !account,
   })
+
   useEffect(() => {
-    if (data) {
-      const ids = data.ottoItems.map(item => String(item.tokenId))
-      api
-        .getItems(ids, i18n.resolvedLanguage)
-        .then(items =>
-          items.map((item, i) => ({
-            ...item,
-            amount: data.ottoItems[i].amount,
-            equipped: Boolean(data.ottoItems[i].parentTokenId),
-            parentTokenId: data.ottoItems[i].parentTokenId?.toString(),
-            update_at: data.ottoItems[i].updateAt,
-          }))
-        )
-        .then(items => setItems(items))
-        .then(() => setLoading(false))
+    if (graphLoading) {
+      setLoading(true)
+      return
     }
-  }, [data])
+    if (!data) {
+      setLoading(false)
+      return
+    }
+    const ids = data.ottoItems.map(item => String(item.tokenId))
+    api
+      .getItems(ids, i18n.resolvedLanguage)
+      .then(items =>
+        items.map((item, i) => ({
+          ...item,
+          amount: data.ottoItems[i].amount,
+          equipped: Boolean(data.ottoItems[i].parentTokenId),
+          parentTokenId: data.ottoItems[i].parentTokenId?.toString(),
+          update_at: data.ottoItems[i].updateAt,
+        }))
+      )
+      .then(items => setItems(items))
+      .then(() => setLoading(false))
+  }, [graphLoading])
+
   return {
     items,
     loading,
-    refetch: () => {
-      setLoading(true)
-      refetch()
-    },
+    refetch,
   }
 }
