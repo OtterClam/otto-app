@@ -8,6 +8,7 @@ import MenuButton from './MenuButton'
 
 const StyledContainer = styled.div`
   width: 90%;
+  max-width: 1200px;
   display: flex;
   align-items: center;
   gap: 10px;
