@@ -5,19 +5,20 @@ import { useDispatch } from 'react-redux'
 import { connectWallet } from 'store/uiSlice'
 import { Caption } from 'styles/typography'
 import { useBreakpoints } from 'contexts/Breakpoints'
+import { useTranslation } from 'next-i18next'
 import LargeEdge from './large-edge.png'
 import LargeCenter from './large-center.png'
 import SmallEdge from './small-edge.png'
 import SmallCenter from './small-center.png'
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ connected: boolean }>`
   display: inline-flex;
   align-items: stretch;
   height: 48px;
 
   &::before,
   &::after {
-    display: block;
+    display: ${props => (props.connected ? 'block' : 'none')};
     content: '';
     width: 5px;
     background: center / 5px 48px url(${LargeEdge.src});
@@ -65,17 +66,18 @@ const useAccount = () => {
 export default function Wallet() {
   const account = useAccount()
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const onClick = () => {
     dispatch(connectWallet())
   }
 
   return (
-    <StyledContainer>
+    <StyledContainer connected={Boolean(account)}>
       {account && <StyledAddress>{account}</StyledAddress>}
       {!account && (
         <Button onClick={onClick} Typography={Caption}>
-          Connect
+          {t('header.connect')}
         </Button>
       )}
     </StyledContainer>
