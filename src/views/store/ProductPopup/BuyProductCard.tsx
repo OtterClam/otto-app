@@ -77,7 +77,7 @@ const StyledMustItemRibbon = styled(Note).attrs({ as: 'div' })`
   height: 45px;
   top: -22.5px;
   left: 0;
-  background: url(${YellowRibbonXL}) no-repeat;
+  background: url(${YellowRibbonXL.src}) no-repeat;
   background-size: 100% 100%;
   z-index: 10;
   display: flex;
