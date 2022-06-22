@@ -50,8 +50,9 @@ const Stable = keyframes`
 const StyledImageContainer = styled.div`
   flex: 1;
   position: relative;
+  pointer-events: none;
 
-  > img {
+  img {
     position: absolute;
     width: 260px;
     height: 260px;
