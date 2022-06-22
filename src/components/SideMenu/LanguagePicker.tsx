@@ -13,18 +13,17 @@ const StyledLanguagePicker = styled.div`
 `
 
 const StyledHeader = styled.p``
-const languages = ['en', 'zh-tw']
 
 export default function LanguagePicker() {
   const router = useRouter()
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   return (
     <StyledLanguagePicker>
       <StyledHeader>
         <ContentSmall>{t('side_menu.select_language')}</ContentSmall>
       </StyledHeader>
-      {languages.map(locale => (
+      {router.locales?.map(locale => (
         <Link
           key={locale}
           href={{
@@ -33,11 +32,7 @@ export default function LanguagePicker() {
           }}
           locale={locale}
         >
-          <SelectButton
-            title={t(`languages.${locale}`)}
-            selected={i18n.resolvedLanguage === locale}
-            onClick={() => i18n.changeLanguage(locale)}
-          />
+          <SelectButton title={t(`languages.${locale}`)} selected={router.locale === locale} />
         </Link>
       ))}
     </StyledLanguagePicker>

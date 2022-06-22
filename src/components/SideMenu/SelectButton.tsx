@@ -3,7 +3,7 @@ import { ContentSmall } from 'styles/typography'
 import CheckedBox from './checkbox-checked.svg'
 import UncheckedBox from './checkbox-unchecked.svg'
 
-const StyledButton = styled.button<{ selected: boolean }>`
+const StyledButton = styled.a<{ selected: boolean }>`
   background: white;
   color: ${({ theme }) => theme.colors.otterBlack};
   padding: 12px 20px;
@@ -22,12 +22,13 @@ const StyledBox = styled.img`
 interface Props {
   title: string
   selected: boolean
-  onClick: () => void
+  href?: string
+  onClick?: () => void
 }
 
-export default function SelectButton({ title, selected, onClick }: Props) {
+export default function SelectButton({ title, selected, onClick, href }: Props) {
   return (
-    <StyledButton selected={selected} onClick={onClick}>
+    <StyledButton selected={selected} href={href} onClick={onClick}>
       <ContentSmall>{title}</ContentSmall>
       <StyledBox src={selected ? CheckedBox.src : UncheckedBox.src} />
     </StyledButton>
