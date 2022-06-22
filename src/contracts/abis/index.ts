@@ -1,8 +1,17 @@
-export { abi as ERC20Abi } from './erc20.json'
-export { abi as OttoAbi } from './Otto.json'
-export { abi as OttopiaPortalCreatorAbi } from './OttopiaPortalCreator.json'
-export { abi as OttoSummonerAbi } from './OttoSummoner.json'
-export { abi as OttoItemAbi } from './OttoItem.json'
-export { abi as OttopiaStoreAbi } from './OttopiaStore.json'
-export { abi as IOttoItemFactoryAbi } from './IOttoItemFactory.json'
-export { abi as OttoItemGiveawayAbi } from './OttoItemGiveaway.json'
+import ERC20 from './erc20.json'
+import Otto from './Otto.json'
+import OttopiaPortalCreator from './OttopiaPortalCreator.json'
+import OttoSummoner from './OttoSummoner.json'
+import OttoItem from './OttoItem.json'
+import OttopiaStore from './OttopiaStore.json'
+import IOttoItemFactory from './IOttoItemFactory.json'
+import OttoItemGiveaway from './OttoItemGiveaway.json'
+
+export const ERC20Abi = ERC20.abi
+export const OttoAbi = Otto.abi
+export const OttopiaPortalCreatorAbi = OttopiaPortalCreator.abi
+export const OttoSummonerAbi = OttoSummoner.abi
+export const OttoItemAbi = OttoItem.abi
+export const OttopiaStoreAbi = OttopiaStore.abi
+export const IOttoItemFactoryAbi = IOttoItemFactory.abi
+export const OttoItemGiveawayAbi = OttoItemGiveaway.abi
