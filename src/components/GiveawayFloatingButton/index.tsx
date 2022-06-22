@@ -13,7 +13,7 @@ const StyledGiveawayFloatingButton = styled.a`
 `
 
 const StyledButton = styled.img.attrs({
-  src: ButtonImg,
+  src: ButtonImg.src,
 })`
   width: 120px;
   height: 120px;

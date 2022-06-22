@@ -32,8 +32,8 @@ interface Props {
 export function LoadingView({ show = true }: Props) {
   const animation = useMemo(() => {
     const LoadingScreen = Math.floor(Math.random() * 2)
-    if (LoadingScreen === 1) return LoadingAnimation1
-    return LoadingAnimation2
+    if (LoadingScreen === 1) return LoadingAnimation1.src
+    return LoadingAnimation2.src
   }, [])
 
   return (

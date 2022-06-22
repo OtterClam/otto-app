@@ -1,5 +1,5 @@
 import { shortenAddress, useEthers } from '@usedapp/core'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { hideSideMenu, selectShowSideMenu } from 'store/uiSlice'
 import styled from 'styled-components/macro'
@@ -78,7 +78,7 @@ export default function SideMenu() {
     <StyledSideMenu show={show}>
       <Background show={show} onClick={() => dispatch(hideSideMenu())} />
       <Container show={show}>
-        <StyledLogo src={Logo} />
+        <StyledLogo src={Logo.src} />
         {account && (
           <StyledAccountContainer>
             <ContentSmall>{shortenAddress(account)}</ContentSmall>

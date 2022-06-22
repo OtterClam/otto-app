@@ -30,13 +30,13 @@ const StyledPortal = styled.img<{ delay: number }>`
 export default function PortalAnimation() {
   return (
     <StyledPortalAnimation>
-      <StyledPortal src={Opening01} delay={0} />
-      <StyledPortal src={Opening02} delay={200} />
-      <StyledPortal src={Opening03} delay={400} />
-      <StyledPortal src={Opening04} delay={600} />
-      <StyledPortal src={Opening05} delay={800} />
-      <StyledPortal src={Opening06} delay={1000} />
-      <StyledPortal src={Opening07} delay={1000} />
+      <StyledPortal src={Opening01.src} delay={0} />
+      <StyledPortal src={Opening02.src} delay={200} />
+      <StyledPortal src={Opening03.src} delay={400} />
+      <StyledPortal src={Opening04.src} delay={600} />
+      <StyledPortal src={Opening05.src} delay={800} />
+      <StyledPortal src={Opening06.src} delay={1000} />
+      <StyledPortal src={Opening07.src} delay={1000} />
     </StyledPortalAnimation>
   )
 }

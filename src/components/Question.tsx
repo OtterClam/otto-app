@@ -1,10 +1,10 @@
 import styled from 'styled-components/macro'
 import { ContentLarge, Headline } from 'styles/typography'
 import Button from 'components/Button'
-import { MouseEventHandler, useState } from 'react'
+import { useState } from 'react'
 import checked from 'assets/icons/CheckedWhite.svg'
 import noop from 'lodash/noop'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 
 interface StyledOptionProps {
   checked: boolean
@@ -54,7 +54,7 @@ const StyledOption = styled(ContentLarge.withComponent('button'))<StyledOptionPr
     position: absolute;
     right: 15px;
     content: '';
-    background: center / cover url(${checked});
+    background: center / cover url(${checked.src});
     width: 20px;
     height: 20px;
     display: ${props => (props.checked ? 'block' : 'none')};

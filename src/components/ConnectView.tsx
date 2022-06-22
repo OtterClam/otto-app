@@ -1,5 +1,5 @@
 import Button from 'components/Button'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { useDispatch } from 'react-redux'
 import { connectWallet } from 'store/uiSlice'
 import styled from 'styled-components/macro'
@@ -36,7 +36,7 @@ export default function ConnectView() {
   return (
     <StyledConnectView>
       <StyledInnerContainer>
-        <StyledConnectImage src={WhiteBlankPortal} />
+        <StyledConnectImage src={WhiteBlankPortal.src} />
         <StyledHelpText>
           <ContentSmall>{t('connect_help_text')}</ContentSmall>
         </StyledHelpText>

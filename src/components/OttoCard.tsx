@@ -3,7 +3,7 @@ import BorderContainer from 'components/BorderContainer'
 import Item, { EmptyItem, traitToItem } from 'models/Item'
 import Otto from 'models/Otto'
 import { useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled, { useTheme } from 'styled-components/macro'
 import { Caption, ContentMedium, ContentSmall } from 'styles/typography'
 
@@ -75,7 +75,7 @@ const StyledRanking = styled(ContentSmall).attrs({
     content: '';
     width: 24px;
     height: 24px;
-    background-image: url(${RankingIcon});
+    background-image: url(${RankingIcon.src});
     background-size: 100%;
   }
 `

@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
 import Lock from 'assets/ui/lock.svg'
@@ -11,7 +11,7 @@ const StyledGenderSpecific = styled(Caption)<{ gender: string }>`
     display: block;
     width: 18px;
     height: 18px;
-    background-image: url(${Lock});
+    background-image: url(${Lock.src});
     background-size: 100% 100%;
     margin-right: 10px;
   }

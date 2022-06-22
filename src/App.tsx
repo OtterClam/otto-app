@@ -1,10 +1,10 @@
 import { ApolloProvider } from '@apollo/client'
-import { ChainId, Config, DAppProvider, useEthers } from '@usedapp/core'
+import { ChainId, Config, DAppProvider } from '@usedapp/core'
 import MintPopup from 'components/MintPopup'
 import SideMenu from 'components/SideMenu'
 import useApollo from 'hooks/useApollo'
 import MyOttosProvider from 'MyOttosProvider'
-import { Outlet } from 'react-router-dom'
+import { PropsWithChildren } from 'react'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
 import bg from './assets/bg.jpg'
@@ -16,7 +16,7 @@ const StyledApp = styled.div`
   flex-direction: column;
   align-items: center;
   height: 100vh;
-  background-image: url(${bg});
+  background-image: url(${bg.src});
   background-size: cover;
   color: ${({ theme }) => theme.colors.otterBlack};
 
@@ -31,21 +31,21 @@ const config: Config = {
   readOnlyChainId: ChainId.Polygon,
   readOnlyUrls: {
     [ChainId.Polygon]: 'https://polygon-rpc.com',
-    // [ChainId.Mumbai]: process.env.REACT_APP_RPC_ENDPOINT_MUMBAI || '',
+    // [ChainId.Mumbai]: process.env.NEXT_PUBLIC_RPC_ENDPOINT_MUMBAI || '',
   },
   multicallAddresses: {
     [ChainId.Hardhat]: '0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507',
   },
 }
 
-const ApolloApp = () => {
+const ApolloApp = ({ children }: PropsWithChildren<object>) => {
   const apollo = useApollo()
   return (
     <ApolloProvider client={apollo}>
       <ThemeProvider theme={theme}>
         <MyOttosProvider>
           <StyledApp>
-            <Outlet />
+            {children}
             <Error />
             <WalletSelector />
             <MintPopup />
@@ -57,10 +57,10 @@ const ApolloApp = () => {
   )
 }
 
-const App = () => {
+const App = ({ children }: PropsWithChildren<object>) => {
   return (
     <DAppProvider config={config}>
-      <ApolloApp />
+      <ApolloApp>{children}</ApolloApp>
     </DAppProvider>
   )
 }

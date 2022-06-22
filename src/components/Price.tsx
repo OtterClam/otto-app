@@ -21,7 +21,7 @@ const StyledIcon = styled.span<StyledIconProps>`
 `
 
 const icons = {
-  [Token.Clam]: clam,
+  [Token.Clam]: clam.src,
 }
 
 const tokenDecimal = {

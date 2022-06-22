@@ -1,6 +1,6 @@
 import { ChainId, useEthers } from '@usedapp/core'
 import { useDispatch } from 'react-redux'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { useEffect, useMemo } from 'react'
 import { clearError, ErrorButtonType, setError } from '../store/errorSlice'
 import { POLYGON_MAINNET, LOCALHOST, POLYGON_MUMBAI } from '../contracts/addresses'

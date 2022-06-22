@@ -23,7 +23,7 @@ const StyledDice = styled.div<{ n: number }>`
   left: 0;
   width: 320px;
   height: 320px;
-  background: url(${image}) 0 ${props => props.n * -640}px;
+  background: url(${image.src}) 0 ${props => props.n * -640}px;
   background-size: 320px auto;
   animation: ${opacity} 1.6s infinite;
   animation-delay: ${props => (props.n + 1) * 200}ms;

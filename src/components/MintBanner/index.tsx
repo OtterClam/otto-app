@@ -1,8 +1,8 @@
 import Button from 'components/Button'
-import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { useTranslation } from 'next-i18next'
+import Link from 'next/link'
 import styled from 'styled-components/macro'
-import { Display2, Display3, Headline } from 'styles/typography'
+import { Display2, Headline } from 'styles/typography'
 import JoinUsImage from './join-us.png'
 
 const StyledMintBanner = styled.div`
@@ -64,15 +64,17 @@ export default function MintBanner({ className }: Props) {
     <StyledMintBanner className={className}>
       <StyledInnerButton>
         <StyledContainer>
-          <StyledImg src={JoinUsImage} alt="mint" />
+          <StyledImg src={JoinUsImage.src} alt="mint" />
           <StyledParagraph>
             <Headline>{t('mint_banner.para1')}</Headline>
             <Display2>{t('mint_banner.para2')}</Display2>
           </StyledParagraph>
-          <Link to="/mint">
-            <Button primaryColor="pink" padding="6px 10px" Typography={Headline}>
-              {t('mint_banner.cta')}
-            </Button>
+          <Link href="/mint">
+            <a>
+              <Button primaryColor="pink" padding="6px 10px" Typography={Headline}>
+                {t('mint_banner.cta')}
+              </Button>
+            </a>
           </Link>
         </StyledContainer>
       </StyledInnerButton>
