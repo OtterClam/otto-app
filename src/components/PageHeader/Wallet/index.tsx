@@ -10,18 +10,22 @@ import LargeEdge from './large-edge.png'
 import LargeCenter from './large-center.png'
 import SmallEdge from './small-edge.png'
 import SmallCenter from './small-center.png'
+import LargeBtnEdge from './large-btn-edge.png'
+import LargeBtnCenter from './large-btn-center.png'
+import SmallBtnEdge from './small-btn-edge.png'
+import SmallBtnCenter from './small-btn-center.png'
 
-const StyledContainer = styled.div<{ connected: boolean }>`
+const StyledContainer = styled.div<{ isButton?: boolean }>`
   display: inline-flex;
   align-items: stretch;
   height: 40px;
 
   &::before,
   &::after {
-    display: ${props => (props.connected ? 'block' : 'none')};
+    display: block;
     content: '';
     width: 8px;
-    background: center / 8px 40px url(${LargeEdge.src});
+    background: center / 8px 40px url(${props => (props.isButton ? LargeBtnEdge.src : LargeEdge.src)});
   }
 
   &::after {
@@ -35,22 +39,22 @@ const StyledContainer = styled.div<{ connected: boolean }>`
     &::before,
     &::after {
       width: 5px;
-      background: center / 5px 24px url(${SmallEdge.src});
+      background: center / 5px 24px url(${props => (props.isButton ? SmallBtnEdge.src : SmallEdge.src)});
     }
   }
 `
 
-const StyledAddress = styled(Caption)`
+const StyledText = styled(Caption)<{ isButton?: boolean }>`
   display: flex;
   align-items: center;
-  background: left / 1px 40px url(${LargeCenter.src});
+  background: left / 1px 40px url(${props => (props.isButton ? LargeBtnCenter.src : LargeCenter.src)});
   color: ${props => props.theme.colors.white};
   padding: 0 0.5em;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     flex: 1;
     justify-content: center;
-    background: left / 1px 24px url(${SmallCenter.src});
+    background: left / 1px 24px url(${props => (props.isButton ? SmallBtnCenter.src : SmallCenter.src)});
   }
 `
 
@@ -70,17 +74,14 @@ export default function Wallet() {
   const { t } = useTranslation()
 
   const onClick = () => {
-    dispatch(connectWallet())
+    if (!account) {
+      dispatch(connectWallet())
+    }
   }
 
   return (
-    <StyledContainer connected={Boolean(account)}>
-      {account && <StyledAddress>{account}</StyledAddress>}
-      {!account && (
-        <Button onClick={onClick} Typography={Caption}>
-          {t('header.connect')}
-        </Button>
-      )}
+    <StyledContainer isButton={!account} as={account ? undefined : 'button'} onClick={onClick}>
+      <StyledText isButton={!account}>{account ?? t('header.connect')}</StyledText>
     </StyledContainer>
   )
 }
