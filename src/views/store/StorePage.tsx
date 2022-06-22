@@ -5,12 +5,17 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentMedium, Display3 } from 'styles/typography'
+import MarkdownWithHtml from 'components/MarkdownWithHtml'
+import useMyItems from 'hooks/useMyItems'
 import Curtain from './Curtain'
 import GemLeft from './gem-left.png'
 import GemRight from './gem-right.png'
-import ProductCard from './ProductCard'
+import BorderedProductCard from './BorderedProductCard'
 import ProductPopup, { GroupedProduct } from './ProductPopup'
 import StoreHero from './StoreHero'
+import StarLeft from './star-left.png'
+import StarRight from './star-right.png'
+import FlashSellInfo from './FlashSellInfo'
 
 const StyledStorePage = styled.div`
   color: ${({ theme }) => theme.colors.white};
@@ -31,6 +36,19 @@ const StyledHeroSection = styled.section`
   color: ${({ theme }) => theme.colors.white};
   background: ${({ theme }) => theme.colors.otterBlack};
   margin-top: -20px;
+`
+
+const StyledFlashSellBody = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 80%;
+  max-width: 880px;
+  padding-bottom: 40px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    padding: 24px 0;
+  }
 `
 
 const StyledProductBody = styled.div`
@@ -76,12 +94,12 @@ const StyledShellChestTitle = styled.h2`
   }
 `
 
-const StyledChestDesc = styled(ContentMedium)`
+const StyledChestDesc = styled(ContentMedium).attrs({ as: 'p' })`
   text-align: center;
-`
 
-const StyledDocLink = styled.a`
-  color: ${({ theme }) => theme.colors.clamPink};
+  a {
+    color: ${({ theme }) => theme.colors.clamPink};
+  }
 `
 
 const StyledProductList = styled.div`
@@ -96,7 +114,7 @@ const StyledProductList = styled.div`
 `
 
 export default function StorePage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('', { keyPrefix: 'store' })
   const [selectedProduct, setSelectedProduct] = useState<GroupedProduct | null>(null)
   const { products } = useProducts()
   const groupedProducts = useMemo(() => {
@@ -118,28 +136,50 @@ export default function StorePage() {
       }, {})
     return Object.values(grouped).sort((a, b) => a.main.id.localeCompare(b.main.id))
   }, [products])
+  const { items } = useMyItems()
+  const flashSellStart = 1655891027241
+  const flashSellEnd = 1655977433796
   return (
-    <Layout title={t('store.title')} background="dark">
+    <Layout title={t('title')} background="dark">
       <StyledStorePage>
         <StyledCurtain />
         <StyledHeroSection>
           <StoreHero />
         </StyledHeroSection>
+        {groupedProducts[0] && Date.now() < flashSellEnd && (
+          <StyledFlashSellBody>
+            <StyledShellChestTitle>
+              <img src={StarLeft.src} alt="Star Left" />
+              <Display3>{t('lucky_star_flash_sell')}</Display3>
+              <img src={StarRight.src} alt="Star Left" />
+            </StyledShellChestTitle>
+            <StyledChestDesc>
+              <MarkdownWithHtml>{t('lucky_star_flash_desc')}</MarkdownWithHtml>
+            </StyledChestDesc>
+            <FlashSellInfo
+              product={groupedProducts[0].main}
+              items={items?.slice(0, 3) || []}
+              startTime={flashSellStart}
+              endTime={flashSellEnd}
+              onClick={() => setSelectedProduct(groupedProducts[0])}
+            />
+          </StyledFlashSellBody>
+        )}
         <StyledProductBody>
           <StyledShellChestTitle>
             <img src={GemLeft.src} alt="Gem Left" />
-            <Display3>{t('store.shell_chest')}</Display3>
+            <Display3>{t('shell_chest')}</Display3>
             <img src={GemRight.src} alt="Gem Left" />
           </StyledShellChestTitle>
-          <StyledChestDesc as="p">
-            {t('store.chest_desc')}
-            <StyledDocLink href={WHITE_PAPER_LINK} target="_blank" rel="noreferrer">
-              {t('store.chest_link_part2')}
-            </StyledDocLink>
+          <StyledChestDesc>
+            {t('chest_desc')}
+            <a href={WHITE_PAPER_LINK} target="_blank" rel="noreferrer">
+              {t('chest_link_part2')}
+            </a>
           </StyledChestDesc>
           <StyledProductList>
             {groupedProducts.map((p, index) => (
-              <ProductCard key={index} product={p.main} onClick={() => setSelectedProduct(p)} />
+              <BorderedProductCard key={index} product={p.main} onClick={() => setSelectedProduct(p)} />
             ))}
           </StyledProductList>
         </StyledProductBody>
