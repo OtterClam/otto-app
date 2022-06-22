@@ -18,8 +18,8 @@ const StyledContainer = styled.div<{ background: string; width: number }>`
   box-sizing: border-box;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    height: 22px;
-    background-size: ${props => props.width}px 22px;
+    height: 24px;
+    background-size: ${props => props.width}px 24px;
     padding: 0;
   }
 `
