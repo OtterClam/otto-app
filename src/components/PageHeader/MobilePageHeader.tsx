@@ -25,10 +25,10 @@ export default function PageHeader({ title }: PageHeaderProps) {
     <StyledContainer>
       <StyledRow>
         <Logo />
-        <Wallet />
         <PearlBalance />
         <ClamBalance />
         <FishBalance />
+        <Wallet />
       </StyledRow>
       <StyledRow>
         <Title>{title}</Title>

@@ -1,6 +1,5 @@
 import { useEthers } from '@usedapp/core'
 import styled from 'styled-components/macro'
-import Button from 'components/Button'
 import { useDispatch } from 'react-redux'
 import { connectWallet } from 'store/uiSlice'
 import { Caption } from 'styles/typography'
@@ -15,10 +14,16 @@ import LargeBtnCenter from './large-btn-center.png'
 import SmallBtnEdge from './small-btn-edge.png'
 import SmallBtnCenter from './small-btn-center.png'
 
-const StyledContainer = styled.div<{ isButton?: boolean }>`
-  display: inline-flex;
+const StyledContainer = styled.div`
+  flex: 1;
+  max-width: 80px;
+`
+
+const StyledContent = styled.div<{ isButton?: boolean }>`
+  display: flex;
   align-items: stretch;
   height: 40px;
+  width: 100%;
 
   &::before,
   &::after {
@@ -45,14 +50,16 @@ const StyledContainer = styled.div<{ isButton?: boolean }>`
 `
 
 const StyledText = styled(Caption)<{ isButton?: boolean }>`
+  flex: ${props => (props.isButton ? '0' : '1')};
   display: flex;
   align-items: center;
+  justify-content: center;
   background: left / 1px 40px url(${props => (props.isButton ? LargeBtnCenter.src : LargeCenter.src)});
   color: ${props => props.theme.colors.white};
   padding: 0 0.5em;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    flex: 1;
+    padding: 0;
     justify-content: center;
     background: left / 1px 24px url(${props => (props.isButton ? SmallBtnCenter.src : SmallCenter.src)});
   }
@@ -80,8 +87,10 @@ export default function Wallet() {
   }
 
   return (
-    <StyledContainer isButton={!account} as={account ? undefined : 'button'} onClick={onClick}>
-      <StyledText isButton={!account}>{account ?? t('header.connect')}</StyledText>
+    <StyledContainer>
+      <StyledContent isButton={!account} as={account ? undefined : 'button'} onClick={onClick}>
+        <StyledText isButton={!account}>{account ?? t('header.connect')}</StyledText>
+      </StyledContent>
     </StyledContainer>
   )
 }

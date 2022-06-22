@@ -19,11 +19,11 @@ export default function PageHeader({ title }: PageHeaderProps) {
   return (
     <StyledContainer>
       <Logo />
-      <Wallet />
       <Title>{title}</Title>
       <PearlBalance />
       <ClamBalance />
       <FishBalance />
+      <Wallet />
       <MenuButton />
     </StyledContainer>
   )
