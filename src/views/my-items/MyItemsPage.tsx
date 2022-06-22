@@ -161,7 +161,7 @@ const Sections: Record<SectionKey, Section> = {
   },
 }
 
-const SortedByOptions = ['latest_received', 'rarity_desc', 'rarity_asc']
+const SortedByOptions = ['latest_received', 'rarity_desc', 'rarity_asc', 'luck_desc']
 const Filters = ['none', 'not_equipped', 'equipped', 'otto_specific', 'lottie_specific']
 
 export default function MyItemsPage() {
@@ -201,6 +201,9 @@ export default function MyItemsPage() {
           }
           if (sortedBy.key === 'rarity_asc') {
             return a.total_rarity_score - b.total_rarity_score
+          }
+          if (sortedBy.key === 'luck_desc') {
+            return b.luck - a.luck
           }
           return 0
         }),

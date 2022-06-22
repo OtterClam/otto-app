@@ -259,7 +259,8 @@
     "sorted_by_options": {
       "latest_received": "Latest Received",
       "rarity_asc": "Rarity  (From lowest)",
-      "rarity_desc": "Rarity  (From highest)"
+      "rarity_desc": "Rarity  (From highest)",
+      "luck_desc": "Luck  (From highest)"
     },
     "take_off": "Take Off",
     "take_off_item": {
