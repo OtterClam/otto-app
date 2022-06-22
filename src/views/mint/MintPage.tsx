@@ -1,5 +1,3 @@
-import Layout from 'Layout'
-import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import Hero from './Hero'
 import Intro from './Intro'
@@ -14,15 +12,12 @@ const StyledPage = styled.div`
 `
 
 const MintPage = () => {
-  const { t } = useTranslation()
   return (
-    <Layout title={t('mint.title')} background="dark">
-      <StyledPage>
-        <Hero />
-        <Mint />
-        <Intro />
-      </StyledPage>
-    </Layout>
+    <StyledPage>
+      <Hero />
+      <Mint />
+      <Intro />
+    </StyledPage>
   )
 }
 

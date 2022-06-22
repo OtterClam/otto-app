@@ -1,7 +1,6 @@
 import MarkdownWithHtml from 'components/MarkdownWithHtml'
 import { WHITE_PAPER_LINK } from 'constant'
 import useApi, { FlashSellResponse } from 'hooks/useApi'
-import Layout from 'Layout'
 import useProducts from 'models/store/useProducts'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -162,7 +161,7 @@ export default function StorePage() {
     }
   }, [api, products])
   return (
-    <Layout title={t('title')} background="dark">
+    <>
       <StyledStorePage>
         <StyledCurtain />
         <StyledHeroSection>
@@ -212,6 +211,6 @@ export default function StorePage() {
         </StyledProductBody>
       </StyledStorePage>
       {selectedProduct && <ProductPopup product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
-    </Layout>
+    </>
   )
 }

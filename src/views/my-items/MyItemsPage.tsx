@@ -4,7 +4,6 @@ import ItemCell from 'components/ItemCell'
 import { LoadingView } from 'components/LoadingView'
 import { useBreakPoints } from 'hooks/useMediaQuery'
 import useMyItems from 'hooks/useMyItems'
-import Layout from 'Layout'
 import Item from 'models/Item'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
@@ -220,102 +219,100 @@ export default function MyItemsPage() {
     setSelectedItem(null)
   }
   return (
-    <Layout title={t('title')} requireConnect>
-      <StyledMyItemsPage>
-        <StyledSectionTabContainer>
-          <StyledSectionTabs>
-            {sectionKeys.map((section, index) => (
-              <StyledSectionTab
-                key={index}
-                section={section}
-                selected={selectedSection === section}
-                onClick={() => setSelectedSection(section)}
-              >
-                <ContentSmall>{t(`section_title.${section}`)}</ContentSmall>
-              </StyledSectionTab>
-            ))}
-          </StyledSectionTabs>
-        </StyledSectionTabContainer>
-        <StyledItemSection>
-          <StyledLeftContainer>
-            <StyledMenuBar>
-              <StyledMenuItem>
-                <p>{t('sorted_by')}</p>
-                <Dropdown
-                  selected={sortedBy.text}
-                  options={sortedByOptions.map(({ text }) => text)}
-                  onSelect={text => setSortedBy(sortedByOptions.find(o => o.text === text) || sortedByOptions[0])}
-                />
-              </StyledMenuItem>
-              <StyledMenuItem>
-                <p>{t('filter')}</p>
-                <Dropdown
-                  selected={filter.text}
-                  options={filters.map(({ text }) => text)}
-                  onSelect={text => setFilter(filters.find(o => o.text === text) || filters[0])}
-                />
-              </StyledMenuItem>
-            </StyledMenuBar>
-            <StyledItemScrollContainer>
-              {loading && <LoadingView />}
-              {!loading && displayItems.length === 0 ? (
-                <StyledEmptySlate>
-                  <img src={EmptyStatus.src} alt="Empty Status" />
-                  <p>{t('empty')}</p>
-                </StyledEmptySlate>
-              ) : (
-                <StyledItemList>
-                  {displayItems.map((item, index) => (
-                    <ItemCell
-                      key={item.id + index}
-                      item={item}
-                      selected={item === selectedItem}
-                      onClick={() => setSelectedItem(item)}
-                    />
-                  ))}
-                </StyledItemList>
-              )}
-            </StyledItemScrollContainer>
-          </StyledLeftContainer>
-          {isMobile ? (
-            selectedItem && (
-              <Fullscreen show background="white">
-                <StyledMobileItemDetailsContainer>
-                  <ItemDetails item={selectedItem} onClose={() => setSelectedItem(null)} onUse={onUse} />
-                </StyledMobileItemDetailsContainer>
-              </Fullscreen>
-            )
-          ) : (
-            <StyledItemDetails>
-              {selectedItem ? (
+    <StyledMyItemsPage>
+      <StyledSectionTabContainer>
+        <StyledSectionTabs>
+          {sectionKeys.map((section, index) => (
+            <StyledSectionTab
+              key={index}
+              section={section}
+              selected={selectedSection === section}
+              onClick={() => setSelectedSection(section)}
+            >
+              <ContentSmall>{t(`section_title.${section}`)}</ContentSmall>
+            </StyledSectionTab>
+          ))}
+        </StyledSectionTabs>
+      </StyledSectionTabContainer>
+      <StyledItemSection>
+        <StyledLeftContainer>
+          <StyledMenuBar>
+            <StyledMenuItem>
+              <p>{t('sorted_by')}</p>
+              <Dropdown
+                selected={sortedBy.text}
+                options={sortedByOptions.map(({ text }) => text)}
+                onSelect={text => setSortedBy(sortedByOptions.find(o => o.text === text) || sortedByOptions[0])}
+              />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <p>{t('filter')}</p>
+              <Dropdown
+                selected={filter.text}
+                options={filters.map(({ text }) => text)}
+                onSelect={text => setFilter(filters.find(o => o.text === text) || filters[0])}
+              />
+            </StyledMenuItem>
+          </StyledMenuBar>
+          <StyledItemScrollContainer>
+            {loading && <LoadingView />}
+            {!loading && displayItems.length === 0 ? (
+              <StyledEmptySlate>
+                <img src={EmptyStatus.src} alt="Empty Status" />
+                <p>{t('empty')}</p>
+              </StyledEmptySlate>
+            ) : (
+              <StyledItemList>
+                {displayItems.map((item, index) => (
+                  <ItemCell
+                    key={item.id + index}
+                    item={item}
+                    selected={item === selectedItem}
+                    onClick={() => setSelectedItem(item)}
+                  />
+                ))}
+              </StyledItemList>
+            )}
+          </StyledItemScrollContainer>
+        </StyledLeftContainer>
+        {isMobile ? (
+          selectedItem && (
+            <Fullscreen show background="white">
+              <StyledMobileItemDetailsContainer>
                 <ItemDetails item={selectedItem} onClose={() => setSelectedItem(null)} onUse={onUse} />
-              ) : (
-                <StyledNoSelectedItem>
-                  <ContentSmall>{t('no_selected_item')}</ContentSmall>
-                </StyledNoSelectedItem>
-              )}
-            </StyledItemDetails>
-          )}
-        </StyledItemSection>
-        {usingItem && (
-          <UseItemPopup
-            item={usingItem}
-            onClose={() => {
-              refetch()
-              setUsingItem(null)
-            }}
-          />
+              </StyledMobileItemDetailsContainer>
+            </Fullscreen>
+          )
+        ) : (
+          <StyledItemDetails>
+            {selectedItem ? (
+              <ItemDetails item={selectedItem} onClose={() => setSelectedItem(null)} onUse={onUse} />
+            ) : (
+              <StyledNoSelectedItem>
+                <ContentSmall>{t('no_selected_item')}</ContentSmall>
+              </StyledNoSelectedItem>
+            )}
+          </StyledItemDetails>
         )}
-        {redeemingCoupon && (
-          <RedeemCouponPopup
-            coupon={redeemingCoupon}
-            onClose={() => {
-              refetch()
-              setRedeemingCoupon(null)
-            }}
-          />
-        )}
-      </StyledMyItemsPage>
-    </Layout>
+      </StyledItemSection>
+      {usingItem && (
+        <UseItemPopup
+          item={usingItem}
+          onClose={() => {
+            refetch()
+            setUsingItem(null)
+          }}
+        />
+      )}
+      {redeemingCoupon && (
+        <RedeemCouponPopup
+          coupon={redeemingCoupon}
+          onClose={() => {
+            refetch()
+            setRedeemingCoupon(null)
+          }}
+        />
+      )}
+    </StyledMyItemsPage>
   )
 }

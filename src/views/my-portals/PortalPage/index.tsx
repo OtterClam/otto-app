@@ -166,7 +166,7 @@ export default function PortalPage() {
   }, [data])
 
   return (
-    <Layout title={t('my_portals.title')}>
+    <>
       <StyledPortalPage>
         {loading && <LoadingView />}
         {data && (
@@ -253,6 +253,6 @@ export default function PortalPage() {
           }}
         />
       )}
-    </Layout>
+    </>
   )
 }

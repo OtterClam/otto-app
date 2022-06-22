@@ -6,15 +6,14 @@ import ConnectView from 'components/ConnectView'
 import { LoadingView } from 'components/LoadingView'
 import MintBanner from 'components/MintBanner'
 import { ottoClick } from 'constant'
-import Layout from 'Layout'
 import { MyOttosContext } from 'MyOttosProvider'
 import { useCallback, useContext, useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import OttoCard from 'components/OttoCard'
 import NoOttoView from './NoOttoView'
-import OttoCard from '../../../components/OttoCard'
 
 const StyledMyOttosPage = styled.div`
   width: 100%;
@@ -91,9 +90,5 @@ export default function MyOttosPage() {
         return <ConnectView />
     }
   }, [state, ottos])
-  return (
-    <Layout title={t('my_ottos.title')} requireConnect>
-      <StyledMyOttosPage>{renderContent()}</StyledMyOttosPage>
-    </Layout>
-  )
+  return <StyledMyOttosPage>{renderContent()}</StyledMyOttosPage>
 }

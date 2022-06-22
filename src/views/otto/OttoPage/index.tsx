@@ -5,7 +5,6 @@ import Loading from 'components/Loading'
 import { getOpenSeaLink } from 'constant'
 import { format } from 'date-fns'
 import useOtto from 'hooks/useOtto'
-import Layout from 'Layout'
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
 import ReactMarkdown from 'react-markdown'
@@ -286,7 +285,7 @@ export default function OttoPage() {
   }, [otto])
 
   return (
-    <Layout title={t('otto.title')}>
+    <>
       <StyledOttoPage>
         <StyledOttoContainer>
           <StyledLeftContainer>
@@ -396,6 +395,6 @@ export default function OttoPage() {
         </StyledOttoContainer>
       </StyledOttoPage>
       <DicePopup />
-    </Layout>
+    </>
   )
 }

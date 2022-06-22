@@ -2,7 +2,6 @@ import { gql, useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
 import { LoadingView } from 'components/LoadingView'
 import { ottoClick } from 'constant'
-import Layout from 'Layout'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
@@ -102,9 +101,5 @@ export default function MyPortalsPage() {
         return <ConnectView />
     }
   }, [state, data])
-  return (
-    <Layout title={t('my_portals.title')} requireConnect>
-      <StyledMyPortalsPage>{renderContent()}</StyledMyPortalsPage>
-    </Layout>
-  )
+  return <StyledMyPortalsPage>{renderContent()}</StyledMyPortalsPage>
 }
