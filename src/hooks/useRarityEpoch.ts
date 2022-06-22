@@ -1,6 +1,6 @@
 import { useOttoInfo } from 'contracts/views'
-import useQueryString from 'hooks/useQueryString'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
 const START_DATE = new Date('2022-05-23').valueOf()
 const EPOCH_LENGTH = 14 * 86400 * 1000 // 14 days
@@ -8,7 +8,8 @@ const EPOCH_LENGTH = 14 * 86400 * 1000 // 14 days
 const epochSupply = [1699]
 
 export default function useRarityEpoch() {
-  const epoch = Number(useQueryString().get('epoch') || -1)
+  const router = useRouter()
+  const epoch = Number(router.query.epoch || -1)
   const [latestEpoch, setLatestEpoch] = useState(epoch)
   const [totalSupply] = useOttoInfo()
 

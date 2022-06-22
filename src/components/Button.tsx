@@ -1,7 +1,7 @@
 import { useEthers } from '@usedapp/core'
 import { ottoClick } from 'constant'
 import { ComponentType, ReactNode, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 import { theme } from 'styles'

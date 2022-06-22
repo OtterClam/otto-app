@@ -65,6 +65,7 @@ export class Api {
       unreturnable: false,
       isCoupon: details.type === 'Coupon',
       total_rarity_score: details.base_rarity_score + details.relative_rarity_score,
+      luck: Number(details.stats.find((s: any) => s.name === 'LUK').value || 0),
       ...details,
     }
   }
@@ -100,9 +101,9 @@ export class Api {
 
 export default function useApi() {
   const { chainId } = useEthers()
-  let uri = process.env.REACT_APP_API_ENDPOINT_MAINNET
+  let uri = process.env.NEXT_PUBLIC_API_ENDPOINT_MAINNET
   if (chainId === ChainId.Mumbai) {
-    uri = process.env.REACT_APP_API_ENDPOINT_MUMBAI
+    uri = process.env.NEXT_PUBLIC_API_ENDPOINT_MUMBAI
   }
   const client = useMemo(
     () =>

@@ -27,6 +27,7 @@ export default interface Item {
   isCoupon: boolean
   product_factory: string
   product_type: string
+  luck: number
   update_at: number
 }
 
@@ -40,6 +41,7 @@ export function traitToItem(trait: Trait): Item {
     product_factory: '',
     product_type: '',
     update_at: 0,
+    luck: Number(trait.stats.find(s => s.name === 'LUK')?.value ?? 0),
     ...trait,
   }
 }
@@ -47,7 +49,7 @@ export function traitToItem(trait: Trait): Item {
 export const EmptyItem: Item = {
   id: '',
   name: '',
-  image: NonItem,
+  image: NonItem.src,
   type: '',
   wearable: true,
   rarity: 'C3',
@@ -73,4 +75,5 @@ export const EmptyItem: Item = {
   product_factory: '',
   product_type: '',
   update_at: 0,
+  luck: 0,
 }

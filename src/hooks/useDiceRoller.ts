@@ -8,7 +8,7 @@ import Otto from 'models/Otto'
 import { useEthers } from '@usedapp/core'
 import Product from 'models/store/Product'
 import { connectContractToSigner } from '@usedapp/core/dist/esm/src/hooks'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { selectOttoInTheHell } from 'store/uiSlice'
 import useApi from './useApi'
 

@@ -1,5 +1,5 @@
 import Fullscreen from 'components/Fullscreen'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled, { keyframes, useTheme } from 'styled-components/macro'
 import { ContentLarge } from 'styles/typography'
 import Star from 'assets/ui/large-star.svg'
@@ -50,7 +50,7 @@ const StyledImageContainer = styled.div`
     position: absolute;
     width: 908px;
     height: 908px;
-    background: url(${Star}) no-repeat;
+    background: url(${Star.src}) no-repeat;
     background-size: 100% 100%;
     top: calc(40% - 454px);
     left: calc(50% - 454px);

@@ -1,12 +1,13 @@
 import { useEthers } from '@usedapp/core'
 import Button from 'components/Button'
+import { IS_SERVER } from 'constant'
 import { useBreakPoints } from 'hooks/useMediaQuery'
 import { Fragment } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { showSideMenu } from 'store/uiSlice'
 import styled from 'styled-components/macro'
-import { Display3, Headline } from 'styles/typography'
+import { Display3 } from 'styles/typography'
 import ClamBalance from './ClamBalance'
 import Connector from './Connector'
 import iconHamburger from './icon-hamburger.svg'
@@ -31,7 +32,7 @@ const StyledHeader = styled.div`
   }
 `
 
-const StyledLogoLink = styled(Link)`
+const StyledLogoLink = styled.a`
   width: 251px;
   height: 68px;
 
@@ -92,13 +93,16 @@ export default function Header({ title }: { title: string }) {
   const { isMobile } = useBreakPoints()
   const { account } = useEthers()
   const hideConnector = isMobile && Boolean(account)
+  const showBackBtn = !IS_SERVER && window.location.pathname !== '/' && window.history.length > 2
 
   return (
     <StyledHeader>
-      <StyledLogoLink to="/">
-        <StyledLogo src={isMobile ? logoSmall : logoLarge} alt="logo" />
-      </StyledLogoLink>
-      {window.location.pathname !== '/' && window.history.length > 2 && (
+      <Link href="/">
+        <StyledLogoLink>
+          <StyledLogo src={isMobile ? logoSmall.src : logoLarge.src} alt="logo" />
+        </StyledLogoLink>
+      </Link>
+      {showBackBtn && (
         <StyledBackButton onClick={() => window.history.back()}>
           <Display3>{'<'}</Display3>
         </StyledBackButton>
@@ -114,7 +118,7 @@ export default function Header({ title }: { title: string }) {
         onClick={() => dispatch(showSideMenu())}
         Typography={Fragment}
       >
-        <StyledIcon src={iconHamburger} />
+        <StyledIcon src={iconHamburger.src} />
       </StyledHamburger>
     </StyledHeader>
   )

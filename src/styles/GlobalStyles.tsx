@@ -4,7 +4,7 @@ import cursorPointer from 'assets/cursor-pointer.png'
 
 const GlobalStyle = createGlobalStyle`
     body {
-        cursor: url(${cursorDefault}), auto;
+        cursor: url(${cursorDefault.src}), auto;
     }
 
     * {
@@ -17,10 +17,10 @@ const GlobalStyle = createGlobalStyle`
         background: none;
         border: none;
         outline: none;
-        cursor: url(${cursorPointer}) 7 0 ,auto;
+        cursor: url(${cursorPointer.src}) 7 0 ,auto;
 
         :disabled {
-            cursor: url(${cursorDefault}), auto;
+            cursor: url(${cursorDefault.src}), auto;
         }
     }
 
@@ -32,7 +32,7 @@ const GlobalStyle = createGlobalStyle`
     a {
         color: unset;
         text-decoration: none;
-        cursor: url(${cursorPointer}) 7 0 ,auto;
+        cursor: url(${cursorPointer.src}) 7 0 ,auto;
     }
 
     @font-face {

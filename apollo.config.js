@@ -5,7 +5,7 @@ module.exports = {
     service: {
       name: 'subgraph',
       // FIXME: change to mainnet before deployed
-      url: process.env.REACT_APP_GRAPH_ENDPOINT_MUMBAI,
+      url: process.env.NEXT_PUBLIC_GRAPH_ENDPOINT_MUMBAI,
     },
   },
 }

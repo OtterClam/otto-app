@@ -93,7 +93,7 @@ const Popup = ({ show, close, header, subHeader, buttonText, buttonAction, child
       <Container>
         <StyledInnerContainer>
           <ExitButton onClick={() => close()}>
-            <Exit src={exit} />
+            <Exit src={exit.src} />
           </ExitButton>
           {header && (
             <Header>

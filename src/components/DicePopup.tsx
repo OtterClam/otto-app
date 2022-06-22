@@ -21,7 +21,7 @@ import { DiceRoller, State, useDiceRoller } from 'hooks/useDiceRoller'
 import { EventType } from 'models/Dice'
 import Otto from 'models/Otto'
 import { FC, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { hideDicePopup, selectOttoInTheHell } from 'store/uiSlice'
 import styled, { keyframes, useTheme } from 'styled-components/macro'
@@ -45,7 +45,7 @@ const zoomInUp = keyframes`
 `
 
 const StyledHellImage = styled.div`
-  background: no-repeat center center / 180px 180px url(${hell});
+  background: no-repeat center center / 180px 180px url(${hell.src});
   height: 180px;
   width: 180px;
 `
@@ -132,7 +132,7 @@ const StyledRankingBadge = styled.span`
   display: inline-block;
   width: 24px;
   height: 24px;
-  background: center / cover url(${rankingBadge});
+  background: center / cover url(${rankingBadge.src});
   margin-right: 5px;
 `
 
@@ -232,7 +232,7 @@ function IntroState({ diceRoller, otto }: StateProps) {
           <MarkdownWithHtml>{t('dice_popup.intro.description')}</MarkdownWithHtml>
         </StyledIntroDesc>
       </ContentExtraSmall>
-      <StyledSkullImage src={skull} />
+      <StyledSkullImage src={skull.src} />
       <StyledIntroCallToAction>{t('dice_popup.intro.call_to_action')}</StyledIntroCallToAction>
       <PaymentButton
         padding="6px 12px 3px"
@@ -276,9 +276,9 @@ function ResultState({ diceRoller, otto }: StateProps) {
   const eventIndex = diceRoller.state === State.FirstResult ? 0 : 1
   const event = diceRoller.dice?.events[eventIndex] ?? { event: '', image: '', type: EventType.Good }
   const bg = {
-    [EventType.Good]: good,
-    [EventType.Bad]: bad,
-    [EventType.Question]: question,
+    [EventType.Good]: good.src,
+    [EventType.Bad]: bad.src,
+    [EventType.Question]: question.src,
   }[event.type]
   const ranking =
     // current ranking + effect of the previous event
@@ -388,7 +388,7 @@ export function DicePopup() {
   return (
     <Fullscreen
       show={Boolean(otto)}
-      background={`no-repeat center center / cover url(${bg}), ${theme.colors.otterBlack}`}
+      background={`no-repeat center center / cover url(${bg.src}), ${theme.colors.otterBlack}`}
     >
       <StyledFullscreenContainer>
         {diceRoller.state !== State.Processing && <StyledCloseButton color="white" onClose={close} />}

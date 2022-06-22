@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client'
 import { useStoreAirdropAmounts } from 'contracts/views'
 import { utils } from 'ethers'
 import { useMyOttos } from 'MyOttosProvider'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import Diamond from './images/diamond.png'
 import Golden from './images/golden.png'
 import Silver from './images/silver.png'
@@ -30,19 +30,19 @@ const GET_PRODUCTS = gql`
 
 const PresetImages: Record<string, any> = {
   silver: {
-    1: Silver,
-    3: Silver3,
-    10: Silver10,
+    1: Silver.src,
+    3: Silver3.src,
+    10: Silver10.src,
   },
   golden: {
-    1: Golden,
-    3: Golden3,
-    10: Golden10,
+    1: Golden.src,
+    3: Golden3.src,
+    10: Golden10.src,
   },
   diamond: {
-    1: Diamond,
-    3: Diamond3,
-    10: Diamond10,
+    1: Diamond.src,
+    3: Diamond3.src,
+    10: Diamond10.src,
   },
   helldice: {},
 }

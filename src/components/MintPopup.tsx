@@ -1,13 +1,13 @@
 import Button from 'components/Button'
 import Fullscreen from 'components/Fullscreen'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import { mintReset, selectMintNumber, selectMintStatus } from 'store/uiSlice'
 import styled from 'styled-components/macro'
-import { ContentLarge, ContentMedium, Display3, Headline } from 'styles/typography'
+import { ContentLarge, Display3, Headline } from 'styles/typography'
 import LoadingOtter from 'assets/loading-otter.png'
 import SuccessPortal from 'assets/success-portal.png'
+import { useRouter } from 'next/router'
 
 const StyledMintPopup = styled.div`
   min-height: 90vh;
@@ -37,7 +37,7 @@ const StyledSuccessPortal = styled.img`
 export default function MintPopup() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const router = useRouter()
   const mintStatus = useSelector(selectMintStatus)
   const mintNumber = useSelector(selectMintNumber)
   return (
@@ -45,20 +45,20 @@ export default function MintPopup() {
       <StyledMintPopup>
         {mintStatus === 'minting' && (
           <>
-            <StyledLoadingOtter src={LoadingOtter} />
+            <StyledLoadingOtter src={LoadingOtter.src} />
             <StyledLoadingText as="p">{t('mint.popup.processing')}</StyledLoadingText>
           </>
         )}
         {mintStatus === 'success' && (
           <>
-            <StyledSuccessPortal src={SuccessPortal} />
+            <StyledSuccessPortal src={SuccessPortal.src} />
             <Headline>Clamtastic!</Headline>
             <Display3>{t('mint.popup.success_msg', { mintNumber })}</Display3>
             <Button
               Typography={Headline}
               onClick={() => {
                 dispatch(mintReset())
-                navigate('/my-portals')
+                router.push('/my-portals')
               }}
             >
               {t('mint.popup.view_my_portals')}

@@ -1,7 +1,7 @@
 import Ribbon from 'assets/ui/ribbon.svg'
 import ItemCell from 'components/ItemCell'
 import Item from 'models/Item'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentMedium, ContentSmall } from 'styles/typography'
 
@@ -47,7 +47,7 @@ const StyledRibbonText = styled.div`
   min-height: 53px;
   text-align: center;
   color: ${({ theme }) => theme.colors.white};
-  background-image: url(${Ribbon});
+  background-image: url(${Ribbon.src});
   padding-top: 6px;
 
   animation: ${ZoomInUp} 1.5s;

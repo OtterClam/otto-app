@@ -1,6 +1,6 @@
 import { useEthers } from '@usedapp/core'
 import Button, { ButtonProps } from 'components/Button'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { useDispatch } from 'react-redux'
 import { connectWallet } from 'store/uiSlice'
 

@@ -1,7 +1,7 @@
 import { useEthers } from '@usedapp/core'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'next-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 import { ContentLarge } from 'styles/typography'
@@ -70,18 +70,18 @@ const WalletSelector = (): JSX.Element => {
       header={t('wallet_selector_head')}
     >
       <StyledContainer>
-        <StyledBanner src={Banner} />
+        <StyledBanner src={Banner.src} />
         <Option onClick={() => activateBrowserWallet()}>
           <Name>Metamask</Name>
-          <Icon src={metamask} alt="Metamask logo" />
+          <Icon src={metamask.src} alt="Metamask logo" />
         </Option>
         <Option onClick={() => activate(walletConnectConnector)}>
           <Name>WalletConnect</Name>
-          <Icon src={walletConnect} alt="WalletConnect logo" />
+          <Icon src={walletConnect.src} alt="WalletConnect logo" />
         </Option>
         <Option onClick={() => activate(CoinbaseWallet)}>
           <Name>Coinbase Wallet</Name>
-          <Icon src={CoinbaseWalletIcon} alt="Coinbase Wallet" />
+          <Icon src={CoinbaseWalletIcon.src} alt="Coinbase Wallet" />
         </Option>
       </StyledContainer>
     </Popup>
