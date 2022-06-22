@@ -19,7 +19,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const apiRes = await axios.post(
       '/giveaway/wallets',
       {
-        code,
+        code: code.trim(),
         wallet,
       },
       {
