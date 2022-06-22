@@ -8,11 +8,11 @@ import PlusBg from './plus.png'
 const StyledContainer = styled.div<{ background: string; width: number }>`
   flex: 0 ${props => props.width}px;
   display: flex;
-  height: 34px;
+  height: 40px;
   min-width: ${props => props.width};
   max-width: ${props => props.width};
   align-items: center;
-  background: center / ${props => props.width}px 34px url(${props => props.background});
+  background: center / ${props => props.width}px 40px url(${props => props.background});
   text-align: right;
   padding: 0 4px 0 20px;
   box-sizing: border-box;

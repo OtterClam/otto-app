@@ -12,7 +12,7 @@ export const ClamBalance = () => {
   const { CLAM } = useContractAddresses()
   const { isMobile } = useBreakpoints()
   const bg = isMobile ? SmallClamBg : LargeClamBg
-  const width = isMobile ? 86 : 104
+  const width = isMobile ? 86 : 128
   return <Balance showBuyButton background={bg.src} width={width} contractAddress={CLAM} />
 }
 
@@ -20,7 +20,7 @@ export const PearlBalance = () => {
   const { PEARL } = useContractAddresses()
   const { isMobile } = useBreakpoints()
   const bg = isMobile ? SmallPearlBg : LargePearlBg
-  const width = isMobile ? 62 : 74
+  const width = isMobile ? 62 : 88
   return <Balance background={bg.src} width={width} contractAddress={PEARL} />
 }
 
@@ -28,6 +28,6 @@ export const FishBalance = () => {
   const { PEARL } = useContractAddresses()
   const { isMobile } = useBreakpoints()
   const bg = isMobile ? SmallFishBg : LargeFishBg
-  const width = isMobile ? 103 : 121
+  const width = isMobile ? 103 : 155
   return <Balance disabled showBuyButton background={bg.src} width={width} contractAddress={PEARL} />
 }

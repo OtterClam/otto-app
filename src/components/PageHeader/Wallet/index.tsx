@@ -14,14 +14,14 @@ import SmallCenter from './small-center.png'
 const StyledContainer = styled.div<{ connected: boolean }>`
   display: inline-flex;
   align-items: stretch;
-  height: 48px;
+  height: 40px;
 
   &::before,
   &::after {
     display: ${props => (props.connected ? 'block' : 'none')};
     content: '';
-    width: 5px;
-    background: center / 5px 48px url(${LargeEdge.src});
+    width: 8px;
+    background: center / 8px 40px url(${LargeEdge.src});
   }
 
   &::after {
@@ -30,11 +30,12 @@ const StyledContainer = styled.div<{ connected: boolean }>`
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     flex: 1;
-    height: 22px;
+    height: 24px;
 
     &::before,
     &::after {
-      background: center / 5px 22px url(${SmallEdge.src});
+      width: 5px;
+      background: center / 5px 24px url(${SmallEdge.src});
     }
   }
 `
@@ -42,14 +43,14 @@ const StyledContainer = styled.div<{ connected: boolean }>`
 const StyledAddress = styled(Caption)`
   display: flex;
   align-items: center;
-  background: left / 1px 48px url(${LargeCenter.src});
+  background: left / 1px 40px url(${LargeCenter.src});
   color: ${props => props.theme.colors.white};
   padding: 0 0.5em;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     flex: 1;
     justify-content: center;
-    background: left / 1px 22px url(${SmallCenter.src});
+    background: left / 1px 24px url(${SmallCenter.src});
   }
 `
 
