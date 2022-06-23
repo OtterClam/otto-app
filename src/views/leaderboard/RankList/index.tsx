@@ -375,7 +375,7 @@ export default function RankList({ className }: Props) {
   } = useQuery<ListRankedOttos, ListRankedOttosVariables>(LIST_RANKED_OTTOS, {
     variables: { skip: page * PAGE, first: PAGE, epoch },
   })
-  const prizeCount = Math.floor((totalOttoSupply - 250) /* exclude reserve Ottos */ * 0.5)
+  const prizeCount = Math.floor(totalOttoSupply * 0.5)
   const topReward = useMemo(() => {
     let sum = 0
     for (let i = 1; i <= prizeCount; i++) {

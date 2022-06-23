@@ -15,11 +15,6 @@ import Rewards from './rewards.png'
 import StreamerLeft from './streamer_left.png'
 import StreamerRight from './streamer_right.png'
 
-const Round1 = {
-  start: new Date('2022-05-23'),
-  end: new Date('2022-06-06'),
-}
-
 const StyledHero = styled.div`
   width: 100%;
   height: 404px;
