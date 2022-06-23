@@ -9,12 +9,12 @@ const StyledContainer = styled.div<{ background: string; width: number }>`
   flex: 0 ${props => props.width}px;
   display: flex;
   height: 40px;
-  min-width: ${props => props.width};
-  max-width: ${props => props.width};
+  min-width: ${props => props.width}px;
+  max-width: ${props => props.width}px;
   align-items: center;
   background: center / ${props => props.width}px 40px url(${props => props.background});
   text-align: right;
-  padding: 0 4px 0 20px;
+  padding: 0 6px 0 20px;
   box-sizing: border-box;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {

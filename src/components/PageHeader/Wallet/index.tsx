@@ -14,14 +14,15 @@ import LargeBtnCenter from './large-btn-center.png'
 import SmallBtnEdge from './small-btn-edge.png'
 import SmallBtnCenter from './small-btn-center.png'
 
-const StyledContainer = styled.div`
-  flex: 1;
-  max-width: 80px;
+const StyledContainer = styled.div<{ isButton?: boolean }>`
+  flex: ${props => (props.isButton ? '0' : '1')};
+  max-width: ${props => (props.isButton ? 'unset' : '80px')};
 `
 
 const StyledContent = styled.div<{ isButton?: boolean }>`
   display: flex;
   align-items: stretch;
+  justify-content: end;
   height: 40px;
   width: 100%;
 
@@ -30,6 +31,7 @@ const StyledContent = styled.div<{ isButton?: boolean }>`
     display: block;
     content: '';
     width: 8px;
+    min-width: 8px;
     background: center / 8px 40px url(${props => (props.isButton ? LargeBtnEdge.src : LargeEdge.src)});
   }
 
@@ -44,6 +46,7 @@ const StyledContent = styled.div<{ isButton?: boolean }>`
     &::before,
     &::after {
       width: 5px;
+      min-width: 5px;
       background: center / 5px 24px url(${props => (props.isButton ? SmallBtnEdge.src : SmallEdge.src)});
     }
   }
@@ -56,6 +59,7 @@ const StyledText = styled(Caption)<{ isButton?: boolean }>`
   justify-content: center;
   background: left / 1px 40px url(${props => (props.isButton ? LargeBtnCenter.src : LargeCenter.src)});
   color: ${props => props.theme.colors.white};
+  white-space: nowrap;
   padding: 0 0.5em;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -87,7 +91,7 @@ export default function Wallet() {
   }
 
   return (
-    <StyledContainer>
+    <StyledContainer isButton={!account}>
       <StyledContent isButton={!account} as={account ? undefined : 'button'} onClick={onClick}>
         <StyledText isButton={!account}>{account ?? t('header.connect')}</StyledText>
       </StyledContent>
