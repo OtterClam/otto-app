@@ -1,4 +1,5 @@
 import { ethers } from 'ethers'
+import { trim } from 'helpers/trim'
 import { useEthers, useTokenBalance } from '@usedapp/core'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
@@ -64,7 +65,7 @@ export default function Balance({
 
   return (
     <StyledContainer width={width} background={background}>
-      <StyledText>{disabled || !balance ? '--' : ethers.utils.formatUnits(balance, 9)}</StyledText>
+      <StyledText>{disabled || !balance ? '--' : trim(ethers.utils.formatUnits(balance, 9), 2)}</StyledText>
       {showBuyButton && !disabled && <StyledBuyButton href={getBuyTokenUrl(contractAddress)} target="_blank" />}
     </StyledContainer>
   )
