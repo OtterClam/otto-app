@@ -5,13 +5,19 @@ import { useEffect, useMemo } from 'react'
 import { clearError, ErrorButtonType, setError } from '../store/errorSlice'
 import { POLYGON_MAINNET, LOCALHOST, POLYGON_MUMBAI } from '../contracts/addresses'
 
+const addresses: { [key: number]: typeof POLYGON_MAINNET } = {
+  [ChainId.Polygon]: POLYGON_MAINNET,
+  [ChainId.Mumbai]: POLYGON_MUMBAI,
+  [ChainId.Hardhat]: LOCALHOST,
+}
+
 const useContractAddresses = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { chainId } = useEthers()
 
   useEffect(() => {
-    if (!chainId || Object.values(ChainId).includes(chainId)) {
+    if (!chainId || Object.keys(addresses).includes(String(chainId))) {
       dispatch(clearError())
     } else {
       dispatch(
@@ -25,11 +31,6 @@ const useContractAddresses = () => {
   }, [chainId])
 
   return useMemo(() => {
-    const addresses: { [key: number]: typeof POLYGON_MAINNET } = {
-      [ChainId.Polygon]: POLYGON_MAINNET,
-      [ChainId.Mumbai]: POLYGON_MUMBAI,
-      [ChainId.Hardhat]: LOCALHOST,
-    }
     return addresses[chainId ?? -1] ?? POLYGON_MAINNET
   }, [chainId])
 }
