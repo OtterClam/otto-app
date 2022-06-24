@@ -428,7 +428,7 @@
       "must_desc": "R3 Item Guaranteed!",
       "name": "Silver Chest"
     },
-    "luk": { "must_desc": "R2 Item Guaranteed!" }
+    "luk": { "must_desc": "R1 Item Guaranteed!" }
   },
   "question": {
     "submit_button": "Confirm"
@@ -441,7 +441,7 @@
     "chest_desc": "The store is stocked with 3 types of Shell Chests for purchase! Your chances of finding Epic/Legendary equipment increases with each level of Shell Chest! To see the probability of obtaining different rarities with each Chest, please visit ",
     "chest_link_part2": "here.",
     "hero": "Welcome to Ottopia Store!",
-    "shop_button": "Show now",
+    "shop_button": "SHOP NOW",
     "flash_sell": {
       "contain_items": "The special items exclusive to this chest:",
       "sell_range": "For sale from {{start}} - {{end}}"
