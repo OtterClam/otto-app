@@ -1,23 +1,21 @@
+import MarkdownWithHtml from 'components/MarkdownWithHtml'
 import { WHITE_PAPER_LINK } from 'constant'
+import useApi, { FlashSellResponse } from 'hooks/useApi'
 import Layout from 'Layout'
 import useProducts from 'models/store/useProducts'
-import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
+import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentMedium, Display3 } from 'styles/typography'
-import MarkdownWithHtml from 'components/MarkdownWithHtml'
-import useMyItems from 'hooks/useMyItems'
-import useApi, { FlashSellResponse } from 'hooks/useApi'
-import { produceWithPatches } from 'immer'
+import BorderedProductCard from './BorderedProductCard'
 import Curtain from './Curtain'
+import FlashSellInfo from './FlashSellInfo'
 import GemLeft from './gem-left.png'
 import GemRight from './gem-right.png'
-import BorderedProductCard from './BorderedProductCard'
 import ProductPopup, { GroupedProduct } from './ProductPopup'
-import StoreHero from './StoreHero'
 import StarLeft from './star-left.png'
 import StarRight from './star-right.png'
-import FlashSellInfo from './FlashSellInfo'
+import StoreHero from './StoreHero'
 
 const StyledStorePage = styled.div`
   color: ${({ theme }) => theme.colors.white};
@@ -49,6 +47,7 @@ const StyledFlashSellBody = styled.section`
   padding-bottom: 40px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 95%;
     padding: 24px 0;
   }
 `

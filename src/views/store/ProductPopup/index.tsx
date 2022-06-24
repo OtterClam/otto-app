@@ -54,9 +54,9 @@ const StyledTopContainer = styled.div`
 
 const StyledHeroImg = styled.img`
   width: 320px;
-  height: 211px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 209px;
   }
 `
 
@@ -64,7 +64,9 @@ const StyledInfoSection = styled.section``
 
 const StyledTitle = styled(Display3)``
 
-const StyledDesc = styled(ContentSmall)``
+const StyledDesc = styled(ContentSmall)`
+  text-align: center;
+`
 
 const StyledChoosePackage = styled(Headline)`
   text-align: center;

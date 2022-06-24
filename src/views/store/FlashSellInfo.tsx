@@ -12,6 +12,11 @@ const StyledContainer = styled(BorderContainer)`
   padding: 40px;
   background: ${({ theme }) => theme.colors.darkGray400};
   display: flex;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    padding: 20px;
+    flex-direction: column;
+  }
 `
 
 const StyledRightContainer = styled.div`
@@ -34,6 +39,13 @@ const StyledItemContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 10px;
+`
+
+const StyledItemCell = styled(ItemCell)`
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 90px;
+    height: 90px;
+  }
 `
 
 const StyledItemName = styled(Caption).attrs({ as: 'div' })`
@@ -70,7 +82,7 @@ export default function FlashSellInfo({
         <StyledItemList>
           {special_items.map((item, index) => (
             <StyledItemContainer key={index}>
-              <ItemCell item={item} />
+              <StyledItemCell item={item} />
               <StyledItemName>
                 {item.name}
                 <StyledItemHint>{`LUK: ${item.luck}`}</StyledItemHint>
