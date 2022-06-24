@@ -65,7 +65,7 @@ interface Props {
   onClick: () => void
 }
 
-const DATE_TIME_FORMAT = 'MMM dd hh:mm:ss aa'
+const DATE_TIME_FORMAT = 'MMM dd hh:mm aa'
 
 export default function FlashSellInfo({
   flashSell: { products, special_items, start_time, end_time },
