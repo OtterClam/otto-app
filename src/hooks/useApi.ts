@@ -16,6 +16,9 @@ export interface FlashSellResponse {
   type: string
   name: string
   desc: string
+  popup_title: string
+  popup_desc: string
+  popup_image: string
   start_time: number
   end_time: number
   products: Product[]

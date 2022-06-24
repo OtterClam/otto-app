@@ -127,6 +127,8 @@ export default function StorePage() {
     const grouped = products.reduce<Record<string, GroupedProduct>>((acc, product) => {
       if (!acc[product.type]) {
         acc[product.type] = {
+          title: product.name,
+          desc: product.desc,
           main: product,
           all: [product],
         }
@@ -180,6 +182,9 @@ export default function StorePage() {
               flashSell={flashSell}
               onClick={() =>
                 setSelectedProduct({
+                  title: flashSell.popup_title,
+                  desc: flashSell.popup_desc,
+                  image: flashSell.popup_image,
                   main: flashSell.products[0],
                   all: flashSell.products,
                 })
