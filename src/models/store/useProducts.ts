@@ -1,8 +1,8 @@
 import { gql, useQuery } from '@apollo/client'
-import { useStoreAirdropAmounts } from 'contracts/views'
 import { utils } from 'ethers'
 import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
+import { useMemo } from 'react'
 import Diamond from './images/diamond.png'
 import Golden from './images/golden.png'
 import Silver from './images/silver.png'
@@ -12,6 +12,9 @@ import Silver3 from './images/silver_3.png'
 import Diamond10 from './images/diamond_10.png'
 import Golden10 from './images/golden_10.png'
 import Silver10 from './images/silver_10.png'
+import Luk from './images/luk.png'
+import Luk3 from './images/luk_3.png'
+import Luk10 from './images/luk_10.png'
 import Product from './Product'
 import { GetProducts } from './__generated__/GetProducts'
 
@@ -45,31 +48,40 @@ const PresetImages: Record<string, any> = {
     10: Diamond10.src,
   },
   helldice: {},
+  luk: {
+    1: Luk.src,
+    3: Luk3.src,
+    10: Luk10.src,
+  },
 }
 
 export default function useProducts() {
   const { t } = useTranslation()
   const { loading, ottos } = useMyOttos()
   const { data } = useQuery<GetProducts>(GET_PRODUCTS, {
-    skip: loading,
+    skip: loading && !ottos.length,
   })
-  const airdropAmounts = useStoreAirdropAmounts(
-    data?.ottoProducts.map(p => p.productId) || [],
-    ottos?.map(o => o.tokenId) || []
+  // @dev: all users should claim their airdrop
+  // const airdropAmounts = useStoreAirdropAmounts(
+  //   data?.ottoProducts.map(p => p.productId) || [],
+  //   ottos?.map(o => o.tokenId) || []
+  // )
+  const products: Product[] = useMemo(
+    () =>
+      data?.ottoProducts
+        .filter(p => Object.keys(PresetImages).includes(p.type))
+        .map((p, idx) => ({
+          ...p,
+          id: p.productId,
+          name: t(`product.${p.type}.name`),
+          desc: t(`product.${p.type}.desc`),
+          mustDesc: p.amount === 10 ? t(`product.${p.type}.must_desc`) : undefined,
+          image: PresetImages[p.type][p.amount],
+          airdropAmount: 0, // airdropAmounts[idx],
+          displayPrice: utils.formatUnits(p.price, 9),
+          displayDiscountPrice: utils.formatUnits(p.discountPrice, 9),
+        })) || [],
+    [data]
   )
-  const products: Product[] =
-    data?.ottoProducts
-      .filter(p => Object.keys(PresetImages).includes(p.type))
-      .map((p, idx) => ({
-        ...p,
-        id: p.productId,
-        name: t(`product.${p.type}.name`),
-        desc: t(`product.${p.type}.desc`),
-        mustDesc: p.amount === 10 ? t(`product.${p.type}.must_desc`) : undefined,
-        image: PresetImages[p.type][p.amount],
-        airdropAmount: airdropAmounts[idx],
-        displayPrice: utils.formatUnits(p.price, 9),
-        displayDiscountPrice: utils.formatUnits(p.discountPrice, 9),
-      })) || []
   return { products }
 }

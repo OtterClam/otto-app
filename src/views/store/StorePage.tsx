@@ -1,12 +1,14 @@
 import { WHITE_PAPER_LINK } from 'constant'
 import Layout from 'Layout'
 import useProducts from 'models/store/useProducts'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentMedium, Display3 } from 'styles/typography'
 import MarkdownWithHtml from 'components/MarkdownWithHtml'
 import useMyItems from 'hooks/useMyItems'
+import useApi, { FlashSellResponse } from 'hooks/useApi'
+import { produceWithPatches } from 'immer'
 import Curtain from './Curtain'
 import GemLeft from './gem-left.png'
 import GemRight from './gem-right.png'
@@ -113,32 +115,50 @@ const StyledProductList = styled.div`
   }
 `
 
+const REGULAR_PRODUCT_TYPES = ['silver', 'golden', 'diamond']
+
 export default function StorePage() {
-  const { t } = useTranslation('', { keyPrefix: 'store' })
+  const { t, i18n } = useTranslation('', { keyPrefix: 'store' })
+  const api = useApi()
+  const [flashSell, setFlashSell] = useState<FlashSellResponse | null>(null)
   const [selectedProduct, setSelectedProduct] = useState<GroupedProduct | null>(null)
   const { products } = useProducts()
   const groupedProducts = useMemo(() => {
-    const grouped = products
-      .filter(p => p.type !== 'helldice')
-      .reduce<Record<string, GroupedProduct>>((acc, product) => {
-        if (!acc[product.type]) {
-          acc[product.type] = {
-            main: product,
-            all: [product],
-          }
-        } else {
-          if (product.amount === 1) {
-            acc[product.type].main = product
-          }
-          acc[product.type].all.push(product)
+    const grouped = products.reduce<Record<string, GroupedProduct>>((acc, product) => {
+      if (!acc[product.type]) {
+        acc[product.type] = {
+          main: product,
+          all: [product],
         }
-        return acc
-      }, {})
+      } else {
+        if (product.amount === 1) {
+          acc[product.type].main = product
+        }
+        acc[product.type].all.push(product)
+      }
+      return acc
+    }, {})
     return Object.values(grouped).sort((a, b) => a.main.id.localeCompare(b.main.id))
   }, [products])
-  const { items } = useMyItems()
-  const flashSellStart = 1655891027241
-  const flashSellEnd = 1655977433796
+  const displayProducts = useMemo(
+    () => groupedProducts.filter(p => REGULAR_PRODUCT_TYPES.indexOf(p.main.type) !== -1),
+    [groupedProducts]
+  )
+  useEffect(() => {
+    if (products.length > 0) {
+      api
+        .getFlashSell(i18n.resolvedLanguage)
+        .then(sell => {
+          setFlashSell({
+            ...sell,
+            products: products
+              .filter(p => p.type === sell.type)
+              .map(p => ({ ...p, ...sell.products.find(sp => String(sp.id) === p.id) })),
+          })
+        })
+        .catch(console.error)
+    }
+  }, [api, products])
   return (
     <Layout title={t('title')} background="dark">
       <StyledStorePage>
@@ -146,22 +166,24 @@ export default function StorePage() {
         <StyledHeroSection>
           <StoreHero />
         </StyledHeroSection>
-        {groupedProducts[0] && Date.now() < flashSellEnd && (
+        {flashSell && Date.now() < new Date(flashSell.end_time).valueOf() && (
           <StyledFlashSellBody>
             <StyledShellChestTitle>
               <img src={StarLeft.src} alt="Star Left" />
-              <Display3>{t('lucky_star_flash_sell')}</Display3>
+              <Display3>{flashSell.name}</Display3>
               <img src={StarRight.src} alt="Star Left" />
             </StyledShellChestTitle>
             <StyledChestDesc>
-              <MarkdownWithHtml>{t('lucky_star_flash_desc')}</MarkdownWithHtml>
+              <MarkdownWithHtml>{flashSell.desc}</MarkdownWithHtml>
             </StyledChestDesc>
             <FlashSellInfo
-              product={groupedProducts[0].main}
-              items={items?.slice(0, 3) || []}
-              startTime={flashSellStart}
-              endTime={flashSellEnd}
-              onClick={() => setSelectedProduct(groupedProducts[0])}
+              flashSell={flashSell}
+              onClick={() =>
+                setSelectedProduct({
+                  main: flashSell.products[0],
+                  all: flashSell.products,
+                })
+              }
             />
           </StyledFlashSellBody>
         )}
@@ -178,7 +200,7 @@ export default function StorePage() {
             </a>
           </StyledChestDesc>
           <StyledProductList>
-            {groupedProducts.map((p, index) => (
+            {displayProducts.map((p, index) => (
               <BorderedProductCard key={index} product={p.main} onClick={() => setSelectedProduct(p)} />
             ))}
           </StyledProductList>

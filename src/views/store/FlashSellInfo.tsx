@@ -2,8 +2,7 @@ import BorderContainer from 'components/BorderContainer'
 import Countdown from 'components/Countdown'
 import ItemCell from 'components/ItemCell'
 import { format } from 'date-fns'
-import Item from 'models/Item'
-import Product from 'models/store/Product'
+import { FlashSellResponse } from 'hooks/useApi'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Caption, ContentSmall } from 'styles/typography'
@@ -50,26 +49,26 @@ const StyledSellRange = styled(ContentSmall)``
 const StyledCountdownContainer = styled.div``
 
 interface Props {
-  product: Product
-  items: Item[]
-  startTime: number
-  endTime: number
+  flashSell: FlashSellResponse
   onClick: () => void
 }
 
 const DATE_TIME_FORMAT = 'MMM dd hh:mm:ss aa'
 
-export default function FlashSellInfo({ product, items, startTime, endTime, onClick }: Props) {
+export default function FlashSellInfo({
+  flashSell: { products, special_items, start_time, end_time },
+  onClick,
+}: Props) {
   const { t } = useTranslation('', { keyPrefix: 'store.flash_sell' })
-  const start = format(new Date(startTime), DATE_TIME_FORMAT)
-  const end = format(new Date(endTime), DATE_TIME_FORMAT)
+  const start = format(new Date(start_time), DATE_TIME_FORMAT)
+  const end = format(new Date(end_time), DATE_TIME_FORMAT)
   return (
     <StyledContainer>
-      <ProductCard product={product} onClick={onClick} />
+      <ProductCard product={products[0]} onClick={onClick} />
       <StyledRightContainer>
         <StyledFlashSellItemsText>{t('contain_items')}</StyledFlashSellItemsText>
         <StyledItemList>
-          {items.map((item, index) => (
+          {special_items.map((item, index) => (
             <StyledItemContainer key={index}>
               <ItemCell item={item} />
               <StyledItemName>
@@ -81,7 +80,7 @@ export default function FlashSellInfo({ product, items, startTime, endTime, onCl
         </StyledItemList>
         <StyledSellRange>{t('sell_range', { start, end })}</StyledSellRange>
         <StyledCountdownContainer>
-          <Countdown target={endTime} />
+          <Countdown target={end_time} />
         </StyledCountdownContainer>
       </StyledRightContainer>
     </StyledContainer>
