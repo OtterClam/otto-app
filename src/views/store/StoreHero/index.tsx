@@ -2,6 +2,8 @@ import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
 import { useEffect, useState } from 'react'
+import Button from 'components/Button'
+import ArrowDownWhite from 'assets/ui/arrow_down_white.svg'
 import Bg from './store_bg.jpg'
 import Otto1 from './store_otto1.png'
 import Otto2 from './store_otto2.png'
@@ -62,7 +64,30 @@ const StyledTitle = styled(Headline)``
 
 const StyledSubtitle = styled(ContentSmall)``
 
-export default function StoreHero() {
+const StyledShopButton = styled(Button)`
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%, 0);
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    display: none;
+  }
+`
+
+const StyledButtonContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`
+
+const StyledArrowDown = styled.img.attrs({ src: ArrowDownWhite.src })``
+
+interface Props {
+  onClickScroll: () => void
+}
+
+export default function StoreHero({ onClickScroll }: Props) {
   const { t } = useTranslation()
   const [state, setState] = useState(1)
   useEffect(() => {
@@ -83,6 +108,12 @@ export default function StoreHero() {
         )}
         {state === 2 && <StyledSubtitle as="p">{t('store.subtitle_2')}</StyledSubtitle>}
       </StyledDialog>
+      <StyledShopButton Typography={Headline} onClick={onClickScroll}>
+        <StyledButtonContent>
+          {t('store.shop_button')}
+          <StyledArrowDown />
+        </StyledButtonContent>
+      </StyledShopButton>
     </StyledStoreHero>
   )
 }

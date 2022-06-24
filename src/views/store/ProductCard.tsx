@@ -1,19 +1,16 @@
 import CLAM from 'assets/clam.png'
-import BorderContainer from 'components/BorderContainer'
+import Star from 'assets/ui/star.svg'
 import Button from 'components/Button'
 import { trim } from 'helpers/trim'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { Caption, ContentLarge, Headline } from 'styles/typography'
-import Star from 'assets/ui/star.svg'
-import useProductBorderColor from '../useProductBorderColor'
 
-const StyledProductCard = styled(BorderContainer)`
+const StyledProductCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 15px;
   align-items: center;
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.darkGray400};
@@ -70,14 +67,10 @@ interface Props {
   onClick: () => void
 }
 
-export default function ProductCard({
-  product: { type, name, image, displayPrice, price, airdropAmount },
-  onClick,
-}: Props) {
+export default function ProductCard({ product: { name, image, displayPrice, airdropAmount }, onClick }: Props) {
   const { t } = useTranslation()
-  const borderColor = useProductBorderColor(type)
   return (
-    <StyledProductCard borderColor={borderColor}>
+    <StyledProductCard>
       <Headline>{name}</Headline>
       <StyledImage>
         <img src={image} alt={name} width="100%" />

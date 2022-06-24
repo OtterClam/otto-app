@@ -44,6 +44,7 @@ const StyledCurtain = styled(Curtain)`
 const StyledTopContainer = styled.div`
   margin-top: 50px;
   display: flex;
+  gap: 40px;
   @media ${({ theme }) => theme.breakpoints.mobile} {
     margin-top: 30px;
     flex-direction: column;
@@ -54,17 +55,25 @@ const StyledTopContainer = styled.div`
 
 const StyledHeroImg = styled.img`
   width: 320px;
-  height: 211px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 209px;
+  }
+`
+
+const StyledImg = styled.img`
+  width: 240px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 209px;
   }
 `
 
 const StyledInfoSection = styled.section``
 
-const StyledTitle = styled(Display3)``
+const StyledTitle = styled(Display3).attrs({ as: 'h1' })``
 
-const StyledDesc = styled(ContentSmall)``
+const StyledDesc = styled(ContentSmall).attrs({ as: 'p' })``
 
 const StyledChoosePackage = styled(Headline)`
   text-align: center;
@@ -92,6 +101,9 @@ const StyledCloseButton = styled(CloseButton)`
 `
 
 export interface GroupedProduct {
+  title: string
+  desc: string
+  image?: string
   main: Product
   all: Product[]
 }
@@ -107,11 +119,11 @@ interface Props {
   onClose: () => void
 }
 
-export default function ProductPopup({ product: { main, all }, onClose }: Props) {
+export default function ProductPopup({ product: { title, desc, image, main, all }, onClose }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
   const { ottos } = useMyOttos()
-  const { name, desc, airdropAmount } = main
+  const { airdropAmount } = main
   const [state, setState] = useState<State>(State.ChoosePackage)
   const [mode] = useState<'buy' | 'claim'>(airdropAmount > 0 ? 'claim' : 'buy')
   const { buy, buyState, resetBuy } = useBuyProduct(mode === 'claim')
@@ -132,10 +144,10 @@ export default function ProductPopup({ product: { main, all }, onClose }: Props)
       <StyledProductPopup>
         <StyledCurtain />
         <StyledTopContainer>
-          <StyledHeroImg src={HeroImage.src} />
+          {image ? <StyledImg src={image} /> : <StyledHeroImg src={HeroImage.src} />}
           <StyledInfoSection>
-            <StyledTitle as="h1">{name}</StyledTitle>
-            <StyledDesc as="p">{desc}</StyledDesc>
+            <StyledTitle>{title}</StyledTitle>
+            <StyledDesc>{desc}</StyledDesc>
           </StyledInfoSection>
         </StyledTopContainer>
         <StyledChoosePackage>

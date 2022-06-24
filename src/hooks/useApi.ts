@@ -3,12 +3,26 @@ import axios, { Axios } from 'axios'
 import { Dice } from 'models/Dice'
 import Item from 'models/Item'
 import { OttoMeta } from 'models/Otto'
+import Product from 'models/store/Product'
 import { useMemo } from 'react'
 
 export interface OttoCandidateMeta {
   name: string
   gender: string
   image: string
+}
+
+export interface FlashSellResponse {
+  type: string
+  name: string
+  desc: string
+  popup_title: string
+  popup_desc: string
+  popup_image: string
+  start_time: number
+  end_time: number
+  products: Product[]
+  special_items: Item[]
 }
 
 export class Api {
@@ -97,6 +111,15 @@ export class Api {
       .put(`/ottos/${ottoId}/helldice/${tx}/events/${index}`, { answer }, { params: { lang } })
       .then(res => new Dice(res.data))
   }
+
+  public async getFlashSell(lang = ''): Promise<FlashSellResponse> {
+    return this.axios.get('/products/flashsale', { params: { lang } }).then(res => ({
+      ...res.data,
+      start_time: new Date(res.data.start_time).valueOf(),
+      end_time: new Date(res.data.end_time).valueOf(),
+      special_items: res.data.special_items.map((i: any) => this.toItem('', i)),
+    }))
+  }
 }
 
 export default function useApi() {
@@ -105,7 +128,7 @@ export default function useApi() {
   if (chainId === ChainId.Mumbai) {
     uri = process.env.NEXT_PUBLIC_API_ENDPOINT_MUMBAI
   }
-  const client = useMemo(
+  return useMemo(
     () =>
       new Api(
         axios.create({
@@ -114,5 +137,4 @@ export default function useApi() {
       ),
     [chainId, uri]
   )
-  return client
 }

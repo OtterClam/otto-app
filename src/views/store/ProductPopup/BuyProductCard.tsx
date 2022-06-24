@@ -17,6 +17,10 @@ const StyledProductCard = styled(BorderContainer)`
   align-items: center;
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.darkGray400};
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    padding: 7.5px;
+  }
 `
 
 const Spin = keyframes`
@@ -28,6 +32,11 @@ const StyledImage = styled.div`
   width: 190px;
   height: 190px;
   position: relative;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 97px;
+    height: 97px;
+  }
 
   > * {
     position: relative;
