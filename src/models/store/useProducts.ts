@@ -57,9 +57,9 @@ const PresetImages: Record<string, any> = {
 
 export default function useProducts() {
   const { t } = useTranslation()
-  const { loading, ottos } = useMyOttos()
+  // const { loading, ottos } = useMyOttos()
   const { data } = useQuery<GetProducts>(GET_PRODUCTS, {
-    skip: loading && !ottos.length,
+    // skip: loading,
   })
   // @dev: all users should claim their airdrop
   // const airdropAmounts = useStoreAirdropAmounts(

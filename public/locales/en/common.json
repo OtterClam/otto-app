@@ -427,7 +427,8 @@
       "desc": "While not as lucky as the Gold/Diamond Shell Chests, Silver Shell Chests contain rare and powerful equipment worthy of admiration! A silver chest has a 5.7% chance to open R-level items, and a 0.3% chance to open E-level items.",
       "must_desc": "R3 Item Guaranteed!",
       "name": "Silver Chest"
-    }
+    },
+    "luk": { "must_desc": "R2 Item Guaranteed!" }
   },
   "question": {
     "submit_button": "Confirm"
@@ -440,6 +441,7 @@
     "chest_desc": "The store is stocked with 3 types of Shell Chests for purchase! Your chances of finding Epic/Legendary equipment increases with each level of Shell Chest! To see the probability of obtaining different rarities with each Chest, please visit ",
     "chest_link_part2": "here.",
     "hero": "Welcome to Ottopia Store!",
+    "shop_button": "Show now",
     "flash_sell": {
       "contain_items": "The special items exclusive to this chest:",
       "sell_range": "For sale from {{start}} - {{end}}"

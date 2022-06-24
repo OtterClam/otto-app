@@ -64,9 +64,7 @@ const StyledInfoSection = styled.section``
 
 const StyledTitle = styled(Display3)``
 
-const StyledDesc = styled(ContentSmall)`
-  text-align: center;
-`
+const StyledDesc = styled(ContentSmall).attrs({ as: 'p' })``
 
 const StyledChoosePackage = styled(Headline)`
   text-align: center;
@@ -137,7 +135,7 @@ export default function ProductPopup({ product: { main, all }, onClose }: Props)
           <StyledHeroImg src={HeroImage.src} />
           <StyledInfoSection>
             <StyledTitle as="h1">{name}</StyledTitle>
-            <StyledDesc as="p">{desc}</StyledDesc>
+            <StyledDesc>{desc}</StyledDesc>
           </StyledInfoSection>
         </StyledTopContainer>
         <StyledChoosePackage>

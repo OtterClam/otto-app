@@ -4,7 +4,7 @@ import useApi, { FlashSellResponse } from 'hooks/useApi'
 import Layout from 'Layout'
 import useProducts from 'models/store/useProducts'
 import { useTranslation } from 'next-i18next'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentMedium, Display3 } from 'styles/typography'
 import BorderedProductCard from './BorderedProductCard'
@@ -52,7 +52,7 @@ const StyledFlashSellBody = styled.section`
   }
 `
 
-const StyledProductBody = styled.div`
+const StyledProductBody = styled.section`
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -119,6 +119,7 @@ const REGULAR_PRODUCT_TYPES = ['silver', 'golden', 'diamond']
 export default function StorePage() {
   const { t, i18n } = useTranslation('', { keyPrefix: 'store' })
   const api = useApi()
+  const bodyRef = useRef<HTMLDivElement>(null)
   const [flashSell, setFlashSell] = useState<FlashSellResponse | null>(null)
   const [selectedProduct, setSelectedProduct] = useState<GroupedProduct | null>(null)
   const { products } = useProducts()
@@ -163,10 +164,10 @@ export default function StorePage() {
       <StyledStorePage>
         <StyledCurtain />
         <StyledHeroSection>
-          <StoreHero />
+          <StoreHero onClickScroll={() => bodyRef?.current?.scrollIntoView({ behavior: 'smooth' })} />
         </StyledHeroSection>
         {flashSell && Date.now() < new Date(flashSell.end_time).valueOf() && (
-          <StyledFlashSellBody>
+          <StyledFlashSellBody ref={bodyRef}>
             <StyledShellChestTitle>
               <img src={StarLeft.src} alt="Star Left" />
               <Display3>{flashSell.name}</Display3>
@@ -186,7 +187,7 @@ export default function StorePage() {
             />
           </StyledFlashSellBody>
         )}
-        <StyledProductBody>
+        <StyledProductBody ref={flashSell ? null : bodyRef}>
           <StyledShellChestTitle>
             <img src={GemLeft.src} alt="Gem Left" />
             <Display3>{t('shell_chest')}</Display3>
