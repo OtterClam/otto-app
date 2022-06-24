@@ -423,6 +423,9 @@
       "desc": "最初階的寶箱，獲得 R 級稀有度的裝備機率為 5.7%、且獲得 E 級稀有度的裝備機率為 0.3%。如果不想花大錢衝稀有度，或是只想幫自己的阿獺多增添不同裝備和飾品，白銀寶箱也是不錯的選擇呢！",
       "must_desc": "R3 道具保證！",
       "name": "白銀寶箱"
+    },
+    "luk": {
+      "must_desc": "R2 道具保證！"
     }
   },
   "question": {
@@ -436,6 +439,10 @@
     "chest_desc": "阿獺王國的商店目前提供三種貝殼寶箱，每個寶箱都會開啟一個裝備，越高級的寶箱擁有越高機率的裝備掉落率喔！在我們的白皮書可以查看每個寶箱對應的機率喔，請點擊",
     "chest_link_part2": "這裡查看。",
     "hero": "歡迎進入阿獺王國商店!",
+    "flash_sell": {
+      "contain_items": "The special items exclusive to this chest:",
+      "sell_range": "For sale from {{start}} - {{end}}"
+    },
     "popup": {
       "buy_now": "購買",
       "check_out": "查看我的物品",

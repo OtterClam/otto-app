@@ -446,8 +446,6 @@
       "contain_items": "The special items exclusive to this chest:",
       "sell_range": "For sale from {{start}} - {{end}}"
     },
-    "lucky_star_flash_sell": "Lucky Star Flash Sale",
-    "lucky_star_flash_desc": "Coming along with the latest Rarity Ranking competition, this Lucky Star Shell Chest contains hundreds of wearable items and each item’s  LUK value is guaranteed to equal or more than 6 points! To see the probability of obtaining different rarities with Lucky Star Chest, please visit <a>here.</a>",
     "popup": {
       "buy_now": "Buy",
       "check_out": "Check Out My Items",
