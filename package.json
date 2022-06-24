@@ -29,7 +29,7 @@
     "@netlify/functions": "^1.0.0",
     "@reduxjs/toolkit": "^1.8.1",
     "@typechain/ethers-v5": "^10.0.0",
-    "@usedapp/core": "^1.0.9",
+    "@usedapp/core": "^1.0.14",
     "@web3-react/walletconnect-connector": "^6.2.10",
     "@web3-react/walletlink-connector": "^6.2.13",
     "axios": "^0.26.1",

@@ -137,7 +137,7 @@ export const useBuyProduct = (claim: boolean) => {
   const [factory, setFactory] = useState<Contract | undefined>()
   const clam = new Contract(CLAM, ERC20Abi, library?.getSigner())
   const store = useStoreContract()
-  const { state, send, resetState } = useContractFunction(store, claim ? 'claimNoChainlink' : 'buyNoChainlink')
+  const { state, send, resetState } = useContractFunction(store, claim ? 'claimNoChainlink' : 'buyNoChainlink', {})
   const [buyState, setBuyState] = useState<OttoBuyTransactionState>({
     state: 'None',
     status: state,
