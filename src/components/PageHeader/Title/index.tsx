@@ -25,7 +25,7 @@ const StyledContainer = styled.div<{ showLeftBg: boolean }>`
 
   &::before {
     display: ${props => (props.showLeftBg ? 'block' : 'none')};
-    transform: rotateY(180deg);
+    transform: rotate(180deg);
   }
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
