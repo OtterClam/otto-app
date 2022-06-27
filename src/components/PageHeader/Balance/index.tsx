@@ -21,7 +21,7 @@ export const PearlBalance = () => {
   const { isMobile } = useBreakpoints()
   const bg = isMobile ? SmallPearlBg : LargePearlBg
   const width = isMobile ? 62 : 88
-  return <Balance background={bg.src} width={width} contractAddress={PEARL} />
+  return <Balance background={bg.src} width={width} contractAddress={PEARL} decimal={18} />
 }
 
 export const FishBalance = () => {
