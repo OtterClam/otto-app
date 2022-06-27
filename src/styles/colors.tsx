@@ -27,6 +27,8 @@ export const colors = {
     E2: '#99B6FF',
     E1: '#B3A4FF',
   },
+  darkBrown: '#5C3317',
+  lightBrown: '#B07C47',
 }
 
 export type Colors = typeof colors
