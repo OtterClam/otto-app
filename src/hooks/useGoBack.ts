@@ -1,7 +1,7 @@
 import { IS_SERVER } from 'constant'
 import { useCallback, useEffect, useState } from 'react'
 
-const getHistoryLength = () => window.location.pathname === '/' ? 0 : window.history.length
+const getHistoryLength = () => (window.location.pathname === '/' ? 0 : window.history.length)
 
 export default function useGoBack() {
   const [historyLength, setHistoryLength] = useState(IS_SERVER ? 0 : getHistoryLength())
