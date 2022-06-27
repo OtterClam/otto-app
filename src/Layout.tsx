@@ -3,7 +3,7 @@ import ConnectView from 'components/ConnectView'
 import { PropsWithChildren } from 'react'
 import styled from 'styled-components/macro'
 import Footer from './components/Footer'
-import Header from './components/Header'
+import PageHeader from './components/PageHeader'
 
 type Background = 'white' | 'dark'
 
@@ -70,7 +70,7 @@ export default function Layout({
   const { account } = useEthers()
   return (
     <>
-      <Header title={title} />
+      <PageHeader title={title} />
       {noBorder ? (
         <StyledNoBorder>{children}</StyledNoBorder>
       ) : (

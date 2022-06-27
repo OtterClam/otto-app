@@ -7,7 +7,7 @@ const StyledGiveawayFloatingButton = styled.a`
   right: 40px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    top: 68px;
+    top: 120px;
     right: 10px;
   }
 `
