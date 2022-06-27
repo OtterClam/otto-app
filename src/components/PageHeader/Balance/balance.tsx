@@ -3,7 +3,7 @@ import { trim } from 'helpers/trim'
 import { useEthers, useTokenBalance } from '@usedapp/core'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
-import { getBuyTokenUrl } from 'utils/exchange'
+import { BUY_CLAM_LINK } from 'constant'
 import PlusBg from './plus.png'
 
 const StyledContainer = styled.div<{ background: string; width: number }>`
@@ -66,7 +66,7 @@ export default function Balance({
   return (
     <StyledContainer width={width} background={background}>
       <StyledText>{disabled || !balance ? '--' : trim(ethers.utils.formatUnits(balance, 9), 2)}</StyledText>
-      {showBuyButton && !disabled && <StyledBuyButton href={getBuyTokenUrl(contractAddress)} target="_blank" />}
+      {showBuyButton && !disabled && <StyledBuyButton href={BUY_CLAM_LINK} target="_blank" />}
     </StyledContainer>
   )
 }
