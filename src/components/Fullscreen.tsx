@@ -3,10 +3,10 @@ import styled from 'styled-components/macro'
 
 const StyledPopup = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: env(safe-area-inset-top);
+  right: env(safe-area-inset-right);
+  bottom: env(safe-area-inset-bottom);
+  left: env(safe-area-inset-left);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -28,9 +28,9 @@ const Container = styled.div`
   width: 80%;
   background-color: ${({ theme }) => theme.colors.crownYellow};
   padding: 6px;
-  margin: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  box-sizing: border-box;
   max-width: 880px;
-  max-height: 100vh;
+  max-height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
 
