@@ -520,5 +520,24 @@
       "distributed": "CLAM Distributed Today",
       "distributedTooltip": "Total amount of CLAM which has been distributed today. This is divided proportionally between all stakers and Pearl Chest holders."
     }
+  },
+  "stake": {
+    "title": "Clam Pond",
+    "stake_tab": "Stake",
+    "unstake_tab": "Unstake",
+    "welcome": "Welcome to the Clam Pond!",
+    "desc": "A Pond that makes your CLAM a shiny PEARL. Stake your CLAM and you will get PEARL and extra fancy rewards every 24 hours!",
+    "available": "Available:",
+    "max": "MAX",
+    "input_placeholder": "Enter your amount",
+    "stake_btn": "Stake CLAM",
+    "tvl": "TVL: {{tvl}}",
+    "staked_balance": "Your Staked Balance",
+    "pearl_balance": "PEARL balance",
+    "next_reward": "Next Reward Amount",
+    "rebase_countdown": "Rebase remaining: {{countdown}}",
+    "next_reward_yield": "Next Reward Yield",
+    "apy": "APY",
+    "extra_reward": "Extra Rewards coming soon..."
   }
 }
