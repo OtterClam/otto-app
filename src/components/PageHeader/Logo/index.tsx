@@ -13,6 +13,7 @@ const StyledContainer = styled.div`
 `
 
 const StyledLogo = styled.a`
+  display: block;
   background: center / 148px 40px url(${LogoLarge.src});
   height: 40px;
   width: 100%;
