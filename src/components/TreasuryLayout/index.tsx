@@ -159,7 +159,7 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { key: 'dashboard' },
-  { key: 'pond', legacy: '/#/stake' },
+  { key: 'pond' },
   { key: 'lake', legacy: '/#/pearl-chests' },
   // { key: 'farm', disabled: true },
   { key: 'bond', legacy: '/#/bonds' },

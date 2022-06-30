@@ -34,7 +34,7 @@ export function useERC20(address: string) {
   return new Contract(address, ERC20Abi, library) as Erc20
 }
 
-export function useSakedClamContract() {
+export function useStakedClamContract() {
   const { sCLAM } = useContractAddresses()
   const { library } = useEthers()
   return new Contract(sCLAM, StakedClamTokenContractAbi, library) as StakedClamTokenContract

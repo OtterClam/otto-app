@@ -6,6 +6,12 @@ import CLAM from 'assets/clam.svg'
 import CLAMCoin from 'assets/icons/CLAM.svg'
 import PearlBalance from 'assets/icons/pearl-balance.png'
 import PearlChest from 'assets/icons/pearl-chest.png'
+import { useStakedBalance, useTreasuryRealtimeMetrics } from 'contracts/views'
+import { BigNumber, ethers } from 'ethers'
+import { trim } from 'helpers/trim'
+import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
+import { useEthers } from '@usedapp/core'
+import { useMemo } from 'react'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
 import Top1 from './top-1.png'
@@ -124,6 +130,10 @@ const StyledInfoTitle = styled.p<{ icon?: string }>`
   }
 `
 
+const StyledHint = styled(Note).attrs({ as: 'p' })`
+  color: ${({ theme }) => theme.colors.darkGray100};
+`
+
 const StyledSubtitle = styled(Note).attrs({ as: 'p' })``
 
 const StyledPearlChestContainer = styled(Note).attrs({ as: 'div' })`
@@ -164,21 +174,33 @@ interface Props {
 
 export default function StakeInfo({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
+  const { account } = useEthers()
+  const { tvd, index, nextRewardRate, apy } = useTreasuryRealtimeMetrics()
+  const { sClamBalance, pearlBalance } = useStakedBalance(account)
+  const totalStaked = useMemo(
+    () => sClamBalance.mul(1e9).add(pearlBalance.mul(index).div(1e9)),
+    [sClamBalance, pearlBalance]
+  )
+  const nextReward = (totalStaked / 1e18) * nextRewardRate
   const countdown = '7hr 30mins'
   return (
     <StyledStakeInfo className={className}>
       <StyledBody>
-        <StyledTVL>{t('tvl', { tvl: '958,321' })}</StyledTVL>
+        <StyledTVL>{t('tvl', { tvl: trim(ethers.utils.formatUnits(tvd, 18), 2) })}</StyledTVL>
         <StyledSection>
           <StyledSectionTitle>{t('staked_balance')}</StyledSectionTitle>
           <StyledSectionBody>
             <StyledClamBalanceContainer>
-              <StyledClamBalance>123.39 CLAM</StyledClamBalance>
+              <StyledClamBalance>{trim(ethers.utils.formatEther(totalStaked), 4)} CLAM</StyledClamBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
               <StyledInfoContainer>
                 <StyledInfoTitle icon={PearlBalance.src}>{t('pearl_balance')}</StyledInfoTitle>
-                <p>39.321 PEARL</p>
+                <p>{trim(ethers.utils.formatEther(pearlBalance), 4)} PEARL</p>
+              </StyledInfoContainer>
+              <StyledInfoContainer>
+                <p />
+                <StyledHint>{`1 PEARL = ${trim(ethers.utils.formatUnits(index, 9), 2)} CLAM`}</StyledHint>
               </StyledInfoContainer>
             </StyledInfos>
           </StyledSectionBody>
@@ -191,16 +213,16 @@ export default function StakeInfo({ className }: Props) {
           </StyledSectionTitle>
           <StyledSectionBody>
             <StyledClamBalanceContainer>
-              <StyledClamBalance>123.39 CLAM</StyledClamBalance>
+              <StyledClamBalance>{trim(nextReward, 4)} CLAM</StyledClamBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
               <StyledInfoContainer>
                 <StyledInfoTitle>{t('next_reward_yield')}</StyledInfoTitle>
-                <p>0.0032%</p>
+                <p>{trim(nextRewardRate * 100, 4)}%</p>
               </StyledInfoContainer>
               <StyledInfoContainer>
                 <StyledInfoTitle>{t('apy')}</StyledInfoTitle>
-                <p>82%</p>
+                <p>{trim(apy, 2)}%</p>
               </StyledInfoContainer>
               <StyledInfoContainer>
                 <p />
