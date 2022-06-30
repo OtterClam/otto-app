@@ -7,6 +7,8 @@ import { trim } from 'helpers/trim'
 import useClamBalance from 'hooks/useClamBalance'
 import Button from 'components/Button'
 import CLAMCoin from 'assets/icons/CLAM.svg'
+import { useRef, useState } from 'react'
+import { useTreasuryRealtimeMetrics } from 'contracts/views'
 
 const StyledStakeDialog = styled.div``
 
@@ -87,6 +89,8 @@ interface Props {
 
 export default function StakeDialog({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
+  const [clamAmount, setClamAmount] = useState('')
+  const ref = useRef<HTMLInputElement | null>(null)
   const clamBalance = useClamBalance()
   return (
     <StyledStakeDialog className={className}>
@@ -102,11 +106,16 @@ export default function StakeDialog({ className }: Props) {
           <StyledClamBalanceText>
             {clamBalance !== undefined ? trim(utils.formatUnits(clamBalance, 9), 2) : '-'}
           </StyledClamBalanceText>
-          <Button Typography={ContentLarge} primaryColor="white" padding="0 12px">
+          <Button
+            Typography={ContentLarge}
+            primaryColor="white"
+            padding="0 12px"
+            onClick={() => clamBalance && setClamAmount(utils.formatUnits(clamBalance, 9))}
+          >
             {t('max')}
           </Button>
         </StyledClamBalance>
-        <StyledClamInput placeholder={t('input_placeholder')} />
+        <StyledClamInput placeholder={t('input_placeholder')} ref={ref} value={clamAmount} />
         <StyledButton Typography={Headline} padding="6px">
           {t('stake_btn')}
         </StyledButton>

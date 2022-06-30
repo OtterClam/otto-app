@@ -159,8 +159,8 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { key: 'dashboard' },
-  { key: 'pond', legacy: '/#/stake' },
-  { key: 'bank', legacy: '/#/bank' },
+  { key: 'pond' },
+  { key: 'bank' },
   // { key: 'farm', disabled: true },
   // { key: 'bond', legacy: '/#/bonds' },
 ]
