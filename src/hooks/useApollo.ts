@@ -1,4 +1,4 @@
-import { ApolloClient, gql, InMemoryCache } from '@apollo/client'
+import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { ChainId, useEthers } from '@usedapp/core'
 import { useMemo } from 'react'
 

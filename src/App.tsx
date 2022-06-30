@@ -6,6 +6,7 @@ import { BreakpointsProvider } from 'contexts/Breakpoints'
 import useApollo from 'hooks/useApollo'
 import useContractAddresses from 'hooks/useContractAddresses'
 import MyOttosProvider from 'MyOttosProvider'
+import OtterSubgraphProvider from 'OtterSubgraphProvider'
 import { PropsWithChildren } from 'react'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
@@ -46,19 +47,21 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
   const apollo = useApollo()
   return (
     <ApolloProvider client={apollo}>
-      <ThemeProvider theme={theme}>
-        <BreakpointsProvider>
-          <MyOttosProvider>
-            <StyledApp>
-              {children}
-              <Error />
-              <WalletSelector />
-              <MintPopup />
-              <SideMenu />
-            </StyledApp>
-          </MyOttosProvider>
-        </BreakpointsProvider>
-      </ThemeProvider>
+      <OtterSubgraphProvider>
+        <ThemeProvider theme={theme}>
+          <BreakpointsProvider>
+            <MyOttosProvider>
+              <StyledApp>
+                {children}
+                <Error />
+                <WalletSelector />
+                <MintPopup />
+                <SideMenu />
+              </StyledApp>
+            </MyOttosProvider>
+          </BreakpointsProvider>
+        </ThemeProvider>
+      </OtterSubgraphProvider>
     </ApolloProvider>
   )
 }

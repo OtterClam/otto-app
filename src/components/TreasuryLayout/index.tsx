@@ -24,6 +24,7 @@ const StyledContainer = styled.div`
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     flex-direction: column;
+    width: 95%;
   }
 `
 
@@ -47,9 +48,11 @@ const StyledMenu = styled.ul`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 15px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     flex-direction: row;
+    gap: unset;
   }
 `
 
@@ -145,6 +148,7 @@ const StyledMenuItemDesc = styled(Note)`
 
 const StyledContent = styled.div`
   flex: 1;
+  padding: 4px;
 `
 
 interface MenuItem {

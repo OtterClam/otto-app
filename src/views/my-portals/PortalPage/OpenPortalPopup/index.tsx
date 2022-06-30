@@ -9,9 +9,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, Display3, Headline } from 'styles/typography'
-import { PortalStatus } from '__generated__/global-types'
-import { GET_PORTAL } from '../queries'
-import { GetPortal, GetPortalVariables } from '../__generated__/GetPortal'
+import { PortalStatus } from '__generated__/otto/global-types'
+import { GetPortal, GetPortalVariables } from 'graphs/__generated__/GetPortal'
+import { GET_PORTAL } from 'graphs/otto'
 
 const StyledOpenPortalPopup = styled.div`
   min-height: 90vh;

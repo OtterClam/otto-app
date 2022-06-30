@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
 import { LoadingView } from 'components/LoadingView'
 import { ottoClick } from 'constant'
@@ -7,10 +7,11 @@ import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import ConnectView from 'components/ConnectView'
 import { useRouter } from 'next/router'
+import { LIST_MY_PORTALS } from 'graphs/otto'
+import { ListMyPortals, ListMyPortalsVariables } from 'graphs/__generated__/ListMyPortals'
 import NoPortalView from './NoPortalView'
 import PortalCard from './PortalCard'
 import PortalContainer from './PortalContainer'
-import { ListMyPortals, ListMyPortalsVariables } from './__generated__/ListMyPortals'
 
 const StyledMyPortalsPage = styled.div`
   width: 100%;
@@ -33,20 +34,6 @@ const StyledMyPortals = styled.div`
     padding: 10px;
     gap: 5px;
     grid-template-columns: 1fr 1fr;
-  }
-`
-
-export const LIST_MY_PORTALS = gql`
-  query ListMyPortals($owner: Bytes!) {
-    ottos(where: { owner: $owner, portalStatus_not: SUMMONED, epoch: -1 }, orderBy: tokenId) {
-      tokenId
-      tokenURI
-      portalStatus
-      canOpenAt
-      mintAt
-      candidates
-      legendary
-    }
   }
 `
 

@@ -6,8 +6,12 @@
     "dev": "next dev",
     "start": "next start",
     "build": "next build",
-    "download-schema": "apollo service:download graphql-schema.json",
-    "codegen": "yarn download-schema && apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql --globalTypesFile='./src/__generated__/global-types.ts' && typechain --target=ethers-v5 ./src/contracts/abis/**/*.json --out-dir=./src/contracts/__generated__/"
+    "download-schema:otto": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otto_testnet otto-graphql-schema.json",
+    "download-schema:otter": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otterclam otter-graphql-schema.json",
+    "codegen:contract": "typechain --target ethers-v5 --out-dir=src/contracts/__generated__ 'src/contracts/abis/*.json'",
+    "codegen:otto-graph": "yarn download-schema:otto && apollo codegen:generate --includes=src/graphs/otto.ts --localSchemaFile=otto-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile='./src/__generated__/otto/global-types.ts'",
+    "codegen:otter-graph": "yarn download-schema:otto && apollo codegen:generate --includes=src/graphs/otter.ts --localSchemaFile=otter-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile='./src/__generated__/otter/global-types.ts'",
+    "codegen": "yarn codegen:contract && yarn codegen:otto-graph && yarn codegen:otter-graph"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -27,6 +31,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.10",
     "@netlify/functions": "^1.0.0",
+    "@react-hook/resize-observer": "^1.2.5",
     "@reduxjs/toolkit": "^1.8.1",
     "@typechain/ethers-v5": "^10.0.0",
     "@usedapp/core": "^1.0.14",
@@ -46,6 +51,10 @@
     "react-markdown": "^8.0.2",
     "react-redux": "^7.2.0",
     "react-responsive": "^9.0.0-beta.10",
+    "react-responsive-carousel": "^3.2.23",
+    "react-tooltip": "^4.2.21",
+    "recharts": "^2.1.12",
+    "recharts-scale": "^0.4.5",
     "rehype-raw": "^6.1.1",
     "styled-components": "^5.3.3",
     "twitter-api-sdk": "^1.0.7",

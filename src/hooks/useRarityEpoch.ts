@@ -1,19 +1,12 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { useOttoInfo } from 'contracts/views'
+import { GET_EPOCH } from 'graphs/otto'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { GetEpoch, GetEpochVariables } from './__generated__/GetEpoch'
+import { GetEpoch, GetEpochVariables } from 'graphs/__generated__/GetEpoch'
 
 const START_DATE = new Date('2022-05-23').valueOf()
 const EPOCH_LENGTH = 14 * 86400 * 1000 // 14 days
-
-const GET_EPOCH = gql`
-  query GetEpoch($epoch: Int!) {
-    epoches(where: { num: $epoch }) {
-      totalOttos
-    }
-  }
-`
 
 export default function useRarityEpoch() {
   const router = useRouter()

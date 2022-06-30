@@ -1,9 +1,10 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
+import { LIST_MY_OTTOS } from 'graphs/otto'
 import { useOttos } from 'hooks/useOtto'
 import Otto from 'models/Otto'
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo } from 'react'
-import { ListMyOttos, ListMyOttosVariables } from './__generated__/ListMyOttos'
+import { ListMyOttos, ListMyOttosVariables } from './graphs/__generated__/ListMyOttos'
 
 interface MyOttos {
   loading: boolean
@@ -30,20 +31,6 @@ export function useIsMyOttos(ottoTokenId?: string): boolean {
     return Boolean(ottos.find(otto => otto.tokenId === ottoTokenId))
   }, [ottos, ottoTokenId])
 }
-
-export const LIST_MY_OTTOS = gql`
-  query ListMyOttos($owner: Bytes!) {
-    ottos(where: { owner: $owner, portalStatus: SUMMONED, epoch: -1 }, orderBy: tokenId) {
-      tokenId
-      tokenURI
-      mintAt
-      legendary
-      brs
-      rrs
-      rarityScore
-    }
-  }
-`
 
 export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
   const { account } = useEthers()

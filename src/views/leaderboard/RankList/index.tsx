@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import CLAM from 'assets/clam.png'
 import cursorPointer from 'assets/cursor-pointer.png'
 import ArrowDown from 'assets/ui/arrow_down.svg'
@@ -21,29 +21,13 @@ import Constellations from 'assets/constellations'
 import useRarityEpoch from 'hooks/useRarityEpoch'
 import { createSearchParams } from 'utils/url'
 import { useRouter } from 'next/router'
+import { LIST_RANKED_OTTOS } from 'graphs/otto'
+import { ListRankedOttos, ListRankedOttosVariables } from 'graphs/__generated__/ListRankedOttos'
 import RarityScore from './rarity_score.png'
 import LoadingGif from './loading.gif'
-import { ListRankedOttos, ListRankedOttosVariables } from './__generated__/ListRankedOttos'
 import FirstRank from './Icon/Rank/1st.png'
 import SecondRank from './Icon/Rank/2nd.png'
 import ThirdRank from './Icon/Rank/3rd.png'
-
-export const LIST_RANKED_OTTOS = gql`
-  query ListRankedOttos($epoch: Int!, $first: Int!, $skip: Int!) {
-    ottos(orderBy: rarityScore, orderDirection: desc, first: $first, skip: $skip, where: { epoch: $epoch }) {
-      tokenId
-      tokenURI
-      mintAt
-      legendary
-      brs
-      rrs
-      rarityScore
-      constellationBoost
-      epochRarityBoost
-      diceCount
-    }
-  }
-`
 
 const StyledRankList = styled.div`
   color: ${({ theme }) => theme.colors.otterBlack};

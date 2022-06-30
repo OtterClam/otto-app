@@ -3,13 +3,13 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { PortalStatus } from "./../../../../__generated__/global-types";
+import { PortalStatus } from "./../../__generated__/otto/global-types";
 
 // ====================================================
-// GraphQL query operation: GetPortal
+// GraphQL query operation: ListMyPortals
 // ====================================================
 
-export interface GetPortal_ottos {
+export interface ListMyPortals_ottos {
   __typename: "Otto";
   tokenId: any;
   tokenURI: string;
@@ -20,10 +20,10 @@ export interface GetPortal_ottos {
   legendary: boolean;
 }
 
-export interface GetPortal {
-  ottos: GetPortal_ottos[];
+export interface ListMyPortals {
+  ottos: ListMyPortals_ottos[];
 }
 
-export interface GetPortalVariables {
-  portalId: any;
+export interface ListMyPortalsVariables {
+  owner: any;
 }

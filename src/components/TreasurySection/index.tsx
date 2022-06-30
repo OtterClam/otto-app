@@ -11,6 +11,7 @@ const StyledContainer = styled.div<{ showRope: boolean }>`
     inset 0 0 0 2px ${({ theme }) => theme.colors.otterBlack};
   background: ${({ theme }) => theme.colors.darkBrown};
   box-sizing: border-box;
+  padding: 2px;
 
   ${props =>
     props.showRope &&
@@ -27,21 +28,21 @@ const StyledContainer = styled.div<{ showRope: boolean }>`
     }
 
     &::before {
-      left: 8px;
+      left: 66px;
     }
 
     &::after {
-      right: 8px;
+      right: 66px;
     }
   `}
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     &::before {
-      left: 4px;
+      left: 16px;
     }
 
     &::after {
-      right: 4px;
+      right: 16px;
     }
   }
 `
