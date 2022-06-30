@@ -6,6 +6,10 @@ import OttoItem from './OttoItem.json'
 import OttopiaStore from './OttopiaStore.json'
 import IOttoItemFactory from './IOttoItemFactory.json'
 import OttoItemGiveaway from './OttoItemGiveaway.json'
+import ClamMaiContract from './ClamMaiContract.json'
+import StakingContract from './StakingContract.json'
+import ClamCirculatingSupply from './ClamCirculatingSupply.json'
+import StakedClamTokenContract from './StakedClamTokenContract.json'
 
 export const ERC20Abi = ERC20.abi
 export const OttoAbi = Otto.abi
@@ -15,3 +19,7 @@ export const OttoItemAbi = OttoItem.abi
 export const OttopiaStoreAbi = OttopiaStore.abi
 export const IOttoItemFactoryAbi = IOttoItemFactory.abi
 export const OttoItemGiveawayAbi = OttoItemGiveaway.abi
+export const ClamMaiContractAbi = ClamMaiContract.abi
+export const StakingContractAbi = StakingContract.abi
+export const ClamCirculatingSupplyAbi = ClamCirculatingSupply.abi
+export const StakedClamTokenContractAbi = StakedClamTokenContract.abi
