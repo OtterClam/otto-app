@@ -531,13 +531,14 @@
     "max": "MAX",
     "input_placeholder": "Enter your amount",
     "stake_btn": "Stake CLAM",
-    "tvl": "TVL: {{tvl}}",
+    "tvl": "TVL: ${{tvl}}",
     "staked_balance": "Your Staked Balance",
     "pearl_balance": "PEARL balance",
     "next_reward": "Next Reward Amount",
     "rebase_countdown": "Rebase remaining: {{countdown}}",
     "next_reward_yield": "Next Reward Yield",
     "apy": "APY",
-    "extra_reward": "Extra Rewards coming soon..."
+    "chest_reward": "Max ",
+    "extra_rewards": "Extra Rewards coming soon..."
   }
 }
