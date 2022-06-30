@@ -24,7 +24,7 @@ const StyledTab = styled(ContentMedium).attrs({ as: 'button' })<{ selected?: boo
   padding: 10px 0;
   flex: 1;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
-  background-color: ${({ theme, selected }) => (selected ? '#FFC737' : theme.colors.white)};
+  background-color: ${({ theme, selected }) => (selected ? theme.colors.darkYellow : theme.colors.white)};
   box-shadow: ${({ selected }) =>
     selected
       ? 'inset 0px -8px 0px #d88335, inset 0px 0px 0px 6px rgba(255, 255, 255, 0.4)'
@@ -81,11 +81,15 @@ const StyledButton = styled(Button)``
 
 // type Tab = 'stake' | 'unstake'
 
-export default function StakeDialog() {
+interface Props {
+  className?: string
+}
+
+export default function StakeDialog({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const clamBalance = useClamBalance()
   return (
-    <StyledStakeDialog>
+    <StyledStakeDialog className={className}>
       <StyledTabs>
         <StyledTab selected>{t('stake_tab')} </StyledTab>
         <StyledTab>{t('unstake_tab')} </StyledTab>

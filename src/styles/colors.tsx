@@ -4,6 +4,7 @@ export const colors = {
   otterBlue: '#3B4BD8',
   otterBlueHover: '#303FC7',
   crownYellow: '#FFDC77',
+  darkYellow: '#FFC737',
   clamPink: '#FF6854',
   lightGray400: '#CCD4E0',
   lightGray300: '#DBE6EC',
