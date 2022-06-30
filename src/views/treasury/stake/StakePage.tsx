@@ -1,13 +1,12 @@
-import Layout from 'Layout'
-import { useTranslation } from 'next-i18next'
+import TreasurySection from 'components/TreasurySection'
 import styled from 'styled-components'
 import BG from './bg.jpg'
 import Otter1 from './clam_pond_otter-1.png'
+import Fountain from './fountain.png'
 import StakeDialog from './StakeDialog'
 import StakeInfo from './StakeInfo'
-import Fountain from './fountain.png'
 
-const StyledStakePage = styled.div`
+const StyledStakePage = styled(TreasurySection)`
   display: flex;
   background: no-repeat center / cover url(${BG.src});
   position: relative;
@@ -39,15 +38,12 @@ const StyledFountain = styled.img.attrs({ src: Fountain.src })`
 `
 
 export default function StakePage() {
-  const { t } = useTranslation('', { keyPrefix: 'stake' })
   return (
-    <Layout title={t('title')}>
-      <StyledStakePage>
-        <StyledFountain />
-        <StyledOtter />
-        <StyledStakeDialog />
-        <StyledStakeInfo />
-      </StyledStakePage>
-    </Layout>
+    <StyledStakePage>
+      <StyledFountain />
+      <StyledOtter />
+      <StyledStakeDialog />
+      <StyledStakeInfo />
+    </StyledStakePage>
   )
 }
