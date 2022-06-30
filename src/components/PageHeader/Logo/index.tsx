@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components/macro'
 import LogoLarge from './logo-large.png'
 import LogoSmall from './logo-small.png'
@@ -11,7 +12,7 @@ const StyledContainer = styled.div`
   }
 `
 
-const StyledLogo = styled.div`
+const StyledLogo = styled.a`
   background: center / 148px 40px url(${LogoLarge.src});
   height: 40px;
   width: 100%;
@@ -26,7 +27,9 @@ const StyledLogo = styled.div`
 export default function Logo() {
   return (
     <StyledContainer>
-      <StyledLogo />
+      <Link href="/">
+        <StyledLogo />
+      </Link>
     </StyledContainer>
   )
 }
