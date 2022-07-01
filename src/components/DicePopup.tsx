@@ -26,9 +26,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { hideDicePopup, selectOttoInTheHell } from 'store/uiSlice'
 import styled, { keyframes, useTheme } from 'styled-components/macro'
 import { ContentExtraSmall, ContentLarge, ContentMedium, ContentSmall, Display3, Headline } from 'styles/typography'
-import rollingDiceAudioSrc from 'assets/audio/rolling_dice.mp3'
-import rolledAudioSrc from 'assets/audio/rolled.mp3'
 import StyledRichContent from './RichContent'
+
+const rollingDiceAudioSrc = '/audio/rolling_dice.mp3'
+const rolledAudioSrc = '/audio/rolled.mp3'
 
 const zoomInUp = keyframes`
   from {
