@@ -14,6 +14,8 @@ import { trim } from 'helpers/trim'
 import { BigNumber, BigNumberish, ethers } from 'ethers'
 import { useMemo } from 'react'
 import useTreasuryRevenues from 'hooks/useTreasuryRevenues'
+import ClamSupplyChart from 'components/ClamSupplyChart'
+import ClamBuybackChart from 'components/ClamBuybackChart'
 import Leaves from './leaves.png'
 import Shell from './shell.png'
 import Bird from './bird.png'
@@ -264,11 +266,11 @@ export default function TreasuryDashboardPage() {
           </StyledChartCard>
 
           <StyledChartCard>
-            <TreasuryMarketValueChart data={metrics} />
+            <ClamSupplyChart data={metrics} />
           </StyledChartCard>
 
           <StyledChartCard>
-            <TreasuryMarketValueChart data={metrics} />
+            <ClamBuybackChart data={revenues} />
           </StyledChartCard>
 
           <StyledTreasuryCard>
