@@ -224,7 +224,7 @@ export default function StakeInfo({ className }: Props) {
                 <StyledInfoTitle>{t('apy')}</StyledInfoTitle>
                 <p>{trim(apy, 2)}%</p>
               </StyledInfoContainer>
-              <StyledInfoContainer>
+              {/* <StyledInfoContainer>
                 <p />
                 <StyledPearlChestContainer>
                   <StyledPearlChest>
@@ -232,7 +232,7 @@ export default function StakeInfo({ className }: Props) {
                     <span>+ 86%</span>
                   </StyledPearlChest>
                 </StyledPearlChestContainer>
-              </StyledInfoContainer>
+              </StyledInfoContainer> */}
             </StyledInfos>
             <StyledExtraRewards>{t('extra_rewards')}</StyledExtraRewards>
             <StyledGashaponTicket />

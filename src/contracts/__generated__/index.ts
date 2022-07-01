@@ -4,6 +4,7 @@
 export type { ClamCirculatingSupply } from "./ClamCirculatingSupply";
 export type { ClamMaiContract } from "./ClamMaiContract";
 export type { IOttoItemFactory } from "./IOttoItemFactory";
+export type { OtterStakingPearlHelper } from "./OtterStakingPearlHelper";
 export type { Otto } from "./Otto";
 export type { OttoItem } from "./OttoItem";
 export type { OttoItemGiveaway } from "./OttoItemGiveaway";
@@ -18,6 +19,7 @@ export { ClamCirculatingSupply__factory } from "./factories/ClamCirculatingSuppl
 export { ClamMaiContract__factory } from "./factories/ClamMaiContract__factory";
 export { Erc20__factory } from "./factories/Erc20__factory";
 export { IOttoItemFactory__factory } from "./factories/IOttoItemFactory__factory";
+export { OtterStakingPearlHelper__factory } from "./factories/OtterStakingPearlHelper__factory";
 export { Otto__factory } from "./factories/Otto__factory";
 export { OttoItem__factory } from "./factories/OttoItem__factory";
 export { OttoItemGiveaway__factory } from "./factories/OttoItemGiveaway__factory";

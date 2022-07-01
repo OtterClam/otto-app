@@ -10,6 +10,7 @@ import ClamMaiContract from './ClamMaiContract.json'
 import StakingContract from './StakingContract.json'
 import ClamCirculatingSupply from './ClamCirculatingSupply.json'
 import StakedClamTokenContract from './StakedClamTokenContract.json'
+import OtterStakingPearlHelper from './OtterStakingPearlHelper.json'
 
 export const ERC20Abi = ERC20.abi
 export const OttoAbi = Otto.abi
@@ -23,3 +24,4 @@ export const ClamMaiContractAbi = ClamMaiContract.abi
 export const StakingContractAbi = StakingContract.abi
 export const ClamCirculatingSupplyAbi = ClamCirculatingSupply.abi
 export const StakedClamTokenContractAbi = StakedClamTokenContract.abi
+export const OtterStakingPearlHelperAbi = OtterStakingPearlHelper.abi

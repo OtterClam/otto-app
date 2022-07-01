@@ -531,7 +531,8 @@
     "available": "Available:",
     "max": "MAX",
     "input_placeholder": "Enter your amount",
-    "stake_btn": "Stake CLAM",
+    "stake_btn": "Stake",
+    "unstake_btn": "Unstake",
     "tvl": "TVL: ${{tvl}}",
     "staked_balance": "Your Staked Balance",
     "pearl_balance": "PEARL balance",
@@ -540,6 +541,16 @@
     "next_reward_yield": "Next Reward Yield",
     "apy": "APY",
     "chest_reward": "Max ",
-    "extra_rewards": "Extra Rewards coming soon..."
+    "extra_rewards": "Extra Rewards coming soon...",
+    "stake_popup": {
+      "headline": "Otter’standing!",
+      "title": "Your stake was successful.",
+      "desc": "You will get "
+    },
+    "unstake_popup": {
+      "headline": "Otter’standing!",
+      "title": "Your unstake was successful.",
+      "desc": "You just received "
+    }
   }
 }

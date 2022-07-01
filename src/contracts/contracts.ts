@@ -14,6 +14,7 @@ import {
   StakingContractAbi,
   ClamCirculatingSupplyAbi,
   StakedClamTokenContractAbi,
+  OtterStakingPearlHelperAbi,
 } from './abis'
 import { OttoItem } from './__generated__/OttoItem'
 import { OttopiaStore } from './__generated__/OttopiaStore'
@@ -24,6 +25,7 @@ import {
   ClamCirculatingSupply,
   ClamMaiContract,
   Erc20,
+  OtterStakingPearlHelper,
   StakedClamTokenContract,
   StakingContract,
 } from './__generated__'
@@ -97,4 +99,10 @@ export function useClamCirculatingSupply() {
   const { CLAM_CIRCULATING_SUPPLY } = useContractAddresses()
   const { library } = useEthers()
   return new Contract(CLAM_CIRCULATING_SUPPLY, ClamCirculatingSupplyAbi, library) as ClamCirculatingSupply
+}
+
+export function useStakingPearlHelper() {
+  const { STAKING_PEARL_HELPER_ADDRESS } = useContractAddresses()
+  const { library } = useEthers()
+  return new Contract(STAKING_PEARL_HELPER_ADDRESS, OtterStakingPearlHelperAbi, library) as OtterStakingPearlHelper
 }
