@@ -444,7 +444,9 @@
     "shop_button": "SHOP NOW",
     "flash_sell": {
       "contain_items": "The special items exclusive to this chest:",
-      "sell_range": "For sale from {{start}} - {{end}}"
+      "sell_range": "For sale from {{start}} - {{end}}",
+      "select": "Select",
+      "coming_soon": "Coming soon"
     },
     "popup": {
       "buy_now": "Buy",

@@ -64,10 +64,17 @@ const StyledAirdropAmount = styled.p`
 
 interface Props {
   product: Product
+  enabled?: boolean
   onClick: () => void
+  button?: string
 }
 
-export default function ProductCard({ product: { name, image, displayPrice, airdropAmount }, onClick }: Props) {
+export default function ProductCard({
+  product: { name, image, displayPrice, airdropAmount },
+  enabled = true,
+  button,
+  onClick,
+}: Props) {
   const { t } = useTranslation()
   return (
     <StyledProductCard>
@@ -78,8 +85,8 @@ export default function ProductCard({ product: { name, image, displayPrice, aird
       <StyledPrice>
         <ContentLarge>{trim(displayPrice, 2)}</ContentLarge>
       </StyledPrice>
-      <Button Typography={Headline} onClick={onClick}>
-        {t('store.product_card.select')}
+      <Button Typography={Headline} disabled={!enabled} onClick={onClick}>
+        {button || t('store.product_card.select')}
       </Button>
       {airdropAmount > 0 && (
         <StyledAirdropAmount>

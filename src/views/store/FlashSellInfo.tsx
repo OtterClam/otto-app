@@ -68,15 +68,21 @@ interface Props {
 const DATE_TIME_FORMAT = 'MMM dd hh:mm aa'
 
 export default function FlashSellInfo({
-  flashSell: { products, special_items, start_time, end_time },
+  flashSell: { type, products, special_items, start_time, end_time },
   onClick,
 }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'store.flash_sell' })
   const start = format(new Date(start_time), DATE_TIME_FORMAT)
   const end = format(new Date(end_time), DATE_TIME_FORMAT)
+  const started = Date.now() >= start_time
   return (
     <StyledContainer>
-      <ProductCard product={products[0]} onClick={onClick} />
+      <ProductCard
+        product={products[0]}
+        enabled={started}
+        button={started ? t('select') : t('coming_soon')}
+        onClick={onClick}
+      />
       <StyledRightContainer>
         <StyledFlashSellItemsText>{t('contain_items')}</StyledFlashSellItemsText>
         <StyledItemList>
@@ -85,15 +91,19 @@ export default function FlashSellInfo({
               <StyledItemCell item={item} />
               <StyledItemName>
                 {item.name}
-                <StyledItemHint>{`LUK: ${item.luck}`}</StyledItemHint>
+                <StyledItemHint>{`${type.toUpperCase()}: ${
+                  item.stats.find((s: any) => s.name === type.toUpperCase())?.value || 0
+                }`}</StyledItemHint>
               </StyledItemName>
             </StyledItemContainer>
           ))}
         </StyledItemList>
         <StyledSellRange>{t('sell_range', { start, end })}</StyledSellRange>
-        <StyledCountdownContainer>
-          <Countdown target={end_time} />
-        </StyledCountdownContainer>
+        {started && (
+          <StyledCountdownContainer>
+            <Countdown target={end_time} />
+          </StyledCountdownContainer>
+        )}
       </StyledRightContainer>
     </StyledContainer>
   )
