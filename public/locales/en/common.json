@@ -514,7 +514,9 @@
       "clamCirculatingSupply": "CLAM Circulating Supply",
       "buybacks": "Buybacks",
       "burned": "Burned CLAM",
-      "distributed": "CLAM Distributed Today"
+      "burnedTooltip": "Amount of CLAM permanently burned and removed from the supply.",
+      "distributed": "CLAM Distributed Today",
+      "distributedTooltip": "Total amount of CLAM which has been distributed today. This is divided proportionally between all stakers and Pearl Chest holders."
     }
   }
 }
