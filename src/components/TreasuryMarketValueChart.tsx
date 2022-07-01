@@ -3,11 +3,14 @@ import { GetTreasuryMetrics_protocolMetrics } from 'graphs/__generated__/GetTrea
 import { trim } from 'helpers/trim'
 import useSize from 'hooks/useSize'
 import { useTranslation } from 'next-i18next'
+import { i18n } from 'i18next'
 import React, { RefObject, useRef } from 'react'
 import { AreaChart, Area, Tooltip } from 'recharts'
 import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
+import { ethers } from 'ethers'
+import ChartTooltip from './ChartTooltip'
 
 const StyledContainer = styled.div`
   height: 260px;
@@ -142,13 +145,42 @@ const marketValues = [
   },
 ]
 
+const keySettingMap = marketValues.reduce(
+  (map, setting) =>
+    Object.assign(map, {
+      [setting.dataKey]: setting,
+    }),
+  {} as { [k: string]: typeof marketValues[0] }
+)
+
 export interface TreasuryMarketValueChartProps {
   data: GetTreasuryMetrics_protocolMetrics[]
 }
 
+const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
+  i18n =>
+  ({ payload, active }) => {
+    if (!active || !payload?.length) {
+      return null
+    }
+    const items = payload
+      .filter(({ value }) => Math.round(value) > 0)
+      .map(({ name, value }) => ({
+        key: name,
+        label: keySettingMap[name].label,
+        value: `$${Math.round(value).toLocaleString(i18n.language)}`,
+        color: keySettingMap[name].stopColor[0],
+      }))
+    const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
+    const headerLabel = i18n.t('treasury.dashboard.chartHeaderLabel')
+    return (
+      <ChartTooltip headerLabel={headerLabel} headerValue={items[0].value} items={items.slice(1)} footer={footer} />
+    )
+  }
+
 export default function TreasuryMarketValueChart({ data }: TreasuryMarketValueChartProps) {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
 
   return (
@@ -184,7 +216,11 @@ export default function TreasuryMarketValueChart({ data }: TreasuryMarketValueCh
           connectNulls
           allowDataOverflow={false}
         />
-        <Tooltip formatter={(value: string) => trim(parseFloat(value), 2)} />
+        <Tooltip
+          wrapperStyle={{ zIndex: 1 }}
+          formatter={(value: string) => trim(parseFloat(value), 2)}
+          content={renderTooltip(i18n) as any}
+        />
         {marketValues.map(({ dataKey, label }) => (
           <Area
             key={dataKey}

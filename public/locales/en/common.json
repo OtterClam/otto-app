@@ -506,7 +506,15 @@
       "tvd": "Total Value Deposited",
       "tvdTooltip": "Total Value Deposited, is the dollar amount of all CLAM staked in the protocol. This metric is often used as growth or health indicator in DeFi projects.",
       "staked": "CLAM Staked",
-      "stakedTooltip": "CLAM Staked, is the ratio of sCLAM to CLAM (staked vs unstaked)"
+      "stakedTooltip": "CLAM Staked, is the ratio of sCLAM to CLAM (staked vs unstaked)",
+      "chartHeaderLabel": "Total",
+      "today": "Today",
+      "treasuryMarketValue": "Market Value of Treasury Assets",
+      "treasuryRevenue": "Treasury Revenue",
+      "clamCirculatingSupply": "CLAM Circulating Supply",
+      "buybacks": "Buybacks",
+      "burned": "Burned CLAM",
+      "distributed": "CLAM Distributed Today"
     }
   }
 }

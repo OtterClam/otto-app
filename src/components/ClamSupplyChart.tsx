@@ -1,5 +1,6 @@
 import format from 'date-fns/format'
 import { GetTreasuryMetrics_protocolMetrics } from 'graphs/__generated__/GetTreasuryMetrics'
+import { i18n } from 'i18next'
 import { trim } from 'helpers/trim'
 import useSize from 'hooks/useSize'
 import { useTranslation } from 'next-i18next'
@@ -8,6 +9,7 @@ import { AreaChart, Area, Tooltip } from 'recharts'
 import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
+import ChartTooltip from './ChartTooltip'
 
 const StyledContainer = styled.div`
   height: 260px;
@@ -41,9 +43,25 @@ export interface ClamSupplyChartProps {
   currency?: Currency
 }
 
+const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
+  i18n =>
+  ({ payload, active }) => {
+    if (!active || !payload?.length) {
+      return null
+    }
+    const items = payload.map(({ name, value }) => ({
+      key: name,
+      label: i18n.t('treasury.dashboard.clamCirculatingSupply'),
+      value: `$${Math.round(value).toLocaleString(i18n.language)}`,
+      color: '#FFACA1',
+    }))
+    const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
+    return <ChartTooltip items={items} footer={footer} />
+  }
+
 export default function ClamSupplyChart({ data, currency = Currency.CLAM }: ClamSupplyChartProps) {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
   const dataKey = currency === Currency.USD ? 'marketCap' : 'clamCirculatingSupply'
 
@@ -78,7 +96,11 @@ export default function ClamSupplyChart({ data, currency = Currency.CLAM }: Clam
           connectNulls
           allowDataOverflow
         />
-        <Tooltip />
+        <Tooltip
+          wrapperStyle={{ zIndex: 1 }}
+          formatter={(value: string) => trim(parseFloat(value), 2)}
+          content={renderTooltip(i18n) as any}
+        />
         <Area dataKey={dataKey} stroke="none" fill="url(#color-clam-supply)" fillOpacity={1} />
       </AreaChart>
     </StyledContainer>

@@ -4,7 +4,7 @@ import TreasuryCard from 'components/TreasuryCard'
 import TreasurySection from 'components/TreasurySection'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
-import { ContentExtraSmall, ContentMedium } from 'styles/typography'
+import { ContentExtraSmall, ContentMedium, ContentSmall } from 'styles/typography'
 import ClamIcon from 'assets/clam.png'
 import PearlIcon from 'assets/pearl.png'
 import Help from 'components/Help'
@@ -106,7 +106,7 @@ const StyledTokenIcon = styled.img`
   height: 48px;
 `
 
-const StyledChartsContainer = styled.div`
+const StyledChartsContainer = styled(ContentMedium)`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
@@ -156,13 +156,22 @@ const StyledChartsContainer = styled.div`
   }
 `
 
-const StyledChartsTitle = styled.h3``
+const StyledChartHeader = styled.h3`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+`
 
-const StyledChartsKeyValue = styled.div``
+const StyledChartTitle = styled(ContentSmall)`
+  color: ${({ theme }) => theme.colors.darkGray200};
+`
 
-const StyledChartsKeyValueLabel = styled.span``
+const StyledChartKeyValue = styled.span``
 
-const StyledChartsKeyValueNumber = styled.span``
+const StyledChartKeyDate = styled.span`
+  color: ${({ theme }) => theme.colors.darkGray200};
+  margin-left: 6px;
+`
 
 const formatFinancialNumber = (num: BigNumberish, decimal = 9) => `$${formatBigNumber(num, decimal)}`
 
@@ -258,18 +267,46 @@ export default function TreasuryDashboardPage() {
       <TreasurySection showRope={false}>
         <StyledChartsContainer>
           <StyledChartCard>
+            <StyledChartHeader>
+              <StyledChartTitle>{t('treasuryMarketValue')}</StyledChartTitle>
+              <StyledChartKeyValue>
+                {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.treasuryMarketValue ?? '0', 27), 27)}
+                <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
+              </StyledChartKeyValue>
+            </StyledChartHeader>
             <TreasuryMarketValueChart data={metrics} />
           </StyledChartCard>
 
           <StyledChartCard>
+            <StyledChartHeader>
+              <StyledChartTitle>{t('treasuryRevenue')}</StyledChartTitle>
+              <StyledChartKeyValue>
+                {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.treasuryMarketValue ?? '0', 27), 27)}
+                <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
+              </StyledChartKeyValue>
+            </StyledChartHeader>
             <TreasuryRevenuesChart data={revenues} />
           </StyledChartCard>
 
           <StyledChartCard>
+            <StyledChartHeader>
+              <StyledChartTitle>{t('clamCirculatingSupply')}</StyledChartTitle>
+              <StyledChartKeyValue>
+                {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.treasuryMarketValue ?? '0', 27), 27)}
+                <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
+              </StyledChartKeyValue>
+            </StyledChartHeader>
             <ClamSupplyChart data={metrics} />
           </StyledChartCard>
 
           <StyledChartCard>
+            <StyledChartHeader>
+              <StyledChartTitle>{t('buybacks')}</StyledChartTitle>
+              <StyledChartKeyValue>
+                {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.treasuryMarketValue ?? '0', 27), 27)}
+                <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
+              </StyledChartKeyValue>
+            </StyledChartHeader>
             <ClamBuybackChart data={revenues} />
           </StyledChartCard>
 

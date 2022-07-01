@@ -1,5 +1,6 @@
 import format from 'date-fns/format'
 import { trim } from 'helpers/trim'
+import { i18n } from 'i18next'
 import useSize from 'hooks/useSize'
 import { useTranslation } from 'next-i18next'
 import React, { RefObject, useRef } from 'react'
@@ -8,6 +9,7 @@ import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
 import { GetTreasuryRevenue_treasuryRevenues } from 'graphs/__generated__/GetTreasuryRevenue'
+import ChartTooltip from './ChartTooltip'
 
 const StyledContainer = styled.div`
   height: 260px;
@@ -41,12 +43,28 @@ export interface ClamBuybackChartProps {
   currency?: Currency
 }
 
-export default function ClamBuybackChart({ data, currency = Currency.CLAM }: ClamBuybackChartProps) {
+const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
+  i18n =>
+  ({ payload, active }) => {
+    if (!active || !payload?.length) {
+      return null
+    }
+    const items = payload.map(({ name, value }) => ({
+      key: name,
+      label: i18n.t('treasury.dashboard.buybacks'),
+      value: `$${Math.round(value).toLocaleString(i18n.language)}`,
+      color: 'rgba(128, 204, 131, 1)',
+    }))
+    const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
+    return <ChartTooltip items={items} footer={footer} />
+  }
+
+export default function ClamBuybackChart({ data, currency = Currency.USD }: ClamBuybackChartProps) {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
   const dataKey = currency === Currency.USD ? 'cumulativeBuybackMarketValue' : 'cumulativeBuybackClamAmount'
-  console.log(data)
+
   return (
     <StyledContainer ref={containerRef}>
       <AreaChart data={data} width={size?.width ?? 300} height={size?.height ?? 260}>
@@ -78,7 +96,11 @@ export default function ClamBuybackChart({ data, currency = Currency.CLAM }: Cla
           connectNulls
           allowDataOverflow
         />
-        <Tooltip />
+        <Tooltip
+          wrapperStyle={{ zIndex: 1 }}
+          formatter={(value: string) => trim(parseFloat(value), 2)}
+          content={renderTooltip(i18n) as any}
+        />
         <Area dataKey={dataKey} stroke="none" fill="url(#color-clam-buyback-area)" fillOpacity={1} />
       </AreaChart>
     </StyledContainer>
