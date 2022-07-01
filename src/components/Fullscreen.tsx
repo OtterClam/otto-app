@@ -23,9 +23,9 @@ const Background = styled.button`
   backdrop-filter: blur(10px);
 `
 
-const Container = styled.div`
+const Container = styled.div<{ width: string }>`
   position: relative;
-  width: 80%;
+  width: ${props => props.width};
   background-color: ${({ theme }) => theme.colors.crownYellow};
   padding: 6px;
   box-sizing: border-box;
@@ -63,10 +63,11 @@ const Content = styled.div`
 interface Props {
   show?: boolean
   background?: string
+  width?: string
   children: ReactNode
 }
 
-const Fullscreen = ({ show = true, background, children }: Props) => {
+const Fullscreen = ({ show = true, background, width = '80%', children }: Props) => {
   useEffect(() => {
     if (show) {
       document.body.style.overflow = 'hidden'
@@ -82,7 +83,7 @@ const Fullscreen = ({ show = true, background, children }: Props) => {
   return (
     <StyledPopup>
       <Background />
-      <Container>
+      <Container width={width}>
         <StyledInnerContainer background={background}>
           <Content>{children}</Content>
         </StyledInnerContainer>

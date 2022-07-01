@@ -1,14 +1,9 @@
 import { useTranslation } from 'next-i18next'
+import { useState } from 'react'
 import styled from 'styled-components'
-import { Caption, ContentLarge, ContentMedium, ContentSmall, Headline } from 'styles/typography'
-import CLAM from 'assets/clam.svg'
-import { utils } from 'ethers'
-import { trim } from 'helpers/trim'
-import useClamBalance from 'hooks/useClamBalance'
-import Button from 'components/Button'
-import CLAMCoin from 'assets/icons/CLAM.svg'
-import { useRef, useState } from 'react'
-import { useTreasuryRealtimeMetrics } from 'contracts/views'
+import { ContentMedium } from 'styles/typography'
+import StakeTab from './StakeTab'
+import UnstakeTab from './UnstakeTab'
 
 const StyledStakeDialog = styled.div``
 
@@ -35,53 +30,13 @@ const StyledTab = styled(ContentMedium).attrs({ as: 'button' })<{ selected?: boo
 `
 
 const StyledBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
   padding: 20px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 20px;
   background: ${({ theme }) => theme.colors.white};
 `
 
-const StyledClamBalance = styled(Caption)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 5px;
-`
-
-const StyledClamBalanceText = styled.div`
-  display: flex;
-  align-items: center;
-  flex: 1;
-  &:before {
-    content: '';
-    background: no-repeat center/contain url(${CLAM.src});
-    width: 16px;
-    height: 16px;
-    margin-right: 5px;
-    display: block;
-  }
-`
-
-const StyledClamInput = styled(ContentSmall).attrs({ as: 'input' })`
-  width: 100%;
-  padding: 20px;
-  border: 4px solid ${({ theme }) => theme.colors.otterBlack};
-  border-radius: 10px;
-  background: url(${CLAMCoin.src}) no-repeat 20px;
-  text-indent: 32px;
-
-  ::placeholder {
-    color: ${({ theme }) => theme.colors.lightGray400};
-    opacity: 1;
-  }
-`
-
-const StyledButton = styled(Button)``
-
-// type Tab = 'stake' | 'unstake'
+type Tab = 'stake' | 'unstake'
 
 interface Props {
   className?: string
@@ -89,36 +44,20 @@ interface Props {
 
 export default function StakeDialog({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
-  const [clamAmount, setClamAmount] = useState('')
-  const ref = useRef<HTMLInputElement | null>(null)
-  const clamBalance = useClamBalance()
+  const [tab, setTab] = useState<Tab>('stake')
   return (
     <StyledStakeDialog className={className}>
       <StyledTabs>
-        <StyledTab selected>{t('stake_tab')} </StyledTab>
-        <StyledTab>{t('unstake_tab')} </StyledTab>
+        <StyledTab selected={tab === 'stake'} onClick={() => setTab('stake')}>
+          {t('stake_tab')}{' '}
+        </StyledTab>
+        <StyledTab selected={tab === 'unstake'} onClick={() => setTab('unstake')}>
+          {t('unstake_tab')}{' '}
+        </StyledTab>
       </StyledTabs>
       <StyledBody>
-        <Headline as="h1">{t('welcome')}</Headline>
-        <ContentSmall as="p">{t('desc')}</ContentSmall>
-        <StyledClamBalance>
-          {t('available')}
-          <StyledClamBalanceText>
-            {clamBalance !== undefined ? trim(utils.formatUnits(clamBalance, 9), 2) : '-'}
-          </StyledClamBalanceText>
-          <Button
-            Typography={ContentLarge}
-            primaryColor="white"
-            padding="0 12px"
-            onClick={() => clamBalance && setClamAmount(utils.formatUnits(clamBalance, 9))}
-          >
-            {t('max')}
-          </Button>
-        </StyledClamBalance>
-        <StyledClamInput placeholder={t('input_placeholder')} ref={ref} value={clamAmount} />
-        <StyledButton Typography={Headline} padding="6px">
-          {t('stake_btn')}
-        </StyledButton>
+        {tab === 'stake' && <StakeTab />}
+        {tab === 'unstake' && <UnstakeTab />}
       </StyledBody>
     </StyledStakeDialog>
   )
