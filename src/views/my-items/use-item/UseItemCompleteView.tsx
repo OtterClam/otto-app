@@ -73,6 +73,7 @@ const StyledItemCellBg = styled.img`
   position: absolute;
   top: -25%;
   left: -26%;
+  pointer-events: none;
 `
 
 const CloseButtonLarge = styled(Button)``
