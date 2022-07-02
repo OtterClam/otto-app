@@ -1,6 +1,5 @@
 import Star from 'assets/ui/star.svg'
 import BorderContainer from 'components/BorderContainer'
-import Layout from 'Layout'
 import Silver from 'models/store/images/silver.png'
 import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
@@ -81,20 +80,18 @@ const StyledBody = styled(BorderContainer)`
 export default function GiveawayPage() {
   const { t } = useTranslation('', { keyPrefix: 'giveaway' })
   return (
-    <Layout title={t('title')}>
-      <StyledGiveawayPage>
-        <StyledHeadline>{t('headline')}</StyledHeadline>
-        <StyledSubtitle>{t('subtitle')}</StyledSubtitle>
-        <StyledHero>
-          <StyledSliverChestContainer>
-            <img src={Silver.src} alt="silver" width="100%" />
-          </StyledSliverChestContainer>
-        </StyledHero>
-        <StyledBody>
-          <GiveawaySteps />
-          <GiveawayFAQ />
-        </StyledBody>
-      </StyledGiveawayPage>
-    </Layout>
+    <StyledGiveawayPage>
+      <StyledHeadline>{t('headline')}</StyledHeadline>
+      <StyledSubtitle>{t('subtitle')}</StyledSubtitle>
+      <StyledHero>
+        <StyledSliverChestContainer>
+          <img src={Silver.src} alt="silver" width="100%" />
+        </StyledSliverChestContainer>
+      </StyledHero>
+      <StyledBody>
+        <GiveawaySteps />
+        <GiveawayFAQ />
+      </StyledBody>
+    </StyledGiveawayPage>
   )
 }

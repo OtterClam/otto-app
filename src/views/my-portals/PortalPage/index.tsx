@@ -5,22 +5,21 @@ import { LoadingView } from 'components/LoadingView'
 import ProgressBar from 'components/ProgressBar'
 import { getOpenSeaLink } from 'constant'
 import { useOpenPortal, useSummonOtto } from 'contracts/functions'
-import Layout from 'Layout'
 import { PortalState } from 'models/Portal'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Display3, Headline } from 'styles/typography'
-import { PortalStatus } from '__generated__/global-types'
+import { PortalStatus } from '__generated__/otto/global-types'
+import { GET_PORTAL } from 'graphs/otto'
+import { GetPortal, GetPortalVariables } from 'graphs/__generated__/GetPortal'
 import ClockImage from '../clock.png'
 import PortalContainer from '../PortalContainer'
 import GetThroughPortal from './get_through_portal.png'
 import OpenPortalPopup from './OpenPortalPopup'
 import PortalCandidates from './PortalCandidates'
-import { GET_PORTAL } from './queries'
 import SummonPopup from './SummonPopup'
-import { GetPortal, GetPortalVariables } from './__generated__/GetPortal'
 
 const StyledPortalPage = styled.div`
   min-height: 100%;
@@ -166,7 +165,7 @@ export default function PortalPage() {
   }, [data])
 
   return (
-    <Layout title={t('my_portals.title')}>
+    <>
       <StyledPortalPage>
         {loading && <LoadingView />}
         {data && (
@@ -253,6 +252,6 @@ export default function PortalPage() {
           }}
         />
       )}
-    </Layout>
+    </>
   )
 }

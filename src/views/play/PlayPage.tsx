@@ -1,7 +1,6 @@
 import GiveawayFloatingButton from 'components/GiveawayFloatingButton'
 import MenuButton from 'components/MenuButton'
 import MintBanner from 'components/MintBanner'
-import Layout from 'Layout'
 import { useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
@@ -69,19 +68,17 @@ const PlayPage = () => {
   )
 
   return (
-    <Layout title={t('play.title')} noBorder>
-      <StyledPlayPage>
-        <StyledBanner />
-        {menus.map(({ title, icon, href }, i) => (
-          <Link key={i} href={href || ''}>
-            <a>
-              <StyledMenuButton title={title} icon={icon} disabled={!href} />
-            </a>
-          </Link>
-        ))}
-        <GiveawayFloatingButton />
-      </StyledPlayPage>
-    </Layout>
+    <StyledPlayPage>
+      <StyledBanner />
+      {menus.map(({ title, icon, href }, i) => (
+        <Link key={i} href={href || ''}>
+          <a>
+            <StyledMenuButton title={title} icon={icon} disabled={!href} />
+          </a>
+        </Link>
+      ))}
+      <GiveawayFloatingButton />
+    </StyledPlayPage>
   )
 }
 

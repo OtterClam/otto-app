@@ -129,14 +129,14 @@ const HomePage = () => {
   )
 
   return (
-    <Layout title={t('home.title')} noBorder>
+    <>
       <StyledHomePage>
         {renderMenus(leftMenus, 'left-menu')}
         {renderPortals()}
         {renderMenus(rightMenus, 'right-menu')}
       </StyledHomePage>
       <GiveawayFloatingButton />
-    </Layout>
+    </>
   )
 }
 

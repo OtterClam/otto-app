@@ -1,8 +1,9 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { utils } from 'ethers'
-import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
+import { GET_PRODUCTS } from 'graphs/otto'
+import { GetProducts } from 'graphs/__generated__/GetProducts'
 import Diamond from './images/diamond.png'
 import Golden from './images/golden.png'
 import Silver from './images/silver.png'
@@ -16,20 +17,6 @@ import Luk from './images/luk.png'
 import Luk3 from './images/luk_3.png'
 import Luk10 from './images/luk_10.png'
 import Product from './Product'
-import { GetProducts } from './__generated__/GetProducts'
-
-const GET_PRODUCTS = gql`
-  query GetProducts {
-    ottoProducts {
-      productId
-      type
-      amount
-      price
-      discountPrice
-      factory
-    }
-  }
-`
 
 const PresetImages: Record<string, any> = {
   silver: {

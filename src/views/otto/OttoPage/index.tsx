@@ -5,7 +5,6 @@ import Loading from 'components/Loading'
 import { getOpenSeaLink } from 'constant'
 import { format } from 'date-fns'
 import useOtto from 'hooks/useOtto'
-import Layout from 'Layout'
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
 import ReactMarkdown from 'react-markdown'
@@ -19,8 +18,8 @@ import Constellations from 'assets/constellations'
 import { DiceBanner } from 'components/DiceBanner'
 import { DicePopup } from 'components/DicePopup'
 import { useRouter } from 'next/router'
-import { GetOtto, GetOttoVariables } from '../__generated__/GetOtto'
-import { GET_OTTO } from '../queries'
+import { GET_OTTO } from 'graphs/otto'
+import { GetOtto, GetOttoVariables } from 'graphs/__generated__/GetOtto'
 import PlayIcon from './icons/play-voice.svg'
 import OttoTraitDetails from './OttoTraitDetails'
 import TheOtter from './icons/the_otter.png'
@@ -286,7 +285,7 @@ export default function OttoPage() {
   }, [otto])
 
   return (
-    <Layout title={t('otto.title')}>
+    <>
       <StyledOttoPage>
         <StyledOttoContainer>
           <StyledLeftContainer>
@@ -396,6 +395,6 @@ export default function OttoPage() {
         </StyledOttoContainer>
       </StyledOttoPage>
       <DicePopup />
-    </Layout>
+    </>
   )
 }

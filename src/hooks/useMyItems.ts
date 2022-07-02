@@ -1,21 +1,11 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
 import Item from 'models/Item'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'next-i18next'
-import { ListItems, ListItemsVariables } from './__generated__/ListItems'
+import { LIST_MY_ITEMS } from 'graphs/otto'
+import { ListItems, ListItemsVariables } from 'graphs/__generated__/ListItems'
 import useApi from './useApi'
-
-const LIST_MY_ITEMS = gql`
-  query ListItems($owner: Bytes!) {
-    ottoItems(where: { rootOwner: $owner, amount_gt: 0 }, first: 1000) {
-      tokenId
-      amount
-      parentTokenId
-      updateAt
-    }
-  }
-`
 
 export default function useMyItems() {
   const [items, setItems] = useState<Item[]>([])

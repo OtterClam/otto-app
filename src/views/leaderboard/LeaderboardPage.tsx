@@ -1,6 +1,5 @@
 import Button from 'components/Button'
 import useRarityEpoch from 'hooks/useRarityEpoch'
-import Layout from 'Layout'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import styled from 'styled-components/macro'
@@ -55,61 +54,59 @@ export default function LeaderboardPage() {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard' })
   const { epoch, latestEpoch, hasPrevEpoch, hasNextEpoch } = useRarityEpoch()
   return (
-    <Layout title={t('title')} background="dark">
-      <StyledLeaderboardPage>
-        <StyledHead>
-          {hasPrevEpoch ? (
-            <Link
-              href={{
-                pathname: '/leaderboard',
-                search: `?epoch=${epoch === -1 ? latestEpoch - 1 : epoch - 1}`,
-              }}
-            >
-              <a>
-                <Button padding="0 6px" Typography={Headline}>
-                  {t('prev')}
-                </Button>
-              </a>
-            </Link>
-          ) : (
-            <div />
-          )}
-          {t('head')}
-          {hasNextEpoch ? (
-            <Link
-              href={{
-                pathname: '/leaderboard',
-                search: `?epoch=${epoch + 1 === latestEpoch ? -1 : epoch + 1}`,
-              }}
-            >
-              <a>
-                <Button padding="0 6px" Typography={Headline}>
-                  {t('next')}
-                </Button>
-              </a>
-            </Link>
-          ) : (
-            <div />
-          )}
-        </StyledHead>
-        <StyledHero />
-        <StyledInfos>
-          <Info
-            image={RewardInfo.src}
-            desc={t('reward_desc')}
-            links={[{ text: t('reward_link'), href: 'https://otterclam.medium.com/raking-for-rarity-8e1ac83588d3' }]}
-          />
-          <Info
-            image={M4Carbin.src}
-            desc={t('item_desc')}
-            links={[
-              { text: t('shell_chest_link'), href: '/store', internal: true },
-              { text: t('mint_portal_link'), href: '/mint', internal: true },
-            ]}
-          />
-        </StyledInfos>
-        <StyledRankList />
-      </StyledLeaderboardPage>
-    </Layout>
+    <StyledLeaderboardPage>
+      <StyledHead>
+        {hasPrevEpoch ? (
+          <Link
+            href={{
+              pathname: '/leaderboard',
+              search: `?epoch=${epoch === -1 ? latestEpoch - 1 : epoch - 1}`,
+            }}
+          >
+            <a>
+              <Button padding="0 6px" Typography={Headline}>
+                {t('prev')}
+              </Button>
+            </a>
+          </Link>
+        ) : (
+          <div />
+        )}
+        {t('head')}
+        {hasNextEpoch ? (
+          <Link
+            href={{
+              pathname: '/leaderboard',
+              search: `?epoch=${epoch + 1 === latestEpoch ? -1 : epoch + 1}`,
+            }}
+          >
+            <a>
+              <Button padding="0 6px" Typography={Headline}>
+                {t('next')}
+              </Button>
+            </a>
+          </Link>
+        ) : (
+          <div />
+        )}
+      </StyledHead>
+      <StyledHero />
+      <StyledInfos>
+        <Info
+          image={RewardInfo.src}
+          desc={t('reward_desc')}
+          links={[{ text: t('reward_link'), href: 'https://otterclam.medium.com/raking-for-rarity-8e1ac83588d3' }]}
+        />
+        <Info
+          image={M4Carbin.src}
+          desc={t('item_desc')}
+          links={[
+            { text: t('shell_chest_link'), href: '/store', internal: true },
+            { text: t('mint_portal_link'), href: '/mint', internal: true },
+          ]}
+        />
+      </StyledInfos>
+      <StyledRankList />
+    </StyledLeaderboardPage>
   )
 }

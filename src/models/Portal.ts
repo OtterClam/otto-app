@@ -1,4 +1,4 @@
-import { PortalStatus } from '__generated__/global-types'
+import { PortalStatus } from '__generated__/otto/global-types'
 
 export interface RawPortal {
   tokenId: any
