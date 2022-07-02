@@ -10,7 +10,7 @@ import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Caption, ContentLarge, ContentSmall, Headline } from 'styles/typography'
-import StakeSuccessPopup from './StakeSuccessPopup'
+import UnstakeSuccessPopup from './UnstakeSuccessPopup'
 
 const StyledUnstakeTab = styled.div`
   display: flex;
@@ -106,8 +106,8 @@ export default function UnstakeTab({ className }: Props) {
         {t('unstake_btn')}
       </StyledButton>
       {state.state === 'Success' && (
-        <StakeSuccessPopup
-          clamAmount={trim(utils.formatUnits(utils.parseUnits('122.53', 9).mul(index), 9), 4)}
+        <UnstakeSuccessPopup
+          clamAmount={trim(utils.formatUnits(utils.parseUnits(pearlAmount, 18).mul(index).div(1e9), 18), 4)}
           onClose={resetState}
         />
       )}

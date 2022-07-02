@@ -27,6 +27,7 @@ const StyledBorder = styled.div`
 const StyledNoBorder = styled.div`
   max-width: 1200px;
   width: 90%;
+  height: 100%;
   overflow-x: hidden;
   overflow-y: scroll;
   display: flex;

@@ -3,7 +3,7 @@ import Fullscreen from 'components/Fullscreen'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Display3, Headline } from 'styles/typography'
-import Gif from './unstake.gif'
+import Gif from './stake.gif'
 
 const StyledStakeSuccessPopup = styled.div`
   padding: 45px;
@@ -46,8 +46,8 @@ interface Props {
   onClose: () => void
 }
 
-export default function UnstakeSuccessPopup({ clamAmount, onClose }: Props) {
-  const { t } = useTranslation('', { keyPrefix: 'stake.unstake_popup' })
+export default function StakeSuccessPopup({ clamAmount, onClose }: Props) {
+  const { t } = useTranslation('', { keyPrefix: 'stake.stake_popup' })
   return (
     <Fullscreen width="unset">
       <StyledStakeSuccessPopup>
@@ -55,7 +55,7 @@ export default function UnstakeSuccessPopup({ clamAmount, onClose }: Props) {
         <StyledTitle>{t('title')}</StyledTitle>
         <StyledGif />
         <StyledDesc>
-          {t('desc')} <span>{clamAmount}</span> CLAM!
+          {t('desc')} <span>{clamAmount}</span> PEARL!
         </StyledDesc>
         <StyledCloseIcon onClick={onClose}>
           <img src={CloseIcon.src} alt="close" />
