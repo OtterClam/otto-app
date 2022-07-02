@@ -1,24 +1,23 @@
-import { useTranslation } from 'next-i18next'
-import styled from 'styled-components'
-import { ContentSmall, Note } from 'styles/typography'
-import TreasurySection from 'components/TreasurySection'
-import CLAM from 'assets/clam.svg'
+import { useEthers } from '@usedapp/core'
 import CLAMCoin from 'assets/icons/CLAM.svg'
 import PearlBalance from 'assets/icons/pearl-balance.png'
-import PearlChest from 'assets/icons/pearl-chest.png'
+import TreasurySection from 'components/TreasurySection'
 import { useStakedBalance, useTreasuryRealtimeMetrics } from 'contracts/views'
-import { BigNumber, ethers } from 'ethers'
+import { ethers } from 'ethers'
 import { trim } from 'helpers/trim'
-import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
-import { useEthers } from '@usedapp/core'
+import { useBreakPoints } from 'hooks/useMediaQuery'
+import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
+import styled from 'styled-components'
+import { ContentSmall, Note } from 'styles/typography'
+import StakeDialog from '../StakeDialog'
+import ArrowDown from './arrow_down-yellow.svg'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
-import Top1 from './top-1.png'
-import Middle from './middle.png'
 import Bottom1 from './bottom-1.png'
-import ArrowDown from './arrow_down-yellow.svg'
 import GashaponTicket from './gashapon-ticket.png'
+import Middle from './middle.png'
+import Top1 from './top-1.png'
 
 const StyledStakeInfo = styled.div`
   width: 530px;
@@ -28,12 +27,17 @@ const StyledStakeInfo = styled.div`
 const StyledBody = styled.div`
   margin-top: 270px;
   margin-bottom: 130px;
-  /* padding-bottom: 130px; */
   background: url(${Middle.src}) repeat-y center center/contain;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    margin-top: 160px;
+    margin-bottom: 85px;
+    padding: 15px;
+  }
 `
 
 const StyledTVL = styled(ContentSmall).attrs({ as: 'div' })`
@@ -70,6 +74,10 @@ const StyledSection = styled(TreasurySection).attrs({ showRope: false })`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 100%;
+  }
 `
 
 const StyledSectionTitle = styled(ContentSmall).attrs({ as: 'h2' })`
@@ -136,30 +144,6 @@ const StyledHint = styled(Note).attrs({ as: 'p' })`
 
 const StyledSubtitle = styled(Note).attrs({ as: 'p' })``
 
-const StyledPearlChestContainer = styled(Note).attrs({ as: 'div' })`
-  background: ${({ theme }) => theme.colors.white};
-  padding: 2px 6px;
-  border-radius: 5px;
-`
-
-const StyledPearlChest = styled(Note).attrs({ as: 'div' })`
-  display: flex;
-  align-items: center;
-
-  > span {
-    color: ${({ theme }) => theme.colors.clamPink};
-  }
-
-  &:before {
-    content: '';
-    display: block;
-    background: no-repeat center/contain url(${PearlChest.src});
-    width: 18px;
-    height: 15px;
-    margin-right: 5px;
-  }
-`
-
 const StyledExtraRewards = styled(Note).attrs({ as: 'p' })`
   text-align: center;
 `
@@ -168,12 +152,17 @@ const StyledGashaponTicket = styled.img.attrs({ src: GashaponTicket.src })`
   width: 240px;
 `
 
+const StyledStakedDialog = styled(StakeDialog)`
+  width: 100%;
+`
+
 interface Props {
   className?: string
 }
 
 export default function StakeInfo({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
+  const { isMobile } = useBreakPoints()
   const { account } = useEthers()
   const { tvd, index, nextRewardRate, apy } = useTreasuryRealtimeMetrics()
   const { sClamBalance, pearlBalance } = useStakedBalance(account)
@@ -187,6 +176,7 @@ export default function StakeInfo({ className }: Props) {
     <StyledStakeInfo className={className}>
       <StyledBody>
         <StyledTVL>{t('tvl', { tvl: trim(ethers.utils.formatUnits(tvd, 18), 2) })}</StyledTVL>
+        {isMobile && <StyledStakedDialog />}
         <StyledSection>
           <StyledSectionTitle>{t('staked_balance')}</StyledSectionTitle>
           <StyledSectionBody>

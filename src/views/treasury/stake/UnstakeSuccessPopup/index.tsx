@@ -3,9 +3,9 @@ import Fullscreen from 'components/Fullscreen'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Display3, Headline } from 'styles/typography'
-import StakeGif from './stake.gif'
+import Gif from './unstake.gif'
 
-const StyledStakeSuccessPopup = styled.div`
+const StyledUnstakeSuccessPopup = styled.div`
   padding: 45px;
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@ const StyledHeadline = styled(Headline).attrs({ as: 'h2' })``
 
 const StyledTitle = styled(Display3)``
 
-const StyledGif = styled.img.attrs({ src: StakeGif.src })`
+const StyledGif = styled.img.attrs({ src: Gif.src })`
   width: 200px;
   position: relative;
 `
@@ -42,25 +42,25 @@ const StyledCloseIcon = styled.button`
 `
 
 interface Props {
-  pearlAmount: string
+  clamAmount: string
   onClose: () => void
 }
 
-export default function StakeSuccessPopup({ pearlAmount, onClose }: Props) {
-  const { t } = useTranslation('', { keyPrefix: 'stake.stake_popup' })
+export default function UnstakeSuccessPopup({ clamAmount, onClose }: Props) {
+  const { t } = useTranslation('', { keyPrefix: 'stake.unstake_popup' })
   return (
     <Fullscreen width="unset">
-      <StyledStakeSuccessPopup>
+      <StyledUnstakeSuccessPopup>
         <StyledHeadline>{t('headline')}</StyledHeadline>
         <StyledTitle>{t('title')}</StyledTitle>
         <StyledGif />
         <StyledDesc>
-          {t('desc')} <span>{pearlAmount}</span> PEARL!
+          {t('desc')} <span>{clamAmount}</span> CLAM!
         </StyledDesc>
         <StyledCloseIcon onClick={onClose}>
           <img src={CloseIcon.src} alt="close" />
         </StyledCloseIcon>
-      </StyledStakeSuccessPopup>
+      </StyledUnstakeSuccessPopup>
     </Fullscreen>
   )
 }

@@ -1,15 +1,15 @@
-import { useTranslation } from 'next-i18next'
-import styled from 'styled-components'
-import { Caption, ContentLarge, ContentMedium, ContentSmall, Headline } from 'styles/typography'
 import CLAM from 'assets/clam.svg'
+import CLAMCoin from 'assets/icons/CLAM.svg'
+import Button from 'components/Button'
+import { useStake } from 'contracts/functions'
+import { useTreasuryRealtimeMetrics } from 'contracts/views'
 import { utils } from 'ethers'
 import { trim } from 'helpers/trim'
 import useClamBalance from 'hooks/useClamBalance'
-import Button from 'components/Button'
-import CLAMCoin from 'assets/icons/CLAM.svg'
-import { useEffect, useRef, useState } from 'react'
-import { useTreasuryRealtimeMetrics } from 'contracts/views'
-import { useStake } from 'contracts/functions'
+import { useTranslation } from 'next-i18next'
+import { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { Caption, ContentLarge, ContentSmall, Headline } from 'styles/typography'
 import StakeSuccessPopup from './StakeSuccessPopup'
 
 const StyledStakeTab = styled.div`
@@ -105,8 +105,8 @@ export default function StakeTab({ className }: Props) {
       </StyledButton>
       {stakeState.state === 'Success' && (
         <StakeSuccessPopup
-          pearlAmount={trim(utils.formatUnits(utils.parseUnits(clamAmount, 9).mul(1e9).div(index), 9), 4)}
-          onClose={resetStake()}
+          clamAmount={trim(utils.formatUnits(utils.parseUnits(clamAmount, 9).mul(1e9).div(index), 9), 4)}
+          onClose={resetStake}
         />
       )}
     </StyledStakeTab>
