@@ -39,7 +39,7 @@ const StyledPearlBalanceText = styled.div`
   }
 `
 
-const StyledInput = styled(ContentSmall).attrs({ as: 'input' })`
+const StyledInput = styled.input`
   width: 100%;
   padding: 20px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
@@ -91,11 +91,13 @@ export default function UnstakeTab({ className }: Props) {
           {t('max')}
         </Button>
       </StyledPearlBalance>
-      <StyledInput
-        placeholder={t('input_placeholder')}
-        value={pearlAmount}
-        onChange={e => setPearlAmount(e.target.value)}
-      />
+      <ContentSmall>
+        <StyledInput
+          placeholder={t('input_placeholder')}
+          value={pearlAmount}
+          onChange={e => setPearlAmount(e.target.value)}
+        />
+      </ContentSmall>
       <StyledButton
         Typography={Headline}
         padding="6px"
