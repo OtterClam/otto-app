@@ -39,7 +39,7 @@ const StyledClamBalanceText = styled.div`
   }
 `
 
-const StyledClamInput = styled(ContentSmall).attrs({ as: 'input' })`
+const StyledClamInput = styled.input`
   width: 100%;
   padding: 20px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
@@ -89,11 +89,13 @@ export default function StakeTab({ className }: Props) {
           {t('max')}
         </Button>
       </StyledClamBalance>
-      <StyledClamInput
-        placeholder={t('input_placeholder')}
-        value={clamAmount}
-        onChange={e => setClamAmount(e.target.value)}
-      />
+      <ContentSmall>
+        <StyledClamInput
+          placeholder={t('input_placeholder')}
+          value={clamAmount}
+          onChange={e => setClamAmount(e.target.value)}
+        />
+      </ContentSmall>
       <StyledButton
         Typography={Headline}
         padding="6px"
