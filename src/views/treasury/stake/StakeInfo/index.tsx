@@ -8,20 +8,51 @@ import { trim } from 'helpers/trim'
 import { useBreakPoints } from 'hooks/useMediaQuery'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { ContentSmall, Note } from 'styles/typography'
 import StakeDialog from '../StakeDialog'
 import ArrowDown from './arrow_down-yellow.svg'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
 import Bottom1 from './bottom-1.png'
+import Bottom2 from './bottom-2.png'
 import GashaponTicket from './gashapon-ticket.png'
 import Middle from './middle.png'
 import Top1 from './top-1.png'
+import Top2 from './top-2.png'
+
+const Animation = keyframes`
+  0%   {opacity: 0;}
+  50%  {opacity: 1;}
+`
 
 const StyledStakeInfo = styled.div`
   width: 530px;
+  /* background: url(${Top1.src}) no-repeat center top/contain, url(${Bottom1.src}) no-repeat center bottom/contain; */
+`
+
+const StyledBackground1 = styled.div<{ delay: number }>`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
   background: url(${Top1.src}) no-repeat center top/contain, url(${Bottom1.src}) no-repeat center bottom/contain;
+  animation: ${Animation} 1000ms infinite;
+  animation-delay: ${({ delay }) => delay}ms;
+  animation-timing-function: steps(1);
+`
+
+const StyledBackground2 = styled.div<{ delay: number }>`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: url(${Top2.src}) no-repeat center top/contain, url(${Bottom2.src}) no-repeat center bottom/contain;
+  animation: ${Animation} 1000ms infinite;
+  animation-delay: ${({ delay }) => delay}ms;
+  animation-timing-function: steps(1);
 `
 
 const StyledBody = styled.div`
@@ -174,6 +205,8 @@ export default function StakeInfo({ className }: Props) {
   const countdown = '7hr 30mins'
   return (
     <StyledStakeInfo className={className}>
+      <StyledBackground1 delay={0} />
+      <StyledBackground2 delay={500} />
       <StyledBody>
         <StyledTVL>{t('tvl', { tvl: trim(ethers.utils.formatUnits(tvd, 18), 2) })}</StyledTVL>
         {isMobile && <StyledStakedDialog />}
