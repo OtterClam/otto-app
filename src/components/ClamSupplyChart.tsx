@@ -31,7 +31,7 @@ const formatCurrency = (c: number) => {
 
 const formatClam = (number: string) => `${trim(parseFloat(number) / 1000, 2)}k`
 
-const formatUsd = (number: string) => `${formatCurrency(parseFloat(number) / 1000)}k`
+const formatUsd = (number: string) => `${formatCurrency(parseFloat(number) / 1000 / 1000)}m`
 
 export enum Currency {
   CLAM = 'clam',
@@ -59,7 +59,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     return <ChartTooltip items={items} footer={footer} />
   }
 
-export default function ClamSupplyChart({ data, currency = Currency.CLAM }: ClamSupplyChartProps) {
+export default function ClamSupplyChart({ data, currency = Currency.USD }: ClamSupplyChartProps) {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
@@ -95,6 +95,7 @@ export default function ClamSupplyChart({ data, currency = Currency.CLAM }: Clam
           tickFormatter={(num: string) => (currency === Currency.CLAM ? formatClam(num) : formatUsd(num))}
           connectNulls
           allowDataOverflow
+          domain={[0, 'auto']}
         />
         <Tooltip
           wrapperStyle={{ zIndex: 1 }}

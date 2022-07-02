@@ -95,6 +95,7 @@ export default function ClamBuybackChart({ data, currency = Currency.USD }: Clam
           tickFormatter={(num: string) => (currency === Currency.CLAM ? formatClam(num) : formatUsd(num))}
           connectNulls
           allowDataOverflow
+          domain={[0, 'auto']}
         />
         <Tooltip
           wrapperStyle={{ zIndex: 1 }}
