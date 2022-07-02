@@ -55,19 +55,17 @@ export default function useProducts() {
   // )
   const products: Product[] = useMemo(
     () =>
-      data?.ottoProducts
-        .filter(p => Object.keys(PresetImages).includes(p.type))
-        .map((p, idx) => ({
-          ...p,
-          id: p.productId,
-          name: t(`product.${p.type}.name`),
-          desc: t(`product.${p.type}.desc`),
-          mustDesc: p.amount === 10 ? t(`product.${p.type}.must_desc`) : undefined,
-          image: PresetImages[p.type][p.amount],
-          airdropAmount: 0, // airdropAmounts[idx],
-          displayPrice: utils.formatUnits(p.price, 9),
-          displayDiscountPrice: utils.formatUnits(p.discountPrice, 9),
-        })) || [],
+      data?.ottoProducts.map((p, idx) => ({
+        ...p,
+        id: p.productId,
+        name: t(`product.${p.type}.name`),
+        desc: t(`product.${p.type}.desc`),
+        mustDesc: p.amount === 10 ? t(`product.${p.type}.must_desc`) : undefined,
+        image: PresetImages[p.type]?.[p.amount],
+        airdropAmount: 0, // airdropAmounts[idx],
+        displayPrice: utils.formatUnits(p.price, 9),
+        displayDiscountPrice: utils.formatUnits(p.discountPrice, 9),
+      })) || [],
     [data]
   )
   return { products }
