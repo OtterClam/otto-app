@@ -52,7 +52,7 @@ const StyledOtter = styled.img<{ delay: number }>`
 const StyledFountain = styled.img.attrs({ src: Fountain.src })`
   position: absolute;
   width: 860px;
-  right: 0;
+  right: -150px;
   bottom: 0;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
