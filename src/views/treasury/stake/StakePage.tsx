@@ -16,7 +16,7 @@ const StyledStakePage = styled.div`
 
 const StyledStakeDialog = styled(StakeDialog)`
   flex: 1;
-  margin-top: 140px;
+  margin-top: 100px;
   margin-left: 80px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
