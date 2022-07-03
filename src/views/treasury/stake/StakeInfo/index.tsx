@@ -68,7 +68,7 @@ const StyledBody = styled.div`
   gap: 10px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    margin-top: 130px;
+    margin-top: 46vw;
     margin-bottom: 85px;
     padding: 15px;
   }
