@@ -40,7 +40,7 @@ const StyledOtter = styled.img<{ delay: number }>`
   left: 0;
   bottom: 0;
   z-index: 10;
-  animation: ${Animation} 1000ms infinite;
+  animation: ${Animation} 2000ms infinite;
   animation-delay: ${({ delay }) => delay}ms;
   animation-timing-function: steps(1);
 
@@ -66,7 +66,7 @@ export default function StakePage() {
       <StyledStakePage>
         <StyledFountain />
         <StyledOtter src={Otter1.src} delay={0} />
-        <StyledOtter src={Otter2.src} delay={500} />
+        <StyledOtter src={Otter2.src} delay={1000} />
         <StyledStakeDialog />
         <StyledStakeInfo />
       </StyledStakePage>
