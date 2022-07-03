@@ -45,7 +45,7 @@ const StyledOtter = styled.img<{ delay: number }>`
   animation-timing-function: steps(1);
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    width: 261px;
+    width: 210px;
   }
 `
 
