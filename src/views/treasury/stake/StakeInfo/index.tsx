@@ -196,6 +196,7 @@ const StyledGashaponTicket = styled.img`
 
 const StyledStakedDialog = styled(StakeDialog)`
   width: 100%;
+  margin-top: -20px;
 `
 
 interface Props {
