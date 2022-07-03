@@ -27,7 +27,7 @@ const Animation = keyframes`
 `
 
 const StyledStakeInfo = styled.div`
-  width: 530px;
+  width: 420px;
   /* background: url(${Top1.src}) no-repeat center top/contain, url(${Bottom1.src}) no-repeat center bottom/contain; */
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -60,8 +60,8 @@ const StyledBackground2 = styled.div<{ delay: number }>`
 `
 
 const StyledBody = styled.div`
-  margin-top: 280px;
-  margin-bottom: 130px;
+  margin-top: 220px;
+  margin-bottom: 78px;
   background: url(${Middle.src}) repeat-y center center/contain;
   display: flex;
   flex-direction: column;
@@ -80,7 +80,7 @@ const StyledTVL = styled(ContentSmall).attrs({ as: 'div' })`
   padding: 6px 24px;
   background: ${({ theme }) => theme.colors.white};
   border: 4px solid ${({ theme }) => theme.colors.darkBrown};
-  top: 200px;
+  top: 160px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     top: 30vw;
