@@ -36,7 +36,7 @@ const Animation = keyframes`
 
 const StyledOtter = styled.img<{ delay: number }>`
   position: absolute;
-  width: 468px;
+  width: 418px;
   left: 0;
   bottom: 0;
   z-index: 10;
