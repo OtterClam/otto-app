@@ -17,7 +17,7 @@ const StyledTabs = styled.div`
 
 const StyledTab = styled(ContentMedium).attrs({ as: 'button' })<{ selected?: boolean }>`
   position: relative;
-  bottom: -4px;
+  bottom: -2px;
   padding: 10px 0;
   flex: 1;
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
