@@ -56,7 +56,7 @@ const StyledBackground2 = styled.div<{ delay: number }>`
 `
 
 const StyledBody = styled.div`
-  margin-top: 270px;
+  margin-top: 200px;
   margin-bottom: 130px;
   background: url(${Middle.src}) repeat-y center center/contain;
   display: flex;
@@ -65,7 +65,7 @@ const StyledBody = styled.div`
   gap: 10px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    margin-top: 160px;
+    margin-top: 130px;
     margin-bottom: 85px;
     padding: 15px;
   }
@@ -180,7 +180,7 @@ const StyledExtraRewards = styled(Note).attrs({ as: 'p' })`
 `
 
 const StyledGashaponTicket = styled.img.attrs({ src: GashaponTicket.src })`
-  width: 240px;
+  width: 100%;
 `
 
 const StyledStakedDialog = styled(StakeDialog)`
