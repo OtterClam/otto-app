@@ -190,6 +190,8 @@ const StyledExtraRewards = styled(Note).attrs({ as: 'p' })`
 
 const StyledGashaponTicket = styled.img`
   width: 100%;
+  border-radius: 10px;
+  border: 2px solid ${({ theme }) => theme.colors.otterBlack};
 `
 
 const StyledStakedDialog = styled(StakeDialog)`
