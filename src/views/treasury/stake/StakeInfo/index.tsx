@@ -11,7 +11,6 @@ import { useMemo } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { ContentSmall, Note } from 'styles/typography'
 import StakeDialog from '../StakeDialog'
-import ArrowDown from './arrow_down-yellow.svg'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
 import Bottom1 from './bottom-1.png'
@@ -228,7 +227,6 @@ export default function StakeInfo({ className }: Props) {
             </StyledInfos>
           </StyledSectionBody>
         </StyledSection>
-        <img src={ArrowDown.src} alt="arrow down" />
         <StyledSection>
           <StyledSectionTitle>
             {t('next_reward')}
