@@ -26,7 +26,7 @@ const StyledStakeDialog = styled(StakeDialog)`
 
 const StyledStakeInfo = styled(StakeInfo)`
   position: relative;
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 `
 
 const Animation = keyframes`
