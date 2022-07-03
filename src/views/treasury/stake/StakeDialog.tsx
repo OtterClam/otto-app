@@ -20,7 +20,7 @@ const StyledTab = styled(ContentMedium).attrs({ as: 'button' })<{ selected?: boo
   bottom: -4px;
   padding: 10px 0;
   flex: 1;
-  border: 4px solid ${({ theme }) => theme.colors.otterBlack};
+  border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   background-color: ${({ theme, selected }) => (selected ? theme.colors.darkYellow : theme.colors.white)};
   box-shadow: ${({ selected }) =>
     selected
@@ -31,7 +31,7 @@ const StyledTab = styled(ContentMedium).attrs({ as: 'button' })<{ selected?: boo
 
 const StyledBody = styled.div`
   padding: 20px;
-  border: 4px solid ${({ theme }) => theme.colors.otterBlack};
+  border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 20px;
   background: ${({ theme }) => theme.colors.white};
 `
