@@ -90,10 +90,15 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
       await tx.wait()
       setDice(await api.rollTheDice(otto.tokenId, tx.hash, i18n.resolvedLanguage))
       setState(State.FirstResult)
-    } catch (err) {
-      window.alert(JSON.stringify(err))
-      setState(State.Intro)
-      dispatch(setError(err as any))
+    } catch (err: any) {
+      if (err.reason === 'repriced') {
+        setDice(await api.rollTheDice(otto.tokenId, err.replacement.hash, i18n.resolvedLanguage))
+        setState(State.FirstResult)
+      } else {
+        window.alert(JSON.stringify(err))
+        setState(State.Intro)
+        dispatch(setError(err as any))
+      }
     }
   }, [otto, account, product, library])
 
