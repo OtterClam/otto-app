@@ -15,7 +15,8 @@ import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
 import Bottom1 from './bottom-1.png'
 import Bottom2 from './bottom-2.png'
-import GashaponTicket from './gashapon-ticket-en.jpeg'
+import GashaponTicketEn from './gashapon-ticket-en.jpg'
+import GashaponTicketZh from './gashapon-ticket-zh.jpg'
 import Middle from './middle.png'
 import Top1 from './top-1.png'
 import Top2 from './top-2.png'
@@ -28,7 +29,7 @@ const Animation = keyframes`
 const StyledStakeInfo = styled.div`
   width: 530px;
   /* background: url(${Top1.src}) no-repeat center top/contain, url(${Bottom1.src}) no-repeat center bottom/contain; */
-  
+
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 100%;
   }
@@ -80,7 +81,7 @@ const StyledTVL = styled(ContentSmall).attrs({ as: 'div' })`
   background: ${({ theme }) => theme.colors.white};
   border: 4px solid ${({ theme }) => theme.colors.darkBrown};
   top: 200px;
-  
+
   @media ${({ theme }) => theme.breakpoints.mobile} {
     top: 30vw;
   }
@@ -187,7 +188,7 @@ const StyledExtraRewards = styled(Note).attrs({ as: 'p' })`
   text-align: center;
 `
 
-const StyledGashaponTicket = styled.img.attrs({ src: GashaponTicket.src })`
+const StyledGashaponTicket = styled.img`
   width: 100%;
 `
 
@@ -200,7 +201,7 @@ interface Props {
 }
 
 export default function StakeInfo({ className }: Props) {
-  const { t } = useTranslation('', { keyPrefix: 'stake' })
+  const { t, i18n } = useTranslation('', { keyPrefix: 'stake' })
   const { isMobile } = useBreakPoints()
   const { account } = useEthers()
   const { tvd, index, nextRewardRate, apy } = useTreasuryRealtimeMetrics()
@@ -265,7 +266,9 @@ export default function StakeInfo({ className }: Props) {
               </StyledInfoContainer> */}
             </StyledInfos>
             <StyledExtraRewards>{t('extra_rewards')}</StyledExtraRewards>
-            <StyledGashaponTicket />
+            <StyledGashaponTicket
+              src={i18n.resolvedLanguage === 'zh-tw' ? GashaponTicketZh.src : GashaponTicketEn.src}
+            />
           </StyledSectionBody>
         </StyledSection>
       </StyledBody>
