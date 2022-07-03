@@ -54,6 +54,7 @@ const StyledFountain = styled.img.attrs({ src: Fountain.src })`
   width: 860px;
   right: -150px;
   bottom: 0;
+  height: 190px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     left: calc(50% - 430px);
