@@ -55,7 +55,7 @@ const StyledBackground2 = styled.div<{ delay: number }>`
 `
 
 const StyledBody = styled.div`
-  margin-top: 200px;
+  margin-top: 280px;
   margin-bottom: 130px;
   background: url(${Middle.src}) repeat-y center center/contain;
   display: flex;
@@ -71,10 +71,11 @@ const StyledBody = styled.div`
 `
 
 const StyledTVL = styled(ContentSmall).attrs({ as: 'div' })`
-  position: relative;
+  position: absolute;
   padding: 6px 24px;
   background: ${({ theme }) => theme.colors.white};
   border: 4px solid ${({ theme }) => theme.colors.darkBrown};
+  top: 200px;
 
   &:before {
     content: '';
