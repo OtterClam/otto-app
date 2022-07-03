@@ -28,6 +28,10 @@ const Animation = keyframes`
 const StyledStakeInfo = styled.div`
   width: 530px;
   /* background: url(${Top1.src}) no-repeat center top/contain, url(${Bottom1.src}) no-repeat center bottom/contain; */
+  
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 100%;
+  }
 `
 
 const StyledBackground1 = styled.div<{ delay: number }>`
