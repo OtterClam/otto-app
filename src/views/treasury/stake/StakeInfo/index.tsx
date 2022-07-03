@@ -76,6 +76,10 @@ const StyledTVL = styled(ContentSmall).attrs({ as: 'div' })`
   background: ${({ theme }) => theme.colors.white};
   border: 4px solid ${({ theme }) => theme.colors.darkBrown};
   top: 200px;
+  
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    top: 30vw;
+  }
 
   &:before {
     content: '';
