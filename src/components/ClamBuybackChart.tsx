@@ -14,7 +14,6 @@ import ChartTooltip from './ChartTooltip'
 const StyledContainer = styled.div`
   height: 260px;
   width: 100%;
-  overflow: hidden;
 `
 
 const xAxisTickProps = { fontSize: '12px' }

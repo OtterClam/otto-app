@@ -9,13 +9,11 @@ import { AreaChart, Area, Tooltip } from 'recharts'
 import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
-import { ethers } from 'ethers'
 import ChartTooltip from './ChartTooltip'
 
 const StyledContainer = styled.div`
   height: 260px;
   width: 100%;
-  overflow: hidden;
 `
 
 const xAxisTickProps = { fontSize: '12px' }
