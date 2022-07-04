@@ -426,6 +426,9 @@
     },
     "luk": {
       "must_desc": "R1 道具保證！"
+    },
+    "dex": {
+      "must_desc": "R2 道具保證！"
     }
   },
   "question": {

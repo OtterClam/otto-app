@@ -106,6 +106,7 @@ export interface GroupedProduct {
   image?: string
   main: Product
   all: Product[]
+  processing_images?: string[]
 }
 
 enum State {
@@ -119,7 +120,10 @@ interface Props {
   onClose: () => void
 }
 
-export default function ProductPopup({ product: { title, desc, image, main, all }, onClose }: Props) {
+export default function ProductPopup({
+  product: { title, desc, image, main, all, processing_images },
+  onClose,
+}: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
   const { ottos } = useMyOttos()
@@ -137,7 +141,7 @@ export default function ProductPopup({ product: { title, desc, image, main, all 
     }
   }, [buyState])
 
-  if (state === State.Loading) return <LoadingView type={main.type} />
+  if (state === State.Loading) return <LoadingView type={main.type} images={processing_images} />
   if (state === State.Success) return <OpenItemView items={buyState.receivedItems || []} onClose={onClose} />
   return (
     <Fullscreen background={theme.colors.white}>

@@ -154,7 +154,10 @@ export default function StorePage() {
             ...sell,
             products: products
               .filter(p => p.type === sell.type)
-              .map(p => ({ ...p, ...sell.products.find(sp => String(sp.id) === p.id) })),
+              .map(p => ({
+                ...p,
+                ...sell.products.find(sp => String(sp.id) === p.id),
+              })),
           })
         })
         .catch(console.error)
@@ -186,6 +189,7 @@ export default function StorePage() {
                   image: flashSell.popup_image,
                   main: flashSell.products[0],
                   all: flashSell.products,
+                  processing_images: flashSell.processing_images,
                 })
               }
             />
