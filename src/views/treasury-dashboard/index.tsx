@@ -78,6 +78,7 @@ const StyledTreasuryCard = styled(TreasuryCard)`
   height: 80px;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 `
 
 const StyledChartCard = styled(TreasuryCard)`
@@ -108,7 +109,7 @@ const StyledTokenIcon = styled.img`
 
 const StyledChartsContainer = styled(ContentMedium)`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   grid-gap: 20px;
   margin: 24px 34px;
 
