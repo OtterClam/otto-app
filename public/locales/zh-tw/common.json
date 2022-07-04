@@ -256,7 +256,8 @@
       "latest_received": "收到時間",
       "rarity_asc": "稀有度（從低到高）",
       "rarity_desc": "稀有度（從高到低）",
-      "luck_desc": "幸運值"
+      "luck_desc": "幸運值",
+      "dex_desc": "DEX"
     },
     "take_off": "脫掉",
     "take_off_item": {
