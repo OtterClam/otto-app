@@ -1,5 +1,5 @@
 import { TransactionState, TransactionStatus, useContractFunction, useEthers } from '@usedapp/core'
-import { constants, Contract, utils } from 'ethers'
+import { constants, Contract, ethers, utils } from 'ethers'
 import useApi from 'hooks/useApi'
 import useContractAddresses from 'hooks/useContractAddresses'
 import Item from 'models/Item'
@@ -14,6 +14,7 @@ import {
   useOttoContract,
   useOttoSummonerContract,
   usePortalCreatorContract,
+  useStakingPearlHelper,
   useStoreContract,
 } from './contracts'
 
@@ -123,9 +124,12 @@ export const takeOffItem = () => {
   return { takeOffState, takeOff, resetTakeOff }
 }
 
-interface OttoBuyTransactionState {
+interface OttoTransactionState {
   state: TransactionState
   status: TransactionStatus
+}
+
+interface OttoBuyTransactionState extends OttoTransactionState {
   receivedItems?: Item[]
 }
 
@@ -270,4 +274,72 @@ export const useClaimGiveaway = () => {
     signature: string
   }) => send(itemId, amount, code, nonce, digest, signature)
   return { claimState, claim, resetClaim }
+}
+
+export const useStake = () => {
+  const { CLAM, STAKING_PEARL_HELPER_ADDRESS } = useContractAddresses()
+  const { account } = useEthers()
+  const clam = useERC20(CLAM)
+  const stakingPearlHelper = useStakingPearlHelper()
+  const { state, send, resetState } = useContractFunction(stakingPearlHelper, 'stake', {})
+  const [stakeState, setStakeState] = useState<OttoTransactionState>({
+    state: 'None',
+    status: state,
+  })
+  const stake = async (amount: string) => {
+    try {
+      const clamAmount = ethers.utils.parseUnits(amount, 9)
+      setStakeState({
+        state: 'PendingSignature',
+        status: state,
+      })
+      const clamAllowance = account ? await clam.allowance(account, STAKING_PEARL_HELPER_ADDRESS) : constants.Zero
+      const noAllowance = clamAllowance.lt(clamAmount)
+      if (noAllowance) {
+        await (await clam.approve(STAKING_PEARL_HELPER_ADDRESS, constants.MaxUint256)).wait()
+      }
+      send(clamAmount)
+    } catch (error: any) {
+      window.alert(error.message)
+      setStakeState({ state: 'None', status: state })
+    }
+  }
+  useEffect(() => {
+    setStakeState({ state: state.status, status: state })
+  }, [state])
+  return { stakeState, stake, resetStake: resetState }
+}
+
+export const useUnstake = () => {
+  const { PEARL, STAKING_PEARL_HELPER_ADDRESS } = useContractAddresses()
+  const { account } = useEthers()
+  const pearl = useERC20(PEARL)
+  const stakingPearlHelper = useStakingPearlHelper()
+  const { state, send, resetState } = useContractFunction(stakingPearlHelper, 'unstake', {})
+  const [unstakeState, setUnstakeState] = useState<OttoTransactionState>({
+    state: 'None',
+    status: state,
+  })
+  const unstake = async (amount: string) => {
+    try {
+      const pearlAmount = ethers.utils.parseEther(amount)
+      setUnstakeState({
+        state: 'PendingSignature',
+        status: state,
+      })
+      const allowance = account ? await pearl.allowance(account, STAKING_PEARL_HELPER_ADDRESS) : constants.Zero
+      const noAllowance = allowance.lt(pearlAmount)
+      if (noAllowance) {
+        await (await pearl.approve(STAKING_PEARL_HELPER_ADDRESS, constants.MaxUint256)).wait()
+      }
+      send(pearlAmount)
+    } catch (error: any) {
+      window.alert(error.message)
+      setUnstakeState({ state: 'None', status: state })
+    }
+  }
+  useEffect(() => {
+    setUnstakeState({ state: state.status, status: state })
+  }, [state])
+  return { unstakeState, unstake, resetState }
 }

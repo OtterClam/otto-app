@@ -56,7 +56,7 @@ const StyledMenu = styled.ul`
   }
 `
 
-const StyledMenutItem = styled.li`
+const StyledMenuItem = styled.li`
   width: 240px;
   height: 65px;
 
@@ -66,7 +66,7 @@ const StyledMenutItem = styled.li`
   }
 `
 
-const StyledMenutItemLink = styled.a<{ active?: boolean; itemKey: keyof typeof menuIcons }>`
+const StyledMenuItemLink = styled.a<{ active?: boolean; itemKey: keyof typeof menuIcons }>`
   display: flex;
   flex-direction: column;
   min-width: 240px;
@@ -159,7 +159,7 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { key: 'dashboard' },
-  { key: 'pond', legacy: '/#/stake' },
+  { key: 'pond' },
   { key: 'lake', legacy: '/#/pearl-chests' },
   // { key: 'farm', disabled: true },
   { key: 'bond', legacy: '/#/bonds' },
@@ -179,14 +179,14 @@ export default function TreasuryLayout({ children }: PropsWithChildren<object>) 
           {menuItems
             .filter(item => !item.disabled)
             .map(item => (
-              <StyledMenutItem key={item.key}>
+              <StyledMenuItem key={item.key}>
                 <Link href={getUrlForMenuItem(item)}>
-                  <StyledMenutItemLink itemKey={item.key} active={getUrlForMenuItem(item) === router.pathname}>
+                  <StyledMenuItemLink itemKey={item.key} active={getUrlForMenuItem(item) === router.pathname}>
                     <StyledMenuItemLabel>{t(`nav.label.${item.key}`)}</StyledMenuItemLabel>
                     <StyledMenuItemDesc>{t(`nav.desc.${item.key}`)}</StyledMenuItemDesc>
-                  </StyledMenutItemLink>
+                  </StyledMenuItemLink>
                 </Link>
-              </StyledMenutItem>
+              </StyledMenuItem>
             ))}
         </StyledMenu>
       </StyledSidebar>

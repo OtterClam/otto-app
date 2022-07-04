@@ -1,12 +1,11 @@
-import { useEthers, useTokenBalance } from '@usedapp/core'
-import styled from 'styled-components/macro'
 import CLAM from 'assets/clam.png'
-import useContractAddresses from 'hooks/useContractAddresses'
-import { utils } from 'ethers'
-import { trim } from 'helpers/trim'
-import { ContentLarge } from 'styles/typography'
 import Button from 'components/Button'
 import { BUY_CLAM_LINK } from 'constant'
+import { utils } from 'ethers'
+import { trim } from 'helpers/trim'
+import useClamBalance from 'hooks/useClamBalance'
+import styled from 'styled-components/macro'
+import { ContentLarge } from 'styles/typography'
 
 const StyledClamBalance = styled.div`
   display: flex;
@@ -35,13 +34,13 @@ const StyledClamBalanceText = styled(ContentLarge)`
 `
 
 export default function ClamBalance() {
-  const { account, chainId } = useEthers()
-  const { CLAM } = useContractAddresses()
-  const clamBalance = useTokenBalance(CLAM, account, { chainId }) || 0
+  const clamBalance = useClamBalance()
   return (
     <a href={BUY_CLAM_LINK} target="_blank" rel="noreferrer">
       <StyledClamBalance>
-        <StyledClamBalanceText>{account ? trim(utils.formatUnits(clamBalance, 9), 2) : '-'}</StyledClamBalanceText>
+        <StyledClamBalanceText>
+          {clamBalance !== undefined ? trim(utils.formatUnits(clamBalance, 9), 2) : '-'}
+        </StyledClamBalanceText>
         <Button padding="0px 10px" primaryColor="pink" Typography={ContentLarge}>
           +
         </Button>

@@ -1,6 +1,7 @@
 import { useEthers } from '@usedapp/core'
 import { Contract } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
+import { useMemo } from 'react'
 import {
   ERC20Abi,
   IOttoItemFactoryAbi,
@@ -14,6 +15,7 @@ import {
   StakingContractAbi,
   ClamCirculatingSupplyAbi,
   StakedClamTokenContractAbi,
+  OtterStakingPearlHelperAbi,
 } from './abis'
 import { OttoItem } from './__generated__/OttoItem'
 import { OttopiaStore } from './__generated__/OttopiaStore'
@@ -24,6 +26,7 @@ import {
   ClamCirculatingSupply,
   ClamMaiContract,
   Erc20,
+  OtterStakingPearlHelper,
   StakedClamTokenContract,
   StakingContract,
 } from './__generated__'
@@ -31,10 +34,10 @@ import { OttoItemGiveaway } from './__generated__/OttoItemGiveaway'
 
 export function useERC20(address: string) {
   const { library } = useEthers()
-  return new Contract(address, ERC20Abi, library) as Erc20
+  return useMemo(() => new Contract(address, ERC20Abi, library?.getSigner()) as Erc20, [address, library])
 }
 
-export function useSakedClamContract() {
+export function useStakedClamContract() {
   const { sCLAM } = useContractAddresses()
   const { library } = useEthers()
   return new Contract(sCLAM, StakedClamTokenContractAbi, library) as StakedClamTokenContract
@@ -97,4 +100,10 @@ export function useClamCirculatingSupply() {
   const { CLAM_CIRCULATING_SUPPLY } = useContractAddresses()
   const { library } = useEthers()
   return new Contract(CLAM_CIRCULATING_SUPPLY, ClamCirculatingSupplyAbi, library) as ClamCirculatingSupply
+}
+
+export function useStakingPearlHelper() {
+  const { STAKING_PEARL_HELPER_ADDRESS } = useContractAddresses()
+  const { library } = useEthers()
+  return new Contract(STAKING_PEARL_HELPER_ADDRESS, OtterStakingPearlHelperAbi, library) as OtterStakingPearlHelper
 }
