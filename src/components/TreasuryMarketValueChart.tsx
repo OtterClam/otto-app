@@ -9,7 +9,6 @@ import { AreaChart, Area, Tooltip } from 'recharts'
 import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
-import { ethers } from 'ethers'
 import ChartTooltip from './ChartTooltip'
 
 const StyledContainer = styled.div`
@@ -33,11 +32,6 @@ const formatCurrency = (c: number) => {
 const ytickFormatter = (number: string) => `${formatCurrency(parseFloat(number) / 1000000)}M`
 
 const marketValues = [
-  {
-    label: 'Total',
-    dataKey: 'treasuryMarketValue',
-    stopColor: ['#FFFFFF', 'rgba(219, 55, 55, 0.5)'],
-  },
   {
     label: 'CLAM/MAI (Quick)',
     dataKey: 'treasuryMaiMarketValue',

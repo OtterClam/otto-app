@@ -3,7 +3,7 @@ import { trim } from 'helpers/trim'
 import { i18n } from 'i18next'
 import useSize from 'hooks/useSize'
 import { useTranslation } from 'next-i18next'
-import React, { RefObject, useRef } from 'react'
+import React, { RefObject, useRef, useMemo } from 'react'
 import { AreaChart, Area, Tooltip } from 'recharts'
 import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
@@ -95,7 +95,7 @@ export default function ClamBuybackChart({ data, currency = Currency.USD }: Clam
           tickFormatter={(num: string) => (currency === Currency.CLAM ? formatClam(num) : formatUsd(num))}
           connectNulls
           allowDataOverflow
-          domain={[0, 'auto']}
+          domain={[0, Math.max(...data.map(d => d[dataKey] ?? 0))]}
         />
         <Tooltip
           wrapperStyle={{ zIndex: 1 }}
