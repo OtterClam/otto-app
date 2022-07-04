@@ -429,8 +429,12 @@
       "must_desc": "R3 Item Guaranteed!",
       "name": "Silver Chest"
     },
-    "luk": { "must_desc": "R1 Item Guaranteed!" },
-    "dex": { "must_desc": "R2 Item Guaranteed!" }
+    "luk": {
+      "must_desc": "R1 Item Guaranteed!"
+    },
+    "dex": {
+      "must_desc": "R2 Item Guaranteed!"
+    }
   },
   "question": {
     "submit_button": "Confirm"
@@ -521,6 +525,9 @@
       "burnedTooltip": "Amount of CLAM permanently burned and removed from the supply.",
       "distributed": "CLAM Distributed Today",
       "distributedTooltip": "Total amount of CLAM which has been distributed today. This is divided proportionally between all stakers and Pearl Chest holders."
+    },
+    "governance": {
+      "title": "Governance"
     }
   },
   "stake": {

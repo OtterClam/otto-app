@@ -16,6 +16,7 @@ const menuIcons = {
   dashboard: DashboardIcon.src,
   lake: PearlIcon.src,
   pond: ClamIcon.src,
+  governance: ClamIcon.src,
 }
 
 const StyledContainer = styled.div`
@@ -163,6 +164,7 @@ const menuItems: MenuItem[] = [
   { key: 'lake', legacy: '/#/pearl-chests' },
   // { key: 'farm', disabled: true },
   { key: 'bond', legacy: '/#/bonds' },
+  { key: 'governance' },
 ]
 
 const getUrlForMenuItem = (item: MenuItem) =>
