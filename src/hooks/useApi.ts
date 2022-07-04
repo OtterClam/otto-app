@@ -23,6 +23,7 @@ export interface FlashSellResponse {
   end_time: number
   products: Product[]
   special_items: Item[]
+  processing_images: string[]
 }
 
 export class Api {
