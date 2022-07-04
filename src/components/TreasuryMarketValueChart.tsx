@@ -34,11 +34,6 @@ const ytickFormatter = (number: string) => `${formatCurrency(parseFloat(number) 
 
 const marketValues = [
   {
-    label: 'Total',
-    dataKey: 'treasuryMarketValue',
-    stopColor: ['#FFFFFF', 'rgba(219, 55, 55, 0.5)'],
-  },
-  {
     label: 'CLAM/MAI (Quick)',
     dataKey: 'treasuryMaiMarketValue',
     stopColor: ['#EE4B4E', 'rgba(219, 55, 55, 0.5)'],
