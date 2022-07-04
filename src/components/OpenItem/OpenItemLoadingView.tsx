@@ -74,22 +74,25 @@ const StyledProcessing = styled(ContentLarge)`
 `
 
 interface Props {
-  type: string
+  type?: string
+  images?: string[]
 }
 
-export default function OpenItemLoadingView({ type }: Props) {
+export default function OpenItemLoadingView({ type, images }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
   return (
     <Fullscreen background={theme.colors.otterBlack}>
       <StyledLoadingView>
         <StyledImageContainer>
-          {Array(7)
-            .fill(0)
-            .map((_, i) => (
-              <StyledImg key={i} src={`/chest-loadings/${type}-loading-${i + 1}.png`} delay={i * 150} />
-            ))}
-          <StyledStableImg src={`/chest-loadings/${type}-loading-8.png`} />
+          {images
+            ? images.slice(0, -1).map((src, i) => <StyledImg key={i} src={src} delay={i * 150} />)
+            : Array(7)
+                .fill(0)
+                .map((_, i) => (
+                  <StyledImg key={i} src={`/chest-loadings/${type}-loading-${i + 1}.png`} delay={i * 150} />
+                ))}
+          <StyledStableImg src={images ? images[images.length - 1] : `/chest-loadings/${type}-loading-8.png`} />
         </StyledImageContainer>
         <StyledProcessing as="p">{t('store.popup.processing')}</StyledProcessing>
       </StyledLoadingView>
