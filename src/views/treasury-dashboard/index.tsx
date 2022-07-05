@@ -16,6 +16,7 @@ import { useMemo } from 'react'
 import useTreasuryRevenues from 'hooks/useTreasuryRevenues'
 import ClamSupplyChart from 'components/ClamSupplyChart'
 import ClamBuybackChart from 'components/ClamBuybackChart'
+import CurrencySwitcher from 'components/CurrencySwitcher'
 import Leaves from './leaves.png'
 import Shell from './shell.png'
 import Bird from './bird.png'
@@ -167,16 +168,22 @@ const StyledChartTitle = styled(ContentSmall)`
   color: ${({ theme }) => theme.colors.darkGray200};
 `
 
-const StyledChartKeyValue = styled.span``
+const StyledChartKeyValue = styled.span`
+  display: flex;
+  align-items: center;
+`
 
 const StyledChartKeyDate = styled.span`
+  flex: 1;
   color: ${({ theme }) => theme.colors.darkGray200};
   margin-left: 6px;
 `
 
-const formatFinancialNumber = (num: BigNumberish, decimal = 9) => `$${formatBigNumber(num, decimal)}`
+const formatFinancialNumber = (num: BigNumberish, decimal = 9, digits = 2) =>
+  `$${formatBigNumber(num, decimal, digits)}`
 
-const formatBigNumber = (num: BigNumberish, decimal = 9) => trim(ethers.utils.formatUnits(num, decimal), 2)
+const formatBigNumber = (num: BigNumberish, decimal = 9, digits = 2) =>
+  trim(ethers.utils.formatUnits(num, decimal), digits)
 
 const formatNormalNumber = (num: number) => num.toFixed(2)
 
@@ -203,15 +210,6 @@ export default function TreasuryDashboardPage() {
       .filter((pm: any) => pm.staked < 100)
   }, [metrics])
 
-  const transformedRevenues = useMemo(() => {
-    return revenues.map(entry =>
-      Object.entries(entry).reduce((obj, [key, value]) => {
-        obj[key] = parseFloat(value)
-        return obj
-      }, {} as { [k: string]: number })
-    )
-  }, [revenues])
-
   return (
     <div>
       <TreasurySection>
@@ -228,39 +226,51 @@ export default function TreasuryDashboardPage() {
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
-            <StyledTokenContainer>
-              <StyledTokenLabel>{t('pearlPrice')}</StyledTokenLabel>
-              <StyledTokenPrice>{pearlPrice ? formatFinancialNumber(pearlPrice, 18) : '--'}</StyledTokenPrice>
-              <StyledTokenIcon src={PearlIcon.src} />
-            </StyledTokenContainer>
+            <Help message={t('burnedTooltip')}>
+              <ContentExtraSmall>{t('burned')}</ContentExtraSmall>
+            </Help>
+            <ContentMedium>
+              {formatBigNumber(ethers.utils.parseUnits(latestMetrics?.totalBurnedClam ?? '0', 2), 2, 0)} (
+              {formatFinancialNumber(
+                ethers.utils.parseUnits(latestMetrics?.totalBurnedClamMarketValue ?? '0', 29),
+                29,
+                0
+              )}
+              )
+            </ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
-            <Help message={t('currentIndexTooltip')}>
-              <ContentExtraSmall>{t('currentIndex')}</ContentExtraSmall>
+            <Help message={t('distributedTooltip')}>
+              <ContentExtraSmall>{t('distributed')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatBigNumber(index)}</ContentMedium>
+            <ContentMedium>
+              {formatBigNumber(distributedAmount, 9, 0)} ({formatFinancialNumber(distributedMarketValue, 42, 0)})
+            </ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
             <Help message={t('backingTooltip')}>
               <ContentExtraSmall>{t('backing')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatBigNumber(backing, 18)}</ContentMedium>
+            <ContentMedium>{formatFinancialNumber(backing, 18)}</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
             <Help message={t('tvdTooltip')}>
               <ContentExtraSmall>{t('tvd')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatFinancialNumber(tvd, 18)}</ContentMedium>
+            <ContentMedium>{formatFinancialNumber(tvd, 18, 0)}</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
             <Help message={t('stakedTooltip')}>
-              <ContentExtraSmall>{t('staked')}</ContentExtraSmall>
+              <ContentExtraSmall>{t('clamCirculatingSupply')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatNormalNumber(staked[0]?.staked ?? 0)}%</ContentMedium>
+            <ContentMedium>
+              {formatBigNumber(ethers.utils.parseUnits(latestMetrics?.clamCirculatingSupply ?? '0', 27), 27, 0)} (
+              {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.totalSupply ?? '0', 27), 27, 0)})
+            </ContentMedium>
           </StyledTreasuryCard>
         </StyledMetricsContainer>
       </TreasurySection>
@@ -284,53 +294,11 @@ export default function TreasuryDashboardPage() {
               <StyledChartKeyValue>
                 {formatFinancialNumber(ethers.utils.parseUnits(revenues[0]?.totalRevenueMarketValue ?? '0', 32), 32)}
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
+                <CurrencySwitcher />
               </StyledChartKeyValue>
             </StyledChartHeader>
             <TreasuryRevenuesChart data={revenues} />
           </StyledChartCard>
-
-          <StyledChartCard>
-            <StyledChartHeader>
-              <StyledChartTitle>{t('clamCirculatingSupply')}</StyledChartTitle>
-              <StyledChartKeyValue>
-                {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.clamCirculatingSupply ?? '0', 27), 27)} /
-                ({formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.totalSupply ?? '0', 27), 27)})
-                <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
-              </StyledChartKeyValue>
-            </StyledChartHeader>
-            <ClamSupplyChart data={metrics} />
-          </StyledChartCard>
-
-          <StyledChartCard>
-            <StyledChartHeader>
-              <StyledChartTitle>{t('buybacks')}</StyledChartTitle>
-              <StyledChartKeyValue>
-                {formatFinancialNumber(ethers.utils.parseUnits(revenues[0]?.buybackMarketValue ?? '0', 32), 32)}
-                <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
-              </StyledChartKeyValue>
-            </StyledChartHeader>
-            <ClamBuybackChart data={revenues} />
-          </StyledChartCard>
-
-          <StyledTreasuryCard>
-            <Help message={t('burnedTooltip')}>
-              <ContentExtraSmall>{t('burned')}</ContentExtraSmall>
-            </Help>
-            <ContentMedium>
-              {formatBigNumber(ethers.utils.parseUnits(latestMetrics?.totalBurnedClam ?? '0', 2), 2)} (
-              {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.totalBurnedClamMarketValue ?? '0', 29), 29)}
-              )
-            </ContentMedium>
-          </StyledTreasuryCard>
-
-          <StyledTreasuryCard>
-            <Help message={t('distributedTooltip')}>
-              <ContentExtraSmall>{t('distributed')}</ContentExtraSmall>
-            </Help>
-            <ContentMedium>
-              {formatFinancialNumber(distributedAmount, 9)} ({formatFinancialNumber(distributedMarketValue, 42)})
-            </ContentMedium>
-          </StyledTreasuryCard>
         </StyledChartsContainer>
       </TreasurySection>
     </div>
