@@ -5,6 +5,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { NextPageWithLayout } from 'pages/_app'
 import GovernancePageView from 'views/treasury/governance'
+
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
     ...(await serverSideTranslations(locale ?? '', ['common'])),

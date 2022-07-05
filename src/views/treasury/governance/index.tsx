@@ -14,147 +14,138 @@ import { trim } from 'helpers/trim'
 import { BigNumber, BigNumberish, ethers } from 'ethers'
 import { useMemo } from 'react'
 import useTreasuryRevenues from 'hooks/useTreasuryRevenues'
-import ClamSupplyChart from 'components/ClamSupplyChart'
-import ClamBuybackChart from 'components/ClamBuybackChart'
-import Leaves from './leaves.png'
-import Shell from './shell.png'
-import Bird from './bird.png'
-import Turtle from './turtle.png'
 
-const TreasuryMarketValueChart = dynamic(() => import('components/TreasuryMarketValueChart'))
-const TreasuryRevenuesChart = dynamic(() => import('components/TreasuryRevenuesChart'))
+// const StyledMetricsContainer = styled.div`
+//   position: relative;
+//   margin: 24px 34px;
+//   display: grid;
+//   grid-template-columns: 1fr 1fr 1fr;
+//   grid-gap: 20px;
 
-const StyledMetricsContainer = styled.div`
-  position: relative;
-  margin: 24px 34px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 20px;
+//   &::before {
+//     content: '';
+//     background: center / 77px 56px url(${Shell.src});
+//     position: absolute;
+//     top: -35px;
+//     right: -45px;
+//     width: 77px;
+//     height: 56px;
+//   }
 
-  &::before {
-    content: '';
-    background: center / 77px 56px url(${Shell.src});
-    position: absolute;
-    top: -35px;
-    right: -45px;
-    width: 77px;
-    height: 56px;
-  }
+//   &::after {
+//     content: '';
+//     background: center / 105px 85px url(${Leaves.src});
+//     position: absolute;
+//     bottom: -24px;
+//     right: -35px;
+//     width: 105px;
+//     height: 85px;
+//   }
 
-  &::after {
-    content: '';
-    background: center / 105px 85px url(${Leaves.src});
-    position: absolute;
-    bottom: -24px;
-    right: -35px;
-    width: 105px;
-    height: 85px;
-  }
+//   @media ${({ theme }) => theme.breakpoints.mobile} {
+//     grid-template-columns: 1fr 1fr;
+//     grid-gap: 5px;
+//     margin: 5px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 5px;
-    margin: 5px;
+//     &::before {
+//       width: 51px;
+//       height: 37px;
+//       background-size: 51px 37px;
+//       right: -16px;
+//       top: -16px;
+//     }
 
-    &::before {
-      width: 51px;
-      height: 37px;
-      background-size: 51px 37px;
-      right: -16px;
-      top: -16px;
-    }
+//     &::after {
+//       width: 70px;
+//       height: 57px;
+//       background-size: 70px 57px;
+//       right: -6px;
+//       bottom: -5px;
+//     }
+//   }
+// `
 
-    &::after {
-      width: 70px;
-      height: 57px;
-      background-size: 70px 57px;
-      right: -6px;
-      bottom: -5px;
-    }
-  }
-`
+// const StyledTreasuryCard = styled(TreasuryCard)`
+//   height: 80px;
+//   display: flex;
+//   flex-direction: column;
+// `
 
-const StyledTreasuryCard = styled(TreasuryCard)`
-  height: 80px;
-  display: flex;
-  flex-direction: column;
-`
+// const StyledChartCard = styled(TreasuryCard)`
+//   min-height: 260px;
+// `
 
-const StyledChartCard = styled(TreasuryCard)`
-  min-height: 260px;
-`
+// const StyledTokenContainer = styled.div`
+//   display: grid;
+//   grid-template-areas:
+//     'label icon'
+//     'price icon';
+//   grid-template-columns: 1fr 48px;
+// `
 
-const StyledTokenContainer = styled.div`
-  display: grid;
-  grid-template-areas:
-    'label icon'
-    'price icon';
-  grid-template-columns: 1fr 48px;
-`
+// const StyledTokenLabel = styled(ContentExtraSmall)`
+//   grid-area: label;
+// `
 
-const StyledTokenLabel = styled(ContentExtraSmall)`
-  grid-area: label;
-`
+// const StyledTokenPrice = styled(ContentMedium)`
+//   grid-area: price;
+// `
 
-const StyledTokenPrice = styled(ContentMedium)`
-  grid-area: price;
-`
+// const StyledTokenIcon = styled.img`
+//   grid-area: icon;
+//   width: 48px;
+//   height: 48px;
+// `
 
-const StyledTokenIcon = styled.img`
-  grid-area: icon;
-  width: 48px;
-  height: 48px;
-`
+// const StyledChartsContainer = styled(ContentMedium)`
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
+//   grid-gap: 20px;
+//   margin: 24px 34px;
 
-const StyledChartsContainer = styled(ContentMedium)`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 20px;
-  margin: 24px 34px;
+//   &::before {
+//     content: '';
+//     z-index: 1;
+//     background: center / 94px 118px url(${Bird.src});
+//     position: absolute;
+//     top: -48px;
+//     left: -10px;
+//     width: 94px;
+//     height: 118px;
+//   }
 
-  &::before {
-    content: '';
-    z-index: 1;
-    background: center / 94px 118px url(${Bird.src});
-    position: absolute;
-    top: -48px;
-    left: -10px;
-    width: 94px;
-    height: 118px;
-  }
+//   &::after {
+//     content: '';
+//     background: center / 126px 125px url(${Turtle.src});
+//     position: absolute;
+//     bottom: -35px;
+//     right: -25px;
+//     width: 126px;
+//     height: 125px;
+//   }
 
-  &::after {
-    content: '';
-    background: center / 126px 125px url(${Turtle.src});
-    position: absolute;
-    bottom: -35px;
-    right: -25px;
-    width: 126px;
-    height: 125px;
-  }
+//   @media ${({ theme }) => theme.breakpoints.mobile} {
+//     grid-template-columns: 1fr;
+//     grid-gap: 5px;
+//     margin: 5px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    grid-template-columns: 1fr;
-    grid-gap: 5px;
-    margin: 5px;
+//     &::before {
+//       width: 63px;
+//       height: 79px;
+//       background-size: 63px 79px;
+//       right: -16px;
+//       top: -35px;
+//     }
 
-    &::before {
-      width: 63px;
-      height: 79px;
-      background-size: 63px 79px;
-      right: -16px;
-      top: -35px;
-    }
-
-    &::after {
-      width: 84px;
-      height: 83px;
-      background-size: 84px 83px;
-      right: -12px;
-      bottom: -20px;
-    }
-  }
-`
+//     &::after {
+//       width: 84px;
+//       height: 83px;
+//       background-size: 84px 83px;
+//       right: -12px;
+//       bottom: -20px;
+//     }
+//   }
+// `
 
 const StyledChartHeader = styled.h3`
   display: flex;
@@ -202,14 +193,14 @@ export default function TreasuryDashboardPage() {
       .filter((pm: any) => pm.staked < 100)
   }, [metrics])
 
-  const transformedRevenues = useMemo(() => {
-    return revenues.map(entry =>
-      Object.entries(entry).reduce((obj, [key, value]) => {
-        obj[key] = parseFloat(value)
-        return obj
-      }, {} as { [k: string]: number })
-    )
-  }, [revenues])
+  // const transformedRevenues = useMemo(() => {
+  //   return revenues.map(entry =>
+  //     Object.entries(entry).reduce((obj, [key, value]) => {
+  //       obj[key] = parseFloat(value)
+  //       return obj
+  //     }, {} as { [k: string]: number })
+  //   )
+  // }, [revenues])
 
   return (
     <div>
@@ -217,7 +208,7 @@ export default function TreasuryDashboardPage() {
         <AdBanner />
       </TreasurySection>
       <TreasurySection>
-        <StyledMetricsContainer>
+        {/* <StyledMetricsContainer>
           <StyledTreasuryCard>
             <StyledTokenContainer>
               <StyledTokenLabel>{t('clamPrice')}</StyledTokenLabel>
@@ -329,7 +320,7 @@ export default function TreasuryDashboardPage() {
               {formatFinancialNumber(distributedAmount, 9)} ({formatFinancialNumber(distributedMarketValue, 42)})
             </ContentMedium>
           </StyledTreasuryCard>
-        </StyledChartsContainer>
+        </StyledChartsContainer> */}
       </TreasurySection>
     </div>
   )

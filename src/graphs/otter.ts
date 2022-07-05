@@ -67,3 +67,21 @@ export const GET_TREASURY_REVENUE = gql`
     }
   }
 `
+
+export const GET_GOVERNANCE_METRICS = gql`
+  query GetGovernanceMetrics {
+    governanceMetrics(orderBy: timestamp, orderDirection: desc) {
+      id
+      timestamp
+      qiDaoVeDystAmt
+      dystTotalSupply
+      veDystTotalSupply
+      penDystTotalSupply
+      vlPenTotalSupply
+      otterClamVlPenTotalOwned
+      otterClamVlPenPercentOwned
+      otterClamVeDystPercentOwned
+      totalQiBribeRewardsMarketValue
+    }
+  }
+`
