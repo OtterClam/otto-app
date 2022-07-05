@@ -1,10 +1,11 @@
-import format from 'date-fns/format'
 import { trim } from 'helpers/trim'
+import format from 'date-fns/format'
 import useSize from 'hooks/useSize'
 import { useTranslation } from 'next-i18next'
 import React, { RefObject, useRef } from 'react'
 import { BarChart, Tooltip, Bar } from 'recharts'
 import { i18n } from 'i18next'
+import { Currency, useCurrency } from 'contexts/Currency'
 import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
@@ -29,14 +30,9 @@ const formatCurrency = (c: number) => {
   }).format(c)
 }
 
-const formatClam = (number: string) => `${trim(parseFloat(number) / 1000, 2)}k`
+const formatClam = (number: string) => `${trim(parseFloat(number), 0)}`
 
 const formatUsd = (number: string) => `${formatCurrency(parseFloat(number) / 1000)}k`
-
-export enum Currency {
-  CLAM = 'clam',
-  USD = 'usd',
-}
 
 const dataKeysSettings = {
   [Currency.CLAM]: [
@@ -72,11 +68,10 @@ const keySettingMap = {
 
 export interface TreasuryRevenueChartProps {
   data: GetTreasuryRevenue_treasuryRevenues[]
-  currency?: Currency
 }
 
-const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
-  i18n =>
+const renderTooltip: (i18nClient: i18n, currency: Currency) => TooltipRenderer =
+  (i18n, currency) =>
   ({ payload, active }) => {
     if (!active || !payload?.length) {
       return null
@@ -86,7 +81,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       .map(({ name, value }) => ({
         key: name,
         label: keySettingMap[name].label,
-        value: `$${Math.round(value).toLocaleString(i18n.language)}`,
+        value: currency === Currency.CLAM ? formatClam(value) : formatUsd(value),
         color: (keySettingMap[name].colors ?? [])[0],
       }))
     const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
@@ -96,9 +91,10 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     )
   }
 
-export default function TreasuryRevenueChart({ data, currency = Currency.USD }: TreasuryRevenueChartProps) {
+export default function TreasuryRevenueChart({ data }: TreasuryRevenueChartProps) {
+  const { currency } = useCurrency()
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
-  const { t, i18n } = useTranslation()
+  const { i18n } = useTranslation()
   const size = useSize(containerRef)
   const settings = dataKeysSettings[currency]
 
@@ -130,7 +126,7 @@ export default function TreasuryRevenueChart({ data, currency = Currency.USD }: 
         <Tooltip
           wrapperStyle={{ zIndex: 1 }}
           formatter={(value: string) => trim(parseFloat(value), 2)}
-          content={renderTooltip(i18n) as any}
+          content={renderTooltip(i18n, currency) as any}
         />
         {settings.map(({ dataKey: key, colors }, i) => {
           // Don't fill area for Total (avoid double-counting)

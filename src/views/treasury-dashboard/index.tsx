@@ -17,6 +17,8 @@ import useTreasuryRevenues from 'hooks/useTreasuryRevenues'
 import ClamSupplyChart from 'components/ClamSupplyChart'
 import ClamBuybackChart from 'components/ClamBuybackChart'
 import CurrencySwitcher from 'components/CurrencySwitcher'
+import useCurrencyFormatter from 'hooks/useCurrencyFormatter'
+import { Currency } from 'contexts/Currency'
 import Leaves from './leaves.png'
 import Shell from './shell.png'
 import Bird from './bird.png'
@@ -200,15 +202,15 @@ export default function TreasuryDashboardPage() {
       ? ethers.utils.parseUnits(metrics[0].totalSupply, 9).sub(ethers.utils.parseUnits(metrics[1].totalSupply, 9))
       : BigNumber.from(0)
   const distributedMarketValue = distributedAmount.mul(ethers.utils.parseUnits(metrics[0]?.clamPrice ?? '0', 33))
-
-  const staked = useMemo(() => {
-    return metrics
-      .map((entry: any) => ({
-        staked: (parseFloat(entry.sClamCirculatingSupply) / parseFloat(entry.clamCirculatingSupply)) * 100,
-        timestamp: entry.timestamp,
-      }))
-      .filter((pm: any) => pm.staked < 100)
-  }, [metrics])
+  const getRevenue = useCurrencyFormatter({
+    formatters: {
+      [Currency.CLAM]: () =>
+        `${formatBigNumber(ethers.utils.parseUnits(revenues[0]?.totalRevenueClamAmount ?? '0', 32), 32, 0)} CLAM`,
+      [Currency.USD]: () =>
+        formatFinancialNumber(ethers.utils.parseUnits(revenues[0]?.totalRevenueMarketValue ?? '0', 32), 32, 0),
+    },
+    defaultCurrency: Currency.CLAM,
+  })
 
   return (
     <div>
@@ -281,7 +283,7 @@ export default function TreasuryDashboardPage() {
             <StyledChartHeader>
               <StyledChartTitle>{t('treasuryMarketValue')}</StyledChartTitle>
               <StyledChartKeyValue>
-                {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.treasuryMarketValue ?? '0', 27), 27)}
+                {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.treasuryMarketValue ?? '0', 27), 27, 0)}
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
               </StyledChartKeyValue>
             </StyledChartHeader>
@@ -292,7 +294,7 @@ export default function TreasuryDashboardPage() {
             <StyledChartHeader>
               <StyledChartTitle>{t('treasuryRevenue')}</StyledChartTitle>
               <StyledChartKeyValue>
-                {formatFinancialNumber(ethers.utils.parseUnits(revenues[0]?.totalRevenueMarketValue ?? '0', 32), 32)}
+                {getRevenue()}
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
                 <CurrencySwitcher />
               </StyledChartKeyValue>
