@@ -8,144 +8,142 @@ import { ContentExtraSmall, ContentMedium, ContentSmall } from 'styles/typograph
 import ClamIcon from 'assets/clam.png'
 import PearlIcon from 'assets/pearl.png'
 import Help from 'components/Help'
-import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
-import { useTreasuryRealtimeMetrics } from 'contracts/views'
+import useGovernanceMetrics from 'hooks/useGovernanceMetrics'
 import { trim } from 'helpers/trim'
 import { BigNumber, BigNumberish, ethers } from 'ethers'
 import { useMemo } from 'react'
-import useTreasuryRevenues from 'hooks/useTreasuryRevenues'
 
-// const StyledMetricsContainer = styled.div`
-//   position: relative;
-//   margin: 24px 34px;
-//   display: grid;
-//   grid-template-columns: 1fr 1fr 1fr;
-//   grid-gap: 20px;
+const StyledMetricsContainer = styled.div`
+  position: relative;
+  margin: 24px 34px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
 
-//   &::before {
-//     content: '';
-//     background: center / 77px 56px url(${Shell.src});
-//     position: absolute;
-//     top: -35px;
-//     right: -45px;
-//     width: 77px;
-//     height: 56px;
-//   }
+  &::before {
+    content: '';
+    position: absolute;
+    top: -35px;
+    right: -45px;
+    width: 77px;
+    height: 56px;
+  }
 
-//   &::after {
-//     content: '';
-//     background: center / 105px 85px url(${Leaves.src});
-//     position: absolute;
-//     bottom: -24px;
-//     right: -35px;
-//     width: 105px;
-//     height: 85px;
-//   }
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -24px;
+    right: -35px;
+    width: 105px;
+    height: 85px;
+  }
 
-//   @media ${({ theme }) => theme.breakpoints.mobile} {
-//     grid-template-columns: 1fr 1fr;
-//     grid-gap: 5px;
-//     margin: 5px;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 5px;
+    margin: 5px;
 
-//     &::before {
-//       width: 51px;
-//       height: 37px;
-//       background-size: 51px 37px;
-//       right: -16px;
-//       top: -16px;
-//     }
+    &::before {
+      width: 51px;
+      height: 37px;
+      background-size: 51px 37px;
+      right: -16px;
+      top: -16px;
+    }
 
-//     &::after {
-//       width: 70px;
-//       height: 57px;
-//       background-size: 70px 57px;
-//       right: -6px;
-//       bottom: -5px;
-//     }
-//   }
-// `
+    &::after {
+      width: 70px;
+      height: 57px;
+      background-size: 70px 57px;
+      right: -6px;
+      bottom: -5px;
+    }
+  }
+`
+// background: center / 77px 56px url(${Shell.src});
+// background: center / 105px 85px url(${Leaves.src});
 
-// const StyledTreasuryCard = styled(TreasuryCard)`
-//   height: 80px;
-//   display: flex;
-//   flex-direction: column;
-// `
+const StyledTreasuryCard = styled(TreasuryCard)`
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+`
 
-// const StyledChartCard = styled(TreasuryCard)`
-//   min-height: 260px;
-// `
+const StyledChartCard = styled(TreasuryCard)`
+  min-height: 260px;
+`
 
-// const StyledTokenContainer = styled.div`
-//   display: grid;
-//   grid-template-areas:
-//     'label icon'
-//     'price icon';
-//   grid-template-columns: 1fr 48px;
-// `
+const StyledTokenContainer = styled.div`
+  display: grid;
+  grid-template-areas:
+    'label icon'
+    'price icon';
+  grid-template-columns: 1fr 48px;
+`
 
-// const StyledTokenLabel = styled(ContentExtraSmall)`
-//   grid-area: label;
-// `
+const StyledTokenLabel = styled(ContentExtraSmall)`
+  grid-area: label;
+`
 
-// const StyledTokenPrice = styled(ContentMedium)`
-//   grid-area: price;
-// `
+const StyledTokenPrice = styled(ContentMedium)`
+  grid-area: price;
+`
 
-// const StyledTokenIcon = styled.img`
-//   grid-area: icon;
-//   width: 48px;
-//   height: 48px;
-// `
+const StyledTokenIcon = styled.img`
+  grid-area: icon;
+  width: 48px;
+  height: 48px;
+`
 
-// const StyledChartsContainer = styled(ContentMedium)`
-//   display: grid;
-//   grid-template-columns: 1fr 1fr;
-//   grid-gap: 20px;
-//   margin: 24px 34px;
+const StyledChartsContainer = styled(ContentMedium)`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+  margin: 24px 34px;
 
-//   &::before {
-//     content: '';
-//     z-index: 1;
-//     background: center / 94px 118px url(${Bird.src});
-//     position: absolute;
-//     top: -48px;
-//     left: -10px;
-//     width: 94px;
-//     height: 118px;
-//   }
+  &::before {
+    content: '';
+    z-index: 1;
+    position: absolute;
+    top: -48px;
+    left: -10px;
+    width: 94px;
+    height: 118px;
+  }
 
-//   &::after {
-//     content: '';
-//     background: center / 126px 125px url(${Turtle.src});
-//     position: absolute;
-//     bottom: -35px;
-//     right: -25px;
-//     width: 126px;
-//     height: 125px;
-//   }
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -35px;
+    right: -25px;
+    width: 126px;
+    height: 125px;
+  }
 
-//   @media ${({ theme }) => theme.breakpoints.mobile} {
-//     grid-template-columns: 1fr;
-//     grid-gap: 5px;
-//     margin: 5px;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    grid-template-columns: 1fr;
+    grid-gap: 5px;
+    margin: 5px;
 
-//     &::before {
-//       width: 63px;
-//       height: 79px;
-//       background-size: 63px 79px;
-//       right: -16px;
-//       top: -35px;
-//     }
+    &::before {
+      width: 63px;
+      height: 79px;
+      background-size: 63px 79px;
+      right: -16px;
+      top: -35px;
+    }
 
-//     &::after {
-//       width: 84px;
-//       height: 83px;
-//       background-size: 84px 83px;
-//       right: -12px;
-//       bottom: -20px;
-//     }
-//   }
-// `
+    &::after {
+      width: 84px;
+      height: 83px;
+      background-size: 84px 83px;
+      right: -12px;
+      bottom: -20px;
+    }
+  }
+`
+// background: center / 94px 118px url(${Bird.src});
+// background: center / 126px 125px url(${Turtle.src});
 
 const StyledChartHeader = styled.h3`
   display: flex;
@@ -170,37 +168,9 @@ const formatBigNumber = (num: BigNumberish, decimal = 9) => trim(ethers.utils.fo
 
 const formatNormalNumber = (num: number) => num.toFixed(2)
 
-export default function TreasuryDashboardPage() {
+export default function GovernancePage() {
   const { t } = useTranslation('', { keyPrefix: 'treasury.dashboard' })
-  const { metrics, latestMetrics } = useTreasuryMetrics()
-  const { revenues } = useTreasuryRevenues()
-  const { clamPrice, pearlPrice, tvd, index } = useTreasuryRealtimeMetrics()
-  const backing = ethers.utils
-    .parseUnits(latestMetrics?.treasuryMarketValue ?? '0', 27)
-    .div(ethers.utils.parseUnits(latestMetrics?.clamCirculatingSupply ?? '1', 9))
-  const distributedAmount =
-    metrics.length >= 2
-      ? ethers.utils.parseUnits(metrics[0].totalSupply, 9).sub(ethers.utils.parseUnits(metrics[1].totalSupply, 9))
-      : BigNumber.from(0)
-  const distributedMarketValue = distributedAmount.mul(ethers.utils.parseUnits(metrics[0]?.clamPrice ?? '0', 33))
-
-  const staked = useMemo(() => {
-    return metrics
-      .map((entry: any) => ({
-        staked: (parseFloat(entry.sClamCirculatingSupply) / parseFloat(entry.clamCirculatingSupply)) * 100,
-        timestamp: entry.timestamp,
-      }))
-      .filter((pm: any) => pm.staked < 100)
-  }, [metrics])
-
-  // const transformedRevenues = useMemo(() => {
-  //   return revenues.map(entry =>
-  //     Object.entries(entry).reduce((obj, [key, value]) => {
-  //       obj[key] = parseFloat(value)
-  //       return obj
-  //     }, {} as { [k: string]: number })
-  //   )
-  // }, [revenues])
+  const { metrics } = useGovernanceMetrics()
 
   return (
     <div>
@@ -265,7 +235,7 @@ export default function TreasuryDashboardPage() {
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
               </StyledChartKeyValue>
             </StyledChartHeader>
-            <TreasuryMarketValueChart data={metrics} />
+            <GovernanceMarketValueChart data={metrics} />
           </StyledChartCard>
 
           <StyledChartCard>
@@ -276,7 +246,7 @@ export default function TreasuryDashboardPage() {
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
               </StyledChartKeyValue>
             </StyledChartHeader>
-            <TreasuryRevenuesChart data={revenues} />
+            <GovernanceRevenuesChart data={revenues} />
           </StyledChartCard>
 
           <StyledChartCard>
