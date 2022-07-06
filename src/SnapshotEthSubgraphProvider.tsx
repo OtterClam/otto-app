@@ -1,5 +1,4 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
-import { ChainId, useEthers } from '@usedapp/core'
 import { createContext, PropsWithChildren, useMemo } from 'react'
 
 const defaultValue = new ApolloClient({
@@ -9,7 +8,6 @@ const defaultValue = new ApolloClient({
 export const SnapshotEthContext = createContext(defaultValue)
 
 export default function SnapshotEthProvider({ children }: PropsWithChildren<object>) {
-  const { chainId } = useEthers()
   let uri = 'https://hub.snapshot.org/graphql'
 
   const apolloClient = useMemo(
