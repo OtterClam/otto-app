@@ -5,14 +5,15 @@ import TreasurySection from 'components/TreasurySection'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, ContentMedium, ContentSmall } from 'styles/typography'
-import ClamIcon from 'assets/clam.png'
-import PearlIcon from 'assets/pearl.png'
-import Help from 'components/Help'
+// import ClamIcon from 'assets/clam.png'
+// import PearlIcon from 'assets/pearl.png'
+// import Help from 'components/Help'
 import useGovernanceMetrics from 'hooks/useGovernanceMetrics'
 import { trim } from 'helpers/trim'
 import { BigNumber, BigNumberish, ethers } from 'ethers'
 import { useMemo } from 'react'
 import useOtterClamProposals from 'hooks/useSnapshotProposals'
+import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
 
 const StyledMetricsContainer = styled.div`
   position: relative;
@@ -172,11 +173,20 @@ const formatNormalNumber = (num: number) => num.toFixed(2)
 export default function GovernancePage() {
   const { t } = useTranslation('', { keyPrefix: 'treasury.dashboard' })
   const { metrics } = useGovernanceMetrics()
+  const { metrics: metrics2 } = useTreasuryMetrics()
   const { proposals } = useOtterClamProposals()
-  console.log(proposals)
+
+  const mappedProposals = useMemo(() => {
+    return proposals
+    // .map((entry: any) => ({
+    //   title: (parseFloat(entry.sClamCirculatingSupply) / parseFloat(entry.clamCirculatingSupply)) * 100,
+    //   timestamp: entry.timestamp,
+    // }))
+  }, [proposals])
 
   return (
     <div>
+      <button onClick={() => console.log(metrics)}>Hello</button>
       <TreasurySection>
         <StyledMetricsContainer>
           <StyledTreasuryCard>

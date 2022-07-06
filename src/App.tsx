@@ -8,6 +8,7 @@ import useContractAddresses from 'hooks/useContractAddresses'
 import MyOttosProvider from 'MyOttosProvider'
 import OtterSubgraphProvider from 'OtterSubgraphProvider'
 import { PropsWithChildren } from 'react'
+import SnapshotProvider from 'SnapshotSubgraphProvider'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
 import bg from './assets/bg.jpg'
@@ -51,13 +52,15 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
         <ThemeProvider theme={theme}>
           <BreakpointsProvider>
             <MyOttosProvider>
-              <StyledApp>
-                {children}
-                <Error />
-                <WalletSelector />
-                <MintPopup />
-                <SideMenu />
-              </StyledApp>
+              <SnapshotProvider>
+                <StyledApp>
+                  {children}
+                  <Error />
+                  <WalletSelector />
+                  <MintPopup />
+                  <SideMenu />
+                </StyledApp>
+              </SnapshotProvider>
             </MyOttosProvider>
           </BreakpointsProvider>
         </ThemeProvider>
