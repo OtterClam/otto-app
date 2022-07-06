@@ -12,6 +12,7 @@ import useGovernanceMetrics from 'hooks/useGovernanceMetrics'
 import { trim } from 'helpers/trim'
 import { BigNumber, BigNumberish, ethers } from 'ethers'
 import { useMemo } from 'react'
+import useOtterClamProposals from 'hooks/useSnapshotProposals'
 
 const StyledMetricsContainer = styled.div`
   position: relative;
@@ -171,6 +172,8 @@ const formatNormalNumber = (num: number) => num.toFixed(2)
 export default function GovernancePage() {
   const { t } = useTranslation('', { keyPrefix: 'treasury.dashboard' })
   const { metrics } = useGovernanceMetrics()
+  const { proposals } = useOtterClamProposals()
+  console.log(proposals)
 
   return (
     <div>
