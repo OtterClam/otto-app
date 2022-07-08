@@ -21,7 +21,7 @@ interface Props {
 export default function NutrientAnimation({ className }: Props) {
   return (
     <StyledAnimation className={className}>
-      <StyledImg src={PotionAnimation} />
+      <StyledImg src={PotionAnimation.src} />
     </StyledAnimation>
   )
 }
