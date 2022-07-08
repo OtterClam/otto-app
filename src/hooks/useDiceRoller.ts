@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setError } from 'store/errorSlice'
 import useProducts from 'models/store/useProducts'
-import { useStoreContract } from 'contracts/contracts'
+import { useOttoHellDiceRoller, useStoreContract } from 'contracts/contracts'
 import Otto from 'models/Otto'
 import { useEthers } from '@usedapp/core'
 import Product from 'models/store/Product'
@@ -51,7 +51,7 @@ const useUnfinishDice = (ottoId?: string) => {
       .getAllDice(ottoId, i18n.resolvedLanguage)
       .then(diceList => setDiceList(diceList))
       .catch(err => dispatch(setError(err)))
-      .then(() => setLoading(true))
+      .then(() => setLoading(false))
   }, [api, ottoId, i18n.resolvedLanguage, ottoInTheHell])
 
   return {
@@ -69,6 +69,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
   const { account } = useEthers()
   const product = useHellDiceProduct()
   const store = useStoreContract()
+  const ottoHellDiceRoller = useOttoHellDiceRoller()
   const { library } = useEthers()
   const { i18n } = useTranslation()
 
@@ -86,7 +87,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
 
     try {
       setState(State.Processing)
-      const tx = await connectContractToSigner(store, {}, library).buyNoChainlink(account, product?.id, 1)
+      const tx = await connectContractToSigner(ottoHellDiceRoller, {}, library).roll()
       await tx.wait()
       setDice(await api.rollTheDice(otto.tokenId, tx.hash, i18n.resolvedLanguage))
       setState(State.FirstResult)
