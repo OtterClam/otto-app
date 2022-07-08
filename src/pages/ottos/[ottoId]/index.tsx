@@ -1,3 +1,4 @@
+import Board from 'components/Board'
 import OttoView from 'views/otto/OttoPage'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps, GetStaticPaths } from 'next'
@@ -20,7 +21,11 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
 const OttoPage: NextPageWithLayout = OttoView
 
 OttoPage.getLayout = (page, i18n) => {
-  return <Layout title={i18n.t('otto.title')}>{page}</Layout>
+  return (
+    <Layout title={i18n.t('otto.title')}>
+      <Board>{page}</Board>
+    </Layout>
+  )
 }
 
 export default OttoPage

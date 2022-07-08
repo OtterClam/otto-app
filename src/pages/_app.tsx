@@ -22,8 +22,10 @@ function AppWrapper({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <Provider store={store}>
-      <GlobalStyles />
-      <App>{getLayout(<Component {...pageProps} />, i18n)}</App>
+      <App>
+        <GlobalStyles />
+        {getLayout(<Component {...pageProps} />, i18n)}
+      </App>
     </Provider>
   )
 }
