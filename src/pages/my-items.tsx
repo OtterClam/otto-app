@@ -1,7 +1,9 @@
+import Board from 'components/Board'
 import MyItemsView from 'views/my-items/MyItemsPage'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import Layout from 'Layout'
+import RequireConnect from 'components/RequireConnect'
 import { useTranslation } from 'next-i18next'
 import { NextPageWithLayout } from './_app'
 
@@ -17,8 +19,10 @@ MyItemsPage.getLayout = page => {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
 
   return (
-    <Layout title={t('title')} requireConnect>
-      {page}
+    <Layout title={t('title')}>
+      <Board>
+        <RequireConnect>{page}</RequireConnect>
+      </Board>
     </Layout>
   )
 }

@@ -16,11 +16,7 @@ const PlayPage: NextPageWithLayout = PlayView
 PlayPage.getLayout = page => {
   const { t } = useTranslation()
 
-  return (
-    <Layout title={t('play.title')} noBorder>
-      {page}
-    </Layout>
-  )
+  return <Layout title={t('play.title')}>{page}</Layout>
 }
 
 export default PlayPage

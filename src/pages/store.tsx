@@ -1,7 +1,9 @@
+import Board, { Background } from 'components/Board'
 import StoreView from 'views/store/StorePage'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import Layout from 'Layout'
+import RequireConnect from 'components/RequireConnect'
 import { useTranslation } from 'next-i18next'
 import { NextPageWithLayout } from './_app'
 
@@ -17,8 +19,8 @@ StorePage.getLayout = page => {
   const { t } = useTranslation('', { keyPrefix: 'store' })
 
   return (
-    <Layout title={t('title')} background="dark">
-      {page}
+    <Layout title={t('title')}>
+      <Board background={Background.Dark}>{page}</Board>
     </Layout>
   )
 }

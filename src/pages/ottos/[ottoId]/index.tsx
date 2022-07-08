@@ -1,3 +1,4 @@
+import Board from 'components/Board'
 import OttoView from 'views/otto/OttoPage'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps, GetStaticPaths } from 'next'
@@ -22,7 +23,11 @@ const OttoPage: NextPageWithLayout = OttoView
 
 OttoPage.getLayout = page => {
   const { t } = useTranslation()
-  return <Layout title={t('otto.title')}>{page}</Layout>
+  return (
+    <Layout title={t('otto.title')}>
+      <Board>{page}</Board>
+    </Layout>
+  )
 }
 
 export default OttoPage

@@ -18,7 +18,7 @@ TreasuryStakePage.getLayout = page => {
   const { t } = useTranslation()
 
   return (
-    <Layout title={t('stake.title')} noBorder requireConnect>
+    <Layout title={t('stake.title')}>
       <TreasuryLayout>{page}</TreasuryLayout>
     </Layout>
   )

@@ -16,7 +16,7 @@ const StyledSideMenu = styled.div<StyledProps>`
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: var(--real-vh);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,14 +25,15 @@ const StyledSideMenu = styled.div<StyledProps>`
 `
 
 const Background = styled.button<StyledProps>`
+  opacity: ${({ show }) => (show ? 1 : 0)};
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background-color: ${({ show }) => (show ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0)')};
+  height: var(--real-vh);
+  background-color: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
-  transition: all 0.25s;
+  transition: opacity 0.25s;
 `
 
 const Container = styled.div<StyledProps>`
