@@ -221,7 +221,7 @@ interface StateProps {
 }
 
 function IntroState({ diceRoller, otto }: StateProps) {
-  const { OTTOPIA_STORE } = useContractAddresses()
+  const { OTTO_HELL_DICE_ROLLER } = useContractAddresses()
   const { t } = useTranslation()
 
   return (
@@ -237,7 +237,7 @@ function IntroState({ diceRoller, otto }: StateProps) {
       <StyledIntroCallToAction>{t('dice_popup.intro.call_to_action')}</StyledIntroCallToAction>
       <PaymentButton
         padding="6px 12px 3px"
-        spenderAddress={OTTOPIA_STORE}
+        spenderAddress={OTTO_HELL_DICE_ROLLER}
         Typography={Headline}
         token={Token.Clam}
         disabled={!diceRoller.product?.price || diceRoller.loading}
