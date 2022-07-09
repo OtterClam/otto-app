@@ -15,11 +15,7 @@ const HomePage: NextPageWithLayout = HomeView
 
 HomePage.getLayout = page => {
   const { t } = useTranslation()
-  return (
-    <Layout title={t('home.title')} noBorder>
-      {page}
-    </Layout>
-  )
+  return <Layout title={t('home.title')}>{page}</Layout>
 }
 
 export default HomePage
