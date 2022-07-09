@@ -151,7 +151,7 @@ const StyledContent = styled.div`
   padding: 4px;
   box-sizing: border-box;
   max-height: var(--body-height);
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 
   @media ${({ theme }) => theme.breakpoints.tablet} {
