@@ -31,7 +31,7 @@ const Container = styled.div<{ width: string }>`
   box-sizing: border-box;
   max-width: 880px;
   max-height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 
   border: 4px solid ${props => props.theme.colors.otterBlack};

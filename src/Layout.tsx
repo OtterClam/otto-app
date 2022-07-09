@@ -9,8 +9,8 @@ const StyledBody = styled.div`
   display: flex;
   justify-content: space-around;
   margin: 0 auto;
-  max-height: val(--body-height);
-  overflow-y: scroll;
+  max-height: var(--body-height);
+  overflow-y: auto;
   overflow-x: hidden;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
