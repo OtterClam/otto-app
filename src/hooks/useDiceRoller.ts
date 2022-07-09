@@ -10,6 +10,7 @@ import Product from 'models/store/Product'
 import { connectContractToSigner } from '@usedapp/core/dist/esm/src/hooks'
 import { useTranslation } from 'next-i18next'
 import { selectOttoInTheHell } from 'store/uiSlice'
+import { BigNumber } from 'ethers'
 import useApi from './useApi'
 
 export enum State {
@@ -87,7 +88,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
 
     try {
       setState(State.Processing)
-      const tx = await connectContractToSigner(ottoHellDiceRoller, {}, library).roll()
+      const tx = await connectContractToSigner(ottoHellDiceRoller, {}, library).roll(otto.tokenId, BigNumber.from('1'))
       await tx.wait()
       setDice(await api.rollTheDice(otto.tokenId, tx.hash, i18n.resolvedLanguage))
       setState(State.FirstResult)
