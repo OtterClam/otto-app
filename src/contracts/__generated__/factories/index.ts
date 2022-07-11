@@ -6,6 +6,7 @@ export { ClamMaiContract__factory } from "./ClamMaiContract__factory";
 export { IOttoItemFactory__factory } from "./IOttoItemFactory__factory";
 export { OtterStakingPearlHelper__factory } from "./OtterStakingPearlHelper__factory";
 export { Otto__factory } from "./Otto__factory";
+export { OttoHellDiceRoller__factory } from "./OttoHellDiceRoller__factory";
 export { OttoItem__factory } from "./OttoItem__factory";
 export { OttoItemGiveaway__factory } from "./OttoItemGiveaway__factory";
 export { OttoSummoner__factory } from "./OttoSummoner__factory";

@@ -16,6 +16,7 @@ import {
   ClamCirculatingSupplyAbi,
   StakedClamTokenContractAbi,
   OtterStakingPearlHelperAbi,
+  OttoHellDiceRollerApi,
 } from './abis'
 import { OttoItem } from './__generated__/OttoItem'
 import { OttopiaStore } from './__generated__/OttopiaStore'
@@ -27,6 +28,7 @@ import {
   ClamMaiContract,
   Erc20,
   OtterStakingPearlHelper,
+  OttoHellDiceRoller,
   StakedClamTokenContract,
   StakingContract,
 } from './__generated__'
@@ -71,6 +73,12 @@ export function useStoreContract() {
   const { OTTOPIA_STORE } = useContractAddresses()
   const { library } = useEthers()
   return new Contract(OTTOPIA_STORE, OttopiaStoreAbi, library) as OttopiaStore
+}
+
+export function useOttoHellDiceRoller() {
+  const { OTTO_HELL_DICE_ROLLER } = useContractAddresses()
+  const { library } = useEthers()
+  return new Contract(OTTO_HELL_DICE_ROLLER, OttoHellDiceRollerApi, library) as OttoHellDiceRoller
 }
 
 export function useItemFactoryContract(address: string) {
