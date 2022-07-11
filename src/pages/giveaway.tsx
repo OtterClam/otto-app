@@ -2,7 +2,6 @@ import GiveawayView from 'views/giveaway/GiveawayPage'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import Layout from 'Layout'
-import { useTranslation } from 'next-i18next'
 import { NextPageWithLayout } from './_app'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
@@ -13,10 +12,8 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => ({
 
 const GiveawayPage: NextPageWithLayout = GiveawayView
 
-GiveawayPage.getLayout = page => {
-  const { t } = useTranslation('', { keyPrefix: 'giveaway' })
-
-  return <Layout title={t('title')}>{page}</Layout>
+GiveawayPage.getLayout = (page, i18n) => {
+  return <Layout title={i18n.t('giveaway.title')}>{page}</Layout>
 }
 
 export default GiveawayPage
