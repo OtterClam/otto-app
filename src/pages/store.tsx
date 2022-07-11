@@ -2,7 +2,6 @@ import StoreView from 'views/store/StorePage'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import Layout from 'Layout'
-import { useTranslation } from 'next-i18next'
 import { NextPageWithLayout } from './_app'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
@@ -13,11 +12,9 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => ({
 
 const StorePage: NextPageWithLayout = StoreView
 
-StorePage.getLayout = page => {
-  const { t } = useTranslation('', { keyPrefix: 'store' })
-
+StorePage.getLayout = (page, i18n) => {
   return (
-    <Layout title={t('title')} background="dark">
+    <Layout title={i18n.t('store.title')} background="dark">
       {page}
     </Layout>
   )
