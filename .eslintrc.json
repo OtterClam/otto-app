@@ -4,6 +4,7 @@
     "es6": true
   },
   "extends": [
+    "next",
     "plugin:react/recommended",
     "airbnb",
     "plugin:@typescript-eslint/eslint-recommended",
@@ -24,7 +25,7 @@
     },
     "jsx": true
   },
-  "plugins": ["@typescript-eslint", "prettier", "import", "jsx-a11y", "react", "react-hooks"],
+  "plugins": ["@typescript-eslint", "prettier", "import", "jsx-a11y", "react"],
   "settings": {
     "import/resolver": {
       "node": {

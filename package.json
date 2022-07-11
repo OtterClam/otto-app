@@ -13,9 +13,6 @@
     "codegen:otter-graph": "yarn download-schema:otto && apollo codegen:generate --includes=src/graphs/otter.ts --localSchemaFile=otter-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile='./src/__generated__/otter/global-types.ts' && rm ./src/__generated__/otter/global-types.ts",
     "codegen": "yarn codegen:contract && yarn codegen:otto-graph && yarn codegen:otter-graph"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -76,12 +73,12 @@
     "babel-plugin-macros": "^3.1.0",
     "eslint": "^8.17.0",
     "eslint-config-airbnb": "^19.0.2",
+    "eslint-config-next": "^12.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.27.1",
-    "eslint-plugin-react-hooks": "^4.3.0",
     "file-loader": "^6.2.0",
     "prettier": "^2.5.1",
     "react-error-overlay": "6.0.9",
