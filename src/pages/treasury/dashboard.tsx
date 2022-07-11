@@ -1,7 +1,6 @@
 import TreasuryLayout from 'components/TreasuryLayout'
 import Layout from 'Layout'
 import { GetStaticProps } from 'next'
-import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { NextPageWithLayout } from 'pages/_app'
 import TreasuryDashboardView from 'views/treasury-dashboard'
@@ -14,11 +13,9 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => ({
 
 const TreasuryDashboardPage: NextPageWithLayout = TreasuryDashboardView
 
-TreasuryDashboardPage.getLayout = page => {
-  const { t } = useTranslation()
-
+TreasuryDashboardPage.getLayout = (page, i18n) => {
   return (
-    <Layout title={t('treasury.dashboard.title')} noBorder requireConnect>
+    <Layout title={i18n.t('treasury.dashboard.title')} noBorder requireConnect>
       <TreasuryLayout>{page}</TreasuryLayout>
     </Layout>
   )
