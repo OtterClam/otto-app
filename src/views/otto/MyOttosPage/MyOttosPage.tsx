@@ -8,9 +8,7 @@ import MintBanner from 'components/MintBanner'
 import { ottoClick } from 'constant'
 import { MyOttosContext } from 'MyOttosProvider'
 import { useCallback, useContext, useMemo } from 'react'
-import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
 import OttoCard from 'components/OttoCard'
 import NoOttoView from './NoOttoView'
@@ -50,8 +48,6 @@ enum State {
 }
 
 export default function MyOttosPage() {
-  const { t } = useTranslation()
-  const router = useRouter()
   const { account } = useEthers()
   const { ottos, loading } = useContext(MyOttosContext)
   const state = useMemo(() => {
