@@ -1,3 +1,4 @@
+import useOtterClamProposals from 'hooks/useSnapshotProposals'
 import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
 import styled from 'styled-components'
@@ -46,6 +47,7 @@ interface Props {
 
 export default function GopvernanceTabGroup({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'governance' })
+  // const { proposals } = useOtterClamProposals()
   const [tab, setTab] = useState<GovernanceTab>('otterclam')
   return (
     <StyledStakeDialog className={className}>

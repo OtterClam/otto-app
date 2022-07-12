@@ -1,11 +1,13 @@
 import CLAM from 'assets/clam.svg'
 import CLAMCoin from 'assets/icons/CLAM.svg'
 import Button from 'components/Button'
+import SnapshotProposalGroup from 'components/SnapshotProposalGroup'
 import { useStake } from 'contracts/functions'
 import { useTreasuryRealtimeMetrics } from 'contracts/views'
 import { utils } from 'ethers'
 import { trim } from 'helpers/trim'
 import useClamBalance from 'hooks/useClamBalance'
+import useOtterClamProposals from 'hooks/useSnapshotProposals'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -60,50 +62,15 @@ interface Props {
 
 export default function OtterClamTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
-  const [clamAmount, setClamAmount] = useState('')
-  const clamBalance = useClamBalance()
-  const { stakeState, stake, resetStake } = useStake()
-  const { index } = useTreasuryRealtimeMetrics()
-  useEffect(() => {
-    if (stakeState.state === 'Fail' || stakeState.state === 'Exception') {
-      window.alert(stakeState.status.errorMessage)
-      resetStake()
-    }
-  }, [stakeState, resetStake])
+  const { proposals } = useOtterClamProposals()
   return (
     <StyledStakeTab className={className}>
       <Headline as="h1">{t('welcome')}</Headline>
       <ContentSmall as="p">{t('desc')}</ContentSmall>
-      <StyledClamBalance>
-        {t('available')}
-        <StyledClamBalanceText>
-          {clamBalance !== undefined ? trim(utils.formatUnits(clamBalance, 9), 2) : '-'}
-        </StyledClamBalanceText>
-        <Button
-          Typography={ContentLarge}
-          primaryColor="white"
-          padding="0 12px"
-          onClick={() => clamBalance && setClamAmount(utils.formatUnits(clamBalance, 9))}
-        >
-          {t('max')}
-        </Button>
-      </StyledClamBalance>
+
       <ContentSmall>
-        <StyledClamInput
-          placeholder={t('input_placeholder')}
-          value={clamAmount}
-          onChange={e => setClamAmount(e.target.value)}
-        />
+        <SnapshotProposalGroup data={proposals}></SnapshotProposalGroup>
       </ContentSmall>
-      <StyledButton
-        Typography={Headline}
-        padding="6px"
-        isWeb3
-        loading={stakeState.state !== 'None'}
-        onClick={() => stake(clamAmount)}
-      >
-        {t('stake_btn')}
-      </StyledButton>
     </StyledStakeTab>
   )
 }

@@ -174,11 +174,13 @@ const formatNormalNumber = (num: number) => num.toFixed(2)
 export default function GovernancePage() {
   const { t } = useTranslation('', { keyPrefix: 'treasury.dashboard' })
   const { metrics } = useGovernanceMetrics()
-  const { proposals } = useOtterClamProposals()
+  // const { proposals } = useOtterClamProposals()
 
   return (
     <div>
-      <GovernanceTabGroup></GovernanceTabGroup>
+      <TreasurySection showRope={false}>
+        <GovernanceTabGroup></GovernanceTabGroup>
+      </TreasurySection>
       {/* <TreasurySection>
         <StyledMetricsContainer>
           <StyledTreasuryCard>
