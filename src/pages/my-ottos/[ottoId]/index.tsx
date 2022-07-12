@@ -3,7 +3,6 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { NextPageWithLayout } from 'pages/_app'
 import Layout from 'Layout'
-import { useTranslation } from 'next-i18next'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
@@ -20,9 +19,8 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
 
 const OttoPage: NextPageWithLayout = OttoView
 
-OttoPage.getLayout = page => {
-  const { t } = useTranslation()
-  return <Layout title={t('otto.title')}>{page}</Layout>
+OttoPage.getLayout = (page, i18n) => {
+  return <Layout title={i18n.t('otto.title')}>{page}</Layout>
 }
 
 export default OttoPage

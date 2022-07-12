@@ -13,11 +13,9 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => ({
 
 const MyItemsPage: NextPageWithLayout = MyItemsView
 
-MyItemsPage.getLayout = page => {
-  const { t } = useTranslation('', { keyPrefix: 'my_items' })
-
+MyItemsPage.getLayout = (page, i18n) => {
   return (
-    <Layout title={t('title')} requireConnect>
+    <Layout title={i18n.t('playVoice.title')} requireConnect>
       {page}
     </Layout>
   )

@@ -3,7 +3,6 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { NextPageWithLayout } from 'pages/_app'
 import Layout from 'Layout'
-import { useTranslation } from 'next-i18next'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
@@ -20,9 +19,8 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
 
 const PortalPage: NextPageWithLayout = PortalView
 
-PortalPage.getLayout = page => {
-  const { t } = useTranslation()
-  return <Layout title={t('my_portals.title')}>{page}</Layout>
+PortalPage.getLayout = (page, i18n) => {
+  return <Layout title={i18n.t('my_portals.title')}>{page}</Layout>
 }
 
 export default PortalPage
