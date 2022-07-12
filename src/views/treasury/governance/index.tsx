@@ -173,25 +173,15 @@ const formatNormalNumber = (num: number) => num.toFixed(2)
 export default function GovernancePage() {
   const { t } = useTranslation('', { keyPrefix: 'treasury.dashboard' })
   const { metrics } = useGovernanceMetrics()
-  const { metrics: metrics2 } = useTreasuryMetrics()
   const { proposals } = useOtterClamProposals()
-
-  const mappedProposals = useMemo(() => {
-    return proposals
-    // .map((entry: any) => ({
-    //   title: (parseFloat(entry.sClamCirculatingSupply) / parseFloat(entry.clamCirculatingSupply)) * 100,
-    //   timestamp: entry.timestamp,
-    // }))
-  }, [proposals])
 
   return (
     <div>
-      <button onClick={() => console.log(metrics)}>Hello</button>
       <TreasurySection>
         <StyledMetricsContainer>
           <StyledTreasuryCard>
             <StyledTokenContainer>
-              <StyledTokenLabel>{t('clamPrice')}</StyledTokenLabel>
+              <StyledTokenLabel></StyledTokenLabel>
               {/* <StyledTokenPrice>{clamPrice ? formatFinancialNumber(clamPrice) : '--'}</StyledTokenPrice>
               <StyledTokenIcon src={ClamIcon.src} /> */}
             </StyledTokenContainer>

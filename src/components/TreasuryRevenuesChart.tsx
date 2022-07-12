@@ -133,7 +133,6 @@ export default function TreasuryRevenueChart({ data, currency = Currency.USD }: 
           content={renderTooltip(i18n) as any}
         />
         {settings.map(({ dataKey: key, colors }, i) => {
-          console.log(colors)
           // Don't fill area for Total (avoid double-counting)
           if (key === 'totalRevenueMarketValue' || key === 'totalRevenueClamAmount') {
             return <Bar key={i} dataKey={key} stackId="-1" fillOpacity={0} />
