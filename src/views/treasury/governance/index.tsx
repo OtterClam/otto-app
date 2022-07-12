@@ -13,6 +13,7 @@ import { trim } from 'helpers/trim'
 import { BigNumber, BigNumberish, ethers } from 'ethers'
 import { useMemo } from 'react'
 import useOtterClamProposals from 'hooks/useSnapshotProposals'
+import GovernanceTabGroup from './GovernanceTabGroup'
 import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
 
 const StyledMetricsContainer = styled.div`
@@ -177,19 +178,20 @@ export default function GovernancePage() {
 
   return (
     <div>
-      <TreasurySection>
+      <GovernanceTabGroup></GovernanceTabGroup>
+      {/* <TreasurySection>
         <StyledMetricsContainer>
           <StyledTreasuryCard>
             <StyledTokenContainer>
               <StyledTokenLabel></StyledTokenLabel>
-              {/* <StyledTokenPrice>{clamPrice ? formatFinancialNumber(clamPrice) : '--'}</StyledTokenPrice>
-              <StyledTokenIcon src={ClamIcon.src} /> */}
+              <StyledTokenPrice>{clamPrice ? formatFinancialNumber(clamPrice) : '--'}</StyledTokenPrice>
+              <StyledTokenIcon src={ClamIcon.src} /> 
             </StyledTokenContainer>
           </StyledTreasuryCard>
         </StyledMetricsContainer>
-      </TreasurySection>
+      </TreasurySection> */}
 
-      <TreasurySection showRope={false}>
+      {/* <TreasurySection showRope={false}>
         <StyledChartsContainer>
           <StyledChartCard>
             <StyledChartHeader>
@@ -199,10 +201,9 @@ export default function GovernancePage() {
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
               </StyledChartKeyValue>
             </StyledChartHeader>
-            {/* <GovernanceMarketValueChart data={metrics} /> */}
           </StyledChartCard>
         </StyledChartsContainer>
-      </TreasurySection>
+      </TreasurySection> */}
     </div>
   )
 }
