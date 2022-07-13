@@ -11,7 +11,6 @@ export const GET_OTTERCLAM_PROPOSALS = gql`
       end
       snapshot
       state
-      state
       scores
       votes
     }

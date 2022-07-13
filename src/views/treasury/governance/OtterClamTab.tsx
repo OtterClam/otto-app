@@ -13,46 +13,11 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Caption, ContentLarge, ContentSmall, Headline } from 'styles/typography'
 
-const StyledStakeTab = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`
-
-const StyledClamBalance = styled(Caption)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 5px;
-`
-
-const StyledClamBalanceText = styled.div`
-  display: flex;
-  align-items: center;
-  flex: 1;
-  &:before {
-    content: '';
-    background: no-repeat center/contain url(${CLAM.src});
-    width: 16px;
-    height: 16px;
-    margin-right: 5px;
-    display: block;
-  }
-`
-
-const StyledClamInput = styled.input`
-  width: 100%;
-  padding: 20px;
-  border: 4px solid ${({ theme }) => theme.colors.otterBlack};
-  border-radius: 10px;
-  background: url(${CLAMCoin.src}) no-repeat 20px;
-  text-indent: 32px;
-
-  ::placeholder {
-    color: ${({ theme }) => theme.colors.lightGray400};
-    opacity: 1;
-  }
-`
+// const StyledOtterClamTab = styled.div`
+//   display: block;
+//   flex-direction: row;
+//   gap: 10px;
+// `
 
 const StyledButton = styled(Button)``
 
@@ -64,13 +29,12 @@ export default function OtterClamTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const { proposals } = useOtterClamProposals()
   return (
-    <StyledStakeTab className={className}>
+    <div className={className}>
       <Headline as="h1">{t('welcome')}</Headline>
       <ContentSmall as="p">{t('desc')}</ContentSmall>
-
-      <ContentSmall>
-        <SnapshotProposalGroup data={proposals}></SnapshotProposalGroup>
+      <ContentSmall as="div">
+        <SnapshotProposalGroup data={proposals} />
       </ContentSmall>
-    </StyledStakeTab>
+    </div>
   )
 }

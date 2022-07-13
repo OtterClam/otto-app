@@ -1,11 +1,28 @@
-import { OtterClamProposals, OtterClamProposals_proposals } from 'graphs/__generated__/OtterClamProposals'
-import { Props } from 'react'
+import { OtterClamProposals_proposals } from 'graphs/__generated__/OtterClamProposals'
 import styled from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
+import SnapshotProposalPieChart from './SnapshotProposalPieChart'
 
 const StyledContainer = styled.div`
+  display: inline-grid;
+  max-width: 45%;
+`
+// `
+//   padding: 15px;
+//   margin-bottom: 4px;
+//   border-radius: 10px;
+//   box-sizing: border-box;
+//   border: 1px solid ${({ theme }) => theme.colors.darkBrown};
+//   box-shadow: 0px 4px 0px ${({ theme }) => theme.colors.superDarkBrown},
+//     inset 0px 0px 0px 4px ${({ theme }) => theme.colors.skin};
+//   background: ${({ theme }) => theme.colors.white};
+// `
+
+const StyledCard = styled.div`
   padding: 15px;
-  margin-bottom: 4px;
+  margin: 4px;
+  max-width: 95%;
+  display: inline-grid;
   border-radius: 10px;
   box-sizing: border-box;
   border: 1px solid ${({ theme }) => theme.colors.darkBrown};
@@ -14,20 +31,45 @@ const StyledContainer = styled.div`
   background: ${({ theme }) => theme.colors.white};
 `
 
+const StyledTextBody = styled.div`
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 10em;
+  padding: 15px;
+  margin: 4px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  border: 1px solid ${({ theme }) => theme.colors.darkBrown};
+  box-shadow: 0px 4px 0px ${({ theme }) => theme.colors.superDarkBrown},
+    inset 0px 0px 0px 4px ${({ theme }) => theme.colors.skin};
+  background: ${({ theme }) => theme.colors.white};
+`
+
+const FixedSizeHeadline = styled.span`
+  font-family: 'Pangolin', 'naikaifont';
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.5;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    font-size: 20px;
+  }
+`
+
 export interface SnapshotProposalGroup {
   className?: string
   data?: OtterClamProposals_proposals[]
-  num_recent_proposals?: number
 }
 
-export default function TreasuryCard({ className, data, num_recent_proposals = 3 }: SnapshotProposalGroup) {
+export default function TreasuryCard({ className, data }: SnapshotProposalGroup) {
   return (
     <StyledContainer className={className}>
       {data?.map(proposal => (
-        <StyledContainer>
-          <Headline as="h1">{proposal!.title}</Headline>
-          <ContentSmall as="p">{proposal!.body}</ContentSmall>
-        </StyledContainer>
+        <StyledCard key={proposal.id}>
+          <FixedSizeHeadline as="h1">{proposal!.title}</FixedSizeHeadline>
+          <StyledTextBody>{proposal!.body}</StyledTextBody>
+          <SnapshotProposalPieChart proposal={proposal!}></SnapshotProposalPieChart>
+        </StyledCard>
       ))}
     </StyledContainer>
   )

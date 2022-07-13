@@ -1,5 +1,4 @@
 import dynamic from 'next/dynamic'
-import AdBanner from 'components/AdBanner'
 import TreasuryCard from 'components/TreasuryCard'
 import TreasurySection from 'components/TreasurySection'
 import { useTranslation } from 'next-i18next'
@@ -12,7 +11,6 @@ import useGovernanceMetrics from 'hooks/useGovernanceMetrics'
 import { trim } from 'helpers/trim'
 import { BigNumber, BigNumberish, ethers } from 'ethers'
 import { useMemo } from 'react'
-import useOtterClamProposals from 'hooks/useSnapshotProposals'
 import GovernanceTabGroup from './GovernanceTabGroup'
 import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
 
@@ -178,7 +176,7 @@ export default function GovernancePage() {
 
   return (
     <div>
-      <TreasurySection showRope={false}>
+      <TreasurySection>
         <GovernanceTabGroup></GovernanceTabGroup>
       </TreasurySection>
       {/* <TreasurySection>
