@@ -15,7 +15,7 @@ const MyItemsPage: NextPageWithLayout = MyItemsView
 
 MyItemsPage.getLayout = (page, i18n) => {
   return (
-    <Layout title={i18n.t('playVoice.title')} requireConnect>
+    <Layout title={i18n.t('my_items.title')} requireConnect>
       {page}
     </Layout>
   )
