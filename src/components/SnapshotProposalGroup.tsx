@@ -1,6 +1,8 @@
 import { OtterClamProposals_proposals } from 'graphs/__generated__/OtterClamProposals'
+import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
-import { ContentSmall, Headline } from 'styles/typography'
+import { ContentSmall, Display1, Headline, ContentMedium } from 'styles/typography'
+import Button from './Button'
 import SnapshotProposalPieChart from './SnapshotProposalPieChart'
 
 const StyledContainer = styled.div``
@@ -32,6 +34,8 @@ const StyledCard = styled.div`
 `
 
 const StyledTextBody = styled.div`
+  font-family: 'Pangolin', 'naikaifont';
+  white-space: pre;
   overflow-y: scroll;
   overflow-x: hidden;
   max-height: 10em;
@@ -46,7 +50,7 @@ const StyledTextBody = styled.div`
   background: ${({ theme }) => theme.colors.white};
 `
 
-const FixedSizeHeadline = styled.span`
+const CenteredHeadline = styled.span`
   font-family: 'Pangolin', 'naikaifont';
   max-width: 80% !important;
   font-size: 24px;
@@ -64,13 +68,25 @@ export interface SnapshotProposalGroup {
 }
 
 export default function TreasuryCard({ className, data }: SnapshotProposalGroup) {
+  const { t } = useTranslation()
   return (
     <StyledContainer className={className}>
       {data?.map(proposal => (
         <StyledCard key={proposal.id}>
-          <FixedSizeHeadline as="h1">{proposal!.title}</FixedSizeHeadline>
+          <CenteredHeadline as="h1">{proposal!.title}</CenteredHeadline>
           <StyledTextBody>{proposal!.body}</StyledTextBody>
           <SnapshotProposalPieChart proposal={proposal!}></SnapshotProposalPieChart>
+          {proposal.state == 'active' ? (
+            <Button
+              padding="6px 48px"
+              Typography={Headline}
+              onClick={() => window.open(`https://snapshot.org/#/otterclam.eth/proposal/${proposal.id}`)}
+            >
+              {t('treasury.governance.voteNow')}
+            </Button>
+          ) : (
+            <ContentMedium>{t('treasury.governance.result')}</ContentMedium>
+          )}
         </StyledCard>
       ))}
     </StyledContainer>

@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { ContentMedium } from 'styles/typography'
 import StakeTab from '../stake/StakeTab'
 import UnstakeTab from '../stake/UnstakeTab'
+import DystopiaPenroseTab from './DystopiaPenroseTab'
 import OtterClamTab from './OtterClamTab'
 
 const StyledStakeDialog = styled.div``
@@ -39,7 +40,7 @@ const StyledBody = styled.div`
   background: ${({ theme }) => theme.colors.white};
 `
 
-type GovernanceTab = 'otterclam' | 'pen_dyst' | 'qidao'
+type GovernanceTab = 'otterclam' | 'dyst_pen' | 'qidao'
 
 interface Props {
   className?: string
@@ -55,8 +56,8 @@ export default function GopvernanceTabGroup({ className }: Props) {
         <StyledTab selected={tab === 'otterclam'} onClick={() => setTab('otterclam')}>
           {t('otterclam_tab')}{' '}
         </StyledTab>
-        <StyledTab selected={tab === 'pen_dyst'} onClick={() => setTab('pen_dyst')}>
-          {t('pen_dyst_tab')}{' '}
+        <StyledTab selected={tab === 'dyst_pen'} onClick={() => setTab('dyst_pen')}>
+          {t('dyst_pen_tab')}{' '}
         </StyledTab>
         <StyledTab selected={tab === 'qidao'} onClick={() => setTab('qidao')}>
           {t('qidao_tab')}{' '}
@@ -64,7 +65,7 @@ export default function GopvernanceTabGroup({ className }: Props) {
       </StyledTabs>
       <StyledBody>
         {tab === 'otterclam' && <OtterClamTab />}
-        {tab === 'pen_dyst' && <UnstakeTab />}
+        {tab === 'dyst_pen' && <DystopiaPenroseTab />}
         {tab === 'qidao' && <UnstakeTab />}
       </StyledBody>
     </StyledStakeDialog>

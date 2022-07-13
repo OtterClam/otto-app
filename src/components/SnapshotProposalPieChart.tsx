@@ -10,15 +10,15 @@ import ChartTooltip from './ChartTooltip'
 import { OtterClamProposals_proposals } from 'graphs/__generated__/OtterClamProposals'
 
 const StyledContainer = styled.div`
-  width: 100%;
+  font-family: 'Pangolin', 'naikaifont' !important;
 `
 export interface SnapshotProposalPieChartProps {
   proposal: OtterClamProposals_proposals
 }
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
 
-const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
-  i18n =>
+const renderTooltip: (i18nClient: i18n, index: number) => TooltipRenderer =
+  (i18n, index) =>
   ({ payload, active }) => {
     if (!active || !payload?.length) {
       return null
@@ -27,7 +27,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       key: name,
       label: name,
       value: `${Math.round(value).toLocaleString(i18n.language)} vPEARL`,
-      color: COLORS[0],
+      color: COLORS[index],
     }))
     // const footer = format(parseInt(payload[0]?.payload?.start ?? '0', 10) * 1000, 'LLL d, yyyy')
     return <ChartTooltip items={items} /> //footer={footer}
@@ -52,13 +52,13 @@ export default function SnapshotProposalPieChart({ proposal }: SnapshotProposalP
   return (
     <StyledContainer ref={containerRef}>
       <PieChart width={size?.width ?? 300} height={260}>
-        <Tooltip wrapperStyle={{ zIndex: 1, fontSize: '12px !important' }} content={renderTooltip(i18n) as any} />
+        <Tooltip wrapperStyle={{ zIndex: 1, fontSize: '12px !important' }} content={renderTooltip(i18n, 0) as any} />
         <Pie data={data} labelLine={false} nameKey="choice" outerRadius={80} dataKey="score" minAngle={5}>
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Legend />
+        <Legend fontFamily="Pangolin" style={{ fontFamily: 'Pangolin !important' }} />
       </PieChart>
     </StyledContainer>
   )
