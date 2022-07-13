@@ -3,10 +3,7 @@ import styled from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
 import SnapshotProposalPieChart from './SnapshotProposalPieChart'
 
-const StyledContainer = styled.div`
-  display: inline-grid;
-  max-width: 45%;
-`
+const StyledContainer = styled.div``
 // `
 //   padding: 15px;
 //   margin-bottom: 4px;
@@ -21,8 +18,11 @@ const StyledContainer = styled.div`
 const StyledCard = styled.div`
   padding: 15px;
   margin: 4px;
-  max-width: 95%;
+  max-width: 45% !important;
   display: inline-grid;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
   border-radius: 10px;
   box-sizing: border-box;
   border: 1px solid ${({ theme }) => theme.colors.darkBrown};
@@ -35,6 +35,7 @@ const StyledTextBody = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   max-height: 10em;
+  max-width: 80% !important;
   padding: 15px;
   margin: 4px;
   border-radius: 10px;
@@ -47,6 +48,7 @@ const StyledTextBody = styled.div`
 
 const FixedSizeHeadline = styled.span`
   font-family: 'Pangolin', 'naikaifont';
+  max-width: 80% !important;
   font-size: 24px;
   font-weight: 400;
   text-align: center;
