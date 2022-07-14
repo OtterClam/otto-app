@@ -1,5 +1,19 @@
 import { gql } from '@apollo/client'
 
+export const GET_PEARL_BANK_METRICS = gql`
+  query GetPearlBankMetrics {
+    pearlBankMetrics(first: 100, orderBy: timestamp, orderDirection: desc) {
+      id
+      payoutMatketValue
+      cumulativeRewardPayoutMarketValue
+      clamPondDepositedAmount
+      stakedCLAMAmount
+      clamTotalSupply
+      timestamp
+    }
+  }
+`
+
 export const GET_TREASURY_METRICS = gql`
   query GetTreasuryMetrics {
     protocolMetrics(first: 100, orderBy: timestamp, orderDirection: desc) {

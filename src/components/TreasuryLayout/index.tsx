@@ -14,7 +14,7 @@ import PearlIcon from './icon_48_pearl.png'
 const menuIcons = {
   bond: BondIcon.src,
   dashboard: DashboardIcon.src,
-  lake: PearlIcon.src,
+  bank: PearlIcon.src,
   pond: ClamIcon.src,
 }
 
@@ -160,9 +160,9 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   { key: 'dashboard' },
   { key: 'pond', legacy: '/#/stake' },
-  { key: 'lake', legacy: '/#/pearl-chests' },
+  { key: 'bank', legacy: '/#/bank' },
   // { key: 'farm', disabled: true },
-  { key: 'bond', legacy: '/#/bonds' },
+  // { key: 'bond', legacy: '/#/bonds' },
 ]
 
 const getUrlForMenuItem = (item: MenuItem) =>

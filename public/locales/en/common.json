@@ -482,14 +482,14 @@
         "label": {
           "dashboard": "Dashboard",
           "pond": "Clam Pond",
-          "lake": "Pearl Lake",
+          "bank": "Pearl Bank",
           "farm": "Farm",
           "bond": "Bond"
         },
         "desc": {
           "dashboard": "OtterClam Finance Stats",
-          "pond": "Stake CLAM",
-          "lake": "Lock Pearl",
+          "pond": "Auto-compound CLAM",
+          "bank": "Stake CLAM for Pearl",
           "farm": "Earn defi yield with tokens",
           "bond": "Provide Liquidity to Earn"
         }

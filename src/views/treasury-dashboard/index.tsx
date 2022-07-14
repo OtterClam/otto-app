@@ -1,3 +1,4 @@
+import { subDays } from 'date-fns'
 import dynamic from 'next/dynamic'
 import AdBanner from 'components/AdBanner'
 import TreasuryCard from 'components/TreasuryCard'
@@ -12,13 +13,15 @@ import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
 import { useTreasuryRealtimeMetrics } from 'contracts/views'
 import { trim } from 'helpers/trim'
 import { BigNumber, BigNumberish, ethers } from 'ethers'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import useTreasuryRevenues from 'hooks/useTreasuryRevenues'
+import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 import ClamSupplyChart from 'components/ClamSupplyChart'
 import ClamBuybackChart from 'components/ClamBuybackChart'
 import CurrencySwitcher from 'components/CurrencySwitcher'
 import useCurrencyFormatter from 'hooks/useCurrencyFormatter'
 import { Currency } from 'contexts/Currency'
+import Switcher from 'components/Switcher'
 import Leaves from './leaves.png'
 import Shell from './shell.png'
 import Bird from './bird.png'
@@ -26,6 +29,7 @@ import Turtle from './turtle.png'
 
 const TreasuryMarketValueChart = dynamic(() => import('components/TreasuryMarketValueChart'))
 const TreasuryRevenuesChart = dynamic(() => import('components/TreasuryRevenuesChart'))
+const BankAvgAprChart = dynamic(() => import('components/BankAvgAprChart'))
 
 const StyledMetricsContainer = styled.div`
   position: relative;
@@ -187,21 +191,53 @@ const formatFinancialNumber = (num: BigNumberish, decimal = 9, digits = 2) =>
 const formatBigNumber = (num: BigNumberish, decimal = 9, digits = 2) =>
   trim(ethers.utils.formatUnits(num, decimal), digits)
 
-const formatNormalNumber = (num: number) => num.toFixed(2)
+enum PearlBankAvgAprRange {
+  Week = 7,
+  Month = 30,
+}
+
+const usePearlBankApr = () => {
+  const [range, setRange] = useState(PearlBankAvgAprRange.Week)
+  const { metrics: pearlBankMetrics } = usePearlBankMetrics()
+  const startDate = useMemo(
+    () => subDays(Number(pearlBankMetrics[0]?.timestamp ?? 0) * 1000, range),
+    [range, pearlBankMetrics]
+  )
+  const avgApr = useMemo(() => {
+    const total = pearlBankMetrics.slice(0, range).reduce((total, value) => {
+      const payoutMatketValue = ethers.utils.parseUnits(value.payoutMatketValue, 6)
+      const stakedCLAMAmount = ethers.utils.parseUnits(value.stakedCLAMAmount, 6)
+      return total.add(payoutMatketValue.div(stakedCLAMAmount))
+    }, BigNumber.from('0'))
+    return trim(ethers.utils.formatUnits(total.mul(365).div(range), 6), 1)
+  }, [range, pearlBankMetrics])
+
+  return {
+    avgApr,
+    pearlBankAvgAprRange: range,
+    setPearlBankAvgAprRange: setRange,
+  }
+}
 
 export default function TreasuryDashboardPage() {
   const { t } = useTranslation('', { keyPrefix: 'treasury.dashboard' })
   const { metrics, latestMetrics } = useTreasuryMetrics()
+  const { metrics: pearlBankMetrics } = usePearlBankMetrics()
   const { revenues } = useTreasuryRevenues()
-  const { clamPrice, pearlPrice, tvd, index } = useTreasuryRealtimeMetrics()
+  const { clamPrice, tvd } = useTreasuryRealtimeMetrics()
+  const { avgApr, pearlBankAvgAprRange, setPearlBankAvgAprRange } = usePearlBankApr()
+
   const backing = ethers.utils
     .parseUnits(latestMetrics?.treasuryMarketValue ?? '0', 27)
     .div(ethers.utils.parseUnits(latestMetrics?.clamCirculatingSupply ?? '1', 9))
+
   const distributedAmount =
     metrics.length >= 2
       ? ethers.utils.parseUnits(metrics[0].totalSupply, 9).sub(ethers.utils.parseUnits(metrics[1].totalSupply, 9))
       : BigNumber.from(0)
+
   const distributedMarketValue = distributedAmount.mul(ethers.utils.parseUnits(metrics[0]?.clamPrice ?? '0', 33))
+
   const getRevenue = useCurrencyFormatter({
     formatters: {
       [Currency.CLAM]: () =>
@@ -288,6 +324,37 @@ export default function TreasuryDashboardPage() {
               </StyledChartKeyValue>
             </StyledChartHeader>
             <TreasuryMarketValueChart data={metrics} />
+          </StyledChartCard>
+
+          <StyledChartCard>
+            <StyledChartHeader>
+              <StyledChartTitle>{t('treasuryRevenue')}</StyledChartTitle>
+              <StyledChartKeyValue>
+                {getRevenue()}
+                <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
+                <CurrencySwitcher />
+              </StyledChartKeyValue>
+            </StyledChartHeader>
+            <TreasuryRevenuesChart data={revenues} />
+          </StyledChartCard>
+
+          <StyledChartCard>
+            <StyledChartHeader>
+              <StyledChartTitle>{t('averageApr')}</StyledChartTitle>
+              <StyledChartKeyValue>
+                {getRevenue()}%<StyledChartKeyDate>{t('averageAprStartDate')}</StyledChartKeyDate>
+                <Switcher
+                  name="pearl-bank-avg-apr-range"
+                  value={pearlBankAvgAprRange}
+                  onChange={setPearlBankAvgAprRange}
+                  options={[
+                    { label: 'Week', value: PearlBankAvgAprRange.Week },
+                    { label: 'Month', value: PearlBankAvgAprRange.Month },
+                  ]}
+                />
+              </StyledChartKeyValue>
+            </StyledChartHeader>
+            <BankAvgAprChart data={pearlBankMetrics} />
           </StyledChartCard>
 
           <StyledChartCard>
