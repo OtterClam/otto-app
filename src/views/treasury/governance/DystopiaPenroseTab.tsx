@@ -2,6 +2,7 @@ import CLAM from 'assets/clam.svg'
 import CLAMCoin from 'assets/icons/CLAM.svg'
 import Button from 'components/Button'
 import DystopiaPenroseFunnelChart from 'components/DystopiaPenroseFunnelChart'
+import PenroseVotesPieChart from 'components/PenroseVotesPieChart'
 import SnapshotProposalGroup from 'components/SnapshotProposalGroup'
 import { useStake } from 'contracts/functions'
 import { useTreasuryRealtimeMetrics } from 'contracts/views'
@@ -46,7 +47,6 @@ export default function DystopiaPenroseTab({ className }: Props) {
 
   const otterClamVlPenRounded = parseFloat(metrics[0].otterClamVlPenPercentOwned).toFixed(2)
   const otterClamVeDystRounded = parseFloat(metrics[0].otterClamVeDystPercentOwned).toFixed(2)
-  // {`OtterClam controls ${otterClamVlPenRounded}% of Penrose voting power,`}
 
   return (
     <div className={className}>
@@ -62,6 +62,8 @@ export default function DystopiaPenroseTab({ className }: Props) {
       </CenteredHeadline>
       <ContentSmall as="p">{}</ContentSmall>
       <DystopiaPenroseFunnelChart metrics={metrics} />
+      <CenteredHeadline as="h1">{"Current Distribtuion of OtterClam's Penrose Vote Allocation:"}</CenteredHeadline>
+      <PenroseVotesPieChart votes={votes} />
     </div>
   )
 }
