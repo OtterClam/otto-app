@@ -44,6 +44,7 @@ export default function DystopiaPenroseTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const { metrics } = useGovernanceMetrics()
   const { votes } = usePenroseVotes()
+  const { proposals } = useOtterClamProposals()
 
   const otterClamVlPenRounded = parseFloat(metrics[0].otterClamVlPenPercentOwned).toFixed(2)
   const otterClamVeDystRounded = parseFloat(metrics[0].otterClamVeDystPercentOwned).toFixed(2)
@@ -64,6 +65,7 @@ export default function DystopiaPenroseTab({ className }: Props) {
       <DystopiaPenroseFunnelChart metrics={metrics} />
       <CenteredHeadline as="h1">{"Current Distribtuion of OtterClam's Penrose Vote Allocation:"}</CenteredHeadline>
       <PenroseVotesPieChart votes={votes} />
+      <SnapshotProposalGroup data={proposals} />
     </div>
   )
 }
