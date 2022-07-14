@@ -29,12 +29,16 @@ interface Props {
 export default function DystopiaPenroseTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const { metrics } = useGovernanceMetrics()
-  console.log(metrics)
   return (
     <div className={className}>
-      <Headline as="h1">{t('welcome')}</Headline>
-      <ContentSmall as="p">{t('desc')}</ContentSmall>
-      <DystopiaPenroseFunnelChart metrics={metrics[0]} />
+      <Headline as="h1">{`OtterClam controls ${parseFloat(metrics[0].otterClamVlPenPercentOwned).toFixed(
+        2
+      )}% of Penrose voting power,`}</Headline>
+      <Headline as="h1">{`equivalent to ${parseFloat(metrics[0].otterClamVeDystPercentOwned).toFixed(
+        2
+      )}% of total Dystopia voting power.`}</Headline>
+      <ContentSmall as="p">{}</ContentSmall>
+      <DystopiaPenroseFunnelChart metrics={metrics} />
     </div>
   )
 }
