@@ -27,7 +27,7 @@ const StyledInnerBorder = styled.div`
   border-radius: 10px;
   overflow: hidden;
   width: 100%;
-  height: var(--body-height);
+  height: calc(var(--body-height) - 20px);
 `
 
 const StyledContainer = styled.div<{ background: Background }>`
