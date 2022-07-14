@@ -11,7 +11,10 @@ import { GetGovernanceMetrics_governanceMetrics, GetGovernanceMetrics } from 'gr
 
 const StyledContainer = styled.div`
   font-family: 'Pangolin', 'naikaifont' !important;
+  justify-content: center;
+  display: grid;
 `
+
 export interface DystopiaPenroseFunnelChartProps {
   metrics: GetGovernanceMetrics_governanceMetrics[]
 }
@@ -65,7 +68,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     const items = payload.map(({ name, value }) => ({
       key: name,
       label: name,
-      value: `$${Math.round(value).toLocaleString(i18n.language)}`,
+      value: `${Math.round(value).toLocaleString(i18n.language)}`,
       color: '#FFFFF',
     }))
     // const footer = format(parseInt(payload[0]?.payload?.start ?? '0', 10) * 1000, 'LLL d, yyyy')
@@ -89,8 +92,15 @@ export default function DystopiaPenroseFunnelChart({ metrics }: DystopiaPenroseF
 
   return (
     <StyledContainer ref={containerRef}>
-      <FunnelChart width={900} height={260}>
-        <Funnel data={data} nameKey="label" dataKey="value" fill="color" labelLine={true} isAnimationActive={false}>
+      <FunnelChart width={660} height={260}>
+        <Funnel
+          data={data}
+          nameKey="label"
+          dataKey="value"
+          fill="rgba(219, 55, 55, 0.5)"
+          labelLine={true}
+          isAnimationActive={false}
+        >
           {/* <LabelList style={{ zIndex: 1 }} height={500} width={500} position="right" dataKey="label" fill="#00FF00" /> */}
           <LabelList position="right" fill="#000" stroke="none" dataKey="label"></LabelList>
         </Funnel>

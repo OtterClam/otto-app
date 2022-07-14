@@ -5,7 +5,13 @@ import { ContentSmall, Display1, Headline, ContentMedium } from 'styles/typograp
 import Button from './Button'
 import SnapshotProposalPieChart from './SnapshotProposalPieChart'
 
-const StyledContainer = styled.div``
+const StyledContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 4px;
+  justify-content: space-evenly;
+`
 // `
 //   padding: 15px;
 //   margin-bottom: 4px;
@@ -35,7 +41,7 @@ const StyledCard = styled.div`
 
 const StyledTextBody = styled.div`
   font-family: 'Pangolin', 'naikaifont';
-  white-space: pre;
+  white-space: pre-line;
   overflow-y: scroll;
   overflow-x: hidden;
   max-height: 10em;
@@ -52,7 +58,7 @@ const StyledTextBody = styled.div`
 
 const CenteredHeadline = styled.span`
   font-family: 'Pangolin', 'naikaifont';
-  max-width: 80% !important;
+  max-width: 80%;
   font-size: 24px;
   font-weight: 400;
   text-align: center;
@@ -79,13 +85,14 @@ export default function TreasuryCard({ className, data }: SnapshotProposalGroup)
           {proposal.state == 'active' ? (
             <Button
               padding="6px 48px"
+              width={'70%'}
               Typography={Headline}
               onClick={() => window.open(`https://snapshot.org/#/otterclam.eth/proposal/${proposal.id}`)}
             >
               {t('treasury.governance.voteNow')}
             </Button>
           ) : (
-            <ContentMedium>{t('treasury.governance.result')}</ContentMedium>
+            <ContentMedium>{t('treasury.governance.votingClosed')}</ContentMedium>
           )}
         </StyledCard>
       ))}

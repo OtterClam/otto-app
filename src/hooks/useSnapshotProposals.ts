@@ -16,3 +16,31 @@ export default function useOtterClamProposals(): {
     proposals,
   }
 }
+
+// export default function useDystopiaPenroseProposals(): {
+//   loading: boolean
+//   proposals: DystopiaPenroseProposals_proposals[]
+// } {
+//   const snapshotSubgraph = useSnapshotSubgraph()
+//   const result = useQuery<DystopiaPenroseProposals>(GET_DYSTOPIA_PENROSE_PROPOSALS, { client: snapshotSubgraph })
+//   const proposals = result?.data?.proposals?.flatMap(x => x!) ?? []
+
+//   return {
+//     loading: Boolean(result?.loading),
+//     proposals,
+//   }
+// }
+
+// export default function useQiDaoProposals(): {
+//   loading: boolean
+//   proposals: DystopiaPenroseProposals_proposals[]
+// } {
+//   const snapshotSubgraph = useSnapshotSubgraph()
+//   const result = useQuery<DystopiaPenroseProposals>(GET_DYSTOPIA_PENROSE_PROPOSALS, { client: snapshotSubgraph })
+//   const proposals = result?.data?.proposals?.flatMap(x => x!) ?? []
+
+//   return {
+//     loading: Boolean(result?.loading),
+//     proposals,
+//   }
+// }

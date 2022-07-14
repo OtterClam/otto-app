@@ -20,6 +20,18 @@ import { Caption, ContentLarge, ContentSmall, Headline } from 'styles/typography
 //   gap: 10px;
 // `
 
+const CenteredHeadline = styled.span`
+  font-family: 'Pangolin', 'naikaifont';
+  white-space: none;
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.5;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    font-size: 20px;
+  }
+`
+
 const StyledButton = styled(Button)``
 
 interface Props {
@@ -29,14 +41,22 @@ interface Props {
 export default function DystopiaPenroseTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const { metrics } = useGovernanceMetrics()
+  const otterClamVlPenRounded = parseFloat(metrics[0].otterClamVlPenPercentOwned).toFixed(2)
+  const otterClamVeDystRounded = parseFloat(metrics[0].otterClamVeDystPercentOwned).toFixed(2)
+  // {`OtterClam controls ${otterClamVlPenRounded}% of Penrose voting power,`}
+
   return (
     <div className={className}>
-      <Headline as="h1">{`OtterClam controls ${parseFloat(metrics[0].otterClamVlPenPercentOwned).toFixed(
-        2
-      )}% of Penrose voting power,`}</Headline>
-      <Headline as="h1">{`equivalent to ${parseFloat(metrics[0].otterClamVeDystPercentOwned).toFixed(
-        2
-      )}% of total Dystopia voting power.`}</Headline>
+      <CenteredHeadline as="h1">
+        {'OtterClam controls '}
+        <span style={{ color: 'red' }}>{`${otterClamVlPenRounded}%`}</span>
+        {' of Penrose voting power,'}
+      </CenteredHeadline>
+      <CenteredHeadline as="h1">
+        {'equivalent to '}
+        <span style={{ color: 'red' }}>{`${otterClamVeDystRounded}%`}</span>
+        {' of total Dystopia voting power.'}
+      </CenteredHeadline>
       <ContentSmall as="p">{}</ContentSmall>
       <DystopiaPenroseFunnelChart metrics={metrics} />
     </div>

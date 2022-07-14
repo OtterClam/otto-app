@@ -527,7 +527,8 @@
       "distributedTooltip": "Total amount of CLAM which has been distributed today. This is divided proportionally between all stakers and Pearl Chest holders."
     },
     "governance": {
-      "title": "Governance"
+      "title": "Governance",
+      "voteNow": "Vote Now!"
     }
   },
   "stake": {
