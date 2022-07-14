@@ -280,10 +280,6 @@ export default function OttoPage() {
     [otto, t]
   )
 
-  useEffect(() => {
-    if (otto) setTimeout(() => otto?.playVoice(), 1000)
-  }, [otto])
-
   return (
     <>
       <StyledOttoPage>
