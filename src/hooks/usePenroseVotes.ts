@@ -1,18 +1,18 @@
 import { useQuery } from '@apollo/client'
-import { GET_GOVERNANCE_METRICS } from 'graphs/otter'
-import { GetGovernanceMetrics, GetGovernanceMetrics_governanceMetrics } from 'graphs/__generated__/GetGovernanceMetrics'
+import { GET_PENROSE_VOTES } from 'graphs/otter'
+import { GetPenroseVotes, GetPenroseVotes_votePosition_votes } from 'graphs/__generated__/GetPenroseVotes'
 import { useOtterSubgraph } from './useOtterSubgraph'
 
-export default function useGovernanceMetrics(): {
+export default function usePenroseVotes(): {
   loading: boolean
-  metrics: GetGovernanceMetrics_governanceMetrics[]
+  votes: GetPenroseVotes_votePosition_votes[]
 } {
   const otterSubgraph = useOtterSubgraph()
-  const result = useQuery<GetGovernanceMetrics>(GET_GOVERNANCE_METRICS, { client: otterSubgraph })
-  const metrics = result?.data?.governanceMetrics ?? []
+  const result = useQuery<GetPenroseVotes>(GET_PENROSE_VOTES, { client: otterSubgraph })
+  const votes = result?.data?.votePosition?.votes ?? []
 
   return {
     loading: Boolean(result?.loading),
-    metrics,
+    votes,
   }
 }

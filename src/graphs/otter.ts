@@ -87,7 +87,7 @@ export const GET_GOVERNANCE_METRICS = gql`
 `
 
 export const GET_PENROSE_VOTES = gql`
-  query GetGovernanceMetrics {
+  query GetPenroseVotes {
     votePosition(id: "1") {
       votes {
         id

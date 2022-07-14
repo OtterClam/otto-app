@@ -8,6 +8,7 @@ import { useTreasuryRealtimeMetrics } from 'contracts/views'
 import { utils } from 'ethers'
 import { trim } from 'helpers/trim'
 import useGovernanceMetrics from 'hooks/useGovernanceMetrics'
+import usePenroseVotes from 'hooks/usePenroseVotes'
 import useOtterClamProposals from 'hooks/useSnapshotProposals'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
@@ -41,6 +42,8 @@ interface Props {
 export default function DystopiaPenroseTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const { metrics } = useGovernanceMetrics()
+  const { votes } = usePenroseVotes()
+
   const otterClamVlPenRounded = parseFloat(metrics[0].otterClamVlPenPercentOwned).toFixed(2)
   const otterClamVeDystRounded = parseFloat(metrics[0].otterClamVeDystPercentOwned).toFixed(2)
   // {`OtterClam controls ${otterClamVlPenRounded}% of Penrose voting power,`}
