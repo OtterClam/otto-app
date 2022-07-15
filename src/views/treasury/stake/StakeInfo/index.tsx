@@ -1,15 +1,14 @@
-import { useEthers } from '@usedapp/core'
 import CLAMCoin from 'assets/icons/CLAM.svg'
 import { useClamPrice, useStakedBalance, useTreasuryRealtimeMetrics } from 'contracts/views'
 import TreasurySection from 'components/TreasurySection'
 import {
   useTotalDepositedAmount,
-  useNextRewadTime,
+  useNextRewardTime,
   useDepositedAmount,
   useTotalStakedAmount,
   useTotalRewardsAmount,
 } from 'contracts/functions'
-import { ethers, BigNumber, utils } from 'ethers'
+import { ethers, BigNumber, utils, constants } from 'ethers'
 import formatDistance from 'date-fns/formatDistanceStrict'
 import { trim } from 'helpers/trim'
 import { useBreakPoints } from 'hooks/useMediaQuery'
@@ -217,39 +216,27 @@ export default function StakeInfo({ className }: Props) {
   const totalRewards = useTotalRewardsAmount()
   const totalDepositedAmount = useTotalDepositedAmount()
   const clamPrice = useClamPrice()
-  const tvl = totalDepositedAmount.mul(clamPrice ?? BigNumber.from(0))
+  const tvl = totalDepositedAmount.mul(clamPrice ?? constants.Zero)
   const depositedAmount = useDepositedAmount()
-
-  const nextRewardTime = useNextRewadTime()
-
+  const nextRewardTime = useNextRewardTime()
   const countdown = useMemo(() => {
     return formatDistance(new Date(), nextRewardTime.toNumber() * 1000)
   }, [nextRewardTime])
-
   const myRewards = useMemo(() => {
     if (totalStaked.eq(0)) {
-      return BigNumber.from(0)
+      return constants.Zero
     }
     return totalRewards.mul(depositedAmount.mul(1000)).div(totalStaked)
   }, [depositedAmount, totalStaked, totalRewards])
-
-  const myRewardsAmount = useMemo(() => {
-    if (!clamPrice || clamPrice.eq(0)) {
-      return BigNumber.from(0)
-    }
-    return myRewards.div(clamPrice)
-  }, [myRewards, clamPrice])
-
-  const yieldRate = useMemo(() => {
-    if (myRewards.eq(0) || !clamPrice || clamPrice.eq(0)) {
-      return BigNumber.from(0)
-    }
-    return myRewards.div(depositedAmount.mul(clamPrice))
-  }, [depositedAmount, clamPrice, myRewards])
-
   const apy = useMemo(() => {
-    return (1 + yieldRate.toNumber() / 365) ** 365 - 1
-  }, [yieldRate])
+    if (totalRewards.eq(0) || !clamPrice || clamPrice.eq(0)) {
+      return constants.Zero
+    }
+    const dailyYield = Number(
+      utils.formatUnits(totalRewards.mul(1e9).mul(1e9).mul(365).div(totalStaked.mul(clamPrice)), 6)
+    )
+    return (1 + dailyYield) ** 365 - 1
+  }, [clamPrice, totalRewards, totalStaked])
 
   return (
     <StyledStakeInfo className={className}>
@@ -276,15 +263,6 @@ export default function StakeInfo({ className }: Props) {
                 <StyledInfoTitle>{t('apy')}</StyledInfoTitle>
                 <p>{trim(apy, 2)}%</p>
               </StyledInfoContainer>
-              {/* <StyledInfoContainer>
-                <p />
-                <StyledPearlChestContainer>
-                  <StyledPearlChest>
-                    {t('chest_reward')}
-                    <span>+ 86%</span>
-                  </StyledPearlChest>
-                </StyledPearlChestContainer>
-              </StyledInfoContainer> */}
             </StyledInfos>
             <StyledExtraRewards>{t('extra_rewards')}</StyledExtraRewards>
             <StyledGashaponTicket
