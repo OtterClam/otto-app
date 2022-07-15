@@ -230,7 +230,7 @@ export default function StakeInfo({ className }: Props) {
     if (totalStaked.eq(0)) {
       return BigNumber.from(0)
     }
-    return totalRewards.mul(depositedAmount).div(totalStaked)
+    return totalRewards.mul(depositedAmount.mul(1000)).div(totalStaked)
   }, [depositedAmount, totalStaked, totalRewards])
 
   const myRewardsAmount = useMemo(() => {
@@ -241,10 +241,10 @@ export default function StakeInfo({ className }: Props) {
   }, [myRewards, clamPrice])
 
   const yieldRate = useMemo(() => {
-    if (myRewards.eq(0)) {
+    if (myRewards.eq(0) || !clamPrice || clamPrice.eq(0)) {
       return BigNumber.from(0)
     }
-    return depositedAmount.mul(clamPrice).div(myRewards)
+    return myRewards.div(depositedAmount.mul(clamPrice))
   }, [depositedAmount, clamPrice, myRewards])
 
   const apy = useMemo(() => {
@@ -256,7 +256,7 @@ export default function StakeInfo({ className }: Props) {
       <StyledBackground1 delay={0} />
       <StyledBackground2 delay={500} />
       <StyledBody>
-        <StyledTVL>{t('tvl', { tvl: trim(ethers.utils.formatUnits(tvl, 18), 2) })}</StyledTVL>
+        <StyledTVL>{t('tvl', { tvl: trim(ethers.utils.formatUnits(tvl, 21), 2) })}</StyledTVL>
         {isMobile && <StyledStakedDialog />}
         <StyledSection>
           <StyledSectionTitle>
@@ -265,7 +265,7 @@ export default function StakeInfo({ className }: Props) {
           </StyledSectionTitle>
           <StyledSectionBody>
             <StyledClamBalanceContainer>
-              <StyledClamBalance>{trim(utils.formatUnits(myRewardsAmount, 9), 4)} CLAM</StyledClamBalance>
+              <StyledClamBalance>{trim(utils.formatUnits(depositedAmount, 9), 4)} CLAM</StyledClamBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
               <StyledInfoContainer>

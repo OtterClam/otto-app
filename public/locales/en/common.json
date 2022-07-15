@@ -587,6 +587,7 @@
       "headline": "Otter’standing!",
       "title": "Your unstake was successful.",
       "desc": "you will get"
-    }
+    },
+    "claim": "Claim"
   }
 }

@@ -322,7 +322,7 @@ export const useUnstake = () => {
   })
   const unstake = async (amount: string) => {
     try {
-      const clamAmount = ethers.utils.parseEther(amount)
+      const clamAmount = ethers.utils.parseUnits(amount, 9)
       setUnstakeState({
         state: 'PendingSignature',
         status: state,
@@ -337,6 +337,12 @@ export const useUnstake = () => {
     setUnstakeState({ state: state.status, status: state })
   }, [state])
   return { unstakeState, unstake, resetState }
+}
+
+export const useClaimRewards = () => {
+  const pearlBank = usePearlBank()
+  const { send } = useContractFunction(pearlBank, 'claimRewards', {})
+  return send
 }
 
 export function useStakedInfo() {
@@ -411,27 +417,29 @@ export function useClamPerPearl() {
 
 export function useTotalRewardsAmount() {
   const pearlBank = usePearlBank()
+  const { OCUSDC } = useContractAddresses()
 
   const [result] = useCalls([
     {
       contract: pearlBank,
-      method: 'latestTokenReward',
-      args: [],
+      method: 'latestTokenRewards',
+      args: [OCUSDC],
     },
   ])
 
   return result?.value ? result?.value[0] : BigNumber.from(0)
 }
 
-export function useClaimableRewards() {
+export function useAvailableTokenRewards() {
   const pearlBank = usePearlBank()
+  const { OCUSDC } = useContractAddresses()
   const { account } = useEthers()
 
   const [result] = useCalls([
     {
       contract: pearlBank,
-      method: 'totalTokenRewardsPerStake',
-      args: [account],
+      method: 'getAvailableTokenRewards',
+      args: [account, OCUSDC],
     },
   ])
 
@@ -533,7 +541,7 @@ export const useWithdraw = () => {
   })
   const unstake = async (amount: string) => {
     try {
-      const clamAmount = ethers.utils.parseEther(amount)
+      const clamAmount = ethers.utils.parseUnits(amount, 9)
       setUnstakeState({
         state: 'PendingSignature',
         status: state,

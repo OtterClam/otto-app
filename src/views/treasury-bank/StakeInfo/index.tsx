@@ -10,8 +10,10 @@ import {
   useStakedInfo,
   useTotalRewardsAmount,
   useNextRewadTime,
-  useClaimableRewards,
+  useAvailableTokenRewards,
+  useClaimRewards,
 } from 'contracts/functions'
+import Button from 'components/Button'
 import formatDistance from 'date-fns/formatDistanceStrict'
 import { ethers, utils, BigNumber } from 'ethers'
 import { trim } from 'helpers/trim'
@@ -19,7 +21,7 @@ import { useBreakPoints } from 'hooks/useMediaQuery'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import { ContentSmall, Note } from 'styles/typography'
+import { ContentExtraSmall, ContentSmall, Note } from 'styles/typography'
 import StakeDialog from '../StakeDialog'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
@@ -120,6 +122,10 @@ const StyledClamBalanceContainer = styled.div`
   padding: 6px 20px;
 `
 
+const StyledClaimableBlanceContainer = styled(StyledClamBalanceContainer)`
+  flex: 1;
+`
+
 const StyledClamBalance = styled(ContentSmall)`
   display: flex;
   align-items: center;
@@ -191,6 +197,14 @@ const StyledStakedDialog = styled(StakeDialog)`
   margin-top: -20px;
 `
 
+const StyledClaimableBalance = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`
+
+const StyledClaimButton = styled(Button)``
+
 interface Props {
   className?: string
 }
@@ -201,12 +215,12 @@ export default function StakeInfo({ className }: Props) {
   const clamPrice = useClamPrice()
   const totalStaked = useTotalStakedAmount()
   const pearlBankBalance = usePearlBankBalance()
-  const clamPerPearl = useClamPerPearl()
   const totalRewards = useTotalRewardsAmount()
   const myStakedInfo = useStakedInfo()
   const nextRewardTime = useNextRewadTime()
-  const claimableRewards = useClaimableRewards()
+  const availableTokenRewards = useAvailableTokenRewards()
   const tvl = clamPrice ? clamPrice.mul(totalStaked) : BigNumber.from(0)
+  const claim = useClaimRewards()
 
   const countdown = useMemo(() => {
     return formatDistance(new Date(), nextRewardTime.toNumber() * 1000)
@@ -220,10 +234,10 @@ export default function StakeInfo({ className }: Props) {
   }, [myStakedInfo, totalStaked, totalRewards])
 
   const yieldRate = useMemo(() => {
-    if (myRewards.eq(0)) {
+    if (myRewards.eq(0) || !clamPrice || clamPrice.eq(0)) {
       return BigNumber.from(0)
     }
-    return myStakedInfo.amount.mul(clamPrice).div(myRewards)
+    return myRewards.mul(1e9).mul(1e9).div(myStakedInfo.amount.mul(clamPrice))
   }, [myStakedInfo, clamPrice, myRewards])
 
   return (
@@ -247,7 +261,7 @@ export default function StakeInfo({ className }: Props) {
               </StyledInfoContainer>
               <StyledInfoContainer>
                 <p />
-                <StyledHint>{`1 PEARL = ${trim(ethers.utils.formatUnits(clamPerPearl, 18), 2)} CLAM`}</StyledHint>
+                <StyledHint>1 PEARL = 1 CLAM</StyledHint>
               </StyledInfoContainer>
             </StyledInfos>
           </StyledSectionBody>
@@ -258,9 +272,14 @@ export default function StakeInfo({ className }: Props) {
             <StyledSubtitle>{t('rebase_countdown', { countdown })}</StyledSubtitle>
           </StyledSectionTitle>
           <StyledSectionBody>
-            <StyledClamBalanceContainer>
-              <StyledUsdPlusBalance>{trim(utils.formatUnits(claimableRewards, 6), 4)} USD+</StyledUsdPlusBalance>
-            </StyledClamBalanceContainer>
+            <StyledClaimableBalance>
+              <StyledClaimableBlanceContainer>
+                <StyledUsdPlusBalance>{trim(utils.formatUnits(availableTokenRewards, 6), 4)} USD+</StyledUsdPlusBalance>
+              </StyledClaimableBlanceContainer>
+              <StyledClaimButton padding="2px 6px 2px 6px" Typography={ContentSmall} onClick={claim}>
+                {t('claim')}
+              </StyledClaimButton>
+            </StyledClaimableBalance>
             <StyledInfos>
               <StyledInfoContainer>
                 <StyledInfoTitle>{t('latest_reward')}</StyledInfoTitle>

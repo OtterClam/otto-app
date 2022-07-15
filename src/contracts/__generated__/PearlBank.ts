@@ -54,6 +54,7 @@ export interface PearlBankInterface extends utils.Interface {
     "isRewardToken(address)": FunctionFragment;
     "isWhitelisted(address)": FunctionFragment;
     "isWhitelistedContract(address)": FunctionFragment;
+    "latestTokenRewards(address)": FunctionFragment;
     "multiplierStakingEnabled()": FunctionFragment;
     "name()": FunctionFragment;
     "onERC721Received(address,address,uint256,bytes)": FunctionFragment;
@@ -126,6 +127,7 @@ export interface PearlBankInterface extends utils.Interface {
       | "isRewardToken"
       | "isWhitelisted"
       | "isWhitelistedContract"
+      | "latestTokenRewards"
       | "multiplierStakingEnabled"
       | "name"
       | "onERC721Received"
@@ -251,6 +253,10 @@ export interface PearlBankInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "isWhitelistedContract",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "latestTokenRewards",
     values: [string]
   ): string;
   encodeFunctionData(
@@ -473,6 +479,10 @@ export interface PearlBankInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "isWhitelistedContract",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "latestTokenRewards",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -982,6 +992,11 @@ export interface PearlBank extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    latestTokenRewards(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     multiplierStakingEnabled(overrides?: CallOverrides): Promise<[boolean]>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
@@ -1273,6 +1288,11 @@ export interface PearlBank extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  latestTokenRewards(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   multiplierStakingEnabled(overrides?: CallOverrides): Promise<boolean>;
 
   name(overrides?: CallOverrides): Promise<string>;
@@ -1555,6 +1575,11 @@ export interface PearlBank extends BaseContract {
       addr: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    latestTokenRewards(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     multiplierStakingEnabled(overrides?: CallOverrides): Promise<boolean>;
 
@@ -2004,6 +2029,11 @@ export interface PearlBank extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    latestTokenRewards(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     multiplierStakingEnabled(overrides?: CallOverrides): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
@@ -2301,6 +2331,11 @@ export interface PearlBank extends BaseContract {
 
     isWhitelistedContract(
       addr: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    latestTokenRewards(
+      arg0: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
