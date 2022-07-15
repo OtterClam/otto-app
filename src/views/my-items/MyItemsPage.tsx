@@ -113,7 +113,7 @@ const StyledNoSelectedItem = styled.div`
 
 const StyledMobileItemDetailsContainer = styled.div`
   height: 90vh;
-  overflow-y: scroll;
+  overflow-y: auto;
 `
 
 const StyledEmptySlate = styled(ContentSmall).attrs({ as: 'div' })`

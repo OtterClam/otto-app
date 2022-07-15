@@ -14,7 +14,7 @@ import PearlIcon from './icon_48_pearl.png'
 const menuIcons = {
   bond: BondIcon.src,
   dashboard: DashboardIcon.src,
-  lake: PearlIcon.src,
+  bank: PearlIcon.src,
   pond: ClamIcon.src,
 }
 
@@ -149,6 +149,16 @@ const StyledMenuItemDesc = styled(Note)`
 const StyledContent = styled.div`
   flex: 1;
   padding: 4px;
+  box-sizing: border-box;
+  max-height: var(--body-height);
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    max-height: unset;
+    overflow-x: unset;
+    overflow-y: unset;
+  }
 `
 
 interface MenuItem {
@@ -158,11 +168,11 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { key: 'dashboard' },
+  // { key: 'dashboard' },
   { key: 'pond' },
-  { key: 'lake', legacy: '/#/pearl-chests' },
+  { key: 'bank' },
   // { key: 'farm', disabled: true },
-  { key: 'bond', legacy: '/#/bonds' },
+  // { key: 'bond', legacy: '/#/bonds' },
 ]
 
 const getUrlForMenuItem = (item: MenuItem) =>

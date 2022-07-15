@@ -305,11 +305,11 @@
   },
   "otto": {
     "birthday": "生日： {{birthday}}",
-    "chosen_one": "This Otto is the chosen one!\nThe upcoming epoch falls to {{birthday}}. All Otto, Lotties and Cleo that the Birthday is same to the date are blessed with special boosts!",
+    "chosen_one": "這隻是天選之獺！\n這一輪的稀有度大賽日期落在了 {{birthday}}，所有與此日期相同生日的阿獺、蘿提及克蕾歐都會被阿獺之神祝福並賜予特殊效果。",
     "classic": "經典",
     "classic_note": "經典阿獺是阿獺王國裡最大宗、且最人見人愛的王國居民。",
     "coatOfArms": "阿獺王國共有 5 大家族，這隻阿獺是屬於{{arms}}，快尋找同樣家徽的阿獺吧！",
-    "constellation_boost": "The upcoming epoch falls to {{constellation}}. The god of {{constellation}} has blessed every {{constellation}} Otto, Lottie and Cleo with glory and power!",
+    "constellation_boost": "這一輪的稀有度大賽落在了 {{constellation}}。{{constellation}}之神賜予了星座為{{constellation}}的阿獺、蘿提及克蕾歐光榮及力量！",
     "first_gen": "第一代阿獺",
     "first_gen_desc": "為第一代先驅者，總共會有 5000 隻阿獺傳送到阿獺王國。",
     "gender": "性別： {{gender}}",
@@ -477,5 +477,117 @@
     "desc": "Ottopia 只支援 Polygon 喔！",
     "title": "不支援的區塊鏈"
   },
-  "wallet_selector_head": "連接錢包"
+  "wallet_selector_head": "連接錢包",
+  "treasury": {
+    "layout": {
+      "nav": {
+        "label": {
+          "dashboard": "國庫概況",
+          "pond": "貝殼水池",
+          "bank": "珍珠銀行",
+          "farm": "農場",
+          "bond": "債券"
+        },
+        "desc": {
+          "dashboard": "阿獺王國的國庫概況",
+          "pond": "自動複利你的 CLAM",
+          "bank": "將 CLAM 變成珍珠",
+          "farm": "用代幣賺取 defi 營收",
+          "bond": "提供流動性來獲利"
+        }
+      }
+    },
+    "dashboard": {
+      "title": "國庫概況",
+      "clamPrice": "CLAM 價格",
+      "pearlPrice": "PEARL 價格",
+      "currentIndex": "當前指數",
+      "currentIndexTooltip": "當前指數從開始質押的時候開始追蹤 sCLAM 累積的數量。基本上就是一個人在一天當中可以擁有多少 sCLAM，如果他們質押或是持有單一顆 CLAM。",
+      "backing": "CLAM 單位支持額",
+      "backingTooltip": "國庫淨資產總值除以流通的 CLAM 數量。",
+      "tvd": "總計存額",
+      "tvdTooltip": "存款總額（Total Value Deposited，簡稱 TVL），是協定中所有 CLAM 賭注的金額。這個度量常常被 DeFi 的專案用來當作評估成長或健康度的指標。",
+      "staked": "CLAM 質押率",
+      "stakedTooltip": "CLAM 質押率, 是 sCLAM 對 CLAM 的比率 (staked / unstaked)",
+      "chartHeaderLabel": "總計",
+      "today": "今天",
+      "treasuryMarketValue": "國庫資產市價",
+      "treasuryRevenue": "國庫營收",
+      "clamCirculatingSupply": "CLAM 總流通量",
+      "buybacks": "回購",
+      "burned": "已燒毀的 CLAM",
+      "burnedTooltip": "由國庫回購並且燒毀的 CLAM 數量。",
+      "distributed": "已分發獎勵",
+      "distributedTooltip": "今天已分發之 USD+ 獎勵。獎勵來自貝殼水池及珍珠銀行所質押所分配的 USD+ 數量。",
+      "averageApr": "平均百分比收益率 (APY)",
+      "averageAprStartDate": "從 {{ date }}"
+    }
+  },
+  "stake": {
+    "title": "貝殼水池",
+    "stake_tab": "投入貝殼",
+    "unstake_tab": "領出貝殼",
+    "welcome": "歡迎來到貝殼水池!",
+    "desc": "投入貝殼幣 CLAM 來賺取 USD+ 獎勵。水池會自動再投入你已獲得的 USD+ 獎勵來產生更多 CLAM ，以自動複利來達到最大效益。你可以隨時投入或領出貝殼幣喔！",
+    "available": "你的貝殼幣:",
+    "max": "最大值",
+    "input_placeholder": "請輸入數量",
+    "stake_btn": "投入貝殼幣",
+    "unstake_btn": "領出貝殼幣",
+    "tvl": "總投入價值 TVL: ${{tvl}}",
+    "unstake_note": "*如果你在 30 天內提領貝殼幣，你將會被收取當次提領貝殼幣數量的 {{ feeRate }}% 手續費。減免手續費日期: {{ date }} (剩餘 {{ days }} 天)",
+    "fee": "手續費 ({{ feeRate }}%)*",
+    "staked_balance": "你已投入數量",
+    "pearl_balance": "PEARL 數量",
+    "next_reward": "最近一次獎勵數量",
+    "rebase_countdown": " 下次收成倒數: {{countdown}}",
+    "next_reward_yield": "最近一次獎勵收益率",
+    "apy": "年度百分比收益率 APY",
+    "chest_reward": "最大值 ",
+    "extra_rewards": "更多豐富獎勵即將登場...",
+    "stake_popup": {
+      "headline": "太蚌了!",
+      "title": "你成功投入貝殼幣到水池了！",
+      "desc": "你將會得到 "
+    },
+    "unstake_popup": {
+      "headline": "太蚌了!",
+      "title": "你成功領出貝殼幣了！",
+      "desc": "你將收到"
+    }
+  },
+  "bank": {
+    "stake_tab": "存入貝殼",
+    "unstake_tab": "提領貝殼",
+    "welcome": "歡迎來到珍珠銀行!",
+    "desc": "存入你的貝殼幣 CLAM 來換取珍珠 PEARL，就可以被動賺取阿獺王國的營收分潤及其他獎勵！獎勵會以 USD+ 分發，你可以隨時存入及提領你的貝殼幣呦！嚕獺～",
+    "available": "你的貝殼幣:",
+    "max": "最大值",
+    "input_placeholder": "請輸入數量",
+    "stake_btn": "存入貝殼幣",
+    "unstake_btn": "提領貝殼幣",
+    "unstake_note": "*如果你在 30 天內提領貝殼幣，你將會被收取當次提領貝殼幣數量的 0.5% 手續費。減免手續費日期: {{ date }} (剩餘 {{ days }} 天)",
+    "fee": "手續費 ({{ feeRate }}%)*",
+    "unstake_receive_amount": "你將會得到",
+    "tvl": "總存入價值 TVL:",
+    "staked_balance": "你已存入數量",
+    "pearl_balance": "PEARL 數量",
+    "current_reward": "當前獎勵數量",
+    "rebase_countdown": "下次獎勵倒數: {{ countdown }}",
+    "latest_reward": "最近一次獎勵",
+    "latest_reward_yield": "最近一次獎勵年化報酬率",
+    "apr": "年化報酬率 APR",
+    "extra_rewards": "更多豐富獎勵即將登場...",
+    "stake_popup": {
+      "headline": "太蚌了!",
+      "title": "你已成功存入貝殼幣",
+      "desc": "你將會得到"
+    },
+    "unstake_popup": {
+      "headline": "太蚌了!",
+      "title": "你已成功提領貝殼幣",
+      "desc": "你將會收到"
+    },
+    "claim": "領取獎勵"
+  }
 }

@@ -13,6 +13,7 @@ const StyledContainer = styled.div`
   align-items: center;
   gap: 10px;
   height: 68px;
+  min-height: 68px;
 `
 
 export default function PageHeader({ title }: PageHeaderProps) {

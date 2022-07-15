@@ -5,7 +5,10 @@ import { ContentMedium } from 'styles/typography'
 import StakeTab from './StakeTab'
 import UnstakeTab from './UnstakeTab'
 
-const StyledStakeDialog = styled.div``
+const StyledStakeDialog = styled.div`
+  position: relative;
+  z-index: 1;
+`
 
 const StyledTabs = styled.div`
   display: flex;

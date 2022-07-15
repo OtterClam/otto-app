@@ -7,10 +7,10 @@ import useApollo from 'hooks/useApollo'
 import useContractAddresses from 'hooks/useContractAddresses'
 import MyOttosProvider from 'MyOttosProvider'
 import OtterSubgraphProvider from 'OtterSubgraphProvider'
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, useEffect } from 'react'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
-import bg from './assets/bg.jpg'
+import { CurrencyProvider } from 'contexts/Currency'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 
@@ -18,16 +18,7 @@ const StyledApp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
-  background-image: url(${bg.src});
-  background-size: cover;
-  color: ${({ theme }) => theme.colors.otterBlack};
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    min-height: 100vh;
-    background-position: center;
-    background-size: cover;
-  }
+  height: var(--real-vh);
 `
 
 const config: Config = {
@@ -42,25 +33,43 @@ const config: Config = {
   bufferGasLimitPercentage: 15,
 }
 
+function useRealWindowSize() {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const updateCssVariables = () => {
+        document.documentElement.style.setProperty('--real-vh', `${window.innerHeight}px`)
+      }
+      window.addEventListener('resize', updateCssVariables)
+      updateCssVariables()
+      return () => window.removeEventListener('resize', updateCssVariables)
+    }
+  }, [])
+}
+
 const ApolloApp = ({ children }: PropsWithChildren<object>) => {
   useContractAddresses()
   const apollo = useApollo()
+
+  useRealWindowSize()
+
   return (
     <ApolloProvider client={apollo}>
       <OtterSubgraphProvider>
-        <ThemeProvider theme={theme}>
-          <BreakpointsProvider>
-            <MyOttosProvider>
-              <StyledApp>
-                {children}
-                <Error />
-                <WalletSelector />
-                <MintPopup />
-                <SideMenu />
-              </StyledApp>
-            </MyOttosProvider>
-          </BreakpointsProvider>
-        </ThemeProvider>
+        <CurrencyProvider>
+          <ThemeProvider theme={theme}>
+            <BreakpointsProvider>
+              <MyOttosProvider>
+                <StyledApp>
+                  {children}
+                  <Error />
+                  <WalletSelector />
+                  <MintPopup />
+                  <SideMenu />
+                </StyledApp>
+              </MyOttosProvider>
+            </BreakpointsProvider>
+          </ThemeProvider>
+        </CurrencyProvider>
       </OtterSubgraphProvider>
     </ApolloProvider>
   )

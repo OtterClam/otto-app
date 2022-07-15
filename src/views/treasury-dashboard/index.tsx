@@ -1,3 +1,4 @@
+import { subDays, format as formatDate } from 'date-fns'
 import dynamic from 'next/dynamic'
 import AdBanner from 'components/AdBanner'
 import TreasuryCard from 'components/TreasuryCard'
@@ -12,10 +13,15 @@ import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
 import { useTreasuryRealtimeMetrics } from 'contracts/views'
 import { trim } from 'helpers/trim'
 import { BigNumber, BigNumberish, ethers } from 'ethers'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import useTreasuryRevenues from 'hooks/useTreasuryRevenues'
+import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 import ClamSupplyChart from 'components/ClamSupplyChart'
 import ClamBuybackChart from 'components/ClamBuybackChart'
+import CurrencySwitcher from 'components/CurrencySwitcher'
+import useCurrencyFormatter from 'hooks/useCurrencyFormatter'
+import { Currency } from 'contexts/Currency'
+import Switcher from 'components/Switcher'
 import Leaves from './leaves.png'
 import Shell from './shell.png'
 import Bird from './bird.png'
@@ -23,6 +29,7 @@ import Turtle from './turtle.png'
 
 const TreasuryMarketValueChart = dynamic(() => import('components/TreasuryMarketValueChart'))
 const TreasuryRevenuesChart = dynamic(() => import('components/TreasuryRevenuesChart'))
+const BankAvgAprChart = dynamic(() => import('components/BankAvgAprChart'))
 
 const StyledMetricsContainer = styled.div`
   position: relative;
@@ -167,50 +174,77 @@ const StyledChartTitle = styled(ContentSmall)`
   color: ${({ theme }) => theme.colors.darkGray200};
 `
 
-const StyledChartKeyValue = styled.span``
+const StyledChartKeyValue = styled.span`
+  display: flex;
+  align-items: center;
+`
 
 const StyledChartKeyDate = styled.span`
+  flex: 1;
   color: ${({ theme }) => theme.colors.darkGray200};
   margin-left: 6px;
 `
 
-const formatFinancialNumber = (num: BigNumberish, decimal = 9) => `$${formatBigNumber(num, decimal)}`
+const formatFinancialNumber = (num: BigNumberish, decimal = 9, digits = 2) =>
+  `$${formatBigNumber(num, decimal, digits)}`
 
-const formatBigNumber = (num: BigNumberish, decimal = 9) => trim(ethers.utils.formatUnits(num, decimal), 2)
+const formatBigNumber = (num: BigNumberish, decimal = 9, digits = 2) =>
+  trim(ethers.utils.formatUnits(num, decimal), digits)
 
-const formatNormalNumber = (num: number) => num.toFixed(2)
+enum PearlBankAvgAprRange {
+  Week = 7,
+  Month = 30,
+}
+
+const usePearlBankApr = () => {
+  const [range, setRange] = useState(PearlBankAvgAprRange.Week)
+  const { metrics: pearlBankMetrics } = usePearlBankMetrics()
+  const startDate = useMemo(
+    () => subDays(Number(pearlBankMetrics[0]?.timestamp ?? 0) * 1000, range),
+    [range, pearlBankMetrics]
+  )
+  const avgApr = useMemo(() => {
+    const total = pearlBankMetrics.slice(0, range).reduce((total, value) => {
+      const payoutMatketValue = ethers.utils.parseUnits(value.payoutMatketValue, 6)
+      const stakedCLAMAmount = ethers.utils.parseUnits(value.stakedCLAMAmount, 6)
+      return total.add(payoutMatketValue.div(stakedCLAMAmount))
+    }, BigNumber.from('0'))
+    return trim(ethers.utils.formatUnits(total.mul(365).div(range), 6), 1)
+  }, [range, pearlBankMetrics])
+
+  return {
+    avgApr,
+    startDate,
+    pearlBankAvgAprRange: range,
+    setPearlBankAvgAprRange: setRange,
+  }
+}
 
 export default function TreasuryDashboardPage() {
   const { t } = useTranslation('', { keyPrefix: 'treasury.dashboard' })
   const { metrics, latestMetrics } = useTreasuryMetrics()
+  const { metrics: pearlBankMetrics, latestMetrics: pearlBankLatestMetrics } = usePearlBankMetrics()
   const { revenues } = useTreasuryRevenues()
-  const { clamPrice, pearlPrice, tvd, index } = useTreasuryRealtimeMetrics()
+  const { clamPrice, tvd } = useTreasuryRealtimeMetrics()
+  const { avgApr, pearlBankAvgAprRange, setPearlBankAvgAprRange } = usePearlBankApr()
+
+  const pearlBankAvgAprRangeStartDate = subDays(new Date(), pearlBankAvgAprRange)
+
   const backing = ethers.utils
     .parseUnits(latestMetrics?.treasuryMarketValue ?? '0', 27)
     .div(ethers.utils.parseUnits(latestMetrics?.clamCirculatingSupply ?? '1', 9))
-  const distributedAmount =
-    metrics.length >= 2
-      ? ethers.utils.parseUnits(metrics[0].totalSupply, 9).sub(ethers.utils.parseUnits(metrics[1].totalSupply, 9))
-      : BigNumber.from(0)
-  const distributedMarketValue = distributedAmount.mul(ethers.utils.parseUnits(metrics[0]?.clamPrice ?? '0', 33))
 
-  const staked = useMemo(() => {
-    return metrics
-      .map((entry: any) => ({
-        staked: (parseFloat(entry.sClamCirculatingSupply) / parseFloat(entry.clamCirculatingSupply)) * 100,
-        timestamp: entry.timestamp,
-      }))
-      .filter((pm: any) => pm.staked < 100)
-  }, [metrics])
+  const distributedMarketValue = ethers.utils.parseUnits(pearlBankLatestMetrics?.payoutMatketValue ?? '0', 6)
 
-  const transformedRevenues = useMemo(() => {
-    return revenues.map(entry =>
-      Object.entries(entry).reduce((obj, [key, value]) => {
-        obj[key] = parseFloat(value)
-        return obj
-      }, {} as { [k: string]: number })
-    )
-  }, [revenues])
+  const getRevenue = useCurrencyFormatter({
+    formatters: {
+      [Currency.CLAM]: () =>
+        `${formatBigNumber(ethers.utils.parseUnits(revenues[0]?.totalRevenueClamAmount ?? '0', 32), 32, 0)} CLAM`,
+      [Currency.USD]: () =>
+        formatFinancialNumber(ethers.utils.parseUnits(revenues[0]?.totalRevenueMarketValue ?? '0', 32), 32, 0),
+    },
+    defaultCurrency: Currency.CLAM,
+  })
 
   return (
     <div>
@@ -228,39 +262,49 @@ export default function TreasuryDashboardPage() {
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
-            <StyledTokenContainer>
-              <StyledTokenLabel>{t('pearlPrice')}</StyledTokenLabel>
-              <StyledTokenPrice>{pearlPrice ? formatFinancialNumber(pearlPrice, 18) : '--'}</StyledTokenPrice>
-              <StyledTokenIcon src={PearlIcon.src} />
-            </StyledTokenContainer>
+            <Help message={t('burnedTooltip')}>
+              <ContentExtraSmall>{t('burned')}</ContentExtraSmall>
+            </Help>
+            <ContentMedium>
+              {formatBigNumber(ethers.utils.parseUnits(latestMetrics?.totalBurnedClam ?? '0', 2), 2, 0)} (
+              {formatFinancialNumber(
+                ethers.utils.parseUnits(latestMetrics?.totalBurnedClamMarketValue ?? '0', 29),
+                29,
+                0
+              )}
+              )
+            </ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
-            <Help message={t('currentIndexTooltip')}>
-              <ContentExtraSmall>{t('currentIndex')}</ContentExtraSmall>
+            <Help message={t('distributedTooltip')}>
+              <ContentExtraSmall>{t('distributed')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatBigNumber(index)}</ContentMedium>
+            <ContentMedium>{formatBigNumber(distributedMarketValue, 6, 0)} USD+</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
             <Help message={t('backingTooltip')}>
               <ContentExtraSmall>{t('backing')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatBigNumber(backing, 18)}</ContentMedium>
+            <ContentMedium>{formatFinancialNumber(backing, 18)}</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
             <Help message={t('tvdTooltip')}>
               <ContentExtraSmall>{t('tvd')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatFinancialNumber(tvd, 18)}</ContentMedium>
+            <ContentMedium>{formatFinancialNumber(tvd, 18, 0)}</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
             <Help message={t('stakedTooltip')}>
-              <ContentExtraSmall>{t('staked')}</ContentExtraSmall>
+              <ContentExtraSmall>{t('clamCirculatingSupply')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatNormalNumber(staked[0]?.staked ?? 0)}%</ContentMedium>
+            <ContentMedium>
+              {formatBigNumber(ethers.utils.parseUnits(latestMetrics?.clamCirculatingSupply ?? '0', 27), 27, 0)} (
+              {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.totalSupply ?? '0', 27), 27, 0)})
+            </ContentMedium>
           </StyledTreasuryCard>
         </StyledMetricsContainer>
       </TreasurySection>
@@ -271,7 +315,7 @@ export default function TreasuryDashboardPage() {
             <StyledChartHeader>
               <StyledChartTitle>{t('treasuryMarketValue')}</StyledChartTitle>
               <StyledChartKeyValue>
-                {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.treasuryMarketValue ?? '0', 27), 27)}
+                {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.treasuryMarketValue ?? '0', 27), 27, 0)}
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
               </StyledChartKeyValue>
             </StyledChartHeader>
@@ -282,8 +326,9 @@ export default function TreasuryDashboardPage() {
             <StyledChartHeader>
               <StyledChartTitle>{t('treasuryRevenue')}</StyledChartTitle>
               <StyledChartKeyValue>
-                {formatFinancialNumber(ethers.utils.parseUnits(revenues[0]?.totalRevenueMarketValue ?? '0', 32), 32)}
+                {getRevenue()}
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
+                <CurrencySwitcher />
               </StyledChartKeyValue>
             </StyledChartHeader>
             <TreasuryRevenuesChart data={revenues} />
@@ -291,46 +336,37 @@ export default function TreasuryDashboardPage() {
 
           <StyledChartCard>
             <StyledChartHeader>
-              <StyledChartTitle>{t('clamCirculatingSupply')}</StyledChartTitle>
+              <StyledChartTitle>{t('averageApr')}</StyledChartTitle>
               <StyledChartKeyValue>
-                {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.clamCirculatingSupply ?? '0', 27), 27)} /
-                ({formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.totalSupply ?? '0', 27), 27)})
-                <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
+                {getRevenue()}%
+                <StyledChartKeyDate>
+                  {t('averageAprStartDate', { date: formatDate(pearlBankAvgAprRangeStartDate, 'MMM d') })}
+                </StyledChartKeyDate>
+                <Switcher
+                  name="pearl-bank-avg-apr-range"
+                  value={pearlBankAvgAprRange}
+                  onChange={setPearlBankAvgAprRange}
+                  options={[
+                    { label: 'Week', value: PearlBankAvgAprRange.Week },
+                    { label: 'Month', value: PearlBankAvgAprRange.Month },
+                  ]}
+                />
               </StyledChartKeyValue>
             </StyledChartHeader>
-            <ClamSupplyChart data={metrics} />
+            <BankAvgAprChart data={pearlBankMetrics} />
           </StyledChartCard>
 
           <StyledChartCard>
             <StyledChartHeader>
-              <StyledChartTitle>{t('buybacks')}</StyledChartTitle>
+              <StyledChartTitle>{t('treasuryRevenue')}</StyledChartTitle>
               <StyledChartKeyValue>
-                {formatFinancialNumber(ethers.utils.parseUnits(revenues[0]?.buybackMarketValue ?? '0', 32), 32)}
+                {getRevenue()}
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
+                <CurrencySwitcher />
               </StyledChartKeyValue>
             </StyledChartHeader>
-            <ClamBuybackChart data={revenues} />
+            <TreasuryRevenuesChart data={revenues} />
           </StyledChartCard>
-
-          <StyledTreasuryCard>
-            <Help message={t('burnedTooltip')}>
-              <ContentExtraSmall>{t('burned')}</ContentExtraSmall>
-            </Help>
-            <ContentMedium>
-              {formatBigNumber(ethers.utils.parseUnits(latestMetrics?.totalBurnedClam ?? '0', 2), 2)} (
-              {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.totalBurnedClamMarketValue ?? '0', 29), 29)}
-              )
-            </ContentMedium>
-          </StyledTreasuryCard>
-
-          <StyledTreasuryCard>
-            <Help message={t('distributedTooltip')}>
-              <ContentExtraSmall>{t('distributed')}</ContentExtraSmall>
-            </Help>
-            <ContentMedium>
-              {formatFinancialNumber(distributedAmount, 9)} ({formatFinancialNumber(distributedMarketValue, 42)})
-            </ContentMedium>
-          </StyledTreasuryCard>
         </StyledChartsContainer>
       </TreasurySection>
     </div>

@@ -486,14 +486,14 @@
         "label": {
           "dashboard": "Dashboard",
           "pond": "Clam Pond",
-          "lake": "Pearl Lake",
+          "bank": "Pearl Bank",
           "farm": "Farm",
           "bond": "Bond"
         },
         "desc": {
           "dashboard": "OtterClam Finance Stats",
-          "pond": "Stake CLAM",
-          "lake": "Lock Pearl",
+          "pond": "Auto-compound CLAM",
+          "bank": "Stake CLAM for Pearl",
           "farm": "Earn defi yield with tokens",
           "bond": "Provide Liquidity to Earn"
         }
@@ -519,27 +519,32 @@
       "buybacks": "Buybacks",
       "burned": "Burned CLAM",
       "burnedTooltip": "Amount of CLAM permanently burned and removed from the supply.",
-      "distributed": "CLAM Distributed Today",
-      "distributedTooltip": "Total amount of CLAM which has been distributed today. This is divided proportionally between all stakers and Pearl Chest holders."
+      "distributed": "Reward Distributed",
+      "distributedTooltip": "Total amount of CLAM which has been distributed today. This is divided proportionally between all stakers and Pearl Chest holders.",
+      "averageApr": "Average APR",
+      "averageAprStartDate": "from {{ date }}"
     }
   },
   "stake": {
     "title": "Clam Pond",
-    "stake_tab": "Stake",
-    "unstake_tab": "Unstake",
+    "stake_tab": "Deposit",
+    "unstake_tab": "Withdraw",
     "welcome": "Welcome to Clam Pond!",
-    "desc": "A Pond that makes your CLAM a shiny PEARL. Stake your CLAM to get PEARL and extra fancy rewards every 24 hours!",
+    "desc": "Deposit your CLAM to automatically compound your USD+ rewards into more CLAM and maximize your passive-income potential. You can deposit and withdraw CLAM at any time.",
     "available": "Available:",
     "max": "MAX",
     "input_placeholder": "Enter your amount",
-    "stake_btn": "Stake",
-    "unstake_btn": "Unstake",
+    "stake_btn": "Deposit",
+    "unstake_btn": "Withdraw",
     "tvl": "TVL: ${{tvl}}",
+    "unstake_note": "*If you unstake within 30 days, you will be charged and burned {{ feeRate }}% of the CLAM amount unstaked. Fully waived date: {{ date }} ({{ days }} days left)",
+    "fee": "Handling Fee ({{ feeRate }}%)*",
+    "unstake_receive_amount": "You will get",
     "staked_balance": "Your Staked Balance",
     "pearl_balance": "PEARL balance",
-    "next_reward": "Next Reward Amount",
+    "next_reward": "Latest Reward Amount",
     "rebase_countdown": "Rebase remaining: {{countdown}}",
-    "next_reward_yield": "Next Reward Yield",
+    "next_reward_yield": "Latest Reward Yield",
     "apy": "APY",
     "chest_reward": "Max ",
     "extra_rewards": "Extra Rewards coming soon...",
@@ -553,5 +558,39 @@
       "title": "Your unstake was successful.",
       "desc": "You just received "
     }
+  },
+  "bank": {
+    "stake_tab": "Stake",
+    "unstake_tab": "Unstake",
+    "welcome": "Welcome to Pearl Bank!",
+    "desc": "Stake your CLAM for PEARL to earn your share of protocol revenue and extra fancy rewards! Rewards are paid in USD+. You can collect your rewards at any time.",
+    "available": "Available:",
+    "max": "Max",
+    "input_placeholder": "Enter your amount",
+    "stake_btn": "Stake",
+    "unstake_btn": "Unstake",
+    "unstake_note": "*If you unstake within 30 days, you will be charged and burned {{ feeRate }}% of the CLAM amount unstaked. Fully waived date: {{ date }} ({{ days }} days left)",
+    "fee": "Handling Fee ({{ feeRate }}%)*",
+    "unstake_receive_amount": "You will get",
+    "tvl": "Total Value Locked:",
+    "staked_balance": "Your Staked Balance",
+    "pearl_balance": "PEARL Balance",
+    "current_reward": "Current Reward Amount",
+    "rebase_countdown": "Next reward time: {{ countdown }}",
+    "latest_reward": "Latest Reward",
+    "latest_reward_yield": "Latest Reward Yield",
+    "apr": "APR",
+    "extra_rewards": "Extra Rewards coming soon...",
+    "stake_popup": {
+      "headline": "Otter’standing!",
+      "title": "Your stake was successful.",
+      "desc": "You will get"
+    },
+    "unstake_popup": {
+      "headline": "Otter’standing!",
+      "title": "Your unstake was successful.",
+      "desc": "you will get"
+    },
+    "claim": "Claim"
   }
 }
