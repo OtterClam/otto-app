@@ -438,6 +438,43 @@ export function useClaimableRewards() {
   return result?.value ? result?.value[0] : BigNumber.from(0)
 }
 
+export function useTotalDepositedAmount() {
+  const clamPond = useClamPond()
+
+  const [result] = useCalls([
+    {
+      contract: clamPond,
+      method: 'scaledTotalSupply',
+      args: [],
+    },
+  ])
+
+  return result?.value ? result?.value[0] : BigNumber.from(0)
+}
+
+export function useDepositedAmount() {
+  const clamPond = useClamPond()
+  const { account } = useEthers()
+
+  const [balanceResult, indexResult] = useCalls([
+    {
+      contract: clamPond,
+      method: 'balanceOf',
+      args: [account],
+    },
+    {
+      contract: clamPond,
+      method: 'liquidityIndex',
+      args: [],
+    },
+  ])
+
+  const balance = balanceResult?.value ? balanceResult?.value[0] : BigNumber.from(0)
+  const index = indexResult?.value ? indexResult?.value[0] : BigNumber.from(0)
+
+  return balance.mul(index)
+}
+
 export function useNextRewadTime() {
   const rewardManager = useRewardManager()
 

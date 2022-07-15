@@ -209,7 +209,7 @@ export default function StakeInfo({ className }: Props) {
   const tvl = clamPrice ? clamPrice.mul(totalStaked) : BigNumber.from(0)
 
   const countdown = useMemo(() => {
-    return formatDistance(new Date(), myStakedInfo.amount.toNumber() * 1000)
+    return formatDistance(new Date(), nextRewardTime.toNumber() * 1000)
   }, [nextRewardTime])
 
   const myRewards = useMemo(() => {

@@ -1,9 +1,16 @@
 import { useEthers } from '@usedapp/core'
 import CLAMCoin from 'assets/icons/CLAM.svg'
-import PearlBalance from 'assets/icons/pearl-balance.png'
+import { useClamPrice, useStakedBalance, useTreasuryRealtimeMetrics } from 'contracts/views'
 import TreasurySection from 'components/TreasurySection'
-import { useStakedBalance, useTreasuryRealtimeMetrics } from 'contracts/views'
-import { ethers } from 'ethers'
+import {
+  useTotalDepositedAmount,
+  useNextRewadTime,
+  useDepositedAmount,
+  useTotalStakedAmount,
+  useTotalRewardsAmount,
+} from 'contracts/functions'
+import { ethers, BigNumber, utils } from 'ethers'
+import formatDistance from 'date-fns/formatDistanceStrict'
 import { trim } from 'helpers/trim'
 import { useBreakPoints } from 'hooks/useMediaQuery'
 import { useTranslation } from 'next-i18next'
@@ -206,21 +213,50 @@ interface Props {
 export default function StakeInfo({ className }: Props) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'stake' })
   const { isMobile } = useBreakPoints()
-  const { account } = useEthers()
-  const { tvd, index, nextRewardRate, apy } = useTreasuryRealtimeMetrics()
-  const { sClamBalance, pearlBalance } = useStakedBalance(account)
-  const totalStaked = useMemo(
-    () => sClamBalance.mul(1e9).add(pearlBalance.mul(index).div(1e9)),
-    [sClamBalance, pearlBalance]
-  )
-  const nextReward = (totalStaked / 1e18) * nextRewardRate
-  const countdown = '7hr 30mins'
+  const totalStaked = useTotalStakedAmount()
+  const totalRewards = useTotalRewardsAmount()
+  const totalDepositedAmount = useTotalDepositedAmount()
+  const clamPrice = useClamPrice()
+  const tvl = totalDepositedAmount.mul(clamPrice ?? BigNumber.from(0))
+  const depositedAmount = useDepositedAmount()
+
+  const nextRewardTime = useNextRewadTime()
+
+  const countdown = useMemo(() => {
+    return formatDistance(new Date(), nextRewardTime.toNumber() * 1000)
+  }, [nextRewardTime])
+
+  const myRewards = useMemo(() => {
+    if (totalStaked.eq(0)) {
+      return BigNumber.from(0)
+    }
+    return totalRewards.mul(depositedAmount).div(totalStaked)
+  }, [depositedAmount, totalStaked, totalRewards])
+
+  const myRewardsAmount = useMemo(() => {
+    if (!clamPrice || clamPrice.eq(0)) {
+      return BigNumber.from(0)
+    }
+    return myRewards.div(clamPrice)
+  }, [myRewards, clamPrice])
+
+  const yieldRate = useMemo(() => {
+    if (myRewards.eq(0)) {
+      return BigNumber.from(0)
+    }
+    return depositedAmount.mul(clamPrice).div(myRewards)
+  }, [depositedAmount, clamPrice, myRewards])
+
+  const apy = useMemo(() => {
+    return (1 + yieldRate.toNumber() / 365) ** 365 - 1
+  }, [yieldRate])
+
   return (
     <StyledStakeInfo className={className}>
       <StyledBackground1 delay={0} />
       <StyledBackground2 delay={500} />
       <StyledBody>
-        <StyledTVL>{t('tvl', { tvl: trim(ethers.utils.formatUnits(tvd, 18), 2) })}</StyledTVL>
+        <StyledTVL>{t('tvl', { tvl: trim(ethers.utils.formatUnits(tvl, 15), 2) })}</StyledTVL>
         {isMobile && <StyledStakedDialog />}
         <StyledSection>
           <StyledSectionTitle>
@@ -229,12 +265,12 @@ export default function StakeInfo({ className }: Props) {
           </StyledSectionTitle>
           <StyledSectionBody>
             <StyledClamBalanceContainer>
-              <StyledClamBalance>{trim(nextReward, 4)} CLAM</StyledClamBalance>
+              <StyledClamBalance>{trim(utils.formatUnits(myRewardsAmount, 9), 4)} CLAM</StyledClamBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
               <StyledInfoContainer>
                 <StyledInfoTitle>{t('next_reward_yield')}</StyledInfoTitle>
-                <p>{trim(nextRewardRate * 100, 4)}%</p>
+                <p>{trim(utils.formatUnits(myRewards, 9), 4)} USD+</p>
               </StyledInfoContainer>
               <StyledInfoContainer>
                 <StyledInfoTitle>{t('apy')}</StyledInfoTitle>
