@@ -3,6 +3,7 @@
 /* eslint-disable */
 export { ClamCirculatingSupply__factory } from "./ClamCirculatingSupply__factory";
 export { ClamMaiContract__factory } from "./ClamMaiContract__factory";
+export { ClamPond__factory } from "./ClamPond__factory";
 export { IOttoItemFactory__factory } from "./IOttoItemFactory__factory";
 export { OtterStakingPearlHelper__factory } from "./OtterStakingPearlHelper__factory";
 export { Otto__factory } from "./Otto__factory";
@@ -12,6 +13,7 @@ export { OttoItemGiveaway__factory } from "./OttoItemGiveaway__factory";
 export { OttoSummoner__factory } from "./OttoSummoner__factory";
 export { OttopiaPortalCreator__factory } from "./OttopiaPortalCreator__factory";
 export { OttopiaStore__factory } from "./OttopiaStore__factory";
+export { PearlBank__factory } from "./PearlBank__factory";
 export { StakedClamTokenContract__factory } from "./StakedClamTokenContract__factory";
 export { StakingContract__factory } from "./StakingContract__factory";
 export { Erc20__factory } from "./Erc20__factory";

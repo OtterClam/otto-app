@@ -2,7 +2,6 @@ import TreasurySection from 'components/TreasurySection'
 import styled, { keyframes } from 'styled-components/macro'
 import BG from './bg.jpg'
 import Otto from './otto.png'
-import Fountain from './fountain.png'
 import StakeDialog from './StakeDialog'
 import StakeInfo from './StakeInfo'
 
@@ -34,30 +33,22 @@ const Animation = keyframes`
 `
 
 const StyledOtter = styled.div`
-  position: absolute;
+  position: fixed;
   width: 352px;
   height: 314px;
-  left: 0;
+  left: 50%;
   bottom: 0;
   z-index: 10;
+  transform: translate(-600px);
   animation: ${Animation} 2000ms steps(1) infinite;
   background: left top / 704px 314px url(${Otto.src});
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
+    position: absolute;
+    left: 0;
+    transform: unset;
     width: 210px;
     height: 188px;
-  }
-`
-
-const StyledFountain = styled.img.attrs({ src: Fountain.src })`
-  position: absolute;
-  width: 860px;
-  right: -150px;
-  bottom: 0;
-  height: 190px;
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    left: calc(50% - 430px);
   }
 `
 
@@ -65,7 +56,6 @@ export default function StakePage() {
   return (
     <TreasurySection showRope={false}>
       <StyledStakePage>
-        <StyledFountain />
         <StyledOtter />
         <StyledStakeDialog />
         <StyledStakeInfo />

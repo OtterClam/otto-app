@@ -1,7 +1,7 @@
 import CLAM from 'assets/clam.svg'
 import CLAMCoin from 'assets/icons/CLAM.svg'
 import Button from 'components/Button'
-import { useStake } from 'contracts/functions'
+import { useDeposit } from 'contracts/functions'
 import { useTreasuryRealtimeMetrics } from 'contracts/views'
 import { utils } from 'ethers'
 import { trim } from 'helpers/trim'
@@ -63,7 +63,7 @@ export default function StakeTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const [clamAmount, setClamAmount] = useState('')
   const clamBalance = useClamBalance()
-  const { stakeState, stake, resetStake } = useStake()
+  const { stakeState, stake, resetStake } = useDeposit()
   const { index } = useTreasuryRealtimeMetrics()
   useEffect(() => {
     if (stakeState.state === 'Fail' || stakeState.state === 'Exception') {

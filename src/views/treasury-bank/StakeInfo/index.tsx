@@ -1,68 +1,35 @@
 import { useEthers } from '@usedapp/core'
 import CLAMCoin from 'assets/icons/CLAM.svg'
+import USDPlus from 'assets/icons/usdplus.png'
 import PearlBalance from 'assets/icons/pearl-balance.png'
 import TreasurySection from 'components/TreasurySection'
-import { useStakedBalance, useTreasuryRealtimeMetrics } from 'contracts/views'
-import { ethers } from 'ethers'
+import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
+import { useClamPrice } from 'contracts/views'
+import { useTotalStakedAmount, usePearlBankBalance, useClamPerPearl, useRewardInfo } from 'contracts/functions'
+import { ethers, utils, BigNumber } from 'ethers'
 import { trim } from 'helpers/trim'
 import { useBreakPoints } from 'hooks/useMediaQuery'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import { ContentSmall, Note } from 'styles/typography'
 import StakeDialog from '../StakeDialog'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
-import Bottom1 from './bottom-1.png'
-import Bottom2 from './bottom-2.png'
 import GashaponTicketEn from './gashapon-ticket-en.jpg'
 import GashaponTicketZh from './gashapon-ticket-zh.jpg'
-import Middle from './middle.png'
-import Top1 from './top-1.png'
-import Top2 from './top-2.png'
-
-const Animation = keyframes`
-  0%   {opacity: 0;}
-  50%  {opacity: 1;}
-`
 
 const StyledStakeInfo = styled.div`
   width: 420px;
-  /* background: url(${Top1.src}) no-repeat center top/contain, url(${Bottom1.src}) no-repeat center bottom/contain; */
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 100%;
   }
 `
 
-const StyledBackground1 = styled.div<{ delay: number }>`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: url(${Top1.src}) no-repeat center top/contain, url(${Bottom1.src}) no-repeat center bottom/contain;
-  animation: ${Animation} 1000ms infinite;
-  animation-delay: ${({ delay }) => delay}ms;
-  animation-timing-function: steps(1);
-`
-
-const StyledBackground2 = styled.div<{ delay: number }>`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: url(${Top2.src}) no-repeat center top/contain, url(${Bottom2.src}) no-repeat center bottom/contain;
-  animation: ${Animation} 1000ms infinite;
-  animation-delay: ${({ delay }) => delay}ms;
-  animation-timing-function: steps(1);
-`
-
 const StyledBody = styled.div`
-  margin-top: 220px;
+  margin-top: 138px;
   margin-bottom: 78px;
-  background: url(${Middle.src}) repeat-y center center/contain;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -76,11 +43,12 @@ const StyledBody = styled.div`
 `
 
 const StyledTVL = styled(ContentSmall).attrs({ as: 'div' })`
+  text-align: center;
   position: absolute;
   padding: 6px 24px;
   background: ${({ theme }) => theme.colors.white};
   border: 4px solid ${({ theme }) => theme.colors.darkBrown};
-  top: 160px;
+  top: 54px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     top: 30vw;
@@ -93,9 +61,11 @@ const StyledTVL = styled(ContentSmall).attrs({ as: 'div' })`
     background-position: left center;
     width: 12px;
     height: 28px;
-    top: 2px;
+    top: 50%;
     left: -14px;
+    transform: translateY(-14px);
   }
+
   &:after {
     content: '';
     position: absolute;
@@ -103,8 +73,9 @@ const StyledTVL = styled(ContentSmall).attrs({ as: 'div' })`
     background-position: right center;
     width: 12px;
     height: 28px;
-    top: 2px;
+    top: 50%;
     right: -14px;
+    transform: translateY(-14px);
   }
 `
 
@@ -150,6 +121,20 @@ const StyledClamBalance = styled(ContentSmall)`
     content: '';
     /* display: block; */
     background: no-repeat center/contain url(${CLAMCoin.src});
+    width: 22px;
+    height: 22px;
+    margin-right: 5px;
+  }
+`
+
+const StyledUsdPlusBalance = styled(ContentSmall)`
+  display: flex;
+  align-items: center;
+  flex: 1;
+  &:before {
+    content: '';
+    /* display: block; */
+    background: no-repeat center/contain url(${USDPlus.src});
     width: 22px;
     height: 22px;
     margin-right: 5px;
@@ -204,59 +189,72 @@ interface Props {
 }
 
 export default function StakeInfo({ className }: Props) {
-  const { t, i18n } = useTranslation('', { keyPrefix: 'stake' })
+  const { t, i18n } = useTranslation('', { keyPrefix: 'bank' })
   const { isMobile } = useBreakPoints()
-  const { account } = useEthers()
-  const { tvd, index, nextRewardRate, apy } = useTreasuryRealtimeMetrics()
-  const { sClamBalance, pearlBalance } = useStakedBalance(account)
-  const totalStaked = useMemo(
-    () => sClamBalance.mul(1e9).add(pearlBalance.mul(index).div(1e9)),
-    [sClamBalance, pearlBalance]
-  )
-  const nextReward = (totalStaked / 1e18) * nextRewardRate
+  const clamPrice = useClamPrice()
+  const totalStaked = useTotalStakedAmount()
+  const pearlBankBalance = usePearlBankBalance()
+  const clamPerPearl = useClamPerPearl()
+  const totalRewards = useRewardInfo()
+  const { latestMetrics } = usePearlBankMetrics()
   const countdown = '7hr 30mins'
+  const tvl = clamPrice ? clamPrice.mul(totalStaked) : BigNumber.from(0)
+
+  const yieldRate = useMemo(() => {
+    if (!latestMetrics) {
+      return BigNumber.from(0)
+    }
+    const stakedMarketValue = latestMetrics.clamMarketValueWhenPayoutHappens.mul(totalStaked)
+    return totalRewards.div(stakedMarketValue)
+  }, [latestMetrics, totalStaked])
+
   return (
     <StyledStakeInfo className={className}>
-      <StyledBackground1 delay={0} />
-      <StyledBackground2 delay={500} />
       <StyledBody>
-        <StyledTVL>{t('tvl', { tvl: trim(ethers.utils.formatUnits(tvd, 18), 2) })}</StyledTVL>
+        <StyledTVL>
+          {t('tvl')}
+          <br />${trim(ethers.utils.formatUnits(tvl, 9), 2)}
+        </StyledTVL>
         {isMobile && <StyledStakedDialog />}
         <StyledSection>
           <StyledSectionTitle>{t('staked_balance')}</StyledSectionTitle>
           <StyledSectionBody>
             <StyledClamBalanceContainer>
-              <StyledClamBalance>{trim(ethers.utils.formatEther(totalStaked), 4)} CLAM</StyledClamBalance>
+              <StyledClamBalance>{trim(ethers.utils.formatEther(totalStaked), 6)} CLAM</StyledClamBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
               <StyledInfoContainer>
                 <StyledInfoTitle icon={PearlBalance.src}>{t('pearl_balance')}</StyledInfoTitle>
-                <p>{trim(ethers.utils.formatEther(pearlBalance), 4)} PEARL</p>
+                <p>{trim(ethers.utils.formatEther(pearlBankBalance), 9)} PEARL</p>
               </StyledInfoContainer>
               <StyledInfoContainer>
                 <p />
-                <StyledHint>{`1 PEARL = ${trim(ethers.utils.formatUnits(index, 9), 2)} CLAM`}</StyledHint>
+                <StyledHint>{`1 PEARL = ${trim(ethers.utils.formatUnits(clamPerPearl, 18), 2)} CLAM`}</StyledHint>
               </StyledInfoContainer>
             </StyledInfos>
           </StyledSectionBody>
         </StyledSection>
         <StyledSection>
           <StyledSectionTitle>
-            {t('next_reward')}
+            {t('current_reward')}
             <StyledSubtitle>{t('rebase_countdown', { countdown })}</StyledSubtitle>
           </StyledSectionTitle>
           <StyledSectionBody>
             <StyledClamBalanceContainer>
-              <StyledClamBalance>{trim(nextReward, 4)} CLAM</StyledClamBalance>
+              <StyledUsdPlusBalance>{trim(utils.formatUnits(totalRewards, 6), 4)} USD+</StyledUsdPlusBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
               <StyledInfoContainer>
-                <StyledInfoTitle>{t('next_reward_yield')}</StyledInfoTitle>
-                <p>{trim(nextRewardRate * 100, 4)}%</p>
+                <StyledInfoTitle>{t('latest_reward')}</StyledInfoTitle>
+                <p>{trim(utils.formatUnits(totalRewards, 6), 4)}</p>
               </StyledInfoContainer>
               <StyledInfoContainer>
-                <StyledInfoTitle>{t('apy')}</StyledInfoTitle>
-                <p>{trim(apy, 2)}%</p>
+                <StyledInfoTitle>{t('latest_reward_yield')}</StyledInfoTitle>
+                <p>{trim(utils.formatUnits(yieldRate.mul(100), 6), 4)}%</p>
+              </StyledInfoContainer>
+              <StyledInfoContainer>
+                <StyledInfoTitle>{t('apr')}</StyledInfoTitle>
+                <p>{trim(utils.formatUnits(yieldRate.mul(365).mul(100), 6), 4)}%</p>
               </StyledInfoContainer>
               {/* <StyledInfoContainer>
                 <p />

@@ -1,5 +1,5 @@
-import { TransactionState, TransactionStatus, useContractFunction, useEthers } from '@usedapp/core'
-import { constants, Contract, ethers, utils } from 'ethers'
+import { TransactionState, TransactionStatus, useCall, useCalls, useContractFunction, useEthers } from '@usedapp/core'
+import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
 import useApi from 'hooks/useApi'
 import useContractAddresses from 'hooks/useContractAddresses'
 import Item from 'models/Item'
@@ -16,6 +16,8 @@ import {
   usePortalCreatorContract,
   useStakingPearlHelper,
   useStoreContract,
+  usePearlBank,
+  useClamPond,
 } from './contracts'
 
 export const useApprove = (tokenAddress?: string) => {
@@ -277,11 +279,11 @@ export const useClaimGiveaway = () => {
 }
 
 export const useStake = () => {
-  const { CLAM, STAKING_PEARL_HELPER_ADDRESS } = useContractAddresses()
+  const pearlBank = usePearlBank()
+  const { CLAM, PEARL_BANK } = useContractAddresses()
   const { account } = useEthers()
   const clam = useERC20(CLAM)
-  const stakingPearlHelper = useStakingPearlHelper()
-  const { state, send, resetState } = useContractFunction(stakingPearlHelper, 'stake', {})
+  const { state, send, resetState } = useContractFunction(pearlBank, 'stake', {})
   const [stakeState, setStakeState] = useState<OttoTransactionState>({
     state: 'None',
     status: state,
@@ -293,10 +295,10 @@ export const useStake = () => {
         state: 'PendingSignature',
         status: state,
       })
-      const clamAllowance = account ? await clam.allowance(account, STAKING_PEARL_HELPER_ADDRESS) : constants.Zero
+      const clamAllowance = account ? await clam.allowance(account, PEARL_BANK) : constants.Zero
       const noAllowance = clamAllowance.lt(clamAmount)
       if (noAllowance) {
-        await (await clam.approve(STAKING_PEARL_HELPER_ADDRESS, constants.MaxUint256)).wait()
+        await (await clam.approve(PEARL_BANK, constants.MaxUint256)).wait()
       }
       send(clamAmount)
     } catch (error: any) {
@@ -311,28 +313,165 @@ export const useStake = () => {
 }
 
 export const useUnstake = () => {
-  const { PEARL, STAKING_PEARL_HELPER_ADDRESS } = useContractAddresses()
-  const { account } = useEthers()
-  const pearl = useERC20(PEARL)
-  const stakingPearlHelper = useStakingPearlHelper()
-  const { state, send, resetState } = useContractFunction(stakingPearlHelper, 'unstake', {})
+  const pearlBank = usePearlBank()
+  const { state, send, resetState } = useContractFunction(pearlBank, 'withdraw', {})
   const [unstakeState, setUnstakeState] = useState<OttoTransactionState>({
     state: 'None',
     status: state,
   })
   const unstake = async (amount: string) => {
     try {
-      const pearlAmount = ethers.utils.parseEther(amount)
+      const clamAmount = ethers.utils.parseEther(amount)
       setUnstakeState({
         state: 'PendingSignature',
         status: state,
       })
-      const allowance = account ? await pearl.allowance(account, STAKING_PEARL_HELPER_ADDRESS) : constants.Zero
-      const noAllowance = allowance.lt(pearlAmount)
+      send(clamAmount)
+    } catch (error: any) {
+      window.alert(error.message)
+      setUnstakeState({ state: 'None', status: state })
+    }
+  }
+  useEffect(() => {
+    setUnstakeState({ state: state.status, status: state })
+  }, [state])
+  return { unstakeState, unstake, resetState }
+}
+
+export function useStakedInfo() {
+  const pearlBank = usePearlBank()
+  const { account } = useEthers()
+
+  const [result] = useCalls([
+    {
+      contract: pearlBank,
+      method: 'otterInfo',
+      args: [account],
+    },
+  ])
+
+  return {
+    amount: result?.value?.amount ?? BigNumber.from(0),
+    timestamp: result?.value?.timestamp ?? BigNumber.from(0),
+  }
+}
+
+export function useTotalStakedAmount(): BigNumber {
+  const pearlBank = usePearlBank()
+
+  const [result] = useCalls([
+    {
+      contract: pearlBank,
+      method: 'totalStaked',
+      args: [],
+    },
+  ])
+
+  return result?.value ? result?.value[0] : BigNumber.from(0)
+}
+
+export function usePearlBankBalance(): BigNumber {
+  const pearlBank = usePearlBank()
+  const { account } = useEthers()
+
+  const [result] = useCalls([
+    {
+      contract: pearlBank,
+      method: 'balanceOf',
+      args: [account],
+    },
+  ])
+
+  return result?.value ? result?.value[0] : BigNumber.from(0)
+}
+
+export function useClamPerPearl() {
+  const pearlBank = usePearlBank()
+  const { account } = useEthers()
+
+  const [totalStakedResult, totalSupplyResult] = useCalls([
+    {
+      contract: pearlBank,
+      method: 'totalStaked',
+      args: [account],
+    },
+    {
+      contract: pearlBank,
+      method: 'totalSupply',
+      args: [],
+    },
+  ])
+
+  const totalStakedOfClam = totalStakedResult?.value ? totalStakedResult?.value[0] : BigNumber.from(0)
+  const totalSupplyOfPearl = totalSupplyResult?.value ? totalSupplyResult?.value[0] : BigNumber.from(0)
+
+  return totalSupplyOfPearl.eq(0) ? BigNumber.from(0) : totalStakedOfClam.div(totalSupplyOfPearl)
+}
+
+export function useRewardInfo() {
+  const pearlBank = usePearlBank()
+  const { account } = useEthers()
+
+  const [result] = useCalls([
+    {
+      contract: pearlBank,
+      method: 'totalTokenRewardsPerStake',
+      args: [account],
+    },
+  ])
+
+  return result?.value ? result?.value[0] : BigNumber.from(0)
+}
+
+export const useDeposit = () => {
+  const clamPond = useClamPond()
+  const { CLAM, CLAM_POND } = useContractAddresses()
+  const { account } = useEthers()
+  const clam = useERC20(CLAM)
+  const { state, send, resetState } = useContractFunction(clamPond, 'deposit', {})
+  const [stakeState, setStakeState] = useState<OttoTransactionState>({
+    state: 'None',
+    status: state,
+  })
+  const stake = async (amount: string) => {
+    try {
+      const clamAmount = ethers.utils.parseUnits(amount, 9)
+      setStakeState({
+        state: 'PendingSignature',
+        status: state,
+      })
+      const clamAllowance = account ? await clam.allowance(account, CLAM_POND) : constants.Zero
+      const noAllowance = clamAllowance.lt(clamAmount)
       if (noAllowance) {
-        await (await pearl.approve(STAKING_PEARL_HELPER_ADDRESS, constants.MaxUint256)).wait()
+        await (await clam.approve(CLAM_POND, constants.MaxUint256)).wait()
       }
-      send(pearlAmount)
+      send(clamAmount)
+    } catch (error: any) {
+      window.alert(error.message)
+      setStakeState({ state: 'None', status: state })
+    }
+  }
+  useEffect(() => {
+    setStakeState({ state: state.status, status: state })
+  }, [state])
+  return { stakeState, stake, resetStake: resetState }
+}
+
+export const useWithdraw = () => {
+  const clamPond = useClamPond()
+  const { state, send, resetState } = useContractFunction(clamPond, 'withdraw', {})
+  const [unstakeState, setUnstakeState] = useState<OttoTransactionState>({
+    state: 'None',
+    status: state,
+  })
+  const unstake = async (amount: string) => {
+    try {
+      const clamAmount = ethers.utils.parseEther(amount)
+      setUnstakeState({
+        state: 'PendingSignature',
+        status: state,
+      })
+      send(clamAmount)
     } catch (error: any) {
       window.alert(error.message)
       setUnstakeState({ state: 'None', status: state })

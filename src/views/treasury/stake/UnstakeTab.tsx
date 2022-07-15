@@ -1,7 +1,7 @@
 import PEARL from 'assets/pearl.png'
 import PearlCoin from 'assets/icons/PEARL-coin.svg'
 import Button from 'components/Button'
-import { useStake, useUnstake } from 'contracts/functions'
+import { useWithdraw } from 'contracts/functions'
 import { useTreasuryRealtimeMetrics } from 'contracts/views'
 import { utils } from 'ethers'
 import { trim } from 'helpers/trim'
@@ -65,7 +65,7 @@ export default function UnstakeTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const [pearlAmount, setPearlAmount] = useState('')
   const pearlBalance = usePearlBalance()
-  const { unstakeState: state, unstake, resetState } = useUnstake()
+  const { unstakeState: state, unstake, resetState } = useWithdraw()
   const { index } = useTreasuryRealtimeMetrics()
   useEffect(() => {
     if (state.state === 'Fail' || state.state === 'Exception') {

@@ -35,16 +35,20 @@ const Animation = keyframes`
 `
 
 const StyledOtter = styled.img<{ delay: number }>`
-  position: absolute;
+  position: fixed;
   width: 418px;
-  left: 0;
+  left: 50%;
   bottom: 0;
   z-index: 10;
+  transform: translate(-600px);
   animation: ${Animation} 2000ms infinite;
   animation-delay: ${({ delay }) => delay}ms;
   animation-timing-function: steps(1);
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
+    position: absolute;
+    left: 0;
+    transform: unset;
     width: 210px;
   }
 `

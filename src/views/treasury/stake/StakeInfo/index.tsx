@@ -223,24 +223,6 @@ export default function StakeInfo({ className }: Props) {
         <StyledTVL>{t('tvl', { tvl: trim(ethers.utils.formatUnits(tvd, 18), 2) })}</StyledTVL>
         {isMobile && <StyledStakedDialog />}
         <StyledSection>
-          <StyledSectionTitle>{t('staked_balance')}</StyledSectionTitle>
-          <StyledSectionBody>
-            <StyledClamBalanceContainer>
-              <StyledClamBalance>{trim(ethers.utils.formatEther(totalStaked), 4)} CLAM</StyledClamBalance>
-            </StyledClamBalanceContainer>
-            <StyledInfos>
-              <StyledInfoContainer>
-                <StyledInfoTitle icon={PearlBalance.src}>{t('pearl_balance')}</StyledInfoTitle>
-                <p>{trim(ethers.utils.formatEther(pearlBalance), 4)} PEARL</p>
-              </StyledInfoContainer>
-              <StyledInfoContainer>
-                <p />
-                <StyledHint>{`1 PEARL = ${trim(ethers.utils.formatUnits(index, 9), 2)} CLAM`}</StyledHint>
-              </StyledInfoContainer>
-            </StyledInfos>
-          </StyledSectionBody>
-        </StyledSection>
-        <StyledSection>
           <StyledSectionTitle>
             {t('next_reward')}
             <StyledSubtitle>{t('rebase_countdown', { countdown })}</StyledSubtitle>

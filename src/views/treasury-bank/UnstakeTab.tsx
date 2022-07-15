@@ -1,15 +1,17 @@
-import PEARL from 'assets/pearl.png'
-import PearlCoin from 'assets/icons/PEARL-coin.svg'
+import CLAM from 'assets/clam.svg'
+import CLAMCoin from 'assets/icons/CLAM.svg'
 import Button from 'components/Button'
-import { useStake, useUnstake } from 'contracts/functions'
-import { useTreasuryRealtimeMetrics } from 'contracts/views'
+import addDays from 'date-fns/addDays'
+import formatDate from 'date-fns/format'
+import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
+import isAfter from 'date-fns/isAfter'
+import { useUnstake, useStakedInfo } from 'contracts/functions'
 import { utils } from 'ethers'
 import { trim } from 'helpers/trim'
-import usePearlBalance from 'hooks/usePearlBalance'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Caption, ContentLarge, ContentSmall, Headline } from 'styles/typography'
+import { Caption, Note, ContentLarge, ContentSmall, Headline } from 'styles/typography'
 import UnstakeSuccessPopup from './UnstakeSuccessPopup'
 
 const StyledUnstakeTab = styled.div`
@@ -18,20 +20,20 @@ const StyledUnstakeTab = styled.div`
   gap: 10px;
 `
 
-const StyledPearlBalance = styled(Caption)`
+const StyledStakedClamAmount = styled(Caption)`
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 5px;
 `
 
-const StyledPearlBalanceText = styled.div`
+const StyledStakedClamAmountText = styled.div`
   display: flex;
   align-items: center;
   flex: 1;
   &:before {
     content: '';
-    background: no-repeat center/contain url(${PEARL.src});
+    background: no-repeat center/contain url(${CLAM.src});
     width: 16px;
     height: 16px;
     margin-right: 5px;
@@ -44,7 +46,7 @@ const StyledInput = styled.input`
   padding: 20px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
-  background: url(${PearlCoin.src}) no-repeat 20px;
+  background: url(${CLAMCoin.src}) no-repeat 20px;
   text-indent: 32px;
 
   ::placeholder {
@@ -53,49 +55,74 @@ const StyledInput = styled.input`
   }
 `
 
-const StyledButton = styled(Button)``
+const StyledField = styled.div`
+  display: flex;
+  align-items: center;
+`
 
-// type Tab = 'stake' | 'unstake'
+const StyledFieldLabel = styled(Caption)`
+  flex: 1;
+`
+
+const StyledFieldValue = styled(Caption)`
+  flex: 1;
+  text-align: right;
+`
+
+const StyledNote = styled(Note)`
+  border-radius: 8px;
+  padding: 10px;
+  background: ${({ theme }) => theme.colors.lightGray200};
+  color: ${({ theme }) => theme.colors.darkGray200};
+`
+
+const StyledButton = styled(Button)``
 
 interface Props {
   className?: string
 }
 
 export default function UnstakeTab({ className }: Props) {
-  const { t } = useTranslation('', { keyPrefix: 'stake' })
-  const [pearlAmount, setPearlAmount] = useState('')
-  const pearlBalance = usePearlBalance()
+  const { t } = useTranslation('', { keyPrefix: 'bank' })
+  const [clamAmount, setClamAmount] = useState('0')
+  const { amount: stakedAmount, timestamp: lastStakeTimestamp } = useStakedInfo()
   const { unstakeState: state, unstake, resetState } = useUnstake()
-  const { index } = useTreasuryRealtimeMetrics()
+  const unlockTime = addDays(lastStakeTimestamp.mul(1000).toNumber(), 30)
+  // const unlocked = isAfter(new Date(), unlockTime)
+  const unlocked = false
+  const fee = utils.parseUnits(clamAmount, 6).mul(5).div(1000)
+  const receiveAmount = utils.parseUnits(clamAmount, 6).sub(fee)
+
   useEffect(() => {
     if (state.state === 'Fail' || state.state === 'Exception') {
       window.alert(state.status.errorMessage)
       resetState()
     }
   }, [state, resetState])
+
   return (
     <StyledUnstakeTab className={className}>
       <Headline as="h1">{t('welcome')}</Headline>
       <ContentSmall as="p">{t('desc')}</ContentSmall>
-      <StyledPearlBalance>
+      <StyledStakedClamAmount>
         {t('available')}
-        <StyledPearlBalanceText>
-          {pearlBalance !== undefined ? trim(utils.formatEther(pearlBalance), 2) : '-'}
-        </StyledPearlBalanceText>
+        <StyledStakedClamAmountText>
+          {!stakedAmount.eq(0) ? trim(utils.formatUnits(stakedAmount, 6), 2) : '-'}
+        </StyledStakedClamAmountText>
         <Button
           Typography={ContentLarge}
           primaryColor="white"
           padding="0 12px"
-          onClick={() => pearlBalance && setPearlAmount(utils.formatEther(pearlBalance))}
+          onClick={() => !stakedAmount.eq(0) && setClamAmount(utils.formatUnits(stakedAmount, 6))}
         >
           {t('max')}
         </Button>
-      </StyledPearlBalance>
+      </StyledStakedClamAmount>
       <ContentSmall>
         <StyledInput
           placeholder={t('input_placeholder')}
-          value={pearlAmount}
-          onChange={e => setPearlAmount(e.target.value)}
+          value={clamAmount}
+          onChange={e => setClamAmount(e.target.value)}
         />
       </ContentSmall>
       <StyledButton
@@ -103,15 +130,30 @@ export default function UnstakeTab({ className }: Props) {
         padding="6px"
         isWeb3
         loading={state.state !== 'None'}
-        onClick={() => unstake(pearlAmount)}
+        onClick={() => unstake(clamAmount)}
       >
         {t('unstake_btn')}
       </StyledButton>
+      {!unlocked && (
+        <>
+          <StyledField>
+            <StyledFieldLabel>{t('fee')}</StyledFieldLabel>
+            <StyledFieldValue>-{trim(utils.formatUnits(fee, 6), 4)} CLAM</StyledFieldValue>
+          </StyledField>
+          <StyledNote>
+            {t('unstake_note', {
+              date: formatDate(unlockTime, 'yyyy-MM-dd'),
+              days: formatDistanceToNowStrict(unlockTime, { unit: 'day' }),
+            })}
+          </StyledNote>
+          <StyledField>
+            <StyledFieldLabel>{t('unstake_receive_amount')}</StyledFieldLabel>
+            <StyledFieldValue>{trim(utils.formatUnits(receiveAmount, 6), 4)} CLAM</StyledFieldValue>
+          </StyledField>
+        </>
+      )}
       {state.state === 'Success' && (
-        <UnstakeSuccessPopup
-          clamAmount={trim(utils.formatUnits(utils.parseUnits(pearlAmount, 18).mul(index).div(1e9), 18), 4)}
-          onClose={resetState}
-        />
+        <UnstakeSuccessPopup clamAmount={trim(utils.formatUnits(stakedAmount, 6), 4)} onClose={resetState} />
       )}
     </StyledUnstakeTab>
   )

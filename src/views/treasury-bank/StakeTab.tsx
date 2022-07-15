@@ -60,7 +60,7 @@ interface Props {
 }
 
 export default function StakeTab({ className }: Props) {
-  const { t } = useTranslation('', { keyPrefix: 'stake' })
+  const { t } = useTranslation('', { keyPrefix: 'bank' })
   const [clamAmount, setClamAmount] = useState('')
   const clamBalance = useClamBalance()
   const { stakeState, stake, resetStake } = useStake()

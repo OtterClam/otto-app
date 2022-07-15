@@ -6,6 +6,8 @@ export const GET_PEARL_BANK_METRICS = gql`
       id
       payoutMatketValue
       cumulativeRewardPayoutMarketValue
+      apr
+      clamMarketValueWhenPayoutHappens
       clamPondDepositedAmount
       stakedCLAMAmount
       clamTotalSupply

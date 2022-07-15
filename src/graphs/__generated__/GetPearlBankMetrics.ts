@@ -10,11 +10,13 @@
 export interface GetPearlBankMetrics_pearlBankMetrics {
   __typename: "PearlBankMetric";
   id: string;
+  payoutMatketValue: any;
+  cumulativeRewardPayoutMarketValue: any;
   /**
    * reward
    */
-  payoutMatketValue: any;
-  cumulativeRewardPayoutMarketValue: any;
+  apr: any;
+  clamMarketValueWhenPayoutHappens: any;
   /**
    * pond
    */

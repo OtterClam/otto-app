@@ -1,4 +1,4 @@
-import { subDays } from 'date-fns'
+import { subDays, format as formatDate } from 'date-fns'
 import dynamic from 'next/dynamic'
 import AdBanner from 'components/AdBanner'
 import TreasuryCard from 'components/TreasuryCard'
@@ -214,6 +214,7 @@ const usePearlBankApr = () => {
 
   return {
     avgApr,
+    startDate,
     pearlBankAvgAprRange: range,
     setPearlBankAvgAprRange: setRange,
   }
@@ -222,21 +223,18 @@ const usePearlBankApr = () => {
 export default function TreasuryDashboardPage() {
   const { t } = useTranslation('', { keyPrefix: 'treasury.dashboard' })
   const { metrics, latestMetrics } = useTreasuryMetrics()
-  const { metrics: pearlBankMetrics } = usePearlBankMetrics()
+  const { metrics: pearlBankMetrics, latestMetrics: pearlBankLatestMetrics } = usePearlBankMetrics()
   const { revenues } = useTreasuryRevenues()
   const { clamPrice, tvd } = useTreasuryRealtimeMetrics()
   const { avgApr, pearlBankAvgAprRange, setPearlBankAvgAprRange } = usePearlBankApr()
+
+  const pearlBankAvgAprRangeStartDate = subDays(new Date(), pearlBankAvgAprRange)
 
   const backing = ethers.utils
     .parseUnits(latestMetrics?.treasuryMarketValue ?? '0', 27)
     .div(ethers.utils.parseUnits(latestMetrics?.clamCirculatingSupply ?? '1', 9))
 
-  const distributedAmount =
-    metrics.length >= 2
-      ? ethers.utils.parseUnits(metrics[0].totalSupply, 9).sub(ethers.utils.parseUnits(metrics[1].totalSupply, 9))
-      : BigNumber.from(0)
-
-  const distributedMarketValue = distributedAmount.mul(ethers.utils.parseUnits(metrics[0]?.clamPrice ?? '0', 33))
+  const distributedMarketValue = ethers.utils.parseUnits(pearlBankLatestMetrics?.payoutMatketValue ?? '0', 6)
 
   const getRevenue = useCurrencyFormatter({
     formatters: {
@@ -282,9 +280,7 @@ export default function TreasuryDashboardPage() {
             <Help message={t('distributedTooltip')}>
               <ContentExtraSmall>{t('distributed')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>
-              {formatBigNumber(distributedAmount, 9, 0)} ({formatFinancialNumber(distributedMarketValue, 42, 0)})
-            </ContentMedium>
+            <ContentMedium>{formatBigNumber(distributedMarketValue, 6, 0)} USD+</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
@@ -342,7 +338,10 @@ export default function TreasuryDashboardPage() {
             <StyledChartHeader>
               <StyledChartTitle>{t('averageApr')}</StyledChartTitle>
               <StyledChartKeyValue>
-                {getRevenue()}%<StyledChartKeyDate>{t('averageAprStartDate')}</StyledChartKeyDate>
+                {getRevenue()}%
+                <StyledChartKeyDate>
+                  {t('averageAprStartDate', { date: formatDate(pearlBankAvgAprRangeStartDate, 'MMM d') })}
+                </StyledChartKeyDate>
                 <Switcher
                   name="pearl-bank-avg-apr-range"
                   value={pearlBankAvgAprRange}

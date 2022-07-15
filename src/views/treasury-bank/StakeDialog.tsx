@@ -37,28 +37,32 @@ const StyledBody = styled.div`
   background: ${({ theme }) => theme.colors.white};
 `
 
-type Tab = 'stake' | 'unstake'
+enum Tab {
+  Stake,
+  Unstake,
+}
 
 interface Props {
   className?: string
 }
 
 export default function StakeDialog({ className }: Props) {
-  const { t } = useTranslation('', { keyPrefix: 'stake' })
-  const [tab, setTab] = useState<Tab>('stake')
+  const { t } = useTranslation('', { keyPrefix: 'bank' })
+  const [tab, setTab] = useState<Tab>(Tab.Stake)
+
   return (
     <StyledStakeDialog className={className}>
       <StyledTabs>
-        <StyledTab selected={tab === 'stake'} onClick={() => setTab('stake')}>
+        <StyledTab selected={tab === Tab.Stake} onClick={() => setTab(Tab.Stake)}>
           {t('stake_tab')}{' '}
         </StyledTab>
-        <StyledTab selected={tab === 'unstake'} onClick={() => setTab('unstake')}>
+        <StyledTab selected={tab === Tab.Unstake} onClick={() => setTab(Tab.Unstake)}>
           {t('unstake_tab')}{' '}
         </StyledTab>
       </StyledTabs>
       <StyledBody>
-        {tab === 'stake' && <StakeTab />}
-        {tab === 'unstake' && <UnstakeTab />}
+        {tab === Tab.Stake && <StakeTab />}
+        {tab === Tab.Unstake && <UnstakeTab />}
       </StyledBody>
     </StyledStakeDialog>
   )
