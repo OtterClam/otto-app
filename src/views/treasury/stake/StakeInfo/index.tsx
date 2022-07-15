@@ -230,7 +230,7 @@ export default function StakeInfo({ className }: Props) {
   }, [depositedAmount, totalStaked, totalRewards])
   const apy = useMemo(() => {
     if (totalRewards.eq(0) || !clamPrice || clamPrice.eq(0)) {
-      return constants.Zero
+      return 0
     }
     const dailyYield = Number(
       utils.formatUnits(totalRewards.mul(1e9).mul(1e9).mul(365).div(totalStaked.mul(clamPrice)), 6)
