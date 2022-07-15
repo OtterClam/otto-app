@@ -231,19 +231,19 @@ export default function StakeInfo({ className }: Props) {
       <StyledBody>
         <StyledTVL>
           {t('tvl')}
-          <br />${trim(ethers.utils.formatUnits(tvl, 9), 2)}
+          <br />${trim(ethers.utils.formatUnits(tvl, 18), 2)}
         </StyledTVL>
         {isMobile && <StyledStakedDialog />}
         <StyledSection>
           <StyledSectionTitle>{t('staked_balance')}</StyledSectionTitle>
           <StyledSectionBody>
             <StyledClamBalanceContainer>
-              <StyledClamBalance>{trim(ethers.utils.formatEther(totalStaked), 6)} CLAM</StyledClamBalance>
+              <StyledClamBalance>{trim(ethers.utils.formatUnits(myStakedInfo.amount, 9), 9)} CLAM</StyledClamBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
               <StyledInfoContainer>
                 <StyledInfoTitle icon={PearlBalance.src}>{t('pearl_balance')}</StyledInfoTitle>
-                <p>{trim(ethers.utils.formatEther(pearlBankBalance), 9)} PEARL</p>
+                <p>{trim(ethers.utils.formatUnits(pearlBankBalance, 9), 9)} PEARL</p>
               </StyledInfoContainer>
               <StyledInfoContainer>
                 <p />
