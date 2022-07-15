@@ -15,7 +15,7 @@ const TreasuryDashboardPage: NextPageWithLayout = TreasuryBankView
 
 TreasuryDashboardPage.getLayout = (page, i18n) => {
   return (
-    <Layout title={i18n.t('treasury.dashboard.title')} noBorder requireConnect>
+    <Layout title={i18n.t('treasury.dashboard.title')}>
       <TreasuryLayout>{page}</TreasuryLayout>
     </Layout>
   )
