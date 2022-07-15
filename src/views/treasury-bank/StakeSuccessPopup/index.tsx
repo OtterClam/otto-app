@@ -47,7 +47,7 @@ interface Props {
 }
 
 export default function StakeSuccessPopup({ clamAmount, onClose }: Props) {
-  const { t } = useTranslation('', { keyPrefix: 'stake.stake_popup' })
+  const { t } = useTranslation('', { keyPrefix: 'bank.stake_popup' })
   return (
     <Fullscreen width="unset">
       <StyledStakeSuccessPopup>

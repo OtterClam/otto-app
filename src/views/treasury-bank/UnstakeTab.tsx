@@ -84,14 +84,16 @@ interface Props {
 
 export default function UnstakeTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'bank' })
-  const [clamAmount, setClamAmount] = useState('0')
+  const [clamAmount, setClamAmount] = useState('')
   const { amount: stakedAmount, timestamp: lastStakeTimestamp } = useStakedInfo()
   const { unstakeState: state, unstake, resetState } = useUnstake()
   const unlockTime = addDays(lastStakeTimestamp.mul(1000).toNumber(), 30)
-  // const unlocked = isAfter(new Date(), unlockTime)
-  const unlocked = false
-  const fee = utils.parseUnits(clamAmount, 6).mul(5).div(1000)
-  const receiveAmount = utils.parseUnits(clamAmount, 6).sub(fee)
+  const unlocked = isAfter(new Date(), unlockTime)
+  const fee = utils
+    .parseUnits(clamAmount || '0', 9)
+    .mul(5)
+    .div(1000)
+  const receiveAmount = utils.parseUnits(clamAmount || '0', 9).sub(fee)
 
   useEffect(() => {
     if (state.state === 'Fail' || state.state === 'Exception') {
@@ -107,13 +109,13 @@ export default function UnstakeTab({ className }: Props) {
       <StyledStakedClamAmount>
         {t('available')}
         <StyledStakedClamAmountText>
-          {!stakedAmount.eq(0) ? trim(utils.formatUnits(stakedAmount, 6), 2) : '-'}
+          {!stakedAmount.eq(0) ? trim(utils.formatUnits(stakedAmount, 9), 2) : '-'}
         </StyledStakedClamAmountText>
         <Button
           Typography={ContentLarge}
           primaryColor="white"
           padding="0 12px"
-          onClick={() => !stakedAmount.eq(0) && setClamAmount(utils.formatUnits(stakedAmount, 6))}
+          onClick={() => !stakedAmount.eq(0) && setClamAmount(utils.formatUnits(stakedAmount, 9))}
         >
           {t('max')}
         </Button>
@@ -138,7 +140,7 @@ export default function UnstakeTab({ className }: Props) {
         <>
           <StyledField>
             <StyledFieldLabel>{t('fee')}</StyledFieldLabel>
-            <StyledFieldValue>-{trim(utils.formatUnits(fee, 6), 4)} CLAM</StyledFieldValue>
+            <StyledFieldValue>-{trim(utils.formatUnits(fee, 9), 4)} CLAM</StyledFieldValue>
           </StyledField>
           <StyledNote>
             {t('unstake_note', {
@@ -148,12 +150,12 @@ export default function UnstakeTab({ className }: Props) {
           </StyledNote>
           <StyledField>
             <StyledFieldLabel>{t('unstake_receive_amount')}</StyledFieldLabel>
-            <StyledFieldValue>{trim(utils.formatUnits(receiveAmount, 6), 4)} CLAM</StyledFieldValue>
+            <StyledFieldValue>{trim(utils.formatUnits(receiveAmount, 9), 4)} CLAM</StyledFieldValue>
           </StyledField>
         </>
       )}
       {state.state === 'Success' && (
-        <UnstakeSuccessPopup clamAmount={trim(utils.formatUnits(stakedAmount, 6), 4)} onClose={resetState} />
+        <UnstakeSuccessPopup clamAmount={trim(utils.formatUnits(stakedAmount, 9), 4)} onClose={resetState} />
       )}
     </StyledUnstakeTab>
   )

@@ -577,6 +577,16 @@
     "latest_reward": "Latest Reward",
     "latest_reward_yield": "Latest Reward Yield",
     "apr": "APR",
-    "extra_rewards": "Extra Rewards coming soon..."
+    "extra_rewards": "Extra Rewards coming soon...",
+    "stake_popup": {
+      "headline": "Otter’standing!",
+      "title": "Your stake was successful.",
+      "desc": "You will get"
+    },
+    "unstake_popup": {
+      "headline": "Otter’standing!",
+      "title": "Your unstake was successful.",
+      "desc": "you will get"
+    }
   }
 }
