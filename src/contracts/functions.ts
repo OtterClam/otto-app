@@ -501,7 +501,7 @@ export function useDepositedAmount() {
   return balance
 }
 
-export function useNextRewadTime() {
+export function useNextRewardTime() {
   const rewardManager = useRewardManager()
 
   const [result] = useCalls([

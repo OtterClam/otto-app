@@ -9,13 +9,13 @@ import {
   useClamPerPearl,
   useStakedInfo,
   useTotalRewardsAmount,
-  useNextRewadTime,
+  useNextRewardTime,
   useAvailableTokenRewards,
   useClaimRewards,
 } from 'contracts/functions'
 import Button from 'components/Button'
 import formatDistance from 'date-fns/formatDistanceStrict'
-import { ethers, utils, BigNumber } from 'ethers'
+import { ethers, utils, BigNumber, constants } from 'ethers'
 import { trim } from 'helpers/trim'
 import { useBreakPoints } from 'hooks/useMediaQuery'
 import { useTranslation } from 'next-i18next'
@@ -217,7 +217,7 @@ export default function StakeInfo({ className }: Props) {
   const pearlBankBalance = usePearlBankBalance()
   const totalRewards = useTotalRewardsAmount()
   const myStakedInfo = useStakedInfo()
-  const nextRewardTime = useNextRewadTime()
+  const nextRewardTime = useNextRewardTime()
   const availableTokenRewards = useAvailableTokenRewards()
   const tvl = clamPrice ? clamPrice.mul(totalStaked) : BigNumber.from(0)
   const claim = useClaimRewards()
@@ -239,6 +239,13 @@ export default function StakeInfo({ className }: Props) {
     }
     return myRewards.mul(1e9).mul(1e9).div(myStakedInfo.amount.mul(clamPrice))
   }, [myStakedInfo, clamPrice, myRewards])
+
+  const apr = useMemo(() => {
+    if (!clamPrice || clamPrice.eq(0)) {
+      return '0'
+    }
+    return utils.formatUnits(totalRewards.mul(1e9).mul(1e9).mul(365).div(totalStaked.mul(clamPrice)), 4)
+  }, [clamPrice, totalStaked, totalRewards])
 
   return (
     <StyledStakeInfo className={className}>
@@ -291,17 +298,8 @@ export default function StakeInfo({ className }: Props) {
               </StyledInfoContainer>
               <StyledInfoContainer>
                 <StyledInfoTitle>{t('apr')}</StyledInfoTitle>
-                <p>{trim(utils.formatUnits(yieldRate.mul(365).mul(100), 6), 4)}%</p>
+                <p>{trim(apr, 4)}%</p>
               </StyledInfoContainer>
-              {/* <StyledInfoContainer>
-                <p />
-                <StyledPearlChestContainer>
-                  <StyledPearlChest>
-                    {t('chest_reward')}
-                    <span>+ 86%</span>
-                  </StyledPearlChest>
-                </StyledPearlChestContainer>
-              </StyledInfoContainer> */}
             </StyledInfos>
             <StyledExtraRewards>{t('extra_rewards')}</StyledExtraRewards>
             <StyledGashaponTicket
