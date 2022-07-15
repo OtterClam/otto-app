@@ -91,7 +91,7 @@ const HomePage = () => {
   const rightMenus: Menu[] = useMemo(
     () => [
       { title: t('home.menu.buy_clam'), icon: BuyCLAMIcon.src, href: BUY_CLAM_LINK },
-      { title: t('home.menu.treasury'), icon: TreasuryIcon.src, href: TREASURY_LINK },
+      { title: t('home.menu.treasury'), icon: TreasuryIcon.src, href: TREASURY_LINK, internal: true },
       { title: t('home.menu.white_paper'), icon: WhitePaperIcon.src, href: WHITE_PAPER_LINK },
     ],
     [t]
