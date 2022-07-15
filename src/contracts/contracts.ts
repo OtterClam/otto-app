@@ -19,6 +19,7 @@ import {
   OttoHellDiceRollerApi,
   ClamPondAbi,
   PearlBankAbi,
+  RewardManagerAbi,
 } from './abis'
 import { OttoItem } from './__generated__/OttoItem'
 import { OttopiaStore } from './__generated__/OttopiaStore'
@@ -30,6 +31,7 @@ import {
   ClamMaiContract,
   ClamPond,
   Erc20,
+  OtterRewardManager,
   OtterStakingPearlHelper,
   OttoHellDiceRoller,
   PearlBank,
@@ -130,4 +132,10 @@ export function usePearlBank() {
   const { PEARL_BANK } = useContractAddresses()
   const { library } = useEthers()
   return new Contract(PEARL_BANK, PearlBankAbi, library) as PearlBank
+}
+
+export function useRewardManager() {
+  const { REWARD_MANAGER } = useContractAddresses()
+  const { library } = useEthers()
+  return new Contract(REWARD_MANAGER, RewardManagerAbi, library) as OtterRewardManager
 }

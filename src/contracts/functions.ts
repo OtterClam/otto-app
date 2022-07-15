@@ -1,4 +1,4 @@
-import { TransactionState, TransactionStatus, useCall, useCalls, useContractFunction, useEthers } from '@usedapp/core'
+import { TransactionState, TransactionStatus, useCalls, useContractFunction, useEthers } from '@usedapp/core'
 import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
 import useApi from 'hooks/useApi'
 import useContractAddresses from 'hooks/useContractAddresses'
@@ -18,6 +18,7 @@ import {
   useStoreContract,
   usePearlBank,
   useClamPond,
+  useRewardManager,
 } from './contracts'
 
 export const useApprove = (tokenAddress?: string) => {
@@ -408,7 +409,21 @@ export function useClamPerPearl() {
   return totalSupplyOfPearl.eq(0) ? BigNumber.from(0) : totalStakedOfClam.div(totalSupplyOfPearl)
 }
 
-export function useRewardInfo() {
+export function useTotalRewardsAmount() {
+  const pearlBank = usePearlBank()
+
+  const [result] = useCalls([
+    {
+      contract: pearlBank,
+      method: 'latestTokenReward',
+      args: [],
+    },
+  ])
+
+  return result?.value ? result?.value[0] : BigNumber.from(0)
+}
+
+export function useClaimableRewards() {
   const pearlBank = usePearlBank()
   const { account } = useEthers()
 
@@ -417,6 +432,20 @@ export function useRewardInfo() {
       contract: pearlBank,
       method: 'totalTokenRewardsPerStake',
       args: [account],
+    },
+  ])
+
+  return result?.value ? result?.value[0] : BigNumber.from(0)
+}
+
+export function useNextRewadTime() {
+  const rewardManager = useRewardManager()
+
+  const [result] = useCalls([
+    {
+      contract: rewardManager,
+      method: 'nextPayoutTime',
+      args: [],
     },
   ])
 

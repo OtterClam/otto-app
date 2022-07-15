@@ -5,6 +5,7 @@ export { ClamCirculatingSupply__factory } from "./ClamCirculatingSupply__factory
 export { ClamMaiContract__factory } from "./ClamMaiContract__factory";
 export { ClamPond__factory } from "./ClamPond__factory";
 export { IOttoItemFactory__factory } from "./IOttoItemFactory__factory";
+export { OtterRewardManager__factory } from "./OtterRewardManager__factory";
 export { OtterStakingPearlHelper__factory } from "./OtterStakingPearlHelper__factory";
 export { Otto__factory } from "./Otto__factory";
 export { OttoHellDiceRoller__factory } from "./OttoHellDiceRoller__factory";

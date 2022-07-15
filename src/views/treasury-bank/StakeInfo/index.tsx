@@ -1,11 +1,18 @@
-import { useEthers } from '@usedapp/core'
 import CLAMCoin from 'assets/icons/CLAM.svg'
 import USDPlus from 'assets/icons/usdplus.png'
 import PearlBalance from 'assets/icons/pearl-balance.png'
 import TreasurySection from 'components/TreasurySection'
-import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 import { useClamPrice } from 'contracts/views'
-import { useTotalStakedAmount, usePearlBankBalance, useClamPerPearl, useRewardInfo } from 'contracts/functions'
+import {
+  useTotalStakedAmount,
+  usePearlBankBalance,
+  useClamPerPearl,
+  useStakedInfo,
+  useTotalRewardsAmount,
+  useNextRewadTime,
+  useClaimableRewards,
+} from 'contracts/functions'
+import formatDistance from 'date-fns/formatDistanceStrict'
 import { ethers, utils, BigNumber } from 'ethers'
 import { trim } from 'helpers/trim'
 import { useBreakPoints } from 'hooks/useMediaQuery'
@@ -195,18 +202,29 @@ export default function StakeInfo({ className }: Props) {
   const totalStaked = useTotalStakedAmount()
   const pearlBankBalance = usePearlBankBalance()
   const clamPerPearl = useClamPerPearl()
-  const totalRewards = useRewardInfo()
-  const { latestMetrics } = usePearlBankMetrics()
-  const countdown = '7hr 30mins'
+  const totalRewards = useTotalRewardsAmount()
+  const myStakedInfo = useStakedInfo()
+  const nextRewardTime = useNextRewadTime()
+  const claimableRewards = useClaimableRewards()
   const tvl = clamPrice ? clamPrice.mul(totalStaked) : BigNumber.from(0)
 
-  const yieldRate = useMemo(() => {
-    if (!latestMetrics) {
+  const countdown = useMemo(() => {
+    return formatDistance(new Date(), myStakedInfo.amount.toNumber() * 1000)
+  }, [nextRewardTime])
+
+  const myRewards = useMemo(() => {
+    if (totalStaked.eq(0)) {
       return BigNumber.from(0)
     }
-    const stakedMarketValue = latestMetrics.clamMarketValueWhenPayoutHappens.mul(totalStaked)
-    return totalRewards.div(stakedMarketValue)
-  }, [latestMetrics, totalStaked])
+    return totalRewards.mul(myStakedInfo.amount).div(totalStaked)
+  }, [myStakedInfo, totalStaked, totalRewards])
+
+  const yieldRate = useMemo(() => {
+    if (myRewards.eq(0)) {
+      return BigNumber.from(0)
+    }
+    return myStakedInfo.amount.mul(clamPrice).div(myRewards)
+  }, [myStakedInfo, clamPrice, myRewards])
 
   return (
     <StyledStakeInfo className={className}>
@@ -241,12 +259,12 @@ export default function StakeInfo({ className }: Props) {
           </StyledSectionTitle>
           <StyledSectionBody>
             <StyledClamBalanceContainer>
-              <StyledUsdPlusBalance>{trim(utils.formatUnits(totalRewards, 6), 4)} USD+</StyledUsdPlusBalance>
+              <StyledUsdPlusBalance>{trim(utils.formatUnits(claimableRewards, 6), 4)} USD+</StyledUsdPlusBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
               <StyledInfoContainer>
                 <StyledInfoTitle>{t('latest_reward')}</StyledInfoTitle>
-                <p>{trim(utils.formatUnits(totalRewards, 6), 4)}</p>
+                <p>{trim(utils.formatUnits(myRewards, 6), 4)}</p>
               </StyledInfoContainer>
               <StyledInfoContainer>
                 <StyledInfoTitle>{t('latest_reward_yield')}</StyledInfoTitle>
