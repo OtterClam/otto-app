@@ -256,7 +256,7 @@ export default function StakeInfo({ className }: Props) {
       <StyledBackground1 delay={0} />
       <StyledBackground2 delay={500} />
       <StyledBody>
-        <StyledTVL>{t('tvl', { tvl: trim(ethers.utils.formatUnits(tvl, 21), 2) })}</StyledTVL>
+        <StyledTVL>{t('tvl', { tvl: trim(ethers.utils.formatUnits(tvl, 18), 2) })}</StyledTVL>
         {isMobile && <StyledStakedDialog />}
         <StyledSection>
           <StyledSectionTitle>

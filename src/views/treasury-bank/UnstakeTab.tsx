@@ -5,13 +5,14 @@ import addDays from 'date-fns/addDays'
 import formatDate from 'date-fns/format'
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 import isAfter from 'date-fns/isAfter'
-import { useUnstake, useStakedInfo } from 'contracts/functions'
+import { useUnstake, useStakedInfo, usePearlBankFee } from 'contracts/functions'
 import { utils } from 'ethers'
 import { trim } from 'helpers/trim'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Caption, Note, ContentLarge, ContentSmall, Headline } from 'styles/typography'
+import { basename } from 'path'
 import UnstakeSuccessPopup from './UnstakeSuccessPopup'
 
 const StyledUnstakeTab = styled.div`
@@ -87,12 +88,9 @@ export default function UnstakeTab({ className }: Props) {
   const [clamAmount, setClamAmount] = useState('')
   const { amount: stakedAmount, timestamp: lastStakeTimestamp } = useStakedInfo()
   const { unstakeState: state, unstake, resetState } = useUnstake()
-  const unlockTime = addDays(lastStakeTimestamp.mul(1000).toNumber(), 30)
+  const { base: feeBase, fee, feeRate, duration } = usePearlBankFee(utils.parseUnits(clamAmount || '0', 9))
+  const unlockTime = new Date(lastStakeTimestamp.add(duration).mul(1000).toNumber())
   const unlocked = isAfter(new Date(), unlockTime)
-  const fee = utils
-    .parseUnits(clamAmount || '0', 9)
-    .mul(5)
-    .div(1000)
   const receiveAmount = utils.parseUnits(clamAmount || '0', 9).sub(fee)
 
   useEffect(() => {
@@ -139,11 +137,14 @@ export default function UnstakeTab({ className }: Props) {
       {!unlocked && (
         <>
           <StyledField>
-            <StyledFieldLabel>{t('fee')}</StyledFieldLabel>
+            <StyledFieldLabel>
+              {t('fee', { feeRate: trim((feeRate.toNumber() / feeBase.toNumber()) * 100, 2) })}
+            </StyledFieldLabel>
             <StyledFieldValue>-{trim(utils.formatUnits(fee, 9), 4)} CLAM</StyledFieldValue>
           </StyledField>
           <StyledNote>
             {t('unstake_note', {
+              feeRate: trim((feeRate.toNumber() / feeBase.toNumber()) * 100, 2),
               date: formatDate(unlockTime, 'yyyy-MM-dd'),
               days: formatDistanceToNowStrict(unlockTime, { unit: 'day' }),
             })}

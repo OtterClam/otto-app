@@ -363,6 +363,23 @@ export function useStakedInfo() {
   }
 }
 
+export function useDepositInfo() {
+  const clamPond = useClamPond()
+  const { account } = useEthers()
+
+  const [result] = useCalls([
+    {
+      contract: clamPond,
+      method: 'depositInfo',
+      args: [account],
+    },
+  ])
+
+  return {
+    timestamp: result?.value?.timestamp ?? BigNumber.from(0),
+  }
+}
+
 export function useTotalStakedAmount(): BigNumber {
   const pearlBank = usePearlBank()
 
@@ -452,7 +469,7 @@ export function useTotalDepositedAmount() {
   const [result] = useCalls([
     {
       contract: clamPond,
-      method: 'scaledTotalSupply',
+      method: 'totalSupply',
       args: [],
     },
   ])
@@ -556,4 +573,73 @@ export const useWithdraw = () => {
     setUnstakeState({ state: state.status, status: state })
   }, [state])
   return { unstakeState, unstake, resetState }
+}
+
+export function usePearlBankFee(amount: BigNumber) {
+  const pearlBank = usePearlBank()
+  const { account } = useEthers()
+
+  const [baseResult, feeRateResult, durationResult, feeResult] = useCalls([
+    {
+      contract: pearlBank,
+      method: 'BASE',
+      args: [],
+    },
+    {
+      contract: pearlBank,
+      method: 'withdrawFeeRate',
+      args: [],
+    },
+    {
+      contract: pearlBank,
+      method: 'withdrawFeeDuration',
+      args: [],
+    },
+    {
+      contract: pearlBank,
+      method: 'withdrawFee',
+      args: [account, amount],
+    },
+  ])
+
+  const base = baseResult?.value ? baseResult?.value[0] : BigNumber.from(1)
+  const feeRate = feeRateResult?.value ? feeRateResult?.value[0] : BigNumber.from(0)
+  const duration = durationResult?.value ? durationResult?.value[0] : BigNumber.from(0)
+  const fee = feeResult?.value ? feeResult?.value[0] : BigNumber.from(0)
+
+  return {
+    base,
+    feeRate,
+    duration,
+    fee,
+  }
+}
+
+export function useClamPondFee(amount: BigNumber) {
+  const clamPond = useClamPond()
+  const { account } = useEthers()
+
+  const [feeRateResult, durationResult, feeResult] = useCalls([
+    {
+      contract: clamPond,
+      method: 'withdrawFeeRate',
+      args: [],
+    },
+    {
+      contract: clamPond,
+      method: 'withdrawFeeDuration',
+      args: [],
+    },
+    {
+      contract: clamPond,
+      method: 'withdrawFee',
+      args: [account, amount],
+    },
+  ])
+
+  const feeRate = feeRateResult?.value ? feeRateResult?.value[0] : BigNumber.from(0)
+  const duration = durationResult?.value ? durationResult?.value[0] : BigNumber.from(0)
+  const fee = feeResult?.value ? feeResult?.value[0] : BigNumber.from(0)
+
+  return { base: BigNumber.from(10000), fee, feeRate, duration }
 }
