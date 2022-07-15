@@ -535,6 +535,8 @@
     "stake_btn": "投入貝殼幣",
     "unstake_btn": "領出貝殼幣",
     "tvl": "總投入價值 TVL: ${{tvl}}",
+    "unstake_note": "*如果你在 30 天內提領貝殼幣，你將會被收取當次提領貝殼幣數量的 {{ feeRate }}% 手續費。減免手續費日期: {{ date }} (剩餘 {{ days }} 天)",
+    "fee": "手續費 ({{ feeRate }}%)*",
     "staked_balance": "你已投入數量",
     "pearl_balance": "PEARL 數量",
     "next_reward": "最近一次獎勵數量",
@@ -550,8 +552,8 @@
     },
     "unstake_popup": {
       "headline": "太蚌了!",
-      "title": "你成功領出貝殼幣了！,
-      "desc": "你將囉收到 "
+      "title": "你成功領出貝殼幣了！",
+      "desc": "你將收到"
     }
   },
   "bank": {
@@ -565,7 +567,7 @@
     "stake_btn": "存入貝殼幣",
     "unstake_btn": "提領貝殼幣",
     "unstake_note": "*如果你在 30 天內提領貝殼幣，你將會被收取當次提領貝殼幣數量的 0.5% 手續費。減免手續費日期: {{ date }} (剩餘 {{ days }} 天)",
-    "fee": "手續費 (0.5%)*",
+    "fee": "手續費 ({{ feeRate }}%)*",
     "unstake_receive_amount": "你將會得到",
     "tvl": "總存入價值 TVL:",
     "staked_balance": "你已存入數量",
