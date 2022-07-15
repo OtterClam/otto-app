@@ -477,5 +477,115 @@
     "desc": "Ottopia 只支援 Polygon 喔！",
     "title": "不支援的區塊鏈"
   },
-  "wallet_selector_head": "連接錢包"
+  "wallet_selector_head": "連接錢包",
+  "treasury": {
+    "layout": {
+      "nav": {
+        "label": {
+          "dashboard": "Dashboard",
+          "pond": "Clam Pond",
+          "bank": "Pearl Bank",
+          "farm": "Farm",
+          "bond": "Bond"
+        },
+        "desc": {
+          "dashboard": "OtterClam Finance Stats",
+          "pond": "Auto-compound CLAM",
+          "bank": "Stake CLAM for Pearl",
+          "farm": "Earn defi yield with tokens",
+          "bond": "Provide Liquidity to Earn"
+        }
+      }
+    },
+    "dashboard": {
+      "title": "Treasury Dashboard",
+      "clamPrice": "CLAM Price",
+      "pearlPrice": "PEARL Price",
+      "currentIndex": "Current Index",
+      "currentIndexTooltip": "The current index tracks the amount of sCLAM accumulated since the beginning of staking. Basically, how much sCLAM one would have if they staked and held a single CLAM from day 1.",
+      "backing": "Backing per CLAM",
+      "backingTooltip": "Market Value of Treasury Assets divided by the circulating supply of CLAM.",
+      "tvd": "Total Value Deposited",
+      "tvdTooltip": "Total Value Deposited, is the dollar amount of all CLAM staked in the protocol. This metric is often used as growth or health indicator in DeFi projects.",
+      "staked": "CLAM Staked",
+      "stakedTooltip": "CLAM Staked, is the ratio of sCLAM to CLAM (staked vs unstaked)",
+      "chartHeaderLabel": "Total",
+      "today": "Today",
+      "treasuryMarketValue": "Market Value of Treasury Assets",
+      "treasuryRevenue": "Treasury Revenue",
+      "clamCirculatingSupply": "CLAM Circulating Supply",
+      "buybacks": "Buybacks",
+      "burned": "Burned CLAM",
+      "burnedTooltip": "Amount of CLAM permanently burned and removed from the supply.",
+      "distributed": "Reward Distributed",
+      "distributedTooltip": "Total amount of CLAM which has been distributed today. This is divided proportionally between all stakers and Pearl Chest holders.",
+      "averageApr": "Average APR",
+      "averageAprStartDate": "from {{ date }}"
+    }
+  },
+  "stake": {
+    "title": "Clam Pond",
+    "stake_tab": "Deposit",
+    "unstake_tab": "Withdraw",
+    "welcome": "Welcome to Clam Pond!",
+    "desc": "Deposit your CLAM to automatically compound your USD+ rewards into more CLAM and maximize your passive-income potential. You can deposit and withdraw CLAM at any time.",
+    "available": "Available:",
+    "max": "MAX",
+    "input_placeholder": "Enter your amount",
+    "stake_btn": "Deposit",
+    "unstake_btn": "Withdraw",
+    "tvl": "TVL: ${{tvl}}",
+    "staked_balance": "Your Staked Balance",
+    "pearl_balance": "PEARL balance",
+    "next_reward": "Latest Reward Amount",
+    "rebase_countdown": "Rebase remaining: {{countdown}}",
+    "next_reward_yield": "Latest Reward Yield",
+    "apy": "APY",
+    "chest_reward": "Max ",
+    "extra_rewards": "Extra Rewards coming soon...",
+    "stake_popup": {
+      "headline": "Otter’standing!",
+      "title": "Your stake was successful.",
+      "desc": "You will get "
+    },
+    "unstake_popup": {
+      "headline": "Otter’standing!",
+      "title": "Your unstake was successful.",
+      "desc": "You just received "
+    }
+  },
+  "bank": {
+    "stake_tab": "Stake",
+    "unstake_tab": "Unstake",
+    "welcome": "Welcome to Pearl Bank!",
+    "desc": "Stake your CLAM for PEARL to earn your share of protocol revenue and extra fancy rewards! Rewards are paid in USD+. You can collect your rewards at any time.",
+    "available": "Available:",
+    "max": "Max",
+    "input_placeholder": "Enter your amount",
+    "stake_btn": "Stake",
+    "unstake_btn": "Unstake",
+    "unstake_note": "*If you unstake within 30 days, you will be charged and burned 0.5% of the CLAM amount unstaked. Fully waived date: {{ date }} ({{ days }} days left)",
+    "fee": "Handling Fee (0.5%)*",
+    "unstake_receive_amount": "You will get",
+    "tvl": "Total Value Locked:",
+    "staked_balance": "Your Staked Balance",
+    "pearl_balance": "PEARL Balance",
+    "current_reward": "Current Reward Amount",
+    "rebase_countdown": "Next reward time: {{ countdown }}",
+    "latest_reward": "Latest Reward",
+    "latest_reward_yield": "Latest Reward Yield",
+    "apr": "APR",
+    "extra_rewards": "Extra Rewards coming soon...",
+    "stake_popup": {
+      "headline": "Otter’standing!",
+      "title": "Your stake was successful.",
+      "desc": "You will get"
+    },
+    "unstake_popup": {
+      "headline": "Otter’standing!",
+      "title": "Your unstake was successful.",
+      "desc": "you will get"
+    },
+    "claim": "Claim"
+  }
 }
