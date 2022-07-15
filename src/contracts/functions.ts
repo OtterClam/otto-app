@@ -472,7 +472,8 @@ export function useDepositedAmount() {
   const balance = balanceResult?.value ? balanceResult?.value[0] : BigNumber.from(0)
   const index = indexResult?.value ? indexResult?.value[0] : BigNumber.from(0)
 
-  return balance.mul(index)
+  // return balance.mul(index)
+  return balance
 }
 
 export function useNextRewadTime() {

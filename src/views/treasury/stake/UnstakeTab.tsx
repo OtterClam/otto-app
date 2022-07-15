@@ -1,11 +1,16 @@
-import PEARL from 'assets/pearl.png'
-import PearlCoin from 'assets/icons/PEARL-coin.svg'
+import CLAM from 'assets/clam.svg'
+import CLAMCoin from 'assets/icons/CLAM.svg'
 import Button from 'components/Button'
-import { useWithdraw } from 'contracts/functions'
-import { useTreasuryRealtimeMetrics } from 'contracts/views'
 import { utils } from 'ethers'
 import { trim } from 'helpers/trim'
-import usePearlBalance from 'hooks/usePearlBalance'
+import {
+  useWithdraw,
+  useTotalDepositedAmount,
+  useNextRewadTime,
+  useDepositedAmount,
+  useTotalStakedAmount,
+  useTotalRewardsAmount,
+} from 'contracts/functions'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -31,7 +36,7 @@ const StyledPearlBalanceText = styled.div`
   flex: 1;
   &:before {
     content: '';
-    background: no-repeat center/contain url(${PEARL.src});
+    background: no-repeat center/contain url(${CLAM.src});
     width: 16px;
     height: 16px;
     margin-right: 5px;
@@ -44,7 +49,7 @@ const StyledInput = styled.input`
   padding: 20px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
-  background: url(${PearlCoin.src}) no-repeat 20px;
+  background: url(${CLAMCoin.src}) no-repeat 20px;
   text-indent: 32px;
 
   ::placeholder {
@@ -64,9 +69,8 @@ interface Props {
 export default function UnstakeTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const [pearlAmount, setPearlAmount] = useState('')
-  const pearlBalance = usePearlBalance()
+  const pearlBalance = useDepositedAmount()
   const { unstakeState: state, unstake, resetState } = useWithdraw()
-  const { index } = useTreasuryRealtimeMetrics()
   useEffect(() => {
     if (state.state === 'Fail' || state.state === 'Exception') {
       window.alert(state.status.errorMessage)
@@ -80,13 +84,13 @@ export default function UnstakeTab({ className }: Props) {
       <StyledPearlBalance>
         {t('available')}
         <StyledPearlBalanceText>
-          {pearlBalance !== undefined ? trim(utils.formatEther(pearlBalance), 2) : '-'}
+          {pearlBalance !== undefined ? trim(utils.formatUnits(pearlBalance, 9), 2) : '-'}
         </StyledPearlBalanceText>
         <Button
           Typography={ContentLarge}
           primaryColor="white"
           padding="0 12px"
-          onClick={() => pearlBalance && setPearlAmount(utils.formatEther(pearlBalance))}
+          onClick={() => pearlBalance && setPearlAmount(utils.formatUnits(pearlBalance, 9))}
         >
           {t('max')}
         </Button>
@@ -109,7 +113,7 @@ export default function UnstakeTab({ className }: Props) {
       </StyledButton>
       {state.state === 'Success' && (
         <UnstakeSuccessPopup
-          clamAmount={trim(utils.formatUnits(utils.parseUnits(pearlAmount, 18).mul(index).div(1e9), 18), 4)}
+          clamAmount={trim(utils.formatUnits(utils.parseUnits(pearlAmount, 9), 9), 4)}
           onClose={resetState}
         />
       )}

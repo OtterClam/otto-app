@@ -2,7 +2,6 @@ import CLAM from 'assets/clam.svg'
 import CLAMCoin from 'assets/icons/CLAM.svg'
 import Button from 'components/Button'
 import { useDeposit } from 'contracts/functions'
-import { useTreasuryRealtimeMetrics } from 'contracts/views'
 import { utils } from 'ethers'
 import { trim } from 'helpers/trim'
 import useClamBalance from 'hooks/useClamBalance'
@@ -64,7 +63,6 @@ export default function StakeTab({ className }: Props) {
   const [clamAmount, setClamAmount] = useState('')
   const clamBalance = useClamBalance()
   const { stakeState, stake, resetStake } = useDeposit()
-  const { index } = useTreasuryRealtimeMetrics()
   useEffect(() => {
     if (stakeState.state === 'Fail' || stakeState.state === 'Exception') {
       window.alert(stakeState.status.errorMessage)
@@ -107,7 +105,7 @@ export default function StakeTab({ className }: Props) {
       </StyledButton>
       {stakeState.state === 'Success' && (
         <StakeSuccessPopup
-          clamAmount={trim(utils.formatUnits(utils.parseUnits(clamAmount, 9).mul(1e9).div(index), 9), 4)}
+          clamAmount={trim(utils.formatUnits(utils.parseUnits(clamAmount, 9), 9), 4)}
           onClose={resetStake}
         />
       )}
