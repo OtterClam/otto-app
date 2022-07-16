@@ -288,14 +288,14 @@ export default function StakeInfo({ className }: Props) {
               </StyledClaimButton>
             </StyledClaimableBalance>
             <StyledInfos>
-              <StyledInfoContainer>
+              {/* <StyledInfoContainer>
                 <StyledInfoTitle>{t('latest_reward')}</StyledInfoTitle>
                 <p>{trim(utils.formatUnits(myRewards, 6), 4)}</p>
               </StyledInfoContainer>
               <StyledInfoContainer>
                 <StyledInfoTitle>{t('latest_reward_yield')}</StyledInfoTitle>
                 <p>{trim(utils.formatUnits(yieldRate.mul(100), 6), 4)}%</p>
-              </StyledInfoContainer>
+              </StyledInfoContainer> */}
               <StyledInfoContainer>
                 <StyledInfoTitle>{t('apr')}</StyledInfoTitle>
                 <p>{trim(apr, 4)}%</p>
