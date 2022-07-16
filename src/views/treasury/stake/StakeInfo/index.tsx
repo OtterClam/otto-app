@@ -233,9 +233,9 @@ export default function StakeInfo({ className }: Props) {
       return 0
     }
     const dailyYield = Number(
-      utils.formatUnits(latestTotalReward.mul(1e9).mul(1e9).mul(365).div(lastTotalStaked.mul(clamPrice)), 6)
+      utils.formatUnits(latestTotalReward.mul(1e9).mul(1e9).div(lastTotalStaked.mul(clamPrice)), 6)
     )
-    return (1 + dailyYield) ** 365 - 1
+    return ((1 + dailyYield) ** 365 - 1) * 100
   }, [clamPrice, latestTotalReward, lastTotalStaked])
 
   return (
