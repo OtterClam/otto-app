@@ -17,11 +17,11 @@ export const ClamBalance = () => {
 }
 
 export const PearlBalance = () => {
-  const { PEARL } = useContractAddresses()
+  const { PEARL_BANK } = useContractAddresses()
   const { isMobile } = useBreakpoints()
   const bg = isMobile ? SmallPearlBg : LargePearlBg
   const width = isMobile ? 62 : 88
-  return <Balance background={bg.src} width={width} contractAddress={PEARL} decimal={18} />
+  return <Balance background={bg.src} width={width} contractAddress={PEARL_BANK} />
 }
 
 export const FishBalance = () => {
