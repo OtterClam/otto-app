@@ -13,26 +13,40 @@ export const GET_OTTERCLAM_PROPOSALS = gql`
       state
       scores
       votes
+      type
+      space {
+        id
+      }
     }
   }
 `
 
-export const GET_DYSTOPIA_PENROSE_PROPOSALS = gql`
-  query DystopiaPenroseProposals {
-    proposals(first: 4, skip: 0, where: { space_in: ["dystopia.eth"] }, orderBy: "created", orderDirection: desc) {
-      id
-      title
-      body
-      choices
-      start
-      end
-      snapshot
-      state
-      scores
-      votes
-    }
-  }
-`
+// export const GET_DYSTOPIA_PENROSE_PROPOSALS = gql`
+//   query DystopiaPenroseProposals {
+//     proposals(
+//       first: 4
+//       skip: 0
+//       where: { space_in: ["dystopia.eth", "penrose.eth"], voter_in: ["0x63b0fb7fe68342afad3d63ef743de4a74cdf462b"] }
+//       orderBy: "created"
+//       orderDirection: desc
+//     ) {
+//       id
+//       title
+//       body
+//       choices
+//       start
+//       end
+//       snapshot
+//       state
+//       scores
+//       votes
+//       type
+//       space {
+//         id
+//       }
+//     }
+//   }
+// `
 
 export const GET_QIDAO_VOTED_PROPOSALS = gql`
   query QiDaoVotes {
@@ -42,7 +56,6 @@ export const GET_QIDAO_VOTED_PROPOSALS = gql`
       orderBy: "created"
       orderDirection: desc
     ) {
-      voter
       choice
       vp
       proposal {
@@ -57,6 +70,9 @@ export const GET_QIDAO_VOTED_PROPOSALS = gql`
         scores
         votes
         type
+        space {
+          id
+        }
       }
     }
   }

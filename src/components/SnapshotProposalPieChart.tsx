@@ -7,13 +7,13 @@ import React, { RefObject, useRef, useMemo } from 'react'
 import { PieChart, Pie, Tooltip, Legend, Cell } from 'recharts'
 import styled from 'styled-components/macro'
 import ChartTooltip from './ChartTooltip'
-import { OtterClamProposals_proposals } from 'graphs/__generated__/OtterClamProposals'
+import { Proposal } from '../models/Proposal'
 
 const StyledContainer = styled.div`
   font-family: 'Pangolin', 'naikaifont' !important;
 `
 export interface SnapshotProposalPieChartProps {
-  proposal: OtterClamProposals_proposals
+  proposal: Proposal
 }
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
 

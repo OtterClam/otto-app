@@ -7,6 +7,11 @@
 // GraphQL query operation: OtterClamProposals
 // ====================================================
 
+export interface OtterClamProposals_proposals_space {
+  __typename: "Space";
+  id: string;
+}
+
 export interface OtterClamProposals_proposals {
   __typename: "Proposal";
   id: string;
@@ -19,6 +24,8 @@ export interface OtterClamProposals_proposals {
   state: string | null;
   scores: (number | null)[] | null;
   votes: number | null;
+  type: string | null;
+  space: OtterClamProposals_proposals_space | null;
 }
 
 export interface OtterClamProposals {

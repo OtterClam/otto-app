@@ -1,26 +1,13 @@
-import CLAM from 'assets/clam.svg'
-import CLAMCoin from 'assets/icons/CLAM.svg'
 import Button from 'components/Button'
 import DystopiaPenroseFunnelChart from 'components/DystopiaPenroseFunnelChart'
 import PenroseVotesPieChart from 'components/PenroseVotesPieChart'
 import SnapshotProposalGroup from 'components/SnapshotProposalGroup'
-import { useStake } from 'contracts/functions'
-import { useTreasuryRealtimeMetrics } from 'contracts/views'
-import { utils } from 'ethers'
-import { trim } from 'helpers/trim'
 import useGovernanceMetrics from 'hooks/useGovernanceMetrics'
 import usePenroseVotes from 'hooks/usePenroseVotes'
-import useOtterClamProposals from 'hooks/useSnapshotProposals'
+import useOtterClamProposals from 'hooks/useOtterClamProposals'
 import { useTranslation } from 'next-i18next'
-import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Caption, ContentLarge, ContentSmall, Headline } from 'styles/typography'
-
-// const StyledOtterClamTab = styled.div`
-//   display: block;
-//   flex-direction: row;
-//   gap: 10px;
-// `
 
 const CenteredHeadline = styled.span`
   font-family: 'Pangolin', 'naikaifont';
@@ -42,14 +29,13 @@ interface Props {
 
 export default function DystopiaPenroseTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
-  const { metrics } = useGovernanceMetrics()
-  const { votes } = usePenroseVotes()
-  const { proposals } = useOtterClamProposals()
+  const { loading: loadingMetrics, metrics } = useGovernanceMetrics()
+  const { loading: loadingVotes, votes } = usePenroseVotes()
 
-  const otterClamVlPenRounded = parseFloat(metrics[0].otterClamVlPenPercentOwned).toFixed(2)
-  const otterClamVeDystRounded = parseFloat(metrics[0].otterClamVeDystPercentOwned).toFixed(2)
+  const otterClamVlPenRounded = parseFloat(metrics?.[0]?.otterClamVlPenPercentOwned ?? 'NaN').toFixed(2)
+  const otterClamVeDystRounded = parseFloat(metrics?.[0]?.otterClamVeDystPercentOwned ?? 'NaN').toFixed(2)
 
-  return (
+  return !(loadingMetrics || loadingVotes) ? (
     <div className={className}>
       <CenteredHeadline as="h1">
         {'OtterClam controls '}
@@ -65,7 +51,9 @@ export default function DystopiaPenroseTab({ className }: Props) {
       <DystopiaPenroseFunnelChart metrics={metrics} />
       <CenteredHeadline as="h1">{"Current Distribtuion of OtterClam's Penrose Vote Allocation:"}</CenteredHeadline>
       <PenroseVotesPieChart votes={votes} />
-      <SnapshotProposalGroup data={proposals} />
     </div>
+  ) : (
+    //TODO: Loading spinner
+    <></>
   )
 }

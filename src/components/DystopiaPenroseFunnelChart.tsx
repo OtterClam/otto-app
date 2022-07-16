@@ -19,13 +19,6 @@ export interface DystopiaPenroseFunnelChartProps {
   metrics: GetGovernanceMetrics_governanceMetrics[]
 }
 
-interface ChartItem {
-  key: any
-  label: any
-  value: string
-  color: string
-}
-
 const localFunnel = [
   {
     label: 'Dyst',
@@ -76,6 +69,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
   }
 
 export default function DystopiaPenroseFunnelChart({ metrics }: DystopiaPenroseFunnelChartProps) {
+  if (metrics.length == 0) return null
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
@@ -88,8 +82,6 @@ export default function DystopiaPenroseFunnelChart({ metrics }: DystopiaPenroseF
     data[i].value = parseFloat(metrics[0][data[i].dataKey as MetricsKey])
   }
 
-  if (data.length == 0) return null
-
   return (
     <StyledContainer ref={containerRef}>
       <FunnelChart width={660} height={260}>
@@ -101,7 +93,6 @@ export default function DystopiaPenroseFunnelChart({ metrics }: DystopiaPenroseF
           labelLine={true}
           isAnimationActive={false}
         >
-          {/* <LabelList style={{ zIndex: 1 }} height={500} width={500} position="right" dataKey="label" fill="#00FF00" /> */}
           <LabelList position="right" fill="#000" stroke="none" dataKey="label"></LabelList>
         </Funnel>
         <Tooltip wrapperStyle={{ zIndex: 1, fontSize: '12px !important' }} content={renderTooltip(i18n) as any} />

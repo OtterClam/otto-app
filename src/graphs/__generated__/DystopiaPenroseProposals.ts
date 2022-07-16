@@ -7,6 +7,11 @@
 // GraphQL query operation: DystopiaPenroseProposals
 // ====================================================
 
+export interface DystopiaPenroseProposals_proposals_space {
+  __typename: "Space";
+  id: string;
+}
+
 export interface DystopiaPenroseProposals_proposals {
   __typename: "Proposal";
   id: string;
@@ -19,6 +24,7 @@ export interface DystopiaPenroseProposals_proposals {
   state: string | null;
   scores: (number | null)[] | null;
   votes: number | null;
+  space: DystopiaPenroseProposals_proposals_space | null;
 }
 
 export interface DystopiaPenroseProposals {

@@ -1,4 +1,5 @@
 import { OtterClamProposals_proposals } from 'graphs/__generated__/OtterClamProposals'
+import { Proposal } from '../models/Proposal'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall, Display1, Headline, ContentMedium } from 'styles/typography'
@@ -70,24 +71,24 @@ const CenteredHeadline = styled.span`
 
 export interface SnapshotProposalGroup {
   className?: string
-  data?: OtterClamProposals_proposals[]
+  proposals: Proposal[]
 }
 
-export default function TreasuryCard({ className, data }: SnapshotProposalGroup) {
+export default function TreasuryCard({ className, proposals }: SnapshotProposalGroup) {
   const { t } = useTranslation()
   return (
     <StyledContainer className={className}>
-      {data?.map(proposal => (
+      {proposals.map(proposal => (
         <StyledCard key={proposal.id}>
           <CenteredHeadline as="h1">{proposal!.title}</CenteredHeadline>
           <StyledTextBody>{proposal!.body}</StyledTextBody>
-          <SnapshotProposalPieChart proposal={proposal!}></SnapshotProposalPieChart>
+          <SnapshotProposalPieChart proposal={proposal}></SnapshotProposalPieChart>
           {proposal.state == 'active' ? (
             <Button
               padding="6px 48px"
               width={'70%'}
               Typography={Headline}
-              onClick={() => window.open(`https://snapshot.org/#/otterclam.eth/proposal/${proposal.id}`)}
+              onClick={() => window.open(`https://snapshot.org/#//proposal/${proposal.id}`)} //${proposal.space.id}
             >
               {t('treasury.governance.voteNow')}
             </Button>

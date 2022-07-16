@@ -7,6 +7,11 @@
 // GraphQL query operation: QiDaoVotes
 // ====================================================
 
+export interface QiDaoVotes_votes_proposal_space {
+  __typename: "Space";
+  id: string;
+}
+
 export interface QiDaoVotes_votes_proposal {
   __typename: "Proposal";
   id: string;
@@ -20,6 +25,7 @@ export interface QiDaoVotes_votes_proposal {
   scores: (number | null)[] | null;
   votes: number | null;
   type: string | null;
+  space: QiDaoVotes_votes_proposal_space | null;
 }
 
 export interface QiDaoVotes_votes {

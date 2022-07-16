@@ -1,23 +1,9 @@
-import CLAM from 'assets/clam.svg'
-import CLAMCoin from 'assets/icons/CLAM.svg'
 import Button from 'components/Button'
 import SnapshotProposalGroup from 'components/SnapshotProposalGroup'
-import { useStake } from 'contracts/functions'
-import { useTreasuryRealtimeMetrics } from 'contracts/views'
-import { utils } from 'ethers'
-import { trim } from 'helpers/trim'
-import useClamBalance from 'hooks/useClamBalance'
-import useOtterClamProposals from 'hooks/useSnapshotProposals'
+import useOtterClamProposals from 'hooks/useOtterClamProposals'
 import { useTranslation } from 'next-i18next'
-import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Caption, ContentLarge, ContentSmall, Headline } from 'styles/typography'
-
-// const StyledOtterClamTab = styled.div`
-//   display: block;
-//   flex-direction: row;
-//   gap: 10px;
-// `
+import { ContentSmall, Headline } from 'styles/typography'
 
 const StyledButton = styled(Button)``
 
@@ -32,7 +18,7 @@ export default function OtterClamTab({ className }: Props) {
     <div className={className}>
       <Headline as="h1">{t('welcome')}</Headline>
       <ContentSmall as="p">{t('desc')}</ContentSmall>
-      <SnapshotProposalGroup data={proposals} />
+      <SnapshotProposalGroup proposals={proposals} />
     </div>
   )
 }
