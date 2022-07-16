@@ -1,12 +1,11 @@
-import useOtterClamProposals from 'hooks/useSnapshotProposals'
 import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { ContentMedium } from 'styles/typography'
-import StakeTab from '../stake/StakeTab'
 import UnstakeTab from '../stake/UnstakeTab'
 import DystopiaPenroseTab from './DystopiaPenroseTab'
 import OtterClamTab from './OtterClamTab'
+import QiDaoTab from './QiDaoTab'
 
 const StyledStakeDialog = styled.div``
 
@@ -66,7 +65,7 @@ export default function GopvernanceTabGroup({ className }: Props) {
       <StyledBody>
         {tab === 'otterclam' && <OtterClamTab />}
         {tab === 'dyst_pen' && <DystopiaPenroseTab />}
-        {tab === 'qidao' && <UnstakeTab />}
+        {tab === 'qidao' && <QiDaoTab />}
       </StyledBody>
     </StyledStakeDialog>
   )

@@ -25,6 +25,7 @@ export default function useOtterClamProposals(): {
         snapshot: x?.snapshot,
         type: x?.type,
         state: x?.state,
+        voted: false,
       } as Proposal
     }) ?? []
 

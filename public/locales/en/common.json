@@ -528,7 +528,9 @@
     },
     "governance": {
       "title": "Governance",
-      "voteNow": "Vote Now!"
+      "voteNow": "Vote Now!",
+      "votingClosed": "Voting Closed",
+      "votes": "Votes"
     }
   },
   "stake": {

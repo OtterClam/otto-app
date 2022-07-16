@@ -13,4 +13,5 @@ export interface Proposal {
   space: string | null
   voted_choices: any | null
   vote_power: number | null
+  voted: boolean
 }

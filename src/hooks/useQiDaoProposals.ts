@@ -29,6 +29,7 @@ export default function useQiDaoProposals(): {
         //DAO vote allocation
         vote_power: x?.vp,
         voted_choices: x?.choice,
+        voted: true,
       } as Proposal
     }) ?? []
 

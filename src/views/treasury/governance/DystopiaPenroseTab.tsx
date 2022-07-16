@@ -28,7 +28,7 @@ interface Props {
 }
 
 export default function DystopiaPenroseTab({ className }: Props) {
-  const { t } = useTranslation('', { keyPrefix: 'stake' })
+  const { t } = useTranslation('', { keyPrefix: 'treasury.governance' })
   const { loading: loadingMetrics, metrics } = useGovernanceMetrics()
   const { loading: loadingVotes, votes } = usePenroseVotes()
 
