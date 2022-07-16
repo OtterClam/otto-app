@@ -570,7 +570,7 @@
     "stake_btn": "Stake",
     "unstake_btn": "Unstake",
     "unstake_note": "*If you unstake within 30 days, you will be charged and burned {{ feeRate }}% of the CLAM amount unstaked. Fully waived date: {{ date }} ({{ days }} days left)",
-    "fee": "Handling Fee ({{ feeRate }}%)*",
+    "fee": "Early Withdraw Fee ({{ feeRate }}%)*",
     "unstake_receive_amount": "You will get",
     "tvl": "Total Value Locked:",
     "staked_balance": "Your Staked Balance",
