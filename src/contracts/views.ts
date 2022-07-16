@@ -1,5 +1,5 @@
-import { useCalls, useEthers } from '@usedapp/core'
-import { BigNumber } from 'ethers'
+import { useCall, useCalls, useEthers } from '@usedapp/core'
+import { BigNumber, constants } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import {
   useClamCirculatingSupply,
@@ -7,9 +7,11 @@ import {
   useClamPond,
   useERC20,
   useItemContract,
+  useOcUsdPlus,
   useOttoContract,
   usePearlBank,
   usePortalCreatorContract,
+  useRewardManager,
   useStakedClamContract,
   useStakingContract,
   useStoreContract,
@@ -312,4 +314,107 @@ export function useClamPondFee(amount?: BigNumber) {
   const fee = feeResult?.value ? feeResult?.value[0] : BigNumber.from(0)
 
   return { base: BigNumber.from(10000), fee, feeRate, duration }
+}
+
+export function usePearlBankAvailableReward() {
+  const pearlBank = usePearlBank()
+  const ocUsdPlus = useOcUsdPlus()
+  const { OC_USD_PLUS } = useContractAddresses()
+  const { account } = useEthers()
+
+  const result = useCall(
+    account && {
+      contract: pearlBank,
+      method: 'getAvailableTokenRewards',
+      args: [account, OC_USD_PLUS],
+    }
+  )
+  const availableWrappedUsdPlus = result?.value ? result?.value[0] : constants.Zero
+  return useUsdPlusAmount(availableWrappedUsdPlus)
+}
+
+export function useTotalPearlBankStakedAmount(): BigNumber {
+  const pearlBank = usePearlBank()
+  const result = useCall({
+    contract: pearlBank,
+    method: 'totalStaked',
+    args: [],
+  })
+
+  return result?.value ? result?.value[0] : BigNumber.from(0)
+}
+
+export function usePearlBankInfo() {
+  const pearlBank = usePearlBank()
+  const { OC_USD_PLUS } = useContractAddresses()
+
+  const [latestReward, lastStaked] = useCalls([
+    {
+      contract: pearlBank,
+      method: 'latestTokenRewards',
+      args: [OC_USD_PLUS],
+    },
+    {
+      contract: pearlBank,
+      method: 'lastTotalMultipliedStaked',
+      args: [OC_USD_PLUS],
+    },
+  ])
+  const latestTotalReward = latestReward?.value ? latestReward?.value[0] : constants.Zero
+  const convertedTotalReward = useUsdPlusAmount(latestTotalReward)
+  return {
+    latestTotalReward: convertedTotalReward,
+    lastTotalStaked: lastStaked?.value ? lastStaked?.value[0] : constants.Zero,
+  }
+}
+
+export function useUsdPlusAmount(amount?: BigNumber) {
+  const ocUsdPlus = useOcUsdPlus()
+  const result = useCall(
+    amount?.gt(0) && {
+      contract: ocUsdPlus,
+      method: 'usdPlusAmount',
+      args: [amount],
+    }
+  )
+  return result?.value ? result?.value[0] : constants.Zero
+}
+
+export function useTotalDepositedAmount() {
+  const clamPond = useClamPond()
+
+  const [result] = useCalls([
+    {
+      contract: clamPond,
+      method: 'totalSupply',
+      args: [],
+    },
+  ])
+
+  return result?.value ? result?.value[0] : BigNumber.from(0)
+}
+
+export function useDepositedAmount() {
+  const clamPond = useClamPond()
+  const { account } = useEthers()
+
+  const [balanceResult] = useCalls([
+    {
+      contract: clamPond,
+      method: 'balanceOf',
+      args: [account],
+    },
+  ])
+
+  return balanceResult?.value ? balanceResult?.value[0] : BigNumber.from(0)
+}
+
+export function useNextRewardTime() {
+  const rewardManager = useRewardManager()
+  const result = useCall({
+    contract: rewardManager,
+    method: 'nextPayoutTime',
+    args: [],
+  })
+  return result?.value ? result?.value[0] : BigNumber.from(0)
 }

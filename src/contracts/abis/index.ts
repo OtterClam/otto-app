@@ -15,6 +15,7 @@ import OttoHellDiceRoller from './OttoHellDiceRoller.json'
 import ClamPond from './ClamPond.json'
 import PearlBank from './PearlBank.json'
 import RewardManager from './OtterRewardManager.json'
+import OtterWrappedUsdPlus from './OtterWrappedUsdPlusToken.json'
 
 export const ERC20Abi = ERC20.abi
 export const OttoAbi = Otto.abi
@@ -33,3 +34,4 @@ export const OttoHellDiceRollerApi = OttoHellDiceRoller.abi
 export const ClamPondAbi = ClamPond.abi
 export const PearlBankAbi = PearlBank.abi
 export const RewardManagerAbi = RewardManager.abi
+export const OtterWrappedUsdPlusAbi = OtterWrappedUsdPlus.abi
