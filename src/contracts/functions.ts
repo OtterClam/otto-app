@@ -380,20 +380,6 @@ export function useDepositInfo() {
   }
 }
 
-export function useTotalStakedAmount(): BigNumber {
-  const pearlBank = usePearlBank()
-
-  const [result] = useCalls([
-    {
-      contract: pearlBank,
-      method: 'totalStaked',
-      args: [],
-    },
-  ])
-
-  return result?.value ? result?.value[0] : BigNumber.from(0)
-}
-
 export function usePearlBankBalance(): BigNumber {
   const pearlBank = usePearlBank()
   const { account } = useEthers()
@@ -430,89 +416,6 @@ export function useClamPerPearl() {
   const totalSupplyOfPearl = totalSupplyResult?.value ? totalSupplyResult?.value[0] : BigNumber.from(0)
 
   return totalSupplyOfPearl.eq(0) ? BigNumber.from(0) : totalStakedOfClam.div(totalSupplyOfPearl)
-}
-
-export function useTotalRewardsAmount() {
-  const pearlBank = usePearlBank()
-  const { OCUSDC } = useContractAddresses()
-
-  const [result] = useCalls([
-    {
-      contract: pearlBank,
-      method: 'latestTokenRewards',
-      args: [OCUSDC],
-    },
-  ])
-
-  return result?.value ? result?.value[0] : BigNumber.from(0)
-}
-
-export function useAvailableTokenRewards() {
-  const pearlBank = usePearlBank()
-  const { OCUSDC } = useContractAddresses()
-  const { account } = useEthers()
-
-  const [result] = useCalls([
-    {
-      contract: pearlBank,
-      method: 'getAvailableTokenRewards',
-      args: [account, OCUSDC],
-    },
-  ])
-
-  return result?.value ? result?.value[0] : BigNumber.from(0)
-}
-
-export function useTotalDepositedAmount() {
-  const clamPond = useClamPond()
-
-  const [result] = useCalls([
-    {
-      contract: clamPond,
-      method: 'totalSupply',
-      args: [],
-    },
-  ])
-
-  return result?.value ? result?.value[0] : BigNumber.from(0)
-}
-
-export function useDepositedAmount() {
-  const clamPond = useClamPond()
-  const { account } = useEthers()
-
-  const [balanceResult, indexResult] = useCalls([
-    {
-      contract: clamPond,
-      method: 'balanceOf',
-      args: [account],
-    },
-    {
-      contract: clamPond,
-      method: 'liquidityIndex',
-      args: [],
-    },
-  ])
-
-  const balance = balanceResult?.value ? balanceResult?.value[0] : BigNumber.from(0)
-  const index = indexResult?.value ? indexResult?.value[0] : BigNumber.from(0)
-
-  // return balance.mul(index)
-  return balance
-}
-
-export function useNextRewardTime() {
-  const rewardManager = useRewardManager()
-
-  const [result] = useCalls([
-    {
-      contract: rewardManager,
-      method: 'nextPayoutTime',
-      args: [],
-    },
-  ])
-
-  return result?.value ? result?.value[0] : BigNumber.from(0)
 }
 
 export const useDeposit = () => {

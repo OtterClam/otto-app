@@ -1,21 +1,18 @@
 import CLAMCoin from 'assets/icons/CLAM.svg'
-import USDPlus from 'assets/icons/usdplus.png'
 import PearlBalance from 'assets/icons/pearl-balance.png'
-import TreasurySection from 'components/TreasurySection'
-import { useClamPrice } from 'contracts/views'
-import {
-  useTotalStakedAmount,
-  usePearlBankBalance,
-  useClamPerPearl,
-  useStakedInfo,
-  useTotalRewardsAmount,
-  useNextRewardTime,
-  useAvailableTokenRewards,
-  useClaimRewards,
-} from 'contracts/functions'
+import USDPlus from 'assets/icons/usdplus.png'
 import Button from 'components/Button'
+import TreasurySection from 'components/TreasurySection'
+import { useClaimRewards, usePearlBankBalance, useStakedInfo } from 'contracts/functions'
+import {
+  useClamPrice,
+  useNextRewardTime,
+  usePearlBankAvailableReward,
+  usePearlBankInfo,
+  useTotalPearlBankStakedAmount,
+} from 'contracts/views'
 import formatDistance from 'date-fns/formatDistanceStrict'
-import { ethers, utils, BigNumber, constants } from 'ethers'
+import { constants, ethers, utils } from 'ethers'
 import { trim } from 'helpers/trim'
 import { useBreakPoints } from 'hooks/useMediaQuery'
 import { useTranslation } from 'next-i18next'
@@ -122,7 +119,7 @@ const StyledClamBalanceContainer = styled.div`
   padding: 6px 20px;
 `
 
-const StyledClaimableBlanceContainer = styled(StyledClamBalanceContainer)`
+const StyledClaimableBalanceContainer = styled(StyledClamBalanceContainer)`
   flex: 1;
 `
 
@@ -213,39 +210,38 @@ export default function StakeInfo({ className }: Props) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'bank' })
   const { isMobile } = useBreakPoints()
   const clamPrice = useClamPrice()
-  const totalStaked = useTotalStakedAmount()
+  const totalStaked = useTotalPearlBankStakedAmount()
+  const { latestTotalReward, lastTotalStaked } = usePearlBankInfo()
   const pearlBankBalance = usePearlBankBalance()
-  const totalRewards = useTotalRewardsAmount()
   const myStakedInfo = useStakedInfo()
   const nextRewardTime = useNextRewardTime()
-  const availableTokenRewards = useAvailableTokenRewards()
-  const tvl = clamPrice ? clamPrice.mul(totalStaked) : BigNumber.from(0)
+  const availableUsdPlusReward = usePearlBankAvailableReward()
+  const tvl = clamPrice ? clamPrice.mul(totalStaked) : constants.Zero
   const claim = useClaimRewards()
-
   const countdown = useMemo(() => {
     return formatDistance(new Date(), nextRewardTime.toNumber() * 1000)
   }, [nextRewardTime])
 
-  const myRewards = useMemo(() => {
-    if (totalStaked.eq(0)) {
-      return BigNumber.from(0)
-    }
-    return totalRewards.mul(myStakedInfo.amount).div(totalStaked)
-  }, [myStakedInfo, totalStaked, totalRewards])
+  // const myRewards = useMemo(() => {
+  //   if (totalStaked.eq(0)) {
+  //     return constants.Zero
+  //   }
+  //   return totalRewards.mul(myStakedInfo.amount).div(totalStaked)
+  // }, [myStakedInfo, totalStaked, totalRewards])
 
-  const yieldRate = useMemo(() => {
-    if (myRewards.eq(0) || !clamPrice || clamPrice.eq(0)) {
-      return BigNumber.from(0)
-    }
-    return myRewards.mul(1e9).mul(1e9).div(myStakedInfo.amount.mul(clamPrice))
-  }, [myStakedInfo, clamPrice, myRewards])
+  // const yieldRate = useMemo(() => {
+  //   if (myRewards.eq(0) || !clamPrice || clamPrice.eq(0)) {
+  //     return BigNumber.from(0)
+  //   }
+  //   return myRewards.mul(1e9).mul(1e9).div(myStakedInfo.amount.mul(clamPrice))
+  // }, [myStakedInfo, clamPrice, myRewards])
 
   const apr = useMemo(() => {
     if (!clamPrice || clamPrice.eq(0)) {
       return '0'
     }
-    return utils.formatUnits(totalRewards.mul(1e9).mul(1e9).mul(365).div(totalStaked.mul(clamPrice)), 4)
-  }, [clamPrice, totalStaked, totalRewards])
+    return utils.formatUnits(latestTotalReward.mul(1e9).mul(1e9).mul(365).div(lastTotalStaked.mul(clamPrice)), 4)
+  }, [clamPrice, lastTotalStaked, latestTotalReward])
 
   return (
     <StyledStakeInfo className={className}>
@@ -280,9 +276,11 @@ export default function StakeInfo({ className }: Props) {
           </StyledSectionTitle>
           <StyledSectionBody>
             <StyledClaimableBalance>
-              <StyledClaimableBlanceContainer>
-                <StyledUsdPlusBalance>{trim(utils.formatUnits(availableTokenRewards, 6), 4)} USD+</StyledUsdPlusBalance>
-              </StyledClaimableBlanceContainer>
+              <StyledClaimableBalanceContainer>
+                <StyledUsdPlusBalance>
+                  {trim(utils.formatUnits(availableUsdPlusReward, 6), 4)} USD+
+                </StyledUsdPlusBalance>
+              </StyledClaimableBalanceContainer>
               <StyledClaimButton padding="2px 6px 2px 6px" Typography={ContentSmall} onClick={claim}>
                 {t('claim')}
               </StyledClaimButton>
