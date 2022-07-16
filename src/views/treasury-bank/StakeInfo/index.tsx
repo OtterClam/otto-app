@@ -237,7 +237,7 @@ export default function StakeInfo({ className }: Props) {
   // }, [myStakedInfo, clamPrice, myRewards])
 
   const apr = useMemo(() => {
-    if (!clamPrice || clamPrice.eq(0)) {
+    if (!clamPrice || clamPrice.eq(0) || lastTotalStaked.eq(0)) {
       return '0'
     }
     return utils.formatUnits(latestTotalReward.mul(1e9).mul(1e9).mul(365).div(lastTotalStaked.mul(clamPrice)), 4)
