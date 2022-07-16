@@ -1,12 +1,14 @@
-import { useCalls } from '@usedapp/core'
+import { useCalls, useEthers } from '@usedapp/core'
 import { BigNumber } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import {
   useClamCirculatingSupply,
   useClamMaiContract,
+  useClamPond,
   useERC20,
   useItemContract,
   useOttoContract,
+  usePearlBank,
   usePortalCreatorContract,
   useStakedClamContract,
   useStakingContract,
@@ -241,4 +243,73 @@ export const useStakedBalance = (account?: string) => {
     sClamBalance,
     pearlBalance,
   }
+}
+
+export function usePearlBankFee(amount?: BigNumber) {
+  const pearlBank = usePearlBank()
+  const { account } = useEthers()
+
+  const [baseResult, feeRateResult, durationResult, feeResult] = useCalls([
+    {
+      contract: pearlBank,
+      method: 'BASE',
+      args: [],
+    },
+    {
+      contract: pearlBank,
+      method: 'withdrawFeeRate',
+      args: [],
+    },
+    {
+      contract: pearlBank,
+      method: 'withdrawFeeDuration',
+      args: [],
+    },
+    amount && {
+      contract: pearlBank,
+      method: 'withdrawFee',
+      args: [account, amount],
+    },
+  ])
+
+  const base = baseResult?.value ? baseResult?.value[0] : BigNumber.from(1)
+  const feeRate = feeRateResult?.value ? feeRateResult?.value[0] : BigNumber.from(0)
+  const duration = durationResult?.value ? durationResult?.value[0] : BigNumber.from(0)
+  const fee = feeResult?.value ? feeResult?.value[0] : BigNumber.from(0)
+
+  return {
+    base,
+    feeRate,
+    duration,
+    fee,
+  }
+}
+
+export function useClamPondFee(amount?: BigNumber) {
+  const clamPond = useClamPond()
+  const { account } = useEthers()
+
+  const [feeRateResult, durationResult, feeResult] = useCalls([
+    {
+      contract: clamPond,
+      method: 'withdrawFeeRate',
+      args: [],
+    },
+    {
+      contract: clamPond,
+      method: 'withdrawFeeDuration',
+      args: [],
+    },
+    amount && {
+      contract: clamPond,
+      method: 'withdrawFee',
+      args: [account, amount],
+    },
+  ])
+
+  const feeRate = feeRateResult?.value ? feeRateResult?.value[0] : BigNumber.from(0)
+  const duration = durationResult?.value ? durationResult?.value[0] : BigNumber.from(0)
+  const fee = feeResult?.value ? feeResult?.value[0] : BigNumber.from(0)
+
+  return { base: BigNumber.from(10000), fee, feeRate, duration }
 }
