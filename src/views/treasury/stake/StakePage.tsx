@@ -8,17 +8,41 @@ import StakeDialog from './StakeDialog'
 import StakeInfo from './StakeInfo'
 
 const StyledStakePage = styled.div`
+  z-index: 0;
   display: flex;
   background: no-repeat center / cover url(${BG.src});
   position: relative;
   overflow-x: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    right: -150px;
+    bottom: 0;
+    width: 78%;
+    padding-bottom: 22.093023255813954%;
+    background: center / 100% url(${Fountain.src});
+
+    @media ${({ theme }) => theme.breakpoints.mobile} {
+      right: unset;
+      left: 50%;
+      width: 150%;
+      transform: translate(-50%);
+    }
+  }
 `
 
 const StyledStakeDialog = styled(StakeDialog)`
-  flex: 1;
-  margin-top: 100px;
-  margin-left: 80px;
-  margin-bottom: 132px;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    display: none;
+  }
+`
+
+const StyledStakeDialogContainer = styled.div`
+  flex: 1 50%;
+  box-sizing: border-box;
+  padding: 100px 24px 132px 74px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     display: none;
@@ -26,6 +50,7 @@ const StyledStakeDialog = styled(StakeDialog)`
 `
 
 const StyledStakeInfo = styled(StakeInfo)`
+  flex: 1 50%;
   position: relative;
   margin-bottom: 30px;
 `
@@ -54,26 +79,15 @@ const StyledOtter = styled.img<{ delay: number }>`
   }
 `
 
-const StyledFountain = styled.img.attrs({ src: Fountain.src })`
-  position: absolute;
-  width: 860px;
-  right: -150px;
-  bottom: 0;
-  height: 190px;
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    left: calc(50% - 430px);
-  }
-`
-
 export default function StakePage() {
   return (
     <TreasurySection showRope={false}>
       <StyledStakePage>
-        <StyledFountain />
         <StyledOtter src={Otter1.src} delay={0} />
         <StyledOtter src={Otter2.src} delay={1000} />
-        <StyledStakeDialog />
+        <StyledStakeDialogContainer>
+          <StyledStakeDialog />
+        </StyledStakeDialogContainer>
         <StyledStakeInfo />
       </StyledStakePage>
     </TreasurySection>
