@@ -7,6 +7,7 @@ import { GetEpoch, GetEpochVariables } from 'graphs/__generated__/GetEpoch'
 
 const START_DATE = new Date('2022-05-23').valueOf()
 const EPOCH_LENGTH = 14 * 86400 * 1000 // 14 days
+const EPOCH_3_EXTEND = 2 * 86400 * 1000 // 2 days
 
 export default function useRarityEpoch() {
   const router = useRouter()
@@ -19,7 +20,8 @@ export default function useRarityEpoch() {
   })
 
   const isLatestEpoch = epoch === -1 || epoch === latestEpoch
-  const epochEnd = START_DATE + ((isLatestEpoch ? latestEpoch : epoch) + 1) * EPOCH_LENGTH
+  const currentEpoch = isLatestEpoch ? latestEpoch : epoch
+  const epochEnd = START_DATE + (currentEpoch + 1) * EPOCH_LENGTH + (currentEpoch >= 3 ? EPOCH_3_EXTEND : 0)
   const hasPrevEpoch = (epoch === -1 || epoch > 0) && latestEpoch > 0
   const hasNextEpoch = epoch !== -1
   const totalOttoSupply = epoch === -1 ? totalSupply - 250 : data?.epoches[0].totalOttos ?? 0
