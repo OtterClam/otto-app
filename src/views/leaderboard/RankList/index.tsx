@@ -4,7 +4,7 @@ import cursorPointer from 'assets/cursor-pointer.png'
 import ArrowDown from 'assets/ui/arrow_down.svg'
 import Button from 'components/Button'
 import { numberWithSign } from 'helpers/number'
-import { useMediaQuery } from 'hooks/useMediaQuery'
+import { useBreakpoints } from 'contexts/Breakpoints'
 import { useOttos } from 'hooks/useOtto'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
@@ -372,7 +372,7 @@ export default function RankList({ className }: Props) {
   const { ottos: myOttos } = useMyOttos()
   const sortedMyOttos = useMemo(() => myOttos.sort((a, b) => a.ranking - b.ranking), [myOttos])
   const [expand, setExpand] = useState(false)
-  const isMobile = useMediaQuery({ query: breakpoints.mobile })
+  const { isMobile } = useBreakpoints()
   useEffect(() => {
     refetch({ skip: page * PAGE, first: PAGE })
   }, [page])

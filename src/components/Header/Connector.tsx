@@ -1,6 +1,6 @@
 import { shortenAddress, useEthers } from '@usedapp/core'
 import Button from 'components/Button'
-import { useMediaQuery } from 'hooks/useMediaQuery'
+import { useBreakpoints } from 'contexts/Breakpoints'
 import { useTranslation } from 'next-i18next'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components/macro'
@@ -22,7 +22,7 @@ const Connector = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { account } = useEthers()
-  const isMobile = useMediaQuery({ query: breakpoints.mobile })
+  const { isMobile } = useBreakpoints()
   return account ? (
     <StyledAccount>
       <ContentLarge>{shortenAddress(account)}</ContentLarge>
