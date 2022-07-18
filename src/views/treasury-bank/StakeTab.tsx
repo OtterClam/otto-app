@@ -112,7 +112,8 @@ export default function StakeTab({ className }: Props) {
         <StyledClamInput
           placeholder={t('input_placeholder')}
           value={clamAmount}
-          onChange={e => setClamAmount(e.target.value)}
+          type="number"
+          onChange={e => setClamAmount(Number.isNaN(e.target.value) ? '' : e.target.value)}
         />
       </ContentSmall>
       <StyledField>
