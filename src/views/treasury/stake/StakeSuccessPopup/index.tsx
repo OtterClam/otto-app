@@ -55,7 +55,7 @@ export default function StakeSuccessPopup({ clamAmount, onClose }: Props) {
         <StyledTitle>{t('title')}</StyledTitle>
         <StyledGif />
         <StyledDesc>
-          {t('desc')} <span>{clamAmount}</span> PEARL!
+          {t('desc')} <span>{clamAmount}</span> CLAM+!
         </StyledDesc>
         <StyledCloseIcon onClick={onClose}>
           <img src={CloseIcon.src} alt="close" />
