@@ -2,7 +2,7 @@ import Dropdown from 'components/Dropdown'
 import Fullscreen from 'components/Fullscreen'
 import ItemCell from 'components/ItemCell'
 import { LoadingView } from 'components/LoadingView'
-import { useBreakPoints } from 'hooks/useMediaQuery'
+import { useBreakpoints } from 'contexts/Breakpoints'
 import useMyItems from 'hooks/useMyItems'
 import Item from 'models/Item'
 import { useMemo, useState } from 'react'
@@ -165,7 +165,7 @@ const Filters = ['none', 'not_equipped', 'equipped', 'otto_specific', 'lottie_sp
 
 export default function MyItemsPage() {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
-  const { isMobile } = useBreakPoints()
+  const { isMobile } = useBreakpoints()
   const [selectedSection, setSelectedSection] = useState<SectionKey>('All')
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
   const [usingItem, setUsingItem] = useState<Item | null>(null)

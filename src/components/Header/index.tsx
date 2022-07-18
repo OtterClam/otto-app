@@ -1,7 +1,7 @@
 import { useEthers } from '@usedapp/core'
 import Button from 'components/Button'
 import { IS_SERVER } from 'constant'
-import { useBreakPoints } from 'hooks/useMediaQuery'
+import { useBreakpoints } from 'contexts/Breakpoints'
 import { Fragment } from 'react'
 import { useDispatch } from 'react-redux'
 import Link from 'next/link'
@@ -90,7 +90,7 @@ const StyledIcon = styled.img``
 
 export default function Header({ title }: { title: string }) {
   const dispatch = useDispatch()
-  const { isMobile } = useBreakPoints()
+  const { isMobile } = useBreakpoints()
   const { account } = useEthers()
   const hideConnector = isMobile && Boolean(account)
   const showBackBtn = !IS_SERVER && window.location.pathname !== '/' && window.history.length > 2

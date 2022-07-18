@@ -7,7 +7,7 @@ import { useMintInfo, useOttoInfo } from 'contracts/views'
 import { ethers } from 'ethers'
 import { trim } from 'helpers/trim'
 import useContractAddresses from 'hooks/useContractAddresses'
-import { useBreakPoints } from 'hooks/useMediaQuery'
+import { useBreakpoints } from 'contexts/Breakpoints'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import { useDispatch } from 'react-redux'
@@ -238,7 +238,7 @@ const percentFormatter = new Intl.NumberFormat('en-US', {
 
 export default function Mint() {
   const { t } = useTranslation()
-  const { isMobile } = useBreakPoints()
+  const { isMobile } = useBreakpoints()
   const dispatch = useDispatch()
   const { PORTAL_CREATOR, CLAM } = useContractAddresses()
   const { account, chainId } = useEthers()

@@ -10,7 +10,7 @@ import {
 import formatDistance from 'date-fns/formatDistanceStrict'
 import { constants, ethers, utils } from 'ethers'
 import { trim } from 'helpers/trim'
-import { useBreakPoints } from 'hooks/useMediaQuery'
+import { useBreakpoints } from 'contexts/Breakpoints'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
 import styled, { keyframes } from 'styled-components'
@@ -210,7 +210,7 @@ interface Props {
 
 export default function StakeInfo({ className }: Props) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'stake' })
-  const { isMobile } = useBreakPoints()
+  const { isMobile } = useBreakpoints()
   const { latestTotalReward, lastTotalStaked } = usePearlBankInfo()
   // const totalStaked = useTotalStakedAmount()
   // const totalRewards = useTotalRewardsAmount()
