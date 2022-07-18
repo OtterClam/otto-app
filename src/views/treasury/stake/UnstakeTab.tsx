@@ -128,15 +128,6 @@ export default function UnstakeTab({ className }: Props) {
           onChange={e => setPearlAmount(Number.isNaN(e.target.value) ? '' : e.target.value)}
         />
       </ContentSmall>
-      <StyledButton
-        Typography={Headline}
-        padding="6px"
-        isWeb3
-        loading={state.state !== 'None'}
-        onClick={() => unstake(pearlAmount)}
-      >
-        {t('unstake_btn')}
-      </StyledButton>
       {!unlocked && (
         <>
           <StyledField>
@@ -158,6 +149,15 @@ export default function UnstakeTab({ className }: Props) {
           </StyledField>
         </>
       )}
+      <StyledButton
+        Typography={Headline}
+        padding="6px"
+        isWeb3
+        loading={state.state !== 'None'}
+        onClick={() => unstake(pearlAmount)}
+      >
+        {t('unstake_btn')}
+      </StyledButton>
       {state.state === 'Success' && (
         <UnstakeSuccessPopup
           clamAmount={trim(utils.formatUnits(utils.parseUnits(pearlAmount, 9), 9), 4)}
