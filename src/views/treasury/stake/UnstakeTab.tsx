@@ -124,7 +124,8 @@ export default function UnstakeTab({ className }: Props) {
         <StyledInput
           placeholder={t('input_placeholder')}
           value={pearlAmount}
-          onChange={e => setPearlAmount(e.target.value)}
+          type="number"
+          onChange={e => setPearlAmount(Number.isNaN(e.target.value) ? '' : e.target.value)}
         />
       </ContentSmall>
       <StyledButton
