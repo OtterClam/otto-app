@@ -34,7 +34,7 @@ export default function useRarityEpoch() {
         setLatestEpoch(Math.floor((now - START_DATE) / EPOCH_LENGTH))
       else if (now < START_DATE + EPOCH_3_EXTEND + 4 * EPOCH_LENGTH) setLatestEpoch(3)
       else {
-        setLatestEpoch((now + EPOCH_3_EXTEND - start) / EPOCH_LENGTH)
+        setLatestEpoch((now + EPOCH_3_EXTEND - START_DATE) / EPOCH_LENGTH)
       }
     }, 1000)
     return () => clearInterval(interval)
