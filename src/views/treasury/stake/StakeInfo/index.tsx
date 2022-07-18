@@ -13,60 +13,63 @@ import { trim } from 'helpers/trim'
 import { useBreakPoints } from 'hooks/useMediaQuery'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components/macro'
 import { ContentSmall, Note } from 'styles/typography'
 import StakeDialog from '../StakeDialog'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
-import Bottom1 from './bottom-1.png'
-import Bottom2 from './bottom-2.png'
+import BottomBg from './bottom.png'
+import TopBg from './top.png'
 import GashaponTicketEn from './gashapon-ticket-en.jpg'
 import GashaponTicketZh from './gashapon-ticket-zh.jpg'
 import Middle from './middle.png'
-import Top1 from './top-1.png'
-import Top2 from './top-2.png'
 
 const Animation = keyframes`
-  0%   {opacity: 0;}
-  50%  {opacity: 1;}
+  0%   { background-position: left top }
+  50%  { background-position: right top }
+`
+
+const AnimationCSS = css`
+  animation: ${Animation} 2000ms steps(1) infinite;
 `
 
 const StyledStakeInfo = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 420px;
-  /* background: url(${Top1.src}) no-repeat center top/contain, url(${Bottom1.src}) no-repeat center bottom/contain; */
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 100%;
   }
-`
 
-const StyledBackground1 = styled.div<{ delay: number }>`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: url(${Top1.src}) no-repeat center top/contain, url(${Bottom1.src}) no-repeat center bottom/contain;
-  animation: ${Animation} 1000ms infinite;
-  animation-delay: ${({ delay }) => delay}ms;
-  animation-timing-function: steps(1);
-`
+  &::after,
+  &::before {
+    content: '';
+    width: 100%;
+    ${AnimationCSS}
 
-const StyledBackground2 = styled.div<{ delay: number }>`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: url(${Top2.src}) no-repeat center top/contain, url(${Bottom2.src}) no-repeat center bottom/contain;
-  animation: ${Animation} 1000ms infinite;
-  animation-delay: ${({ delay }) => delay}ms;
-  animation-timing-function: steps(1);
+    @media ${({ theme }) => theme.breakpoints.mobile} {
+      width: 100%;
+    }
+  }
+
+  &::before {
+    background: left top / 200% 100% url(${TopBg.src}) no-repeat;
+    padding-bottom: 52.8571428571%;
+    min-height: 0;
+    max-height: 0;
+  }
+
+  &::after {
+    background: left top / 200% 100% url(${BottomBg.src}) no-repeat;
+    padding-bottom: 25.7142857143%;
+    min-height: 0;
+    max-height: 0;
+  }
 `
 
 const StyledBody = styled.div`
-  margin-top: 220px;
-  margin-bottom: 78px;
+  flex: 1;
   background: url(${Middle.src}) repeat-y center center/contain;
   display: flex;
   flex-direction: column;
@@ -74,8 +77,6 @@ const StyledBody = styled.div`
   gap: 10px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    margin-top: 46vw;
-    margin-bottom: 85px;
     padding: 15px;
   }
 `
@@ -240,8 +241,6 @@ export default function StakeInfo({ className }: Props) {
 
   return (
     <StyledStakeInfo className={className}>
-      <StyledBackground1 delay={0} />
-      <StyledBackground2 delay={500} />
       <StyledBody>
         <StyledTVL>{t('tvl', { tvl: trim(ethers.utils.formatUnits(tvl, 18), 2) })}</StyledTVL>
         {isMobile && <StyledStakedDialog />}
