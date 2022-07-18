@@ -87,6 +87,7 @@ const StyledTVL = styled(ContentSmall).attrs({ as: 'div' })`
   background: ${({ theme }) => theme.colors.white};
   border: 4px solid ${({ theme }) => theme.colors.darkBrown};
   top: 160px;
+  text-align: center;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     top: 30vw;
@@ -242,7 +243,10 @@ export default function StakeInfo({ className }: Props) {
   return (
     <StyledStakeInfo className={className}>
       <StyledBody>
-        <StyledTVL>{t('tvl', { tvl: trim(ethers.utils.formatUnits(tvl, 18), 2) })}</StyledTVL>
+        <StyledTVL>
+          {t('tvl')} <br />
+          ${trim(ethers.utils.formatUnits(tvl, 18), 2)}
+        </StyledTVL>
         {isMobile && <StyledStakedDialog />}
         <StyledSection>
           <StyledSectionTitle>
