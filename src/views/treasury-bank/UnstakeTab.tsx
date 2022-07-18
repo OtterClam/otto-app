@@ -125,15 +125,6 @@ export default function UnstakeTab({ className }: Props) {
           onChange={e => setClamAmount(Number.isNaN(Number(e.target.value)) ? '' : e.target.value)}
         />
       </ContentSmall>
-      <StyledButton
-        Typography={Headline}
-        padding="6px"
-        isWeb3
-        loading={state.state !== 'None'}
-        onClick={() => unstake(clamAmount)}
-      >
-        {t('unstake_btn')}
-      </StyledButton>
       {!unlocked && (
         <>
           <StyledField>
@@ -155,6 +146,15 @@ export default function UnstakeTab({ className }: Props) {
           </StyledField>
         </>
       )}
+      <StyledButton
+        Typography={Headline}
+        padding="6px"
+        isWeb3
+        loading={state.state !== 'None'}
+        onClick={() => unstake(clamAmount)}
+      >
+        {t('unstake_btn')}
+      </StyledButton>
       {state.state === 'Success' && (
         <UnstakeSuccessPopup clamAmount={trim(utils.formatUnits(stakedAmount, 9), 4)} onClose={resetState} />
       )}
