@@ -15,7 +15,7 @@ const GiveawayPage: NextPageWithLayout = GiveawayView
 
 GiveawayPage.getLayout = (page, i18n) => {
   return (
-    <Layout title={i18n.t('title')}>
+    <Layout title={i18n.t('giveaway.title')}>
       <Board>{page}</Board>
     </Layout>
   )
