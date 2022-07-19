@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 export default function useIsAtTop() {
-  const check = () => typeof window === 'undefined' || window.pageYOffset === 0
+  const check = () => typeof window === 'undefined' || window.pageYOffset <= 5
   const [isAtTop, setIsAtTop] = useState(check())
 
   useEffect(() => {
