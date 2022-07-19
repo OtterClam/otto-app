@@ -7,12 +7,28 @@ import Fountain from './fountain.png'
 import StakeDialog from './StakeDialog'
 import StakeInfo from './StakeInfo'
 
+const StyledTreasurySection = styled(TreasurySection)`
+  height: var(--body-height);
+  display: flex;
+  align-item: stretch;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    overflow: unset;
+    height: unset;
+    align-item: unset;
+  }
+`
+
 const StyledStakePage = styled.div`
   z-index: 0;
-  display: flex;
   background: no-repeat center / cover url(${BG.src});
   position: relative;
   overflow-x: hidden;
+  overflow-y: scroll;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    overflow: unset;
+  }
 
   &::after {
     content: '';
@@ -31,6 +47,11 @@ const StyledStakePage = styled.div`
       transform: translate(-50%);
     }
   }
+`
+
+const StyledStakePageInner = styled.div`
+  flex: 1 100%;
+  display: flex;
 `
 
 const StyledStakeDialog = styled(StakeDialog)`
@@ -81,15 +102,17 @@ const StyledOtter = styled.img<{ delay: number }>`
 
 export default function StakePage() {
   return (
-    <TreasurySection showRope={false}>
+    <StyledTreasurySection showRope={false}>
       <StyledStakePage>
-        <StyledOtter src={Otter1.src} delay={0} />
-        <StyledOtter src={Otter2.src} delay={1000} />
-        <StyledStakeDialogContainer>
-          <StyledStakeDialog />
-        </StyledStakeDialogContainer>
-        <StyledStakeInfo />
+        <StyledStakePageInner>
+          <StyledOtter src={Otter1.src} delay={0} />
+          <StyledOtter src={Otter2.src} delay={1000} />
+          <StyledStakeDialogContainer>
+            <StyledStakeDialog />
+          </StyledStakeDialogContainer>
+          <StyledStakeInfo />
+        </StyledStakePageInner>
       </StyledStakePage>
-    </TreasurySection>
+    </StyledTreasurySection>
   )
 }

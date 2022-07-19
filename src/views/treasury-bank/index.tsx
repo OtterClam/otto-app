@@ -5,16 +5,37 @@ import Otto from './otto.png'
 import StakeDialog from './StakeDialog'
 import StakeInfo from './StakeInfo'
 
-const StyledStakePage = styled.div`
+const StyledTreasurySection = styled(TreasurySection)`
+  height: var(--body-height);
   display: flex;
+  align-item: stretch;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    overflow: unset;
+    height: unset;
+    align-item: unset;
+  }
+`
+
+const StyledStakePage = styled.div`
   background: no-repeat center / cover url(${BG.src});
   position: relative;
   overflow-x: hidden;
+  overflow-y: scroll;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    overflow: unset;
+  }
+`
+
+const StyledStakePageInner = styled.div`
+  flex: 1 100%;
+  display: flex;
 `
 
 const StyledStakeDialog = styled(StakeDialog)`
   flex: 1;
-  margin-top: 100px;
+  margin-top: 60px;
   margin-left: 80px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -24,7 +45,6 @@ const StyledStakeDialog = styled(StakeDialog)`
 
 const StyledStakeInfo = styled(StakeInfo)`
   position: relative;
-  margin-bottom: 30px;
 `
 
 const Animation = keyframes`
@@ -54,12 +74,14 @@ const StyledOtter = styled.div`
 
 export default function StakePage() {
   return (
-    <TreasurySection showRope={false}>
+    <StyledTreasurySection showRope={false}>
       <StyledStakePage>
-        <StyledOtter />
-        <StyledStakeDialog />
-        <StyledStakeInfo />
+        <StyledStakePageInner>
+          <StyledOtter />
+          <StyledStakeDialog />
+          <StyledStakeInfo />
+        </StyledStakePageInner>
       </StyledStakePage>
-    </TreasurySection>
+    </StyledTreasurySection>
   )
 }

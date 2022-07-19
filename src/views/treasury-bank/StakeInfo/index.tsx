@@ -58,7 +58,7 @@ const StyledTVL = styled(ContentSmall).attrs({ as: 'div' })`
   top: 54px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    top: 30vw;
+    top: 108px;
   }
 
   &:before {
