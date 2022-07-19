@@ -249,7 +249,7 @@ export default function StakeInfo({ className }: Props) {
       <StyledBody>
         <StyledTVL>
           {t('tvl')}
-          <br />${trim(ethers.utils.formatUnits(tvl, 18), 0)}
+          <br />${trim(ethers.utils.formatEther(tvl), 0)}
         </StyledTVL>
         {isMobile && <StyledStakedDialog />}
         <StyledSection>

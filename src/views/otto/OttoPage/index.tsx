@@ -365,7 +365,7 @@ export default function OttoPage() {
                     <StyledStatIcon src={otto.legendary ? LegendaryIcon.src : ClassicIcon.src} />
                     <StyledStatTitle>{t(otto.legendary ? 'otto.legendary' : 'otto.classic')}</StyledStatTitle>
                     <StyledStatDesc>{t(otto.legendary ? 'otto.legendary_note' : 'otto.classic_note')}</StyledStatDesc>
-                    {otto.legendary && (
+                    {Number(otto.tokenId) >= 250 && otto.legendary && (
                       <StyledLegendaryBoost>
                         {t('otto.legendary_boost', {
                           context: (otto.raw.legendaryBoost || 0) > 0 ? 'added' : 'removed',
