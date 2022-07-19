@@ -244,8 +244,7 @@ export default function StakeInfo({ className }: Props) {
     <StyledStakeInfo className={className}>
       <StyledBody>
         <StyledTVL>
-          {t('tvl')} <br />
-          ${trim(ethers.utils.formatUnits(tvl, 18), 2)}
+          {t('tvl')} <br />${trim(ethers.utils.formatUnits(tvl, 18), 0)}
         </StyledTVL>
         {isMobile && <StyledStakedDialog />}
         <StyledSection>
