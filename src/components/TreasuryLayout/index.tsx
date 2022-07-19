@@ -52,7 +52,8 @@ const StyledMenu = styled.ul`
 
   @media ${({ theme }) => theme.breakpoints.tablet} {
     flex-direction: row;
-    gap: unset;
+    justify-content: center;
+    gap: 20px;
   }
 `
 
