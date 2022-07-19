@@ -1,6 +1,9 @@
+import { BigNumber, ethers } from 'ethers'
 import { trim } from 'helpers/trim'
 
-export const formatClam = (number: string | number): string => `${trim(parseFloat(String(number)) / 1000, 2)}k`
+export const formatClam = (value: BigNumber, decimal = 4) => trim(ethers.utils.formatUnits(value, 9), decimal)
+
+export const formatUsdc = (value: BigNumber, decimal = 4) => trim(ethers.utils.formatUnits(value, 6), decimal)
 
 export const formatUsd = (number: string | number): string => {
   return `${new Intl.NumberFormat('en-US', {

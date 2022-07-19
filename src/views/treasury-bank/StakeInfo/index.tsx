@@ -19,6 +19,7 @@ import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { ContentSmall, Note } from 'styles/typography'
+import { formatClam, formatUsdc } from 'utils/currency'
 import StakeDialog from '../StakeDialog'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
@@ -255,12 +256,12 @@ export default function StakeInfo({ className }: Props) {
           <StyledSectionTitle>{t('staked_balance')}</StyledSectionTitle>
           <StyledSectionBody>
             <StyledClamBalanceContainer>
-              <StyledClamBalance>{trim(ethers.utils.formatUnits(myStakedInfo.amount, 9), 9)} CLAM</StyledClamBalance>
+              <StyledClamBalance>{formatClam(myStakedInfo.amount)} CLAM</StyledClamBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
               <StyledInfoContainer>
                 <StyledInfoTitle icon={PearlBalance.src}>{t('pearl_balance')}</StyledInfoTitle>
-                <p>{trim(ethers.utils.formatUnits(pearlBankBalance, 9), 9)} PEARL</p>
+                <p>{formatClam(pearlBankBalance)} PEARL</p>
               </StyledInfoContainer>
               <StyledInfoContainer>
                 <p />
@@ -277,9 +278,7 @@ export default function StakeInfo({ className }: Props) {
           <StyledSectionBody>
             <StyledClaimableBalance>
               <StyledClaimableBalanceContainer>
-                <StyledUsdPlusBalance>
-                  {trim(utils.formatUnits(availableUsdPlusReward, 6), 4)} USD+
-                </StyledUsdPlusBalance>
+                <StyledUsdPlusBalance>{formatUsdc(availableUsdPlusReward)} USD+</StyledUsdPlusBalance>
               </StyledClaimableBalanceContainer>
               <StyledClaimButton padding="2px 6px 2px 6px" Typography={ContentSmall} onClick={claim}>
                 {t('claim')}

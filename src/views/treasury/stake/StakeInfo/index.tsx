@@ -15,6 +15,7 @@ import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
 import styled, { css, keyframes } from 'styled-components/macro'
 import { ContentSmall, Note } from 'styles/typography'
+import { formatClam } from 'utils/currency'
 import StakeDialog from '../StakeDialog'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
@@ -244,7 +245,7 @@ export default function StakeInfo({ className }: Props) {
     <StyledStakeInfo className={className}>
       <StyledBody>
         <StyledTVL>
-          {t('tvl')} <br />${trim(ethers.utils.formatUnits(tvl, 18), 0)}
+          {t('tvl')} <br />${trim(ethers.utils.formatEther(tvl), 0)}
         </StyledTVL>
         {isMobile && <StyledStakedDialog />}
         <StyledSection>
@@ -254,7 +255,7 @@ export default function StakeInfo({ className }: Props) {
           </StyledSectionTitle>
           <StyledSectionBody>
             <StyledClamBalanceContainer>
-              <StyledClamBalance>{trim(utils.formatUnits(depositedAmount, 9), 4)} CLAM</StyledClamBalance>
+              <StyledClamBalance>{formatClam(depositedAmount)} CLAM</StyledClamBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
               {/* <StyledInfoContainer>
