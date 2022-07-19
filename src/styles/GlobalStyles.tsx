@@ -11,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
       --body-height: calc(var(--real-vh) - var(--header-height) - var(--footer-height) - env(safe-area-inset-bottom));
       
       --z-index-header: 1000;
+      --z-index-popup: 2000;
 
       @media ${({ theme }) => theme.breakpoints.mobile} {
         --header-height: 100px;
