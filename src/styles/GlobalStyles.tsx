@@ -9,6 +9,8 @@ const GlobalStyle = createGlobalStyle`
       --header-height: 68px;
       --footer-height: 50px;
       --body-height: calc(var(--real-vh) - var(--header-height) - var(--footer-height) - env(safe-area-inset-bottom));
+      
+      --z-index-header: 1000;
 
       @media ${({ theme }) => theme.breakpoints.mobile} {
         --header-height: 100px;
@@ -16,10 +18,11 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body {
+      padding-top: var(--header-height);
       cursor: url(${cursorDefault.src}), auto;
       color: ${({ theme }) => theme.colors.otterBlack};
       background: center / cover no-repeat url(${bg.src});
-      height: var(--real-vh);
+      background-attachment: fixed;
     }
 
     * {
