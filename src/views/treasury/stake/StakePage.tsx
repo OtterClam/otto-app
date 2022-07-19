@@ -42,7 +42,7 @@ const StyledStakeDialog = styled(StakeDialog)`
 const StyledStakeDialogContainer = styled.div`
   flex: 1 50%;
   box-sizing: border-box;
-  padding: 100px 24px 132px 74px;
+  padding: 100px 24px 48px 74px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     display: none;
