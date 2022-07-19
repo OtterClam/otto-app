@@ -159,10 +159,7 @@ export default function UnstakeTab({ className }: Props) {
         </>
       )}
       {state.state === 'Success' && (
-        <UnstakeSuccessPopup
-          clamAmount={trim(utils.formatUnits(utils.parseUnits(receiveAmount, 9), 9), 4)}
-          onClose={resetState}
-        />
+        <UnstakeSuccessPopup clamAmount={trim(utils.formatUnits(receiveAmount, 9), 4)} onClose={resetState} />
       )}
     </StyledUnstakeTab>
   )
