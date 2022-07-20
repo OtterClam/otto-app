@@ -17,6 +17,7 @@ const StyledContainer = styled.div<{ isAtTop: boolean }>`
   gap: 5px;
   width: 100%;
   padding: 5px 5% 10px;
+  box-sizing: border-box;
 
   &::after {
     content: '';

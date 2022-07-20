@@ -12,8 +12,7 @@ const StyledTreasurySection = styled(TreasurySection)`
   display: flex;
   align-item: stretch;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    overflow: unset;
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     height: unset;
     align-item: unset;
   }
@@ -26,9 +25,16 @@ const StyledStakePage = styled.div`
   overflow-x: hidden;
   overflow-y: scroll;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    overflow: unset;
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    overflow: hidden;
   }
+`
+
+const StyledStakePageInner = styled.div`
+  position: relative;
+  flex: 1 100%;
+  display: flex;
+  height: 100%;
 
   &::after {
     content: '';
@@ -40,7 +46,7 @@ const StyledStakePage = styled.div`
     padding-bottom: 22.093023255813954%;
     background: center / 100% url(${Fountain.src});
 
-    @media ${({ theme }) => theme.breakpoints.mobile} {
+    @media ${({ theme }) => theme.breakpoints.tablet} {
       right: unset;
       left: 50%;
       width: 150%;
@@ -49,13 +55,8 @@ const StyledStakePage = styled.div`
   }
 `
 
-const StyledStakePageInner = styled.div`
-  flex: 1 100%;
-  display: flex;
-`
-
 const StyledStakeDialog = styled(StakeDialog)`
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     display: none;
   }
 `
@@ -65,7 +66,7 @@ const StyledStakeDialogContainer = styled.div`
   box-sizing: border-box;
   padding: 100px 24px 48px 74px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     display: none;
   }
 `
@@ -92,7 +93,7 @@ const StyledOtter = styled.img<{ delay: number }>`
   animation-delay: ${({ delay }) => delay}ms;
   animation-timing-function: steps(1);
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     position: absolute;
     left: 0;
     transform: unset;
@@ -103,10 +104,10 @@ const StyledOtter = styled.img<{ delay: number }>`
 export default function StakePage() {
   return (
     <StyledTreasurySection showRope={false}>
+      <StyledOtter src={Otter1.src} delay={0} />
+      <StyledOtter src={Otter2.src} delay={1000} />
       <StyledStakePage>
         <StyledStakePageInner>
-          <StyledOtter src={Otter1.src} delay={0} />
-          <StyledOtter src={Otter2.src} delay={1000} />
           <StyledStakeDialogContainer>
             <StyledStakeDialog />
           </StyledStakeDialogContainer>

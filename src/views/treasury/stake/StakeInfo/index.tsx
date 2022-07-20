@@ -39,7 +39,7 @@ const StyledStakeInfo = styled.div`
   flex-direction: column;
   width: 420px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     width: 100%;
   }
 
@@ -49,7 +49,7 @@ const StyledStakeInfo = styled.div`
     width: 100%;
     ${AnimationCSS}
 
-    @media ${({ theme }) => theme.breakpoints.mobile} {
+    @media ${({ theme }) => theme.breakpoints.tablet} {
       width: 100%;
     }
   }
@@ -77,22 +77,25 @@ const StyledBody = styled.div`
   align-items: center;
   gap: 10px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     padding: 15px;
   }
 `
 
+const StyledTVLContainer = styled.div`
+  margin-top: -24%;
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    margin-bottom: 24px;
+  }
+`
+
 const StyledTVL = styled(ContentSmall).attrs({ as: 'div' })`
-  position: absolute;
+  position: relative;
   padding: 6px 24px;
   background: ${({ theme }) => theme.colors.white};
   border: 4px solid ${({ theme }) => theme.colors.darkBrown};
-  top: 160px;
   text-align: center;
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    top: 30vw;
-  }
 
   &:before {
     content: '';
@@ -123,7 +126,7 @@ const StyledSection = styled(TreasurySection).attrs({ showRope: false })`
   flex-direction: column;
   align-items: center;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     width: 100%;
   }
 `
@@ -213,7 +216,7 @@ interface Props {
 
 export default function StakeInfo({ className }: Props) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'stake' })
-  const { isMobile } = useBreakpoints()
+  const { isTablet } = useBreakpoints()
   const { latestTotalReward, lastTotalStaked } = usePearlBankInfo()
   // const totalStaked = useTotalStakedAmount()
   // const totalRewards = useTotalRewardsAmount()
@@ -244,10 +247,12 @@ export default function StakeInfo({ className }: Props) {
   return (
     <StyledStakeInfo className={className}>
       <StyledBody>
-        <StyledTVL>
-          {t('tvl')} <br />${trim(ethers.utils.formatEther(tvl), 0)}
-        </StyledTVL>
-        {isMobile && <StyledStakedDialog />}
+        <StyledTVLContainer>
+          <StyledTVL>
+            {t('tvl')} <br />${trim(ethers.utils.formatEther(tvl), 0)}
+          </StyledTVL>
+        </StyledTVLContainer>
+        {isTablet && <StyledStakedDialog />}
         <StyledSection>
           <StyledSectionTitle>
             {t('next_reward')}

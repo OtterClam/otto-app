@@ -10,7 +10,7 @@ const StyledTreasurySection = styled(TreasurySection)`
   display: flex;
   align-item: stretch;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     overflow: unset;
     height: unset;
     align-item: unset;
@@ -23,7 +23,7 @@ const StyledStakePage = styled.div`
   overflow-x: hidden;
   overflow-y: scroll;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     overflow: unset;
   }
 `
@@ -38,7 +38,7 @@ const StyledStakeDialog = styled(StakeDialog)`
   margin-top: 60px;
   margin-left: 80px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     display: none;
   }
 `
@@ -63,7 +63,7 @@ const StyledOtter = styled.div`
   animation: ${Animation} 2000ms steps(1) infinite;
   background: left top / 200% 100% url(${Otto.src});
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     position: absolute;
     left: 0;
     transform: unset;

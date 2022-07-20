@@ -29,7 +29,7 @@ import GashaponTicketZh from './gashapon-ticket-zh.jpg'
 const StyledStakeInfo = styled.div`
   width: 420px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     width: 100%;
   }
 `
@@ -42,24 +42,27 @@ const StyledBody = styled.div`
   align-items: center;
   gap: 10px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     margin-top: 46vw;
     margin-bottom: 85px;
     padding: 15px;
   }
 `
 
+const StyledTVLContainer = styled.div`
+  margin-top: -20%;
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    margin-bottom: 24px;
+  }
+`
+
 const StyledTVL = styled(ContentSmall).attrs({ as: 'div' })`
+  position: relative;
   text-align: center;
-  position: absolute;
   padding: 6px 24px;
   background: ${({ theme }) => theme.colors.white};
   border: 4px solid ${({ theme }) => theme.colors.darkBrown};
-  top: 54px;
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    top: 108px;
-  }
 
   &:before {
     content: '';
@@ -93,7 +96,7 @@ const StyledSection = styled(TreasurySection).attrs({ showRope: false })`
   flex-direction: column;
   align-items: center;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     width: 100%;
   }
 `
@@ -209,7 +212,7 @@ interface Props {
 
 export default function StakeInfo({ className }: Props) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'bank' })
-  const { isMobile } = useBreakpoints()
+  const { isTablet } = useBreakpoints()
   const clamPrice = useClamPrice()
   const totalStaked = useTotalPearlBankStakedAmount()
   const { latestTotalReward, lastTotalStaked } = usePearlBankInfo()
@@ -247,11 +250,13 @@ export default function StakeInfo({ className }: Props) {
   return (
     <StyledStakeInfo className={className}>
       <StyledBody>
-        <StyledTVL>
-          {t('tvl')}
-          <br />${trim(ethers.utils.formatEther(tvl), 0)}
-        </StyledTVL>
-        {isMobile && <StyledStakedDialog />}
+        <StyledTVLContainer>
+          <StyledTVL>
+            {t('tvl')}
+            <br />${trim(ethers.utils.formatEther(tvl), 0)}
+          </StyledTVL>
+        </StyledTVLContainer>
+        {isTablet && <StyledStakedDialog />}
         <StyledSection>
           <StyledSectionTitle>{t('staked_balance')}</StyledSectionTitle>
           <StyledSectionBody>
