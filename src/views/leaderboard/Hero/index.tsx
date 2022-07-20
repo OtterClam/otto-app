@@ -76,6 +76,7 @@ const StyledRewardImg = styled.img`
   max-width: 500px;
   left: 0;
   bottom: 15px;
+  z-index: 1;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     position: static;
@@ -88,6 +89,7 @@ const StyledCenterContainer = styled.div`
   flex-direction: column;
   align-items: center;
   right: 10%;
+  z-index: 4;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     padding: 5px;
@@ -182,6 +184,7 @@ const StyledOttos = styled.img`
   width: 710px;
   bottom: 5px;
   right: 0;
+  z-index: 2;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     display: none;
@@ -205,6 +208,7 @@ const StyledClam = styled.img`
   position: absolute;
   left: -40px;
   bottom: -40px;
+  z-index: 3;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     display: none;
