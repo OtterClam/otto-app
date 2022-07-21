@@ -21,7 +21,7 @@ const StyledHomePage = styled.div`
   display: grid;
   grid-template: 'left-menu portal right-menu' / 168px auto 168px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     max-width: 356px;
     width: 100%;
     grid-template:
@@ -51,7 +51,7 @@ const StyledPortalContainer = styled.div`
   justify-content: space-around;
   grid-area: portal;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     max-height: 375px;
   }
 `
@@ -60,7 +60,7 @@ const StyledPortalImage = styled.img`
   width: 472px;
   height: 472px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     width: 375px;
     height: 375px;
   }
