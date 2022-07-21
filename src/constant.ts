@@ -25,7 +25,9 @@ export function getOpenSeaLink(tokenId: string) {
 export const ottoClick = IS_SERVER ? { play: () => {}, load: () => {} } : new Audio('https://ottopia.app/ottoclick.mp3')
 ottoClick.load()
 
-export const TOTAL_RARITY_REWARD = 10000
+export const TOTAL_RARITY_REWARD = 16000
+export const ROUND_RARITY_REWARD_BEFORE_3 = 2500
+export const ROUND_RARITY_REWARD_AFTER_3 = 3000
 
 export enum Token {
   Clam = 'CLAM',
