@@ -39,7 +39,7 @@ const StyledStakeInfo = styled.div`
   flex-direction: column;
   width: 420px;
 
-  @media ${({ theme }) => theme.breakpoints.tablet} {
+  @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 100%;
   }
 
@@ -49,7 +49,7 @@ const StyledStakeInfo = styled.div`
     width: 100%;
     ${AnimationCSS}
 
-    @media ${({ theme }) => theme.breakpoints.tablet} {
+    @media ${({ theme }) => theme.breakpoints.mobile} {
       width: 100%;
     }
   }
@@ -77,7 +77,7 @@ const StyledBody = styled.div`
   align-items: center;
   gap: 10px;
 
-  @media ${({ theme }) => theme.breakpoints.tablet} {
+  @media ${({ theme }) => theme.breakpoints.mobile} {
     padding: 15px;
   }
 `
@@ -85,7 +85,7 @@ const StyledBody = styled.div`
 const StyledTVLContainer = styled.div`
   margin-top: -24%;
 
-  @media ${({ theme }) => theme.breakpoints.tablet} {
+  @media ${({ theme }) => theme.breakpoints.mobile} {
     margin-bottom: 24px;
   }
 `
@@ -126,7 +126,7 @@ const StyledSection = styled(TreasurySection).attrs({ showRope: false })`
   flex-direction: column;
   align-items: center;
 
-  @media ${({ theme }) => theme.breakpoints.tablet} {
+  @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 100%;
   }
 `
@@ -216,7 +216,7 @@ interface Props {
 
 export default function StakeInfo({ className }: Props) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'stake' })
-  const { isTablet } = useBreakpoints()
+  const { isMobile } = useBreakpoints()
   const { latestTotalReward, lastTotalStaked } = usePearlBankInfo()
   // const totalStaked = useTotalStakedAmount()
   // const totalRewards = useTotalRewardsAmount()
@@ -252,7 +252,7 @@ export default function StakeInfo({ className }: Props) {
             {t('tvl')} <br />${trim(ethers.utils.formatEther(tvl), 0)}
           </StyledTVL>
         </StyledTVLContainer>
-        {isTablet && <StyledStakedDialog />}
+        {isMobile && <StyledStakedDialog />}
         <StyledSection>
           <StyledSectionTitle>
             {t('next_reward')}

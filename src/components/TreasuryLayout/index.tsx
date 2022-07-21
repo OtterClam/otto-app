@@ -22,7 +22,7 @@ const StyledContainer = styled.div`
   display: flex;
   width: 100%;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     flex-direction: column;
     width: 95%;
   }
@@ -33,7 +33,7 @@ const StyledSidebar = styled.nav`
   min-width: 240px;
   max-width: 240px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     flex: 0 84px;
     min-height: 84px;
     max-height: 84px;
@@ -50,7 +50,7 @@ const StyledMenu = styled.ul`
   justify-content: space-between;
   gap: 15px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     flex-direction: row;
     justify-content: center;
     gap: 20px;
@@ -61,7 +61,7 @@ const StyledMenuItem = styled.li`
   width: 240px;
   height: 65px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     width: 64px;
     height: 84px;
   }
@@ -93,7 +93,7 @@ const StyledMenuItemLink = styled.a<{ active?: boolean; itemKey: keyof typeof me
     }
   `}
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     min-width: unset;
     max-width: unset;
     min-height: 84px;
@@ -125,7 +125,7 @@ const StyledMenuItemLabel = styled(Caption)`
   margin-top: 4px;
   margin-left: 4px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     margin: 0;
     justify-content: center;
     align-items: end;
@@ -142,7 +142,7 @@ const StyledMenuItemDesc = styled(Note)`
   color: ${({ theme }) => theme.colors.white};
   margin-bottom: 4px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     display: none;
   }
 `

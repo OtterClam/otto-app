@@ -12,7 +12,7 @@ const StyledTreasurySection = styled(TreasurySection)`
   display: flex;
   align-item: stretch;
 
-  @media ${({ theme }) => theme.breakpoints.tablet} {
+  @media ${({ theme }) => theme.breakpoints.mobile} {
     height: unset;
     align-item: unset;
   }
@@ -25,7 +25,7 @@ const StyledStakePage = styled.div`
   overflow-x: hidden;
   overflow-y: scroll;
 
-  @media ${({ theme }) => theme.breakpoints.tablet} {
+  @media ${({ theme }) => theme.breakpoints.mobile} {
     overflow: hidden;
   }
 `
@@ -46,7 +46,7 @@ const StyledStakePageInner = styled.div`
     padding-bottom: 22.093023255813954%;
     background: center / 100% url(${Fountain.src});
 
-    @media ${({ theme }) => theme.breakpoints.tablet} {
+    @media ${({ theme }) => theme.breakpoints.mobile} {
       right: unset;
       left: 50%;
       width: 150%;
@@ -56,7 +56,7 @@ const StyledStakePageInner = styled.div`
 `
 
 const StyledStakeDialog = styled(StakeDialog)`
-  @media ${({ theme }) => theme.breakpoints.tablet} {
+  @media ${({ theme }) => theme.breakpoints.mobile} {
     display: none;
   }
 `
@@ -66,7 +66,7 @@ const StyledStakeDialogContainer = styled.div`
   box-sizing: border-box;
   padding: 100px 24px 48px 74px;
 
-  @media ${({ theme }) => theme.breakpoints.tablet} {
+  @media ${({ theme }) => theme.breakpoints.mobile} {
     display: none;
   }
 `
@@ -93,7 +93,7 @@ const StyledOtter = styled.img<{ delay: number }>`
   animation-delay: ${({ delay }) => delay}ms;
   animation-timing-function: steps(1);
 
-  @media ${({ theme }) => theme.breakpoints.tablet} {
+  @media ${({ theme }) => theme.breakpoints.mobile} {
     position: absolute;
     left: 0;
     transform: unset;
