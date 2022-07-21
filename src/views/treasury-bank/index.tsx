@@ -6,6 +6,7 @@ import StakeDialog from './StakeDialog'
 import StakeInfo from './StakeInfo'
 
 const StyledTreasurySection = styled(TreasurySection)`
+  margin-top: 4px;
   height: var(--body-height);
   display: flex;
   align-item: stretch;
