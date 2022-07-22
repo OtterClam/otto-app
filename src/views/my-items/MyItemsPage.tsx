@@ -22,7 +22,8 @@ const StyledMyItemsPage = styled.div`
 `
 
 const StyledSectionTabContainer = styled.div`
-  min-height: 90px;
+  display: flex;
+  align-items: stretch;
   overflow: scroll;
   border-bottom: 4px solid ${({ theme }) => theme.colors.otterBlack};
 `
@@ -30,11 +31,11 @@ const StyledSectionTabContainer = styled.div`
 const StyledSectionTabs = styled.div`
   display: flex;
   height: 100%;
+  align-items: stretch;
 `
 
 const StyledSectionTab = styled.button<{ section: string; selected: boolean }>`
   display: flex;
-  height: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;

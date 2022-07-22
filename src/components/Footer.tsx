@@ -3,7 +3,8 @@ import { Caption } from 'styles/typography'
 
 const StyledFooter = styled.div`
   width: 100%;
-  height: 50px;
+  min-height: 50px;
+  max-height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;

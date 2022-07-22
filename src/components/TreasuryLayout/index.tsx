@@ -149,17 +149,7 @@ const StyledMenuItemDesc = styled(Note)`
 
 const StyledContent = styled.div`
   flex: 1;
-  padding: 4px;
   box-sizing: border-box;
-  max-height: var(--body-height);
-  overflow-y: auto;
-  overflow-x: hidden;
-
-  @media ${({ theme }) => theme.breakpoints.tablet} {
-    max-height: unset;
-    overflow-x: unset;
-    overflow-y: unset;
-  }
 `
 
 interface MenuItem {

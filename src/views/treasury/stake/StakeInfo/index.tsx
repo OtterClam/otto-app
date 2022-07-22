@@ -82,17 +82,20 @@ const StyledBody = styled.div`
   }
 `
 
+const StyledTVLContainer = styled.div`
+  margin-top: -24%;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    margin-bottom: 24px;
+  }
+`
+
 const StyledTVL = styled(ContentSmall).attrs({ as: 'div' })`
-  position: absolute;
+  position: relative;
   padding: 6px 24px;
   background: ${({ theme }) => theme.colors.white};
   border: 4px solid ${({ theme }) => theme.colors.darkBrown};
-  top: 160px;
   text-align: center;
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    top: 30vw;
-  }
 
   &:before {
     content: '';
@@ -244,9 +247,11 @@ export default function StakeInfo({ className }: Props) {
   return (
     <StyledStakeInfo className={className}>
       <StyledBody>
-        <StyledTVL>
-          {t('tvl')} <br />${trim(ethers.utils.formatEther(tvl), 0)}
-        </StyledTVL>
+        <StyledTVLContainer>
+          <StyledTVL>
+            {t('tvl')} <br />${trim(ethers.utils.formatEther(tvl), 0)}
+          </StyledTVL>
+        </StyledTVLContainer>
         {isMobile && <StyledStakedDialog />}
         <StyledSection>
           <StyledSectionTitle>

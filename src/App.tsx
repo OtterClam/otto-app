@@ -18,7 +18,7 @@ const StyledApp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: var(--real-vh);
+  overflow-x: hidden;
 `
 
 const config: Config = {

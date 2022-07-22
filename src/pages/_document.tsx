@@ -99,6 +99,7 @@ export default class MyDocument extends Document<{ asPath: string }> {
           </noscript>
           <Main />
           <NextScript />
+          <div id="modal-root" />
         </body>
       </Html>
     )
