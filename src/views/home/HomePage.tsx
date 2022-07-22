@@ -1,8 +1,8 @@
 import Button from 'components/Button'
 import GiveawayFloatingButton from 'components/GiveawayFloatingButton'
+import OtterClamFloatingButton from 'components/OtterClamFloatingButton'
 import MenuButton from 'components/MenuButton'
 import { BUY_CLAM_LINK, DAO_LINK, DISCORD_LINK, TREASURY_LINK, WHITE_PAPER_LINK } from 'constant'
-import Layout from 'Layout'
 import { useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
@@ -136,6 +136,7 @@ const HomePage = () => {
         {renderMenus(rightMenus, 'right-menu')}
       </StyledHomePage>
       <GiveawayFloatingButton />
+      <OtterClamFloatingButton />
     </>
   )
 }

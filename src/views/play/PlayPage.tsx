@@ -1,4 +1,5 @@
 import GiveawayFloatingButton from 'components/GiveawayFloatingButton'
+import OtterClamFloatingButton from 'components/OtterClamFloatingButton'
 import MenuButton from 'components/MenuButton'
 import MintBanner from 'components/MintBanner'
 import { useMemo } from 'react'
@@ -78,6 +79,7 @@ const PlayPage = () => {
         </Link>
       ))}
       <GiveawayFloatingButton />
+      <OtterClamFloatingButton />
     </StyledPlayPage>
   )
 }
