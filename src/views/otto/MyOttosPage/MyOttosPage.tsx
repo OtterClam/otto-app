@@ -25,10 +25,8 @@ const StyledMyOttos = styled.div`
   background-color: white;
   display: grid;
   justify-content: left;
-  align-items: center;
-  justify-items: center;
   gap: 20px;
-  grid-template-columns: repeat(auto-fit, 265px);
+  grid-template-columns: repeat(auto-fit, max(265px));
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     padding: 10px;
@@ -69,6 +67,13 @@ export default function MyOttosPage() {
         return (
           <>
             <StyledMyOttos>
+              {ottos.map((otto, index) => (
+                <Link key={index} href={`/my-ottos/${otto.tokenId}`}>
+                  <a onClick={() => ottoClick.play()}>
+                    <OttoCard otto={otto} />
+                  </a>
+                </Link>
+              ))}
               {ottos.map((otto, index) => (
                 <Link key={index} href={`/my-ottos/${otto.tokenId}`}>
                   <a onClick={() => ottoClick.play()}>
