@@ -68,10 +68,10 @@ const useTransformedData = (data: GetPearlBankMetrics_pearlBankMetrics[]) => {
   return useMemo(
     () =>
       data.map(value => {
-        const payoutMatketValue = ethers.utils.parseUnits(value.payoutMatketValue, 6)
+        const payoutMarketValue = ethers.utils.parseUnits(value.payoutMarketValue, 6)
         const stakedCLAMAmount = ethers.utils.parseUnits(value.stakedCLAMAmount, 6)
         return {
-          apy: trim(ethers.utils.formatUnits(payoutMatketValue.div(stakedCLAMAmount).mul(365), 6), 1),
+          apy: trim(ethers.utils.formatUnits(payoutMarketValue.div(stakedCLAMAmount).mul(365), 6), 1),
           timestamp: value.timestamp,
         }
       }),

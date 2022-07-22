@@ -205,9 +205,9 @@ const usePearlBankApr = () => {
   )
   const avgApr = useMemo(() => {
     const total = pearlBankMetrics.slice(0, range).reduce((total, value) => {
-      const payoutMatketValue = ethers.utils.parseUnits(value.payoutMatketValue, 6)
+      const payoutMarketValue = ethers.utils.parseUnits(value.payoutMarketValue, 6)
       const stakedCLAMAmount = ethers.utils.parseUnits(value.stakedCLAMAmount, 6)
-      return total.add(payoutMatketValue.div(stakedCLAMAmount))
+      return total.add(payoutMarketValue.div(stakedCLAMAmount))
     }, BigNumber.from('0'))
     return trim(ethers.utils.formatUnits(total.mul(365).div(range), 6), 1)
   }, [range, pearlBankMetrics])
@@ -234,7 +234,7 @@ export default function TreasuryDashboardPage() {
     .parseUnits(latestMetrics?.treasuryMarketValue ?? '0', 27)
     .div(ethers.utils.parseUnits(latestMetrics?.clamCirculatingSupply ?? '1', 9))
 
-  const distributedMarketValue = ethers.utils.parseUnits(pearlBankLatestMetrics?.payoutMatketValue ?? '0', 6)
+  const distributedMarketValue = ethers.utils.parseUnits(pearlBankLatestMetrics?.payoutMarketValue ?? '0', 6)
 
   const getRevenue = useCurrencyFormatter({
     formatters: {
