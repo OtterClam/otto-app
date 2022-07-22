@@ -1,13 +1,13 @@
 import styled from 'styled-components/macro'
 import ButtonImg from './button.png'
 
-const StyledGiveawayFloatingButton = styled.a`
+const StyledOtterClamFloatingButton = styled.a`
   position: absolute;
-  top: 88px;
+  top: 194px;
   right: 40px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    top: 100px;
+    top: 206px;
     right: 10px;
   }
 `
@@ -19,10 +19,10 @@ const StyledButton = styled.img.attrs({
   height: 96px;
 `
 
-export default function GiveawayFloatingButton() {
+export default function OtterClamFloatingButton() {
   return (
-    <StyledGiveawayFloatingButton href="/giveaway" target="_blank" rel="noreferrer">
+    <StyledOtterClamFloatingButton href="https://app.otterclam.finance" target="_blank" rel="noreferrer">
       <StyledButton />
-    </StyledGiveawayFloatingButton>
+    </StyledOtterClamFloatingButton>
   )
 }
