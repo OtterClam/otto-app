@@ -84,6 +84,11 @@ const StyledAttrs = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 80px);
   column-gap: 10px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+  }
 `
 
 const StyledAttr = styled.div`
