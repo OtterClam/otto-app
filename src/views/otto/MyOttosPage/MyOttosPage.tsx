@@ -74,13 +74,6 @@ export default function MyOttosPage() {
                   </a>
                 </Link>
               ))}
-              {ottos.map((otto, index) => (
-                <Link key={index} href={`/my-ottos/${otto.tokenId}`}>
-                  <a onClick={() => ottoClick.play()}>
-                    <OttoCard otto={otto} />
-                  </a>
-                </Link>
-              ))}
             </StyledMyOttos>
             <StyledMintBanner>
               <MintBanner />
