@@ -6,6 +6,7 @@ import Title from './Title'
 import { PageHeaderProps } from './type'
 import { ClamBalance, FishBalance } from './Balance'
 import MenuButton from './MenuButton'
+import ExchangePopup from './ExchangePopup'
 
 const StyledContainer = styled.div<{ isAtTop: boolean }>`
   position: fixed;
@@ -47,6 +48,18 @@ const StyledRow = styled.div`
   gap: 5px;
 `
 
+const StyledClamBalanceContainer = styled.div``
+
+const StyledExchangePopup = styled(ExchangePopup)`
+  position: absolute;
+  left: calc(50% - 160px);
+  display: none;
+
+  ${StyledClamBalanceContainer}:hover, ${StyledClamBalanceContainer}:active & {
+    display: block;
+  }
+`
+
 export default function PageHeader({ title }: PageHeaderProps) {
   const isAtTop = useIsAtTop()
 
@@ -54,7 +67,10 @@ export default function PageHeader({ title }: PageHeaderProps) {
     <StyledContainer isAtTop={isAtTop}>
       <StyledRow>
         <Logo />
-        <ClamBalance />
+        <StyledClamBalanceContainer>
+          <ClamBalance />
+          <StyledExchangePopup />
+        </StyledClamBalanceContainer>
         <FishBalance />
         <Wallet />
       </StyledRow>
