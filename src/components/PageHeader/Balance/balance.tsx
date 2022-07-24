@@ -3,20 +3,21 @@ import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
 import PlusBg from './plus.png'
 
-const StyledContainer = styled.div<{ background: string; width: number; hover: string }>`
+const StyledContainer = styled.div<{ background: string; width: number }>`
   flex: 0 ${props => props.width}px;
   display: flex;
   height: 40px;
   min-width: ${props => props.width}px;
   max-width: ${props => props.width}px;
   align-items: center;
-  background: center / ${props => props.width}px 40px url(${props => props.background});
+  background: url(${props => props.background}) 0 0;
+  background-size: ${props => props.width * 2}px 40px;
   text-align: right;
   padding: 0 6px 0 20px;
   box-sizing: border-box;
 
   &:hover {
-    background: center / ${props => props.width}px 40px url(${props => props.hover});
+    background-position-x: -${props => props.width}px;
   }
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -25,7 +26,7 @@ const StyledContainer = styled.div<{ background: string; width: number; hover: s
     padding: 0;
 
     &:hover {
-      background: center / ${props => props.width}px 24px url(${props => props.hover});
+      background-position-x: -${props => props.width}px;
     }
   }
 `
@@ -54,21 +55,13 @@ export interface BalanceProps {
   disabled?: boolean
   width: number
   background: string
-  hover: string
   balance: string
   showBuyButton?: boolean
 }
 
-export default function Balance({
-  balance,
-  width,
-  background,
-  hover,
-  showBuyButton = false,
-  disabled = false,
-}: BalanceProps) {
+export default function Balance({ balance, width, background, showBuyButton = false, disabled = false }: BalanceProps) {
   return (
-    <StyledContainer width={width} background={background} hover={hover}>
+    <StyledContainer width={width} background={background}>
       <StyledText>{balance}</StyledText>
       {showBuyButton && !disabled && <StyledBuyButton href={BUY_CLAM_LINK} target="_blank" />}
     </StyledContainer>
