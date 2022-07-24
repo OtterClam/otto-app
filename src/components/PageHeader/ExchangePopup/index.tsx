@@ -8,6 +8,9 @@ import { Caption } from 'styles/typography'
 import { formatClam } from 'utils/currency'
 import ClamPondIcon from 'assets/icons/icon_48_clam-pond.png'
 import PearlBankIcon from 'assets/icons/icon_48_pearl-bank.png'
+import CLAMIcon from 'assets/tokens/CLAM.svg'
+import CLAMPlusIcon from 'assets/tokens/CLAM+.svg'
+import PEARLIcon from 'assets/tokens/PEARL.svg'
 import BalanceCell from './BalanceCell'
 
 const StyledExchangePopup = styled.div`
@@ -61,9 +64,19 @@ export default function ExchangePopup({ className }: Props) {
         <StyledBalancesContainer>
           <StyledBalanceTitle>{t('balance_title')}</StyledBalanceTitle>
           <StyledBalanceCells>
-            <StyledBalanceCell name={t('wallet')} balance={formatClam(clamBalance, 2)} />
-            <StyledBalanceCell name={t('clam_pond')} icon={ClamPondIcon.src} balance={formatClam(clamPlusBalance, 2)} />
-            <StyledBalanceCell name={t('pearl_bank')} icon={PearlBankIcon.src} balance={formatClam(pearlBalance, 2)} />
+            <StyledBalanceCell name={t('wallet')} balance={formatClam(clamBalance, 2)} balanceIcon={CLAMIcon.src} />
+            <StyledBalanceCell
+              name={t('clam_pond')}
+              icon={ClamPondIcon.src}
+              balance={formatClam(clamPlusBalance, 2)}
+              balanceIcon={CLAMPlusIcon.src}
+            />
+            <StyledBalanceCell
+              name={t('pearl_bank')}
+              icon={PearlBankIcon.src}
+              balance={formatClam(pearlBalance, 2)}
+              balanceIcon={PEARLIcon.src}
+            />
           </StyledBalanceCells>
         </StyledBalancesContainer>
         {/* <StyledExchangeContainer>Exchange</StyledExchangeContainer> */}

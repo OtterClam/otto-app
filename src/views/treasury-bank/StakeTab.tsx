@@ -1,5 +1,5 @@
 import CLAM from 'assets/clam.svg'
-import CLAMCoin from 'assets/icons/CLAM.svg'
+import CLAMCoin from 'assets/tokens/CLAM.svg'
 import Button from 'components/Button'
 import { useStake } from 'contracts/functions'
 import { usePearlBankFee } from 'contracts/views'

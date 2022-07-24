@@ -11,7 +11,7 @@ const StyledTreasurySection = styled(TreasurySection)`
   margin-top: 4px;
   height: var(--body-height);
   display: flex;
-  align-item: stretch;
+  align-items: stretch;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     height: unset;

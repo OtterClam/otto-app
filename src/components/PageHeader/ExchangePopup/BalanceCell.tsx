@@ -34,11 +34,19 @@ const StyledBalance = styled(Note).attrs({ as: 'p' })`
   background: ${({ theme }) => theme.colors.white};
   text-align: center;
   padding: 5px;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
 `
 
 const StyledIcon = styled.img`
   width: 18px;
   height: 18px;
+`
+
+const StyledBalanceIcon = styled.img`
+  width: 16px;
+  height: 16px;
 `
 
 export default function BalanceCell({ name, icon, balance, balanceIcon }: Props) {
@@ -49,7 +57,7 @@ export default function BalanceCell({ name, icon, balance, balanceIcon }: Props)
         {name}
       </StyledName>
       <StyledBalance>
-        {balanceIcon && <StyledIcon src={balanceIcon} />}
+        {balanceIcon && <StyledBalanceIcon src={balanceIcon} />}
         {balance}
       </StyledBalance>
     </StyledBalanceCell>
