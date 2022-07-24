@@ -1,12 +1,9 @@
-import { ethers } from 'ethers'
-import { trim } from 'helpers/trim'
-import { useEthers, useTokenBalance } from '@usedapp/core'
+import { BUY_CLAM_LINK } from 'constant'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
-import { BUY_CLAM_LINK } from 'constant'
 import PlusBg from './plus.png'
 
-const StyledContainer = styled.div<{ background: string; width: number }>`
+const StyledContainer = styled.div<{ background: string; width: number; hover: string }>`
   flex: 0 ${props => props.width}px;
   display: flex;
   height: 40px;
@@ -18,10 +15,18 @@ const StyledContainer = styled.div<{ background: string; width: number }>`
   padding: 0 6px 0 20px;
   box-sizing: border-box;
 
+  &:hover {
+    background: center / ${props => props.width}px 40px url(${props => props.hover});
+  }
+
   @media ${({ theme }) => theme.breakpoints.mobile} {
     height: 24px;
     background-size: ${props => props.width}px 24px;
     padding: 0;
+
+    &:hover {
+      background: center / ${props => props.width}px 24px url(${props => props.hover});
+    }
   }
 `
 
@@ -49,13 +54,21 @@ export interface BalanceProps {
   disabled?: boolean
   width: number
   background: string
+  hover: string
   balance: string
   showBuyButton?: boolean
 }
 
-export default function Balance({ balance, width, background, showBuyButton = false, disabled = false }: BalanceProps) {
+export default function Balance({
+  balance,
+  width,
+  background,
+  hover,
+  showBuyButton = false,
+  disabled = false,
+}: BalanceProps) {
   return (
-    <StyledContainer width={width} background={background}>
+    <StyledContainer width={width} background={background} hover={hover}>
       <StyledText>{balance}</StyledText>
       {showBuyButton && !disabled && <StyledBuyButton href={BUY_CLAM_LINK} target="_blank" />}
     </StyledContainer>
