@@ -4,7 +4,7 @@ import Logo from './Logo'
 import Wallet from './Wallet'
 import Title from './Title'
 import { PageHeaderProps } from './type'
-import { ClamBalance, FishBalance, PearlBalance } from './Balance'
+import { ClamBalance, FishBalance } from './Balance'
 import MenuButton from './MenuButton'
 
 const StyledContainer = styled.div<{ isAtTop: boolean }>`
@@ -56,7 +56,6 @@ export default function PageHeader({ title }: PageHeaderProps) {
       <StyledInnerContainer>
         <Logo />
         <Title>{title}</Title>
-        <PearlBalance />
         <ClamBalance />
         <FishBalance />
         <Wallet />

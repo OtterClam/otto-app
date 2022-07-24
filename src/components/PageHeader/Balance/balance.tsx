@@ -49,25 +49,14 @@ export interface BalanceProps {
   disabled?: boolean
   width: number
   background: string
-  contractAddress: string
+  balance: string
   showBuyButton?: boolean
-  decimal?: number
 }
 
-export default function Balance({
-  width,
-  background,
-  contractAddress,
-  showBuyButton = false,
-  disabled = false,
-  decimal = 9,
-}: BalanceProps) {
-  const { account } = useEthers()
-  const balance = useTokenBalance(!disabled && contractAddress, account)
-
+export default function Balance({ balance, width, background, showBuyButton = false, disabled = false }: BalanceProps) {
   return (
     <StyledContainer width={width} background={background}>
-      <StyledText>{!balance ? '--' : trim(ethers.utils.formatUnits(balance, decimal), 2)}</StyledText>
+      <StyledText>{balance}</StyledText>
       {showBuyButton && !disabled && <StyledBuyButton href={BUY_CLAM_LINK} target="_blank" />}
     </StyledContainer>
   )
