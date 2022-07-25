@@ -22,7 +22,7 @@ const StyledContainer = styled.div<{ background: string; width: number }>`
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     height: 24px;
-    background-size: ${props => props.width}px 24px;
+    background-size: ${props => props.width * 2}px 24px;
     padding: 0;
 
     &:hover {
