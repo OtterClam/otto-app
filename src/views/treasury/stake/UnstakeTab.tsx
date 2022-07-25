@@ -1,5 +1,5 @@
 import CLAM from 'assets/clam.svg'
-import CLAMCoin from 'assets/icons/CLAM.svg'
+import CLAMCoin from 'assets/tokens/CLAM.svg'
 import Button from 'components/Button'
 import isAfter from 'date-fns/isAfter'
 import formatDate from 'date-fns/format'

@@ -1,9 +1,9 @@
-import { BigNumber, ethers } from 'ethers'
+import { BigNumber, BigNumberish, ethers } from 'ethers'
 import { trim } from 'helpers/trim'
 
-export const formatClam = (value: BigNumber, decimal = 4) => trim(ethers.utils.formatUnits(value, 9), decimal)
+export const formatClam = (value: BigNumberish, decimal = 4) => trim(ethers.utils.formatUnits(value, 9), decimal)
 
-export const formatUsdc = (value: BigNumber, decimal = 4) => trim(ethers.utils.formatUnits(value, 6), decimal)
+export const formatUsdc = (value: BigNumberish, decimal = 4) => trim(ethers.utils.formatUnits(value, 6), decimal)
 
 export const formatUsd = (number: string | number): string => {
   return `${new Intl.NumberFormat('en-US', {

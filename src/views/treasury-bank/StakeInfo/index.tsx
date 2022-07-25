@@ -1,4 +1,4 @@
-import CLAMCoin from 'assets/icons/CLAM.svg'
+import CLAMCoin from 'assets/tokens/CLAM.svg'
 import PearlBalance from 'assets/icons/pearl-balance.png'
 import USDPlus from 'assets/icons/usdplus.png'
 import Button from 'components/Button'

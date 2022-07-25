@@ -1,5 +1,5 @@
 import CLAM from 'assets/clam.svg'
-import CLAMCoin from 'assets/icons/CLAM.svg'
+import CLAMCoin from 'assets/tokens/CLAM.svg'
 import Button from 'components/Button'
 import { useDeposit } from 'contracts/functions'
 import { useClamPondFee } from 'contracts/views'

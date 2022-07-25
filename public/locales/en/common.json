@@ -593,5 +593,11 @@
       "desc": "you will get"
     },
     "claim": "Claim"
+  },
+  "exchange": {
+    "balance_title": "Your CLAM Balance",
+    "wallet": "Wallet",
+    "clam_pond": "Clam Pond",
+    "pearl_bank": "Pearl Bank"
   }
 }

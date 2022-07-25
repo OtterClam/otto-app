@@ -1,4 +1,4 @@
-import CLAMCoin from 'assets/icons/CLAM.svg'
+import CLAMCoin from 'assets/tokens/CLAM.svg'
 import TreasurySection from 'components/TreasurySection'
 import {
   useClamPrice,
