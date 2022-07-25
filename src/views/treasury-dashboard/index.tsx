@@ -188,8 +188,13 @@ const StyledChartKeyDate = styled.span`
 const formatFinancialNumber = (num: BigNumberish, decimal = 9, digits = 2) =>
   `$${formatBigNumber(num, decimal, digits)}`
 
-const formatBigNumber = (num: BigNumberish, decimal = 9, digits = 2) =>
-  trim(ethers.utils.formatUnits(num, decimal), digits)
+const formatBigNumber = (num: BigNumberish, decimal = 9, digits = 2) => {
+  try {
+    return trim(ethers.utils.formatUnits(num, decimal), digits)
+  } catch {
+    return ''
+  }
+}
 
 enum PearlBankAvgAprRange {
   Week = 7,
@@ -204,12 +209,13 @@ const usePearlBankApr = () => {
     [range, pearlBankMetrics]
   )
   const avgApr = useMemo(() => {
-    const total = pearlBankMetrics.slice(0, range).reduce((total, value) => {
-      const payoutMarketValue = ethers.utils.parseUnits(value.payoutMarketValue, 6)
-      const stakedCLAMAmount = ethers.utils.parseUnits(value.stakedCLAMAmount, 6)
-      return total.add(payoutMarketValue.div(stakedCLAMAmount))
-    }, BigNumber.from('0'))
-    return trim(ethers.utils.formatUnits(total.mul(365).div(range), 6), 1)
+    const totalSum = pearlBankMetrics.slice(0, range).reduce((total, value) => {
+      return total + value.apr
+    }, 0)
+
+    const average = totalSum / range
+
+    return trim(average, 1)
   }, [range, pearlBankMetrics])
 
   return {
@@ -225,16 +231,10 @@ export default function TreasuryDashboardPage() {
   const { metrics, latestMetrics } = useTreasuryMetrics()
   const { metrics: pearlBankMetrics, latestMetrics: pearlBankLatestMetrics } = usePearlBankMetrics()
   const { revenues } = useTreasuryRevenues()
-  const { clamPrice, tvd } = useTreasuryRealtimeMetrics()
+  const { clamPrice } = useTreasuryRealtimeMetrics()
   const { avgApr, pearlBankAvgAprRange, setPearlBankAvgAprRange } = usePearlBankApr()
-
   const pearlBankAvgAprRangeStartDate = subDays(new Date(), pearlBankAvgAprRange)
-
-  const backing = ethers.utils
-    .parseUnits(latestMetrics?.treasuryMarketValue ?? '0', 27)
-    .div(ethers.utils.parseUnits(latestMetrics?.clamCirculatingSupply ?? '1', 9))
-
-  const distributedMarketValue = ethers.utils.parseUnits(pearlBankLatestMetrics?.payoutMarketValue ?? '0', 6)
+  const pearlBankAvgApr = pearlBankAvgAprRange
 
   const getRevenue = useCurrencyFormatter({
     formatters: {
@@ -266,13 +266,8 @@ export default function TreasuryDashboardPage() {
               <ContentExtraSmall>{t('burned')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {formatBigNumber(ethers.utils.parseUnits(latestMetrics?.totalBurnedClam ?? '0', 2), 2, 0)} (
-              {formatFinancialNumber(
-                ethers.utils.parseUnits(latestMetrics?.totalBurnedClamMarketValue ?? '0', 29),
-                29,
-                0
-              )}
-              )
+              {trim(latestMetrics?.totalBurnedClam, 0)}
+              {` ($${trim(latestMetrics?.totalBurnedClamMarketValue, 2)})`}
             </ContentMedium>
           </StyledTreasuryCard>
 
@@ -280,30 +275,34 @@ export default function TreasuryDashboardPage() {
             <Help message={t('distributedTooltip')}>
               <ContentExtraSmall>{t('distributed')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatBigNumber(distributedMarketValue, 6, 0)} USD+</ContentMedium>
+            <ContentMedium>
+              {formatBigNumber(pearlBankLatestMetrics?.cumulativeRewardPayoutMarketValue, 6, 0)} USD+
+            </ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
             <Help message={t('backingTooltip')}>
               <ContentExtraSmall>{t('backing')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatFinancialNumber(backing, 18)}</ContentMedium>
+            <ContentMedium>{trim(latestMetrics?.clamBacking, 2)}</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
             <Help message={t('tvdTooltip')}>
               <ContentExtraSmall>{t('tvd')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatFinancialNumber(tvd, 18, 0)}</ContentMedium>
+            <ContentMedium>
+              {formatFinancialNumber(pearlBankLatestMetrics?.totalClamStakedUsdValue, 18, 0)}
+            </ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
-            <Help message={t('stakedTooltip')}>
+            <Help message={t('clamCirculatingSupplyTooltip')}>
               <ContentExtraSmall>{t('clamCirculatingSupply')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {formatBigNumber(ethers.utils.parseUnits(latestMetrics?.clamCirculatingSupply ?? '0', 27), 27, 0)} (
-              {formatFinancialNumber(ethers.utils.parseUnits(latestMetrics?.totalSupply ?? '0', 27), 27, 0)})
+              {latestMetrics?.clamCirculatingSupply} /
+              {formatBigNumber(ethers.utils.parseUnits(latestMetrics?.totalSupply ?? '0', 27), 27, 0)}
             </ContentMedium>
           </StyledTreasuryCard>
         </StyledMetricsContainer>
@@ -338,7 +337,7 @@ export default function TreasuryDashboardPage() {
             <StyledChartHeader>
               <StyledChartTitle>{t('averageApr')}</StyledChartTitle>
               <StyledChartKeyValue>
-                {getRevenue()}%
+                {avgApr ?? 0}%
                 <StyledChartKeyDate>
                   {t('averageAprStartDate', { date: formatDate(pearlBankAvgAprRangeStartDate, 'MMM d') })}
                 </StyledChartKeyDate>

@@ -6,6 +6,7 @@ export const GET_PEARL_BANK_METRICS = gql`
       id
       timestamp
       apr
+      apy
       payoutMarketValue
       clamMarketValueWhenPayoutHappens
       cumulativeRewardPayoutMarketValue
@@ -32,6 +33,8 @@ export const GET_TREASURY_METRICS = gql`
       marketCap
       totalBurnedClam
       totalBurnedClamMarketValue
+      treasuryMarketValue
+      treasuryMarketValueWithoutClam
 
       #treasury tokens
       treasuryWmaticMarketValue

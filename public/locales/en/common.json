@@ -430,8 +430,12 @@
       "must_desc": "R3 Item Guaranteed!",
       "name": "Silver Chest"
     },
-    "luk": { "must_desc": "R1 Item Guaranteed!" },
-    "dex": { "must_desc": "R2 Item Guaranteed!" }
+    "luk": {
+      "must_desc": "R1 Item Guaranteed!"
+    },
+    "dex": {
+      "must_desc": "R2 Item Guaranteed!"
+    }
   },
   "question": {
     "submit_button": "Confirm"
@@ -538,7 +542,7 @@
     "stake_btn": "Deposit",
     "unstake_btn": "Withdraw",
     "tvl": "Total Locked Value:",
-    "unstake_note": "*If you unstake within 30 days, you will be charged and burned {{ feeRate }}% of the CLAM amount unstaked. Fully waived date: {{ date }} ({{ days }} days left)",
+    "unstake_note": "*If you unstake within 30 days, you will be charged and burned {{ feeRate }}% of the CLAM amount unstaked. Fully waived date: {{ date }} ({{ days }} left)",
     "fee": "Early Withdraw Fee ({{ feeRate }}%)*",
     "unstake_receive_amount": "You will get",
     "staked_balance": "Your Staked Balance",

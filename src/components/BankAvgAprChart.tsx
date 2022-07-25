@@ -54,40 +54,26 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       .map(({ name, value }) => ({
         key: name,
         label: keySettingMap[name].label,
-        value: `$${Math.round(value).toLocaleString(i18n.language)}`,
+        value: `${parseFloat(value).toLocaleString(i18n.language)}`,
         color: keySettingMap[name].stopColor[0],
       }))
+
+    console.log(items)
     const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
     const headerLabel = i18n.t('treasury.dashboard.chartHeaderLabel')
-    return (
-      <ChartTooltip headerLabel={headerLabel} headerValue={items[0].value} items={items.slice(1)} footer={footer} />
-    )
-  }
 
-const useTransformedData = (data: GetPearlBankMetrics_pearlBankMetrics[]) => {
-  return useMemo(
-    () =>
-      data.map(value => {
-        const payoutMarketValue = ethers.utils.parseUnits(value.payoutMarketValue, 6)
-        const stakedCLAMAmount = ethers.utils.parseUnits(value.stakedCLAMAmount, 6)
-        return {
-          apy: trim(ethers.utils.formatUnits(payoutMarketValue.div(stakedCLAMAmount).mul(365), 6), 1),
-          timestamp: value.timestamp,
-        }
-      }),
-    [data]
-  )
-}
+    return items.length > 0 ? (
+      <ChartTooltip headerLabel={headerLabel} headerValue={items[0].value} items={items.slice(1)} footer={footer} />
+    ) : null
+  }
 
 export default function BankAvgAprChart({ data }: BankAvgAprChartProps) {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
-  const transformedData = useTransformedData(data)
-
   return (
     <StyledContainer ref={containerRef}>
-      <AreaChart data={transformedData} width={size?.width ?? 300} height={size?.height ?? 260}>
+      <AreaChart data={data} width={size?.width ?? 300} height={size?.height ?? 260}>
         <defs>
           {displayedFields.map(({ dataKey: key, stopColor }) => (
             <linearGradient key={key} id={`color-${key}`} x1="0" y1="0" x2="0" y2="1">
@@ -123,7 +109,7 @@ export default function BankAvgAprChart({ data }: BankAvgAprChartProps) {
           formatter={(value: string) => trim(parseFloat(value), 2)}
           content={renderTooltip(i18n) as any}
         />
-        {displayedFields.map(({ dataKey, label }) => (
+        {/* {displayedFields.map(({ dataKey, label }) => (
           <Area
             key={dataKey}
             stroke="none"
@@ -133,7 +119,7 @@ export default function BankAvgAprChart({ data }: BankAvgAprChartProps) {
             fillOpacity="1"
             stackId="1"
           />
-        ))}
+        ))} */}
       </AreaChart>
     </StyledContainer>
   )

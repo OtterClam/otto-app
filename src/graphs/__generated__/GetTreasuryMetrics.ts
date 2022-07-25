@@ -18,6 +18,8 @@ export interface GetTreasuryMetrics_protocolMetrics {
   marketCap: any;
   totalBurnedClam: any;
   totalBurnedClamMarketValue: any;
+  treasuryMarketValue: any;
+  treasuryMarketValueWithoutClam: any;
   treasuryWmaticMarketValue: any;
   treasuryDystMarketValue: any;
   treasuryVeDystMarketValue: any;
