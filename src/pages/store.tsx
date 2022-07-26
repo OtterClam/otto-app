@@ -15,7 +15,7 @@ const StorePage: NextPageWithLayout = StoreView
 
 StorePage.getLayout = (page, i18n) => {
   return (
-    <Layout title={i18n.t('title')}>
+    <Layout title={i18n.t('store.title')}>
       <Board background={Background.Dark}>{page}</Board>
     </Layout>
   )

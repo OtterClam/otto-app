@@ -16,7 +16,7 @@ const LeaderBoardPage: NextPageWithLayout = LeaderboardView
 
 LeaderBoardPage.getLayout = (page, i18n) => {
   return (
-    <Layout title={i18n.t('mint.mint.title')}>
+    <Layout title={i18n.t('leaderboard.title')}>
       <Board background={Background.Dark}>{page}</Board>
     </Layout>
   )
