@@ -196,7 +196,7 @@ const formatBigNumber = (num: BigNumberish, decimal = 9, digits = 2) => {
   }
 }
 
-enum PearlBankAvgAprRange {
+export enum PearlBankAvgAprRange {
   Week = 7,
   Month = 30,
 }
@@ -208,12 +208,13 @@ const usePearlBankApr = () => {
     () => subDays(Number(pearlBankMetrics[0]?.timestamp ?? 0) * 1000, range),
     [range, pearlBankMetrics]
   )
+  const metricsSlice = pearlBankMetrics.slice(0, range)
   const avgApr = useMemo(() => {
-    const totalSum = pearlBankMetrics.slice(0, range).reduce((total, value) => {
-      return total + value.apr
+    const totalSum = metricsSlice.reduce((total, value) => {
+      return total + parseFloat(value.apr)
     }, 0)
 
-    const average = totalSum / range
+    const average = totalSum / metricsSlice.length
 
     return trim(average, 1)
   }, [range, pearlBankMetrics])
@@ -234,7 +235,6 @@ export default function TreasuryDashboardPage() {
   const { clamPrice } = useTreasuryRealtimeMetrics()
   const { avgApr, pearlBankAvgAprRange, setPearlBankAvgAprRange } = usePearlBankApr()
   const pearlBankAvgAprRangeStartDate = subDays(new Date(), pearlBankAvgAprRange)
-  const pearlBankAvgApr = pearlBankAvgAprRange
 
   const getRevenue = useCurrencyFormatter({
     formatters: {
@@ -284,7 +284,7 @@ export default function TreasuryDashboardPage() {
             <Help message={t('backingTooltip')}>
               <ContentExtraSmall>{t('backing')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{trim(latestMetrics?.clamBacking, 2)}</ContentMedium>
+            <ContentMedium>{'$' + trim(latestMetrics?.clamBacking, 2)}</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
@@ -301,7 +301,7 @@ export default function TreasuryDashboardPage() {
               <ContentExtraSmall>{t('clamCirculatingSupply')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {latestMetrics?.clamCirculatingSupply} /
+              {trim(latestMetrics?.clamCirculatingSupply, 0)} /
               {formatBigNumber(ethers.utils.parseUnits(latestMetrics?.totalSupply ?? '0', 27), 27, 0)}
             </ContentMedium>
           </StyledTreasuryCard>
@@ -352,7 +352,7 @@ export default function TreasuryDashboardPage() {
                 />
               </StyledChartKeyValue>
             </StyledChartHeader>
-            <BankAvgAprChart data={pearlBankMetrics} />
+            <BankAvgAprChart data={pearlBankMetrics} aprRange={pearlBankAvgAprRange} />
           </StyledChartCard>
 
           <StyledChartCard>

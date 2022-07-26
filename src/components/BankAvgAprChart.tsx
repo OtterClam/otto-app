@@ -11,6 +11,7 @@ import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
 import ChartTooltip from './ChartTooltip'
+import { PearlBankAvgAprRange } from 'views/treasury-dashboard'
 
 const StyledContainer = styled.div`
   height: 260px;
@@ -41,6 +42,7 @@ const keySettingMap = displayedFields.reduce(
 
 export interface BankAvgAprChartProps {
   data: GetPearlBankMetrics_pearlBankMetrics[]
+  aprRange: PearlBankAvgAprRange
 }
 
 const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
@@ -54,11 +56,10 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       .map(({ name, value }) => ({
         key: name,
         label: keySettingMap[name].label,
-        value: `${parseFloat(value).toLocaleString(i18n.language)}`,
+        value: `${parseFloat(trim(value, 2)).toLocaleString(i18n.language)}%`,
         color: keySettingMap[name].stopColor[0],
       }))
 
-    console.log(items)
     const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
     const headerLabel = i18n.t('treasury.dashboard.chartHeaderLabel')
 
@@ -67,18 +68,20 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     ) : null
   }
 
-export default function BankAvgAprChart({ data }: BankAvgAprChartProps) {
+export default function BankAvgAprChart({ data, aprRange }: BankAvgAprChartProps) {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
+
+  const slicedData = data.slice(0, aprRange)
   return (
     <StyledContainer ref={containerRef}>
-      <AreaChart data={data} width={size?.width ?? 300} height={size?.height ?? 260}>
+      <AreaChart data={slicedData} width={size?.width ?? 300} height={size?.height ?? 260}>
         <defs>
           {displayedFields.map(({ dataKey: key, stopColor }) => (
             <linearGradient key={key} id={`color-${key}`} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor={stopColor[0]} stopOpacity={1} />
-              <stop offset="90%" stopColor={stopColor[1]} stopOpacity={1} />
+              <stop offset="99%" stopColor={stopColor[1]} stopOpacity={1} />
             </linearGradient>
           ))}
         </defs>
@@ -109,7 +112,7 @@ export default function BankAvgAprChart({ data }: BankAvgAprChartProps) {
           formatter={(value: string) => trim(parseFloat(value), 2)}
           content={renderTooltip(i18n) as any}
         />
-        {/* {displayedFields.map(({ dataKey, label }) => (
+        {displayedFields.map(({ dataKey, label }) => (
           <Area
             key={dataKey}
             stroke="none"
@@ -119,7 +122,7 @@ export default function BankAvgAprChart({ data }: BankAvgAprChartProps) {
             fillOpacity="1"
             stackId="1"
           />
-        ))} */}
+        ))}
       </AreaChart>
     </StyledContainer>
   )
