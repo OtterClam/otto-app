@@ -267,7 +267,7 @@ export default function TreasuryDashboardPage() {
             </Help>
             <ContentMedium>
               {trim(latestMetrics?.totalBurnedClam, 0)}
-              {` ($${trim(latestMetrics?.totalBurnedClamMarketValue, 2)})`}
+              {`🔥($${trim(latestMetrics?.totalBurnedClamMarketValue, 2)})`}
             </ContentMedium>
           </StyledTreasuryCard>
 
@@ -275,9 +275,7 @@ export default function TreasuryDashboardPage() {
             <Help message={t('distributedTooltip')}>
               <ContentExtraSmall>{t('distributed')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>
-              {formatBigNumber(pearlBankLatestMetrics?.cumulativeRewardPayoutMarketValue, 6, 0)} USD+
-            </ContentMedium>
+            <ContentMedium>{trim(pearlBankLatestMetrics?.cumulativeRewardPayoutMarketValue, 0)} USD+</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
@@ -291,9 +289,7 @@ export default function TreasuryDashboardPage() {
             <Help message={t('tvdTooltip')}>
               <ContentExtraSmall>{t('tvd')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>
-              {formatFinancialNumber(pearlBankLatestMetrics?.totalClamStakedUsdValue, 18, 0)}
-            </ContentMedium>
+            <ContentMedium>{`$${trim(pearlBankLatestMetrics?.totalClamStakedUsdValue, 0)}`}</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>

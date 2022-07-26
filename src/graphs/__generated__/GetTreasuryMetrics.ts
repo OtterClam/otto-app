@@ -29,8 +29,8 @@ export interface GetTreasuryMetrics_protocolMetrics {
   treasuryTetuQiMarketValue: any;
   treasuryQiMarketValue: any;
   treasuryOtterClamQiMarketValue: any;
-  treasuryCurveMai3PoolValue: any;
-  treasuryCurveMai3PoolInvestmentValue: any;
+  treasuryClamMaiMarketValue: any;
+  treasuryMaiUsdcMarketValue: any;
   treasuryMaiUsdcQiInvestmentValue: any;
   treasuryQiWmaticMarketValue: any;
   treasuryQiWmaticQiInvestmentMarketValue: any;

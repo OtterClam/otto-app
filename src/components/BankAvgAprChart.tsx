@@ -22,7 +22,7 @@ const xAxisTickProps = { fontSize: '12px' }
 const yAxisTickProps = { fontSize: '12px' }
 const tickCount = 3
 
-const ytickFormatter = (number: string) => number
+const ytickFormatter = (number: string) => `${number}%`
 
 const displayedFields = [
   {
@@ -100,7 +100,7 @@ export default function BankAvgAprChart({ data, aprRange }: BankAvgAprChartProps
           tickCount={tickCount}
           axisLine={false}
           tickLine={false}
-          width={33}
+          width={40}
           tick={yAxisTickProps}
           tickFormatter={(num: string) => ytickFormatter(num)}
           domain={[0, 'auto']}

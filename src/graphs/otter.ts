@@ -48,8 +48,8 @@ export const GET_TREASURY_METRICS = gql`
       treasuryOtterClamQiMarketValue
 
       #treasury LPs
-      treasuryCurveMai3PoolValue
-      treasuryCurveMai3PoolInvestmentValue
+      treasuryClamMaiMarketValue
+      treasuryMaiUsdcMarketValue
       treasuryMaiUsdcQiInvestmentValue
       treasuryQiWmaticMarketValue
       treasuryQiWmaticQiInvestmentMarketValue
