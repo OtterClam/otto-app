@@ -20,7 +20,7 @@ import ClamSupplyChart from 'components/ClamSupplyChart'
 import ClamBuybackChart from 'components/ClamBuybackChart'
 import CurrencySwitcher from 'components/CurrencySwitcher'
 import useCurrencyFormatter from 'hooks/useCurrencyFormatter'
-import { Currency } from 'contexts/Currency'
+import { Currency, useCurrency } from 'contexts/Currency'
 import Switcher from 'components/Switcher'
 import Leaves from './leaves.png'
 import Shell from './shell.png'
@@ -30,6 +30,7 @@ import Turtle from './turtle.png'
 const TreasuryMarketValueChart = dynamic(() => import('components/TreasuryMarketValueChart'))
 const TreasuryRevenuesChart = dynamic(() => import('components/TreasuryRevenuesChart'))
 const BankAvgAprChart = dynamic(() => import('components/BankAvgAprChart'))
+const StakedClamChart = dynamic(() => import('components/StakedClamChart'))
 
 const StyledMetricsContainer = styled.div`
   position: relative;
@@ -235,6 +236,7 @@ export default function TreasuryDashboardPage() {
   const { clamPrice } = useTreasuryRealtimeMetrics()
   const { avgApr, pearlBankAvgAprRange, setPearlBankAvgAprRange } = usePearlBankApr()
   const pearlBankAvgAprRangeStartDate = subDays(new Date(), pearlBankAvgAprRange)
+  const { currency } = useCurrency()
 
   const getRevenue = useCurrencyFormatter({
     formatters: {
@@ -353,14 +355,16 @@ export default function TreasuryDashboardPage() {
 
           <StyledChartCard>
             <StyledChartHeader>
-              <StyledChartTitle>{t('treasuryRevenue')}</StyledChartTitle>
+              <StyledChartTitle>{t('clamStaked')}</StyledChartTitle>
               <StyledChartKeyValue>
-                {getRevenue()}
+                {currency === Currency.CLAM
+                  ? trim(pearlBankLatestMetrics?.totalClamStaked, 0)
+                  : trim(pearlBankLatestMetrics?.totalClamStakedUsdValue, 0)}
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
                 <CurrencySwitcher />
               </StyledChartKeyValue>
             </StyledChartHeader>
-            <TreasuryRevenuesChart data={revenues} />
+            <StakedClamChart data={pearlBankMetrics} />
           </StyledChartCard>
         </StyledChartsContainer>
       </TreasurySection>

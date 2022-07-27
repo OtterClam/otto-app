@@ -78,7 +78,7 @@ const marketValues = [
     stopColor: ['#F4D258', 'rgba(244, 210, 88, 0.5)'],
   },
   {
-    label: 'Qi(Locked)',
+    label: 'Qi (Locked)',
     dataKey: 'treasuryOtterClamQiMarketValue',
     stopColor: ['#F4D258', 'rgba(244, 210, 88, 0.5)'],
   },
@@ -215,21 +215,17 @@ export default function TreasuryMarketValueChart({ data }: TreasuryMarketValueCh
           padding={{ right: 20 }}
         />
         <ChartYAxis
-          ticks={[0, 3000000]}
+          tickCount={2}
+          interval="preserveStartEnd"
           axisLine={false}
           tickLine={false}
           width={33}
           tick={yAxisTickProps}
           tickFormatter={(num: string) => ytickFormatter(num)}
-          domain={[0, 'auto']}
           connectNulls
           allowDataOverflow={false}
         />
-        <Tooltip
-          wrapperStyle={{ zIndex: 1 }}
-          formatter={(value: string) => trim(parseFloat(value), 2)}
-          content={renderTooltip(i18n) as any}
-        />
+        <Tooltip wrapperStyle={{ zIndex: 1 }} content={renderTooltip(i18n) as any} />
         {marketValues
           .filter(({ label }) => label != 'Total')
           .map(({ dataKey, label }) => (

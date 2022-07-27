@@ -28,7 +28,8 @@ const displayedFields = [
   {
     label: 'APR',
     dataKey: 'apr',
-    stopColor: ['rgba(56, 208, 117, 1)', 'rgba(56, 208, 117, 0)'],
+    // stopColor: ['rgba(56, 208, 117, 1)', 'rgba(56, 208, 117, 0)'],
+    stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
   },
 ]
 
@@ -64,7 +65,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     const headerLabel = i18n.t('treasury.dashboard.chartHeaderLabel')
 
     return items.length > 0 ? (
-      <ChartTooltip headerLabel={headerLabel} headerValue={items[0].value} items={items.slice(1)} footer={footer} />
+      <ChartTooltip headerLabel={'APR: '} headerValue={items[0].value} items={items.slice(1)} footer={footer} />
     ) : null
   }
 
@@ -81,7 +82,7 @@ export default function BankAvgAprChart({ data, aprRange }: BankAvgAprChartProps
           {displayedFields.map(({ dataKey: key, stopColor }) => (
             <linearGradient key={key} id={`color-${key}`} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor={stopColor[0]} stopOpacity={1} />
-              <stop offset="99%" stopColor={stopColor[1]} stopOpacity={1} />
+              <stop offset="100%" stopColor={stopColor[1]} stopOpacity={1} />
             </linearGradient>
           ))}
         </defs>
