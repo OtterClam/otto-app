@@ -49,18 +49,6 @@ const StyledRow = styled.div`
   gap: 5px;
 `
 
-const StyledClamBalanceContainer = styled.div``
-
-const StyledWalletPopup = styled(WalletPopup)`
-  position: absolute;
-  left: calc(50% - 160px);
-  /* display: none; */
-
-  ${StyledClamBalanceContainer}:hover, ${StyledClamBalanceContainer}:active & {
-    display: block;
-  }
-`
-
 export default function PageHeader({ title }: PageHeaderProps) {
   const isAtTop = useIsAtTop()
   const [showWalletPopup, setShowWalletPopup] = useState(false)
@@ -69,10 +57,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
     <StyledContainer isAtTop={isAtTop}>
       <StyledRow>
         <Logo />
-        <StyledClamBalanceContainer>
-          <ClamBalance onClick={() => setShowWalletPopup(true)} />
-          <StyledWalletPopup show={showWalletPopup} onClose={() => setShowWalletPopup(false)} />
-        </StyledClamBalanceContainer>
+        <ClamBalance onClick={() => setShowWalletPopup(true)} />
         <FishBalance />
         <Wallet />
       </StyledRow>
@@ -80,6 +65,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
         <Title>{title}</Title>
         <MenuButton />
       </StyledRow>
+      <WalletPopup show={showWalletPopup} onClose={() => setShowWalletPopup(false)} />
     </StyledContainer>
   )
 }

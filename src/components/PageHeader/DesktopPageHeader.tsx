@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 import useIsAtTop from 'hooks/useIsAtTop'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Logo from './Logo'
 import Wallet from './Wallet'
 import Title from './Title'
@@ -50,30 +50,24 @@ const StyledInnerContainer = styled.div`
   margin: 0 auto;
 `
 
-const StyledClamBalanceContainer = styled.div``
-
-const StyledWalletPopup = styled(WalletPopup)`
-  position: absolute;
-  display: block;
-`
-
 export default function PageHeader({ title }: PageHeaderProps) {
   const isAtTop = useIsAtTop()
   const [showWalletPopup, setShowWalletPopup] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
 
   return (
     <StyledContainer isAtTop={isAtTop}>
       <StyledInnerContainer>
         <Logo />
         <Title>{title}</Title>
-        <StyledClamBalanceContainer>
-          <ClamBalance onClick={() => setShowWalletPopup(true)} />
-          <StyledWalletPopup show={showWalletPopup} onClose={() => setShowWalletPopup(false)} />
-        </StyledClamBalanceContainer>
+        <div ref={ref}>
+          <ClamBalance onClick={() => setShowWalletPopup(show => !show)} />
+        </div>
         <FishBalance />
         <Wallet />
         <MenuButton />
       </StyledInnerContainer>
+      <WalletPopup show={showWalletPopup} alignRef={ref} onClose={() => setShowWalletPopup(false)} />
     </StyledContainer>
   )
 }
