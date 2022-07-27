@@ -9,7 +9,7 @@ import useClamBalance from 'hooks/useClamBalance'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Caption, ContentLarge, ContentSmall, Headline, Note } from 'styles/typography'
+import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } from 'styles/typography'
 import formatDate from 'date-fns/format'
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 import StakeSuccessPopup from './StakeSuccessPopup'
@@ -41,7 +41,7 @@ const StyledClamBalanceText = styled.div`
   }
 `
 
-const StyledClamInput = styled.input`
+const StyledClamInput = styled(RegularInput)`
   width: 100%;
   padding: 20px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
@@ -108,14 +108,12 @@ export default function StakeTab({ className }: Props) {
           {t('max')}
         </Button>
       </StyledClamBalance>
-      <ContentSmall>
-        <StyledClamInput
-          placeholder={t('input_placeholder')}
-          value={clamAmount}
-          type="number"
-          onChange={e => setClamAmount(Number.isNaN(e.target.value) ? '' : e.target.value)}
-        />
-      </ContentSmall>
+      <StyledClamInput
+        placeholder={t('input_placeholder')}
+        value={clamAmount}
+        type="number"
+        onChange={e => setClamAmount(Number.isNaN(e.target.value) ? '' : e.target.value)}
+      />
       <StyledField>
         <StyledFieldLabel>
           {t('fee', { feeRate: trim((feeRate.toNumber() / feeBase.toNumber()) * 100, 2) })}

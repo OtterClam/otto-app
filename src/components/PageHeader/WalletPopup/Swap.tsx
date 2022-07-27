@@ -13,7 +13,7 @@ import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
-import { Caption, ContentLarge, ContentSmall, Headline, Note } from 'styles/typography'
+import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } from 'styles/typography'
 import LoadingIndicator from 'assets/ui/loading-indicator.svg'
 import BuyCLAMIcon from './buy-clam.png'
 import { use1inchQuote, use1inchSwap } from './1inchHelper'
@@ -122,7 +122,7 @@ const StyledSelectTokenButton = styled.button<{ icon: string }>`
   }
 `
 
-const StyledInput = styled.input`
+const StyledInput = styled(RegularInput)`
   min-width: 0px;
   width: 100%;
   text-align: right;
@@ -407,15 +407,13 @@ export default function Swap() {
             >
               <ContentSmall>{fromToken}</ContentSmall>
             </StyledSelectTokenButton>
-            <ContentSmall>
-              <StyledInput
-                placeholder={t('placeholder')}
-                value={fromAmount}
-                onChange={e =>
-                  Number.isNaN(Number(e.target.value)) ? setFromAmount(fromAmount) : setFromAmount(e.target.value)
-                }
-              />
-            </ContentSmall>
+            <StyledInput
+              placeholder={t('placeholder')}
+              value={fromAmount}
+              onChange={e =>
+                Number.isNaN(Number(e.target.value)) ? setFromAmount(fromAmount) : setFromAmount(e.target.value)
+              }
+            />
           </StyledTokenInputRow>
           {renderTokenSelector(selectFromToken, token => {
             setFromToken(token)
