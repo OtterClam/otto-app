@@ -1,0 +1,22 @@
+name: Merge Schedule
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+  schedule:
+    # https://crontab.guru/every-day
+    - cron: "0 0 * * *"
+
+jobs:
+  merge_schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: gr2m/merge-schedule-action@v2
+        with:
+          require_statuses_success: "true"
+          automerge_fail_label: "merge-schedule-failed"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
