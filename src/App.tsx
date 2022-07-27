@@ -15,6 +15,7 @@ import useServiceWorker from 'hooks/useServiceWorker'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
+import AssetsLoader from 'components/AssetsLoader'
 
 const StyledApp = styled.div`
   display: flex;
@@ -70,6 +71,7 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                     <WalletSelector />
                     <MintPopup />
                     <SideMenu />
+                    <AssetsLoader />
                   </StyledApp>
                 </MyOttosProvider>
               </BreakpointsProvider>

@@ -120,6 +120,8 @@ export class CacheController {
           const matched = await cache.match(new URL(uri, baseUrl))
           if (matched) {
             console.log(`[worker] already cached: ${file}`)
+            fileSet.add(file)
+            this.onFileLoaded(bundle, file)
             return
           }
 
@@ -127,12 +129,12 @@ export class CacheController {
 
           try {
             await cache.add(uri)
+            fileSet.add(file)
             this.onFileLoaded(bundle, file)
           } catch (err) {
             console.warn(`[worker] failed to download ${file}` + (uri === file ? '' : ' (' + uri + ')'), err)
-            this.onFileLoaded(bundle, file, err as Error)
-          } finally {
             fileSet.add(file)
+            this.onFileLoaded(bundle, file, err as Error)
           }
         })
       )

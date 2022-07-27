@@ -1,3 +1,4 @@
+import { IS_SERVER } from 'constant'
 import EventEmitter from 'events'
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { WorkboxMessageEvent } from 'workbox-window'
@@ -21,7 +22,7 @@ export class AssetsLoader extends EventEmitter {
   }
 
   private messageHandler = (event: WorkboxMessageEvent) => {
-    if (event.data.type === EventType.FileLoaded && this.bundleNames.includes(event.data.bundleName)) {
+    if (event.data.type === EventType.FileLoaded && this.bundleNames.includes(event.data.data.bundleName)) {
       this.updateLoadingProgress()
     }
     if (event.data.type === EventType.DownloadProgress) {
@@ -31,10 +32,13 @@ export class AssetsLoader extends EventEmitter {
     }
   }
 
+  watch(bundleNames: string[]) {
+    this.bundleNames = bundleNames
+  }
+
   async loadBundleByNames(names: string[]): Promise<void> {
     this.removeAllListeners('progress')
     console.log(`[assets-loader] load bundles: ${names}`)
-    this.bundleNames = names
     window.workbox.messageSW({
       type: EventType.UpdateBundleByNames,
       data: names,
@@ -54,6 +58,15 @@ const AssetsLoaderContext = createContext<AssetsLoader>(new AssetsLoader())
 
 export const AssetsLoaderProvider = ({ children }: PropsWithChildren<object>) => {
   const [assetsLoader] = useState(() => new AssetsLoader())
+
+  useEffect(() => {
+    if (IS_SERVER) {
+      return
+    }
+    assetsLoader.init()
+    return () => assetsLoader.destroy()
+  }, [])
+
   return <AssetsLoaderContext.Provider value={assetsLoader}>{children}</AssetsLoaderContext.Provider>
 }
 

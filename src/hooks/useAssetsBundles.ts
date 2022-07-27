@@ -3,6 +3,7 @@ import { useAssetsLoader } from 'contexts/AssetsLoader'
 import { useEffect, useState } from 'react'
 import { BundleName } from '../worker/consts'
 
+// only page components are allowed to use this hook.
 export default function useAssetsBundles(names: BundleName[], deps: any[] = []) {
   const [loadingProgress, setLoadingProgress] = useState<number>(0)
   const assetsLoader = useAssetsLoader()
@@ -12,6 +13,7 @@ export default function useAssetsBundles(names: BundleName[], deps: any[] = []) 
       return
     }
     assetsLoader.loadBundleByNames(names)
+    assetsLoader.watch(names)
     assetsLoader.on('progress', setLoadingProgress)
   }, [names, ...deps])
 
