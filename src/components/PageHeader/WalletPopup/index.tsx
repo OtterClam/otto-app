@@ -12,8 +12,9 @@ import CLAMIcon from 'assets/tokens/CLAM.svg'
 import CLAMPlusIcon from 'assets/tokens/CLAM+.svg'
 import PEARLIcon from 'assets/tokens/PEARL.svg'
 import BalanceCell from './BalanceCell'
+import Swap from './Swap'
 
-const StyledExchangePopup = styled.div`
+const StyledWalletPopup = styled.div`
   width: 320px;
 `
 
@@ -43,23 +44,21 @@ const StyledBalanceCell = styled(BalanceCell)`
   flex: 1;
 `
 
-const StyledExchangeContainer = styled.div`
-  background: ${({ theme }) => theme.colors.white};
-`
+const StyledSwap = styled(Swap)``
 
 interface Props {
   className?: string
 }
 
-export default function ExchangePopup({ className }: Props) {
-  const { t } = useTranslation('', { keyPrefix: 'exchange' })
+export default function WalletPopup({ className }: Props) {
+  const { t } = useTranslation('', { keyPrefix: 'wallet_popup' })
   const { CLAM, PEARL_BANK, CLAM_POND } = useContractAddresses()
   const { account } = useEthers()
   const clamBalance = useTokenBalance(CLAM, account) || constants.Zero
   const pearlBalance = useTokenBalance(PEARL_BANK, account) || 0
   const clamPlusBalance = useTokenBalance(CLAM_POND, account) || 0
   return (
-    <StyledExchangePopup className={className}>
+    <StyledWalletPopup className={className}>
       <StyledBorderContainer size="xs">
         <StyledBalancesContainer>
           <StyledBalanceTitle>{t('balance_title')}</StyledBalanceTitle>
@@ -79,8 +78,8 @@ export default function ExchangePopup({ className }: Props) {
             />
           </StyledBalanceCells>
         </StyledBalancesContainer>
-        {/* <StyledExchangeContainer>Exchange</StyledExchangeContainer> */}
+        <StyledSwap />
       </StyledBorderContainer>
-    </StyledExchangePopup>
+    </StyledWalletPopup>
   )
 }
