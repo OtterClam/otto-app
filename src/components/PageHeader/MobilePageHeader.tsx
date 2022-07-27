@@ -1,12 +1,16 @@
 import styled from 'styled-components/macro'
 import useIsAtTop from 'hooks/useIsAtTop'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { connectWallet } from 'store/uiSlice'
+import { useEthers } from '@usedapp/core'
 import Logo from './Logo'
 import Wallet from './Wallet'
 import Title from './Title'
 import { PageHeaderProps } from './type'
 import { ClamBalance, FishBalance } from './Balance'
 import MenuButton from './MenuButton'
-import ExchangePopup from './ExchangePopup'
+import WalletPopup from './WalletPopup'
 
 const StyledContainer = styled.div<{ isAtTop: boolean }>`
   position: fixed;
@@ -48,29 +52,17 @@ const StyledRow = styled.div`
   gap: 5px;
 `
 
-const StyledClamBalanceContainer = styled.div``
-
-const StyledExchangePopup = styled(ExchangePopup)`
-  position: absolute;
-  left: calc(50% - 160px);
-  display: none;
-
-  ${StyledClamBalanceContainer}:hover, ${StyledClamBalanceContainer}:active & {
-    display: block;
-  }
-`
-
 export default function PageHeader({ title }: PageHeaderProps) {
   const isAtTop = useIsAtTop()
+  const [showWalletPopup, setShowWalletPopup] = useState(false)
+  const { account } = useEthers()
+  const dispatch = useDispatch()
 
   return (
     <StyledContainer isAtTop={isAtTop}>
       <StyledRow>
         <Logo />
-        <StyledClamBalanceContainer>
-          <ClamBalance />
-          <StyledExchangePopup />
-        </StyledClamBalanceContainer>
+        <ClamBalance onClick={() => (account ? setShowWalletPopup(true) : dispatch(connectWallet()))} />
         <FishBalance />
         <Wallet />
       </StyledRow>
@@ -78,6 +70,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
         <Title>{title}</Title>
         <MenuButton />
       </StyledRow>
+      <WalletPopup show={showWalletPopup} onClose={() => setShowWalletPopup(false)} />
     </StyledContainer>
   )
 }

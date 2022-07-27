@@ -57,11 +57,19 @@ export interface BalanceProps {
   background: string
   balance: string
   showBuyButton?: boolean
+  onClick?: () => void
 }
 
-export default function Balance({ balance, width, background, showBuyButton = false, disabled = false }: BalanceProps) {
+export default function Balance({
+  balance,
+  width,
+  background,
+  showBuyButton = false,
+  disabled = false,
+  onClick,
+}: BalanceProps) {
   return (
-    <StyledContainer width={width} background={background}>
+    <StyledContainer width={width} background={background} onClick={onClick}>
       <StyledText>{balance}</StyledText>
       {showBuyButton && !disabled && <StyledBuyButton href={BUY_CLAM_LINK} target="_blank" />}
     </StyledContainer>
