@@ -3,6 +3,7 @@
     "en": "English",
     "zh-tw": "中文"
   },
+  "new_version": "A newer version of this web app is available, reload to update?",
   "button_processing": "Processing",
   "close": "Close",
   "connect_help_text": "Please connect wallet to continue playing.",

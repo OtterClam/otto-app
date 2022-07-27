@@ -15,6 +15,8 @@ import PortalLarge from './icons/portal-large.png'
 import PortalIcon from './icons/portal.png'
 import TreasuryIcon from './icons/treasury.png'
 import WhitePaperIcon from './icons/whitepaper.png'
+import useAssetsBundles from 'hooks/useAssetsBundles'
+import { BundleName } from '../../worker/consts'
 
 const StyledHomePage = styled.div`
   width: 80%;
@@ -79,6 +81,8 @@ interface Menu {
 
 const HomePage = () => {
   const { t } = useTranslation()
+
+  useAssetsBundles([BundleName.HomePage])
 
   const leftMenus: Menu[] = useMemo(
     () => [

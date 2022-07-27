@@ -11,8 +11,10 @@ import { PropsWithChildren, useEffect } from 'react'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
 import { CurrencyProvider } from 'contexts/Currency'
+import useServiceWorker from 'hooks/useServiceWorker'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
+import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
 
 const StyledApp = styled.div`
   display: flex;
@@ -48,6 +50,7 @@ function useRealWindowSize() {
 }
 
 const ApolloApp = ({ children }: PropsWithChildren<object>) => {
+  useServiceWorker()
   useContractAddresses()
   const apollo = useApollo()
 
@@ -56,21 +59,23 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
   return (
     <ApolloProvider client={apollo}>
       <OtterSubgraphProvider>
-        <CurrencyProvider>
-          <ThemeProvider theme={theme}>
-            <BreakpointsProvider>
-              <MyOttosProvider>
-                <StyledApp>
-                  {children}
-                  <Error />
-                  <WalletSelector />
-                  <MintPopup />
-                  <SideMenu />
-                </StyledApp>
-              </MyOttosProvider>
-            </BreakpointsProvider>
-          </ThemeProvider>
-        </CurrencyProvider>
+        <AssetsLoaderProvider>
+          <CurrencyProvider>
+            <ThemeProvider theme={theme}>
+              <BreakpointsProvider>
+                <MyOttosProvider>
+                  <StyledApp>
+                    {children}
+                    <Error />
+                    <WalletSelector />
+                    <MintPopup />
+                    <SideMenu />
+                  </StyledApp>
+                </MyOttosProvider>
+              </BreakpointsProvider>
+            </ThemeProvider>
+          </CurrencyProvider>
+        </AssetsLoaderProvider>
       </OtterSubgraphProvider>
     </ApolloProvider>
   )
