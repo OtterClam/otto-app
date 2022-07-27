@@ -74,6 +74,13 @@ export function use1inchSwap() {
     }
     try {
       setSwapState({ state: 'PendingSignature', status: state })
+      const fromERC20 = getERC20(fromToken, library?.getSigner())
+      const allowance = await fromERC20.allowance(account, ONE_INCH)
+      if (allowance.lt(amount)) {
+        const tx = await fromERC20.approve(ONE_INCH, ethers.constants.MaxUint256)
+        setSwapState({ state: 'Approving', status: state })
+        await tx.wait()
+      }
       const res = await axios.get('https://api.1inch.io/v4.0/137/swap', {
         params: {
           fromTokenAddress: fromToken,
@@ -86,12 +93,6 @@ export function use1inchSwap() {
         },
       })
       const { tx } = res.data
-      const fromERC20 = getERC20(fromToken, library?.getSigner())
-      const allowance = await fromERC20.allowance(account, ONE_INCH)
-      if (allowance.lt(amount)) {
-        await (await fromERC20.approve(ONE_INCH, ethers.constants.MaxUint256)).wait()
-        setSwapState({ state: 'Approving', status: state })
-      }
       sendTransaction({
         from: tx.from,
         to: tx.to,
