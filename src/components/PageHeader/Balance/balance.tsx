@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
 import PlusBg from './plus.png'
 
-const StyledContainer = styled.div<{ background: string; width: number }>`
+const StyledContainer = styled.button<{ background: string; width: number }>`
   flex: 0 ${props => props.width}px;
   display: flex;
   height: 40px;
@@ -71,7 +71,7 @@ export default function Balance({
   return (
     <StyledContainer width={width} background={background} onClick={onClick}>
       <StyledText>{balance}</StyledText>
-      {showBuyButton && !disabled && <StyledBuyButton href={BUY_CLAM_LINK} target="_blank" />}
+      {showBuyButton && !disabled && <StyledBuyButton target="_blank" />}
     </StyledContainer>
   )
 }
