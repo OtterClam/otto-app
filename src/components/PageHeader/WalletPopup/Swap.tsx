@@ -175,9 +175,9 @@ const StyledSuccessBody = styled.div`
   gap: 15px;
 `
 
-const StyledTokenSelector = styled.div`
+const StyledTokenSelector = styled.div<{ show: boolean }>`
+  display: ${({ show }) => (show ? 'flex' : 'none')};
   position: absolute;
-  display: flex;
   flex-direction: column;
   gap: 10px;
   background: ${({ theme }) => theme.colors.white};
@@ -310,8 +310,8 @@ export default function Swap() {
     }
   }, [swapState, resetSwap])
 
-  const renderTokenSelector = (onSelect: (token: Token) => void) => (
-    <StyledTokenSelector>
+  const renderTokenSelector = (show: boolean, onSelect: (token: Token) => void) => (
+    <StyledTokenSelector show={show}>
       {Object.entries(tokens)
         .filter(([t]) => t !== 'CLAM')
         .map(([token, tokenInfo]) => (
@@ -415,11 +415,10 @@ export default function Swap() {
               />
             </ContentSmall>
           </StyledTokenInputRow>
-          {selectFromToken &&
-            renderTokenSelector(token => {
-              setFromToken(token)
-              setSelectFromToken(false)
-            })}
+          {renderTokenSelector(selectFromToken, token => {
+            setFromToken(token)
+            setSelectFromToken(false)
+          })}
         </StyledTokenInput>
         <StyledTokenInput>
           <StyledTokenInputRow>
@@ -437,11 +436,10 @@ export default function Swap() {
               <StyledInput value={toAmount} disabled />
             </ContentSmall>
           </StyledTokenInputRow>
-          {selectToToken &&
-            renderTokenSelector(token => {
-              setToToken(token)
-              setSelectToToken(false)
-            })}
+          {renderTokenSelector(selectToToken, token => {
+            setToToken(token)
+            setSelectToToken(false)
+          })}
         </StyledTokenInput>
       </StyledTokenInputContainer>
       <StyledSwapInfoContainer>

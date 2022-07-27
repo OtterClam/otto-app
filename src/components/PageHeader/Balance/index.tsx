@@ -10,7 +10,11 @@ import SmallClamBg from './header_clam_xs.png'
 import LargeFishBg from './large-fish.png'
 import SmallFishBg from './small-fish.png'
 
-export const ClamBalance = () => {
+interface Props {
+  onClick: () => void
+}
+
+export const ClamBalance = ({ onClick }: Props) => {
   const { CLAM, PEARL_BANK, CLAM_POND } = useContractAddresses()
   const { account } = useEthers()
   const clamBalance = useTokenBalance(CLAM, account) || constants.Zero
@@ -23,7 +27,7 @@ export const ClamBalance = () => {
     () => formatClam(clamBalance?.add(pearlBalance || 0)?.add(clamPlusBalance) || 0, 2),
     [clamBalance, pearlBalance, clamPlusBalance]
   )
-  return <Balance showBuyButton background={bg.src} width={width} balance={balance} />
+  return <Balance showBuyButton background={bg.src} width={width} balance={balance} onClick={onClick} />
 }
 
 export const FishBalance = () => {

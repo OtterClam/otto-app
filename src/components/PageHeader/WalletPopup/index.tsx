@@ -11,6 +11,8 @@ import PearlBankIcon from 'assets/icons/icon_48_pearl-bank.png'
 import CLAMIcon from 'assets/tokens/CLAM.svg'
 import CLAMPlusIcon from 'assets/tokens/CLAM+.svg'
 import PEARLIcon from 'assets/tokens/PEARL.svg'
+import useClickOutside from 'hooks/useClickOutside'
+import { useRef } from 'react'
 import BalanceCell from './BalanceCell'
 import Swap from './Swap'
 
@@ -47,18 +49,27 @@ const StyledBalanceCell = styled(BalanceCell)`
 const StyledSwap = styled(Swap)``
 
 interface Props {
+  show: boolean
   className?: string
+  onClose: () => void
 }
 
-export default function WalletPopup({ className }: Props) {
+export default function WalletPopup({ show, className, onClose }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'wallet_popup' })
   const { CLAM, PEARL_BANK, CLAM_POND } = useContractAddresses()
   const { account } = useEthers()
+  const clickRef = useRef<HTMLDivElement | null>(null)
+  useClickOutside(clickRef, () => {
+    show && onClose()
+  })
   const clamBalance = useTokenBalance(CLAM, account) || constants.Zero
   const pearlBalance = useTokenBalance(PEARL_BANK, account) || 0
   const clamPlusBalance = useTokenBalance(CLAM_POND, account) || 0
+  if (!show) {
+    return null
+  }
   return (
-    <StyledWalletPopup className={className}>
+    <StyledWalletPopup className={className} ref={clickRef}>
       <StyledBorderContainer size="xs">
         <StyledBalancesContainer>
           <StyledBalanceTitle>{t('balance_title')}</StyledBalanceTitle>
