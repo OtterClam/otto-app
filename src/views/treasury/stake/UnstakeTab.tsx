@@ -11,7 +11,7 @@ import { useClamPondFee, useDepositedAmount } from 'contracts/views'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Caption, Note, ContentLarge, ContentSmall, Headline } from 'styles/typography'
+import { Caption, Note, ContentLarge, ContentSmall, Headline, RegularInput } from 'styles/typography'
 import UnstakeSuccessPopup from './UnstakeSuccessPopup'
 
 const StyledUnstakeTab = styled.div`
@@ -41,7 +41,7 @@ const StyledPearlBalanceText = styled.div`
   }
 `
 
-const StyledInput = styled.input`
+const StyledInput = styled(RegularInput)`
   width: 100%;
   padding: 20px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
@@ -120,14 +120,12 @@ export default function UnstakeTab({ className }: Props) {
           {t('max')}
         </Button>
       </StyledPearlBalance>
-      <ContentSmall>
-        <StyledInput
-          placeholder={t('input_placeholder')}
-          value={pearlAmount}
-          type="number"
-          onChange={e => setPearlAmount(Number.isNaN(e.target.value) ? '' : e.target.value)}
-        />
-      </ContentSmall>
+      <StyledInput
+        placeholder={t('input_placeholder')}
+        value={pearlAmount}
+        type="number"
+        onChange={e => setPearlAmount(Number.isNaN(e.target.value) ? '' : e.target.value)}
+      />
       {!unlocked && (
         <>
           <StyledField>
