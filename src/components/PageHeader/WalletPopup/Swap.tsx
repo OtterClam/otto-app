@@ -16,6 +16,7 @@ import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Headline, Note } from 'styles/typography'
 import BuyCLAMIcon from './buy-clam.png'
 import { use1inchQuote, use1inchSwap } from './1inchHelper'
+import ArrowRight from './arrow-right.svg'
 
 const StyledSwap = styled.div`
   display: flex;
@@ -72,6 +73,7 @@ const StyledTokenSelector = styled.div`
 const StyledTokenSelectorRow = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `
 
 const StyledTokenHeader = styled(Caption).attrs({ as: 'p' })``
@@ -150,6 +152,14 @@ const StyledLoadingContainer = styled.section`
   flex-direction: column;
   align-items: center;
   background: ${({ theme }) => theme.colors.white};
+  padding: 20px 12px 12px 12px;
+  gap: 20px;
+`
+
+const StyledSuccessBody = styled.div`
+  display: flex;
+  padding: 10px 0;
+  gap: 15px;
 `
 
 const StyledLoadingTitle = styled(ContentLarge).attrs({ as: 'h2' })``
@@ -253,18 +263,32 @@ export default function Swap() {
   if (swapState.state !== 'None') {
     let title = ''
     let desc = ''
+    let showCloseButton = false
+    let body: React.ReactNode = null
     switch (swapState.state) {
-      case 'Approving':
-        title = t('approving_title')
-        desc = t('approving_desc', { symbol: fromToken })
-        break
       case 'PendingSignature':
         title = t('sign_tx_title')
         desc = t('sign_tx_desc')
         break
+      case 'Approving':
+        title = t('approving_title')
+        desc = t('approving_desc', { symbol: fromToken })
+        showCloseButton = true
+        break
       case 'Success':
         title = t('tx_success_title')
-        desc = t('tx_success_desc')
+        desc = t('tx_success_desc', {
+          to: toToken,
+          amount: trim(formatUnits(swapState.amountOut || '0', toTokenInfo.decimal), 4),
+        })
+        showCloseButton = true
+        body = (
+          <StyledSuccessBody>
+            <Image width="60px" height="60px" src={fromTokenInfo.icon} />
+            <Image src={ArrowRight} />
+            <Image width="60px" height="60px" src={toTokenInfo.icon} />
+          </StyledSuccessBody>
+        )
         break
       case 'Mining':
       default:
@@ -274,7 +298,13 @@ export default function Swap() {
     return (
       <StyledLoadingContainer>
         <StyledLoadingTitle>{title}</StyledLoadingTitle>
+        {body}
         <StyledLoadingDesc>{desc}</StyledLoadingDesc>
+        {showCloseButton && (
+          <Button primaryColor="white" width="100%" Typography={Headline} onClick={resetSwap}>
+            {t('close_btn')}
+          </Button>
+        )}
       </StyledLoadingContainer>
     )
   }

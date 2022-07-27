@@ -616,7 +616,7 @@
       "approving_desc": "Approving Spending {{symbol}}",
       "tx_sent_title": "Transaction Sent",
       "tx_sent_desc": "Swap from {{from}} to {{to}}",
-      "tx_success_title": "Swap Successful",
+      "tx_success_title": "Swap Successful!",
       "tx_success_desc": "You just received {{amount}} {{to}}",
       "close_btn": "Close"
     }

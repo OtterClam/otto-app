@@ -1,5 +1,6 @@
 import { TransactionState, TransactionStatus, useEthers, useSendTransaction } from '@usedapp/core'
 import axios from 'axios'
+import { AggregationRouterV4Abi } from 'contracts/abis'
 import { getERC20 } from 'contracts/contracts'
 import { ethers } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
@@ -45,6 +46,7 @@ type SwapState = TransactionState | 'Approving'
 interface SwapTransactionState {
   state: SwapState
   status: TransactionStatus
+  amountOut?: string
 }
 
 interface SwapParams {
@@ -102,7 +104,21 @@ export function use1inchSwap() {
     }
   }
   useEffect(() => {
-    setSwapState({ state: state.status, status: state })
+    if (state.status === 'Success') {
+      const routerInterface = new ethers.utils.Interface(AggregationRouterV4Abi)
+      const amountOut = state.receipt?.logs
+        .map(log => {
+          try {
+            return routerInterface.parseLog(log)
+          } catch (err) {
+            return null
+          }
+        })
+        .find(e => e?.name === 'Swapped')?.args[5]
+      setSwapState({ state: state.status, status: state, amountOut })
+    } else {
+      setSwapState({ state: state.status, status: state })
+    }
   }, [state])
   return { swap, swapState, resetSwap }
 }
