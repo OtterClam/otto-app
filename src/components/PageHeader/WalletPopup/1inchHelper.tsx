@@ -36,7 +36,7 @@ export function use1inchQuote({ fromToken, toToken, amount }: QuoteParams) {
       }
     },
     [fromToken, toToken, amount],
-    1000
+    500
   )
   return { amountOut }
 }

@@ -60,7 +60,7 @@ const StyledTokenInputContainer = styled.div`
   }
 `
 
-const StyledTokenSelector = styled.div`
+const StyledTokenInput = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -70,7 +70,7 @@ const StyledTokenSelector = styled.div`
   padding-right: 15px;
 `
 
-const StyledTokenSelectorRow = styled.div`
+const StyledTokenInputRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -88,7 +88,7 @@ const StyledMaxButton = styled.button`
   }
 `
 
-const StyledSelectTokenButton = styled.button<{ icon: string; enabled: boolean }>`
+const StyledSelectTokenButton = styled.button<{ icon: string }>`
   display: flex;
   gap: 5px;
   align-items: center;
@@ -103,13 +103,26 @@ const StyledSelectTokenButton = styled.button<{ icon: string; enabled: boolean }
     height: 22px;
   }
 
+  &::after {
+    display: ${({ disabled }) => (disabled ? 'none' : 'block')};
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: url(${ArrowDownIcon.src}) no-repeat center/12px 12px;
+  }
+
   &:hover {
-    background: ${({ theme, enabled }) => (enabled ? theme.colors.lightGray200 : theme.colors.white)};
+    background: ${({ theme, disabled }) => (disabled ? theme.colors.white : theme.colors.lightGray200)};
+  }
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.otterBlack};
   }
 `
 
 const StyledInput = styled.input`
   min-width: 0px;
+  width: 100%;
   text-align: right;
   ::placeholder {
     color: ${({ theme }) => theme.colors.lightGray400};
@@ -162,6 +175,40 @@ const StyledSuccessBody = styled.div`
   gap: 15px;
 `
 
+const StyledTokenSelector = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: ${({ theme }) => theme.colors.white};
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding: 10px 0;
+`
+
+const StyledSelectTokenRow = styled.button`
+  display: flex;
+  padding: 0 10px;
+  gap: 5px;
+  align-items: center;
+  width: 100%;
+  &:hover {
+    background: ${({ theme }) => theme.colors.lightGray200};
+  }
+`
+
+const StyledSelectTokenRightContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+`
+
+const StyledSelectTokenName = styled(ContentSmall)``
+
+const StyledSelectTokenAmount = styled(Note)`
+  color: ${({ theme }) => theme.colors.darkGray200};
+`
+
 const StyledLoadingTitle = styled(ContentLarge).attrs({ as: 'h2' })``
 
 const StyledLoadingDesc = styled(ContentSmall).attrs({ as: 'p' })``
@@ -181,6 +228,8 @@ export default function Swap() {
   const slippage = 1
   const [fromToken, setFromToken] = useState<Token>('USDC')
   const [toToken, setToToken] = useState<Token>('CLAM')
+  const [selectFromToken, setSelectFromToken] = useState(false)
+  const [selectToToken, setSelectToToken] = useState(false)
   const [fromAmount, setFromAmount] = useState<string>('')
   const [toAmount, setToAmount] = useState<string>('')
   const { swap, swapState, resetSwap } = use1inchSwap()
@@ -249,6 +298,7 @@ export default function Swap() {
     const originFrom = fromToken
     setFromToken(toToken)
     setToToken(originFrom)
+    setFromAmount('')
   }
   const enoughBalance =
     fromTokenInfo.balance && fromTokenInfo.balance.gte(fromAmount ? parseUnits(fromAmount, fromTokenInfo.decimal) : 0)
@@ -260,6 +310,23 @@ export default function Swap() {
     }
   }, [swapState, resetSwap])
 
+  const renderTokenSelector = (onSelect: (token: Token) => void) => (
+    <StyledTokenSelector>
+      {Object.entries(tokens)
+        .filter(([t]) => t !== 'CLAM')
+        .map(([token, tokenInfo]) => (
+          <StyledSelectTokenRow key={token} onClick={() => onSelect(token as Token)}>
+            <Image width="22px" height="22px" src={tokenInfo.icon} layout="fixed" />
+            <StyledSelectTokenRightContainer>
+              <StyledSelectTokenName>{token}</StyledSelectTokenName>
+              <StyledSelectTokenAmount>
+                {`${tokenInfo.balance ? trim(formatUnits(tokenInfo.balance, tokenInfo.decimal), 4) : '0'} ${token}`}
+              </StyledSelectTokenAmount>
+            </StyledSelectTokenRightContainer>
+          </StyledSelectTokenRow>
+        ))}
+    </StyledTokenSelector>
+  )
   if (swapState.state !== 'None') {
     let title = ''
     let desc = ''
@@ -315,21 +382,27 @@ export default function Swap() {
       <StyledAvailable>
         {t('available')}
         <StyledAvailableToken src={fromTokenInfo.icon} width="18px" height="18px" />
-        <StyledAvailableAmount>{`${trim(
-          fromTokenInfo.balance ? formatUnits(fromTokenInfo.balance, fromTokenInfo.decimal) : '-',
-          4
-        )} ${fromToken}`}</StyledAvailableAmount>
+        <StyledAvailableAmount>{`${
+          fromTokenInfo.balance ? trim(formatUnits(fromTokenInfo.balance, fromTokenInfo.decimal), 4) : '-'
+        } ${fromToken}`}</StyledAvailableAmount>
       </StyledAvailable>
       <StyledTokenInputContainer>
-        <StyledTokenSelector>
-          <StyledTokenSelectorRow>
+        <StyledInverseButton onClick={inverseSwap}>
+          <Image src={ArrowDownIcon} width="16px" height="16px" />
+        </StyledInverseButton>
+        <StyledTokenInput>
+          <StyledTokenInputRow>
             <StyledTokenHeader>{t('from')}</StyledTokenHeader>
             <StyledMaxButton onClick={setMax}>
               <Caption>{t('max')}</Caption>
             </StyledMaxButton>
-          </StyledTokenSelectorRow>
-          <StyledTokenSelectorRow>
-            <StyledSelectTokenButton icon={fromTokenInfo.icon.src} enabled={false}>
+          </StyledTokenInputRow>
+          <StyledTokenInputRow>
+            <StyledSelectTokenButton
+              icon={fromTokenInfo.icon.src}
+              disabled={fromToken === 'CLAM'}
+              onClick={() => setSelectFromToken(true)}
+            >
               <ContentSmall>{fromToken}</ContentSmall>
             </StyledSelectTokenButton>
             <ContentSmall>
@@ -341,24 +414,35 @@ export default function Swap() {
                 }
               />
             </ContentSmall>
-          </StyledTokenSelectorRow>
-        </StyledTokenSelector>
-        <StyledInverseButton onClick={inverseSwap}>
-          <Image src={ArrowDownIcon} width="16px" height="16px" />
-        </StyledInverseButton>
-        <StyledTokenSelector>
-          <StyledTokenSelectorRow>
+          </StyledTokenInputRow>
+          {selectFromToken &&
+            renderTokenSelector(token => {
+              setFromToken(token)
+              setSelectFromToken(false)
+            })}
+        </StyledTokenInput>
+        <StyledTokenInput>
+          <StyledTokenInputRow>
             <StyledTokenHeader>{t('to')}</StyledTokenHeader>
-          </StyledTokenSelectorRow>
-          <StyledTokenSelectorRow>
-            <StyledSelectTokenButton icon={toTokenInfo.icon.src} enabled={false}>
+          </StyledTokenInputRow>
+          <StyledTokenInputRow>
+            <StyledSelectTokenButton
+              icon={toTokenInfo.icon.src}
+              disabled={toToken === 'CLAM'}
+              onClick={() => setSelectToToken(true)}
+            >
               <ContentSmall>{toToken}</ContentSmall>
             </StyledSelectTokenButton>
             <ContentSmall>
               <StyledInput value={toAmount} disabled />
             </ContentSmall>
-          </StyledTokenSelectorRow>
-        </StyledTokenSelector>
+          </StyledTokenInputRow>
+          {selectToToken &&
+            renderTokenSelector(token => {
+              setToToken(token)
+              setSelectToToken(false)
+            })}
+        </StyledTokenInput>
       </StyledTokenInputContainer>
       <StyledSwapInfoContainer>
         <StyledSwapInfo>
