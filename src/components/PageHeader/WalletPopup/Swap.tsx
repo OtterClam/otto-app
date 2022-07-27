@@ -342,7 +342,7 @@ export default function Swap() {
       case 'Approving':
         title = t('approving_title')
         desc = t('approving_desc', { symbol: fromToken })
-        showCloseButton = true
+        // showCloseButton = true
         break
       case 'Success':
         title = t('tx_success_title')
