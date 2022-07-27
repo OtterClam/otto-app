@@ -98,7 +98,8 @@ const StyledSelectTokenButton = styled.button<{ icon: string }>`
   &:before {
     content: '';
     display: block;
-    background: no-repeat center/22px 22px url(${({ icon }) => icon});
+    background: no-repeat url(${({ icon }) => icon});
+    background-size: 100% 100%;
     width: 22px;
     height: 22px;
   }

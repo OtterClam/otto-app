@@ -6,7 +6,6 @@ import CLAMIcon from 'assets/tokens/CLAM.svg'
 import PEARLIcon from 'assets/tokens/PEARL.svg'
 import BorderContainer from 'components/BorderContainer'
 import { constants } from 'ethers'
-import useClickOutside from 'hooks/useClickOutside'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useTranslation } from 'next-i18next'
 import { RefObject, useEffect, useRef } from 'react'
@@ -49,6 +48,7 @@ const StyledWalletPopup = styled.div<{ top: number; left: number }>`
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     position: static;
+    width: 90%;
   }
 `
 
