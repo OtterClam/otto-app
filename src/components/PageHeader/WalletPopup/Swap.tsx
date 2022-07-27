@@ -14,6 +14,7 @@ import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Headline, Note } from 'styles/typography'
+import LoadingIndicator from 'assets/ui/loading-indicator.svg'
 import BuyCLAMIcon from './buy-clam.png'
 import { use1inchQuote, use1inchSwap } from './1inchHelper'
 import ArrowRight from './arrow-right.svg'
@@ -332,7 +333,7 @@ export default function Swap() {
     let title = ''
     let desc = ''
     let showCloseButton = false
-    let body: React.ReactNode = null
+    let body: React.ReactNode = <Image src={LoadingIndicator} width="80px" height="80px" />
     switch (swapState.state) {
       case 'PendingSignature':
         title = t('sign_tx_title')
