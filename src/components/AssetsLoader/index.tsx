@@ -194,7 +194,7 @@ export default function AssetsLoader() {
     <StyledContainer show={progress < 1}>
       <StyledImageContainer>
         <StyledLoadingImage src={loadingImage} />
-        <StyledProgress data-progress={Math.floor(progress * 100) + '%'}>
+        <StyledProgress data-progress={`${Math.floor(progress * 100)}%`}>
           <StyledProgressBar progress={progress} />
         </StyledProgress>
       </StyledImageContainer>
