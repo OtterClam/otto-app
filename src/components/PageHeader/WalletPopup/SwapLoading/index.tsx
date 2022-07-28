@@ -59,7 +59,7 @@ const StyledCoinFace = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background: #b5c0d0;
+  background: ${({ theme }) => theme.colors.lightGray400};
   border-radius: 50%;
 
   &:nth-child(1) {
@@ -80,13 +80,13 @@ function SpinCoin({ src }: { src: string }) {
   return (
     <StyledCoin>
       <StyledCoinFace>
-        <Image src={src} width={60} height={60} />
+        <Image src={src} width={60} height={60} unoptimized />
       </StyledCoinFace>
       <StyledCoinFace />
       <StyledCoinFace />
       <StyledCoinFace />
       <StyledCoinFace>
-        <Image src={src} width={60} height={60} />
+        <Image src={src} width={60} height={60} unoptimized />
       </StyledCoinFace>
     </StyledCoin>
   )
