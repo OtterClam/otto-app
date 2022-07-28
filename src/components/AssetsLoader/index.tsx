@@ -163,12 +163,30 @@ function useOtto() {
   return { ottoNo, dialogNo }
 }
 
+function useServiceWorkerRegistrationStatus() {
+  const [activated, setActivated] = useState(false)
+
+  useEffect(() => {
+    if (IS_SERVER) {
+      return
+    }
+    window.workbox.active.then(() => {
+      console.log('service worker activated')
+      setActivated(true)
+    })
+  }, [])
+
+  return activated
+}
+
 export default function AssetsLoader() {
   const loadingImage = useLoadingImage()
   const { ottoNo, dialogNo } = useOtto()
   const assetsLoader = useAssetsLoader()
   const [progress, setProgress] = useState(1)
   const { t } = useTranslation()
+  const activated = useServiceWorkerRegistrationStatus()
+  const loading = progress < 1 || !activated
 
   useEffect(() => {
     assetsLoader.on('progress', setProgress)
@@ -191,7 +209,7 @@ export default function AssetsLoader() {
   }
 
   return createPortal(
-    <StyledContainer show={progress < 1}>
+    <StyledContainer show={loading}>
       <StyledImageContainer>
         <StyledLoadingImage src={loadingImage} />
         <StyledProgress data-progress={`${Math.floor(progress * 100)}%`}>
