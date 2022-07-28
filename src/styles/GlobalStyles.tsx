@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
       --header-height: 68px;
       --footer-height: 50px;
       --body-height: calc(var(--real-vh) - var(--header-height) - var(--footer-height) - env(safe-area-inset-bottom));
-      
+
       --z-index-header: 1000;
       --z-index-popup: 2000;
 
@@ -37,6 +37,8 @@ const GlobalStyle = createGlobalStyle`
         border: none;
         outline: none;
         cursor: url(${cursorPointer.src}) 7 0 ,auto;
+        text-decoration: none;
+        color: ${({ theme }) => theme.colors.otterBlack};
 
         :disabled {
             cursor: url(${cursorDefault.src}), auto;

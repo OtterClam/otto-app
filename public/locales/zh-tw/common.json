@@ -426,12 +426,9 @@
       "must_desc": "R3 道具保證！",
       "name": "白銀寶箱"
     },
-    "luk": {
-      "must_desc": "R1 道具保證！"
-    },
-    "dex": {
-      "must_desc": "R2 道具保證！"
-    }
+    "luk": { "must_desc": "R1 道具保證！" },
+    "dex": { "must_desc": "R2 道具保證！" },
+    "cute": { "must_desc": "R2 道具保證！" }
   },
   "question": {
     "submit_button": "確認"

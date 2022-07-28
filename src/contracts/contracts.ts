@@ -1,5 +1,5 @@
 import { useEthers } from '@usedapp/core'
-import { Contract } from 'ethers'
+import { Contract, Signer } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useMemo } from 'react'
 import {
@@ -44,7 +44,11 @@ import { OttoItemGiveaway } from './__generated__/OttoItemGiveaway'
 
 export function useERC20(address: string) {
   const { library } = useEthers()
-  return useMemo(() => new Contract(address, ERC20Abi, library?.getSigner()) as Erc20, [address, library])
+  return useMemo(() => getERC20(address, library?.getSigner()), [address, library])
+}
+
+export function getERC20(address: string, signer?: Signer) {
+  return new Contract(address, ERC20Abi, signer) as Erc20
 }
 
 export function useStakedClamContract() {
