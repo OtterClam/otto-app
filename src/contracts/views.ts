@@ -333,16 +333,16 @@ export function usePearlBankAvailableReward() {
   return useUsdPlusAmount(availableWrappedUsdPlus)
 }
 
-export function useTotalPearlBankStakedAmount(): BigNumber {
-  const pearlBank = usePearlBank()
-  const result = useCall({
-    contract: pearlBank,
-    method: 'totalStaked',
-    args: [],
-  })
+// export function useTotalPearlBankStakedAmount(): BigNumber {
+//   const pearlBank = usePearlBank()
+//   const result = useCall({
+//     contract: pearlBank,
+//     method: 'totalStaked',
+//     args: [],
+//   })
 
-  return result?.value ? result?.value[0] : BigNumber.from(0)
-}
+//   return result?.value ? result?.value[0] : BigNumber.from(0)
+// }
 
 export function usePearlBankInfo() {
   const pearlBank = usePearlBank()
@@ -380,19 +380,19 @@ export function useUsdPlusAmount(amount?: BigNumber) {
   return result?.value ? result?.value[0] : constants.Zero
 }
 
-export function useTotalDepositedAmount() {
-  const clamPond = useClamPond()
+// export function useTotalDepositedAmount() {
+//   const clamPond = useClamPond()
 
-  const [result] = useCalls([
-    {
-      contract: clamPond,
-      method: 'totalSupply',
-      args: [],
-    },
-  ])
+//   const [result] = useCalls([
+//     {
+//       contract: clamPond,
+//       method: 'totalSupply',
+//       args: [],
+//     },
+//   ])
 
-  return result?.value ? result?.value[0] : BigNumber.from(0)
-}
+//   return result?.value ? result?.value[0] : BigNumber.from(0)
+// }
 
 export function useDepositedAmount() {
   const clamPond = useClamPond()

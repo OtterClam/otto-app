@@ -253,13 +253,10 @@ export default function TreasuryDashboardPage() {
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
-            <Help message={t('burnedTooltip')}>
-              <ContentExtraSmall>{t('burned')}</ContentExtraSmall>
+            <Help message={t('marketcapTooltip')}>
+              <ContentExtraSmall>{t('marketcap')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>
-              {formatClamString(latestMetrics?.totalBurnedClam)}
-              {`🔥(${formatUsd(latestMetrics?.totalBurnedClamMarketValue)})`}
-            </ContentMedium>
+            <ContentMedium>{formatUsd(latestMetrics?.marketCap)}</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
@@ -277,10 +274,13 @@ export default function TreasuryDashboardPage() {
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
-            <Help message={t('marketcapTooltip')}>
-              <ContentExtraSmall>{t('marketcap')}</ContentExtraSmall>
+            <Help message={t('burnedTooltip')}>
+              <ContentExtraSmall>{t('burned')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatUsd(latestMetrics?.marketCap)}</ContentMedium>
+            <ContentMedium>
+              {formatClamString(latestMetrics?.totalBurnedClam)}
+              {`🔥(${formatUsd(latestMetrics?.totalBurnedClamMarketValue)})`}
+            </ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
