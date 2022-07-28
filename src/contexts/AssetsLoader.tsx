@@ -2,7 +2,7 @@ import { IS_SERVER } from 'constant'
 import EventEmitter from 'events'
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { WorkboxMessageEvent } from 'workbox-window'
-import { EventType } from '../worker/consts'
+import { BundleName, EventType } from '../worker/consts'
 
 export interface AssetsLoaderState {
   bundleNames: string[]
@@ -36,12 +36,12 @@ export class AssetsLoader extends EventEmitter {
     this.bundleNames = bundleNames
   }
 
-  async loadBundleByNames(names: string[]): Promise<void> {
+  async loadBundleByNames(names: BundleName[]): Promise<void> {
     this.removeAllListeners('progress')
     console.log(`[assets-loader] load bundles: ${names}`)
     window.workbox.messageSW({
       type: EventType.UpdateBundleByNames,
-      data: names,
+      data: [BundleName.Basic].concat(names),
     })
   }
 

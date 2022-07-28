@@ -66,7 +66,9 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
               <BreakpointsProvider>
                 <MyOttosProvider>
                   <StyledApp>
-                    {children}
+                    <div id="page">
+                      {children}
+                    </div>
                     <Error />
                     <WalletSelector />
                     <MintPopup />

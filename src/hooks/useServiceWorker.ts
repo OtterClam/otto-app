@@ -1,3 +1,4 @@
+import { IS_SERVER } from 'constant'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 
@@ -16,6 +17,11 @@ export default function useServiceWorker() {
   const [activated, setActivated] = useState(false)
 
   useEffect(() => {
+    if (IS_SERVER) {
+      return
+    }
+
+    window.workbox.update()
     window.workbox.active.then(() => {
       console.log('service worker activated')
       setActivated(true)
@@ -24,7 +30,7 @@ export default function useServiceWorker() {
 
   useEffect(() => {
     if (!enabled) {
-      console.debug('The execution environment does not support service worker')
+      console.warn('The execution environment does not support service worker')
       return
     }
 

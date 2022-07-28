@@ -183,7 +183,7 @@ export default function AssetsLoader() {
   const loadingImage = useLoadingImage()
   const { ottoNo, dialogNo } = useOtto()
   const assetsLoader = useAssetsLoader()
-  const [progress, setProgress] = useState(1)
+  const [progress, setProgress] = useState(0)
   const { t } = useTranslation()
   const activated = useServiceWorkerRegistrationStatus()
   const loading = progress < 1 || !activated
@@ -196,13 +196,13 @@ export default function AssetsLoader() {
   }, [])
 
   useEffect(() => {
-    if (!IS_SERVER && progress < 1) {
-      document.body.style.overflow = 'hidden'
+    if (!IS_SERVER && loading) {
+      document.body.classList.add('loading')
       return () => {
-        document.body.style.overflow = ''
+        document.body.classList.remove('loading')
       }
     }
-  }, [progress])
+  }, [loading])
 
   if (typeof document === 'undefined') {
     return null
@@ -212,9 +212,11 @@ export default function AssetsLoader() {
     <StyledContainer show={loading}>
       <StyledImageContainer>
         <StyledLoadingImage src={loadingImage} />
-        <StyledProgress data-progress={`${Math.floor(progress * 100)}%`}>
-          <StyledProgressBar progress={progress} />
-        </StyledProgress>
+        {activated && (
+          <StyledProgress data-progress={`${Math.floor(progress * 100)}%`}>
+            <StyledProgressBar progress={progress} />
+          </StyledProgress>
+        )}
       </StyledImageContainer>
       <StyledOttoContainer>
         <StyledOtto no={ottoNo} />

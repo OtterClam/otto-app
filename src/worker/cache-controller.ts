@@ -97,7 +97,8 @@ export class CacheController {
 
   private async updateBundle(bundle: AssetsBundle): Promise<void> {
     if (this.lock.get(bundle)) {
-      throw new Error('Loading process has already started')
+      console.warn('Loading process has already started')
+      return
     }
     this.lock.set(bundle, true)
 
