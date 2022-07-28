@@ -5,7 +5,7 @@ import KawaiiChest from './kawaii_chest.jpg'
 import JulyAMA from './otterking_ama_july2022.jpg'
 import StakingV2 from './staking_v2.jpg'
 import RarityEpoch5 from './5th_epoch_rarity_contest.jpg'
-import RarityEpoch4Winners from './5th_epoch_rarity_contest.jpg'
+import RarityEpoch4Winners from './4th_epoch_rarity_winners.jpg'
 import ClamPond from './clam_pond.jpg'
 import PearlBank from './pearl_bank.jpg'
 
