@@ -41,12 +41,13 @@ export default function SwapLoading({ swapState, fromTokenInfo, toTokenInfo, onC
   let title = ''
   let desc = ''
   let showCloseButton = false
+  let showSuccessButton = false
   let body: React.ReactNode = <Image src={LoadingIndicator} width="80px" height="80px" />
   switch (swapState.state) {
     case 'Approving':
       title = t('approving_title')
       desc = t('approving_desc', { symbol: fromTokenInfo.symbol })
-      // showCloseButton = true
+      showCloseButton = true
       break
     case 'Success':
       title = t('tx_success_title')
@@ -54,7 +55,6 @@ export default function SwapLoading({ swapState, fromTokenInfo, toTokenInfo, onC
         to: toTokenInfo.symbol,
         amount: trim(formatUnits(swapState.amountOut || '0', toTokenInfo.decimal), 4),
       })
-      showCloseButton = true
       body = (
         <StyledSuccessBody>
           <Image width="60px" height="60px" src={fromTokenInfo.icon} />
@@ -62,10 +62,12 @@ export default function SwapLoading({ swapState, fromTokenInfo, toTokenInfo, onC
           <Image width="60px" height="60px" src={toTokenInfo.icon} />
         </StyledSuccessBody>
       )
+      showSuccessButton = true
       break
     case 'Mining':
       title = t('tx_sent_title')
       desc = t('tx_sent_desc', { from: fromTokenInfo.symbol, to: toTokenInfo.symbol })
+      showCloseButton = true
       break
     case 'PendingSignature':
     default:
@@ -81,6 +83,11 @@ export default function SwapLoading({ swapState, fromTokenInfo, toTokenInfo, onC
       {showCloseButton && (
         <Button primaryColor="white" width="100%" Typography={Headline} onClick={onClose}>
           {t('close_btn')}
+        </Button>
+      )}
+      {showSuccessButton && (
+        <Button primaryColor="white" width="100%" Typography={Headline} onClick={onSuccess}>
+          {t('success_btn')}
         </Button>
       )}
     </StyledLoadingContainer>

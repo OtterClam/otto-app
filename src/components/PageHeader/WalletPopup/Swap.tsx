@@ -1,19 +1,13 @@
-import { useEthers, useTokenBalance } from '@usedapp/core'
-import CLAMIcon from 'assets/tokens/CLAM.svg'
-import USDCIcon from 'assets/tokens/USDC.svg'
-import USDPlusIcon from 'assets/tokens/USDPlus.png'
-import WMATICIcon from 'assets/tokens/WMATIC.svg'
 import ArrowDownIcon from 'assets/ui/arrow_down.svg'
 import Button from 'components/Button'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { trim } from 'helpers/trim'
-import useContractAddresses from 'hooks/useContractAddresses'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } from 'styles/typography'
-import { Token, TokenInfo, use1inchQuote, use1inchSwap } from './1inchHelper'
+import { Token, use1inchQuote, use1inchSwap, useTokenList } from './1inchHelper'
 import BuyCLAMIcon from './buy-clam.png'
 import SwapLoading from './SwapLoading'
 
@@ -194,10 +188,14 @@ const StyledSelectTokenAmount = styled(Note)`
   color: ${({ theme }) => theme.colors.darkGray200};
 `
 
-export default function Swap() {
+interface Props {
+  onClose: () => void
+}
+
+export default function Swap({ onClose }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'wallet_popup.swap' })
-  const { account } = useEthers()
   const slippage = 1
+  const tokens = useTokenList()
   const [fromToken, setFromToken] = useState<Token>('USDC')
   const [toToken, setToToken] = useState<Token>('CLAM')
   const [selectFromToken, setSelectFromToken] = useState(false)
@@ -205,46 +203,6 @@ export default function Swap() {
   const [fromAmount, setFromAmount] = useState<string>('')
   const [toAmount, setToAmount] = useState<string>('')
   const { swap, swapState, resetSwap } = use1inchSwap()
-  const {
-    tokens: { CLAM, USDC, USDPlus, WMATIC },
-  } = useContractAddresses()
-  const clamBalance = useTokenBalance(CLAM, account)
-  const usdcBalance = useTokenBalance(USDC, account)
-  const usdPlusBalance = useTokenBalance(USDPlus, account)
-  const wmaticBalance = useTokenBalance(WMATIC, account)
-  const tokens: Record<Token, TokenInfo> = useMemo(
-    () => ({
-      CLAM: {
-        icon: CLAMIcon,
-        balance: clamBalance,
-        decimal: 9,
-        address: CLAM,
-        symbol: 'CLAM',
-      },
-      USDC: {
-        icon: USDCIcon,
-        balance: usdcBalance,
-        decimal: 6,
-        address: USDC,
-        symbol: 'USDC',
-      },
-      'USD+': {
-        icon: USDPlusIcon,
-        balance: usdPlusBalance,
-        decimal: 6,
-        address: USDPlus,
-        symbol: 'USD+',
-      },
-      WMATIC: {
-        icon: WMATICIcon,
-        balance: wmaticBalance,
-        decimal: 18,
-        address: WMATIC,
-        symbol: 'WMATIC',
-      },
-    }),
-    [clamBalance, usdcBalance, usdPlusBalance, wmaticBalance, CLAM, USDC, USDPlus, WMATIC]
-  )
   const fromTokenInfo = tokens[fromToken]
   const toTokenInfo = tokens[toToken]
   const { amountOut } = use1inchQuote({
@@ -309,9 +267,7 @@ export default function Swap() {
         swapState={swapState}
         fromTokenInfo={fromTokenInfo}
         toTokenInfo={toTokenInfo}
-        onClose={() => {
-          // ...
-        }}
+        onClose={onClose}
         onSuccess={resetSwap}
       />
     )

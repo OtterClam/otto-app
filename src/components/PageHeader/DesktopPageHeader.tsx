@@ -2,7 +2,7 @@ import styled from 'styled-components/macro'
 import useIsAtTop from 'hooks/useIsAtTop'
 import { useRef, useState } from 'react'
 import { useEthers } from '@usedapp/core'
-import { connectWallet } from 'store/uiSlice'
+import { connectWallet, showWalletPopup } from 'store/uiSlice'
 import { useDispatch } from 'react-redux'
 import Logo from './Logo'
 import Wallet from './Wallet'
@@ -55,7 +55,6 @@ const StyledInnerContainer = styled.div`
 
 export default function PageHeader({ title }: PageHeaderProps) {
   const isAtTop = useIsAtTop()
-  const [showWalletPopup, setShowWalletPopup] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const { account } = useEthers()
   const dispatch = useDispatch()
@@ -66,13 +65,13 @@ export default function PageHeader({ title }: PageHeaderProps) {
         <Logo />
         <Title>{title}</Title>
         <div ref={ref}>
-          <ClamBalance onClick={() => (account ? setShowWalletPopup(show => !show) : dispatch(connectWallet()))} />
+          <ClamBalance onClick={() => dispatch(account ? showWalletPopup() : connectWallet())} />
         </div>
         <FishBalance />
         <Wallet />
         <MenuButton />
       </StyledInnerContainer>
-      <WalletPopup show={showWalletPopup} alignRef={ref} onClose={() => setShowWalletPopup(false)} />
+      <WalletPopup alignRef={ref} />
     </StyledContainer>
   )
 }

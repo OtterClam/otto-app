@@ -587,5 +587,33 @@
       "desc": "你將會收到"
     },
     "claim": "領取獎勵"
+  },
+  "wallet_popup": {
+    "balance_title": "Your CLAM Balance",
+    "wallet": "Wallet",
+    "clam_pond": "Clam Pond",
+    "pearl_bank": "Pearl Bank",
+    "swap": {
+      "title": "Swap CLAM",
+      "from": "From",
+      "available": "Available:",
+      "max": "MAX",
+      "to": "To",
+      "swapping_fee": "Swapping fee({{fee}})",
+      "slippage": "Slippage",
+      "swap": "Swap",
+      "not_enough_balance": "Insufficient {{symbol}} Balance",
+      "placeholder": "Enter your amount",
+      "sign_tx_title": "Sign Transaction",
+      "sign_tx_desc": "Please sign transaction in your wallet",
+      "approving_title": "Approve Spending",
+      "approving_desc": "Approving Spending {{symbol}}",
+      "tx_sent_title": "Transaction Sent",
+      "tx_sent_desc": "Swap from {{from}} to {{to}}",
+      "tx_success_title": "Swap Successful!",
+      "tx_success_desc": "You just received {{amount}} {{to}}",
+      "close_btn": "Close",
+      "success_btn": "Back"
+    }
   }
 }
