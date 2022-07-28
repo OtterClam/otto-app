@@ -10,19 +10,21 @@ import useContractAddresses from 'hooks/useContractAddresses'
 import { useTranslation } from 'next-i18next'
 import { RefObject, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { hideWalletPopup, selectShowWalletPopup } from 'store/uiSlice'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
 import { formatClamEthers } from 'utils/currency'
 import BalanceCell from './BalanceCell'
 import Swap from './Swap'
 
-const StyledPopup = styled.div`
+const StyledPopup = styled.div<{ show: boolean }>`
+  display: ${({ show }) => (show ? 'flex' : 'none')};
   position: fixed;
   top: env(safe-area-inset-top);
   right: env(safe-area-inset-right);
   bottom: env(safe-area-inset-bottom);
   left: env(safe-area-inset-left);
-  display: flex;
   justify-content: center;
   align-items: center;
   z-index: var(--z-index-popup);
@@ -81,19 +83,20 @@ const StyledBalanceCell = styled(BalanceCell)`
 const StyledSwap = styled(Swap)``
 
 interface Props {
-  show: boolean
   alignRef?: RefObject<HTMLDivElement>
   className?: string
-  onClose: () => void
 }
 
-export default function WalletPopup({ show, alignRef, className, onClose }: Props) {
+export default function WalletPopup({ alignRef, className }: Props) {
+  const show = useSelector(selectShowWalletPopup)
   const { t } = useTranslation('', { keyPrefix: 'wallet_popup' })
   const { CLAM, PEARL_BANK, CLAM_POND } = useContractAddresses()
   const { account } = useEthers()
   const clamBalance = useTokenBalance(CLAM, account) || constants.Zero
   const pearlBalance = useTokenBalance(PEARL_BANK, account) || constants.Zero
   const clamPlusBalance = useTokenBalance(CLAM_POND, account) || constants.Zero
+  const dispatch = useDispatch()
+  const onClose = () => dispatch(hideWalletPopup())
   useEffect(() => {
     if (show) {
       document.body.style.overflow = 'hidden'
@@ -103,13 +106,12 @@ export default function WalletPopup({ show, alignRef, className, onClose }: Prop
     }
   }, [show])
 
-  if (!show) return null
   if (typeof document === 'undefined') return null
 
   const { left, bottom } = alignRef?.current?.getBoundingClientRect() || { left: 0, bottom: 0 }
 
   const dom = (
-    <StyledPopup>
+    <StyledPopup show={show}>
       <StyledBackground onClick={onClose} />
       <StyledWalletPopup className={className} top={bottom} left={left}>
         <StyledBorderContainer size="xs">
@@ -135,7 +137,7 @@ export default function WalletPopup({ show, alignRef, className, onClose }: Prop
               />
             </StyledBalanceCells>
           </StyledBalancesContainer>
-          <StyledSwap />
+          <StyledSwap onClose={onClose} />
         </StyledBorderContainer>
       </StyledWalletPopup>
     </StyledPopup>

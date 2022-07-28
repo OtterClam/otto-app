@@ -1,23 +1,15 @@
-import { useEthers, useTokenBalance } from '@usedapp/core'
-import CLAMIcon from 'assets/tokens/CLAM.svg'
-import USDCIcon from 'assets/tokens/USDC.svg'
-import USDPlusIcon from 'assets/tokens/USDPlus.png'
-import WMATICIcon from 'assets/tokens/WMATIC.svg'
 import ArrowDownIcon from 'assets/ui/arrow_down.svg'
 import Button from 'components/Button'
-import { BigNumber } from 'ethers'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { trim } from 'helpers/trim'
-import useContractAddresses from 'hooks/useContractAddresses'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } from 'styles/typography'
-import LoadingIndicator from 'assets/ui/loading-indicator.svg'
+import { Token, use1inchQuote, use1inchSwap, useTokenList } from './1inchHelper'
 import BuyCLAMIcon from './buy-clam.png'
-import { use1inchQuote, use1inchSwap } from './1inchHelper'
-import ArrowRight from './arrow-right.svg'
+import SwapLoading from './SwapLoading'
 
 const StyledSwap = styled.div`
   display: flex;
@@ -162,21 +154,6 @@ const StyledSwapButton = styled(Button)`
   margin-top: 10px;
 `
 
-const StyledLoadingContainer = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: ${({ theme }) => theme.colors.white};
-  padding: 20px 12px 12px 12px;
-  gap: 20px;
-`
-
-const StyledSuccessBody = styled.div`
-  display: flex;
-  padding: 10px 0;
-  gap: 15px;
-`
-
 const StyledTokenSelector = styled.div<{ show: boolean }>`
   display: ${({ show }) => (show ? 'flex' : 'none')};
   position: absolute;
@@ -211,23 +188,14 @@ const StyledSelectTokenAmount = styled(Note)`
   color: ${({ theme }) => theme.colors.darkGray200};
 `
 
-const StyledLoadingTitle = styled(ContentLarge).attrs({ as: 'h2' })``
-
-const StyledLoadingDesc = styled(ContentSmall).attrs({ as: 'p' })``
-
-type Token = 'CLAM' | 'USD+' | 'USDC' | 'WMATIC'
-
-interface TokenInfo {
-  icon: any
-  balance?: BigNumber
-  decimal: number
-  address: string
+interface Props {
+  onClose: () => void
 }
 
-export default function Swap() {
+export default function Swap({ onClose }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'wallet_popup.swap' })
-  const { account } = useEthers()
   const slippage = 1
+  const tokens = useTokenList()
   const [fromToken, setFromToken] = useState<Token>('USDC')
   const [toToken, setToToken] = useState<Token>('CLAM')
   const [selectFromToken, setSelectFromToken] = useState(false)
@@ -235,42 +203,6 @@ export default function Swap() {
   const [fromAmount, setFromAmount] = useState<string>('')
   const [toAmount, setToAmount] = useState<string>('')
   const { swap, swapState, resetSwap } = use1inchSwap()
-  const {
-    tokens: { CLAM, USDC, USDPlus, WMATIC },
-  } = useContractAddresses()
-  const clamBalance = useTokenBalance(CLAM, account)
-  const usdcBalance = useTokenBalance(USDC, account)
-  const usdPlusBalance = useTokenBalance(USDPlus, account)
-  const wmaticBalance = useTokenBalance(WMATIC, account)
-  const tokens: Record<Token, TokenInfo> = useMemo(
-    () => ({
-      CLAM: {
-        icon: CLAMIcon,
-        balance: clamBalance,
-        decimal: 9,
-        address: CLAM,
-      },
-      USDC: {
-        icon: USDCIcon,
-        balance: usdcBalance,
-        decimal: 6,
-        address: USDC,
-      },
-      'USD+': {
-        icon: USDPlusIcon,
-        balance: usdPlusBalance,
-        decimal: 6,
-        address: USDPlus,
-      },
-      WMATIC: {
-        icon: WMATICIcon,
-        balance: wmaticBalance,
-        decimal: 18,
-        address: WMATIC,
-      },
-    }),
-    [clamBalance, usdcBalance, usdPlusBalance, wmaticBalance, CLAM, USDC, USDPlus, WMATIC]
-  )
   const fromTokenInfo = tokens[fromToken]
   const toTokenInfo = tokens[toToken]
   const { amountOut } = use1inchQuote({
@@ -330,51 +262,14 @@ export default function Swap() {
     </StyledTokenSelector>
   )
   if (swapState.state !== 'None') {
-    let title = ''
-    let desc = ''
-    let showCloseButton = false
-    let body: React.ReactNode = <Image src={LoadingIndicator} width="80px" height="80px" />
-    switch (swapState.state) {
-      case 'PendingSignature':
-        title = t('sign_tx_title')
-        desc = t('sign_tx_desc')
-        break
-      case 'Approving':
-        title = t('approving_title')
-        desc = t('approving_desc', { symbol: fromToken })
-        // showCloseButton = true
-        break
-      case 'Success':
-        title = t('tx_success_title')
-        desc = t('tx_success_desc', {
-          to: toToken,
-          amount: trim(formatUnits(swapState.amountOut || '0', toTokenInfo.decimal), 4),
-        })
-        showCloseButton = true
-        body = (
-          <StyledSuccessBody>
-            <Image width="60px" height="60px" src={fromTokenInfo.icon} />
-            <Image src={ArrowRight} />
-            <Image width="60px" height="60px" src={toTokenInfo.icon} />
-          </StyledSuccessBody>
-        )
-        break
-      case 'Mining':
-      default:
-        title = t('tx_sent_title')
-        desc = t('tx_sent_desc', { from: fromToken, to: toToken })
-    }
     return (
-      <StyledLoadingContainer>
-        <StyledLoadingTitle>{title}</StyledLoadingTitle>
-        {body}
-        <StyledLoadingDesc>{desc}</StyledLoadingDesc>
-        {showCloseButton && (
-          <Button primaryColor="white" width="100%" Typography={Headline} onClick={resetSwap}>
-            {t('close_btn')}
-          </Button>
-        )}
-      </StyledLoadingContainer>
+      <SwapLoading
+        swapState={swapState}
+        fromTokenInfo={fromTokenInfo}
+        toTokenInfo={toTokenInfo}
+        onClose={onClose}
+        onSuccess={resetSwap}
+      />
     )
   }
 

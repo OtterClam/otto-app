@@ -1,19 +1,77 @@
-import { TransactionState, TransactionStatus, useEthers, useSendTransaction } from '@usedapp/core'
+import { TransactionState, TransactionStatus, useEthers, useSendTransaction, useTokenBalance } from '@usedapp/core'
+import CLAMIcon from 'assets/tokens/CLAM.svg'
+import USDCIcon from 'assets/tokens/USDC.svg'
+import USDPlusIcon from 'assets/tokens/USDPlus.png'
+import WMATICIcon from 'assets/tokens/WMATIC.svg'
 import axios from 'axios'
 import { AggregationRouterV4Abi } from 'contracts/abis'
 import { getERC20 } from 'contracts/contracts'
-import { ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+
+export type Token = 'CLAM' | 'USD+' | 'USDC' | 'WMATIC'
+
+export interface TokenInfo {
+  icon: any
+  balance?: BigNumber
+  decimal: number
+  address: string
+  symbol: string
+}
+
+const FEE = 1 // 1% fee to DAO
+
+export function useTokenList() {
+  const { account } = useEthers()
+  const {
+    tokens: { CLAM, USDC, USDPlus, WMATIC },
+  } = useContractAddresses()
+  const clamBalance = useTokenBalance(CLAM, account)
+  const usdcBalance = useTokenBalance(USDC, account)
+  const usdPlusBalance = useTokenBalance(USDPlus, account)
+  const wmaticBalance = useTokenBalance(WMATIC, account)
+  return useMemo(
+    () => ({
+      CLAM: {
+        icon: CLAMIcon,
+        balance: clamBalance,
+        decimal: 9,
+        address: CLAM,
+        symbol: 'CLAM',
+      },
+      USDC: {
+        icon: USDCIcon,
+        balance: usdcBalance,
+        decimal: 6,
+        address: USDC,
+        symbol: 'USDC',
+      },
+      'USD+': {
+        icon: USDPlusIcon,
+        balance: usdPlusBalance,
+        decimal: 6,
+        address: USDPlus,
+        symbol: 'USD+',
+      },
+      WMATIC: {
+        icon: WMATICIcon,
+        balance: wmaticBalance,
+        decimal: 18,
+        address: WMATIC,
+        symbol: 'WMATIC',
+      },
+    }),
+    [clamBalance, usdcBalance, usdPlusBalance, wmaticBalance, CLAM, USDC, USDPlus, WMATIC]
+  )
+}
 
 interface QuoteParams {
   fromToken: string
   toToken: string
   amount: string
 }
-
-const FEE = 1 // 1% fee to DAO
 
 export function use1inchQuote({ fromToken, toToken, amount }: QuoteParams) {
   const [amountOut, setAmountOut] = useState('')
@@ -43,7 +101,7 @@ export function use1inchQuote({ fromToken, toToken, amount }: QuoteParams) {
 
 type SwapState = TransactionState | 'Approving'
 
-interface SwapTransactionState {
+export interface SwapTransactionState {
   state: SwapState
   status: TransactionStatus
   amountOut?: string
