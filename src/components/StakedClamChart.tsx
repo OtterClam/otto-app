@@ -1,4 +1,5 @@
 import format from 'date-fns/format'
+import { formatClamString, formatClamThousandsK, formatUsd, formatUsdThousandsK } from 'utils/currency'
 import { Currency, useCurrency } from 'contexts/Currency'
 import { trim } from 'helpers/trim'
 import { ethers } from 'ethers'
@@ -12,7 +13,6 @@ import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
 import ChartTooltip from './ChartTooltip'
-import { formatClamString, formatClamThousandsK, formatUsd, formatUsdThousandsK } from 'utils/currency'
 
 const StyledContainer = styled.div`
   height: 260px;
