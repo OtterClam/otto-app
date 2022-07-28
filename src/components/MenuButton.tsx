@@ -106,11 +106,19 @@ interface Props {
   icon: string
   className?: string
   disabled?: boolean
+  onClick?: () => void
 }
 
-export default function MenuButton({ padding, title, icon, className, disabled }: Props) {
+export default function MenuButton({ padding, title, icon, className, disabled, onClick }: Props) {
   return (
-    <StyledButton className={className} disabled={disabled} onClick={() => audio.play()}>
+    <StyledButton
+      className={className}
+      disabled={disabled}
+      onClick={() => {
+        audio.play()
+        onClick && onClick()
+      }}
+    >
       <StyledInnerButton padding={padding}>
         <StyledContainer>
           <StyledImg src={icon} alt={title} />
