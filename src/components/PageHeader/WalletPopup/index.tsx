@@ -12,7 +12,7 @@ import { RefObject, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
-import { formatClam } from 'utils/currency'
+import { formatClamEthers } from 'utils/currency'
 import BalanceCell from './BalanceCell'
 import Swap from './Swap'
 
@@ -116,17 +116,21 @@ export default function WalletPopup({ show, alignRef, className, onClose }: Prop
           <StyledBalancesContainer>
             <StyledBalanceTitle>{t('balance_title')}</StyledBalanceTitle>
             <StyledBalanceCells>
-              <StyledBalanceCell name={t('wallet')} balance={formatClam(clamBalance, 2)} balanceIcon={CLAMIcon.src} />
+              <StyledBalanceCell
+                name={t('wallet')}
+                balance={formatClamEthers(clamBalance, 2)}
+                balanceIcon={CLAMIcon.src}
+              />
               <StyledBalanceCell
                 name={t('clam_pond')}
                 icon={ClamPondIcon.src}
-                balance={formatClam(clamPlusBalance, 2)}
+                balance={formatClamEthers(clamPlusBalance, 2)}
                 balanceIcon={CLAMPlusIcon.src}
               />
               <StyledBalanceCell
                 name={t('pearl_bank')}
                 icon={PearlBankIcon.src}
-                balance={formatClam(pearlBalance, 2)}
+                balance={formatClamEthers(pearlBalance, 2)}
                 balanceIcon={PEARLIcon.src}
               />
             </StyledBalanceCells>

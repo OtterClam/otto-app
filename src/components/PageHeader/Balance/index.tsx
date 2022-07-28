@@ -1,7 +1,7 @@
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import { useEthers, useTokenBalance } from '@usedapp/core'
-import { formatClam } from 'utils/currency'
+import { formatClamEthers } from 'utils/currency'
 import { useMemo } from 'react'
 import { constants } from 'ethers'
 import Balance from './balance'
@@ -24,7 +24,7 @@ export const ClamBalance = ({ onClick }: Props) => {
   const bg = isMobile ? SmallClamBg : LargeClamBg
   const width = isMobile ? 108 : 128
   const balance = useMemo(
-    () => formatClam(clamBalance?.add(pearlBalance || 0)?.add(clamPlusBalance) || 0, 2),
+    () => formatClamEthers(clamBalance?.add(pearlBalance || 0)?.add(clamPlusBalance) || 0, 2),
     [clamBalance, pearlBalance, clamPlusBalance]
   )
   return <Balance showBuyButton background={bg.src} width={width} balance={balance} onClick={onClick} />
