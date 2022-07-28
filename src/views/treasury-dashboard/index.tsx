@@ -309,7 +309,9 @@ export default function TreasuryDashboardPage() {
 
           <StyledChartCard>
             <StyledChartHeader>
-              <StyledChartTitle>{t('treasuryRevenue')}</StyledChartTitle>
+              <Help message={t('treasuryRevenueTooltip')}>
+                {<StyledChartTitle> {t('treasuryRevenue')} </StyledChartTitle>}
+              </Help>
               <StyledChartKeyValue>
                 {currency === Currency.CLAM
                   ? `${formatClamString(latestRevenues?.totalRevenueClamAmount, true)}`
@@ -345,7 +347,8 @@ export default function TreasuryDashboardPage() {
 
           <StyledChartCard>
             <StyledChartHeader>
-              <StyledChartTitle>{t('staked')}</StyledChartTitle>
+              <Help message={t('tvdTooltip')}> {<StyledChartTitle>{t('tvd')}</StyledChartTitle>} </Help>
+
               <StyledChartKeyValue>
                 {currency === Currency.CLAM
                   ? formatClamString(pearlBankLatestMetrics?.totalClamStaked, true)

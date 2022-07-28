@@ -10,6 +10,7 @@ import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
 import ChartTooltip from './ChartTooltip'
+import { formatUsd } from 'utils/currency'
 
 const StyledContainer = styled.div`
   height: 260px;
@@ -18,7 +19,6 @@ const StyledContainer = styled.div`
 
 const xAxisTickProps = { fontSize: '12px' }
 const yAxisTickProps = { fontSize: '12px' }
-const tickCount = 3
 
 const formatCurrency = (c: number) => {
   return new Intl.NumberFormat('en-US', {
@@ -172,7 +172,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       .map(({ name, value }) => ({
         key: name,
         label: keySettingMap[name].label,
-        value: `$${Math.round(value).toLocaleString(i18n.language)}`,
+        value: formatUsd(value),
         color: keySettingMap[name].stopColor[0],
       }))
     const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
@@ -180,7 +180,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     return (
       <ChartTooltip
         headerLabel={headerLabel}
-        headerValue={`$${trim(payload[0]?.payload?.treasuryMarketValue, 0)}`}
+        headerValue={formatUsd(payload[0]?.payload?.treasuryMarketValue)}
         items={items}
         footer={footer}
       />

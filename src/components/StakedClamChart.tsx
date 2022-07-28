@@ -12,6 +12,7 @@ import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
 import ChartTooltip from './ChartTooltip'
 import { Currency, useCurrency } from 'contexts/Currency'
+import { formatClamString, formatClamThousandsK, formatUsd, formatUsdThousandsK } from 'utils/currency'
 
 const StyledContainer = styled.div`
   height: 260px;
@@ -20,21 +21,6 @@ const StyledContainer = styled.div`
 
 const xAxisTickProps = { fontSize: '12px' }
 const yAxisTickProps = { fontSize: '12px' }
-
-const formatCurrency = (c: number, maxDigits: number = 0) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: maxDigits,
-    minimumFractionDigits: 0,
-  }).format(c)
-}
-
-const formatClam = (number: string) => `${Intl.NumberFormat('en-US').format(Math.round(parseFloat(number)))}`
-const formatUsd = (number: string) => `${formatCurrency(parseFloat(number))}`
-
-const formatUsdAxis = (number: string) => `${formatCurrency(parseFloat(number) / 1000)}k`
-const formatClamAxis = (number: string) => `${Math.round(parseFloat(number) / 1000)}k`
 
 const dataKeysSettings = {
   [Currency.CLAM]: [
@@ -93,7 +79,7 @@ const renderTooltip: (i18nClient: i18n, currency: Currency) => TooltipRenderer =
       .map(({ name, value }) => ({
         key: name,
         label: keySettingMap[name].label,
-        value: currency === Currency.CLAM ? formatClam(value) : formatUsd(value),
+        value: currency === Currency.CLAM ? formatClamString(value) : formatUsd(value),
         color: keySettingMap[name].stopColor[0],
       }))
 
@@ -104,7 +90,7 @@ const renderTooltip: (i18nClient: i18n, currency: Currency) => TooltipRenderer =
         headerLabel={headerLabel}
         headerValue={
           currency === Currency.CLAM
-            ? formatClam(payload[0]?.payload?.totalClamStaked)
+            ? formatClamString(payload[0]?.payload?.totalClamStaked)
             : formatUsd(payload[0]?.payload?.totalClamStakedUsdValue)
         }
         items={items}
@@ -149,7 +135,9 @@ export default function StakedClamChart({ data }: StakedClamChartProps) {
           tickLine={false}
           width={40}
           tick={yAxisTickProps}
-          tickFormatter={(num: string) => (currency === Currency.CLAM ? formatClamAxis(num) : formatUsdAxis(num))}
+          tickFormatter={(num: string) =>
+            currency === Currency.CLAM ? formatClamThousandsK(num) : formatUsdThousandsK(num)
+          }
           domain={[0, 'auto']}
           connectNulls
           allowDataOverflow={false}

@@ -159,7 +159,7 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  // { key: 'dashboard' },
+  { key: 'dashboard' },
   { key: 'pond' },
   { key: 'bank' },
   // { key: 'farm', disabled: true },

@@ -5,7 +5,7 @@ export const formatClamEthers = (value: BigNumber, decimal = 4) => trim(ethers.u
 export const formatClamString = (number: string, appendClam: boolean = false) =>
   `${Intl.NumberFormat('en-US').format(Math.round(parseFloat(number)))} ${appendClam ? ' CLAM' : ''}`
 export const formatClamThousandsK = (number: string) =>
-  `${Intl.NumberFormat('en-US').format(Math.round(parseFloat(number)))}`
+  `${Intl.NumberFormat('en-US').format(Math.round(parseFloat(number) / 1000))}k`
 
 export const formatUsdc = (value: BigNumber, decimal = 4) => trim(ethers.utils.formatUnits(value, 6), decimal)
 

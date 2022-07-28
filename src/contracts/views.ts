@@ -144,109 +144,6 @@ export interface KeyMetrics {
   tvd?: BigNumber
 }
 
-// export const useTreasuryRealtimeMetrics = () => {
-//   const { MAI, CLAM } = useContractAddresses()
-//   const clamMaiContract = useClamMaiContract()
-//   const stakingContract = useStakingContract()
-//   const clamCirculatingSupply = useClamCirculatingSupply()
-//   // const sClamContract = useStakedClamContract()
-//   const clamContract = useERC20(CLAM)
-
-//   const results = useCalls([
-//     // {
-//     //   contract: sClamContract,
-//     //   method: 'circulatingSupply',
-//     //   args: [],
-//     // },
-//     {
-//       contract: clamContract,
-//       method: 'totalSupply',
-//       args: [],
-//     },
-//     {
-//       contract: clamCirculatingSupply,
-//       method: 'CLAMCirculatingSupply',
-//       args: [],
-//     },
-//     {
-//       contract: stakingContract,
-//       method: 'index',
-//       args: [],
-//     },
-//     {
-//       contract: clamMaiContract,
-//       method: 'getReserves',
-//       args: [],
-//     },
-//     {
-//       contract: stakingContract,
-//       method: 'epoch',
-//       args: [],
-//     },
-//   ])
-
-//   results.forEach(result => {
-//     if (result?.error) {
-//       console.error('failed to get value from contract:', result.error)
-//     }
-//   })
-
-//   // const sClamCirculatingSupply = results[0]?.value[0] ?? BigNumber.from(0)
-//   const [clamReserve, maiReserve] = (
-//     BigNumber.from(MAI).gt(CLAM)
-//       ? [results[4]?.value[0], results[4]?.value[1]]
-//       : [results[4]?.value[1], results[4]?.value[0]]
-//   ) as [BigNumber, BigNumber]
-//   const clamPrice = clamReserve && maiReserve ? maiReserve.div(clamReserve) : BigNumber.from(0)
-//   const index = results[3]?.value[0] ?? BigNumber.from(0)
-//   const pearlPrice = clamPrice.mul(index)
-//   const tvd = sClamCirculatingSupply.mul(clamPrice)
-//   const nextRewardRate = ((results[5]?.value?.distribute || 0) * 1e9) / sClamCirculatingSupply / 1e9
-//   const apy = ((1 + nextRewardRate) ** 1095 - 1) * 100
-
-//   return {
-//     clamPrice,
-//     pearlPrice,
-//     index,
-//     tvd,
-//     nextRewardRate,
-//     apy,
-//   }
-// }
-
-// export const useStakedBalance = (account?: string) => {
-//   const { sCLAM, PEARL } = useContractAddresses()
-//   const sClamContract = useERC20(sCLAM)
-//   const pearlContract = useERC20(PEARL)
-
-//   const results = useCalls([
-//     account && {
-//       contract: sClamContract,
-//       method: 'balanceOf',
-//       args: [account],
-//     },
-//     account && {
-//       contract: pearlContract,
-//       method: 'balanceOf',
-//       args: [account],
-//     },
-//   ])
-
-//   results.forEach(result => {
-//     if (result?.error) {
-//       console.error('failed to get value from contract:', result.error)
-//     }
-//   })
-
-//   const sClamBalance = results[0]?.value[0] ?? BigNumber.from(0)
-//   const pearlBalance = results[1]?.value[0] ?? BigNumber.from(0)
-
-//   return {
-//     sClamBalance,
-//     pearlBalance,
-//   }
-// }
-
 export function usePearlBankFee(amount?: BigNumber) {
   const pearlBank = usePearlBank()
   const { account } = useEthers()
@@ -333,17 +230,6 @@ export function usePearlBankAvailableReward() {
   return useUsdPlusAmount(availableWrappedUsdPlus)
 }
 
-// export function useTotalPearlBankStakedAmount(): BigNumber {
-//   const pearlBank = usePearlBank()
-//   const result = useCall({
-//     contract: pearlBank,
-//     method: 'totalStaked',
-//     args: [],
-//   })
-
-//   return result?.value ? result?.value[0] : BigNumber.from(0)
-// }
-
 export function usePearlBankInfo() {
   const pearlBank = usePearlBank()
   const { OC_USD_PLUS } = useContractAddresses()
@@ -379,20 +265,6 @@ export function useUsdPlusAmount(amount?: BigNumber) {
   )
   return result?.value ? result?.value[0] : constants.Zero
 }
-
-// export function useTotalDepositedAmount() {
-//   const clamPond = useClamPond()
-
-//   const [result] = useCalls([
-//     {
-//       contract: clamPond,
-//       method: 'totalSupply',
-//       args: [],
-//     },
-//   ])
-
-//   return result?.value ? result?.value[0] : BigNumber.from(0)
-// }
 
 export function useDepositedAmount() {
   const clamPond = useClamPond()

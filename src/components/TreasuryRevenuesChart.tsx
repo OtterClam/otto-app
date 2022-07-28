@@ -11,6 +11,7 @@ import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
 import { GetTreasuryRevenue_treasuryRevenues } from 'graphs/__generated__/GetTreasuryRevenue'
 import ChartTooltip from './ChartTooltip'
+import { formatClamString, formatClamThousandsK, formatUsd, formatUsdThousandsK } from 'utils/currency'
 
 const StyledContainer = styled.div`
   height: 260px;
@@ -28,13 +29,6 @@ const formatCurrency = (c: number, maxDigits: number = 0) => {
     minimumFractionDigits: 0,
   }).format(c)
 }
-
-const formatClam = (number: string) => `${Intl.NumberFormat('en-US').format(Math.round(parseFloat(number)))}`
-const formatUsd = (number: string) => `${formatCurrency(parseFloat(number))}`
-
-const formatUsdAxis = (number: string) => `${formatCurrency(parseFloat(number) / 1000)}k`
-const formatClamAxis = (number: string) => `${Math.round(parseFloat(number) / 1000)}k`
-
 const dataKeysSettings = {
   [Currency.CLAM]: [
     { dataKey: 'qiClamAmount', colors: ['rgba(244, 210, 88, 1)', 'rgba(244, 210, 88, 0.5)'], label: 'Qi' },
@@ -82,7 +76,7 @@ const renderTooltip: (i18nClient: i18n, currency: Currency) => TooltipRenderer =
       .map(({ name, value }) => ({
         key: name,
         label: keySettingMap[name].label,
-        value: currency === Currency.CLAM ? formatClam(value) : formatUsd(value),
+        value: currency === Currency.CLAM ? formatClamString(value) : formatUsd(value),
         color: (keySettingMap[name].colors ?? [])[0],
       }))
     const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
@@ -92,7 +86,7 @@ const renderTooltip: (i18nClient: i18n, currency: Currency) => TooltipRenderer =
         headerLabel={headerLabel}
         headerValue={
           currency === Currency.CLAM
-            ? formatClam(payload[0]?.payload?.totalRevenueClamAmount)
+            ? formatClamString(payload[0]?.payload?.totalRevenueClamAmount)
             : formatUsd(payload[0]?.payload?.totalRevenueMarketValue)
         }
         items={items}
@@ -129,7 +123,9 @@ export default function TreasuryRevenueChart({ data }: TreasuryRevenueChartProps
           width={40}
           interval="preserveEnd"
           tick={yAxisTickProps}
-          tickFormatter={(num: string) => (currency === Currency.CLAM ? formatClamAxis(num) : formatUsdAxis(num))}
+          tickFormatter={(num: string) =>
+            currency === Currency.CLAM ? formatClamThousandsK(num) : formatUsdThousandsK(num)
+          }
           domain={[0, (dataMax: number) => dataMax * 1.1]}
           connectNulls
           allowDataOverflow
