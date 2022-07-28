@@ -4,7 +4,7 @@ import { formatUnits } from 'ethers/lib/utils'
 import { trim } from 'helpers/trim'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import styled from 'styled-components/macro'
+import styled, { keyframes } from 'styled-components/macro'
 import { ContentLarge, ContentSmall, Headline } from 'styles/typography'
 import { SwapTransactionState, TokenInfo } from '../1inchHelper'
 import ArrowRight from './arrow-right.svg'
@@ -36,13 +36,69 @@ const StyledSuccessBody = styled.div`
   gap: 15px;
 `
 
+const Spin = keyframes`
+  0%, 10% {
+    transform: perspective(400px);
+  }
+  90%, 100% {
+    transform: perspective(400px) rotateY(-180deg);
+  }
+`
+
+const StyledCoin = styled.div`
+  width: 60px;
+  height: 60px;
+  animation: ${Spin} 3s cubic-bezier(0.3, 2, 0.4, 0.8) infinite both;
+  transform-style: preserve-3d;
+  position: relative;
+`
+
+const StyledCoinFace = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #b5c0d0;
+  border-radius: 50%;
+
+  &:nth-child(1) {
+    transform: translateZ(-0.2em) rotateY(180deg);
+  }
+  &:nth-child(2) {
+    transform: translateZ(-0.1em);
+  }
+  &:nth-child(4) {
+    transform: translateZ(0.1em);
+  }
+  &:nth-child(5) {
+    transform: translateZ(0.2em);
+  }
+`
+
+function SpinCoin({ src }: { src: string }) {
+  return (
+    <StyledCoin>
+      <StyledCoinFace>
+        <Image src={src} width={60} height={60} />
+      </StyledCoinFace>
+      <StyledCoinFace />
+      <StyledCoinFace />
+      <StyledCoinFace />
+      <StyledCoinFace>
+        <Image src={src} width={60} height={60} />
+      </StyledCoinFace>
+    </StyledCoin>
+  )
+}
+
 export default function SwapLoading({ swapState, fromTokenInfo, toTokenInfo, onClose, onSuccess }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'wallet_popup.swap' })
   let title = ''
   let desc = ''
   let showCloseButton = false
   let showSuccessButton = false
-  let body: React.ReactNode = <Image src={LoadingIndicator} width="80px" height="80px" />
+  let body: React.ReactNode = <Image src={LoadingIndicator} unoptimized width="80px" height="80px" />
   switch (swapState.state) {
     case 'Approving':
       title = t('approving_title')
@@ -57,9 +113,9 @@ export default function SwapLoading({ swapState, fromTokenInfo, toTokenInfo, onC
       })
       body = (
         <StyledSuccessBody>
-          <Image width="60px" height="60px" src={fromTokenInfo.icon} />
+          <SpinCoin src={fromTokenInfo.icon.src} />
           <Image src={ArrowRight} />
-          <Image width="60px" height="60px" src={toTokenInfo.icon} />
+          <SpinCoin src={toTokenInfo.icon.src} />
         </StyledSuccessBody>
       )
       showSuccessButton = true
