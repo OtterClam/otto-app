@@ -57,7 +57,7 @@ export default function PaymentButton({
     if (onClick) {
       onClick()
     }
-  }, [onClick, amount, allowance, spenderAddress])
+  }, [onClick, amount, allowance, spenderAddress, approve])
 
   useEffect(() => {
     if (btnState === BtnState.WaitingApprove && allowance && BigNumber.from(amount).lte(allowance)) {
@@ -66,7 +66,7 @@ export default function PaymentButton({
         onClick()
       }
     }
-  }, [btnState, allowance])
+  }, [btnState, allowance, amount, onClick])
 
   useEffect(() => {
     if (approveState.status === 'Exception') {

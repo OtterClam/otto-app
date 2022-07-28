@@ -34,7 +34,7 @@ const ads = [
     image: PearlBank,
     link: 'https://ottopia.app/treasury/bank',
   },
-  //TODO
+  // TODO: Link
   {
     image: JulyAMA,
     link: '',

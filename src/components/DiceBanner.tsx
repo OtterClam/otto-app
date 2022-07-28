@@ -108,7 +108,7 @@ const useAllDice = (ottoId: string) => {
       .getAllDice(ottoId, i18n.resolvedLanguage)
       .then(diceList => setDiceList(diceList))
       .catch(err => dispatch(setError(err)))
-  }, [api, ottoId, i18n.resolvedLanguage, ottoInTheHell])
+  }, [api, ottoId, i18n.resolvedLanguage, ottoInTheHell, dispatch])
 
   return diceList
 }

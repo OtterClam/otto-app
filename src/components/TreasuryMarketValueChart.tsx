@@ -1,4 +1,5 @@
 import format from 'date-fns/format'
+import { formatUsd } from 'utils/currency'
 import { GetTreasuryMetrics_protocolMetrics } from 'graphs/__generated__/GetTreasuryMetrics'
 import { trim } from 'helpers/trim'
 import useSize from 'hooks/useSize'
@@ -10,7 +11,6 @@ import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
 import ChartTooltip from './ChartTooltip'
-import { formatUsd } from 'utils/currency'
 
 const StyledContainer = styled.div`
   height: 260px;

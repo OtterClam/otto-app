@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
-import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
+import Document, { Html, Main, NextScript, DocumentContext } from 'next/document'
+import Head from 'next/head'
 import { ServerStyleSheet } from 'styled-components'
 
 export default class MyDocument extends Document<{ asPath: string }> {

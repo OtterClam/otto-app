@@ -1,4 +1,5 @@
 import format from 'date-fns/format'
+import { Currency, useCurrency } from 'contexts/Currency'
 import { trim } from 'helpers/trim'
 import { ethers } from 'ethers'
 import { GetPearlBankMetrics_pearlBankMetrics } from 'graphs/__generated__/GetPearlBankMetrics'
@@ -11,7 +12,6 @@ import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
 import ChartTooltip from './ChartTooltip'
-import { Currency, useCurrency } from 'contexts/Currency'
 import { formatClamString, formatClamThousandsK, formatUsd, formatUsdThousandsK } from 'utils/currency'
 
 const StyledContainer = styled.div`

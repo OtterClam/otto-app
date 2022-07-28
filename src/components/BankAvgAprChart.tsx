@@ -65,7 +65,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     const headerLabel = i18n.t('treasury.dashboard.chartHeaderLabel')
 
     return items.length > 0 ? (
-      <ChartTooltip headerLabel={'APR: '} headerValue={items[0].value} items={items.slice(1)} footer={footer} />
+      <ChartTooltip headerLabel="APR: " headerValue={items[0].value} items={items.slice(1)} footer={footer} />
     ) : null
   }
 
