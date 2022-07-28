@@ -431,7 +431,8 @@
       "name": "Silver Chest"
     },
     "luk": { "must_desc": "R1 Item Guaranteed!" },
-    "dex": { "must_desc": "R2 Item Guaranteed!" }
+    "dex": { "must_desc": "R2 Item Guaranteed!" },
+    "cute": { "must_desc": "R2 Item Guaranteed!" }
   },
   "question": {
     "submit_button": "Confirm"
