@@ -1,3 +1,4 @@
+import { PearlBankAvgAprRange } from 'views/treasury-dashboard'
 import format from 'date-fns/format'
 import { trim } from 'helpers/trim'
 import { ethers } from 'ethers'
@@ -11,7 +12,6 @@ import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
 import ChartTooltip from './ChartTooltip'
-import { PearlBankAvgAprRange } from 'views/treasury-dashboard'
 
 const StyledContainer = styled.div`
   height: 260px;

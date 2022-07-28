@@ -227,7 +227,7 @@ export default function TreasuryMarketValueChart({ data }: TreasuryMarketValueCh
         />
         <Tooltip wrapperStyle={{ zIndex: 1 }} content={renderTooltip(i18n) as any} />
         {marketValues
-          .filter(({ label }) => label != 'Total')
+          .filter(({ label }) => label !== 'Total')
           .map(({ dataKey, label }) => (
             <Area
               key={dataKey}

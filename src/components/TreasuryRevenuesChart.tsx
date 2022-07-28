@@ -1,4 +1,5 @@
 import { trim } from 'helpers/trim'
+import { formatClamString, formatClamThousandsK, formatUsd, formatUsdThousandsK } from 'utils/currency'
 import format from 'date-fns/format'
 import useSize from 'hooks/useSize'
 import { useTranslation } from 'next-i18next'
@@ -11,7 +12,6 @@ import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
 import { GetTreasuryRevenue_treasuryRevenues } from 'graphs/__generated__/GetTreasuryRevenue'
 import ChartTooltip from './ChartTooltip'
-import { formatClamString, formatClamThousandsK, formatUsd, formatUsdThousandsK } from 'utils/currency'
 
 const StyledContainer = styled.div`
   height: 260px;
@@ -21,7 +21,7 @@ const StyledContainer = styled.div`
 const xAxisTickProps = { fontSize: '12px' }
 const yAxisTickProps = { fontSize: '12px' }
 
-const formatCurrency = (c: number, maxDigits: number = 0) => {
+const formatCurrency = (c: number, maxDigits = 0) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
