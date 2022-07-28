@@ -2,18 +2,28 @@ import { TransactionState, TransactionStatus, useEthers, useSendTransaction } fr
 import axios from 'axios'
 import { AggregationRouterV4Abi } from 'contracts/abis'
 import { getERC20 } from 'contracts/contracts'
-import { ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import { useEffect, useState } from 'react'
+
+export type Token = 'CLAM' | 'USD+' | 'USDC' | 'WMATIC'
+
+export interface TokenInfo {
+  icon: any
+  balance?: BigNumber
+  decimal: number
+  address: string
+  symbol: string
+}
+
+const FEE = 1 // 1% fee to DAO
 
 interface QuoteParams {
   fromToken: string
   toToken: string
   amount: string
 }
-
-const FEE = 1 // 1% fee to DAO
 
 export function use1inchQuote({ fromToken, toToken, amount }: QuoteParams) {
   const [amountOut, setAmountOut] = useState('')
@@ -43,7 +53,7 @@ export function use1inchQuote({ fromToken, toToken, amount }: QuoteParams) {
 
 type SwapState = TransactionState | 'Approving'
 
-interface SwapTransactionState {
+export interface SwapTransactionState {
   state: SwapState
   status: TransactionStatus
   amountOut?: string
