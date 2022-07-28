@@ -527,7 +527,9 @@
       "distributed": "Rewards Distributed",
       "distributedTooltip": "Total amount of CLAM which has been distributed today. This is divided proportionally between all stakers and Pearl Chest holders.",
       "averageApr": "Average APR",
-      "averageAprStartDate": "from {{ date }}"
+      "averageAprStartDate": "from {{ date }}",
+      "marketcap": "CLAM Market Cap",
+      "marketcapTooltip": "The circulating supply of CLAM tokens multiplied by the market price."
     }
   },
   "stake": {

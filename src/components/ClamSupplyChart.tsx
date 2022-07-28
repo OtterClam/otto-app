@@ -10,6 +10,7 @@ import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
 import ChartTooltip from './ChartTooltip'
+import { Currency, useCurrency } from 'contexts/Currency'
 
 const StyledContainer = styled.div`
   height: 260px;
@@ -33,14 +34,8 @@ const formatClam = (number: string) => `${trim(parseFloat(number) / 1000, 2)}k`
 
 const formatUsd = (number: string) => `${formatCurrency(parseFloat(number) / 1000 / 1000)}m`
 
-export enum Currency {
-  CLAM = 'clam',
-  USD = 'usd',
-}
-
 export interface ClamSupplyChartProps {
   data: GetTreasuryMetrics_protocolMetrics[]
-  currency?: Currency
 }
 
 const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
@@ -59,10 +54,11 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     return <ChartTooltip items={items} footer={footer} />
   }
 
-export default function ClamSupplyChart({ data, currency = Currency.USD }: ClamSupplyChartProps) {
+export default function ClamSupplyChart({ data }: ClamSupplyChartProps) {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
+  const { currency } = useCurrency()
   const dataKey = currency === Currency.USD ? 'marketCap' : 'clamCirculatingSupply'
 
   return (

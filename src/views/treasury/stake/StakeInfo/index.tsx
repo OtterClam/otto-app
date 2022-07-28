@@ -15,7 +15,7 @@ import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
 import styled, { css, keyframes } from 'styled-components/macro'
 import { ContentSmall, Note } from 'styles/typography'
-import { formatClam } from 'utils/currency'
+import { formatClamEthers } from 'utils/currency'
 import StakeDialog from '../StakeDialog'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
@@ -260,7 +260,7 @@ export default function StakeInfo({ className }: Props) {
           </StyledSectionTitle>
           <StyledSectionBody>
             <StyledClamBalanceContainer>
-              <StyledClamBalance>{formatClam(depositedAmount)} CLAM</StyledClamBalance>
+              <StyledClamBalance>{formatClamEthers(depositedAmount)} CLAM</StyledClamBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
               {/* <StyledInfoContainer>
