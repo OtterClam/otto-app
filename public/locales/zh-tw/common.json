@@ -6,26 +6,26 @@
   "new_version": "App 有新版本囉，要立刻重整畫面更新嗎？",
   "assets_loader": {
     "name": {
-      "0": "Percy the Clerk",
-      "1": "Timmy the Pond Keeper",
-      "2": "Archibald the Banker"
+      "0": "店長佩西",
+      "1": "水池管理員提米",
+      "2": "銀行經理阿奇波德"
     },
     "messages": {
       "0": {
-        "0": "Want your Otto NFT to look fancy and be stronger? Buy the Shell Chests and get special equipment in the Ottopia Store. Uta!",
-        "1": "Stores occasionally offer limited-time specials, so keep an eye on Discord for the latest info. Uta!",
-        "2": "Feeling lucky? Roll the Dice of Destiny to hopefully increase your Otto NFT’s rarity score. Be careful though, some are unlucky! Uta!",
-        "3": "Did you know we offer discounts for Chests purchased in larger quantities? Uta!"
+        "0": "想要你的阿獺 NFT 變得更強嗎？在阿獺王國商店可以購買寶箱來開啟獲得裝備，並強化你的阿獺，嗚獺！",
+        "1": "商店不定期會有特賣活動，有機會得到稀有限定商品，請隨時關注最新消息喔，嗚獺！",
+        "2": "你夠幸運嗎？你可以試試地獄骰子來提升阿獺的稀有度喔！但如果不幸會骰出不好的事件，可能會降低阿獺的稀有度呢，嗚獺！",
+        "3": "你知道一次購買大量寶箱可以享有更多折扣嗎？快來商店看看吧，嗚獺！"
       },
       "1": {
-        "0": "Throw your CLAM in CLAM Pond, and the pond will automatically compound your rewards! Omi!",
-        "1": "Rest easy and don't worry about auto-compounding your yields! The pond keeper does it all for you. Omi!",
-        "2": "Remember! There's a 1% fee for deposit withdrawals before 30 days have passed! Omi!"
+        "0": "把你的 CLAM 投到貝殼水池裡，水池就會幫你把 CLAM 自動複利，變出更多 CLAM 喔，嗚米！",
+        "1": "不需要擔心你丟進貝殼水池裡的 CLAM ，提米我會好好看管水池的～嗚米！",
+        "2": "小提醒，丟進去的 CLAM 在 30 天內提領出來會酌收 1% 提領手續費喔，嗚米！"
       },
       "2": {
-        "0": "Don’t forget to claim your USD+ rewards everyday! You can claim USD+ in Pearl Bank with just one click. Apo!",
-        "1": "Remember! There's a 1% fee for deposit withdrawals before 30 days have passed!",
-        "2": "Want rewards without volatility? Then Pearl Bank is for you!"
+        "0": "別忘了每天領取你在珍珠銀行的 USD+ 獎勵！只需要一鍵就可以領取獎勵喔，阿波!",
+        "1": "小提醒，存進去的 CLAM 在 30 天內提領出來會酌收 1% 提領手續費喔，阿波！",
+        "2": "想要穩定地獲得報酬嗎？那把你的 CLAM 存進珍珠銀行就對啦！阿波！"
       }
     }
   },
