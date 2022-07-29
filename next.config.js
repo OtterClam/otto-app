@@ -30,6 +30,7 @@ module.exports = withPWA(
       scope: '/',
       cacheStartUrl: false,
       swSrc: './src/worker/index.ts',
+      disable: process.env.NODE_ENV === 'development',
     },
   })
 )
