@@ -24,6 +24,10 @@ const StyledApp = styled.div`
   overflow-x: hidden;
 `
 
+const StyledPageContainer = styled.div.attrs({ id: 'page' })`
+  width: 100%;
+`
+
 const config: Config = {
   readOnlyChainId: ChainId.Polygon,
   readOnlyUrls: {
@@ -66,9 +70,9 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
               <BreakpointsProvider>
                 <MyOttosProvider>
                   <StyledApp>
-                    <div id="page">
+                    <StyledPageContainer>
                       {children}
-                    </div>
+                    </StyledPageContainer>
                     <Error />
                     <WalletSelector />
                     <MintPopup />
