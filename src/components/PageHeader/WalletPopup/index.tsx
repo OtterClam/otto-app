@@ -5,7 +5,7 @@ import CLAMPlusIcon from 'assets/tokens/CLAM+.svg'
 import CLAMIcon from 'assets/tokens/CLAM.svg'
 import PEARLIcon from 'assets/tokens/PEARL.svg'
 import BorderContainer from 'components/BorderContainer'
-import { constants } from 'ethers'
+import { BigNumber, constants } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useTranslation } from 'next-i18next'
 import { RefObject, useEffect, useRef } from 'react'
@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { hideWalletPopup, selectShowWalletPopup } from 'store/uiSlice'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
-import { formatClam } from 'utils/currency'
+import { formatClamEthers } from 'utils/currency'
 import BalanceCell from './BalanceCell'
 import Swap from './Swap'
 
@@ -93,8 +93,8 @@ export default function WalletPopup({ alignRef, className }: Props) {
   const { CLAM, PEARL_BANK, CLAM_POND } = useContractAddresses()
   const { account } = useEthers()
   const clamBalance = useTokenBalance(CLAM, account) || constants.Zero
-  const pearlBalance = useTokenBalance(PEARL_BANK, account) || 0
-  const clamPlusBalance = useTokenBalance(CLAM_POND, account) || 0
+  const pearlBalance = useTokenBalance(PEARL_BANK, account) || constants.Zero
+  const clamPlusBalance = useTokenBalance(CLAM_POND, account) || constants.Zero
   const dispatch = useDispatch()
   const onClose = () => dispatch(hideWalletPopup())
   useEffect(() => {
@@ -118,17 +118,21 @@ export default function WalletPopup({ alignRef, className }: Props) {
           <StyledBalancesContainer>
             <StyledBalanceTitle>{t('balance_title')}</StyledBalanceTitle>
             <StyledBalanceCells>
-              <StyledBalanceCell name={t('wallet')} balance={formatClam(clamBalance, 2)} balanceIcon={CLAMIcon.src} />
+              <StyledBalanceCell
+                name={t('wallet')}
+                balance={formatClamEthers(clamBalance, 2)}
+                balanceIcon={CLAMIcon.src}
+              />
               <StyledBalanceCell
                 name={t('clam_pond')}
                 icon={ClamPondIcon.src}
-                balance={formatClam(clamPlusBalance, 2)}
+                balance={formatClamEthers(clamPlusBalance, 2)}
                 balanceIcon={CLAMPlusIcon.src}
               />
               <StyledBalanceCell
                 name={t('pearl_bank')}
                 icon={PearlBankIcon.src}
-                balance={formatClam(pearlBalance, 2)}
+                balance={formatClamEthers(pearlBalance, 2)}
                 balanceIcon={PEARLIcon.src}
               />
             </StyledBalanceCells>

@@ -6,6 +6,7 @@ import { useOtterSubgraph } from './useOtterSubgraph'
 export default function useTreasuryRevenues(): {
   loading: boolean
   revenues: GetTreasuryRevenue_treasuryRevenues[]
+  latestRevenues?: GetTreasuryRevenue_treasuryRevenues
 } {
   const otterSubgraph = useOtterSubgraph()
   const result = useQuery<GetTreasuryRevenue>(GET_TREASURY_REVENUE, { client: otterSubgraph })
@@ -14,5 +15,6 @@ export default function useTreasuryRevenues(): {
   return {
     loading: Boolean(result?.loading),
     revenues,
+    latestRevenues: revenues[0],
   }
 }

@@ -258,7 +258,7 @@ function ProcessingState({ diceRoller, otto }: StateProps) {
     rollingDiceAudio.audio.loop = true
     rollingDiceAudio.audio.play()
     return () => rollingDiceAudio.audio.pause()
-  }, [])
+  }, [rollingDiceAudio])
 
   return (
     <StyledProcessingStateContainer>
@@ -291,7 +291,7 @@ function ResultState({ diceRoller, otto }: StateProps) {
     if (diceRoller.state === State.FirstResult) {
       rolledAudio.audio.play()
     }
-  }, [diceRoller.state])
+  }, [diceRoller.state, rolledAudio])
 
   return (
     <StyledResultStateContainer>

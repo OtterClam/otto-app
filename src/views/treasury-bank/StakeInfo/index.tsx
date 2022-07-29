@@ -4,13 +4,7 @@ import USDPlus from 'assets/tokens/USDPlus.png'
 import Button from 'components/Button'
 import TreasurySection from 'components/TreasurySection'
 import { useClaimRewards, usePearlBankBalance, useStakedInfo } from 'contracts/functions'
-import {
-  useClamPrice,
-  useNextRewardTime,
-  usePearlBankAvailableReward,
-  usePearlBankInfo,
-  useTotalPearlBankStakedAmount,
-} from 'contracts/views'
+import { useClamPrice, useNextRewardTime, usePearlBankAvailableReward, usePearlBankInfo } from 'contracts/views'
 import formatDistance from 'date-fns/formatDistanceStrict'
 import { constants, ethers, utils } from 'ethers'
 import { trim } from 'helpers/trim'
@@ -19,12 +13,13 @@ import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { ContentSmall, Note } from 'styles/typography'
-import { formatClam, formatUsdc } from 'utils/currency'
+import { formatClamEthers, formatUsd, formatUsdc } from 'utils/currency'
 import StakeDialog from '../StakeDialog'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
 import GashaponTicketEn from './gashapon-ticket-en.jpg'
 import GashaponTicketZh from './gashapon-ticket-zh.jpg'
+import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 
 const StyledStakeInfo = styled.div`
   width: 420px;
@@ -213,14 +208,11 @@ interface Props {
 export default function StakeInfo({ className }: Props) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'bank' })
   const { isMobile } = useBreakpoints()
-  const clamPrice = useClamPrice()
-  const totalStaked = useTotalPearlBankStakedAmount()
-  const { latestTotalReward, lastTotalStaked } = usePearlBankInfo()
+  const { metrics, latestMetrics } = usePearlBankMetrics()
   const pearlBankBalance = usePearlBankBalance()
   const myStakedInfo = useStakedInfo()
   const nextRewardTime = useNextRewardTime()
   const availableUsdPlusReward = usePearlBankAvailableReward()
-  const tvl = clamPrice ? clamPrice.mul(totalStaked) : constants.Zero
   const claim = useClaimRewards()
   const countdown = useMemo(() => {
     return formatDistance(new Date(), nextRewardTime.toNumber() * 1000)
@@ -240,20 +232,14 @@ export default function StakeInfo({ className }: Props) {
   //   return myRewards.mul(1e9).mul(1e9).div(myStakedInfo.amount.mul(clamPrice))
   // }, [myStakedInfo, clamPrice, myRewards])
 
-  const apr = useMemo(() => {
-    if (!clamPrice || clamPrice.eq(0) || lastTotalStaked.eq(0)) {
-      return '0'
-    }
-    return utils.formatUnits(latestTotalReward.mul(1e9).mul(1e9).mul(365).div(lastTotalStaked.mul(clamPrice)), 4)
-  }, [clamPrice, lastTotalStaked, latestTotalReward])
-
   return (
     <StyledStakeInfo className={className}>
       <StyledBody>
         <StyledTVLContainer>
           <StyledTVL>
             {t('tvl')}
-            <br />${trim(ethers.utils.formatEther(tvl), 0)}
+            <br />
+            {formatUsd(latestMetrics?.pearlBankDepositedUsdValue)}
           </StyledTVL>
         </StyledTVLContainer>
         {isMobile && <StyledStakedDialog />}
@@ -261,12 +247,12 @@ export default function StakeInfo({ className }: Props) {
           <StyledSectionTitle>{t('staked_balance')}</StyledSectionTitle>
           <StyledSectionBody>
             <StyledClamBalanceContainer>
-              <StyledClamBalance>{formatClam(myStakedInfo.amount)} CLAM</StyledClamBalance>
+              <StyledClamBalance>{formatClamEthers(myStakedInfo.amount)} CLAM</StyledClamBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
               <StyledInfoContainer>
                 <StyledInfoTitle icon={PearlBalance.src}>{t('pearl_balance')}</StyledInfoTitle>
-                <p>{formatClam(pearlBankBalance)} PEARL</p>
+                <p>{formatClamEthers(pearlBankBalance)} PEARL</p>
               </StyledInfoContainer>
               <StyledInfoContainer>
                 <p />
@@ -300,7 +286,7 @@ export default function StakeInfo({ className }: Props) {
               </StyledInfoContainer> */}
               <StyledInfoContainer>
                 <StyledInfoTitle>{t('apr')}</StyledInfoTitle>
-                <p>{trim(apr, 4)}%</p>
+                <p>{trim(latestMetrics?.apr, 2)}%</p>
               </StyledInfoContainer>
             </StyledInfos>
             <StyledExtraRewards>{t('extra_rewards')}</StyledExtraRewards>

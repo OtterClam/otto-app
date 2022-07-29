@@ -1,5 +1,6 @@
-import { PearlBankAvgAprRange } from 'views/treasury-dashboard'
 import format from 'date-fns/format'
+import { formatClamString, formatClamThousandsK, formatUsd, formatUsdThousandsK } from 'utils/currency'
+import { Currency, useCurrency } from 'contexts/Currency'
 import { trim } from 'helpers/trim'
 import { ethers } from 'ethers'
 import { GetPearlBankMetrics_pearlBankMetrics } from 'graphs/__generated__/GetPearlBankMetrics'
@@ -20,34 +21,55 @@ const StyledContainer = styled.div`
 
 const xAxisTickProps = { fontSize: '12px' }
 const yAxisTickProps = { fontSize: '12px' }
-const tickCount = 3
 
-const ytickFormatter = (number: string) => `${number}%`
-
-const displayedFields = [
-  {
-    label: 'APR',
-    dataKey: 'apr',
-    // stopColor: ['rgba(56, 208, 117, 1)', 'rgba(56, 208, 117, 0)'],
-    stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
-  },
-]
-
-const keySettingMap = displayedFields.reduce(
-  (map, setting) =>
-    Object.assign(map, {
-      [setting.dataKey]: setting,
-    }),
-  {} as { [k: string]: typeof displayedFields[0] }
-)
-
-export interface BankAvgAprChartProps {
-  data: GetPearlBankMetrics_pearlBankMetrics[]
-  aprRange: PearlBankAvgAprRange
+const dataKeysSettings = {
+  [Currency.CLAM]: [
+    {
+      label: 'Pearl Bank',
+      dataKey: 'pearlBankDepositedClamAmount',
+      stopColor: ['rgba(108, 111, 227, 1)', 'rgba(8, 95, 142, 0.5)'],
+    },
+    {
+      label: 'Clam Pond',
+      dataKey: 'clamPondDepositedClamAmount',
+      stopColor: ['rgba(255, 172, 161, 1)', 'rgba(255, 172, 161, 0.5)'],
+    },
+  ],
+  [Currency.USD]: [
+    {
+      label: 'Pearl Bank',
+      dataKey: 'pearlBankDepositedUsdValue',
+      stopColor: ['rgba(108, 111, 227, 1)', 'rgba(8, 95, 142, 0.5)'],
+    },
+    {
+      label: 'Clam Pond',
+      dataKey: 'clamPondDepositedUsdValue',
+      stopColor: ['rgba(255, 172, 161, 1)', 'rgba(255, 172, 161, 0.5)'],
+    },
+  ],
 }
 
-const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
-  i18n =>
+const settingsToMap = (settings: typeof dataKeysSettings[Currency.CLAM]) => {
+  return settings.reduce(
+    (map, setting) =>
+      Object.assign(map, {
+        [setting.dataKey]: setting,
+      }),
+    {} as { [k: string]: typeof settings[0] }
+  )
+}
+
+const keySettingMap = {
+  ...settingsToMap(dataKeysSettings[Currency.CLAM]),
+  ...settingsToMap(dataKeysSettings[Currency.USD]),
+}
+
+export interface StakedClamChartProps {
+  data: GetPearlBankMetrics_pearlBankMetrics[]
+}
+
+const renderTooltip: (i18nClient: i18n, currency: Currency) => TooltipRenderer =
+  (i18n, currency) =>
   ({ payload, active }) => {
     if (!active || !payload?.length) {
       return null
@@ -57,29 +79,39 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       .map(({ name, value }) => ({
         key: name,
         label: keySettingMap[name].label,
-        value: `${parseFloat(trim(value, 2)).toLocaleString(i18n.language)}%`,
+        value: currency === Currency.CLAM ? formatClamString(value) : formatUsd(value),
         color: keySettingMap[name].stopColor[0],
       }))
 
     const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
     const headerLabel = i18n.t('treasury.dashboard.chartHeaderLabel')
-
     return items.length > 0 ? (
-      <ChartTooltip headerLabel="APR: " headerValue={items[0].value} items={items.slice(1)} footer={footer} />
+      <ChartTooltip
+        headerLabel={headerLabel}
+        headerValue={
+          currency === Currency.CLAM
+            ? formatClamString(payload[0]?.payload?.totalClamStaked)
+            : formatUsd(payload[0]?.payload?.totalClamStakedUsdValue)
+        }
+        items={items}
+        footer={footer}
+      />
     ) : null
   }
 
-export default function BankAvgAprChart({ data, aprRange }: BankAvgAprChartProps) {
+export default function StakedClamChart({ data }: StakedClamChartProps) {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
+  const { currency } = useCurrency()
 
-  const slicedData = data.slice(0, aprRange)
+  const settings = dataKeysSettings[currency]
+
   return (
     <StyledContainer ref={containerRef}>
-      <AreaChart data={slicedData} width={size?.width ?? 300} height={size?.height ?? 260}>
+      <AreaChart data={data} width={size?.width ?? 300} height={size?.height ?? 260}>
         <defs>
-          {displayedFields.map(({ dataKey: key, stopColor }) => (
+          {settings.map(({ dataKey: key, stopColor }) => (
             <linearGradient key={key} id={`color-${key}`} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor={stopColor[0]} stopOpacity={1} />
               <stop offset="100%" stopColor={stopColor[1]} stopOpacity={1} />
@@ -98,22 +130,24 @@ export default function BankAvgAprChart({ data, aprRange }: BankAvgAprChartProps
           padding={{ right: 20 }}
         />
         <ChartYAxis
-          tickCount={tickCount}
+          tickCount={2}
           axisLine={false}
           tickLine={false}
           width={40}
           tick={yAxisTickProps}
-          tickFormatter={(num: string) => ytickFormatter(num)}
+          tickFormatter={(num: string) =>
+            currency === Currency.CLAM ? formatClamThousandsK(num) : formatUsdThousandsK(num)
+          }
           domain={[0, 'auto']}
           connectNulls
           allowDataOverflow={false}
         />
         <Tooltip
           wrapperStyle={{ zIndex: 1 }}
-          formatter={(value: string) => trim(parseFloat(value), 2)}
-          content={renderTooltip(i18n) as any}
+          formatter={(value: string) => parseFloat(value)}
+          content={renderTooltip(i18n, currency) as any}
         />
-        {displayedFields.map(({ dataKey, label }) => (
+        {settings.map(({ dataKey, label }) => (
           <Area
             key={dataKey}
             stroke="none"
@@ -121,7 +155,7 @@ export default function BankAvgAprChart({ data, aprRange }: BankAvgAprChartProps
             label={label}
             fill={`url(#color-${dataKey})`}
             fillOpacity="1"
-            stackId="1"
+            stackId="0"
           />
         ))}
       </AreaChart>
