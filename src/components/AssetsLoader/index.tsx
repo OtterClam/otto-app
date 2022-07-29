@@ -204,6 +204,12 @@ export default function AssetsLoader() {
     }
   }, [loading])
 
+  useEffect(() => {
+    if (activated) {
+      assetsLoader.updateLoadingProgress()
+    }
+  }, [activated])
+
   if (typeof document === 'undefined') {
     return null
   }
