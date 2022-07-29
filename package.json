@@ -9,9 +9,10 @@
     "download-schema:otto": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otto_testnet otto-graphql-schema.json",
     "download-schema:otter": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otterclam_backup otter-graphql-schema.json",
     "codegen:contract": "typechain --target ethers-v5 --out-dir=src/contracts/__generated__ 'src/contracts/abis/*.json'",
-    "codegen:otto-graph": "yarn download-schema:otto && apollo codegen:generate --includes=src/graphs/otto.ts --localSchemaFile=otto-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=./src/__generated__/otto/global-types.ts",
-    "codegen:otter-graph": "yarn download-schema:otter && apollo codegen:generate --includes=src/graphs/otter.ts --localSchemaFile=otter-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=./src/__generated__/otter/global-types.ts && rm ./src/__generated__/otter/global-types.ts",
-    "codegen": "yarn codegen:contract && yarn codegen:otto-graph && yarn codegen:otter-graph"
+    "codegen:otto-graph": "yarn download-schema:otto && apollo codegen:generate --includes=src/graphs/otto.ts --localSchemaFile=otto-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile='./src/__generated__/otto/global-types.ts'",
+    "codegen:otter-graph": "yarn download-schema:otter && apollo codegen:generate --includes=src/graphs/otter.ts --localSchemaFile=otter-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile='./src/__generated__/otter/global-types.ts' && rm ./src/__generated__/otter/global-types.ts",
+    "codegen": "yarn codegen:contract && yarn codegen:otto-graph && yarn codegen:otter-graph",
+    "prepare": "husky install"
   },
   "browserslist": {
     "production": [
@@ -23,6 +24,12 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "lint-staged": {
+    "*.{png,jpeg,jpg,gif,svg}": [
+      "node ./scripts/imagemin.mjs",
+      "git add"
     ]
   },
   "dependencies": {
@@ -81,6 +88,12 @@
     "eslint-plugin-react": "^7.27.1",
     "file-loader": "^6.2.0",
     "husky": "^8.0.1",
+    "imagemin": "^8.0.1",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-jpegtran": "^7.0.0",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-svgo": "^10.0.1",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.5.1",
     "react-error-overlay": "6.0.9",
     "typescript": "^4.6.3"
