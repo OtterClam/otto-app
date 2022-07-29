@@ -1,11 +1,16 @@
 import styled from 'styled-components/macro'
 import useIsAtTop from 'hooks/useIsAtTop'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { connectWallet, showWalletPopup } from 'store/uiSlice'
+import { useEthers } from '@usedapp/core'
 import Logo from './Logo'
 import Wallet from './Wallet'
 import Title from './Title'
 import { PageHeaderProps } from './type'
-import { ClamBalance, FishBalance, PearlBalance } from './Balance'
+import { ClamBalance, FishBalance } from './Balance'
 import MenuButton from './MenuButton'
+import WalletPopup from './WalletPopup'
 
 const StyledContainer = styled.div<{ isAtTop: boolean }>`
   position: fixed;
@@ -49,13 +54,14 @@ const StyledRow = styled.div`
 
 export default function PageHeader({ title }: PageHeaderProps) {
   const isAtTop = useIsAtTop()
+  const { account } = useEthers()
+  const dispatch = useDispatch()
 
   return (
     <StyledContainer isAtTop={isAtTop}>
       <StyledRow>
         <Logo />
-        <PearlBalance />
-        <ClamBalance />
+        <ClamBalance onClick={() => dispatch(account ? showWalletPopup() : connectWallet())} />
         <FishBalance />
         <Wallet />
       </StyledRow>
@@ -63,6 +69,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
         <Title>{title}</Title>
         <MenuButton />
       </StyledRow>
+      <WalletPopup />
     </StyledContainer>
   )
 }

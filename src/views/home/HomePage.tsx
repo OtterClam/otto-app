@@ -8,6 +8,8 @@ import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import styled from 'styled-components/macro'
 import { Display3 } from 'styles/typography'
+import { useDispatch } from 'react-redux'
+import { showWalletPopup } from 'store/uiSlice'
 import BuyCLAMIcon from './icons/buy-clam.png'
 import DAOIcon from './icons/dao.png'
 import JoinDiscordIcon from './icons/join-discord.png'
@@ -75,12 +77,14 @@ const StyledButton = styled(Button)`
 interface Menu {
   title: string
   icon: string
-  href: string
+  href?: string
   internal?: boolean
+  action?: () => void
 }
 
 const HomePage = () => {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   useAssetsBundles([BundleName.HomePage])
 
@@ -94,24 +98,26 @@ const HomePage = () => {
   )
   const rightMenus: Menu[] = useMemo(
     () => [
-      { title: t('home.menu.buy_clam'), icon: BuyCLAMIcon.src, href: BUY_CLAM_LINK },
+      { title: t('home.menu.buy_clam'), icon: BuyCLAMIcon.src, action: () => dispatch(showWalletPopup()) },
       { title: t('home.menu.treasury'), icon: TreasuryIcon.src, href: TREASURY_LINK, internal: true },
       { title: t('home.menu.white_paper'), icon: WhitePaperIcon.src, href: WHITE_PAPER_LINK },
     ],
-    [t]
+    [t, dispatch]
   )
 
   const renderMenus = (menus: Menu[], area: string) => (
     <StyledMenus area={area}>
-      {menus.map(({ title, icon, href, internal }, i) =>
-        internal ? (
-          <Link key={i} href={href} rel="noreferrer">
+      {menus.map(({ title, icon, href, internal, action }, i) =>
+        action ? (
+          <StyledMenuButton title={title} icon={icon} onClick={action} />
+        ) : internal ? (
+          <Link key={i} href={href || ''} rel="noreferrer">
             <a>
               <StyledMenuButton title={title} icon={icon} disabled={!href} />
             </a>
           </Link>
         ) : (
-          <a key={i} href={href} target="_blank" rel="noreferrer">
+          <a key={i} href={href || ''} target="_blank" rel="noreferrer">
             <StyledMenuButton title={title} icon={icon} disabled={!href} />
           </a>
         )

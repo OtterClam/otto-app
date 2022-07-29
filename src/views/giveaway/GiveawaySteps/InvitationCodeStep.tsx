@@ -3,7 +3,7 @@ import Invitation from 'assets/ui/invitation.svg'
 import { useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
-import { Caption, ContentSmall, Headline } from 'styles/typography'
+import { Caption, ContentSmall, Headline, RegularInput } from 'styles/typography'
 import Button from 'components/Button'
 import axios from 'axios'
 import { useEthers } from '@usedapp/core'
@@ -72,7 +72,7 @@ const StyledInputContainer = styled.div`
   gap: 10px;
 `
 
-const StyledInput = styled(ContentSmall).attrs({ as: 'input' })`
+const StyledInput = styled(RegularInput)`
   width: 100%;
   padding: 10px;
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};

@@ -1,12 +1,6 @@
-import CLAMCoin from 'assets/icons/CLAM.svg'
+import CLAMCoin from 'assets/tokens/CLAM.svg'
 import TreasurySection from 'components/TreasurySection'
-import {
-  useClamPrice,
-  useDepositedAmount,
-  useNextRewardTime,
-  usePearlBankInfo,
-  useTotalDepositedAmount,
-} from 'contracts/views'
+import { useClamPrice, useDepositedAmount, useNextRewardTime, usePearlBankInfo } from 'contracts/views'
 import formatDistance from 'date-fns/formatDistanceStrict'
 import { constants, ethers, utils } from 'ethers'
 import { trim } from 'helpers/trim'
@@ -15,7 +9,7 @@ import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
 import styled, { css, keyframes } from 'styled-components/macro'
 import { ContentSmall, Note } from 'styles/typography'
-import { formatClam } from 'utils/currency'
+import { formatClamEthers, formatUsd } from 'utils/currency'
 import StakeDialog from '../StakeDialog'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
@@ -24,6 +18,7 @@ import TopBg from './top.png'
 import GashaponTicketEn from './gashapon-ticket-en.jpg'
 import GashaponTicketZh from './gashapon-ticket-zh.jpg'
 import Middle from './middle.png'
+import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 
 const Animation = keyframes`
   0%   { background-position: left top }
@@ -218,12 +213,10 @@ export default function StakeInfo({ className }: Props) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'stake' })
   const { isMobile } = useBreakpoints()
   const { latestTotalReward, lastTotalStaked } = usePearlBankInfo()
-  // const totalStaked = useTotalStakedAmount()
-  // const totalRewards = useTotalRewardsAmount()
-  const totalDepositedAmount = useTotalDepositedAmount()
   const clamPrice = useClamPrice()
-  const tvl = totalDepositedAmount.mul(clamPrice ?? constants.Zero)
   const depositedAmount = useDepositedAmount()
+  const { metrics, latestMetrics } = usePearlBankMetrics()
+
   const nextRewardTime = useNextRewardTime()
   const countdown = useMemo(() => {
     return formatDistance(new Date(), nextRewardTime.toNumber() * 1000)
@@ -234,22 +227,14 @@ export default function StakeInfo({ className }: Props) {
   //   }
   //   return totalRewards.mul(depositedAmount.mul(1000)).div(totalStaked)
   // }, [depositedAmount, totalStaked, totalRewards])
-  const apy = useMemo(() => {
-    if (latestTotalReward.eq(0) || !clamPrice || clamPrice.eq(0)) {
-      return 0
-    }
-    const dailyYield = Number(
-      utils.formatUnits(latestTotalReward.mul(1e9).mul(1e9).div(lastTotalStaked.mul(clamPrice)), 6)
-    )
-    return ((1 + dailyYield) ** 365 - 1) * 100
-  }, [clamPrice, latestTotalReward, lastTotalStaked])
 
   return (
     <StyledStakeInfo className={className}>
       <StyledBody>
         <StyledTVLContainer>
           <StyledTVL>
-            {t('tvl')} <br />${trim(ethers.utils.formatEther(tvl), 0)}
+            {t('tvl')} <br />
+            {formatUsd(latestMetrics?.clamPondDepositedUsdValue)}
           </StyledTVL>
         </StyledTVLContainer>
         {isMobile && <StyledStakedDialog />}
@@ -260,7 +245,7 @@ export default function StakeInfo({ className }: Props) {
           </StyledSectionTitle>
           <StyledSectionBody>
             <StyledClamBalanceContainer>
-              <StyledClamBalance>{formatClam(depositedAmount)} CLAM</StyledClamBalance>
+              <StyledClamBalance>{formatClamEthers(depositedAmount)} CLAM</StyledClamBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
               {/* <StyledInfoContainer>
@@ -269,7 +254,7 @@ export default function StakeInfo({ className }: Props) {
               </StyledInfoContainer> */}
               <StyledInfoContainer>
                 <StyledInfoTitle>{t('apy')}</StyledInfoTitle>
-                <p>{trim(apy, 2)}%</p>
+                <p>{trim(latestMetrics?.apy, 2)}%</p>
               </StyledInfoContainer>
             </StyledInfos>
             <StyledExtraRewards>{t('extra_rewards')}</StyledExtraRewards>

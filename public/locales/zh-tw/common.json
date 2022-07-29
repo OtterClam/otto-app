@@ -452,12 +452,9 @@
       "must_desc": "R3 道具保證！",
       "name": "白銀寶箱"
     },
-    "luk": {
-      "must_desc": "R1 道具保證！"
-    },
-    "dex": {
-      "must_desc": "R2 道具保證！"
-    }
+    "luk": { "must_desc": "R1 道具保證！" },
+    "dex": { "must_desc": "R2 道具保證！" },
+    "cute": { "must_desc": "R2 道具保證！" }
   },
   "question": {
     "submit_button": "確認"
@@ -472,8 +469,8 @@
     "hero": "歡迎進入阿獺王國商店!",
     "shop_button": "立即選購",
     "flash_sell": {
-      "contain_items": "The special items exclusive to this chest:",
-      "sell_range": "For sale from {{start}} - {{end}}"
+      "contain_items": "寶箱限定物品:",
+      "sell_range": "限定特賣期間 {{start}} - {{end}}"
     },
     "popup": {
       "buy_now": "購買",
@@ -616,5 +613,33 @@
       "desc": "你將會收到"
     },
     "claim": "領取獎勵"
+  },
+  "wallet_popup": {
+    "balance_title": "你的 CLAM 餘額",
+    "wallet": "錢包",
+    "clam_pond": "貝殼水池",
+    "pearl_bank": "珍珠銀行",
+    "swap": {
+      "title": "兌換 CLAM",
+      "from": "從",
+      "available": "可用餘額:",
+      "max": "最大值",
+      "to": "到",
+      "swapping_fee": "兌換手續費 ({{fee}})",
+      "slippage": "滑價",
+      "swap": "兌換",
+      "not_enough_balance": " {{symbol}} 可用餘額不足",
+      "placeholder": "請輸入數量",
+      "sign_tx_title": "簽署交易",
+      "sign_tx_desc": "請在你的錢包簽署交易",
+      "approving_title": "正在授權交易",
+      "approving_desc": "正在授權此筆交易 {{symbol}}",
+      "tx_sent_title": "交易已送出",
+      "tx_sent_desc": "從 {{from}} 兌換到 {{to}}",
+      "tx_success_title": "兌換成功！",
+      "tx_success_desc": "你已收到 {{amount}} {{to}}",
+      "close_btn": "關閉",
+      "success_btn": "返回"
+    }
   }
 }

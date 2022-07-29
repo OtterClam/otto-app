@@ -10,23 +10,24 @@
 export interface GetPearlBankMetrics_pearlBankMetrics {
   __typename: "PearlBankMetric";
   id: string;
-  payoutMatketValue: any;
-  cumulativeRewardPayoutMarketValue: any;
+  /**
+   * token supply
+   */
+  timestamp: any;
   /**
    * reward
    */
   apr: any;
+  apy: any;
+  payoutMarketValue: any;
   clamMarketValueWhenPayoutHappens: any;
-  /**
-   * pond
-   */
-  clamPondDepositedAmount: any;
-  /**
-   * token supply
-   */
-  stakedCLAMAmount: any;
-  clamTotalSupply: any;
-  timestamp: any;
+  cumulativeRewardPayoutMarketValue: any;
+  clamPondDepositedClamAmount: any;
+  clamPondDepositedUsdValue: any;
+  pearlBankDepositedClamAmount: any;
+  pearlBankDepositedUsdValue: any;
+  totalClamStaked: any;
+  totalClamStakedUsdValue: any;
 }
 
 export interface GetPearlBankMetrics {

@@ -1,4 +1,5 @@
 import { trim } from 'helpers/trim'
+import { formatClamString, formatClamThousandsK, formatUsd, formatUsdThousandsK } from 'utils/currency'
 import format from 'date-fns/format'
 import useSize from 'hooks/useSize'
 import { useTranslation } from 'next-i18next'
@@ -19,34 +20,28 @@ const StyledContainer = styled.div`
 
 const xAxisTickProps = { fontSize: '12px' }
 const yAxisTickProps = { fontSize: '12px' }
-const tickCount = 3
 
-const formatCurrency = (c: number) => {
+const formatCurrency = (c: number, maxDigits = 0) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-    maximumFractionDigits: 0,
+    maximumFractionDigits: maxDigits,
     minimumFractionDigits: 0,
   }).format(c)
 }
-
-const formatClam = (number: string) => `${trim(parseFloat(number), 0)}`
-
-const formatUsd = (number: string) => `${formatCurrency(parseFloat(number) / 1000)}k`
-
 const dataKeysSettings = {
   [Currency.CLAM]: [
-    { dataKey: 'totalRevenueClamAmount', colors: [], label: '' },
     { dataKey: 'qiClamAmount', colors: ['rgba(244, 210, 88, 1)', 'rgba(244, 210, 88, 0.5)'], label: 'Qi' },
     { dataKey: 'ottopiaClamAmount', colors: ['rgba(255, 172, 161, 1)', 'rgba(255, 172, 161, 0.5)'], label: 'CLAM' },
     { dataKey: 'dystClamAmount', colors: ['rgba(8, 95, 142, 0.6)', 'rgba(8, 95, 142, 0.3)'], label: 'DYST' },
+    { dataKey: 'penDystClamAmount', colors: ['rgba(108, 111, 227, 1)', 'rgba(8, 95, 142, 0.5)'], label: 'penDYST' },
     { dataKey: 'penClamAmount', colors: ['rgba(128, 131, 235, 0.8)', 'rgba(252, 236, 255, 0.5)'], label: 'PEN' },
   ],
   [Currency.USD]: [
-    { dataKey: 'totalRevenueMarketValue', colors: [], label: '' },
     { dataKey: 'qiMarketValue', colors: ['rgba(244, 210, 88, 1)', 'rgba(244, 210, 88, 0.5)'], label: 'Qi' },
     { dataKey: 'ottopiaMarketValue', colors: ['rgba(255, 172, 161, 1)', 'rgba(255, 172, 161, 0.5)'], label: 'CLAM' },
     { dataKey: 'dystMarketValue', colors: ['rgba(8, 95, 142, 0.6)', 'rgba(8, 95, 142, 0.3)'], label: 'DYST' },
+    { dataKey: 'penDystMarketValue', colors: ['rgba(108, 111, 227, 1)', 'rgba(8, 95, 142, 0.5)'], label: 'penDYST' },
     { dataKey: 'penMarketValue', colors: ['rgba(128, 131, 235, 0.8)', 'rgba(252, 236, 255, 0.5)'], label: 'PEN' },
   ],
 }
@@ -81,13 +76,22 @@ const renderTooltip: (i18nClient: i18n, currency: Currency) => TooltipRenderer =
       .map(({ name, value }) => ({
         key: name,
         label: keySettingMap[name].label,
-        value: currency === Currency.CLAM ? formatClam(value) : formatUsd(value),
+        value: currency === Currency.CLAM ? formatClamString(value) : formatUsd(value),
         color: (keySettingMap[name].colors ?? [])[0],
       }))
     const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
     const headerLabel = i18n.t('treasury.dashboard.chartHeaderLabel')
     return (
-      <ChartTooltip headerLabel={headerLabel} headerValue={items[0].value} items={items.slice(1)} footer={footer} />
+      <ChartTooltip
+        headerLabel={headerLabel}
+        headerValue={
+          currency === Currency.CLAM
+            ? formatClamString(payload[0]?.payload?.totalRevenueClamAmount)
+            : formatUsd(payload[0]?.payload?.totalRevenueMarketValue)
+        }
+        items={items}
+        footer={footer}
+      />
     )
   }
 
@@ -113,26 +117,21 @@ export default function TreasuryRevenueChart({ data }: TreasuryRevenueChartProps
           padding={{ right: 20 }}
         />
         <ChartYAxis
-          tickCount={tickCount}
           axisLine={false}
+          tickCount={3}
           tickLine={false}
           width={40}
+          interval="preserveEnd"
           tick={yAxisTickProps}
-          tickFormatter={(num: string) => (currency === Currency.CLAM ? formatClam(num) : formatUsd(num))}
-          domain={[0, (dataMax: number) => dataMax / 3]}
+          tickFormatter={(num: string) =>
+            currency === Currency.CLAM ? formatClamThousandsK(num) : formatUsdThousandsK(num)
+          }
+          domain={[0, (dataMax: number) => dataMax * 1.1]}
           connectNulls
           allowDataOverflow
         />
-        <Tooltip
-          wrapperStyle={{ zIndex: 1 }}
-          formatter={(value: string) => trim(parseFloat(value), 2)}
-          content={renderTooltip(i18n, currency) as any}
-        />
+        <Tooltip wrapperStyle={{ zIndex: 1 }} content={renderTooltip(i18n, currency) as any} />
         {settings.map(({ dataKey: key, colors }, i) => {
-          // Don't fill area for Total (avoid double-counting)
-          if (key === 'totalRevenueMarketValue' || key === 'totalRevenueClamAmount') {
-            return <Bar key={i} dataKey={key} stackId="-1" fillOpacity={0} />
-          }
           return <Bar key={i} dataKey={key} stroke={colors[0]} fill={colors[0]} fillOpacity={1} stackId="1" />
         })}
       </BarChart>

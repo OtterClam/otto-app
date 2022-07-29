@@ -1,12 +1,30 @@
 import styled from 'styled-components/macro'
 
 interface Props {
+  size?: 'xl' | 'xs'
   borderColor?: string
 }
 
+const Sizes = {
+  xl: {
+    outer: '2px',
+    outerRadius: '15px',
+    inner: '5px',
+    innerRadius: '12px',
+    padding: '3px',
+  },
+  xs: {
+    outer: '1px',
+    outerRadius: '10px',
+    inner: '3px',
+    innerRadius: '8px',
+    padding: '2px',
+  },
+}
+
 const BorderContainer = styled.div<Props>`
-  border: 2px solid ${({ theme }) => theme.colors.otterBlack};
-  border-radius: 15px;
+  border: ${({ size = 'xl' }) => Sizes[size].outer} solid ${({ theme }) => theme.colors.otterBlack};
+  border-radius: ${({ size = 'xl' }) => Sizes[size].outerRadius};
   position: relative;
 
   &:before {
@@ -16,20 +34,21 @@ const BorderContainer = styled.div<Props>`
     left: 0px;
     right: 0px;
     bottom: 0px;
-    border: 5px solid ${({ theme, borderColor }) => borderColor || theme.colors.crownYellow};
-    border-radius: 12px;
+    border: ${({ size = 'xl' }) => Sizes[size].inner} solid
+      ${({ theme, borderColor }) => borderColor || theme.colors.crownYellow};
+    border-radius: ${({ size = 'xl' }) => Sizes[size].innerRadius};
     pointer-events: none;
   }
 
   &:after {
     content: ' ';
     position: absolute;
-    top: 3px;
-    left: 3px;
-    right: 3px;
-    bottom: 3px;
-    border: 2px solid ${({ theme }) => theme.colors.otterBlack};
-    border-radius: 12px;
+    top: ${({ size = 'xl' }) => Sizes[size].padding};
+    left: ${({ size = 'xl' }) => Sizes[size].padding};
+    right: ${({ size = 'xl' }) => Sizes[size].padding};
+    bottom: ${({ size = 'xl' }) => Sizes[size].padding};
+    border: ${({ size = 'xl' }) => Sizes[size].outer} solid ${({ theme }) => theme.colors.otterBlack};
+    border-radius: ${({ size = 'xl' }) => Sizes[size].innerRadius};
     pointer-events: none;
   }
 `

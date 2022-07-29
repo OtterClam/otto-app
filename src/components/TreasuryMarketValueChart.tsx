@@ -1,4 +1,5 @@
 import format from 'date-fns/format'
+import { formatUsd } from 'utils/currency'
 import { GetTreasuryMetrics_protocolMetrics } from 'graphs/__generated__/GetTreasuryMetrics'
 import { trim } from 'helpers/trim'
 import useSize from 'hooks/useSize'
@@ -18,7 +19,6 @@ const StyledContainer = styled.div`
 
 const xAxisTickProps = { fontSize: '12px' }
 const yAxisTickProps = { fontSize: '12px' }
-const tickCount = 3
 
 const formatCurrency = (c: number) => {
   return new Intl.NumberFormat('en-US', {
@@ -33,8 +33,18 @@ const ytickFormatter = (number: string) => `${formatCurrency(parseFloat(number) 
 
 const marketValues = [
   {
+    label: 'Total',
+    dataKey: 'treasuryMarketValue',
+    stopColor: ['#EE4B4E', 'rgba(219, 55, 55, 0.5)'],
+  },
+  {
+    label: 'CLAM/USD+ (Penrose)',
+    dataKey: 'treasuryDystopiaPairUSDPLUSClamMarketValue',
+    stopColor: ['#EE4B4E', 'rgba(219, 55, 55, 0.5)'],
+  },
+  {
     label: 'CLAM/MAI (Quick)',
-    dataKey: 'treasuryMaiMarketValue',
+    dataKey: 'treasuryClamMaiMarketValue',
     stopColor: ['#EE4B4E', 'rgba(219, 55, 55, 0.5)'],
   },
   {
@@ -54,12 +64,12 @@ const marketValues = [
   },
   {
     label: 'MAI/USDC (QiDAO)',
-    dataKey: 'treasuryMaiUsdcQiInvestmentRiskFreeValue',
+    dataKey: 'treasuryMaiUsdcQiInvestmentValue',
     stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
   },
   {
     label: 'MAI/USDC',
-    dataKey: 'treasuryMaiUsdcRiskFreeValue',
+    dataKey: 'treasuryMaiUsdcMarketValue',
     stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
   },
   {
@@ -68,7 +78,7 @@ const marketValues = [
     stopColor: ['#F4D258', 'rgba(244, 210, 88, 0.5)'],
   },
   {
-    label: 'Qi(Locked)',
+    label: 'Qi (Locked)',
     dataKey: 'treasuryOtterClamQiMarketValue',
     stopColor: ['#F4D258', 'rgba(244, 210, 88, 0.5)'],
   },
@@ -81,6 +91,11 @@ const marketValues = [
     label: 'Qi/MATIC',
     dataKey: 'treasuryQiWmaticQiInvestmentMarketValue',
     stopColor: ['#F4D258', 'rgba(244, 210, 88, 0.5)'],
+  },
+  {
+    label: 'Qi/TetuQi (Penrose)',
+    dataKey: 'treasuryDystopiaPairQiTetuQiMarketValue',
+    stopColor: ['#CC48E1', 'rgba(244, 210, 88, 0.5)'],
   },
   {
     label: 'DAI',
@@ -116,11 +131,6 @@ const marketValues = [
     label: 'penDYST',
     dataKey: 'treasuryPenDystMarketValue',
     stopColor: ['rgba(108, 111, 227, 1)', 'rgba(8, 95, 142, 0.5)'],
-  },
-  {
-    label: 'CLAM/USD+ (Penrose)',
-    dataKey: 'treasuryDystopiaPairUSDPLUSClamMarketValue',
-    stopColor: ['rgba(182, 233, 152, 1)', 'rgba(182, 233, 152, 0.5)'],
   },
   {
     label: 'MATIC/DYST (Penrose)',
@@ -162,13 +172,18 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       .map(({ name, value }) => ({
         key: name,
         label: keySettingMap[name].label,
-        value: `$${Math.round(value).toLocaleString(i18n.language)}`,
+        value: formatUsd(value),
         color: keySettingMap[name].stopColor[0],
       }))
     const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
     const headerLabel = i18n.t('treasury.dashboard.chartHeaderLabel')
     return (
-      <ChartTooltip headerLabel={headerLabel} headerValue={items[0].value} items={items.slice(1)} footer={footer} />
+      <ChartTooltip
+        headerLabel={headerLabel}
+        headerValue={formatUsd(payload[0]?.payload?.treasuryMarketValue)}
+        items={items}
+        footer={footer}
+      />
     )
   }
 
@@ -200,32 +215,30 @@ export default function TreasuryMarketValueChart({ data }: TreasuryMarketValueCh
           padding={{ right: 20 }}
         />
         <ChartYAxis
-          tickCount={tickCount}
+          tickCount={2}
+          interval="preserveStartEnd"
           axisLine={false}
           tickLine={false}
           width={33}
           tick={yAxisTickProps}
           tickFormatter={(num: string) => ytickFormatter(num)}
-          domain={[0, 'auto']}
           connectNulls
           allowDataOverflow={false}
         />
-        <Tooltip
-          wrapperStyle={{ zIndex: 1 }}
-          formatter={(value: string) => trim(parseFloat(value), 2)}
-          content={renderTooltip(i18n) as any}
-        />
-        {marketValues.map(({ dataKey, label }) => (
-          <Area
-            key={dataKey}
-            stroke="none"
-            dataKey={dataKey}
-            label={label}
-            fill={`url(#color-${dataKey})`}
-            fillOpacity="1"
-            stackId="1"
-          />
-        ))}
+        <Tooltip wrapperStyle={{ zIndex: 1 }} content={renderTooltip(i18n) as any} />
+        {marketValues
+          .filter(({ label }) => label !== 'Total')
+          .map(({ dataKey, label }) => (
+            <Area
+              key={dataKey}
+              stroke="none"
+              dataKey={dataKey}
+              label={label}
+              fill={`url(#color-${dataKey})`}
+              fillOpacity="1"
+              stackId="1"
+            />
+          ))}
       </AreaChart>
     </StyledContainer>
   )

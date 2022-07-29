@@ -1,5 +1,5 @@
 import CLAM from 'assets/clam.svg'
-import CLAMCoin from 'assets/icons/CLAM.svg'
+import CLAMCoin from 'assets/tokens/CLAM.svg'
 import Button from 'components/Button'
 import formatDate from 'date-fns/format'
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
@@ -11,7 +11,7 @@ import { trim } from 'helpers/trim'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Caption, Note, ContentLarge, ContentSmall, Headline } from 'styles/typography'
+import { Caption, Note, ContentLarge, ContentSmall, Headline, RegularInput } from 'styles/typography'
 import UnstakeSuccessPopup from './UnstakeSuccessPopup'
 
 const StyledUnstakeTab = styled.div`
@@ -41,7 +41,7 @@ const StyledStakedClamAmountText = styled.div`
   }
 `
 
-const StyledInput = styled.input`
+const StyledInput = styled(RegularInput)`
   width: 100%;
   padding: 20px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
@@ -117,14 +117,12 @@ export default function UnstakeTab({ className }: Props) {
           {t('max')}
         </Button>
       </StyledStakedClamAmount>
-      <ContentSmall>
-        <StyledInput
-          placeholder={t('input_placeholder')}
-          value={clamAmount}
-          type="number"
-          onChange={e => setClamAmount(Number.isNaN(Number(e.target.value)) ? '' : e.target.value)}
-        />
-      </ContentSmall>
+      <StyledInput
+        placeholder={t('input_placeholder')}
+        value={clamAmount}
+        type="number"
+        onChange={e => setClamAmount(Number.isNaN(Number(e.target.value)) ? '' : e.target.value)}
+      />
       {!unlocked && (
         <>
           <StyledField>

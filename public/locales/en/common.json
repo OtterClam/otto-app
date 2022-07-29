@@ -456,8 +456,15 @@
       "must_desc": "R3 Item Guaranteed!",
       "name": "Silver Chest"
     },
-    "luk": { "must_desc": "R1 Item Guaranteed!" },
-    "dex": { "must_desc": "R2 Item Guaranteed!" }
+    "luk": {
+      "must_desc": "R1 Item Guaranteed!"
+    },
+    "dex": {
+      "must_desc": "R2 Item Guaranteed!"
+    },
+    "cute": {
+      "must_desc": "R2 Item Guaranteed!"
+    }
   },
   "question": {
     "submit_button": "Confirm"
@@ -529,11 +536,8 @@
     "dashboard": {
       "title": "Treasury Dashboard",
       "clamPrice": "CLAM Price",
-      "pearlPrice": "PEARL Price",
-      "currentIndex": "Current Index",
-      "currentIndexTooltip": "The current index tracks the amount of sCLAM accumulated since the beginning of staking. Basically, how much sCLAM one would have if they staked and held a single CLAM from day 1.",
       "backing": "Backing per CLAM",
-      "backingTooltip": "Market Value of Treasury Assets divided by the circulating supply of CLAM.",
+      "backingTooltip": "Market Value of Treasury Assets divided by the circulating supply of CLAM. The value of CLAM tokens in liquidity pools is NOT included in the backing price.",
       "tvd": "Total Value Deposited",
       "tvdTooltip": "Total Value Deposited, is the dollar amount of all CLAM staked in the protocol. This metric is often used as growth or health indicator in DeFi projects.",
       "staked": "CLAM Staked",
@@ -542,14 +546,18 @@
       "today": "Today",
       "treasuryMarketValue": "Market Value of Treasury Assets",
       "treasuryRevenue": "Treasury Revenue",
+      "treasuryRevenueTooltip": "Daily income harvested from treasury investments. This does not reflect changes in the market value of treasury assets, only new liquid tokens entering the treasury.",
       "clamCirculatingSupply": "CLAM Circulating Supply",
+      "clamCirculatingSupplyTooltip": "The amount of CLAM in circulation. The difference between the circulating and total supply is the amount of CLAM held by the DAO wallet and Ottopia reward pool.",
       "buybacks": "Buybacks",
       "burned": "Burned CLAM",
-      "burnedTooltip": "Amount of CLAM permanently burned and removed from the supply.",
-      "distributed": "Reward Distributed",
-      "distributedTooltip": "Total amount of CLAM which has been distributed today. This is divided proportionally between all stakers and Pearl Chest holders.",
+      "burnedTooltip": "Amount of CLAM permanently burned and removed from the supply. USD value is calculated from market price at the time of burning.",
+      "distributed": "Rewards Distributed",
+      "distributedTooltip": "Total USD value of rewards paid to CLAM stakers since launch!",
       "averageApr": "Average APR",
-      "averageAprStartDate": "from {{ date }}"
+      "averageAprStartDate": "from {{ date }}",
+      "marketcap": "CLAM Market Cap",
+      "marketcapTooltip": "The circulating supply of CLAM tokens multiplied by the market price."
     }
   },
   "stake": {
@@ -564,7 +572,7 @@
     "stake_btn": "Deposit",
     "unstake_btn": "Withdraw",
     "tvl": "Total Locked Value:",
-    "unstake_note": "*If you unstake within 30 days, you will be charged and burned {{ feeRate }}% of the CLAM amount unstaked. Fully waived date: {{ date }} ({{ days }} days left)",
+    "unstake_note": "*If you unstake within 30 days, you will be charged and burned {{ feeRate }}% of the CLAM amount unstaked. Fully waived date: {{ date }} ({{ days }} left)",
     "fee": "Early Withdraw Fee ({{ feeRate }}%)*",
     "unstake_receive_amount": "You will get",
     "staked_balance": "Your Staked Balance",
@@ -619,5 +627,33 @@
       "desc": "you will get"
     },
     "claim": "Claim"
+  },
+  "wallet_popup": {
+    "balance_title": "Your CLAM Balance",
+    "wallet": "Wallet",
+    "clam_pond": "Clam Pond",
+    "pearl_bank": "Pearl Bank",
+    "swap": {
+      "title": "Swap CLAM",
+      "from": "From",
+      "available": "Available:",
+      "max": "MAX",
+      "to": "To",
+      "swapping_fee": "Swapping fee({{fee}})",
+      "slippage": "Slippage",
+      "swap": "Swap",
+      "not_enough_balance": "Insufficient {{symbol}} Balance",
+      "placeholder": "Enter your amount",
+      "sign_tx_title": "Sign Transaction",
+      "sign_tx_desc": "Please sign transaction in your wallet",
+      "approving_title": "Approve Spending",
+      "approving_desc": "Approving Spending {{symbol}}",
+      "tx_sent_title": "Transaction Sent",
+      "tx_sent_desc": "Swap from {{from}} to {{to}}",
+      "tx_success_title": "Swap Successful!",
+      "tx_success_desc": "You just received {{amount}} {{to}}",
+      "close_btn": "Close",
+      "success_btn": "Back"
+    }
   }
 }

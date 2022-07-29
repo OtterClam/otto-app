@@ -9,6 +9,7 @@ interface UiState {
   mintStatus: MintStatus
   mintNumber: number
   showSideMenu: boolean
+  showWalletPopup: boolean
   ottoInTheHell?: ReturnType<Otto['toJSON']>
 }
 
@@ -17,6 +18,7 @@ const initialState: UiState = {
   mintStatus: 'init',
   mintNumber: 0,
   showSideMenu: false,
+  showWalletPopup: false,
   ottoInTheHell: undefined,
 }
 
@@ -55,6 +57,12 @@ export const uiSlice = createSlice({
     hideDicePopup: state => {
       state.ottoInTheHell = undefined
     },
+    showWalletPopup: state => {
+      state.showWalletPopup = true
+    },
+    hideWalletPopup: state => {
+      state.showWalletPopup = false
+    },
   },
 })
 
@@ -69,6 +77,8 @@ export const {
   hideSideMenu,
   showDicePopup,
   hideDicePopup,
+  showWalletPopup,
+  hideWalletPopup,
 } = uiSlice.actions
 
 export const selectConnectingWallet = (state: RootState) => state.ui.connectingWallet
@@ -78,6 +88,8 @@ export const selectMintStatus = (state: RootState) => state.ui.mintStatus
 export const selectMintNumber = (state: RootState) => state.ui.mintNumber
 
 export const selectShowSideMenu = (state: RootState) => state.ui.showSideMenu
+
+export const selectShowWalletPopup = (state: RootState) => state.ui.showWalletPopup
 
 export const selectOttoInTheHell = (state: RootState) => {
   if (!state.ui.ottoInTheHell) {

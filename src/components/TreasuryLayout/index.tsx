@@ -4,12 +4,12 @@ import { PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import { Caption, Note } from 'styles/typography'
 import { useRouter } from 'next/router'
+import ClamIcon from 'assets/icons/icon_48_clam-pond.png'
+import PearlIcon from 'assets/icons/icon_48_pearl-bank.png'
 import MenuXl from './treasury_menu_xl.png'
 import MenuXs from './treasury_menu_xs.png'
 import BondIcon from './icon_48_bond.png'
-import ClamIcon from './icon_48_clam.png'
 import DashboardIcon from './icon_48_dashboard.png'
-import PearlIcon from './icon_48_pearl.png'
 
 const menuIcons = {
   bond: BondIcon.src,
@@ -159,7 +159,7 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  // { key: 'dashboard' },
+  { key: 'dashboard' },
   { key: 'pond' },
   { key: 'bank' },
   // { key: 'farm', disabled: true },

@@ -10,7 +10,7 @@ export const BUY_CLAM_LINK = 'https://app.1inch.io/#/137/classic/swap/USDC/CLAM'
 
 export const DAO_LINK = 'https://discord.gg/hygVspKCBf'
 
-export const TREASURY_LINK = '/treasury/pond'
+export const TREASURY_LINK = '/treasury/dashboard'
 
 export const DISCORD_LINK = 'https://discord.gg/otterclam'
 

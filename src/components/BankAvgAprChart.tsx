@@ -1,3 +1,4 @@
+import { PearlBankAvgAprRange } from 'views/treasury-dashboard'
 import format from 'date-fns/format'
 import { trim } from 'helpers/trim'
 import { ethers } from 'ethers'
@@ -21,13 +22,14 @@ const xAxisTickProps = { fontSize: '12px' }
 const yAxisTickProps = { fontSize: '12px' }
 const tickCount = 3
 
-const ytickFormatter = (number: string) => number
+const ytickFormatter = (number: string) => `${number}%`
 
 const displayedFields = [
   {
     label: 'APR',
     dataKey: 'apr',
-    stopColor: ['rgba(56, 208, 117, 1)', 'rgba(56, 208, 117, 0)'],
+    // stopColor: ['rgba(56, 208, 117, 1)', 'rgba(56, 208, 117, 0)'],
+    stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
   },
 ]
 
@@ -41,6 +43,7 @@ const keySettingMap = displayedFields.reduce(
 
 export interface BankAvgAprChartProps {
   data: GetPearlBankMetrics_pearlBankMetrics[]
+  aprRange: PearlBankAvgAprRange
 }
 
 const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
@@ -54,45 +57,32 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       .map(({ name, value }) => ({
         key: name,
         label: keySettingMap[name].label,
-        value: `$${Math.round(value).toLocaleString(i18n.language)}`,
+        value: `${parseFloat(trim(value, 2)).toLocaleString(i18n.language)}%`,
         color: keySettingMap[name].stopColor[0],
       }))
+
     const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
     const headerLabel = i18n.t('treasury.dashboard.chartHeaderLabel')
-    return (
-      <ChartTooltip headerLabel={headerLabel} headerValue={items[0].value} items={items.slice(1)} footer={footer} />
-    )
+
+    return items.length > 0 ? (
+      <ChartTooltip headerLabel="APR: " headerValue={items[0].value} items={items.slice(1)} footer={footer} />
+    ) : null
   }
 
-const useTransformedData = (data: GetPearlBankMetrics_pearlBankMetrics[]) => {
-  return useMemo(
-    () =>
-      data.map(value => {
-        const payoutMatketValue = ethers.utils.parseUnits(value.payoutMatketValue, 6)
-        const stakedCLAMAmount = ethers.utils.parseUnits(value.stakedCLAMAmount, 6)
-        return {
-          apy: trim(ethers.utils.formatUnits(payoutMatketValue.div(stakedCLAMAmount).mul(365), 6), 1),
-          timestamp: value.timestamp,
-        }
-      }),
-    [data]
-  )
-}
-
-export default function BankAvgAprChart({ data }: BankAvgAprChartProps) {
+export default function BankAvgAprChart({ data, aprRange }: BankAvgAprChartProps) {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
-  const transformedData = useTransformedData(data)
 
+  const slicedData = data.slice(0, aprRange)
   return (
     <StyledContainer ref={containerRef}>
-      <AreaChart data={transformedData} width={size?.width ?? 300} height={size?.height ?? 260}>
+      <AreaChart data={slicedData} width={size?.width ?? 300} height={size?.height ?? 260}>
         <defs>
           {displayedFields.map(({ dataKey: key, stopColor }) => (
             <linearGradient key={key} id={`color-${key}`} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor={stopColor[0]} stopOpacity={1} />
-              <stop offset="90%" stopColor={stopColor[1]} stopOpacity={1} />
+              <stop offset="100%" stopColor={stopColor[1]} stopOpacity={1} />
             </linearGradient>
           ))}
         </defs>
@@ -111,7 +101,7 @@ export default function BankAvgAprChart({ data }: BankAvgAprChartProps) {
           tickCount={tickCount}
           axisLine={false}
           tickLine={false}
-          width={33}
+          width={40}
           tick={yAxisTickProps}
           tickFormatter={(num: string) => ytickFormatter(num)}
           domain={[0, 'auto']}
