@@ -21,14 +21,6 @@ const StyledContainer = styled.div`
 const xAxisTickProps = { fontSize: '12px' }
 const yAxisTickProps = { fontSize: '12px' }
 
-const formatCurrency = (c: number, maxDigits = 0) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: maxDigits,
-    minimumFractionDigits: 0,
-  }).format(c)
-}
 const dataKeysSettings = {
   [Currency.CLAM]: [
     { dataKey: 'qiClamAmount', colors: ['rgba(244, 210, 88, 1)', 'rgba(244, 210, 88, 0.5)'], label: 'Qi' },
