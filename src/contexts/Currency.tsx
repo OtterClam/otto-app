@@ -8,11 +8,11 @@ export enum Currency {
 export const CurrencyContext = createContext({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setCurrency: (value: Currency) => {},
-  currency: Currency.CLAM,
+  currency: Currency.USD,
 })
 
 export const CurrencyProvider = ({ children }: PropsWithChildren<object>) => {
-  const [currency, setCurrency] = useState(Currency.CLAM)
+  const [currency, setCurrency] = useState(Currency.USD)
   const value = useMemo(
     () => ({
       currency,

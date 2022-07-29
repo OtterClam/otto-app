@@ -531,7 +531,9 @@
       "averageApr": "Average APR",
       "averageAprStartDate": "from {{ date }}",
       "marketcap": "CLAM Market Cap",
-      "marketcapTooltip": "The circulating supply of CLAM tokens multiplied by the market price."
+      "marketcapTooltip": "The circulating supply of CLAM tokens multiplied by the market price.",
+      "stakedChartHeader": "Staked",
+      "autocompoundChartHeader": "Auto-Compound"
     }
   },
   "stake": {
