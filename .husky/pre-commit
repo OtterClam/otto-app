@@ -1,0 +1,6 @@
+
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+
+yarn next lint
+./node_modules/.bin/lint-staged
