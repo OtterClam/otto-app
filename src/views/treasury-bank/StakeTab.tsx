@@ -120,7 +120,7 @@ export default function StakeTab({ className }: Props) {
         </StyledFieldLabel>
       </StyledField>
       <StyledNote>
-        {t('unstake_note', {
+        {t('stake_note', {
           feeRate: trim((feeRate.toNumber() / feeBase.toNumber()) * 100, 2),
           date: formatDate(unlockTime, 'yyyy-MM-dd'),
           days: formatDistanceToNowStrict(unlockTime, { unit: 'day' }),
