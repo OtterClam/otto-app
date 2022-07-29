@@ -3,11 +3,11 @@ import ButtonImg from './button.png'
 
 const StyledGiveawayFloatingButton = styled.a`
   position: absolute;
-  top: 108px;
+  top: 88px;
   right: 40px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    top: 120px;
+    top: 100px;
     right: 10px;
   }
 `
@@ -15,8 +15,8 @@ const StyledGiveawayFloatingButton = styled.a`
 const StyledButton = styled.img.attrs({
   src: ButtonImg.src,
 })`
-  width: 120px;
-  height: 120px;
+  width: 96px;
+  height: 96px;
 `
 
 export default function GiveawayFloatingButton() {

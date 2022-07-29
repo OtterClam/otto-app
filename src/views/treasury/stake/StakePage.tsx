@@ -7,17 +7,65 @@ import Fountain from './fountain.png'
 import StakeDialog from './StakeDialog'
 import StakeInfo from './StakeInfo'
 
-const StyledStakePage = styled.div`
+const StyledTreasurySection = styled(TreasurySection)`
+  margin-top: 4px;
+  height: var(--body-height);
   display: flex;
+  align-items: stretch;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    height: unset;
+    align-item: unset;
+  }
+`
+
+const StyledStakePage = styled.div`
+  z-index: 0;
   background: no-repeat center / cover url(${BG.src});
   position: relative;
   overflow-x: hidden;
+  overflow-y: scroll;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    overflow: hidden;
+  }
+`
+
+const StyledStakePageInner = styled.div`
+  position: relative;
+  flex: 1 100%;
+  display: flex;
+  height: 100%;
+
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    right: -150px;
+    bottom: 0;
+    width: 78%;
+    padding-bottom: 22.093023255813954%;
+    background: center / 100% url(${Fountain.src});
+
+    @media ${({ theme }) => theme.breakpoints.mobile} {
+      right: unset;
+      left: 50%;
+      width: 150%;
+      transform: translate(-50%);
+    }
+  }
 `
 
 const StyledStakeDialog = styled(StakeDialog)`
-  flex: 1;
-  margin-top: 100px;
-  margin-left: 80px;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    display: none;
+  }
+`
+
+const StyledStakeDialogContainer = styled.div`
+  flex: 1 50%;
+  box-sizing: border-box;
+  padding: 100px 24px 48px 74px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     display: none;
@@ -25,6 +73,7 @@ const StyledStakeDialog = styled(StakeDialog)`
 `
 
 const StyledStakeInfo = styled(StakeInfo)`
+  flex: 1 50%;
   position: relative;
   margin-bottom: 30px;
 `
@@ -35,42 +84,37 @@ const Animation = keyframes`
 `
 
 const StyledOtter = styled.img<{ delay: number }>`
-  position: absolute;
+  position: fixed;
   width: 418px;
-  left: 0;
+  left: 50%;
   bottom: 0;
   z-index: 10;
+  transform: translate(-600px);
   animation: ${Animation} 2000ms infinite;
   animation-delay: ${({ delay }) => delay}ms;
   animation-timing-function: steps(1);
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
+    position: absolute;
+    left: 0;
+    transform: unset;
     width: 210px;
-  }
-`
-
-const StyledFountain = styled.img.attrs({ src: Fountain.src })`
-  position: absolute;
-  width: 860px;
-  right: -150px;
-  bottom: 0;
-  height: 190px;
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    left: calc(50% - 430px);
   }
 `
 
 export default function StakePage() {
   return (
-    <TreasurySection showRope={false}>
+    <StyledTreasurySection showRope={false}>
+      <StyledOtter src={Otter1.src} delay={0} />
+      <StyledOtter src={Otter2.src} delay={1000} />
       <StyledStakePage>
-        <StyledFountain />
-        <StyledOtter src={Otter1.src} delay={0} />
-        <StyledOtter src={Otter2.src} delay={1000} />
-        <StyledStakeDialog />
-        <StyledStakeInfo />
+        <StyledStakePageInner>
+          <StyledStakeDialogContainer>
+            <StyledStakeDialog />
+          </StyledStakeDialogContainer>
+          <StyledStakeInfo />
+        </StyledStakePageInner>
       </StyledStakePage>
-    </TreasurySection>
+    </StyledTreasurySection>
   )
 }

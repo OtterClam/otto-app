@@ -19,7 +19,7 @@ const StyledItemPopup = styled.div`
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
   background: ${({ theme }) => theme.colors.white};
-  overflow-y: scroll;
+  overflow-y: auto;
 `
 
 const StyledCloseButton = styled(CloseButton)`
@@ -40,7 +40,7 @@ const StyledProcessingContainer = styled.div`
 
 const StyledCompletedContainer = styled.div`
   height: 90vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   border-radius: 10px;
   background: ${({ theme }) => theme.colors.otterBlack};
 `

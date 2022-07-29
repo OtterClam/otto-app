@@ -30,7 +30,6 @@ export interface QiDaoVotes_votes_proposal {
 
 export interface QiDaoVotes_votes {
   __typename: "Vote";
-  voter: string;
   choice: any;
   vp: number | null;
   proposal: QiDaoVotes_votes_proposal | null;

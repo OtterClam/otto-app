@@ -6,7 +6,7 @@ import bg from 'assets/dice-of-destiny-bg.jpg'
 import { ContentSmall, Headline } from 'styles/typography'
 import Button from 'components/Button'
 import useApi from 'hooks/useApi'
-import { useBreakPoints } from 'hooks/useMediaQuery'
+import { useBreakpoints } from 'contexts/Breakpoints'
 import { selectOttoInTheHell, showDicePopup } from 'store/uiSlice'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
@@ -108,13 +108,13 @@ const useAllDice = (ottoId: string) => {
       .getAllDice(ottoId, i18n.resolvedLanguage)
       .then(diceList => setDiceList(diceList))
       .catch(err => dispatch(setError(err)))
-  }, [api, ottoId, i18n.resolvedLanguage, ottoInTheHell])
+  }, [api, ottoId, i18n.resolvedLanguage, ottoInTheHell, dispatch])
 
   return diceList
 }
 
 export function DiceBanner({ otto }: DiceBannerProps) {
-  const { isMobile } = useBreakPoints()
+  const { isMobile } = useBreakpoints()
   const dispatch = useDispatch()
   const openPopup = () => dispatch(showDicePopup(otto.toJSON()))
   const { t } = useTranslation()

@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom'
 import { ReactNode, useEffect } from 'react'
 import styled from 'styled-components/macro'
 
@@ -10,7 +11,7 @@ const StyledPopup = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: var(--z-index-popup);
 `
 
 const Background = styled.button`
@@ -31,7 +32,7 @@ const Container = styled.div<{ width: string }>`
   box-sizing: border-box;
   max-width: 880px;
   max-height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 
   border: 4px solid ${props => props.theme.colors.otterBlack};
@@ -80,7 +81,7 @@ const Fullscreen = ({ show = true, background, width = '80%', children }: Props)
 
   if (!show) return null
 
-  return (
+  const dom = (
     <StyledPopup>
       <Background />
       <Container width={width}>
@@ -90,6 +91,12 @@ const Fullscreen = ({ show = true, background, width = '80%', children }: Props)
       </Container>
     </StyledPopup>
   )
+
+  if (typeof document === 'undefined') {
+    return null
+  }
+
+  return ReactDOM.createPortal(dom, document.querySelector('#modal-root') ?? document.body)
 }
 
 export default Fullscreen

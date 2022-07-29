@@ -4,7 +4,7 @@ import cursorPointer from 'assets/cursor-pointer.png'
 import ArrowDown from 'assets/ui/arrow_down.svg'
 import Button from 'components/Button'
 import { numberWithSign } from 'helpers/number'
-import { useMediaQuery } from 'hooks/useMediaQuery'
+import { useBreakpoints } from 'contexts/Breakpoints'
 import { useOttos } from 'hooks/useOtto'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
@@ -16,7 +16,7 @@ import OttOLoading from 'assets/ui/otto-loading.jpg'
 import { useMyOttos } from 'MyOttosProvider'
 import { trim } from 'helpers/trim'
 import Otto from 'models/Otto'
-import { TOTAL_RARITY_REWARD } from 'constant'
+import { ROUND_RARITY_REWARD_AFTER_3, ROUND_RARITY_REWARD_BEFORE_3, TOTAL_RARITY_REWARD } from 'constant'
 import Constellations from 'assets/constellations'
 import useRarityEpoch from 'hooks/useRarityEpoch'
 import { createSearchParams } from 'utils/url'
@@ -362,17 +362,18 @@ export default function RankList({ className }: Props) {
   const prizeCount = Math.floor(totalOttoSupply * 0.5)
   const topReward = useMemo(() => {
     let sum = 0
+    const totalReward = epoch > 3 || epoch === -1 ? ROUND_RARITY_REWARD_AFTER_3 : ROUND_RARITY_REWARD_BEFORE_3
     for (let i = 1; i <= prizeCount; i++) {
       sum += 1 / i
     }
-    return TOTAL_RARITY_REWARD / sum
-  }, [prizeCount])
-  const getEstimatedReward = (rank: number) => (rank <= prizeCount ? trim((topReward * (1 / rank)) / 4, 2) : '-')
+    return totalReward / sum
+  }, [prizeCount, epoch])
+  const getEstimatedReward = (rank: number) => (rank <= prizeCount ? trim(topReward * (1 / rank), 2) : '-')
   const { ottos, loading: loadingApi } = useOttos(data?.ottos, { details: true, epoch })
   const { ottos: myOttos } = useMyOttos()
   const sortedMyOttos = useMemo(() => myOttos.sort((a, b) => a.ranking - b.ranking), [myOttos])
   const [expand, setExpand] = useState(false)
-  const isMobile = useMediaQuery({ query: breakpoints.mobile })
+  const { isMobile } = useBreakpoints()
   useEffect(() => {
     refetch({ skip: page * PAGE, first: PAGE })
   }, [page])

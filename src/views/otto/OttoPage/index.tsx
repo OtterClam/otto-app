@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import OpenSeaBlue from 'assets/opensea-blue.svg'
 import Button from 'components/Button'
 import Loading from 'components/Loading'
-import { getOpenSeaLink } from 'constant'
+import { getOpenSeaLink, reserveOttoAmount } from 'constant'
 import { format } from 'date-fns'
 import useOtto from 'hooks/useOtto'
 import { useEffect, useMemo } from 'react'
@@ -20,6 +20,7 @@ import { DicePopup } from 'components/DicePopup'
 import { useRouter } from 'next/router'
 import { GET_OTTO } from 'graphs/otto'
 import { GetOtto, GetOttoVariables } from 'graphs/__generated__/GetOtto'
+import { useEthers } from '@usedapp/core'
 import PlayIcon from './icons/play-voice.svg'
 import OttoTraitDetails from './OttoTraitDetails'
 import TheOtter from './icons/the_otter.png'
@@ -245,6 +246,7 @@ const StyledBoost = styled.span`
 
 export default function OttoPage() {
   const { t } = useTranslation()
+  const { chainId } = useEthers()
   const router = useRouter()
   const ottoId = router.query.ottoId as string
   const { data } = useQuery<GetOtto, GetOttoVariables>(GET_OTTO, {
@@ -279,10 +281,6 @@ export default function OttoPage() {
         : null,
     [otto, t]
   )
-
-  useEffect(() => {
-    if (otto) setTimeout(() => otto?.playVoice(), 1000)
-  }, [otto])
 
   return (
     <>
@@ -369,7 +367,7 @@ export default function OttoPage() {
                     <StyledStatIcon src={otto.legendary ? LegendaryIcon.src : ClassicIcon.src} />
                     <StyledStatTitle>{t(otto.legendary ? 'otto.legendary' : 'otto.classic')}</StyledStatTitle>
                     <StyledStatDesc>{t(otto.legendary ? 'otto.legendary_note' : 'otto.classic_note')}</StyledStatDesc>
-                    {otto.legendary && (
+                    {Number(otto.tokenId) >= reserveOttoAmount(chainId) && otto.legendary && (
                       <StyledLegendaryBoost>
                         {t('otto.legendary_boost', {
                           context: (otto.raw.legendaryBoost || 0) > 0 ? 'added' : 'removed',

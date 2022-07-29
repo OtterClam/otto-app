@@ -10,7 +10,7 @@ export const BUY_CLAM_LINK = 'https://app.1inch.io/#/137/classic/swap/USDC/CLAM'
 
 export const DAO_LINK = 'https://discord.gg/hygVspKCBf'
 
-export const TREASURY_LINK = 'https://app.otterclam.finance'
+export const TREASURY_LINK = '/treasury/dashboard'
 
 export const DISCORD_LINK = 'https://discord.gg/otterclam'
 
@@ -25,8 +25,12 @@ export function getOpenSeaLink(tokenId: string) {
 export const ottoClick = IS_SERVER ? { play: () => {}, load: () => {} } : new Audio('https://ottopia.app/ottoclick.mp3')
 ottoClick.load()
 
-export const TOTAL_RARITY_REWARD = 10000
+export const TOTAL_RARITY_REWARD = 16000
+export const ROUND_RARITY_REWARD_BEFORE_3 = 2500
+export const ROUND_RARITY_REWARD_AFTER_3 = 3000
 
 export enum Token {
   Clam = 'CLAM',
 }
+
+export const reserveOttoAmount = (chainId?: number) => (chainId === 137 ? 250 : 0)

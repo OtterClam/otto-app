@@ -2,7 +2,7 @@ import Dropdown from 'components/Dropdown'
 import Fullscreen from 'components/Fullscreen'
 import ItemCell from 'components/ItemCell'
 import { LoadingView } from 'components/LoadingView'
-import { useBreakPoints } from 'hooks/useMediaQuery'
+import { useBreakpoints } from 'contexts/Breakpoints'
 import useMyItems from 'hooks/useMyItems'
 import Item from 'models/Item'
 import { useMemo, useState } from 'react'
@@ -22,7 +22,8 @@ const StyledMyItemsPage = styled.div`
 `
 
 const StyledSectionTabContainer = styled.div`
-  min-height: 90px;
+  display: flex;
+  align-items: stretch;
   overflow: scroll;
   border-bottom: 4px solid ${({ theme }) => theme.colors.otterBlack};
 `
@@ -30,11 +31,11 @@ const StyledSectionTabContainer = styled.div`
 const StyledSectionTabs = styled.div`
   display: flex;
   height: 100%;
+  align-items: stretch;
 `
 
 const StyledSectionTab = styled.button<{ section: string; selected: boolean }>`
   display: flex;
-  height: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -113,7 +114,7 @@ const StyledNoSelectedItem = styled.div`
 
 const StyledMobileItemDetailsContainer = styled.div`
   height: 90vh;
-  overflow-y: scroll;
+  overflow-y: auto;
 `
 
 const StyledEmptySlate = styled(ContentSmall).attrs({ as: 'div' })`
@@ -160,12 +161,12 @@ const Sections: Record<SectionKey, Section> = {
   },
 }
 
-const SortedByOptions = ['latest_received', 'rarity_desc', 'rarity_asc', 'luck_desc', 'dex_desc']
+const SortedByOptions = ['latest_received', 'rarity_desc', 'rarity_asc', 'cute_desc', 'luck_desc', 'dex_desc']
 const Filters = ['none', 'not_equipped', 'equipped', 'otto_specific', 'lottie_specific']
 
 export default function MyItemsPage() {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
-  const { isMobile } = useBreakPoints()
+  const { isMobile } = useBreakpoints()
   const [selectedSection, setSelectedSection] = useState<SectionKey>('All')
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
   const [usingItem, setUsingItem] = useState<Item | null>(null)
@@ -206,6 +207,9 @@ export default function MyItemsPage() {
           }
           if (sortedBy.key === 'dex_desc') {
             return b.dex - a.dex
+          }
+          if (sortedBy.key === 'cute_desc') {
+            return b.cute - a.cute
           }
           return 0
         }),

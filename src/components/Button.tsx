@@ -90,6 +90,28 @@ const StyledInnerButton = styled.div<InnerButtonProps>`
   }
 `
 
+function useProcessingText(processing: boolean, text: string) {
+  const [dots, updateDots] = useState(0)
+
+  useEffect(() => {
+    if (!processing) {
+      return
+    }
+    const timer = setInterval(() => {
+      updateDots(n => (n + 1) % 4)
+    }, 200)
+    return () => clearInterval(timer)
+  }, [processing])
+
+  return (
+    <>
+      {text}
+      <span>{'.'.repeat(dots)}</span>
+      <span style={{ opacity: 0 }}>{'.'.repeat(3 - dots)}</span>
+    </>
+  )
+}
+
 export interface ButtonProps {
   width?: string
   height?: string
@@ -124,6 +146,8 @@ const Button = ({
   const [pending, setPending] = useState(false)
   const { t } = useTranslation()
 
+  const processingText = useProcessingText(Boolean(loading), t('button_processing'))
+
   useEffect(() => {
     if (error || loading) setPending(false)
   }, [error, loading])
@@ -150,9 +174,7 @@ const Button = ({
       }}
     >
       <StyledInnerButton primaryColor={primaryColor} padding={padding} disabled={disabled || loading || pending}>
-        <Typography>
-          {isWeb3 && !account ? t('connect_wallet') : loading ? t('button_processing') : children}
-        </Typography>
+        <Typography>{isWeb3 && !account ? t('connect_wallet') : loading ? processingText : children}</Typography>
       </StyledInnerButton>
     </StyledButton>
   )

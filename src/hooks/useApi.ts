@@ -80,8 +80,9 @@ export class Api {
       unreturnable: false,
       isCoupon: details.type === 'Coupon',
       total_rarity_score: details.base_rarity_score + details.relative_rarity_score,
-      luck: Number(details.stats.find((s: any) => s.name === 'LUK').value || 0),
-      dex: Number(details.stats.find((s: any) => s.name === 'DEX').value || 0),
+      luck: Number(details.stats.find((s: any) => s.name === 'LUK').value) || 0,
+      dex: Number(details.stats.find((s: any) => s.name === 'DEX').value) || 0,
+      cute: Number(details.stats.find((s: any) => s.name === 'CUTE').value) || 0,
       ...details,
     }
   }

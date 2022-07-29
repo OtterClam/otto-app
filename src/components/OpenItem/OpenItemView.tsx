@@ -128,7 +128,7 @@ export default function OpenItemView({ items, onClose }: Props) {
         }
       }, 3000)
     }
-  }, [state, current])
+  }, [state, current, items.length])
   return (
     <Fullscreen>
       <StyledOpenItemView>
@@ -155,7 +155,7 @@ export default function OpenItemView({ items, onClose }: Props) {
               ))}
             </StyledItemList>
             <Link href="/my-items">
-              <a>
+              <a href="/my-items">
                 <StyledCheckOutButton Typography={Headline} onClick={onClose}>
                   {t('store.popup.check_out')}
                 </StyledCheckOutButton>

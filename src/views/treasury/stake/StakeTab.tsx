@@ -1,15 +1,17 @@
 import CLAM from 'assets/clam.svg'
-import CLAMCoin from 'assets/icons/CLAM.svg'
+import CLAMCoin from 'assets/tokens/CLAM.svg'
 import Button from 'components/Button'
-import { useStake } from 'contracts/functions'
-import { useTreasuryRealtimeMetrics } from 'contracts/views'
+import { useDeposit } from 'contracts/functions'
+import { useClamPondFee } from 'contracts/views'
 import { utils } from 'ethers'
 import { trim } from 'helpers/trim'
 import useClamBalance from 'hooks/useClamBalance'
 import { useTranslation } from 'next-i18next'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Caption, ContentLarge, ContentSmall, Headline } from 'styles/typography'
+import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } from 'styles/typography'
+import formatDate from 'date-fns/format'
+import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 import StakeSuccessPopup from './StakeSuccessPopup'
 
 const StyledStakeTab = styled.div`
@@ -39,7 +41,7 @@ const StyledClamBalanceText = styled.div`
   }
 `
 
-const StyledClamInput = styled.input`
+const StyledClamInput = styled(RegularInput)`
   width: 100%;
   padding: 20px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
@@ -55,6 +57,22 @@ const StyledClamInput = styled.input`
 
 const StyledButton = styled(Button)``
 
+const StyledField = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const StyledFieldLabel = styled(Caption)`
+  flex: 1;
+`
+
+const StyledNote = styled(Note)`
+  border-radius: 8px;
+  padding: 10px;
+  background: ${({ theme }) => theme.colors.lightGray200};
+  color: ${({ theme }) => theme.colors.darkGray200};
+`
+
 interface Props {
   className?: string
 }
@@ -63,8 +81,9 @@ export default function StakeTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const [clamAmount, setClamAmount] = useState('')
   const clamBalance = useClamBalance()
-  const { stakeState, stake, resetStake } = useStake()
-  const { index } = useTreasuryRealtimeMetrics()
+  const { stakeState, stake, resetStake } = useDeposit()
+  const { base: feeBase, feeRate, duration } = useClamPondFee()
+  const unlockTime = useMemo(() => new Date(Date.now() + duration * 1000), [duration])
   useEffect(() => {
     if (stakeState.state === 'Fail' || stakeState.state === 'Exception') {
       window.alert(stakeState.status.errorMessage)
@@ -89,13 +108,24 @@ export default function StakeTab({ className }: Props) {
           {t('max')}
         </Button>
       </StyledClamBalance>
-      <ContentSmall>
-        <StyledClamInput
-          placeholder={t('input_placeholder')}
-          value={clamAmount}
-          onChange={e => setClamAmount(e.target.value)}
-        />
-      </ContentSmall>
+      <StyledClamInput
+        placeholder={t('input_placeholder')}
+        value={clamAmount}
+        type="number"
+        onChange={e => setClamAmount(Number.isNaN(e.target.value) ? '' : e.target.value)}
+      />
+      <StyledField>
+        <StyledFieldLabel>
+          {t('fee', { feeRate: trim((feeRate.toNumber() / feeBase.toNumber()) * 100, 2) })}
+        </StyledFieldLabel>
+      </StyledField>
+      <StyledNote>
+        {t('unstake_note', {
+          feeRate: trim((feeRate.toNumber() / feeBase.toNumber()) * 100, 2),
+          date: formatDate(unlockTime, 'yyyy-MM-dd'),
+          days: formatDistanceToNowStrict(unlockTime, { unit: 'day' }),
+        })}
+      </StyledNote>
       <StyledButton
         Typography={Headline}
         padding="6px"
@@ -107,7 +137,7 @@ export default function StakeTab({ className }: Props) {
       </StyledButton>
       {stakeState.state === 'Success' && (
         <StakeSuccessPopup
-          clamAmount={trim(utils.formatUnits(utils.parseUnits(clamAmount, 9).mul(1e9).div(index), 9), 4)}
+          clamAmount={trim(utils.formatUnits(utils.parseUnits(clamAmount, 9), 9), 4)}
           onClose={resetStake}
         />
       )}

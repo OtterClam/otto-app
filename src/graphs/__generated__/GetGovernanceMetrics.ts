@@ -12,14 +12,13 @@ export interface GetGovernanceMetrics_governanceMetrics {
   id: string;
   timestamp: any;
   qiDaoVeDystAmt: any;
-  dystTotalSupply: any;
-  veDystTotalSupply: any;
-  penDystTotalSupply: any;
-  vlPenTotalSupply: any;
-  otterClamVlPenTotalOwned: any;
+  dystMarketCap: any;
+  veDystMarketCap: any;
+  penDystMarketCap: any;
+  vlPenMarketCap: any;
+  otterClamVlPenMarketCap: any;
   otterClamVlPenPercentOwned: any;
   otterClamVeDystPercentOwned: any;
-  totalQiBribeRewardsMarketValue: any;
 }
 
 export interface GetGovernanceMetrics {

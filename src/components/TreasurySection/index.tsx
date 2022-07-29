@@ -49,6 +49,7 @@ const StyledContainer = styled.div<{ showRope: boolean }>`
 
 const StyledCorner = styled.span<{ position: 'lt' | 'lb' | 'rt' | 'rb' }>`
   position: absolute;
+  z-index: 1;
   width: 24px;
   height: 24px;
   background: center / 48px 48px url(${EdgeXL.src});

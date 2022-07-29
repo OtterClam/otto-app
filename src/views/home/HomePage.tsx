@@ -1,13 +1,15 @@
 import Button from 'components/Button'
 import GiveawayFloatingButton from 'components/GiveawayFloatingButton'
+import OtterClamFloatingButton from 'components/OtterClamFloatingButton'
 import MenuButton from 'components/MenuButton'
 import { BUY_CLAM_LINK, DAO_LINK, DISCORD_LINK, TREASURY_LINK, WHITE_PAPER_LINK } from 'constant'
-import Layout from 'Layout'
 import { useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import styled from 'styled-components/macro'
 import { Display3 } from 'styles/typography'
+import { useDispatch } from 'react-redux'
+import { showWalletPopup } from 'store/uiSlice'
 import BuyCLAMIcon from './icons/buy-clam.png'
 import DAOIcon from './icons/dao.png'
 import JoinDiscordIcon from './icons/join-discord.png'
@@ -21,7 +23,7 @@ const StyledHomePage = styled.div`
   display: grid;
   grid-template: 'left-menu portal right-menu' / 168px auto 168px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     max-width: 356px;
     width: 100%;
     grid-template:
@@ -51,7 +53,7 @@ const StyledPortalContainer = styled.div`
   justify-content: space-around;
   grid-area: portal;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     max-height: 375px;
   }
 `
@@ -60,7 +62,7 @@ const StyledPortalImage = styled.img`
   width: 472px;
   height: 472px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
+  @media ${({ theme }) => theme.breakpoints.tablet} {
     width: 375px;
     height: 375px;
   }
@@ -73,12 +75,14 @@ const StyledButton = styled(Button)`
 interface Menu {
   title: string
   icon: string
-  href: string
+  href?: string
   internal?: boolean
+  action?: () => void
 }
 
 const HomePage = () => {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const leftMenus: Menu[] = useMemo(
     () => [
@@ -90,24 +94,26 @@ const HomePage = () => {
   )
   const rightMenus: Menu[] = useMemo(
     () => [
-      { title: t('home.menu.buy_clam'), icon: BuyCLAMIcon.src, href: BUY_CLAM_LINK },
-      { title: t('home.menu.treasury'), icon: TreasuryIcon.src, href: TREASURY_LINK },
+      { title: t('home.menu.buy_clam'), icon: BuyCLAMIcon.src, action: () => dispatch(showWalletPopup()) },
+      { title: t('home.menu.treasury'), icon: TreasuryIcon.src, href: TREASURY_LINK, internal: true },
       { title: t('home.menu.white_paper'), icon: WhitePaperIcon.src, href: WHITE_PAPER_LINK },
     ],
-    [t]
+    [t, dispatch]
   )
 
   const renderMenus = (menus: Menu[], area: string) => (
     <StyledMenus area={area}>
-      {menus.map(({ title, icon, href, internal }, i) =>
-        internal ? (
-          <Link key={i} href={href} rel="noreferrer">
+      {menus.map(({ title, icon, href, internal, action }, i) =>
+        action ? (
+          <StyledMenuButton title={title} icon={icon} onClick={action} />
+        ) : internal ? (
+          <Link key={i} href={href || ''} rel="noreferrer">
             <a>
               <StyledMenuButton title={title} icon={icon} disabled={!href} />
             </a>
           </Link>
         ) : (
-          <a key={i} href={href} target="_blank" rel="noreferrer">
+          <a key={i} href={href || ''} target="_blank" rel="noreferrer">
             <StyledMenuButton title={title} icon={icon} disabled={!href} />
           </a>
         )
@@ -136,6 +142,7 @@ const HomePage = () => {
         {renderMenus(rightMenus, 'right-menu')}
       </StyledHomePage>
       <GiveawayFloatingButton />
+      <OtterClamFloatingButton />
     </>
   )
 }

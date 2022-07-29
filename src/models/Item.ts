@@ -29,6 +29,7 @@ export default interface Item {
   product_type: string
   luck: number
   dex: number
+  cute: number
   update_at: number
 }
 
@@ -44,6 +45,7 @@ export function traitToItem(trait: Trait): Item {
     update_at: 0,
     luck: Number(trait.stats.find(s => s.name === 'LUK')?.value ?? 0),
     dex: Number(trait.stats.find(s => s.name === 'DEX')?.value ?? 0),
+    cute: Number(trait.stats.find(s => s.name === 'CUTE')?.value ?? 0),
     ...trait,
   }
 }
@@ -79,4 +81,5 @@ export const EmptyItem: Item = {
   update_at: 0,
   luck: 0,
   dex: 0,
+  cute: 0,
 }

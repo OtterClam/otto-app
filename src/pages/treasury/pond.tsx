@@ -15,7 +15,7 @@ const TreasuryStakePage: NextPageWithLayout = StakeView
 
 TreasuryStakePage.getLayout = (page, i18n) => {
   return (
-    <Layout title={i18n.t('stake.title')} noBorder requireConnect>
+    <Layout title={i18n.t('stake.title')}>
       <TreasuryLayout>{page}</TreasuryLayout>
     </Layout>
   )

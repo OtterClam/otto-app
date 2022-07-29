@@ -8,8 +8,7 @@ import styled, { useTheme } from 'styled-components/macro'
 import { Caption, ContentMedium, ContentSmall } from 'styles/typography'
 
 const StyledOttoCard = styled(BorderContainer)`
-  width: 265px;
-  height: 448px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   color: ${({ theme }) => theme.colors.otterBlack};
@@ -18,9 +17,6 @@ const StyledOttoCard = styled(BorderContainer)`
   gap: 12px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    width: 100%;
-    height: 363px;
-    /* padding: 8px 5px; */
     gap: 8px;
     align-items: center;
   }
@@ -84,6 +80,11 @@ const StyledAttrs = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 80px);
   column-gap: 10px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+  }
 `
 
 const StyledAttr = styled.div`

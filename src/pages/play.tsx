@@ -13,11 +13,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => ({
 const PlayPage: NextPageWithLayout = PlayView
 
 PlayPage.getLayout = (page, i18n) => {
-  return (
-    <Layout title={i18n.t('play.title')} noBorder>
-      {page}
-    </Layout>
-  )
+  return <Layout title={i18n.t('play.title')}>{page}</Layout>
 }
 
 export default PlayPage

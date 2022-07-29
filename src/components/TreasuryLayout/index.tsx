@@ -4,17 +4,17 @@ import { PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import { Caption, Note } from 'styles/typography'
 import { useRouter } from 'next/router'
+import ClamIcon from 'assets/icons/icon_48_clam-pond.png'
+import PearlIcon from 'assets/icons/icon_48_pearl-bank.png'
 import MenuXl from './treasury_menu_xl.png'
 import MenuXs from './treasury_menu_xs.png'
 import BondIcon from './icon_48_bond.png'
-import ClamIcon from './icon_48_clam.png'
 import DashboardIcon from './icon_48_dashboard.png'
-import PearlIcon from './icon_48_pearl.png'
 
 const menuIcons = {
   bond: BondIcon.src,
   dashboard: DashboardIcon.src,
-  lake: PearlIcon.src,
+  bank: PearlIcon.src,
   pond: ClamIcon.src,
   governance: ClamIcon.src,
 }
@@ -53,7 +53,8 @@ const StyledMenu = styled.ul`
 
   @media ${({ theme }) => theme.breakpoints.tablet} {
     flex-direction: row;
-    gap: unset;
+    justify-content: center;
+    gap: 20px;
   }
 `
 
@@ -149,7 +150,7 @@ const StyledMenuItemDesc = styled(Note)`
 
 const StyledContent = styled.div`
   flex: 1;
-  padding: 4px;
+  box-sizing: border-box;
 `
 
 interface MenuItem {
@@ -161,9 +162,9 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   { key: 'dashboard' },
   { key: 'pond' },
-  { key: 'lake', legacy: '/#/pearl-chests' },
+  { key: 'bank' },
   // { key: 'farm', disabled: true },
-  { key: 'bond', legacy: '/#/bonds' },
+  // { key: 'bond', legacy: '/#/bonds' },
   { key: 'governance' },
 ]
 

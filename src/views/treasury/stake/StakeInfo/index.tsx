@@ -1,67 +1,71 @@
-import { useEthers } from '@usedapp/core'
-import CLAMCoin from 'assets/icons/CLAM.svg'
-import PearlBalance from 'assets/icons/pearl-balance.png'
+import CLAMCoin from 'assets/tokens/CLAM.svg'
 import TreasurySection from 'components/TreasurySection'
-import { useStakedBalance, useTreasuryRealtimeMetrics } from 'contracts/views'
-import { ethers } from 'ethers'
+import { useClamPrice, useDepositedAmount, useNextRewardTime, usePearlBankInfo } from 'contracts/views'
+import formatDistance from 'date-fns/formatDistanceStrict'
+import { constants, ethers, utils } from 'ethers'
 import { trim } from 'helpers/trim'
-import { useBreakPoints } from 'hooks/useMediaQuery'
+import { useBreakpoints } from 'contexts/Breakpoints'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components/macro'
 import { ContentSmall, Note } from 'styles/typography'
+import { formatClamEthers, formatUsd } from 'utils/currency'
 import StakeDialog from '../StakeDialog'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
-import Bottom1 from './bottom-1.png'
-import Bottom2 from './bottom-2.png'
+import BottomBg from './bottom.png'
+import TopBg from './top.png'
 import GashaponTicketEn from './gashapon-ticket-en.jpg'
 import GashaponTicketZh from './gashapon-ticket-zh.jpg'
 import Middle from './middle.png'
-import Top1 from './top-1.png'
-import Top2 from './top-2.png'
+import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 
 const Animation = keyframes`
-  0%   {opacity: 0;}
-  50%  {opacity: 1;}
+  0%   { background-position: left top }
+  50%  { background-position: right top }
+`
+
+const AnimationCSS = css`
+  animation: ${Animation} 2000ms steps(1) infinite;
 `
 
 const StyledStakeInfo = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 420px;
-  /* background: url(${Top1.src}) no-repeat center top/contain, url(${Bottom1.src}) no-repeat center bottom/contain; */
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 100%;
   }
-`
 
-const StyledBackground1 = styled.div<{ delay: number }>`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: url(${Top1.src}) no-repeat center top/contain, url(${Bottom1.src}) no-repeat center bottom/contain;
-  animation: ${Animation} 1000ms infinite;
-  animation-delay: ${({ delay }) => delay}ms;
-  animation-timing-function: steps(1);
-`
+  &::after,
+  &::before {
+    content: '';
+    width: 100%;
+    ${AnimationCSS}
 
-const StyledBackground2 = styled.div<{ delay: number }>`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: url(${Top2.src}) no-repeat center top/contain, url(${Bottom2.src}) no-repeat center bottom/contain;
-  animation: ${Animation} 1000ms infinite;
-  animation-delay: ${({ delay }) => delay}ms;
-  animation-timing-function: steps(1);
+    @media ${({ theme }) => theme.breakpoints.mobile} {
+      width: 100%;
+    }
+  }
+
+  &::before {
+    background: left top / 200% 100% url(${TopBg.src}) no-repeat;
+    padding-bottom: 52.8571428571%;
+    min-height: 0;
+    max-height: 0;
+  }
+
+  &::after {
+    background: left top / 200% 100% url(${BottomBg.src}) no-repeat;
+    padding-bottom: 25.7142857143%;
+    min-height: 0;
+    max-height: 0;
+  }
 `
 
 const StyledBody = styled.div`
-  margin-top: 220px;
-  margin-bottom: 78px;
+  flex: 1;
   background: url(${Middle.src}) repeat-y center center/contain;
   display: flex;
   flex-direction: column;
@@ -69,22 +73,24 @@ const StyledBody = styled.div`
   gap: 10px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    margin-top: 46vw;
-    margin-bottom: 85px;
     padding: 15px;
   }
 `
 
+const StyledTVLContainer = styled.div`
+  margin-top: -24%;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    margin-bottom: 24px;
+  }
+`
+
 const StyledTVL = styled(ContentSmall).attrs({ as: 'div' })`
-  position: absolute;
+  position: relative;
   padding: 6px 24px;
   background: ${({ theme }) => theme.colors.white};
   border: 4px solid ${({ theme }) => theme.colors.darkBrown};
-  top: 160px;
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    top: 30vw;
-  }
+  text-align: center;
 
   &:before {
     content: '';
@@ -205,41 +211,33 @@ interface Props {
 
 export default function StakeInfo({ className }: Props) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'stake' })
-  const { isMobile } = useBreakPoints()
-  const { account } = useEthers()
-  const { tvd, index, nextRewardRate, apy } = useTreasuryRealtimeMetrics()
-  const { sClamBalance, pearlBalance } = useStakedBalance(account)
-  const totalStaked = useMemo(
-    () => sClamBalance.mul(1e9).add(pearlBalance.mul(index).div(1e9)),
-    [sClamBalance, pearlBalance]
-  )
-  const nextReward = (totalStaked / 1e18) * nextRewardRate
-  const countdown = '7hr 30mins'
+  const { isMobile } = useBreakpoints()
+  const { latestTotalReward, lastTotalStaked } = usePearlBankInfo()
+  const clamPrice = useClamPrice()
+  const depositedAmount = useDepositedAmount()
+  const { metrics, latestMetrics } = usePearlBankMetrics()
+
+  const nextRewardTime = useNextRewardTime()
+  const countdown = useMemo(() => {
+    return formatDistance(new Date(), nextRewardTime.toNumber() * 1000)
+  }, [nextRewardTime])
+  // const myRewards = useMemo(() => {
+  //   if (totalStaked.eq(0)) {
+  //     return constants.Zero
+  //   }
+  //   return totalRewards.mul(depositedAmount.mul(1000)).div(totalStaked)
+  // }, [depositedAmount, totalStaked, totalRewards])
+
   return (
     <StyledStakeInfo className={className}>
-      <StyledBackground1 delay={0} />
-      <StyledBackground2 delay={500} />
       <StyledBody>
-        <StyledTVL>{t('tvl', { tvl: trim(ethers.utils.formatUnits(tvd, 18), 2) })}</StyledTVL>
+        <StyledTVLContainer>
+          <StyledTVL>
+            {t('tvl')} <br />
+            {formatUsd(latestMetrics?.clamPondDepositedUsdValue)}
+          </StyledTVL>
+        </StyledTVLContainer>
         {isMobile && <StyledStakedDialog />}
-        <StyledSection>
-          <StyledSectionTitle>{t('staked_balance')}</StyledSectionTitle>
-          <StyledSectionBody>
-            <StyledClamBalanceContainer>
-              <StyledClamBalance>{trim(ethers.utils.formatEther(totalStaked), 4)} CLAM</StyledClamBalance>
-            </StyledClamBalanceContainer>
-            <StyledInfos>
-              <StyledInfoContainer>
-                <StyledInfoTitle icon={PearlBalance.src}>{t('pearl_balance')}</StyledInfoTitle>
-                <p>{trim(ethers.utils.formatEther(pearlBalance), 4)} PEARL</p>
-              </StyledInfoContainer>
-              <StyledInfoContainer>
-                <p />
-                <StyledHint>{`1 PEARL = ${trim(ethers.utils.formatUnits(index, 9), 2)} CLAM`}</StyledHint>
-              </StyledInfoContainer>
-            </StyledInfos>
-          </StyledSectionBody>
-        </StyledSection>
         <StyledSection>
           <StyledSectionTitle>
             {t('next_reward')}
@@ -247,26 +245,17 @@ export default function StakeInfo({ className }: Props) {
           </StyledSectionTitle>
           <StyledSectionBody>
             <StyledClamBalanceContainer>
-              <StyledClamBalance>{trim(nextReward, 4)} CLAM</StyledClamBalance>
+              <StyledClamBalance>{formatClamEthers(depositedAmount)} CLAM</StyledClamBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
-              <StyledInfoContainer>
+              {/* <StyledInfoContainer>
                 <StyledInfoTitle>{t('next_reward_yield')}</StyledInfoTitle>
-                <p>{trim(nextRewardRate * 100, 4)}%</p>
-              </StyledInfoContainer>
+                <p>{trim(utils.formatUnits(myRewards, 9), 4)} USD+</p>
+              </StyledInfoContainer> */}
               <StyledInfoContainer>
                 <StyledInfoTitle>{t('apy')}</StyledInfoTitle>
-                <p>{trim(apy, 2)}%</p>
+                <p>{trim(latestMetrics?.apy, 2)}%</p>
               </StyledInfoContainer>
-              {/* <StyledInfoContainer>
-                <p />
-                <StyledPearlChestContainer>
-                  <StyledPearlChest>
-                    {t('chest_reward')}
-                    <span>+ 86%</span>
-                  </StyledPearlChest>
-                </StyledPearlChestContainer>
-              </StyledInfoContainer> */}
             </StyledInfos>
             <StyledExtraRewards>{t('extra_rewards')}</StyledExtraRewards>
             <StyledGashaponTicket

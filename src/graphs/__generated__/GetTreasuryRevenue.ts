@@ -11,22 +11,18 @@ export interface GetTreasuryRevenue_treasuryRevenues {
   __typename: "TreasuryRevenue";
   id: string;
   timestamp: any;
-  ottopiaClamAmount: any;
-  ottopiaMarketValue: any;
-  yieldClamAmount: any;
-  yieldMarketValue: any;
-  totalRevenueClamAmount: any;
-  totalRevenueMarketValue: any;
-  buybackClamAmount: any;
-  buybackMarketValue: any;
-  cumulativeBuybackClamAmount: any;
-  cumulativeBuybackMarketValue: any;
   qiClamAmount: any;
   qiMarketValue: any;
   dystClamAmount: any;
   dystMarketValue: any;
   penClamAmount: any;
   penMarketValue: any;
+  penDystClamAmount: any;
+  penDystMarketValue: any;
+  ottopiaClamAmount: any;
+  ottopiaMarketValue: any;
+  totalRevenueClamAmount: any;
+  totalRevenueMarketValue: any;
 }
 
 export interface GetTreasuryRevenue {

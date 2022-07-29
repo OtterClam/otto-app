@@ -7,11 +7,11 @@ import useApollo from 'hooks/useApollo'
 import useContractAddresses from 'hooks/useContractAddresses'
 import MyOttosProvider from 'MyOttosProvider'
 import OtterSubgraphProvider from 'OtterSubgraphProvider'
-import { PropsWithChildren } from 'react'
 import SnapshotProvider from 'SnapshotSubgraphProvider'
+import { PropsWithChildren, useEffect } from 'react'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
-import bg from './assets/bg.jpg'
+import { CurrencyProvider } from 'contexts/Currency'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 
@@ -19,16 +19,7 @@ const StyledApp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
-  background-image: url(${bg.src});
-  background-size: cover;
-  color: ${({ theme }) => theme.colors.otterBlack};
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    min-height: 100vh;
-    background-position: center;
-    background-size: cover;
-  }
+  overflow-x: hidden;
 `
 
 const config: Config = {
@@ -36,6 +27,7 @@ const config: Config = {
   readOnlyUrls: {
     [ChainId.Polygon]: 'https://polygon-rpc.com',
     // [ChainId.Mumbai]: process.env.NEXT_PUBLIC_RPC_ENDPOINT_MUMBAI || '',
+    // [ChainId.Hardhat]: 'http://127.0.0.1:8545',
   },
   multicallAddresses: {
     [ChainId.Hardhat]: '0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507',
@@ -43,27 +35,45 @@ const config: Config = {
   bufferGasLimitPercentage: 15,
 }
 
+function useRealWindowSize() {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const updateCssVariables = () => {
+        document.documentElement.style.setProperty('--real-vh', `${window.innerHeight}px`)
+      }
+      window.addEventListener('resize', updateCssVariables)
+      updateCssVariables()
+      return () => window.removeEventListener('resize', updateCssVariables)
+    }
+  }, [])
+}
+
 const ApolloApp = ({ children }: PropsWithChildren<object>) => {
   useContractAddresses()
   const apollo = useApollo()
+
+  useRealWindowSize()
+
   return (
     <ApolloProvider client={apollo}>
       <OtterSubgraphProvider>
-        <ThemeProvider theme={theme}>
-          <BreakpointsProvider>
-            <MyOttosProvider>
-              <SnapshotProvider>
-                <StyledApp>
-                  {children}
-                  <Error />
-                  <WalletSelector />
-                  <MintPopup />
-                  <SideMenu />
-                </StyledApp>
-              </SnapshotProvider>
-            </MyOttosProvider>
-          </BreakpointsProvider>
-        </ThemeProvider>
+        <CurrencyProvider>
+          <ThemeProvider theme={theme}>
+            <BreakpointsProvider>
+              <MyOttosProvider>
+                <SnapshotProvider>
+                  <StyledApp>
+                    {children}
+                    <Error />
+                    <WalletSelector />
+                    <MintPopup />
+                    <SideMenu />
+                  </StyledApp>
+                </SnapshotProvider>
+              </MyOttosProvider>
+            </BreakpointsProvider>
+          </ThemeProvider>
+        </CurrencyProvider>
       </OtterSubgraphProvider>
     </ApolloProvider>
   )

@@ -1,5 +1,5 @@
 import { useEthers } from '@usedapp/core'
-import { Contract } from 'ethers'
+import { Contract, Signer } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useMemo } from 'react'
 import {
@@ -17,6 +17,10 @@ import {
   StakedClamTokenContractAbi,
   OtterStakingPearlHelperAbi,
   OttoHellDiceRollerApi,
+  ClamPondAbi,
+  PearlBankAbi,
+  RewardManagerAbi,
+  OtterWrappedUsdPlusAbi,
 } from './abis'
 import { OttoItem } from './__generated__/OttoItem'
 import { OttopiaStore } from './__generated__/OttopiaStore'
@@ -26,9 +30,13 @@ import { IOttoItemFactory } from './__generated__/IOttoItemFactory'
 import {
   ClamCirculatingSupply,
   ClamMaiContract,
+  ClamPond,
   Erc20,
+  OtterRewardManager,
   OtterStakingPearlHelper,
+  OtterWrappedUsdPlusToken,
   OttoHellDiceRoller,
+  PearlBank,
   StakedClamTokenContract,
   StakingContract,
 } from './__generated__'
@@ -36,7 +44,11 @@ import { OttoItemGiveaway } from './__generated__/OttoItemGiveaway'
 
 export function useERC20(address: string) {
   const { library } = useEthers()
-  return useMemo(() => new Contract(address, ERC20Abi, library?.getSigner()) as Erc20, [address, library])
+  return useMemo(() => getERC20(address, library?.getSigner()), [address, library])
+}
+
+export function getERC20(address: string, signer?: Signer) {
+  return new Contract(address, ERC20Abi, signer) as Erc20
 }
 
 export function useStakedClamContract() {
@@ -114,4 +126,28 @@ export function useStakingPearlHelper() {
   const { STAKING_PEARL_HELPER_ADDRESS } = useContractAddresses()
   const { library } = useEthers()
   return new Contract(STAKING_PEARL_HELPER_ADDRESS, OtterStakingPearlHelperAbi, library) as OtterStakingPearlHelper
+}
+
+export function useClamPond() {
+  const { CLAM_POND } = useContractAddresses()
+  const { library } = useEthers()
+  return new Contract(CLAM_POND, ClamPondAbi, library) as ClamPond
+}
+
+export function usePearlBank() {
+  const { PEARL_BANK } = useContractAddresses()
+  const { library } = useEthers()
+  return new Contract(PEARL_BANK, PearlBankAbi, library) as PearlBank
+}
+
+export function useRewardManager() {
+  const { REWARD_MANAGER } = useContractAddresses()
+  const { library } = useEthers()
+  return new Contract(REWARD_MANAGER, RewardManagerAbi, library) as OtterRewardManager
+}
+
+export function useOcUsdPlus() {
+  const { OC_USD_PLUS } = useContractAddresses()
+  const { library } = useEthers()
+  return new Contract(OC_USD_PLUS, OtterWrappedUsdPlusAbi, library) as OtterWrappedUsdPlusToken
 }

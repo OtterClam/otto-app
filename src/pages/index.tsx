@@ -13,11 +13,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => ({
 const HomePage: NextPageWithLayout = HomeView
 
 HomePage.getLayout = (page, i18n) => {
-  return (
-    <Layout title={i18n.t('home.title')} noBorder>
-      {page}
-    </Layout>
-  )
+  return <Layout title={i18n.t('home.title')}>{page}</Layout>
 }
 
 export default HomePage
