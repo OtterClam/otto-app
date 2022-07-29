@@ -28,8 +28,7 @@
   },
   "lint-staged": {
     "*.{png,jpeg,jpg,gif,svg}": [
-      "node ./scripts/imagemin.mjs",
-      "git add"
+      "node ./scripts/imagemin.mjs"
     ]
   },
   "dependencies": {

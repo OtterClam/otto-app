@@ -260,10 +260,12 @@ export default function TreasuryDashboardPage() {
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
-            <Help message={t('distributedTooltip')}>
-              <ContentExtraSmall>{t('distributed')}</ContentExtraSmall>
+            <Help message={t('clamCirculatingSupplyTooltip')}>
+              <ContentExtraSmall>{t('clamCirculatingSupply')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatUsd(pearlBankLatestMetrics?.cumulativeRewardPayoutMarketValue)} USD+</ContentMedium>
+            <ContentMedium>
+              {formatClamString(latestMetrics?.clamCirculatingSupply)} /{formatClamString(latestMetrics?.totalSupply)}
+            </ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
@@ -284,11 +286,11 @@ export default function TreasuryDashboardPage() {
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
-            <Help message={t('clamCirculatingSupplyTooltip')}>
-              <ContentExtraSmall>{t('clamCirculatingSupply')}</ContentExtraSmall>
+            <Help message={t('distributedTooltip')}>
+              <ContentExtraSmall>{t('distributed')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {formatClamString(latestMetrics?.clamCirculatingSupply)} /{formatClamString(latestMetrics?.totalSupply)}
+              {formatUsd(pearlBankLatestMetrics?.cumulativeRewardPayoutMarketValue)} / {avgApr}%
             </ContentMedium>
           </StyledTreasuryCard>
         </StyledMetricsContainer>
