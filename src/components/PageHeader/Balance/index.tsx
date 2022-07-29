@@ -2,7 +2,7 @@ import useContractAddresses from 'hooks/useContractAddresses'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import { useEthers, useTokenBalance } from '@usedapp/core'
 import { formatClamEthers } from 'utils/currency'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { constants } from 'ethers'
 import ReactTooltip from 'react-tooltip'
 import styled, { useTheme } from 'styled-components/macro'
@@ -24,10 +24,12 @@ interface Props {
   onClick: () => void
 }
 
-const SHOW_NEW_WALLET_TOOLTIP = 'show-new-wallet-tooltip'
+const NEW_WALLET_TOOLTIP_SHOWED = 'new-wallet-tooltip-showed'
 
 export const ClamBalance = ({ onClick }: Props) => {
-  const newWalletPopup = Boolean(typeof window !== 'undefined' ? localStorage.getItem(SHOW_NEW_WALLET_TOOLTIP) : false)
+  const [newWalletTooltipShowed, setNewWalletTooltipShowed] = useState(() =>
+    Boolean(typeof window !== 'undefined' ? localStorage.getItem(NEW_WALLET_TOOLTIP_SHOWED) : false)
+  )
   const { CLAM, PEARL_BANK, CLAM_POND } = useContractAddresses()
   const { account } = useEthers()
   const theme = useTheme()
@@ -53,11 +55,12 @@ export const ClamBalance = ({ onClick }: Props) => {
         width={width}
         balance={balance}
         onClick={() => {
-          localStorage.setItem(SHOW_NEW_WALLET_TOOLTIP, 'true')
+          setNewWalletTooltipShowed(true)
+          localStorage.setItem(NEW_WALLET_TOOLTIP_SHOWED, 'true')
           onClick()
         }}
       />
-      {!newWalletPopup && (
+      {!newWalletTooltipShowed && (
         <StyledToolTip
           place="bottom"
           effect="solid"
