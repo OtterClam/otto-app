@@ -170,6 +170,12 @@ function useServiceWorkerRegistrationStatus() {
     if (IS_SERVER) {
       return
     }
+
+    if (!window.workbox) {
+      setActivated(true)
+      return
+    }
+
     window.workbox.active.then(() => {
       console.log('service worker activated')
       setActivated(true)
@@ -183,7 +189,7 @@ export default function AssetsLoader() {
   const loadingImage = useLoadingImage()
   const { ottoNo, dialogNo } = useOtto()
   const assetsLoader = useAssetsLoader()
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState(!IS_SERVER && window.workbox ? 0 : 1)
   const { t } = useTranslation()
   const activated = useServiceWorkerRegistrationStatus()
   const loading = progress < 1 || !activated

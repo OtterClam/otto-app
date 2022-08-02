@@ -1,13 +1,13 @@
 /* eslint-disable no-restricted-globals */
 
 import { RegExpRoute, registerRoute, setDefaultHandler } from 'workbox-routing'
+import { StaleWhileRevalidate } from 'workbox-strategies'
 import { CacheController } from './cache-controller'
 import { BundleName, EventType } from './consts'
 import { WorkerMessageEvent } from './event'
 import { bundles } from './assets-bundles'
 import { broadcast } from './broadcast'
 import { BundleRouteHandler } from './bundle-route-handler'
-import { StaleWhileRevalidate } from 'workbox-strategies'
 
 // the following line can't be removed
 self.__WB_MANIFEST

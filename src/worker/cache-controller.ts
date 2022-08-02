@@ -126,14 +126,14 @@ export class CacheController {
             return
           }
 
-          console.log(`[worker] download: ${file}` + (uri === file ? '' : ' (' + uri + ')'))
+          console.log(`[worker] download: ${file}${uri === file ? '' : ` (${uri})`}`)
 
           try {
             await cache.add(uri)
             fileSet.add(file)
             this.onFileLoaded(bundle, file)
           } catch (err) {
-            console.warn(`[worker] failed to download ${file}` + (uri === file ? '' : ' (' + uri + ')'), err)
+            console.warn(`[worker] failed to download ${file}${uri === file ? '' : ` (${uri})`}`, err)
             fileSet.add(file)
             this.onFileLoaded(bundle, file, err as Error)
           }

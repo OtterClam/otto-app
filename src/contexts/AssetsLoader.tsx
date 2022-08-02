@@ -11,17 +11,21 @@ export interface AssetsLoaderState {
 
 export class AssetsLoader extends EventEmitter {
   private bundleNames: string[] = []
-  private loadingProgress: number = 1
+
+  private loadingProgress = 1
 
   init() {
+    console.log('[assets-loader] init')
     window.workbox.addEventListener('message', this.messageHandler)
   }
 
   destroy() {
+    console.log('[assets-loader] destroy')
     window.workbox.removeEventListener('message', this.messageHandler)
   }
 
   private messageHandler = (event: WorkboxMessageEvent) => {
+    console.log('[assets-loader] receive event', event)
     if (event.data.type === EventType.FileLoaded && this.bundleNames.includes(event.data.data.bundleName)) {
       this.updateLoadingProgress()
     }
@@ -37,6 +41,10 @@ export class AssetsLoader extends EventEmitter {
   }
 
   async loadBundleByNames(names: BundleName[]): Promise<void> {
+    if (!window.workbox) {
+      return
+    }
+
     this.removeAllListeners('progress')
     console.log(`[assets-loader] load bundles: ${names}`)
     window.workbox.messageSW({
@@ -46,7 +54,11 @@ export class AssetsLoader extends EventEmitter {
   }
 
   async updateLoadingProgress(): Promise<void> {
-    console.log(`[assets-loader] update loading progress...`)
+    if (!window.workbox) {
+      return
+    }
+
+    console.log(`[assets-loader] update loading progress...`, this.bundleNames)
     window.workbox.messageSW({
       type: EventType.GetDowbloadProgress,
       data: this.bundleNames,
@@ -63,6 +75,11 @@ export const AssetsLoaderProvider = ({ children }: PropsWithChildren<object>) =>
     if (IS_SERVER) {
       return
     }
+
+    if (!window.workbox) {
+      return
+    }
+
     assetsLoader.init()
     return () => assetsLoader.destroy()
   }, [])

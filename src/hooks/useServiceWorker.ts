@@ -21,6 +21,11 @@ export default function useServiceWorker() {
       return
     }
 
+    if (!window.workbox) {
+      setActivated(true)
+      return
+    }
+
     window.workbox.update()
     window.workbox.active.then(() => {
       console.log('service worker activated')
