@@ -46,7 +46,7 @@ const StyledActionButtons = styled(ActionButtons)`
 
 const StyledBanner = styled(Banner)`
   width: auto;
-  max-width: 262px;
+  max-width: 450px;
   pointer-events: auto;
 `
 
