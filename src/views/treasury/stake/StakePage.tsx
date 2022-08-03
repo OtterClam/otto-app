@@ -17,6 +17,10 @@ const StyledTreasurySection = styled(TreasurySection)`
     height: unset;
     align-item: unset;
   }
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    height: calc(var(--body-height) - 84px);
+  }
 `
 
 const StyledStakePage = styled.div`

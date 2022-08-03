@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react'
+import { forwardRef, PropsWithChildren, RefObject } from 'react'
 import styled from 'styled-components/macro'
 import EdgeXL from './golden_edge_xl.png'
 import EdgeXS from './golden_edge_xs.png'
@@ -96,13 +96,12 @@ export interface TreasurySectionProps {
   showRope?: boolean
 }
 
-export default function TreasurySection({
-  className,
-  children,
-  showRope = true,
-}: PropsWithChildren<TreasurySectionProps>) {
+export default forwardRef<unknown, PropsWithChildren<TreasurySectionProps>>(function TreasurySection(
+  { className, children, showRope = true },
+  ref
+) {
   return (
-    <StyledContainer showRope={showRope} className={className}>
+    <StyledContainer ref={ref as RefObject<HTMLDivElement>} showRope={showRope} className={className}>
       {children}
       <StyledCorner position="lt" />
       <StyledCorner position="lb" />
@@ -110,4 +109,4 @@ export default function TreasurySection({
       <StyledCorner position="rb" />
     </StyledContainer>
   )
-}
+})

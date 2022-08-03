@@ -2,9 +2,17 @@ import { ChainId, useEthers } from '@usedapp/core'
 import axios, { Axios } from 'axios'
 import { Dice } from 'models/Dice'
 import Item from 'models/Item'
+import { Notification, RawNotification } from 'models/Notification'
 import { OttoMeta } from 'models/Otto'
 import Product from 'models/store/Product'
 import { useMemo } from 'react'
+
+const hash = (s: string) => {
+  return s.split('').reduce((a: number, b: string) => {
+    a = (a << 5) - a + b.charCodeAt(0)
+    return a & a
+  }, 0)
+}
 
 export interface OttoCandidateMeta {
   name: string
@@ -43,6 +51,16 @@ export class Api {
 
   public async getOttoMeta(ottoId: string, lang: string, details: boolean): Promise<OttoMeta> {
     return this.axios.get(`/ottos/metadata/${ottoId}`, { params: { details, lang } }).then(res => res.data)
+  }
+
+  public async getNotifications(): Promise<Notification[]> {
+    const res = await this.axios.get<RawNotification[]>('/notifications/home')
+    return res.data.map(raw => ({
+      key: hash(JSON.stringify(raw)),
+      imageUrl: raw.image_url,
+      text: raw.text,
+      url: raw.url,
+    }))
   }
 
   public async getOttoMetas(
