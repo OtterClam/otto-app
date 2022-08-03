@@ -1,5 +1,5 @@
-import TreasuryLayout from 'components/TreasuryLayout'
-import Layout from 'Layout'
+import TreasuryLayout from 'layouts/TreasuryLayout'
+import DefaultLayout from 'layouts/DefaultLayout'
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { NextPageWithLayout } from 'pages/_app'
@@ -15,9 +15,9 @@ const TreasuryStakePage: NextPageWithLayout = StakeView
 
 TreasuryStakePage.getLayout = (page, i18n) => {
   return (
-    <Layout title={i18n.t('stake.title')}>
+    <DefaultLayout title={i18n.t('stake.title')}>
       <TreasuryLayout>{page}</TreasuryLayout>
-    </Layout>
+    </DefaultLayout>
   )
 }
 

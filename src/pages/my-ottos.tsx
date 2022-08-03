@@ -2,7 +2,7 @@ import Board from 'components/Board'
 import MyOttosView from 'views/otto/MyOttosPage/MyOttosPage'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
-import Layout from 'Layout'
+import DefaultLayout from 'layouts/DefaultLayout'
 import RequireConnect from 'components/RequireConnect'
 import { NextPageWithLayout } from './_app'
 
@@ -16,11 +16,11 @@ const MyOttosPage: NextPageWithLayout = MyOttosView
 
 MyOttosPage.getLayout = (page, i18n) => {
   return (
-    <Layout title={i18n.t('my_ottos.title')}>
+    <DefaultLayout title={i18n.t('my_ottos.title')}>
       <Board>
         <RequireConnect>{page}</RequireConnect>
       </Board>
-    </Layout>
+    </DefaultLayout>
   )
 }
 
