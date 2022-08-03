@@ -1,6 +1,6 @@
+import dynamic from 'next/dynamic'
 import { ApolloProvider } from '@apollo/client'
 import { ChainId, Config, DAppProvider } from '@usedapp/core'
-import MintPopup from 'components/MintPopup'
 import SideMenu from 'components/SideMenu'
 import { BreakpointsProvider } from 'contexts/Breakpoints'
 import useApollo from 'hooks/useApollo'
@@ -13,6 +13,10 @@ import { theme } from 'styles'
 import { CurrencyProvider } from 'contexts/Currency'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
+
+const MintPopup = dynamic(() => import('components/MintPopup'), {
+  ssr: true,
+})
 
 const StyledApp = styled.div`
   display: flex;

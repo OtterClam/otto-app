@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic'
 import Button from 'components/Button'
 import { useClaimGiveaway } from 'contracts/functions'
 import { useEffect, useRef, useState } from 'react'
@@ -12,7 +13,8 @@ import BottomLeftDraw from './draw-bottom-left.jpg'
 import BottomRightDraw from './draw-bottom-right.jpg'
 import InvitationCodeStep, { SuccessResponse } from './InvitationCodeStep'
 import TwitterStep from './TwitterStep'
-import GiveawayPopup from '../GiveawayPopup'
+
+const GiveawayPopup = dynamic(() => import('../GiveawayPopup'), { ssr: false })
 
 const StyledSteps = styled.section`
   width: 100%;

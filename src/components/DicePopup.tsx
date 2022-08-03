@@ -375,7 +375,7 @@ const stateView: { [key: string]: FC<StateProps> } = {
   [State.SecondResult]: ResultState,
 }
 
-export function DicePopup() {
+export default function DicePopup() {
   const theme = useTheme()
   const otto = useSelector(selectOttoInTheHell)
   const diceRoller = useDiceRoller(otto)
