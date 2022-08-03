@@ -20,12 +20,10 @@ button {
 	outline: none;
 	cursor: url('/cursor-pointer.png') 7 0, auto;
 	text-decoration: none;
-}
 
-;
-
-:disabled {
-	cursor: url('/cursor-default.png'), auto;
+	&:disabled {
+		cursor: url('/cursor-default.png'), auto;
+	}
 }
 
 input {
