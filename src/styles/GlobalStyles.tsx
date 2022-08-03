@@ -24,6 +24,15 @@ const GlobalStyle = createGlobalStyle`
       color: ${({ theme }) => theme.colors.otterBlack};
       background: center / cover no-repeat url(${bg.src});
       background-attachment: fixed;
+
+      &.loading {
+        overflow: hidden;
+        background: #101631;
+      }
+
+      &.loading #page {
+        opacity: 0;
+      }
     }
 
     * {

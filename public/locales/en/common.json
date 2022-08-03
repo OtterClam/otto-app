@@ -3,6 +3,32 @@
     "en": "English",
     "zh-tw": "中文"
   },
+  "new_version": "A newer version of this web app is available, reload to update?",
+  "assets_loader": {
+    "name": {
+      "0": "Percy the Clerk",
+      "1": "Timmy the Pond Keeper",
+      "2": "Archibald the Banker"
+    },
+    "messages": {
+      "0": {
+        "0": "Want your Otto NFT to look fancy and be stronger? Buy the Shell Chests and get special equipment in the Ottopia Store. Uta!",
+        "1": "Stores occasionally offer limited-time specials, so keep an eye on Discord for the latest info. Uta!",
+        "2": "Feeling lucky? Roll the Dice of Destiny to hopefully increase your Otto NFT’s rarity score. Be careful though, some are unlucky! Uta!",
+        "3": "Did you know we offer discounts for Chests purchased in larger quantities? Uta!"
+      },
+      "1": {
+        "0": "Throw your CLAM in CLAM Pond, and the pond will automatically compound your rewards! Omi!",
+        "1": "Rest easy and don't worry about auto-compounding your yields! The pond keeper does it all for you. Omi!",
+        "2": "Remember! There's a 1% fee for deposit withdrawals before 30 days have passed! Omi!"
+      },
+      "2": {
+        "0": "Don’t forget to claim your USD+ rewards everyday! You can claim USD+ in Pearl Bank with just one click. Apo!",
+        "1": "Remember! There's a 1% fee for deposit withdrawals before 30 days have passed!",
+        "2": "Want rewards without volatility? Then Pearl Bank is for you!"
+      }
+    }
+  },
   "button_processing": "Processing",
   "close": "Close",
   "connect_help_text": "Please connect wallet to continue playing.",

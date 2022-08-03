@@ -4,7 +4,8 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
+      "webworker"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -24,7 +25,8 @@
   },
   "include": [
     "src",
-    "typings"
+    "typings",
+    "node_modules/@types"
   ],
   "exclude": [
     "node_modules"

@@ -85,7 +85,7 @@ export default class MyDocument extends Document<{ asPath: string }> {
           <link rel="apple-touch-icon" href="/logo192.png" />
           <link rel="manifest" href="/manifest.json" />
         </Head>
-        <body>
+        <body className="loading">
           <noscript>
             <iframe
               src="https://www.googletagmanager.com/ns.html?id=GTM-W4MP2GV"
