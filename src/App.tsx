@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic'
 import { ApolloProvider } from '@apollo/client'
 import { ChainId, Config, DAppProvider } from '@usedapp/core'
 import SideMenu from 'components/SideMenu'
@@ -13,10 +12,6 @@ import { theme } from 'styles'
 import { CurrencyProvider } from 'contexts/Currency'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
-
-const MintPopup = dynamic(() => import('components/MintPopup'), {
-  ssr: true,
-})
 
 const StyledApp = styled.div`
   display: flex;
@@ -68,7 +63,6 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                   {children}
                   <Error />
                   <WalletSelector />
-                  <MintPopup />
                   <SideMenu />
                 </StyledApp>
               </MyOttosProvider>
