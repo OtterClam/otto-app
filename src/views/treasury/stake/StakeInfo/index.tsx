@@ -10,6 +10,7 @@ import { useMemo } from 'react'
 import styled, { css, keyframes } from 'styled-components/macro'
 import { ContentSmall, Note } from 'styles/typography'
 import { formatClamEthers, formatUsd } from 'utils/currency'
+import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 import StakeDialog from '../StakeDialog'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
@@ -18,7 +19,6 @@ import TopBg from './top.png'
 import GashaponTicketEn from './gashapon-ticket-en.jpg'
 import GashaponTicketZh from './gashapon-ticket-zh.jpg'
 import Middle from './middle.png'
-import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 
 const Animation = keyframes`
   0%   { background-position: left top }

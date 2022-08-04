@@ -14,12 +14,12 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import { ContentSmall, Note } from 'styles/typography'
 import { formatClamEthers, formatUsd, formatUsdc } from 'utils/currency'
+import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 import StakeDialog from '../StakeDialog'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
 import GashaponTicketEn from './gashapon-ticket-en.jpg'
 import GashaponTicketZh from './gashapon-ticket-zh.jpg'
-import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 
 const StyledStakeInfo = styled.div`
   width: 420px;

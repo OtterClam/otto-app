@@ -1,3 +1,5 @@
+import noop from 'lodash/noop'
+
 export const IS_SERVER = typeof window === 'undefined'
 
 export const WHITELIST_MINT_TIME = 1647694800000 // 2022/3/19 21:00+8
@@ -22,7 +24,7 @@ export function getOpenSeaLink(tokenId: string) {
   return `${OPENSEA_NFT_LINK}${tokenId}`
 }
 
-export const ottoClick = IS_SERVER ? { play: () => {}, load: () => {} } : new Audio('https://ottopia.app/ottoclick.mp3')
+export const ottoClick = IS_SERVER ? { play: noop, load: noop } : new Audio('https://ottopia.app/ottoclick.mp3')
 ottoClick.load()
 
 export const TOTAL_RARITY_REWARD = 16000
