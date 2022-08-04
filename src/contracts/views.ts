@@ -2,7 +2,6 @@ import { useCall, useCalls, useEthers } from '@usedapp/core'
 import { BigNumber, constants } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import {
-  useClamMaiContract,
   useClamPond,
   useItemContract,
   useOcUsdPlus,
@@ -10,7 +9,6 @@ import {
   usePearlBank,
   usePortalCreatorContract,
   useRewardManager,
-  useStakingContract,
   useStoreContract,
 } from './contracts'
 
@@ -73,57 +71,6 @@ export const useStoreAirdropAmounts = (productIds: string[], ottoIds: string[]) 
     }
   })
   return results.map(result => Number(result?.value?.[0] || 0))
-}
-
-export const useClamPrice = (): BigNumber | undefined => {
-  const { MAI, CLAM } = useContractAddresses()
-  const clamMaiContract = useClamMaiContract()
-  const [result] = useCalls([
-    {
-      contract: clamMaiContract,
-      method: 'getReserves',
-      args: [],
-    },
-  ])
-
-  if (!result) {
-    console.error('failed to get pair reserves')
-    return
-  }
-
-  if (result.error) {
-    console.error('failed to get pair reserves:', result.error)
-    return
-  }
-
-  const [clamReserve, maiReserve] = (
-    BigNumber.from(MAI).gt(CLAM) ? [result.value[0], result.value[1]] : [result.value[1], result.value[0]]
-  ) as [BigNumber, BigNumber]
-
-  return maiReserve.div(clamReserve)
-}
-
-export const useClamIndex = (): BigNumber | undefined => {
-  const stakingContract = useStakingContract()
-  const [result] = useCalls([
-    {
-      contract: stakingContract,
-      method: 'index',
-      args: [],
-    },
-  ])
-
-  if (!result) {
-    console.error('failed to get pair reserves')
-    return
-  }
-
-  if (result.error) {
-    console.error('failed to get pair reserves:', result.error)
-    return
-  }
-
-  return result.value
 }
 
 export interface KeyMetrics {
