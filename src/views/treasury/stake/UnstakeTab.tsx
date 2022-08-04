@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic'
 import CLAM from 'assets/clam.svg'
 import CLAMCoin from 'assets/tokens/CLAM.svg'
 import Button from 'components/Button'
@@ -12,7 +13,8 @@ import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Caption, Note, ContentLarge, ContentSmall, Headline, RegularInput } from 'styles/typography'
-import UnstakeSuccessPopup from './UnstakeSuccessPopup'
+
+const UnstakeSuccessPopup = dynamic(() => import('./UnstakeSuccessPopup'), { ssr: false })
 
 const StyledUnstakeTab = styled.div`
   display: flex;

@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic'
 import { useQuery } from '@apollo/client'
 import OpenSeaBlue from 'assets/opensea-blue.svg'
 import Button from 'components/Button'
@@ -17,9 +18,10 @@ import { GetPortal, GetPortalVariables } from 'graphs/__generated__/GetPortal'
 import ClockImage from '../clock.png'
 import PortalContainer from '../PortalContainer'
 import GetThroughPortal from './get_through_portal.png'
-import OpenPortalPopup from './OpenPortalPopup'
 import PortalCandidates from './PortalCandidates'
-import SummonPopup from './SummonPopup'
+
+const SummonPopup = dynamic(() => import('./SummonPopup'), { ssr: false })
+const OpenPortalPopup = dynamic(() => import('./OpenPortalPopup'), { ssr: false })
 
 const StyledPortalPage = styled.div`
   min-height: 100%;

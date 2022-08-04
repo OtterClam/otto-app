@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic'
 import { useQuery } from '@apollo/client'
 import OpenSeaBlue from 'assets/opensea-blue.svg'
 import Button from 'components/Button'
@@ -5,7 +6,7 @@ import Loading from 'components/Loading'
 import { getOpenSeaLink, reserveOttoAmount } from 'constant'
 import { format } from 'date-fns'
 import useOtto from 'hooks/useOtto'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components/macro'
@@ -16,7 +17,6 @@ import LegendaryIcon from 'assets/badge/legendary.png'
 import FirstGenIcon from 'assets/badge/first-gen.png'
 import Constellations from 'assets/constellations'
 import { DiceBanner } from 'components/DiceBanner'
-import { DicePopup } from 'components/DicePopup'
 import { useRouter } from 'next/router'
 import { GET_OTTO } from 'graphs/otto'
 import { GetOtto, GetOttoVariables } from 'graphs/__generated__/GetOtto'
@@ -24,6 +24,10 @@ import { useEthers } from '@usedapp/core'
 import PlayIcon from './icons/play-voice.svg'
 import OttoTraitDetails from './OttoTraitDetails'
 import TheOtter from './icons/the_otter.png'
+
+const DicePopup = dynamic(() => import('components/DicePopup'), {
+  ssr: false,
+})
 
 const StyledOttoPage = styled.div`
   min-height: 100%;
