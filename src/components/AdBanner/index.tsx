@@ -37,7 +37,7 @@ const ads = [
   // TODO: Link
   {
     image: JulyAMA,
-    link: '',
+    link: 'https://www.youtube.com/watch?v=DLWFkhIRXcU',
   },
 ]
 

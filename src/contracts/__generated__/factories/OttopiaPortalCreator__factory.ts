@@ -48,6 +48,31 @@ const _abi = [
       {
         indexed: true,
         internalType: "address",
+        name: "minter",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "quantity",
+        type: "uint256",
+      },
+    ],
+    name: "OttoMinted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
         name: "previousOwner",
         type: "address",
       },
@@ -79,7 +104,7 @@ const _abi = [
     name: "CLAM",
     outputs: [
       {
-        internalType: "contract IERC20",
+        internalType: "contract IBurnableERC20",
         name: "",
         type: "address",
       },
@@ -128,6 +153,19 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "REWARD",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "WETH",
     outputs: [
       {
@@ -143,50 +181,15 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
-        name: "amount_",
-        type: "uint256",
-      },
-      {
-        internalType: "address[]",
-        name: "wallets",
-        type: "address[]",
-      },
-    ],
-    name: "addOttolisted",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "enum OttopiaPortalCreator.SALE_STAGE",
-        name: "stage_",
-        type: "uint8",
-      },
-      {
-        internalType: "uint256",
-        name: "timestamp_",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "price_",
+        name: "quantity_",
         type: "uint256",
       },
     ],
-    name: "adjustSaleConfig",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "clamPerWETH",
+    name: "currentPrice",
     outputs: [
       {
         internalType: "uint256",
-        name: "clamPerWETH_",
+        name: "",
         type: "uint256",
       },
     ],
@@ -220,28 +223,31 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
+    inputs: [],
+    name: "discountConfig",
+    outputs: [
       {
-        internalType: "address",
-        name: "to_",
-        type: "address",
+        internalType: "uint256",
+        name: "startedAt",
+        type: "uint256",
       },
       {
         internalType: "uint256",
-        name: "quantity_",
+        name: "endedAt",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amountThreshold",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "percentageOff",
         type: "uint256",
       },
     ],
-    name: "devMint",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "distribute",
-    outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -261,22 +267,12 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
+        name: "clam_",
+        type: "address",
+      },
+      {
+        internalType: "address",
         name: "otto_",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "weth_",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "maiclam_",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "wethPriceFeed_",
         type: "address",
       },
       {
@@ -289,8 +285,18 @@ const _abi = [
         name: "dao_",
         type: "address",
       },
+      {
+        internalType: "address",
+        name: "reward_",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "price_",
+        type: "uint256",
+      },
     ],
-    name: "initialize",
+    name: "initializeV2",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -357,11 +363,11 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "priceInCLAM",
+    name: "price",
     outputs: [
       {
         internalType: "uint256",
-        name: "price_",
+        name: "",
         type: "uint256",
       },
     ],
@@ -370,11 +376,11 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "priceInWETH",
+    name: "priceInCLAM",
     outputs: [
       {
         internalType: "uint256",
-        name: "price_",
+        name: "",
         type: "uint256",
       },
     ],
@@ -404,7 +410,7 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "enum OttopiaPortalCreator.SALE_STAGE",
+        internalType: "enum OttopiaPortalCreatorV2.SALE_STAGE",
         name: "",
         type: "uint8",
       },
@@ -426,32 +432,49 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "saleStage",
-    outputs: [
+    inputs: [
       {
-        internalType: "enum OttopiaPortalCreator.SALE_STAGE",
-        name: "stage_",
-        type: "uint8",
+        components: [
+          {
+            internalType: "uint256",
+            name: "startedAt",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "endedAt",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "amountThreshold",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "percentageOff",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct OttopiaPortalCreatorV2.DiscountConfig",
+        name: "discountConfig_",
+        type: "tuple",
       },
     ],
-    stateMutability: "view",
+    name: "setDiscount",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [
       {
         internalType: "uint256",
-        name: "amount_",
+        name: "newPrice",
         type: "uint256",
       },
-      {
-        internalType: "address[]",
-        name: "wallets",
-        type: "address[]",
-      },
     ],
-    name: "setOttolisted",
+    name: "setPrice",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
