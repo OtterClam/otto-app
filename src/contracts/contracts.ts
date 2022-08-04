@@ -3,44 +3,36 @@ import { Contract, Signer } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useMemo } from 'react'
 import {
+  ClamCirculatingSupplyAbi,
+  ClamPondAbi,
   ERC20Abi,
   IOttoItemFactoryAbi,
+  OtterWrappedUsdPlusAbi,
   OttoAbi,
-  OttoItemAbi,
-  OttopiaStoreAbi,
-  OttopiaPortalCreatorAbi,
-  OttoSummonerAbi,
-  OttoItemGiveawayAbi,
-  ClamMaiContractAbi,
-  StakingContractAbi,
-  ClamCirculatingSupplyAbi,
-  StakedClamTokenContractAbi,
-  OtterStakingPearlHelperAbi,
   OttoHellDiceRollerApi,
-  ClamPondAbi,
+  OttoItemAbi,
+  OttoItemGiveawayAbi,
+  OttopiaPortalCreatorAbi,
+  OttopiaStoreAbi,
+  OttoSummonerAbi,
   PearlBankAbi,
   RewardManagerAbi,
-  OtterWrappedUsdPlusAbi,
 } from './abis'
-import { OttoItem } from './__generated__/OttoItem'
-import { OttopiaStore } from './__generated__/OttopiaStore'
-import { Otto } from './__generated__/Otto'
-import { OttopiaPortalCreator } from './__generated__/OttopiaPortalCreator'
-import { IOttoItemFactory } from './__generated__/IOttoItemFactory'
 import {
   ClamCirculatingSupply,
-  ClamMaiContract,
   ClamPond,
   Erc20,
   OtterRewardManager,
-  OtterStakingPearlHelper,
   OtterWrappedUsdPlusToken,
   OttoHellDiceRoller,
   PearlBank,
-  StakedClamTokenContract,
-  StakingContract,
 } from './__generated__'
+import { IOttoItemFactory } from './__generated__/IOttoItemFactory'
+import { Otto } from './__generated__/Otto'
+import { OttoItem } from './__generated__/OttoItem'
 import { OttoItemGiveaway } from './__generated__/OttoItemGiveaway'
+import { OttopiaPortalCreator } from './__generated__/OttopiaPortalCreator'
+import { OttopiaStore } from './__generated__/OttopiaStore'
 
 export function useERC20(address: string) {
   const { library } = useEthers()
@@ -49,12 +41,6 @@ export function useERC20(address: string) {
 
 export function getERC20(address: string, signer?: Signer) {
   return new Contract(address, ERC20Abi, signer) as Erc20
-}
-
-export function useStakedClamContract() {
-  const { sCLAM } = useContractAddresses()
-  const { library } = useEthers()
-  return new Contract(sCLAM, StakedClamTokenContractAbi, library) as StakedClamTokenContract
 }
 
 export function useOttoContract() {
@@ -104,28 +90,10 @@ export function useItemGiveaway() {
   return new Contract(OTTO_ITEM_GIVEAWAY, OttoItemGiveawayAbi, library) as OttoItemGiveaway
 }
 
-export function useClamMaiContract() {
-  const { MAI_CLAM } = useContractAddresses()
-  const { library } = useEthers()
-  return new Contract(MAI_CLAM, ClamMaiContractAbi, library) as ClamMaiContract
-}
-
-export function useStakingContract() {
-  const { STAKING } = useContractAddresses()
-  const { library } = useEthers()
-  return new Contract(STAKING, StakingContractAbi, library) as StakingContract
-}
-
 export function useClamCirculatingSupply() {
   const { CLAM_CIRCULATING_SUPPLY } = useContractAddresses()
   const { library } = useEthers()
   return new Contract(CLAM_CIRCULATING_SUPPLY, ClamCirculatingSupplyAbi, library) as ClamCirculatingSupply
-}
-
-export function useStakingPearlHelper() {
-  const { STAKING_PEARL_HELPER_ADDRESS } = useContractAddresses()
-  const { library } = useEthers()
-  return new Contract(STAKING_PEARL_HELPER_ADDRESS, OtterStakingPearlHelperAbi, library) as OtterStakingPearlHelper
 }
 
 export function useClamPond() {
