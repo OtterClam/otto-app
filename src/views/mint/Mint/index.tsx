@@ -1,17 +1,16 @@
 import { shortenAddress, useEthers, useTokenAllowance, useTokenBalance } from '@usedapp/core'
 import CLAM from 'assets/clam.png'
 import Button from 'components/Button'
-import { BUY_CLAM_LINK } from 'constant'
+import { useBreakpoints } from 'contexts/Breakpoints'
 import { useApprove, useMint } from 'contracts/functions'
 import { useMintInfo, useOttoInfo } from 'contracts/views'
 import { ethers } from 'ethers'
 import { trim } from 'helpers/trim'
 import useContractAddresses from 'hooks/useContractAddresses'
-import { useBreakpoints } from 'contexts/Breakpoints'
-import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { connectWallet, mintFailed, mintStart, mintSuccess } from 'store/uiSlice'
+import { connectWallet, mintFailed, mintStart, mintSuccess, showWalletPopup } from 'store/uiSlice'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentMedium, ContentSmall, Display2, Headline, Note } from 'styles/typography'
 import PortalPreviewImage from './portal-preview.png'
@@ -378,9 +377,7 @@ export default function Mint() {
             )}
             <StyledBuyCLAM>
               <ContentSmall>{t('mint.not_enough_clam')}</ContentSmall>
-              <a href={BUY_CLAM_LINK} target="_blank" rel="noreferrer">
-                <StyledBuyCLAMLink>{t('mint.buy')}</StyledBuyCLAMLink>
-              </a>
+              <StyledBuyCLAMLink onClick={() => dispatch(showWalletPopup())}>{t('mint.buy')}</StyledBuyCLAMLink>
             </StyledBuyCLAM>
           </StyledRightSection>
         </StyledSection>
