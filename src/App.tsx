@@ -11,10 +11,10 @@ import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
 import { CurrencyProvider } from 'contexts/Currency'
 import useServiceWorker from 'hooks/useServiceWorker'
-import Error from './components/Error'
-import WalletSelector from './components/WalletSelector'
 import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
 import AssetsLoader from 'components/AssetsLoader'
+import Error from './components/Error'
+import WalletSelector from './components/WalletSelector'
 
 const StyledApp = styled.div`
   display: flex;
@@ -69,9 +69,7 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
               <BreakpointsProvider>
                 <MyOttosProvider>
                   <StyledApp>
-                    <StyledPageContainer>
-                      {children}
-                    </StyledPageContainer>
+                    <StyledPageContainer>{children}</StyledPageContainer>
                     <Error />
                     <WalletSelector />
                     <SideMenu />
