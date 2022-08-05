@@ -3,7 +3,6 @@ import LeaderboardView from 'views/leaderboard/LeaderboardPage'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import Layout from 'Layout'
-import RequireConnect from 'components/RequireConnect'
 import { NextPageWithLayout } from './_app'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({

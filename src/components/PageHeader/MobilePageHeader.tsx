@@ -1,6 +1,5 @@
 import styled from 'styled-components/macro'
 import useIsAtTop from 'hooks/useIsAtTop'
-import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { connectWallet, showWalletPopup } from 'store/uiSlice'
 import { useEthers } from '@usedapp/core'

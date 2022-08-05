@@ -1,6 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
 import { ChainId, Config, DAppProvider } from '@usedapp/core'
-import MintPopup from 'components/MintPopup'
 import SideMenu from 'components/SideMenu'
 import { BreakpointsProvider } from 'contexts/Breakpoints'
 import useApollo from 'hooks/useApollo'
@@ -75,7 +74,6 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                     </StyledPageContainer>
                     <Error />
                     <WalletSelector />
-                    <MintPopup />
                     <SideMenu />
                     <AssetsLoader />
                   </StyledApp>

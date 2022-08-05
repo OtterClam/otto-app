@@ -67,7 +67,7 @@ const StyledItemValue = styled(Note)`
   text-align: right;
 `
 
-export interface ChartTooltipPrpps {
+export interface ChartTooltipProps {
   headerLabel?: string
   headerValue?: string | number
   items: {
@@ -79,7 +79,7 @@ export interface ChartTooltipPrpps {
   footer?: string
 }
 
-export default function ChartTooltip({ headerLabel, headerValue, items = [], footer }: ChartTooltipPrpps) {
+export default function ChartTooltip({ headerLabel, headerValue, items = [], footer }: ChartTooltipProps) {
   return (
     <StyledContainer>
       {(headerLabel || headerValue) && (

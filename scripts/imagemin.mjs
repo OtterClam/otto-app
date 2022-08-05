@@ -11,7 +11,7 @@ const plugins = [
   gif({ interlaced: true }),
   jpg({ progressive: true }),
   png({ optimizationLevel: 5 }),
-  svg({ plugins: [{ removeViewBox: false }] }),
+  svg({ plugins: [{ name: 'removeViewBox', active: false }] }),
 ]
 
 const minifyFile = filename =>

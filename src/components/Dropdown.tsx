@@ -1,11 +1,10 @@
-import cursorPointer from 'assets/cursor-pointer.png'
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentSmall } from 'styles/typography'
 
 const StyledDropdown = styled.div`
   position: relative;
-  cursor: url(${cursorPointer.src}) 7 0, auto;
+  cursor: url('/cursor-pointer.png') 7 0, auto;
 `
 
 const StyledSelected = styled.div`

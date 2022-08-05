@@ -1,0 +1,47 @@
+@import url('./fonts.css');
+@import url('./modules.css');
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	padding-top: var(--header-height);
+	cursor: url('/cursor-default.png'), auto;
+	background: center / cover no-repeat url('/bg.jpg');
+	background-attachment: fixed;
+
+	&.loading {
+		overflow: hidden;
+		background: #101631;
+	}
+
+	&.loading #page {
+		opacity: 0;
+	}
+}
+
+button {
+	background: none;
+	border: none;
+	outline: none;
+	cursor: url('/cursor-pointer.png') 7 0, auto;
+	text-decoration: none;
+
+	&:disabled {
+		cursor: url('/cursor-default.png'), auto;
+	}
+}
+
+input {
+	border: none;
+	outline: none;
+}
+
+a {
+	color: unset;
+	text-decoration: none;
+	cursor: url('/cursor-pointer.png') 7 0, auto;
+}

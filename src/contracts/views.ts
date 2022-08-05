@@ -2,37 +2,26 @@ import { useCall, useCalls, useEthers } from '@usedapp/core'
 import { BigNumber, constants } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import {
-  useClamCirculatingSupply,
   useClamMaiContract,
   useClamPond,
-  useERC20,
   useItemContract,
   useOcUsdPlus,
   useOttoContract,
   usePearlBank,
   usePortalCreatorContract,
   useRewardManager,
-  useStakedClamContract,
   useStakingContract,
   useStoreContract,
 } from './contracts'
 
-export const useMintInfo = () => {
+export const useMintInfo = (quantity: number) => {
   const contract = usePortalCreatorContract()
-  const results =
-    useCalls([
-      {
-        contract,
-        method: 'priceInCLAM',
-        args: [],
-      },
-    ]) || {}
-  results.forEach((result, idx) => {
-    if (result && result.error) {
-      console.error(`Error encountered  ${result.error.message}`)
-    }
+  const result = useCall({
+    contract,
+    method: 'currentPrice',
+    args: [quantity],
   })
-  return results.map(result => BigNumber.from(result?.value?.[0] || '0'))
+  return (result?.value?.[0] || constants.Zero).div(quantity)
 }
 
 export const useOttoInfo = () => {

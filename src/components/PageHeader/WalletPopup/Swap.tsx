@@ -10,6 +10,7 @@ import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } fro
 import { Token, use1inchQuote, use1inchSwap, useTokenList } from './1inchHelper'
 import BuyCLAMIcon from './buy-clam.png'
 import SwapLoading from './SwapLoading'
+import OneinchIcon from './1inch.png'
 
 const StyledSwap = styled.div`
   display: flex;
@@ -188,6 +189,15 @@ const StyledSelectTokenAmount = styled(Note)`
   color: ${({ theme }) => theme.colors.darkGray200};
 `
 
+const StyledPoweredBy = styled(Note)`
+  width: 100%;
+  color: ${({ theme }) => theme.colors.darkGray100};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+`
+
 interface Props {
   onClose: () => void
 }
@@ -364,6 +374,10 @@ export default function Swap({ onClose }: Props) {
       <StyledSwapButton Typography={Headline} onClick={performSwap} disabled={!fromAmount || !enoughBalance}>
         {!fromAmount ? t('placeholder') : enoughBalance ? t('swap') : t('not_enough_balance', { symbol: fromToken })}
       </StyledSwapButton>
+      <StyledPoweredBy>
+        Powered by 1inch
+        <Image src={OneinchIcon} width="18px" height="18px" />
+      </StyledPoweredBy>
     </StyledSwap>
   )
 }

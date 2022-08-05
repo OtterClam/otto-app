@@ -66,7 +66,7 @@ export default function Switcher<T>({ value, name, options, onChange = noop }: S
       left: (rect?.left ?? 0) - containerRect.left,
       width: rect?.width ?? 0,
     })
-  }, [value, containerRef])
+  }, [value, containerRef.current])
 
   return (
     <StyledContainer bgLeft={size?.left ?? 0} bgWidth={size?.width ?? 0} ref={containerRef}>

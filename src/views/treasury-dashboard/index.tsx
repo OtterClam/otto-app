@@ -21,11 +21,11 @@ import CurrencySwitcher from 'components/CurrencySwitcher'
 import useCurrencyFormatter from 'hooks/useCurrencyFormatter'
 import { Currency, useCurrency } from 'contexts/Currency'
 import Switcher from 'components/Switcher'
+import { formatClamString, formatUsd } from 'utils/currency'
 import Leaves from './leaves.png'
 import Shell from './shell.png'
 import Bird from './bird.png'
 import Turtle from './turtle.png'
-import { formatClamString, formatUsd } from 'utils/currency'
 
 const TreasuryMarketValueChart = dynamic(() => import('components/TreasuryMarketValueChart'))
 const TreasuryRevenuesChart = dynamic(() => import('components/TreasuryRevenuesChart'))
@@ -186,6 +186,36 @@ const StyledChartKeyDate = styled.span`
   margin-left: 6px;
 `
 
+const StyledChartHeaderHorizontalList = styled.ul`
+  list-style: none;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: baseline;
+`
+const StyledChartHeaderHorizontalListItem = styled.li`
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+
+  &::before {
+    /* Unicode for a bullet */
+    content: '\\2022';
+    font-size: 26px;
+    width: 0.5em;
+  }
+
+  &:nth-child(1):before {
+    color: rgba(108, 111, 227, 1);
+  }
+  &:nth-child(2):before {
+    color: rgba(255, 172, 161, 1);
+  }
+`
+const StyledTopBar = styled.div`
+  display: inline-flex;
+  justify-content: space-between;
+`
+
 const formatFinancialNumber = (num: BigNumberish, decimal = 9, digits = 2) =>
   `$${formatBigNumber(num, decimal, digits)}`
 
@@ -260,10 +290,12 @@ export default function TreasuryDashboardPage() {
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
-            <Help message={t('distributedTooltip')}>
-              <ContentExtraSmall>{t('distributed')}</ContentExtraSmall>
+            <Help message={t('clamCirculatingSupplyTooltip')}>
+              <ContentExtraSmall>{t('clamCirculatingSupply')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatUsd(pearlBankLatestMetrics?.cumulativeRewardPayoutMarketValue)} USD+</ContentMedium>
+            <ContentMedium>
+              {formatClamString(latestMetrics?.clamCirculatingSupply)} /{formatClamString(latestMetrics?.totalSupply)}
+            </ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
@@ -284,11 +316,11 @@ export default function TreasuryDashboardPage() {
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
-            <Help message={t('clamCirculatingSupplyTooltip')}>
-              <ContentExtraSmall>{t('clamCirculatingSupply')}</ContentExtraSmall>
+            <Help message={t('distributedTooltip')}>
+              <ContentExtraSmall>{t('distributed')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {formatClamString(latestMetrics?.clamCirculatingSupply)} /{formatClamString(latestMetrics?.totalSupply)}
+              {formatUsd(pearlBankLatestMetrics?.cumulativeRewardPayoutMarketValue)} / {avgApr}%
             </ContentMedium>
           </StyledTreasuryCard>
         </StyledMetricsContainer>
@@ -309,15 +341,17 @@ export default function TreasuryDashboardPage() {
 
           <StyledChartCard>
             <StyledChartHeader>
-              <Help message={t('treasuryRevenueTooltip')}>
-                {<StyledChartTitle> {t('treasuryRevenue')} </StyledChartTitle>}
-              </Help>
+              <StyledTopBar>
+                <Help message={t('treasuryRevenueTooltip')}>
+                  <StyledChartTitle> {t('treasuryRevenue')} </StyledChartTitle>
+                </Help>
+                <CurrencySwitcher />
+              </StyledTopBar>
               <StyledChartKeyValue>
                 {currency === Currency.CLAM
                   ? `${formatClamString(latestRevenues?.totalRevenueClamAmount, true)}`
                   : formatUsd(latestRevenues?.totalRevenueMarketValue)}
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
-                <CurrencySwitcher />
               </StyledChartKeyValue>
             </StyledChartHeader>
             <TreasuryRevenuesChart data={revenues} />
@@ -325,12 +359,8 @@ export default function TreasuryDashboardPage() {
 
           <StyledChartCard>
             <StyledChartHeader>
-              <StyledChartTitle>{t('averageApr')}</StyledChartTitle>
-              <StyledChartKeyValue>
-                {avgApr ?? 0}%
-                <StyledChartKeyDate>
-                  {t('averageAprStartDate', { date: formatDate(pearlBankAvgAprRangeStartDate, 'MMM d') })}
-                </StyledChartKeyDate>
+              <StyledTopBar>
+                <StyledChartTitle>{t('averageApr')}</StyledChartTitle>
                 <Switcher
                   name="pearl-bank-avg-apr-range"
                   value={pearlBankAvgAprRange}
@@ -340,6 +370,12 @@ export default function TreasuryDashboardPage() {
                     { label: 'Month', value: PearlBankAvgAprRange.Month },
                   ]}
                 />
+              </StyledTopBar>
+              <StyledChartKeyValue>
+                {avgApr ?? 0}%
+                <StyledChartKeyDate>
+                  {t('averageAprStartDate', { date: formatDate(pearlBankAvgAprRangeStartDate, 'MMM d') })}
+                </StyledChartKeyDate>
               </StyledChartKeyValue>
             </StyledChartHeader>
             <BankAvgAprChart data={pearlBankMetrics} aprRange={pearlBankAvgAprRange} />
@@ -347,15 +383,33 @@ export default function TreasuryDashboardPage() {
 
           <StyledChartCard>
             <StyledChartHeader>
-              <Help message={t('tvdTooltip')}> {<StyledChartTitle>{t('tvd')}</StyledChartTitle>} </Help>
-
-              <StyledChartKeyValue>
-                {currency === Currency.CLAM
-                  ? formatClamString(pearlBankLatestMetrics?.totalClamStaked, true)
-                  : formatUsd(pearlBankLatestMetrics?.totalClamStakedUsdValue)}
-                <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
+              <StyledTopBar>
+                <Help message={t('tvdTooltip')}>
+                  {' '}
+                  <StyledChartTitle>{t('tvd')}</StyledChartTitle>{' '}
+                </Help>
                 <CurrencySwitcher />
-              </StyledChartKeyValue>
+              </StyledTopBar>
+              <StyledChartHeaderHorizontalList>
+                <StyledChartHeaderHorizontalListItem>
+                  <StyledChartKeyValue>{`${trim(
+                    ((pearlBankLatestMetrics?.pearlBankDepositedClamAmount ?? 0) /
+                      (latestMetrics?.clamCirculatingSupply ?? 1)) *
+                      100,
+                    1
+                  )}%`}</StyledChartKeyValue>
+                  <StyledChartKeyDate>{t('stakedChartHeader')}</StyledChartKeyDate>
+                </StyledChartHeaderHorizontalListItem>
+                <StyledChartHeaderHorizontalListItem>
+                  <StyledChartKeyValue>{`${trim(
+                    ((pearlBankLatestMetrics?.clamPondDepositedClamAmount ?? 0) /
+                      (latestMetrics?.clamCirculatingSupply ?? 1)) *
+                      100,
+                    1
+                  )}%`}</StyledChartKeyValue>
+                  <StyledChartKeyDate>{t('autocompoundChartHeader')}</StyledChartKeyDate>
+                </StyledChartHeaderHorizontalListItem>
+              </StyledChartHeaderHorizontalList>
             </StyledChartHeader>
             <StakedClamChart data={pearlBankMetrics} />
           </StyledChartCard>
