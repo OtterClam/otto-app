@@ -78,7 +78,7 @@ const renderTooltip: (i18nClient: i18n, currency: Currency) => TooltipRenderer =
         headerLabel={headerLabel}
         headerValue={
           currency === Currency.CLAM
-            ? formatClamString(payload[0]?.payload?.totalRevenueClamAmount)
+            ? formatClamString(payload[0]?.payload?.totalRevenueClamAmount, true)
             : formatUsd(payload[0]?.payload?.totalRevenueMarketValue)
         }
         items={items}

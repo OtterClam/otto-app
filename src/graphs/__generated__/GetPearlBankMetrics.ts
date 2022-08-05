@@ -13,6 +13,7 @@ export interface GetPearlBankMetrics_pearlBankMetrics {
   timestamp: any;
   apr: any;
   apy: any;
+  rewardRate: any;
   payoutMarketValue: any;
   clamMarketValueWhenPayoutHappens: any;
   cumulativeRewardPayoutMarketValue: any;

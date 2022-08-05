@@ -239,10 +239,10 @@ const usePearlBankApr = () => {
     () => subDays(Number(pearlBankMetrics[0]?.timestamp ?? 0) * 1000, range),
     [range, pearlBankMetrics]
   )
-  const metricsSlice = pearlBankMetrics.slice(0, range)
-  const avgApr = useMemo(() => {
+  const avgApy = useMemo(() => {
+    const metricsSlice = pearlBankMetrics.slice(0, range)
     const totalSum = metricsSlice.reduce((total, value) => {
-      return total + parseFloat(value.apr)
+      return total + parseFloat(value.apy)
     }, 0)
 
     const average = totalSum / metricsSlice.length
@@ -251,7 +251,7 @@ const usePearlBankApr = () => {
   }, [range, pearlBankMetrics])
 
   return {
-    avgApr,
+    avgApy,
     startDate,
     pearlBankAvgAprRange: range,
     setPearlBankAvgAprRange: setRange,
@@ -263,10 +263,18 @@ export default function TreasuryDashboardPage() {
   const { metrics, latestMetrics } = useTreasuryMetrics()
   const { metrics: pearlBankMetrics, latestMetrics: pearlBankLatestMetrics } = usePearlBankMetrics()
   const { revenues, latestRevenues } = useTreasuryRevenues()
-  const { avgApr, pearlBankAvgAprRange, setPearlBankAvgAprRange } = usePearlBankApr()
+  const { avgApy, pearlBankAvgAprRange, setPearlBankAvgAprRange } = usePearlBankApr()
   const pearlBankAvgAprRangeStartDate = subDays(new Date(), pearlBankAvgAprRange)
   const { currency } = useCurrency()
 
+  const pctBurnt = trim((parseFloat(latestMetrics?.totalBurnedClam) / parseFloat(latestMetrics?.totalSupply)) * 100, 2)
+
+  const allTimeAvgApr =
+    pearlBankMetrics.reduce((total, value) => {
+      return total + parseFloat(value.apr)
+    }, 0) / pearlBankMetrics.length
+
+  console.log(pearlBankMetrics)
   return (
     <div>
       <TreasurySection>
@@ -294,7 +302,7 @@ export default function TreasuryDashboardPage() {
               <ContentExtraSmall>{t('clamCirculatingSupply')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {formatClamString(latestMetrics?.clamCirculatingSupply)} /{formatClamString(latestMetrics?.totalSupply)}
+              {formatClamString(latestMetrics?.clamCirculatingSupply)} / {formatClamString(latestMetrics?.totalSupply)}
             </ContentMedium>
           </StyledTreasuryCard>
 
@@ -311,7 +319,8 @@ export default function TreasuryDashboardPage() {
             </Help>
             <ContentMedium>
               {formatClamString(latestMetrics?.totalBurnedClam)}
-              {`🔥(${formatUsd(latestMetrics?.totalBurnedClamMarketValue)})`}
+              {` 🔥 ${formatUsd(latestMetrics?.totalBurnedClamMarketValue)}`}
+              {` 🔥 ${pctBurnt}%`}
             </ContentMedium>
           </StyledTreasuryCard>
 
@@ -320,7 +329,7 @@ export default function TreasuryDashboardPage() {
               <ContentExtraSmall>{t('distributed')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {formatUsd(pearlBankLatestMetrics?.cumulativeRewardPayoutMarketValue)} / {avgApr}%
+              {formatUsd(pearlBankLatestMetrics?.cumulativeRewardPayoutMarketValue)} @ {trim(allTimeAvgApr, 1)}% APR
             </ContentMedium>
           </StyledTreasuryCard>
         </StyledMetricsContainer>
@@ -360,7 +369,9 @@ export default function TreasuryDashboardPage() {
           <StyledChartCard>
             <StyledChartHeader>
               <StyledTopBar>
-                <StyledChartTitle>{t('averageApr')}</StyledChartTitle>
+                <Help message={t('rewardsTooltip')}>
+                  <StyledChartTitle>{t('averageApy')}</StyledChartTitle>
+                </Help>
                 <Switcher
                   name="pearl-bank-avg-apr-range"
                   value={pearlBankAvgAprRange}
@@ -372,9 +383,9 @@ export default function TreasuryDashboardPage() {
                 />
               </StyledTopBar>
               <StyledChartKeyValue>
-                {avgApr ?? 0}%
+                {avgApy ?? 0}%
                 <StyledChartKeyDate>
-                  {t('averageAprStartDate', { date: formatDate(pearlBankAvgAprRangeStartDate, 'MMM d') })}
+                  {t('averageApyStartDate', { date: formatDate(pearlBankAvgAprRangeStartDate, 'MMM d') })}
                 </StyledChartKeyDate>
               </StyledChartKeyValue>
             </StyledChartHeader>

@@ -7,6 +7,7 @@ export const GET_PEARL_BANK_METRICS = gql`
       timestamp
       apr
       apy
+      rewardRate
       payoutMarketValue
       clamMarketValueWhenPayoutHappens
       cumulativeRewardPayoutMarketValue
@@ -35,6 +36,7 @@ export const GET_TREASURY_METRICS = gql`
       totalBurnedClamMarketValue
       treasuryMarketValue
       treasuryMarketValueWithoutClam
+      totalClamUsdPlusRebaseValue
 
       #treasury tokens
       treasuryWmaticMarketValue
@@ -80,6 +82,17 @@ export const GET_TREASURY_REVENUE = gql`
       ottopiaMarketValue
       totalRevenueClamAmount
       totalRevenueMarketValue
+    }
+  }
+`
+
+export const GET_LAST_PAYOUT_TO_ADDRESS = gql`
+  query LastPayout($address: Bytes!) {
+    stakedBalances(where: { id: $address }) {
+      id
+      clamPondLastPayout
+      clamPondLastPayoutUsd
+      pearlBankLastPayout
     }
   }
 `

@@ -20,6 +20,7 @@ const StyledIcon = styled.img`
 const StyledNote = styled(Note)`
   display: block;
   max-width: 300px;
+  white-space: break-spaces;
 `
 
 export interface HelpProps {

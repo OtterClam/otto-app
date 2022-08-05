@@ -73,7 +73,7 @@ const marketValues = [
     stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
   },
   {
-    label: 'USDC/TUSD (Penrose)',
+    label: 'TUSD/USDC (Penrose)',
     dataKey: 'treasuryDystopiaPairUsdcTusdMarketValue',
     stopColor: ['rgba(182, 233, 152, 1)', 'rgba(182, 233, 152, 0.5)'],
   },
