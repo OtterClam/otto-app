@@ -1,8 +1,8 @@
-import largeItemsImage from './large-items.png'
-import largeMissionsImage from './large-missions.png'
-import largeOttosImage from './large-ottos.png'
-import largePortalsImage from './large-portals.png'
-import largeTreasuryImage from './large-treasury.png'
+import itemsImage from './items.png'
+import missionsImage from './missions.png'
+import ottosImage from './ottos.png'
+import portalsImage from './portals.png'
+import treasuryImage from './treasury.png'
 
 export interface Item {
   key: string
@@ -17,27 +17,27 @@ export interface Item {
 export const items = [
   {
     key: 'portals',
-    image: largePortalsImage,
+    image: portalsImage,
     link: '/my-portals',
   },
   {
     key: 'items',
-    image: largeItemsImage,
+    image: itemsImage,
     link: '/my-items',
   },
   {
     key: 'ottos',
-    image: largeOttosImage,
+    image: ottosImage,
     link: '/my-ottos',
   },
   {
     key: 'treasury',
-    image: largeTreasuryImage,
+    image: treasuryImage,
     link: '/treasury/dashboard',
   },
   {
     key: 'missions',
-    image: largeMissionsImage,
+    image: missionsImage,
     link: '/missions',
   },
 ]

@@ -2,7 +2,7 @@ import Notifications from 'components/Notifications'
 import SectionRope from 'components/SectionRope'
 import SmallAd from 'components/SmallAd'
 import styled from 'styled-components/macro'
-import ActionButtons from './ActionButtons'
+import FloatingNavButtons from 'components/FloatingNavButtons'
 import Banner from './Banner'
 import { FixedMap } from './Map'
 
@@ -39,7 +39,7 @@ const StyledBannerAndActionsContainer = styled.div`
   margin-bottom: 2px;
 `
 
-const StyledActionButtons = styled(ActionButtons)`
+const StyledActionButtons = styled(FloatingNavButtons)`
   pointer-events: auto;
   margin-top: 12px;
 `

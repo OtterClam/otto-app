@@ -5,7 +5,7 @@ import TreasurySection from 'components/TreasurySection'
 import { MouseRelativePositionProvider } from 'contexts/MouseRelativePosition'
 import { Body } from 'layouts/GameLayout'
 import styled from 'styled-components/macro'
-import ActionButtons from './ActionButtons'
+import FloatingNavButtons from 'components/FloatingNavButtons'
 import Banner from './Banner'
 import Map from './Map'
 
@@ -26,7 +26,7 @@ const StyledSection = styled(TreasurySection)`
   height: calc(var(--game-body-height) - var(--header-margin));
 `
 
-const StyledActionButtons = styled(ActionButtons)`
+const StyledActionButtons = styled(FloatingNavButtons)`
   position: absolute;
   z-index: var(--others-z-index);
   top: 12px;

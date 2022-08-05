@@ -630,5 +630,16 @@
       "close_btn": "Close",
       "success_btn": "Back"
     }
+  },
+  "floatingNavButtons": {
+    "giveaway": "Giveaway",
+    "news": "News"
+  },
+  "gameMenu": {
+    "portals": "My Portals",
+    "items": "My Items",
+    "treasury": "Treasury",
+    "ottos": "My Ottos",
+    "missions": "Missions"
   }
 }

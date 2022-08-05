@@ -1,7 +1,11 @@
-import IconButton from 'components/IconButton'
+import ImageButton from 'components/ImageButton'
+import NotificationBadge from 'components/NotificationBadge'
 import { useBreakpoints } from 'contexts/Breakpoints'
+import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import styled from 'styled-components/macro'
+import { Caption } from 'styles/typography'
+import { textStroke } from 'utils/styles'
 import { items } from './items'
 
 const StyledContainer = styled.div`
@@ -41,19 +45,52 @@ const StyledItems = styled.div`
   justify-content: center;
   gap: 20px;
   margin-bottom: 10px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    gap: 5px;
+  }
 `
+
+const StyledItem = styled(NotificationBadge)`
+  &::before {
+    right: 1px;
+    top: 1px;
+  }
+`
+
+const StyledLabel = styled(Caption)`
+  position: absolute;
+  text-align: center;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  color: ${({ theme }) => theme.colors.white};
+  ${({ theme }) => textStroke(1, theme.colors.otterBlack)}
+`
+
+const itemStates = ['default', 'hover']
 
 export default function GameMenu({ className }: { className?: string }) {
   const { isMobile } = useBreakpoints()
-  const width = isMobile ? 65 : 75
+  const width = isMobile ? 65 : 72
+  const { t } = useTranslation('', { keyPrefix: 'gameMenu' })
 
   return (
     <StyledContainer className={className}>
       <StyledItems>
         {items.map(item => (
-          <Link href={item.link} key={item.key} passHref>
-            <IconButton as="a" icon={item.image} scale={width / item.image.width} />
-          </Link>
+          <StyledItem show={item.key === 'missions'}>
+            <Link href={item.link} key={item.key} passHref>
+              <ImageButton
+                as="a"
+                states={itemStates}
+                image={item.image}
+                scale={width / (item.image.width / itemStates.length)}
+              >
+                <StyledLabel>{t(item.key)}</StyledLabel>
+              </ImageButton>
+            </Link>
+          </StyledItem>
         ))}
       </StyledItems>
     </StyledContainer>

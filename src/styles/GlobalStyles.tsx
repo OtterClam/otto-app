@@ -13,6 +13,10 @@ const GlobalStyle = createGlobalStyle`
       --z-index-header: 1000;
       --z-index-popup: 2000;
 
+      @media ${({ theme }) => theme.breakpoints.tablet} {
+        --game-body-height: calc(var(--real-vh) - var(--header-height) - var(--game-menu-height) - env(safe-area-inset-bottom));
+      }
+
       @media ${({ theme }) => theme.breakpoints.mobile} {
         --header-height: 100px;
         --header-margin: 10px;
