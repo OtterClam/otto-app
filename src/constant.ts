@@ -8,9 +8,7 @@ export const PUBLIC_MINT_TIME = 1647781200000 // 2022/3/20 21:00+8
 
 export const WHITE_PAPER_LINK = 'https://docs.ottopia.app/ottopia/'
 
-export const BUY_CLAM_LINK = 'https://app.1inch.io/#/137/classic/swap/USDC/CLAM'
-
-export const DAO_LINK = 'https://discord.gg/hygVspKCBf'
+export const DAO_LINK = 'https://snapshot.org/#/otterclam.eth'
 
 export const TREASURY_LINK = '/treasury/dashboard'
 
