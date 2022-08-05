@@ -1,51 +1,28 @@
 import { Carousel } from 'react-responsive-carousel'
 import Image from 'next/image'
 import styled from 'styled-components/macro'
-import KawaiiChest from './kawaii_chest.jpg'
-import JulyAMA from './otterking_ama_july2022.jpg'
-import StakingV2 from './staking_v2.jpg'
-import RarityEpoch5 from './5th_epoch_rarity_contest.jpg'
-import RarityEpoch4Winners from './4th_epoch_rarity_winners.jpg'
-import ClamPond from './clam_pond.jpg'
-import PearlBank from './pearl_bank.jpg'
-
-const ads = [
-  {
-    image: KawaiiChest,
-    link: 'https://ottopia.app/store',
-  },
-  {
-    image: StakingV2,
-    link: 'https://medium.com/@otterclam/introducing-clam-pond-and-pearl-bank-ce7a9fa46407',
-  },
-  {
-    image: RarityEpoch5,
-    link: 'https://ottopia.app/leaderboard',
-  },
-  {
-    image: RarityEpoch4Winners,
-    link: 'https://ottopia.app/leaderboard?epoch=3',
-  },
-  {
-    image: ClamPond,
-    link: 'https://ottopia.app/treasury/pond',
-  },
-  {
-    image: PearlBank,
-    link: 'https://ottopia.app/treasury/bank',
-  },
-  // TODO: Link
-  {
-    image: JulyAMA,
-    link: 'https://www.youtube.com/watch?v=DLWFkhIRXcU',
-  },
-]
+import { useEffect, useState } from 'react'
+import useApi from 'hooks/useApi'
+import { Banner } from 'models/Banner'
 
 const StyledLink = styled.a`
   display: flex !important;
 `
 
 export default function AdBanner({ showIndicators }: { showIndicators?: boolean }) {
+  const [ads, setAds] = useState<Banner[]>([])
+  const api = useApi()
+
+  useEffect(() => {
+    fetch('/api/banners')
+      .then(res => res.json())
+      .then(setAds)
+  }, [api])
+
+  if (!ads.length) {
+    return <div />
+  }
+
   return (
     <Carousel
       interval={6000}
@@ -58,7 +35,7 @@ export default function AdBanner({ showIndicators }: { showIndicators?: boolean 
     >
       {ads.map(({ image, link }, i) => (
         <StyledLink key={i} href={link} target="_blank" style={{ display: 'block' }} rel="noreferrer">
-          <Image unoptimized src={image} />
+          <Image unoptimized src={image} width={2000} height={500} />
         </StyledLink>
       ))}
     </Carousel>

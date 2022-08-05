@@ -4,21 +4,19 @@ import useApi from 'hooks/useApi'
 import useContractAddresses from 'hooks/useContractAddresses'
 import Item from 'models/Item'
 import Product from 'models/store/Product'
-import { useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
+import { useEffect, useState } from 'react'
 import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
 import {
+  useClamPond,
   useERC20,
   useItemContract,
   useItemGiveaway,
   useOttoContract,
   useOttoSummonerContract,
-  usePortalCreatorContract,
-  useStakingPearlHelper,
-  useStoreContract,
   usePearlBank,
-  useClamPond,
-  useRewardManager,
+  usePortalCreatorContract,
+  useStoreContract,
 } from './contracts'
 
 export const useApprove = (tokenAddress?: string) => {
@@ -95,7 +93,7 @@ export const useItem = () => {
   return { useItemState, use, resetUse }
 }
 
-export const takeOffItem = () => {
+export const useTakeOffItem = () => {
   const { OTTO_ITEM } = useContractAddresses()
   const { account } = useEthers()
   const otto = useOttoContract()

@@ -1,10 +1,10 @@
 import CLAMCoin from 'assets/tokens/CLAM.svg'
 import TreasurySection from 'components/TreasurySection'
-import { useClamPrice, useDepositedAmount, useNextRewardTime, usePearlBankInfo } from 'contracts/views'
-import formatDistance from 'date-fns/formatDistanceStrict'
-import { constants, ethers, utils } from 'ethers'
-import { trim } from 'helpers/trim'
 import { useBreakpoints } from 'contexts/Breakpoints'
+import { useDepositedAmount, useNextRewardTime } from 'contracts/views'
+import formatDistance from 'date-fns/formatDistanceStrict'
+import { trim } from 'helpers/trim'
+import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
 import styled, { css, keyframes } from 'styled-components/macro'
@@ -14,11 +14,10 @@ import StakeDialog from '../StakeDialog'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
 import BottomBg from './bottom.png'
-import TopBg from './top.png'
 import GashaponTicketEn from './gashapon-ticket-en.jpg'
 import GashaponTicketZh from './gashapon-ticket-zh.jpg'
 import Middle from './middle.png'
-import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
+import TopBg from './top.png'
 
 const Animation = keyframes`
   0%   { background-position: left top }
@@ -212,10 +211,8 @@ interface Props {
 export default function StakeInfo({ className }: Props) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'stake' })
   const { isMobile } = useBreakpoints()
-  const { latestTotalReward, lastTotalStaked } = usePearlBankInfo()
-  const clamPrice = useClamPrice()
   const depositedAmount = useDepositedAmount()
-  const { metrics, latestMetrics } = usePearlBankMetrics()
+  const { latestMetrics } = usePearlBankMetrics()
 
   const nextRewardTime = useNextRewardTime()
   const countdown = useMemo(() => {

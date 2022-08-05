@@ -21,11 +21,11 @@ import CurrencySwitcher from 'components/CurrencySwitcher'
 import useCurrencyFormatter from 'hooks/useCurrencyFormatter'
 import { Currency, useCurrency } from 'contexts/Currency'
 import Switcher from 'components/Switcher'
+import { formatClamString, formatUsd } from 'utils/currency'
 import Leaves from './leaves.png'
 import Shell from './shell.png'
 import Bird from './bird.png'
 import Turtle from './turtle.png'
-import { formatClamString, formatUsd } from 'utils/currency'
 
 const TreasuryMarketValueChart = dynamic(() => import('components/TreasuryMarketValueChart'))
 const TreasuryRevenuesChart = dynamic(() => import('components/TreasuryRevenuesChart'))
@@ -343,7 +343,7 @@ export default function TreasuryDashboardPage() {
             <StyledChartHeader>
               <StyledTopBar>
                 <Help message={t('treasuryRevenueTooltip')}>
-                  {<StyledChartTitle> {t('treasuryRevenue')} </StyledChartTitle>}
+                  <StyledChartTitle> {t('treasuryRevenue')} </StyledChartTitle>
                 </Help>
                 <CurrencySwitcher />
               </StyledTopBar>
@@ -384,20 +384,27 @@ export default function TreasuryDashboardPage() {
           <StyledChartCard>
             <StyledChartHeader>
               <StyledTopBar>
-                <Help message={t('tvdTooltip')}> {<StyledChartTitle>{t('tvd')}</StyledChartTitle>} </Help>
+                <Help message={t('tvdTooltip')}>
+                  {' '}
+                  <StyledChartTitle>{t('tvd')}</StyledChartTitle>{' '}
+                </Help>
                 <CurrencySwitcher />
               </StyledTopBar>
               <StyledChartHeaderHorizontalList>
                 <StyledChartHeaderHorizontalListItem>
                   <StyledChartKeyValue>{`${trim(
-                    (pearlBankLatestMetrics?.pearlBankDepositedClamAmount / latestMetrics?.clamCirculatingSupply) * 100,
+                    ((pearlBankLatestMetrics?.pearlBankDepositedClamAmount ?? 0) /
+                      (latestMetrics?.clamCirculatingSupply ?? 1)) *
+                      100,
                     1
                   )}%`}</StyledChartKeyValue>
                   <StyledChartKeyDate>{t('stakedChartHeader')}</StyledChartKeyDate>
                 </StyledChartHeaderHorizontalListItem>
                 <StyledChartHeaderHorizontalListItem>
                   <StyledChartKeyValue>{`${trim(
-                    (pearlBankLatestMetrics?.clamPondDepositedClamAmount / latestMetrics?.clamCirculatingSupply) * 100,
+                    ((pearlBankLatestMetrics?.clamPondDepositedClamAmount ?? 0) /
+                      (latestMetrics?.clamCirculatingSupply ?? 1)) *
+                      100,
                     1
                   )}%`}</StyledChartKeyValue>
                   <StyledChartKeyDate>{t('autocompoundChartHeader')}</StyledChartKeyDate>

@@ -1,6 +1,6 @@
 import CloseButton from 'components/CloseButton'
 import Fullscreen from 'components/Fullscreen'
-import { takeOffItem, useItem } from 'contracts/functions'
+import { useTakeOffItem, useItem } from 'contracts/functions'
 import Item from 'models/Item'
 import Otto from 'models/Otto'
 import { MyOttosContext } from 'MyOttosProvider'
@@ -67,7 +67,7 @@ interface Props {
 export default function ItemPopup({ item, onClose }: Props) {
   const { t } = useTranslation()
   const { useItemState, use, resetUse } = useItem()
-  const { takeOffState, takeOff, resetTakeOff } = takeOffItem()
+  const { takeOffState, takeOff, resetTakeOff } = useTakeOffItem()
   const [state, setState] = useState(State.Idle)
   const { ottos, reload } = useContext(MyOttosContext)
   const [selectedOtto, setSelectedOtto] = useState<Otto | null>(null)

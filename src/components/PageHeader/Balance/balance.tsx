@@ -1,4 +1,3 @@
-import { BUY_CLAM_LINK } from 'constant'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
 import PlusBg from './plus.png'

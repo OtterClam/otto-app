@@ -1,3 +1,5 @@
+import noop from 'lodash/noop'
+
 export const IS_SERVER = typeof window === 'undefined'
 
 export const WHITELIST_MINT_TIME = 1647694800000 // 2022/3/19 21:00+8
@@ -6,9 +8,7 @@ export const PUBLIC_MINT_TIME = 1647781200000 // 2022/3/20 21:00+8
 
 export const WHITE_PAPER_LINK = 'https://docs.ottopia.app/ottopia/'
 
-export const BUY_CLAM_LINK = 'https://app.1inch.io/#/137/classic/swap/USDC/CLAM'
-
-export const DAO_LINK = 'https://discord.gg/hygVspKCBf'
+export const DAO_LINK = 'https://snapshot.org/#/otterclam.eth'
 
 export const TREASURY_LINK = '/treasury/dashboard'
 
@@ -22,7 +22,7 @@ export function getOpenSeaLink(tokenId: string) {
   return `${OPENSEA_NFT_LINK}${tokenId}`
 }
 
-export const ottoClick = IS_SERVER ? { play: () => {}, load: () => {} } : new Audio('https://ottopia.app/ottoclick.mp3')
+export const ottoClick = IS_SERVER ? { play: noop, load: noop } : new Audio('https://ottopia.app/ottoclick.mp3')
 ottoClick.load()
 
 export const TOTAL_RARITY_REWARD = 16000
