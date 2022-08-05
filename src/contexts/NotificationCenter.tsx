@@ -13,7 +13,7 @@ export function useNotifications() {
 }
 
 export default function NotificationCenterProvider({ children }: PropsWithChildren<object>) {
-  const [notifications, setNotifications] = useState<Map<number, Notification>>(() => new Map())
+  const [notifications, setNotifications] = useState<Map<string, Notification>>(() => new Map())
   const api = useApi()
 
   const value = useMemo(() => Array.from(notifications).map(([, val]) => val), [notifications])
@@ -31,7 +31,7 @@ export default function NotificationCenterProvider({ children }: PropsWithChildr
         .getNotifications()
         .then(result => {
           setNotifications(oldNotifications => {
-            const newNotifications = new Map<number, Notification>()
+            const newNotifications = new Map<string, Notification>()
 
             result.forEach(notification => {
               if (!notifications.has(notification.key)) {
