@@ -43,10 +43,11 @@ const StyledFlag = styled.span<{ scale: number }>`
   position: absolute;
   top: 12.8%;
   left: 53.33%;
-  width: ${({ scale }) => flagImage.width / 2 / 3 * scale}px;
-  height: ${({ scale }) => flagImage.height / 2 * scale}px;
-  background: left center / ${({ scale }) => flagImage.width / 2 * scale}px ${({ scale }) => flagImage.height / 2 * scale}px url(${flagImage.src});
-  animation: ${({ scale }) => flagAnimation(scale)} .8s steps(3) infinite;
+  width: ${({ scale }) => (flagImage.width / 2 / 3) * scale}px;
+  height: ${({ scale }) => (flagImage.height / 2) * scale}px;
+  background: left center / ${({ scale }) => (flagImage.width / 2) * scale}px
+    ${({ scale }) => (flagImage.height / 2) * scale}px url(${flagImage.src});
+  animation: ${({ scale }) => flagAnimation(scale)} 0.8s steps(3) infinite;
 `
 
 const StyledBackgroundLayer = styled.div<{ scale: number; offset: Position }>`
