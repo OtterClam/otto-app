@@ -242,9 +242,9 @@ export default function Mint() {
   const dispatch = useDispatch()
   const { PORTAL_CREATOR, CLAM } = useContractAddresses()
   const { account, chainId } = useEthers()
-  const [clamPrice] = useMintInfo()
   const maxCanMint = 6
-  const [quantity, setQuantity] = useState(maxCanMint || 0)
+  const [quantity, setQuantity] = useState(maxCanMint)
+  const clamPrice = useMintInfo(quantity)
   const [ottoSupply] = useOttoInfo()
   const clamBalance = useTokenBalance(CLAM, account, { chainId }) || 0
   const clamAllowance = useTokenAllowance(CLAM, account, PORTAL_CREATOR, { chainId })
@@ -262,9 +262,6 @@ export default function Mint() {
     }
   }, [account, quantity, totalPaymentCLAM, mint])
 
-  useEffect(() => {
-    if (maxCanMint > 0) setQuantity(maxCanMint || 0)
-  }, [maxCanMint])
   useEffect(() => {
     if (mintState.status === 'Mining') dispatch(mintStart())
     if (mintState.status === 'Success') dispatch(mintSuccess(quantity))

@@ -33,18 +33,27 @@ export declare namespace IOttopiaStore {
     discountPrice: BigNumberish;
     amount: BigNumberish;
     typ: string;
+    metaItemId: BigNumberish;
+    startedAt: BigNumberish;
+    endedAt: BigNumberish;
   };
 
   export type ProductStructOutput = [
     BigNumber,
     BigNumber,
     BigNumber,
-    string
+    string,
+    BigNumber,
+    BigNumber,
+    BigNumber
   ] & {
     price: BigNumber;
     discountPrice: BigNumber;
     amount: BigNumber;
     typ: string;
+    metaItemId: BigNumber;
+    startedAt: BigNumber;
+    endedAt: BigNumber;
   };
 }
 
@@ -57,18 +66,21 @@ export interface OttopiaStoreInterface extends utils.Interface {
     "MANAGER_ROLE()": FunctionFragment;
     "OTTO()": FunctionFragment;
     "REWARD()": FunctionFragment;
+    "WHITELISTED_CONTRACT()": FunctionFragment;
     "airdropClaimableAmount(uint256,uint256[])": FunctionFragment;
     "airdropInfos(uint256)": FunctionFragment;
     "amountOf(uint256)": FunctionFragment;
+    "buy(address,uint256,uint256)": FunctionFragment;
     "buyNoChainlink(address,uint256,uint256)": FunctionFragment;
     "claim(uint256,uint256[])": FunctionFragment;
     "claimNoChainlink(uint256,uint256[])": FunctionFragment;
     "claimed(uint256,uint256)": FunctionFragment;
     "coupons(uint256)": FunctionFragment;
     "createCoupon(uint256,uint256)": FunctionFragment;
-    "createProduct((uint256,uint256,uint256,string),address)": FunctionFragment;
+    "createProduct((uint256,uint256,uint256,string,uint256,uint256,uint256),address)": FunctionFragment;
     "deleteCoupon(uint256)": FunctionFragment;
     "deleteProduct(uint256)": FunctionFragment;
+    "discountPriceOf(uint256)": FunctionFragment;
     "factories(uint256)": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
     "grantManager(address)": FunctionFragment;
@@ -88,9 +100,12 @@ export interface OttopiaStoreInterface extends utils.Interface {
     "setBaseURI(string)": FunctionFragment;
     "setItem(address)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
+    "toggleWhitelist(address)": FunctionFragment;
+    "totalSupply()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "updateCoupon(uint256,uint256)": FunctionFragment;
-    "updateProduct(uint256,(uint256,uint256,uint256,string),address)": FunctionFragment;
+    "updateProduct(uint256,(uint256,uint256,uint256,string,uint256,uint256,uint256),address)": FunctionFragment;
+    "upgradeForFlashSale()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
     "uri(uint256)": FunctionFragment;
@@ -105,9 +120,11 @@ export interface OttopiaStoreInterface extends utils.Interface {
       | "MANAGER_ROLE"
       | "OTTO"
       | "REWARD"
+      | "WHITELISTED_CONTRACT"
       | "airdropClaimableAmount"
       | "airdropInfos"
       | "amountOf"
+      | "buy"
       | "buyNoChainlink"
       | "claim"
       | "claimNoChainlink"
@@ -117,6 +134,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
       | "createProduct"
       | "deleteCoupon"
       | "deleteProduct"
+      | "discountPriceOf"
       | "factories"
       | "getRoleAdmin"
       | "grantManager"
@@ -136,9 +154,12 @@ export interface OttopiaStoreInterface extends utils.Interface {
       | "setBaseURI"
       | "setItem"
       | "supportsInterface"
+      | "toggleWhitelist"
+      | "totalSupply"
       | "transferOwnership"
       | "updateCoupon"
       | "updateProduct"
+      | "upgradeForFlashSale"
       | "upgradeTo"
       | "upgradeToAndCall"
       | "uri"
@@ -158,6 +179,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "OTTO", values?: undefined): string;
   encodeFunctionData(functionFragment: "REWARD", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "WHITELISTED_CONTRACT",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "airdropClaimableAmount",
     values: [BigNumberish, BigNumberish[]]
   ): string;
@@ -168,6 +193,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "amountOf",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "buy",
+    values: [string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "buyNoChainlink",
@@ -203,6 +232,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "deleteProduct",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "discountPriceOf",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -273,6 +306,14 @@ export interface OttopiaStoreInterface extends utils.Interface {
     values: [BytesLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "toggleWhitelist",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "totalSupply",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
@@ -283,6 +324,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "updateProduct",
     values: [BigNumberish, IOttopiaStore.ProductStruct, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "upgradeForFlashSale",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
   encodeFunctionData(
@@ -305,6 +350,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "OTTO", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "REWARD", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "WHITELISTED_CONTRACT",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "airdropClaimableAmount",
     data: BytesLike
   ): Result;
@@ -313,6 +362,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "amountOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "buy", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "buyNoChainlink",
     data: BytesLike
@@ -338,6 +388,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "deleteProduct",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "discountPriceOf",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "factories", data: BytesLike): Result;
@@ -390,6 +444,14 @@ export interface OttopiaStoreInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "toggleWhitelist",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "totalSupply",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
@@ -399,6 +461,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "updateProduct",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "upgradeForFlashSale",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
@@ -611,6 +677,8 @@ export interface OttopiaStore extends BaseContract {
 
     REWARD(overrides?: CallOverrides): Promise<[string]>;
 
+    WHITELISTED_CONTRACT(overrides?: CallOverrides): Promise<[string]>;
+
     airdropClaimableAmount(
       productId_: BigNumberish,
       ottoIds_: BigNumberish[],
@@ -632,6 +700,13 @@ export interface OttopiaStore extends BaseContract {
       id_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    buy(
+      to_: string,
+      id_: BigNumberish,
+      amount_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     buyNoChainlink(
       to_: string,
@@ -687,6 +762,11 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    discountPriceOf(
+      id_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     factories(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
@@ -740,11 +820,22 @@ export interface OttopiaStore extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, BigNumber, BigNumber, string] & {
+      [
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        string,
+        BigNumber,
+        BigNumber,
+        BigNumber
+      ] & {
         price: BigNumber;
         discountPrice: BigNumber;
         amount: BigNumber;
         typ: string;
+        metaItemId: BigNumber;
+        startedAt: BigNumber;
+        endedAt: BigNumber;
       }
     >;
 
@@ -794,6 +885,13 @@ export interface OttopiaStore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    toggleWhitelist(
+      contract_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -809,6 +907,10 @@ export interface OttopiaStore extends BaseContract {
       id_: BigNumberish,
       product_: IOttopiaStore.ProductStruct,
       factory_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    upgradeForFlashSale(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -840,6 +942,8 @@ export interface OttopiaStore extends BaseContract {
 
   REWARD(overrides?: CallOverrides): Promise<string>;
 
+  WHITELISTED_CONTRACT(overrides?: CallOverrides): Promise<string>;
+
   airdropClaimableAmount(
     productId_: BigNumberish,
     ottoIds_: BigNumberish[],
@@ -858,6 +962,13 @@ export interface OttopiaStore extends BaseContract {
   >;
 
   amountOf(id_: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+  buy(
+    to_: string,
+    id_: BigNumberish,
+    amount_: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   buyNoChainlink(
     to_: string,
@@ -910,6 +1021,11 @@ export interface OttopiaStore extends BaseContract {
     id_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  discountPriceOf(
+    id_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   factories(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
@@ -964,11 +1080,22 @@ export interface OttopiaStore extends BaseContract {
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
-    [BigNumber, BigNumber, BigNumber, string] & {
+    [
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      string,
+      BigNumber,
+      BigNumber,
+      BigNumber
+    ] & {
       price: BigNumber;
       discountPrice: BigNumber;
       amount: BigNumber;
       typ: string;
+      metaItemId: BigNumber;
+      startedAt: BigNumber;
+      endedAt: BigNumber;
     }
   >;
 
@@ -1018,6 +1145,13 @@ export interface OttopiaStore extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  toggleWhitelist(
+    contract_: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+
   transferOwnership(
     newOwner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -1033,6 +1167,10 @@ export interface OttopiaStore extends BaseContract {
     id_: BigNumberish,
     product_: IOttopiaStore.ProductStruct,
     factory_: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  upgradeForFlashSale(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1064,6 +1202,8 @@ export interface OttopiaStore extends BaseContract {
 
     REWARD(overrides?: CallOverrides): Promise<string>;
 
+    WHITELISTED_CONTRACT(overrides?: CallOverrides): Promise<string>;
+
     airdropClaimableAmount(
       productId_: BigNumberish,
       ottoIds_: BigNumberish[],
@@ -1082,6 +1222,13 @@ export interface OttopiaStore extends BaseContract {
     >;
 
     amountOf(id_: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    buy(
+      to_: string,
+      id_: BigNumberish,
+      amount_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     buyNoChainlink(
       to_: string,
@@ -1134,6 +1281,11 @@ export interface OttopiaStore extends BaseContract {
 
     deleteProduct(id_: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
+    discountPriceOf(
+      id_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     factories(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
@@ -1184,11 +1336,22 @@ export interface OttopiaStore extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, BigNumber, BigNumber, string] & {
+      [
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        string,
+        BigNumber,
+        BigNumber,
+        BigNumber
+      ] & {
         price: BigNumber;
         discountPrice: BigNumber;
         amount: BigNumber;
         typ: string;
+        metaItemId: BigNumber;
+        startedAt: BigNumber;
+        endedAt: BigNumber;
       }
     >;
 
@@ -1227,6 +1390,13 @@ export interface OttopiaStore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    toggleWhitelist(
+      contract_: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+
     transferOwnership(
       newOwner: string,
       overrides?: CallOverrides
@@ -1244,6 +1414,8 @@ export interface OttopiaStore extends BaseContract {
       factory_: string,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    upgradeForFlashSale(overrides?: CallOverrides): Promise<void>;
 
     upgradeTo(
       newImplementation: string,
@@ -1376,6 +1548,8 @@ export interface OttopiaStore extends BaseContract {
 
     REWARD(overrides?: CallOverrides): Promise<BigNumber>;
 
+    WHITELISTED_CONTRACT(overrides?: CallOverrides): Promise<BigNumber>;
+
     airdropClaimableAmount(
       productId_: BigNumberish,
       ottoIds_: BigNumberish[],
@@ -1388,6 +1562,13 @@ export interface OttopiaStore extends BaseContract {
     ): Promise<BigNumber>;
 
     amountOf(id_: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    buy(
+      to_: string,
+      id_: BigNumberish,
+      amount_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     buyNoChainlink(
       to_: string,
@@ -1436,6 +1617,11 @@ export interface OttopiaStore extends BaseContract {
     deleteProduct(
       id_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    discountPriceOf(
+      id_: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     factories(
@@ -1541,6 +1727,13 @@ export interface OttopiaStore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    toggleWhitelist(
+      contract_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1556,6 +1749,10 @@ export interface OttopiaStore extends BaseContract {
       id_: BigNumberish,
       product_: IOttopiaStore.ProductStruct,
       factory_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    upgradeForFlashSale(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1590,6 +1787,10 @@ export interface OttopiaStore extends BaseContract {
 
     REWARD(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    WHITELISTED_CONTRACT(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     airdropClaimableAmount(
       productId_: BigNumberish,
       ottoIds_: BigNumberish[],
@@ -1604,6 +1805,13 @@ export interface OttopiaStore extends BaseContract {
     amountOf(
       id_: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    buy(
+      to_: string,
+      id_: BigNumberish,
+      amount_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     buyNoChainlink(
@@ -1656,6 +1864,11 @@ export interface OttopiaStore extends BaseContract {
     deleteProduct(
       id_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    discountPriceOf(
+      id_: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     factories(
@@ -1764,6 +1977,13 @@ export interface OttopiaStore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    toggleWhitelist(
+      contract_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1779,6 +1999,10 @@ export interface OttopiaStore extends BaseContract {
       id_: BigNumberish,
       product_: IOttopiaStore.ProductStruct,
       factory_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    upgradeForFlashSale(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

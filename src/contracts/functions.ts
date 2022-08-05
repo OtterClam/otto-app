@@ -95,7 +95,7 @@ export const useItem = () => {
   return { useItemState, use, resetUse }
 }
 
-export const takeOffItem = () => {
+export const useTakeOffItem = () => {
   const { OTTO_ITEM } = useContractAddresses()
   const { account } = useEthers()
   const otto = useOttoContract()

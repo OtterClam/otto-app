@@ -1,6 +1,5 @@
 import { useQuery } from '@apollo/client'
 import CLAM from 'assets/clam.png'
-import cursorPointer from 'assets/cursor-pointer.png'
 import ArrowDown from 'assets/ui/arrow_down.svg'
 import Button from 'components/Button'
 import { numberWithSign } from 'helpers/number'
@@ -150,7 +149,7 @@ const StyledExpandColumn = styled(ContentMedium)<{ expand: boolean }>`
   justify-content: center;
   padding: 10px;
   gap: 10px;
-  cursor: url(${cursorPointer.src}) 7 0, auto;
+  cursor: url('/cursor-pointer.png') 7 0, auto;
   margin-top: 10px;
 
   &:after {

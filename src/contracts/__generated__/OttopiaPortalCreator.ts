@@ -27,32 +27,51 @@ import type {
   OnEvent,
 } from "./common";
 
+export declare namespace OttopiaPortalCreatorV2 {
+  export type DiscountConfigStruct = {
+    startedAt: BigNumberish;
+    endedAt: BigNumberish;
+    amountThreshold: BigNumberish;
+    percentageOff: BigNumberish;
+  };
+
+  export type DiscountConfigStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ] & {
+    startedAt: BigNumber;
+    endedAt: BigNumber;
+    amountThreshold: BigNumber;
+    percentageOff: BigNumber;
+  };
+}
+
 export interface OttopiaPortalCreatorInterface extends utils.Interface {
   functions: {
     "CLAM()": FunctionFragment;
     "MAI()": FunctionFragment;
     "MAICLAM()": FunctionFragment;
     "OTTO()": FunctionFragment;
+    "REWARD()": FunctionFragment;
     "WETH()": FunctionFragment;
-    "addOttolisted(uint256,address[])": FunctionFragment;
-    "adjustSaleConfig(uint8,uint256,uint256)": FunctionFragment;
-    "clamPerWETH()": FunctionFragment;
+    "currentPrice(uint256)": FunctionFragment;
     "dao()": FunctionFragment;
     "devCanMint()": FunctionFragment;
-    "devMint(address,uint256)": FunctionFragment;
-    "distribute()": FunctionFragment;
+    "discountConfig()": FunctionFragment;
     "emergencyWithdraw(address)": FunctionFragment;
-    "initialize(address,address,address,address,address,address)": FunctionFragment;
+    "initializeV2(address,address,address,address,address,uint256)": FunctionFragment;
     "mint(address,uint256,uint256,bool)": FunctionFragment;
     "ottolisted(address)": FunctionFragment;
     "owner()": FunctionFragment;
+    "price()": FunctionFragment;
     "priceInCLAM()": FunctionFragment;
-    "priceInWETH()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "saleConfig(uint8)": FunctionFragment;
-    "saleStage()": FunctionFragment;
-    "setOttolisted(uint256,address[])": FunctionFragment;
+    "setDiscount((uint256,uint256,uint256,uint256))": FunctionFragment;
+    "setPrice(uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
@@ -64,26 +83,24 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
       | "MAI"
       | "MAICLAM"
       | "OTTO"
+      | "REWARD"
       | "WETH"
-      | "addOttolisted"
-      | "adjustSaleConfig"
-      | "clamPerWETH"
+      | "currentPrice"
       | "dao"
       | "devCanMint"
-      | "devMint"
-      | "distribute"
+      | "discountConfig"
       | "emergencyWithdraw"
-      | "initialize"
+      | "initializeV2"
       | "mint"
       | "ottolisted"
       | "owner"
+      | "price"
       | "priceInCLAM"
-      | "priceInWETH"
       | "proxiableUUID"
       | "renounceOwnership"
       | "saleConfig"
-      | "saleStage"
-      | "setOttolisted"
+      | "setDiscount"
+      | "setPrice"
       | "transferOwnership"
       | "upgradeTo"
       | "upgradeToAndCall"
@@ -93,18 +110,11 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "MAI", values?: undefined): string;
   encodeFunctionData(functionFragment: "MAICLAM", values?: undefined): string;
   encodeFunctionData(functionFragment: "OTTO", values?: undefined): string;
+  encodeFunctionData(functionFragment: "REWARD", values?: undefined): string;
   encodeFunctionData(functionFragment: "WETH", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "addOttolisted",
-    values: [BigNumberish, string[]]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "adjustSaleConfig",
-    values: [BigNumberish, BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "clamPerWETH",
-    values?: undefined
+    functionFragment: "currentPrice",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "dao", values?: undefined): string;
   encodeFunctionData(
@@ -112,11 +122,7 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "devMint",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "distribute",
+    functionFragment: "discountConfig",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -124,8 +130,8 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "initialize",
-    values: [string, string, string, string, string, string]
+    functionFragment: "initializeV2",
+    values: [string, string, string, string, string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "mint",
@@ -133,12 +139,9 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "ottolisted", values: [string]): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(functionFragment: "price", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "priceInCLAM",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "priceInWETH",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -153,10 +156,13 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
     functionFragment: "saleConfig",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "saleStage", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "setOttolisted",
-    values: [BigNumberish, string[]]
+    functionFragment: "setDiscount",
+    values: [OttopiaPortalCreatorV2.DiscountConfigStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setPrice",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
@@ -172,37 +178,32 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "MAI", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "MAICLAM", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "OTTO", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "REWARD", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "addOttolisted",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "adjustSaleConfig",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "clamPerWETH",
+    functionFragment: "currentPrice",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "dao", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "devCanMint", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "devMint", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "distribute", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "discountConfig",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "emergencyWithdraw",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "initializeV2",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ottolisted", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "price", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "priceInCLAM",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "priceInWETH",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -214,11 +215,11 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "saleConfig", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "saleStage", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setOttolisted",
+    functionFragment: "setDiscount",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "setPrice", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
@@ -232,12 +233,14 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
   events: {
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
+    "OttoMinted(address,address,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OttoMinted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
@@ -262,6 +265,18 @@ export type BeaconUpgradedEvent = TypedEvent<
 >;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
+
+export interface OttoMintedEventObject {
+  minter: string;
+  to: string;
+  quantity: BigNumber;
+}
+export type OttoMintedEvent = TypedEvent<
+  [string, string, BigNumber],
+  OttoMintedEventObject
+>;
+
+export type OttoMintedEventFilter = TypedEventFilter<OttoMintedEvent>;
 
 export interface OwnershipTransferredEventObject {
   previousOwner: string;
@@ -317,51 +332,42 @@ export interface OttopiaPortalCreator extends BaseContract {
 
     OTTO(overrides?: CallOverrides): Promise<[string]>;
 
+    REWARD(overrides?: CallOverrides): Promise<[string]>;
+
     WETH(overrides?: CallOverrides): Promise<[string]>;
 
-    addOttolisted(
-      amount_: BigNumberish,
-      wallets: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    adjustSaleConfig(
-      stage_: BigNumberish,
-      timestamp_: BigNumberish,
-      price_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    clamPerWETH(
+    currentPrice(
+      quantity_: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[BigNumber] & { clamPerWETH_: BigNumber }>;
+    ): Promise<[BigNumber]>;
 
     dao(overrides?: CallOverrides): Promise<[string]>;
 
     devCanMint(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    devMint(
-      to_: string,
-      quantity_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    distribute(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    discountConfig(
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber] & {
+        startedAt: BigNumber;
+        endedAt: BigNumber;
+        amountThreshold: BigNumber;
+        percentageOff: BigNumber;
+      }
+    >;
 
     emergencyWithdraw(
       token_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    initialize(
+    initializeV2(
+      clam_: string,
       otto_: string,
-      weth_: string,
-      maiclam_: string,
-      wethPriceFeed_: string,
       treasury_: string,
       dao_: string,
+      reward_: string,
+      price_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -377,13 +383,9 @@ export interface OttopiaPortalCreator extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
-    priceInCLAM(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { price_: BigNumber }>;
+    price(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    priceInWETH(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { price_: BigNumber }>;
+    priceInCLAM(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
@@ -398,13 +400,13 @@ export interface OttopiaPortalCreator extends BaseContract {
       [BigNumber, BigNumber] & { timestamp: BigNumber; price: BigNumber }
     >;
 
-    saleStage(
-      overrides?: CallOverrides
-    ): Promise<[number] & { stage_: number }>;
+    setDiscount(
+      discountConfig_: OttopiaPortalCreatorV2.DiscountConfigStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
-    setOttolisted(
-      amount_: BigNumberish,
-      wallets: string[],
+    setPrice(
+      newPrice: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -433,49 +435,42 @@ export interface OttopiaPortalCreator extends BaseContract {
 
   OTTO(overrides?: CallOverrides): Promise<string>;
 
+  REWARD(overrides?: CallOverrides): Promise<string>;
+
   WETH(overrides?: CallOverrides): Promise<string>;
 
-  addOttolisted(
-    amount_: BigNumberish,
-    wallets: string[],
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  adjustSaleConfig(
-    stage_: BigNumberish,
-    timestamp_: BigNumberish,
-    price_: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  clamPerWETH(overrides?: CallOverrides): Promise<BigNumber>;
+  currentPrice(
+    quantity_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   dao(overrides?: CallOverrides): Promise<string>;
 
   devCanMint(overrides?: CallOverrides): Promise<BigNumber>;
 
-  devMint(
-    to_: string,
-    quantity_: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  distribute(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  discountConfig(
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, BigNumber, BigNumber, BigNumber] & {
+      startedAt: BigNumber;
+      endedAt: BigNumber;
+      amountThreshold: BigNumber;
+      percentageOff: BigNumber;
+    }
+  >;
 
   emergencyWithdraw(
     token_: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  initialize(
+  initializeV2(
+    clam_: string,
     otto_: string,
-    weth_: string,
-    maiclam_: string,
-    wethPriceFeed_: string,
     treasury_: string,
     dao_: string,
+    reward_: string,
+    price_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -491,9 +486,9 @@ export interface OttopiaPortalCreator extends BaseContract {
 
   owner(overrides?: CallOverrides): Promise<string>;
 
-  priceInCLAM(overrides?: CallOverrides): Promise<BigNumber>;
+  price(overrides?: CallOverrides): Promise<BigNumber>;
 
-  priceInWETH(overrides?: CallOverrides): Promise<BigNumber>;
+  priceInCLAM(overrides?: CallOverrides): Promise<BigNumber>;
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
@@ -508,11 +503,13 @@ export interface OttopiaPortalCreator extends BaseContract {
     [BigNumber, BigNumber] & { timestamp: BigNumber; price: BigNumber }
   >;
 
-  saleStage(overrides?: CallOverrides): Promise<number>;
+  setDiscount(
+    discountConfig_: OttopiaPortalCreatorV2.DiscountConfigStruct,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
-  setOttolisted(
-    amount_: BigNumberish,
-    wallets: string[],
+  setPrice(
+    newPrice: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -541,44 +538,39 @@ export interface OttopiaPortalCreator extends BaseContract {
 
     OTTO(overrides?: CallOverrides): Promise<string>;
 
+    REWARD(overrides?: CallOverrides): Promise<string>;
+
     WETH(overrides?: CallOverrides): Promise<string>;
 
-    addOttolisted(
-      amount_: BigNumberish,
-      wallets: string[],
+    currentPrice(
+      quantity_: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>;
-
-    adjustSaleConfig(
-      stage_: BigNumberish,
-      timestamp_: BigNumberish,
-      price_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    clamPerWETH(overrides?: CallOverrides): Promise<BigNumber>;
+    ): Promise<BigNumber>;
 
     dao(overrides?: CallOverrides): Promise<string>;
 
     devCanMint(overrides?: CallOverrides): Promise<BigNumber>;
 
-    devMint(
-      to_: string,
-      quantity_: BigNumberish,
+    discountConfig(
       overrides?: CallOverrides
-    ): Promise<void>;
-
-    distribute(overrides?: CallOverrides): Promise<void>;
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber] & {
+        startedAt: BigNumber;
+        endedAt: BigNumber;
+        amountThreshold: BigNumber;
+        percentageOff: BigNumber;
+      }
+    >;
 
     emergencyWithdraw(token_: string, overrides?: CallOverrides): Promise<void>;
 
-    initialize(
+    initializeV2(
+      clam_: string,
       otto_: string,
-      weth_: string,
-      maiclam_: string,
-      wethPriceFeed_: string,
       treasury_: string,
       dao_: string,
+      reward_: string,
+      price_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -594,9 +586,9 @@ export interface OttopiaPortalCreator extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<string>;
 
-    priceInCLAM(overrides?: CallOverrides): Promise<BigNumber>;
+    price(overrides?: CallOverrides): Promise<BigNumber>;
 
-    priceInWETH(overrides?: CallOverrides): Promise<BigNumber>;
+    priceInCLAM(overrides?: CallOverrides): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
@@ -609,13 +601,12 @@ export interface OttopiaPortalCreator extends BaseContract {
       [BigNumber, BigNumber] & { timestamp: BigNumber; price: BigNumber }
     >;
 
-    saleStage(overrides?: CallOverrides): Promise<number>;
-
-    setOttolisted(
-      amount_: BigNumberish,
-      wallets: string[],
+    setDiscount(
+      discountConfig_: OttopiaPortalCreatorV2.DiscountConfigStruct,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    setPrice(newPrice: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
     transferOwnership(
       newOwner: string,
@@ -649,6 +640,17 @@ export interface OttopiaPortalCreator extends BaseContract {
     ): BeaconUpgradedEventFilter;
     BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
 
+    "OttoMinted(address,address,uint256)"(
+      minter?: string | null,
+      to?: string | null,
+      quantity?: null
+    ): OttoMintedEventFilter;
+    OttoMinted(
+      minter?: string | null,
+      to?: string | null,
+      quantity?: null
+    ): OttoMintedEventFilter;
+
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,
       newOwner?: string | null
@@ -671,49 +673,33 @@ export interface OttopiaPortalCreator extends BaseContract {
 
     OTTO(overrides?: CallOverrides): Promise<BigNumber>;
 
+    REWARD(overrides?: CallOverrides): Promise<BigNumber>;
+
     WETH(overrides?: CallOverrides): Promise<BigNumber>;
 
-    addOttolisted(
-      amount_: BigNumberish,
-      wallets: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+    currentPrice(
+      quantity_: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    adjustSaleConfig(
-      stage_: BigNumberish,
-      timestamp_: BigNumberish,
-      price_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    clamPerWETH(overrides?: CallOverrides): Promise<BigNumber>;
 
     dao(overrides?: CallOverrides): Promise<BigNumber>;
 
     devCanMint(overrides?: CallOverrides): Promise<BigNumber>;
 
-    devMint(
-      to_: string,
-      quantity_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    distribute(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    discountConfig(overrides?: CallOverrides): Promise<BigNumber>;
 
     emergencyWithdraw(
       token_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    initialize(
+    initializeV2(
+      clam_: string,
       otto_: string,
-      weth_: string,
-      maiclam_: string,
-      wethPriceFeed_: string,
       treasury_: string,
       dao_: string,
+      reward_: string,
+      price_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -729,9 +715,9 @@ export interface OttopiaPortalCreator extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
-    priceInCLAM(overrides?: CallOverrides): Promise<BigNumber>;
+    price(overrides?: CallOverrides): Promise<BigNumber>;
 
-    priceInWETH(overrides?: CallOverrides): Promise<BigNumber>;
+    priceInCLAM(overrides?: CallOverrides): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -744,11 +730,13 @@ export interface OttopiaPortalCreator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    saleStage(overrides?: CallOverrides): Promise<BigNumber>;
+    setDiscount(
+      discountConfig_: OttopiaPortalCreatorV2.DiscountConfigStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
-    setOttolisted(
-      amount_: BigNumberish,
-      wallets: string[],
+    setPrice(
+      newPrice: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -778,49 +766,33 @@ export interface OttopiaPortalCreator extends BaseContract {
 
     OTTO(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    REWARD(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     WETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    addOttolisted(
-      amount_: BigNumberish,
-      wallets: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+    currentPrice(
+      quantity_: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    adjustSaleConfig(
-      stage_: BigNumberish,
-      timestamp_: BigNumberish,
-      price_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    clamPerWETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     dao(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     devCanMint(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    devMint(
-      to_: string,
-      quantity_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    distribute(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    discountConfig(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     emergencyWithdraw(
       token_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    initialize(
+    initializeV2(
+      clam_: string,
       otto_: string,
-      weth_: string,
-      maiclam_: string,
-      wethPriceFeed_: string,
       treasury_: string,
       dao_: string,
+      reward_: string,
+      price_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -839,9 +811,9 @@ export interface OttopiaPortalCreator extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    priceInCLAM(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    price(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    priceInWETH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    priceInCLAM(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -854,11 +826,13 @@ export interface OttopiaPortalCreator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    saleStage(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    setDiscount(
+      discountConfig_: OttopiaPortalCreatorV2.DiscountConfigStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
-    setOttolisted(
-      amount_: BigNumberish,
-      wallets: string[],
+    setPrice(
+      newPrice: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
