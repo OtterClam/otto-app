@@ -7,13 +7,6 @@ import { OttoMeta } from 'models/Otto'
 import Product from 'models/store/Product'
 import { useMemo } from 'react'
 
-const hash = (s: string) => {
-  return s.split('').reduce((a: number, b: string) => {
-    a = (a << 5) - a + b.charCodeAt(0)
-    return a & a
-  }, 0)
-}
-
 export interface OttoCandidateMeta {
   name: string
   gender: string
@@ -56,7 +49,7 @@ export class Api {
   public async getNotifications(): Promise<Notification[]> {
     const res = await this.axios.get<RawNotification[]>('/notifications/home')
     return res.data.map(raw => ({
-      key: hash(JSON.stringify(raw)),
+      key: raw.id,
       imageUrl: raw.image_url,
       text: raw.text,
       url: raw.url,
