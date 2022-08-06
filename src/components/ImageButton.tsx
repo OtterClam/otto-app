@@ -21,8 +21,8 @@ const StyledButton = styled.button<{ image: NextImage; states: string[]; scale: 
       state === 'default'
         ? ''
         : `
-    &:${state} {
-      background-position: ${((image.width * scale) / states.length) * index}px center;
+    &${state} {
+      background-position: -${((image.width * scale) / states.length) * index}px center;
     }
   `
     )}

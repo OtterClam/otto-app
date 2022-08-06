@@ -35,7 +35,7 @@ export interface NavButtonProps {
   }
 }
 
-const buttonStates = ['default', 'hover']
+const buttonStates = ['default', ':hover']
 
 export default function NavButton({ label, showNotifcationIcon, link, image }: NavButtonProps) {
   return (

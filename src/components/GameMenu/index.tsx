@@ -68,7 +68,7 @@ const StyledLabel = styled(Caption)`
   ${({ theme }) => textStroke(1, theme.colors.otterBlack)}
 `
 
-const itemStates = ['default', 'hover']
+const itemStates = ['default', ':hover']
 
 export default function GameMenu({ className }: { className?: string }) {
   const { isMobile } = useBreakpoints()

@@ -110,15 +110,18 @@
     "connect": "Connect"
   },
   "home": {
-    "menu": {
-      "buy_clam": "Buy CLAM",
-      "join_discord": "Join Discord",
-      "mint_portals": "Mint Portals",
-      "otter_dao": "Otter DAO",
-      "treasury": "Treasury",
-      "white_paper": "White Paper"
+    "pins": {
+      "adventure": "Adventure",
+      "governance": "Governance",
+      "mine": "Mine",
+      "leaderboard": "Leaderboard",
+      "pond": "Clam Pond",
+      "mint": "Mint Portal",
+      "market": "Market",
+      "foundry": "Foundry",
+      "store": "Store",
+      "bank": "Pearl Bank"
     },
-    "play": "Play",
     "title": "Ottopia"
   },
   "leaderboard": {

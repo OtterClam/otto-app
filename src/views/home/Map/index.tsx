@@ -8,7 +8,7 @@ import styled, { keyframes } from 'styled-components/macro'
 import mapImage from './city_center.jpg'
 import cloudLeftImage from './cloud_left.png'
 import cloudRightImage from './cloud_right.png'
-import { pins } from './pins'
+import { pins, Pin } from './pins'
 import flagImage from './flag.png'
 
 const flagAnimation = (scale: number) => keyframes`
@@ -42,12 +42,12 @@ const StyledContainer = styled.div`
 const StyledFlag = styled.span<{ scale: number }>`
   position: absolute;
   top: 12.8%;
-  left: 53.33%;
+  left: 53.44%;
   width: ${({ scale }) => (flagImage.width / 2 / 3) * scale}px;
   height: ${({ scale }) => (flagImage.height / 2) * scale}px;
   background: left center / ${({ scale }) => (flagImage.width / 2) * scale}px
     ${({ scale }) => (flagImage.height / 2) * scale}px url(${flagImage.src});
-  animation: ${({ scale }) => flagAnimation(scale)} 0.8s steps(3) infinite;
+  animation: ${({ scale }) => flagAnimation(scale)} 0.4s steps(3) infinite;
 `
 
 const StyledBackgroundLayer = styled.div<{ scale: number; offset: Position }>`
@@ -72,12 +72,16 @@ const StyledPinsLayer = styled.div<{ scale: number; offset: Position }>`
   transform: translate(${({ offset }) => `${offset.x}px, ${offset.y}px`});
 `
 
-const StyledCloudsLayer = styled.div<{ scale: number; offset: Position }>`
+const StyledCloudsLayer = styled.div<{
+  scale: number
+  containerSize: { width: number; height: number }
+  offset: Position
+}>`
   position: absolute;
-  left: calc(50% - ${({ scale }) => (MAP_WIDTH / 2) * scale}px);
-  top: calc(50% - ${({ scale }) => (MAP_HEIGHT / 2) * scale}px);
-  width: ${({ scale }) => MAP_WIDTH * scale}px;
-  height: ${({ scale }) => MAP_HEIGHT * scale}px;
+  left: calc(50% - ${({ scale, containerSize }) => (containerSize.width / 2) * scale}px);
+  top: calc(50% - ${({ scale, containerSize }) => (containerSize.height / 2) * scale}px);
+  width: ${({ scale, containerSize }) => containerSize.width * scale}px;
+  height: ${({ scale, containerSize }) => containerSize.height * scale}px;
   z-index: 1;
   pointer-events: none;
   transform: translate(${({ offset }) => `${offset.x}px, ${offset.y}px`});
@@ -87,9 +91,9 @@ const StyledCloudsLayer = styled.div<{ scale: number; offset: Position }>`
     position: absolute;
     left: 0;
     bottom: 0;
-    width: ${({ scale }) => (cloudLeftImage.width / 2) * scale}px;
-    height: ${({ scale }) => (cloudLeftImage.height / 2) * scale}px;
-    background: center / cover url(${cloudLeftImage.src});
+    width: 100%;
+    height: 100%;
+    background: left center / auto 100% url(${cloudLeftImage.src}) no-repeat;
   }
 
   &::after {
@@ -97,23 +101,19 @@ const StyledCloudsLayer = styled.div<{ scale: number; offset: Position }>`
     position: absolute;
     right: 0;
     bottom: 0;
-    width: ${({ scale }) => (cloudRightImage.width / 2) * scale}px;
-    height: ${({ scale }) => (cloudRightImage.height / 2) * scale}px;
-    background: center / cover url(${cloudRightImage.src});
+    width: 100%;
+    height: 100%;
+    background: right center / auto 100% url(${cloudRightImage.src}) no-repeat;
   }
 `
 
-const StyledPin = styled(props => <IconButton {...props} as="a" />)<{ position: { x: number; y: number } }>`
+const StyledPin = styled(Pin)`
   position: absolute;
-  top: calc(50% + ${({ position }) => position.y}% - ${({ icon }) => icon.height / 2}px);
-  left: calc(50% + ${({ position }) => position.x}% - ${({ icon }) => icon.width / 2}px);
-  pointer-events: auto;
-`
-
-const StyledDisabledPin = styled(IconButton)<{ position: { x: number; y: number } }>`
-  position: absolute;
-  top: calc(50% + ${({ position }) => position.y}% - ${({ icon }) => icon.height / 2}px);
-  left: calc(50% + ${({ position }) => position.x}% - ${({ icon }) => icon.width / 2}px);
+  top: calc(
+    50% + ${({ pin }) => pin.position.y}% -
+      ${({ pin, width }) => (pin.image.height * (width / (pin.image.width / 3))) / 2}px
+  );
+  left: calc(50% + ${({ pin }) => pin.position.x}% - ${({ width }) => width / 2}px);
   pointer-events: auto;
 `
 
@@ -168,35 +168,33 @@ export interface MapProps {
 export function FixedMap({ className, hideCloud }: MapProps) {
   const containerRef = useRef() as RefObject<HTMLDivElement>
   const size = useSize(containerRef)
+  const containerSize = size || { width: MAP_WIDTH, height: MAP_HEIGHT }
   const { isMobile } = useBreakpoints()
-  const mapSize = useMapSize(size || { width: MAP_WIDTH, height: MAP_HEIGHT })
+  const mapSize = useMapSize(containerSize)
   const imageScale = mapSize.width / MAP_WIDTH
-  const mapOffset = isMobile ? { x: -(size?.width ?? MAP_WIDTH) * 0.08, y: 0 } : noOffset
+  const mapOffset = isMobile ? { x: -(size?.width ?? MAP_WIDTH) * 0.07, y: 0 } : noOffset
+  const pinWidth = isMobile ? 100 : 120
 
   return (
     <StyledContainer className={className} ref={containerRef}>
       <StyledBackgroundLayer scale={imageScale} offset={mapOffset} />
       <StyledPinsLayer scale={imageScale} offset={mapOffset}>
         <StyledFlag scale={imageScale} />
-        {pins.map(pin =>
-          pin.link ? (
-            <Link key={pin.key} href={pin.link} passHref>
-              <StyledPin icon={pin.image} position={pin.position} />
-            </Link>
-          ) : (
-            <StyledDisabledPin key={pin.key} disabled icon={pin.image} position={pin.position} />
-          )
-        )}
+        {pins.map(pin => (
+          <StyledPin width={pinWidth} key={pin.key} pin={pin} />
+        ))}
       </StyledPinsLayer>
-      {!hideCloud && <StyledCloudsLayer scale={imageScale} offset={noOffset} />}
+      {!hideCloud && <StyledCloudsLayer containerSize={containerSize} scale={imageScale} offset={noOffset} />}
     </StyledContainer>
   )
 }
 
 export default function Map({ className, hideCloud }: MapProps) {
+  const { isMobile } = useBreakpoints()
   const containerRef = useRef() as RefObject<HTMLDivElement>
   const size = useSize(containerRef)
-  const mapSize = useMapSize(size || { width: MAP_WIDTH, height: MAP_HEIGHT })
+  const containerSize = size || { width: MAP_WIDTH, height: MAP_HEIGHT }
+  const mapSize = useMapSize(containerSize)
   const cloudContainerScale =
     1 + Math.max((maxCloudOffset * 2) / (size?.width ?? MAP_WIDTH), (maxCloudOffset * 2) / (size?.height ?? MAP_HEIGHT))
   const imageScale = mapSize.width / MAP_WIDTH
@@ -204,23 +202,20 @@ export default function Map({ className, hideCloud }: MapProps) {
 
   const cloudOffsetTransform = useCloudOffsetTransform(size)
   const cloudOffset = useTransformedPosition(pos, cloudOffsetTransform)
+  const pinWidth = isMobile ? 100 : 120
 
   return (
     <StyledContainer className={className} ref={containerRef}>
       <StyledBackgroundLayer scale={imageScale} offset={noOffset} />
       <StyledPinsLayer scale={imageScale} offset={noOffset}>
         <StyledFlag scale={imageScale} />
-        {pins.map(pin =>
-          pin.link ? (
-            <Link key={pin.key} href={pin.link} passHref>
-              <StyledPin icon={pin.image} position={pin.position} />
-            </Link>
-          ) : (
-            <StyledDisabledPin key={pin.key} disabled icon={pin.image} position={pin.position} />
-          )
-        )}
+        {pins.map(pin => (
+          <StyledPin width={pinWidth} key={pin.key} pin={pin} />
+        ))}
       </StyledPinsLayer>
-      {!hideCloud && <StyledCloudsLayer scale={imageScale * cloudContainerScale} offset={cloudOffset} />}
+      {!hideCloud && (
+        <StyledCloudsLayer containerSize={containerSize} scale={cloudContainerScale} offset={cloudOffset} />
+      )}
     </StyledContainer>
   )
 }
