@@ -1,8 +1,6 @@
-import IconButton from 'components/IconButton'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import { Position, useMouseRelativePosition } from 'contexts/MouseRelativePosition'
 import useSize from 'hooks/useSize'
-import Link from 'next/link'
 import { RefObject, useCallback, useMemo, useRef } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 import mapImage from './city_center.jpg'
