@@ -168,7 +168,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       return null
     }
     const items = payload
-      .filter(({ value }) => Math.round(value) > 0)
+      .filter(({ value }) => Math.round(value) > 10)
       .map(({ name, value }) => ({
         key: name,
         label: keySettingMap[name].label,
