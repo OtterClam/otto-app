@@ -11,7 +11,7 @@ const fields = ['Name', 'Image', 'Link']
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { refresh } = req.query
-  const limit = req.query.limit ?? 3
+  const limit = req.query.limit ?? 100
   const uri = `/Banner?maxRecords=${limit}&view=Grid%20view`
   let raw: string
 
