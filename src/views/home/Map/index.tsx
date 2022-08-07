@@ -28,13 +28,14 @@ export const MAP_WIDTH = mapImage.width / 2
 
 export const MAP_HEIGHT = mapImage.height / 2
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ padding: number }>`
   position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
+  left: ${({ padding }) => padding}px;
+  right: ${({ padding }) => padding}px;
+  top: ${({ padding }) => padding}px;
+  bottom: ${({ padding }) => padding}px;
   overflow: hidden;
+  user-select: none;
 `
 
 const StyledFlag = styled.span<{ scale: number }>`
@@ -174,7 +175,7 @@ export function FixedMap({ className, hideCloud }: MapProps) {
   const pinWidth = isMobile ? 100 : 120
 
   return (
-    <StyledContainer className={className} ref={containerRef}>
+    <StyledContainer className={className} ref={containerRef} padding={0}>
       <StyledBackgroundLayer scale={imageScale} offset={mapOffset} />
       <StyledPinsLayer scale={imageScale} offset={mapOffset}>
         <StyledFlag scale={imageScale} />
@@ -203,7 +204,7 @@ export default function Map({ className, hideCloud }: MapProps) {
   const pinWidth = isMobile ? 100 : 120
 
   return (
-    <StyledContainer className={className} ref={containerRef}>
+    <StyledContainer className={className} ref={containerRef} padding={2}>
       <StyledBackgroundLayer scale={imageScale} offset={noOffset} />
       <StyledPinsLayer scale={imageScale} offset={noOffset}>
         <StyledFlag scale={imageScale} />

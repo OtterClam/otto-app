@@ -14,7 +14,7 @@ export default function FloatingNavButtons({ className }: { className?: string }
   const { t } = useTranslation('', { keyPrefix: 'floatingNavButtons' })
   return (
     <StyledContainer className={className}>
-      <NavButton image={newsImage} link="/news" label={t('news')} />
+      {/* <NavButton image={newsImage} link="/news" label={t('news')} /> */}
       <NavButton showNotifcationIcon image={giveawayImage} link="/giveaway" label={t('giveaway')} />
     </StyledContainer>
   )
