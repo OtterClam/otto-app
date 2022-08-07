@@ -7,7 +7,7 @@ const extractFields = (fields: string[], record: { fields?: { [key: string]: unk
 const validate = (fields: string[], data: { [key: string]: unknown }) =>
   fields.reduce((valid, key) => valid && Boolean(data[key.toLocaleLowerCase()]), true)
 
-const fields = ['Name', 'Image', 'Link']
+const fields = ['Name', 'Type', 'Image', 'Link']
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { refresh } = req.query
