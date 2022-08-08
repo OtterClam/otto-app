@@ -7,11 +7,11 @@ const extractFields = (fields: string[], record: { fields?: { [key: string]: unk
 const validate = (fields: string[], data: { [key: string]: unknown }) =>
   fields.reduce((valid, key) => valid && Boolean(data[key.toLocaleLowerCase()]), true)
 
-const fields = ['Name', 'Image', 'Link']
+const fields = ['Name', 'Type', 'Image', 'Link']
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { refresh } = req.query
-  const limit = req.query.limit ?? 3
+  const limit = req.query.limit ?? 100
   const uri = `/Banner?maxRecords=${limit}&view=Grid%20view`
   let raw: string
 

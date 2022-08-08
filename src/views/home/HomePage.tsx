@@ -10,6 +10,7 @@ import styled from 'styled-components/macro'
 import { Display3 } from 'styles/typography'
 import { useDispatch } from 'react-redux'
 import { showWalletPopup } from 'store/uiSlice'
+import useAssetsBundles from 'hooks/useAssetsBundles'
 import BuyCLAMIcon from './icons/buy-clam.png'
 import DAOIcon from './icons/dao.png'
 import JoinDiscordIcon from './icons/join-discord.png'
@@ -17,6 +18,7 @@ import PortalLarge from './icons/portal-large.png'
 import PortalIcon from './icons/portal.png'
 import TreasuryIcon from './icons/treasury.png'
 import WhitePaperIcon from './icons/whitepaper.png'
+import { BundleName } from '../../worker/consts'
 
 const StyledHomePage = styled.div`
   width: 80%;
@@ -83,6 +85,8 @@ interface Menu {
 const HomePage = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
+
+  useAssetsBundles([BundleName.HomePage])
 
   const leftMenus: Menu[] = useMemo(
     () => [

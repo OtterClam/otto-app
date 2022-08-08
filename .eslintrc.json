@@ -37,6 +37,7 @@
     }
   },
   "rules": {
+    "no-restricted-globals": "warn",
     "jsx-a11y/anchor-is-valid": "warn",
     "class-methods-use-this": "off",
     "import/no-unresolved": "off",
