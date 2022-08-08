@@ -16,6 +16,14 @@ export const DISCORD_LINK = 'https://discord.gg/otterclam'
 
 export const TWITTER_LINK = 'https://twitter.com/otterclam'
 
+export const YOUTUB_LINK = 'https://www.youtube.com/channel/UCDDMx916FeqHmCilGr5WuQw/video'
+
+export const MEDIUM_LINK = 'https://medium.com/@ottercla'
+
+export const GITHUB_LINK = 'https://github.com/ottercla'
+
+export const TELEGRAM_LINK = 'https://t.me/otterclam_official'
+
 export const OPENSEA_NFT_LINK = 'https://opensea.io/assets/matic/0x6e8a9cb6b1e73e9fce3fd3c68b5af9728f708eb7/'
 
 export function getOpenSeaLink(tokenId: string) {

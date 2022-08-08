@@ -471,7 +471,13 @@
   },
   "side_menu": {
     "follow_us": "Follow us",
-    "select_language": "Select Language"
+    "more": "More",
+    "select_language": "Select Language",
+    "disconnect": "Disconnect",
+    "more_items": {
+      "play": "How to Play",
+      "dao": "DAO"
+    }
   },
   "store": {
     "chest_desc": "The store is stocked with 3 types of Shell Chests for purchase! Your chances of finding Epic/Legendary equipment increases with each level of Shell Chest! To see the probability of obtaining different rarities with each Chest, please visit our ",

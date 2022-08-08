@@ -461,7 +461,13 @@
   },
   "side_menu": {
     "follow_us": "關注我們",
-    "select_language": "選擇語言"
+    "more": "更多",
+    "select_language": "選擇語言",
+    "disconnect": "取消連結",
+    "more_items": {
+      "play": "如何玩",
+      "dao": "DAO"
+    }
   },
   "store": {
     "chest_desc": "阿獺王國的商店目前提供三種貝殼寶箱，每個寶箱都會開啟一個裝備，越高級的寶箱擁有越高機率的裝備掉落率喔！在我們的白皮書可以查看每個寶箱對應的機率喔，請點擊",
