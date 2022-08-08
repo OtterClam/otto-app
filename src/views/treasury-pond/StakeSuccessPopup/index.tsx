@@ -1,6 +1,7 @@
 import CloseIcon from 'assets/ui/close_icon.svg'
 import Fullscreen from 'components/Fullscreen'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import styled from 'styled-components/macro'
 import { Display3, Headline } from 'styles/typography'
 import Gif from './stake.gif'
@@ -58,7 +59,7 @@ export default function StakeSuccessPopup({ clamAmount, onClose }: Props) {
           {t('desc')} <span>{clamAmount}</span> CLAM+!
         </StyledDesc>
         <StyledCloseIcon onClick={onClose}>
-          <img src={CloseIcon.src} alt="close" />
+          <Image src={CloseIcon} alt="close" />
         </StyledCloseIcon>
       </StyledStakeSuccessPopup>
     </Fullscreen>

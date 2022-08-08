@@ -1,6 +1,8 @@
 import CloseIcon from 'assets/ui/close_icon.svg'
 import Fullscreen from 'components/Fullscreen'
+import { ClamPondToken } from 'contracts/functions'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import styled from 'styled-components/macro'
 import { Display3, Headline } from 'styles/typography'
 import Gif from './unstake.gif'
@@ -42,11 +44,12 @@ const StyledCloseIcon = styled.button`
 `
 
 interface Props {
-  clamAmount: string
+  token: ClamPondToken
+  amount: string
   onClose: () => void
 }
 
-export default function UnstakeSuccessPopup({ clamAmount, onClose }: Props) {
+export default function UnstakeSuccessPopup({ token, amount, onClose }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake.unstake_popup' })
   return (
     <Fullscreen width="unset">
@@ -55,10 +58,10 @@ export default function UnstakeSuccessPopup({ clamAmount, onClose }: Props) {
         <StyledTitle>{t('title')}</StyledTitle>
         <StyledGif />
         <StyledDesc>
-          {t('desc')} <span>{clamAmount}</span> CLAM!
+          {t('desc')} <span>{amount}</span> {token}!
         </StyledDesc>
         <StyledCloseIcon onClick={onClose}>
-          <img src={CloseIcon.src} alt="close" />
+          <Image src={CloseIcon} alt="close" />
         </StyledCloseIcon>
       </StyledUnstakeSuccessPopup>
     </Fullscreen>

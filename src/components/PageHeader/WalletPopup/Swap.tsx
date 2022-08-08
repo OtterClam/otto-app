@@ -10,7 +10,7 @@ import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } fro
 import { Token, use1inchQuote, use1inchSwap, useTokenList } from './1inchHelper'
 import BuyCLAMIcon from './buy-clam.png'
 import SwapLoading from './SwapLoading'
-import OneinchIcon from './1inch.png'
+import OneInchIcon from './1inch.png'
 
 const StyledSwap = styled.div`
   display: flex;
@@ -376,7 +376,7 @@ export default function Swap({ onClose }: Props) {
       </StyledSwapButton>
       <StyledPoweredBy>
         Powered by 1inch
-        <Image src={OneinchIcon} width="18px" height="18px" />
+        <Image src={OneInchIcon} width="18px" height="18px" />
       </StyledPoweredBy>
     </StyledSwap>
   )

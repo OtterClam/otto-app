@@ -361,23 +361,6 @@ export function useStakedInfo() {
   }
 }
 
-export function useDepositInfo() {
-  const clamPond = useClamPond()
-  const { account } = useEthers()
-
-  const [result] = useCalls([
-    {
-      contract: clamPond,
-      method: 'depositInfo',
-      args: [account],
-    },
-  ])
-
-  return {
-    timestamp: result?.value?.timestamp ?? BigNumber.from(0),
-  }
-}
-
 export function usePearlBankBalance(): BigNumber {
   const pearlBank = usePearlBank()
   const { account } = useEthers()
@@ -416,12 +399,15 @@ export function useClamPerPearl() {
   return totalSupplyOfPearl.eq(0) ? BigNumber.from(0) : totalStakedOfClam.div(totalSupplyOfPearl)
 }
 
-export const useDeposit = () => {
+export type ClamPondToken = 'CLAM' | 'PEARL'
+
+export const useClamPondDeposit = (token: ClamPondToken) => {
   const clamPond = useClamPond()
-  const { CLAM, CLAM_POND } = useContractAddresses()
   const { account } = useEthers()
-  const clam = useERC20(CLAM)
-  const { state, send, resetState } = useContractFunction(clamPond, 'deposit', {})
+  const { CLAM, PEARL_BANK, CLAM_POND } = useContractAddresses()
+  const tokenAddress = token === 'CLAM' ? CLAM : PEARL_BANK
+  const tokenERC20 = useERC20(tokenAddress)
+  const { state, send, resetState } = useContractFunction(clamPond, token === 'CLAM' ? 'deposit' : 'depositPearl', {})
   const [stakeState, setStakeState] = useState<OttoTransactionState>({
     state: 'None',
     status: state,
@@ -433,10 +419,10 @@ export const useDeposit = () => {
         state: 'PendingSignature',
         status: state,
       })
-      const clamAllowance = account ? await clam.allowance(account, CLAM_POND) : constants.Zero
+      const clamAllowance = account ? await tokenERC20.allowance(account, CLAM_POND) : constants.Zero
       const noAllowance = clamAllowance.lt(clamAmount)
       if (noAllowance) {
-        await (await clam.approve(CLAM_POND, constants.MaxUint256)).wait()
+        await (await tokenERC20.approve(CLAM_POND, constants.MaxUint256)).wait()
       }
       send(clamAmount)
     } catch (error: any) {
@@ -450,9 +436,9 @@ export const useDeposit = () => {
   return { stakeState, stake, resetStake: resetState }
 }
 
-export const useWithdraw = () => {
+export const useClamPondWithdraw = (token: ClamPondToken) => {
   const clamPond = useClamPond()
-  const { state, send, resetState } = useContractFunction(clamPond, 'withdraw', {})
+  const { state, send, resetState } = useContractFunction(clamPond, token === 'CLAM' ? 'withdraw' : 'withdrawPearl', {})
   const [unstakeState, setUnstakeState] = useState<OttoTransactionState>({
     state: 'None',
     status: state,
