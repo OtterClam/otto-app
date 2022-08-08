@@ -1,3 +1,4 @@
+import { DISCORD_LINK, MEDIUM_LINK, YOUTUB_LINK, TWITTER_LINK, GITHUB_LINK, TELEGRAM_LINK } from 'constant'
 import styled from 'styled-components/macro'
 import discordImage from './discord.svg'
 import githubImage from './github.svg'
@@ -20,12 +21,12 @@ const StyledSocialLink = styled.a<{ image: string }>`
 `
 
 const links = [
-  { key: 'twitter', image: twitterImage, link: 'https://twitter.com/otterclam' },
-  { key: 'discord', image: discordImage, link: 'https://discord.gg/otterclam' },
-  { key: 'youtube', image: youtubeImage, link: 'https://www.youtube.com/channel/UCDDMx916FeqHmCilGr5WuQw/videos' },
-  { key: 'medium', image: mediumImage, link: 'https://medium.com/@otterclam' },
-  { key: 'github', image: githubImage, link: 'https://github.com/otterclam' },
-  { key: 'telegram', image: telegramImage, link: 'https://t.me/otterclam_official' },
+  { key: 'twitter', image: twitterImage, link: TWITTER_LINK },
+  { key: 'discord', image: discordImage, link: DISCORD_LINK },
+  { key: 'youtube', image: youtubeImage, link: YOUTUB_LINK },
+  { key: 'medium', image: mediumImage, link: MEDIUM_LINK },
+  { key: 'github', image: githubImage, link: GITHUB_LINK },
+  { key: 'telegram', image: telegramImage, link: TELEGRAM_LINK },
 ]
 
 export default function SocialLinks() {

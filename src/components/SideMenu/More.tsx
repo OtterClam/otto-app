@@ -1,3 +1,4 @@
+import { DAO_LINK, WHITE_PAPER_LINK } from 'constant'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import styled from 'styled-components/macro'
@@ -35,8 +36,8 @@ const StyledItem = styled.a<{ image: [number, number] }>`
 `
 
 const items: { key: string; image: [number, number]; link: string }[] = [
-  { key: 'play', image: [1, 0], link: 'https://docs.ottopia.app/ottopia/' },
-  { key: 'dao', image: [0, 0], link: 'https://discord.gg/otterclam' },
+  { key: 'play', image: [1, 0], link: WHITE_PAPER_LINK },
+  { key: 'dao', image: [0, 0], link: DAO_LINK },
 ]
 
 export default function More() {
