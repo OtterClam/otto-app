@@ -1,10 +1,11 @@
 import useResizeObserver from '@react-hook/resize-observer'
-import { useState, useLayoutEffect, RefObject } from 'react'
+import { RefObject, useState } from 'react'
+import useBrowserLayoutEffect from './useBrowserLayoutEffect'
 
 export default function useSize(target: RefObject<HTMLElement>) {
   const [size, setSize] = useState<DOMRect>()
 
-  useLayoutEffect(() => {
+  useBrowserLayoutEffect(() => {
     if (target.current) {
       setSize(target.current.getBoundingClientRect())
     }
