@@ -54,20 +54,32 @@ export default function SnapshotProposalPieChart({ proposal }: SnapshotProposalP
   if (proposal.voted) {
     let totalWeight = Object.values(proposal.voted_choices)
       .map(Number)
-      .reduce((a, b) => a + b)
-    for (let i = 0; i < Object.keys(proposal.voted_choices).length; i++) {
-      let choiceId = parseInt(Object.keys(proposal.voted_choices)[i]) - 1 //vote index starts at 1
-      let weight = proposal.voted_choices[Object.keys(proposal.voted_choices)[i]]
+      .reduce((a, b) => a + b, 0)
 
+    if (proposal.type == 'single-choice') {
+      let choiceId = parseInt(proposal.voted_choices) - 1
       dao_votes.push({
         choiceId: choiceId,
         choice: proposal.choices?.[choiceId],
-        weight: weight,
-        power: (weight / totalWeight) * (proposal.vote_power ?? 1),
+        weight: 1,
+        power: proposal.vote_power,
       })
     }
-  }
+    if (proposal.type == 'weighted') {
+      for (let i = 0; i < Object.keys(proposal.voted_choices).length; i++) {
+        let choiceId = parseInt(Object.keys(proposal.voted_choices)[i]) - 1 //vote index starts at 1
+        let weight = proposal.voted_choices[Object.keys(proposal.voted_choices)[i]]
 
+        dao_votes.push({
+          choiceId: choiceId,
+          choice: proposal.choices?.[choiceId],
+          weight: weight,
+          power: (weight / totalWeight) * (proposal.vote_power ?? 1),
+        })
+      }
+    }
+  }
+  console.log(dao_votes)
   if (data.length == 0) return null
 
   data = data.sort((a, b) => b.score - a.score)

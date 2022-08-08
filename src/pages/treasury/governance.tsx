@@ -18,7 +18,7 @@ GovernancePage.getLayout = page => {
   const { t } = useTranslation()
 
   return (
-    <Layout title={t('treasury.governance.title')} noBorder requireConnect>
+    <Layout title={t('treasury.governance.title')}>
       <TreasuryLayout>{page}</TreasuryLayout>
     </Layout>
   )

@@ -22,31 +22,31 @@ export interface DystopiaPenroseFunnelChartProps {
 const localFunnel = [
   {
     label: 'Dyst',
-    dataKey: 'dystTotalSupply',
+    dataKey: 'dystMarketCap',
     color: 'rgba(15, 99, 55, 0.5)',
     value: 0,
   },
   {
     label: 'veDyst',
-    dataKey: 'veDystTotalSupply',
+    dataKey: 'veDystMarketCap',
     color: 'rgba(190, 55, 55, 0.5)',
     value: 0,
   },
   {
     label: 'penDyst',
-    dataKey: 'penDystTotalSupply',
+    dataKey: 'penDystMarketCap',
     color: 'rgba(200, 55, 55, 0.5)',
     value: 0,
   },
   {
     label: 'vlPen',
-    dataKey: 'vlPenTotalSupply',
+    dataKey: 'vlPenMarketCap',
     color: 'rgba(210, 55, 55, 0.5)',
     value: 0,
   },
   {
     label: 'OC vlPen',
-    dataKey: 'otterClamVlPenTotalOwned',
+    dataKey: 'otterClamVlPenMarketCap',
     color: 'rgba(219, 55, 55, 0.5)',
     value: 0,
   },

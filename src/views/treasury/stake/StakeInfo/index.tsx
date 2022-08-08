@@ -1,6 +1,6 @@
 import CLAMCoin from 'assets/tokens/CLAM.svg'
 import TreasurySection from 'components/TreasurySection'
-import { useClamPrice, useDepositedAmount, useNextRewardTime, usePearlBankInfo } from 'contracts/views'
+import { useDepositedAmount, useNextRewardTime, usePearlBankInfo } from 'contracts/views'
 import formatDistance from 'date-fns/formatDistanceStrict'
 import { constants, ethers, utils } from 'ethers'
 import { trim } from 'helpers/trim'
@@ -213,7 +213,6 @@ export default function StakeInfo({ className }: Props) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'stake' })
   const { isMobile } = useBreakpoints()
   const { latestTotalReward, lastTotalStaked } = usePearlBankInfo()
-  const clamPrice = useClamPrice()
   const depositedAmount = useDepositedAmount()
   const { metrics, latestMetrics } = usePearlBankMetrics()
 

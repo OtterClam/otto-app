@@ -88,7 +88,7 @@ export default function TreasuryCard({ className, proposals }: SnapshotProposalG
               padding="6px 48px"
               width={'70%'}
               Typography={Headline}
-              onClick={() => window.open(`https://snapshot.org/#/${space}/proposal/${proposal.id}`)} //${proposal.space.id}
+              onClick={() => window.open(`https://snapshot.org/#/${proposal.space}/proposal/${proposal.id}`)} //${proposal.space.id}
             >
               {t('treasury.governance.voteNow')}
             </Button>
