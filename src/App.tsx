@@ -1,6 +1,6 @@
+import dynamic from 'next/dynamic'
 import { ApolloProvider } from '@apollo/client'
 import { ChainId, Config, DAppProvider } from '@usedapp/core'
-import SideMenu from 'components/SideMenu'
 import { BreakpointsProvider } from 'contexts/Breakpoints'
 import useApollo from 'hooks/useApollo'
 import useContractAddresses from 'hooks/useContractAddresses'
@@ -12,6 +12,8 @@ import { theme } from 'styles'
 import { CurrencyProvider } from 'contexts/Currency'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
+
+const SideMenu = dynamic(() => import('components/SideMenu'), { ssr: false })
 
 const StyledApp = styled.div`
   display: flex;
