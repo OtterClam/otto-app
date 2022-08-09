@@ -100,11 +100,12 @@ export function usePearlBankFee(amount?: BigNumber) {
       method: 'withdrawFeeDuration',
       args: [],
     },
-    amount && {
-      contract: pearlBank,
-      method: 'withdrawFee',
-      args: [account, amount],
-    },
+    account &&
+      amount && {
+        contract: pearlBank,
+        method: 'withdrawFee',
+        args: [account, amount],
+      },
   ])
 
   const base = baseResult?.value ? baseResult?.value[0] : BigNumber.from(1)
@@ -135,11 +136,12 @@ export function useClamPondFee(amount?: BigNumber) {
       method: 'withdrawFeeDuration',
       args: [],
     },
-    amount && {
-      contract: clamPond,
-      method: 'withdrawFee',
-      args: [account, amount],
-    },
+    account &&
+      amount && {
+        contract: clamPond,
+        method: 'withdrawFee',
+        args: [account, amount],
+      },
   ])
 
   const feeRate = feeRateResult?.value ? feeRateResult?.value[0] : BigNumber.from(0)
@@ -202,19 +204,27 @@ export function useUsdPlusAmount(amount?: BigNumber) {
   return result?.value ? result?.value[0] : constants.Zero
 }
 
-export function useDepositedAmount() {
+export function useClamPondDepositInfo() {
   const clamPond = useClamPond()
   const { account } = useEthers()
 
-  const [balanceResult] = useCalls([
-    {
+  const [info, balance] = useCalls([
+    account && {
+      contract: clamPond,
+      method: 'depositInfo',
+      args: [account],
+    },
+    account && {
       contract: clamPond,
       method: 'balanceOf',
       args: [account],
     },
   ])
 
-  return balanceResult?.value ? balanceResult?.value[0] : BigNumber.from(0)
+  return {
+    timestamp: info?.value?.timestamp ?? constants.Zero,
+    balance: balance?.value[0] ?? constants.Zero,
+  }
 }
 
 export function useNextRewardTime() {
@@ -224,5 +234,5 @@ export function useNextRewardTime() {
     method: 'nextPayoutTime',
     args: [],
   })
-  return result?.value ? result?.value[0] : BigNumber.from(0)
+  return result?.value ? result?.value[0] : constants.Zero
 }

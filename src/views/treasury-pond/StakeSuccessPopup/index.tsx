@@ -1,11 +1,12 @@
 import CloseIcon from 'assets/ui/close_icon.svg'
 import Fullscreen from 'components/Fullscreen'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import styled from 'styled-components/macro'
 import { Display3, Headline } from 'styles/typography'
-import Gif from './unstake.gif'
+import Gif from './stake.gif'
 
-const StyledUnstakeSuccessPopup = styled.div`
+const StyledStakeSuccessPopup = styled.div`
   padding: 45px;
   display: flex;
   flex-direction: column;
@@ -46,21 +47,21 @@ interface Props {
   onClose: () => void
 }
 
-export default function UnstakeSuccessPopup({ clamAmount, onClose }: Props) {
-  const { t } = useTranslation('', { keyPrefix: 'stake.unstake_popup' })
+export default function StakeSuccessPopup({ clamAmount, onClose }: Props) {
+  const { t } = useTranslation('', { keyPrefix: 'stake.stake_popup' })
   return (
     <Fullscreen width="unset">
-      <StyledUnstakeSuccessPopup>
+      <StyledStakeSuccessPopup>
         <StyledHeadline>{t('headline')}</StyledHeadline>
         <StyledTitle>{t('title')}</StyledTitle>
         <StyledGif />
         <StyledDesc>
-          {t('desc')} <span>{clamAmount}</span> CLAM!
+          {t('desc')} <span>{clamAmount}</span> CLAM+!
         </StyledDesc>
         <StyledCloseIcon onClick={onClose}>
-          <img src={CloseIcon.src} alt="close" />
+          <Image src={CloseIcon} alt="close" />
         </StyledCloseIcon>
-      </StyledUnstakeSuccessPopup>
+      </StyledStakeSuccessPopup>
     </Fullscreen>
   )
 }

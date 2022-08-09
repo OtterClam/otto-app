@@ -7,12 +7,14 @@ import formatDate from 'date-fns/format'
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 import { utils } from 'ethers'
 import { trim } from 'helpers/trim'
-import { useWithdraw, useDepositInfo } from 'contracts/functions'
-import { useClamPondFee, useDepositedAmount } from 'contracts/views'
+import { useClamPondWithdraw, ClamPondToken } from 'contracts/functions'
+import { useClamPondFee, useClamPondDepositInfo } from 'contracts/views'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Caption, Note, ContentLarge, ContentSmall, Headline, RegularInput } from 'styles/typography'
+import ClamInput from './ClamPondInput'
+import usePondTokens from './usePondTokens'
 
 const UnstakeSuccessPopup = dynamic(() => import('./UnstakeSuccessPopup'), { ssr: false })
 
@@ -80,22 +82,21 @@ const StyledNote = styled(Note)`
 
 const StyledButton = styled(Button)``
 
-// type Tab = 'stake' | 'unstake'
-
 interface Props {
   className?: string
 }
 
 export default function UnstakeTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
-  const [pearlAmount, setPearlAmount] = useState('')
-  const pearlBalance = useDepositedAmount()
-  const { unstakeState: state, unstake, resetState } = useWithdraw()
-  const { base: feeBase, fee, feeRate, duration } = useClamPondFee(utils.parseUnits(pearlAmount || '0', 9))
-  const { timestamp: lastStakeTimestamp } = useDepositInfo()
+  const tokens = usePondTokens()
+  const [token, setToken] = useState<ClamPondToken>('CLAM')
+  const [unstakeAmount, setUnstakeAmount] = useState('')
+  const { balance, timestamp: lastStakeTimestamp } = useClamPondDepositInfo()
+  const { unstakeState: state, unstake, resetState } = useClamPondWithdraw(token)
+  const { base: feeBase, fee, feeRate, duration } = useClamPondFee(utils.parseUnits(unstakeAmount || '0', 9))
   const unlockTime = new Date(lastStakeTimestamp.add(duration).mul(1000).toNumber())
   const unlocked = isAfter(new Date(), unlockTime)
-  const receiveAmount = utils.parseUnits(pearlAmount || '0', 9).sub(fee)
+  const receiveAmount = utils.parseUnits(unstakeAmount || '0', 9).sub(token === 'CLAM' ? fee : 0)
 
   useEffect(() => {
     if (state.state === 'Fail' || state.state === 'Exception') {
@@ -111,24 +112,25 @@ export default function UnstakeTab({ className }: Props) {
       <StyledPearlBalance>
         {t('available')}
         <StyledPearlBalanceText>
-          {pearlBalance !== undefined ? trim(utils.formatUnits(pearlBalance, 9), 2) : '-'}
+          {balance !== undefined ? trim(utils.formatUnits(balance, 9), 2) : '-'}
         </StyledPearlBalanceText>
         <Button
           Typography={ContentLarge}
           primaryColor="white"
           padding="0 12px"
-          onClick={() => pearlBalance && setPearlAmount(utils.formatUnits(pearlBalance, 9))}
+          onClick={() => balance && setUnstakeAmount(utils.formatUnits(balance, 9))}
         >
           {t('max')}
         </Button>
       </StyledPearlBalance>
-      <StyledInput
-        placeholder={t('input_placeholder')}
-        value={pearlAmount}
-        type="number"
-        onChange={e => setPearlAmount(Number.isNaN(e.target.value) ? '' : e.target.value)}
+      <ClamInput
+        tokens={tokens}
+        selectedToken={tokens[token]}
+        value={unstakeAmount}
+        onTokenSelected={({ id }) => setToken(id as ClamPondToken)}
+        onValueChanged={setUnstakeAmount}
       />
-      {!unlocked && (
+      {token === 'CLAM' && !unlocked && (
         <>
           <StyledField>
             <StyledFieldLabel>
@@ -154,12 +156,12 @@ export default function UnstakeTab({ className }: Props) {
         padding="6px"
         isWeb3
         loading={state.state !== 'None'}
-        onClick={() => unstake(pearlAmount)}
+        onClick={() => unstake(unstakeAmount)}
       >
         {t('unstake_btn')}
       </StyledButton>
       {state.state === 'Success' && (
-        <UnstakeSuccessPopup clamAmount={trim(utils.formatUnits(receiveAmount, 9), 4)} onClose={resetState} />
+        <UnstakeSuccessPopup token={token} amount={trim(utils.formatUnits(receiveAmount, 9), 4)} onClose={resetState} />
       )}
     </StyledUnstakeTab>
   )
