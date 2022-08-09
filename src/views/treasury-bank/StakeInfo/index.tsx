@@ -311,7 +311,7 @@ export default function StakeInfo({ className }: Props) {
             </StyledInfos>
             <StyledExtraRewards>{t('extra_rewards')}</StyledExtraRewards>
             <StyledGashaponTicket
-              src={i18n.resolvedLanguage === 'zh-tw' ? GashaponTicketZh.src : GashaponTicketEn.src}
+              src={i18n.resolvedLanguage.startsWith('zh-') ? GashaponTicketZh.src : GashaponTicketEn.src}
             />
           </StyledSectionBody>
         </StyledSection>
