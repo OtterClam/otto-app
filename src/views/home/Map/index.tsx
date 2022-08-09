@@ -171,6 +171,8 @@ export function FixedMap({ className, hideCloud }: MapProps) {
   const { isMobile } = useBreakpoints()
   const mapSize = useMapSize(containerSize)
   const imageScale = mapSize.width / MAP_WIDTH
+  const cloudContainerScale =
+    1 + Math.max((maxCloudOffset * 2) / (size?.width ?? MAP_WIDTH), (maxCloudOffset * 2) / (size?.height ?? MAP_HEIGHT))
   const mapOffset = isMobile ? { x: -(size?.width ?? MAP_WIDTH) * 0.07, y: 0 } : noOffset
   const pinWidth = isMobile ? 100 : 120
 
@@ -183,7 +185,7 @@ export function FixedMap({ className, hideCloud }: MapProps) {
           <StyledPin width={pinWidth} key={pin.key} pin={pin} />
         ))}
       </StyledPinsLayer>
-      {!hideCloud && <StyledCloudsLayer containerSize={containerSize} scale={imageScale} offset={noOffset} />}
+      {!hideCloud && <StyledCloudsLayer containerSize={containerSize} scale={cloudContainerScale} offset={noOffset} />}
     </StyledContainer>
   )
 }

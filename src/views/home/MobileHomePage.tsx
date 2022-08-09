@@ -3,6 +3,7 @@ import SectionRope from 'components/SectionRope'
 import SmallAd from 'components/SmallAd'
 import styled from 'styled-components/macro'
 import FloatingNavButtons from 'components/FloatingNavButtons'
+import { useBreakpoints } from 'contexts/Breakpoints'
 import Banner from './Banner'
 import { FixedMap } from './Map'
 
@@ -66,6 +67,8 @@ const StyledNotifications = styled(Notifications)`
 `
 
 const MobileHomePage = () => {
+  const { isSmallTablet } = useBreakpoints()
+
   return (
     <StyledContainer>
       <StyledTopLayer>
@@ -76,7 +79,7 @@ const MobileHomePage = () => {
         <StyledNotifications />
         <StyledSmallAd />
       </StyledTopLayer>
-      <StyledMap hideCloud />
+      <StyledMap hideCloud={isSmallTablet} />
       <SectionRope />
     </StyledContainer>
   )
