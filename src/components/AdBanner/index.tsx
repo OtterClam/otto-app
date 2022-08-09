@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styled from 'styled-components/macro'
 import { useEffect, useState } from 'react'
 import useApi from 'hooks/useApi'
-import { Banner } from 'models/Banner'
+import { Banner, BannerType } from 'models/Banner'
 
 const StyledLink = styled.a`
   display: flex !important;
@@ -16,6 +16,7 @@ export default function AdBanner({ showIndicators }: { showIndicators?: boolean 
   useEffect(() => {
     fetch('/api/banners')
       .then(res => res.json())
+      .then(data => data.filter(({ type }: Banner) => type === BannerType.AdBanner))
       .then(setAds)
   }, [api])
 

@@ -1,6 +1,6 @@
+import dynamic from 'next/dynamic'
 import { ApolloProvider } from '@apollo/client'
 import { ChainId, Config, DAppProvider } from '@usedapp/core'
-import SideMenu from 'components/SideMenu'
 import { BreakpointsProvider } from 'contexts/Breakpoints'
 import useApollo from 'hooks/useApollo'
 import useContractAddresses from 'hooks/useContractAddresses'
@@ -10,14 +10,23 @@ import { PropsWithChildren, useEffect } from 'react'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
 import { CurrencyProvider } from 'contexts/Currency'
+import useServiceWorker from 'hooks/useServiceWorker'
+import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
+import AssetsLoader from 'components/AssetsLoader'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
+
+const SideMenu = dynamic(() => import('components/SideMenu'), { ssr: false })
 
 const StyledApp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
+`
+
+const StyledPageContainer = styled.div.attrs({ id: 'page' })`
+  width: 100%;
 `
 
 const config: Config = {
@@ -47,6 +56,7 @@ function useRealWindowSize() {
 }
 
 const ApolloApp = ({ children }: PropsWithChildren<object>) => {
+  useServiceWorker()
   useContractAddresses()
   const apollo = useApollo()
 
@@ -55,20 +65,23 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
   return (
     <ApolloProvider client={apollo}>
       <OtterSubgraphProvider>
-        <CurrencyProvider>
-          <ThemeProvider theme={theme}>
-            <BreakpointsProvider>
-              <MyOttosProvider>
-                <StyledApp>
-                  {children}
-                  <Error />
-                  <WalletSelector />
-                  <SideMenu />
-                </StyledApp>
-              </MyOttosProvider>
-            </BreakpointsProvider>
-          </ThemeProvider>
-        </CurrencyProvider>
+        <AssetsLoaderProvider>
+          <CurrencyProvider>
+            <ThemeProvider theme={theme}>
+              <BreakpointsProvider>
+                <MyOttosProvider>
+                  <StyledApp>
+                    <StyledPageContainer>{children}</StyledPageContainer>
+                    <Error />
+                    <WalletSelector />
+                    <SideMenu />
+                    <AssetsLoader />
+                  </StyledApp>
+                </MyOttosProvider>
+              </BreakpointsProvider>
+            </ThemeProvider>
+          </CurrencyProvider>
+        </AssetsLoaderProvider>
       </OtterSubgraphProvider>
     </ApolloProvider>
   )

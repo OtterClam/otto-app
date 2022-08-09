@@ -8,8 +8,10 @@ import { useClaimRewards, usePearlBankBalance, useStakedInfo } from 'contracts/f
 import { useNextRewardTime, usePearlBankAvailableReward } from 'contracts/views'
 import formatDistance from 'date-fns/formatDistanceStrict'
 import { trim } from 'helpers/trim'
+import useLastPayoutToAccount from 'hooks/useLastPayout'
 import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { ContentSmall, Note } from 'styles/typography'
@@ -158,9 +160,29 @@ const StyledInfoContainer = styled(Note).attrs({ as: 'div' })`
   align-items: center;
 `
 
+const StyledInfoContainerLower = styled(Note).attrs({ as: 'div' })`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`
+
 const StyledInfoTitle = styled.p<{ icon?: string }>`
   display: flex;
   align-items: center;
+  &:before {
+    content: '';
+    display: ${({ icon }) => (icon ? 'block' : 'none')};
+    background: no-repeat center/contain url(${({ icon }) => icon});
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
+`
+
+const StyledInfoTitleLower = styled.p<{ icon?: string }>`
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
   &:before {
     content: '';
     display: ${({ icon }) => (icon ? 'block' : 'none')};
@@ -198,6 +220,12 @@ const StyledClaimableBalance = styled.div`
   align-items: center;
 `
 
+const StyledPayoutBalance = styled.p<{ icon?: string }>`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`
+
 const StyledClaimButton = styled(Button)``
 
 interface Props {
@@ -207,7 +235,7 @@ interface Props {
 export default function StakeInfo({ className }: Props) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'bank' })
   const { isMobile } = useBreakpoints()
-  const { metrics, latestMetrics } = usePearlBankMetrics()
+  const { latestMetrics } = usePearlBankMetrics()
   const pearlBankBalance = usePearlBankBalance()
   const myStakedInfo = useStakedInfo()
   const nextRewardTime = useNextRewardTime()
@@ -216,20 +244,7 @@ export default function StakeInfo({ className }: Props) {
   const countdown = useMemo(() => {
     return formatDistance(new Date(), nextRewardTime.toNumber() * 1000)
   }, [nextRewardTime])
-
-  // const myRewards = useMemo(() => {
-  //   if (totalStaked.eq(0)) {
-  //     return constants.Zero
-  //   }
-  //   return totalRewards.mul(myStakedInfo.amount).div(totalStaked)
-  // }, [myStakedInfo, totalStaked, totalRewards])
-
-  // const yieldRate = useMemo(() => {
-  //   if (myRewards.eq(0) || !clamPrice || clamPrice.eq(0)) {
-  //     return BigNumber.from(0)
-  //   }
-  //   return myRewards.mul(1e9).mul(1e9).div(myStakedInfo.amount.mul(clamPrice))
-  // }, [myStakedInfo, clamPrice, myRewards])
+  const { payout } = useLastPayoutToAccount()
 
   return (
     <StyledStakeInfo className={className}>
@@ -275,22 +290,28 @@ export default function StakeInfo({ className }: Props) {
               </StyledClaimButton>
             </StyledClaimableBalance>
             <StyledInfos>
-              {/* <StyledInfoContainer>
-                <StyledInfoTitle>{t('latest_reward')}</StyledInfoTitle>
-                <p>{trim(utils.formatUnits(myRewards, 6), 4)}</p>
-              </StyledInfoContainer>
-              <StyledInfoContainer>
-                <StyledInfoTitle>{t('latest_reward_yield')}</StyledInfoTitle>
-                <p>{trim(utils.formatUnits(yieldRate.mul(100), 6), 4)}%</p>
-              </StyledInfoContainer> */}
-              <StyledInfoContainer>
-                <StyledInfoTitle>{t('apr')}</StyledInfoTitle>
-                <p>{trim(latestMetrics?.apr, 2)}%</p>
-              </StyledInfoContainer>
+              {payout ? (
+                <StyledInfoContainerLower>
+                  <StyledInfoTitleLower>{t('lastPayout')}</StyledInfoTitleLower>
+                  <StyledPayoutBalance>
+                    + <Image src={USDPlus} width="22px" height="22px" />
+                    {formatUsd(payout?.pearlBankLastPayout, 2)} USD+
+                  </StyledPayoutBalance>
+                </StyledInfoContainerLower>
+              ) : null}
+
+              <StyledInfoContainerLower>
+                <StyledInfoTitleLower>{t('lastYield')}</StyledInfoTitleLower>
+                <StyledPayoutBalance>{trim(latestMetrics?.rewardRate, 3)}%</StyledPayoutBalance>
+              </StyledInfoContainerLower>
+              <StyledInfoContainerLower>
+                <StyledInfoTitleLower>{t('apr')}</StyledInfoTitleLower>
+                <StyledPayoutBalance>{trim(latestMetrics?.apr, 2)}%</StyledPayoutBalance>
+              </StyledInfoContainerLower>
             </StyledInfos>
             <StyledExtraRewards>{t('extra_rewards')}</StyledExtraRewards>
             <StyledGashaponTicket
-              src={i18n.resolvedLanguage === 'zh-tw' ? GashaponTicketZh.src : GashaponTicketEn.src}
+              src={i18n.resolvedLanguage.startsWith('zh-') ? GashaponTicketZh.src : GashaponTicketEn.src}
             />
           </StyledSectionBody>
         </StyledSection>

@@ -1,15 +1,18 @@
 import CLAMCoin from 'assets/tokens/CLAM.svg'
+import USDPlus from 'assets/tokens/USDPlus.png'
 import TreasurySection from 'components/TreasurySection'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import { useDepositedAmount, useNextRewardTime } from 'contracts/views'
 import formatDistance from 'date-fns/formatDistanceStrict'
 import { trim } from 'helpers/trim'
+import useLastPayoutToAccount from 'hooks/useLastPayout'
 import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import { useMemo } from 'react'
 import styled, { css, keyframes } from 'styled-components/macro'
-import { ContentSmall, Note } from 'styles/typography'
-import { formatClamEthers, formatUsd } from 'utils/currency'
+import { ContentMedium, ContentSmall, Note } from 'styles/typography'
+import { formatClamDecimals, formatClamEthers, formatUsd } from 'utils/currency'
 import StakeDialog from '../StakeDialog'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
@@ -147,7 +150,7 @@ const StyledClamBalanceContainer = styled.div`
   padding: 6px 20px;
 `
 
-const StyledClamBalance = styled(ContentSmall)`
+const StyledClamBalance = styled(ContentMedium)`
   display: flex;
   align-items: center;
   flex: 1;
@@ -161,18 +164,32 @@ const StyledClamBalance = styled(ContentSmall)`
   }
 `
 
-const StyledInfos = styled.div``
+const StyledPayoutBalance = styled.p`
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: end;
+`
+
+const StyledPayoutBalanceContent = styled.span`
+  min-width: 66px;
+  text-align: right;
+`
+
+const StyledInfos = styled(ContentMedium)``
 
 const StyledInfoContainer = styled(Note).attrs({ as: 'div' })`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  justify-items: normal;
+  align-items: start;
 `
 
 const StyledInfoTitle = styled.p<{ icon?: string }>`
   display: flex;
   align-items: center;
+  margin-bottom: 4px;
   &:before {
     content: '';
     display: ${({ icon }) => (icon ? 'block' : 'none')};
@@ -181,10 +198,6 @@ const StyledInfoTitle = styled.p<{ icon?: string }>`
     height: 20px;
     margin-right: 5px;
   }
-`
-
-const StyledHint = styled(Note).attrs({ as: 'p' })`
-  color: ${({ theme }) => theme.colors.darkGray100};
 `
 
 const StyledSubtitle = styled(Note).attrs({ as: 'p' })``
@@ -204,6 +217,11 @@ const StyledStakedDialog = styled(StakeDialog)`
   margin-top: -20px;
 `
 
+const StyledRewardRate = styled.p`
+  justify-content: end;
+  display: flex;
+`
+
 interface Props {
   className?: string
 }
@@ -213,17 +231,12 @@ export default function StakeInfo({ className }: Props) {
   const { isMobile } = useBreakpoints()
   const depositedAmount = useDepositedAmount()
   const { latestMetrics } = usePearlBankMetrics()
+  const { payout } = useLastPayoutToAccount()
 
   const nextRewardTime = useNextRewardTime()
   const countdown = useMemo(() => {
     return formatDistance(new Date(), nextRewardTime.toNumber() * 1000)
   }, [nextRewardTime])
-  // const myRewards = useMemo(() => {
-  //   if (totalStaked.eq(0)) {
-  //     return constants.Zero
-  //   }
-  //   return totalRewards.mul(depositedAmount.mul(1000)).div(totalStaked)
-  // }, [depositedAmount, totalStaked, totalRewards])
 
   return (
     <StyledStakeInfo className={className}>
@@ -245,18 +258,38 @@ export default function StakeInfo({ className }: Props) {
               <StyledClamBalance>{formatClamEthers(depositedAmount)} CLAM</StyledClamBalance>
             </StyledClamBalanceContainer>
             <StyledInfos>
-              {/* <StyledInfoContainer>
-                <StyledInfoTitle>{t('next_reward_yield')}</StyledInfoTitle>
-                <p>{trim(utils.formatUnits(myRewards, 9), 4)} USD+</p>
-              </StyledInfoContainer> */}
+              {payout ? (
+                <StyledInfoContainer>
+                  <StyledInfoTitle>{t('lastPayout')}</StyledInfoTitle>
+                  <div>
+                    <StyledPayoutBalance>
+                      + <Image src={USDPlus} width={22} height={22} unoptimized />
+                      <StyledPayoutBalanceContent>
+                        {formatUsd(payout?.clamPondLastPayoutUsd, 2)} USD+
+                      </StyledPayoutBalanceContent>
+                    </StyledPayoutBalance>
+                    <StyledPayoutBalance>
+                      =
+                      <Image src={CLAMCoin} width={22} height={22} unoptimized />
+                      <StyledPayoutBalanceContent>
+                        {formatClamDecimals(payout?.clamPondLastPayout, 2, true)}
+                      </StyledPayoutBalanceContent>
+                    </StyledPayoutBalance>
+                  </div>
+                </StyledInfoContainer>
+              ) : null}
+              <StyledInfoContainer>
+                <StyledInfoTitle>{t('lastYield')}</StyledInfoTitle>
+                <StyledRewardRate>{trim(latestMetrics?.rewardRate, 3)}%</StyledRewardRate>
+              </StyledInfoContainer>
               <StyledInfoContainer>
                 <StyledInfoTitle>{t('apy')}</StyledInfoTitle>
-                <p>{trim(latestMetrics?.apy, 2)}%</p>
+                <StyledRewardRate>{trim(latestMetrics?.apy, 2)}%</StyledRewardRate>
               </StyledInfoContainer>
             </StyledInfos>
             <StyledExtraRewards>{t('extra_rewards')}</StyledExtraRewards>
             <StyledGashaponTicket
-              src={i18n.resolvedLanguage === 'zh-tw' ? GashaponTicketZh.src : GashaponTicketEn.src}
+              src={i18n.resolvedLanguage.startsWith('zh-') ? GashaponTicketZh.src : GashaponTicketEn.src}
             />
           </StyledSectionBody>
         </StyledSection>

@@ -12,6 +12,7 @@ const GlobalStyle = createGlobalStyle`
 
       --z-index-header: 1000;
       --z-index-popup: 2000;
+      --z-index-side-menu: 2001;
 
       @media ${({ theme }) => theme.breakpoints.tablet} {
         --game-body-height: calc(var(--real-vh) - var(--header-height) - var(--game-menu-height) - env(safe-area-inset-bottom));

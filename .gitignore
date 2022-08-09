@@ -20,3 +20,12 @@ yarn-error.log*
 # Local Netlify folder
 .netlify
 .next
+
+# next-pwa
+public/sw.js
+public/sw.js.map
+public/worker-*.js
+public/worker-*.js.map
+
+# tsc
+tsconfig.tsbuildinfo

@@ -12,6 +12,15 @@ body {
 	cursor: url('/cursor-default.png'), auto;
 	background: center / cover no-repeat url('/bg.jpg');
 	background-attachment: fixed;
+
+	&.loading {
+		overflow: hidden;
+		background: #101631;
+	}
+
+	&.loading #page {
+		opacity: 0;
+	}
 }
 
 button {

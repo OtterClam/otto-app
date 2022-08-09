@@ -6,11 +6,12 @@
     "dev": "next dev",
     "start": "next start",
     "build": "next build",
+    "check-types": "tsc --noemit",
     "download-schema:otto": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otto_testnet otto-graphql-schema.json",
-    "download-schema:otter": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otterclam_backup otter-graphql-schema.json",
+    "download-schema:otter": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otterclam otter-graphql-schema.json",
     "codegen:contract": "typechain --target ethers-v5 --out-dir=src/contracts/__generated__ 'src/contracts/abis/*.json'",
-    "codegen:otto-graph": "yarn download-schema:otto && apollo codegen:generate --includes=src/graphs/otto.ts --localSchemaFile=otto-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile='./src/__generated__/otto/global-types.ts'",
-    "codegen:otter-graph": "yarn download-schema:otter && apollo codegen:generate --includes=src/graphs/otter.ts --localSchemaFile=otter-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile='./src/__generated__/otter/global-types.ts' && rm ./src/__generated__/otter/global-types.ts",
+    "codegen:otto-graph": "yarn download-schema:otto && apollo codegen:generate --includes=src/graphs/otto.ts --localSchemaFile=otto-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=./src/__generated__/otto/global-types.ts",
+    "codegen:otter-graph": "yarn download-schema:otter && apollo codegen:generate --includes=src/graphs/otter.ts --localSchemaFile=otter-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=./src/__generated__/otter/global-types.ts && rm ./src/__generated__/otter/global-types.ts",
     "codegen": "yarn codegen:contract && yarn codegen:otto-graph && yarn codegen:otter-graph",
     "prepare": "husky install"
   },
@@ -29,6 +30,9 @@
   "lint-staged": {
     "*.{png,jpeg,jpg,gif,svg}": [
       "node ./scripts/imagemin.mjs"
+    ],
+    "public/locales/**/*.json": [
+      "node ./scripts/gen-cn.mjs"
     ]
   },
   "dependencies": {
@@ -49,6 +53,7 @@
     "md5": "^2.3.0",
     "next": "^12.1.6",
     "next-i18next": "^11.0.0",
+    "next-pwa": "^5.5.4",
     "next-transpile-modules": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -57,13 +62,20 @@
     "react-responsive": "^9.0.0-beta.10",
     "react-responsive-carousel": "^3.2.23",
     "react-tooltip": "^4.2.21",
+    "react-transition-group": "^4.4.5",
     "recharts": "^2.1.12",
     "recharts-scale": "^0.4.5",
     "rehype-raw": "^6.1.1",
     "styled-components": "^5.3.3",
     "twitter-api-sdk": "^1.0.7",
     "twitter-lite": "^1.1.0",
-    "typechain": "^8.0.0"
+    "typechain": "^8.0.0",
+    "webpack-manifest-plugin": "^5.0.0",
+    "webpack-sources": "^3.2.3",
+    "workbox-core": "^6.5.3",
+    "workbox-routing": "^6.5.3",
+    "workbox-strategies": "^6.5.3",
+    "workbox-window": "^6.5.3"
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "^4.9.1",
@@ -74,7 +86,10 @@
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "@types/react-redux": "^7.1.7",
+    "@types/react-transition-group": "^4.4.5",
+    "@types/serviceworker": "^0.0.48",
     "@types/styled-components": "^5.1.15",
+    "@types/workbox-window": "^4.3.4",
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "^5.8.0",
     "apollo": "2.33.9",
@@ -95,6 +110,7 @@
     "imagemin-optipng": "^8.0.0",
     "imagemin-svgo": "^10.0.1",
     "lint-staged": "^13.0.3",
+    "opencc-js": "^1.0.4",
     "prettier": "^2.5.1",
     "react-error-overlay": "6.0.9",
     "sass": "^1.54.1",

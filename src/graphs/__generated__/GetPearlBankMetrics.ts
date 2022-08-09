@@ -10,15 +10,10 @@
 export interface GetPearlBankMetrics_pearlBankMetrics {
   __typename: "PearlBankMetric";
   id: string;
-  /**
-   * token supply
-   */
   timestamp: any;
-  /**
-   * reward
-   */
   apr: any;
   apy: any;
+  rewardRate: any;
   payoutMarketValue: any;
   clamMarketValueWhenPayoutHappens: any;
   cumulativeRewardPayoutMarketValue: any;
