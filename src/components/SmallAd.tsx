@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const StyledContainer = styled.a`
-  display: inline-block;
+  display: inline-flex;
   border: 2px ${({ theme }) => theme.colors.white} solid;
 `
 
