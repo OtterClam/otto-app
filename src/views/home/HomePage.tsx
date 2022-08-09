@@ -109,7 +109,7 @@ const HomePage = () => {
     <StyledMenus area={area}>
       {menus.map(({ title, icon, href, internal, action }, i) =>
         action ? (
-          <StyledMenuButton title={title} icon={icon} onClick={action} />
+          <StyledMenuButton key={i} title={title} icon={icon} onClick={action} />
         ) : internal ? (
           <Link key={i} href={href || ''} rel="noreferrer">
             <a>
