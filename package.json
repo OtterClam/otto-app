@@ -6,6 +6,7 @@
     "dev": "next dev",
     "start": "next start",
     "build": "next build",
+    "check-types": "tsc --noemit",
     "download-schema:otto": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otto_testnet otto-graphql-schema.json",
     "download-schema:otter": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otterclam otter-graphql-schema.json",
     "codegen:contract": "typechain --target ethers-v5 --out-dir=src/contracts/__generated__ 'src/contracts/abis/*.json'",
