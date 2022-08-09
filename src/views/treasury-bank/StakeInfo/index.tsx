@@ -11,6 +11,7 @@ import { trim } from 'helpers/trim'
 import useLastPayoutToAccount from 'hooks/useLastPayout'
 import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { ContentSmall, Note } from 'styles/typography'
@@ -161,9 +162,8 @@ const StyledInfoContainer = styled(Note).attrs({ as: 'div' })`
 
 const StyledInfoContainerLower = styled(Note).attrs({ as: 'div' })`
   width: 100%;
-  display: grid;
-  justify-items: normal;
-  align-items: start;
+  display: flex;
+  justify-content: space-between;
 `
 
 const StyledInfoTitle = styled.p<{ icon?: string }>`
@@ -182,7 +182,6 @@ const StyledInfoTitle = styled.p<{ icon?: string }>`
 const StyledInfoTitleLower = styled.p<{ icon?: string }>`
   display: flex;
   align-items: center;
-  border-bottom: 2px solid currentColor;
   margin-bottom: 4px;
   &:before {
     content: '';
@@ -222,18 +221,9 @@ const StyledClaimableBalance = styled.div`
 `
 
 const StyledPayoutBalance = styled.p<{ icon?: string }>`
-  align-items: center;
   display: flex;
-  flex: 0;
-  justify-content: end;
-  &:before {
-    content: '';
-    background: no-repeat center/contain url(${({ icon }) => icon});
-    width: 44px;
-    height: 22px;
-    margin-right: ${({ icon }) => (icon === USDPlus.src ? '' : '-5px')};
-    white-space: pre;
-  }
+  align-items: center;
+  gap: 5px;
 `
 
 const StyledClaimButton = styled(Button)``
@@ -245,7 +235,7 @@ interface Props {
 export default function StakeInfo({ className }: Props) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'bank' })
   const { isMobile } = useBreakpoints()
-  const { metrics, latestMetrics } = usePearlBankMetrics()
+  const { latestMetrics } = usePearlBankMetrics()
   const pearlBankBalance = usePearlBankBalance()
   const myStakedInfo = useStakedInfo()
   const nextRewardTime = useNextRewardTime()
@@ -303,7 +293,8 @@ export default function StakeInfo({ className }: Props) {
               {payout ? (
                 <StyledInfoContainerLower>
                   <StyledInfoTitleLower>{t('lastPayout')}</StyledInfoTitleLower>
-                  <StyledPayoutBalance icon={USDPlus.src}>
+                  <StyledPayoutBalance>
+                    + <Image src={USDPlus} width="22px" height="22px" />
                     {formatUsd(payout?.pearlBankLastPayout, 2)} USD+
                   </StyledPayoutBalance>
                 </StyledInfoContainerLower>

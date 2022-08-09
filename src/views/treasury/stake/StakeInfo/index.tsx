@@ -8,10 +8,11 @@ import { trim } from 'helpers/trim'
 import useLastPayoutToAccount from 'hooks/useLastPayout'
 import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import { useMemo } from 'react'
 import styled, { css, keyframes } from 'styled-components/macro'
 import { ContentMedium, ContentSmall, Note } from 'styles/typography'
-import { formatClamDecimals, formatClamEthers, formatClamString, formatUsd } from 'utils/currency'
+import { formatClamDecimals, formatClamEthers, formatUsd } from 'utils/currency'
 import StakeDialog from '../StakeDialog'
 import BadgeLeft from './badge-left.svg'
 import BadgeRight from './badge-right.svg'
@@ -163,26 +164,24 @@ const StyledClamBalance = styled(ContentMedium)`
   }
 `
 
-const StyledPayoutBalance = styled.p<{ icon?: string }>`
-  align-items: center;
+const StyledPayoutBalance = styled.p`
   display: flex;
-  flex: 0;
+  gap: 5px;
+  align-items: center;
   justify-content: end;
-  &:before {
-    content: '';
-    background: no-repeat center/contain url(${({ icon }) => icon});
-    width: 44px;
-    height: 22px;
-    margin-right: ${({ icon }) => (icon === USDPlus.src ? '' : '-5px')};
-    white-space: pre;
-  }
+`
+
+const StyledPayoutBalanceContent = styled.span`
+  min-width: 66px;
+  text-align: right;
 `
 
 const StyledInfos = styled(ContentMedium)``
 
 const StyledInfoContainer = styled(Note).attrs({ as: 'div' })`
   width: 100%;
-  display: grid;
+  display: flex;
+  justify-content: space-between;
   justify-items: normal;
   align-items: start;
 `
@@ -190,7 +189,6 @@ const StyledInfoContainer = styled(Note).attrs({ as: 'div' })`
 const StyledInfoTitle = styled.p<{ icon?: string }>`
   display: flex;
   align-items: center;
-  border-bottom: 2px solid currentColor;
   margin-bottom: 4px;
   &:before {
     content: '';
@@ -200,10 +198,6 @@ const StyledInfoTitle = styled.p<{ icon?: string }>`
     height: 20px;
     margin-right: 5px;
   }
-`
-
-const StyledHint = styled(Note).attrs({ as: 'p' })`
-  color: ${({ theme }) => theme.colors.darkGray100};
 `
 
 const StyledSubtitle = styled(Note).attrs({ as: 'p' })``
@@ -267,12 +261,21 @@ export default function StakeInfo({ className }: Props) {
               {payout ? (
                 <StyledInfoContainer>
                   <StyledInfoTitle>{t('lastPayout')}</StyledInfoTitle>
-                  <StyledPayoutBalance icon={USDPlus.src}>
-                    {formatUsd(payout?.clamPondLastPayoutUsd, 2)} USD+
-                  </StyledPayoutBalance>
-                  <StyledPayoutBalance icon={CLAMCoin.src}>
-                    = {formatClamDecimals(payout?.clamPondLastPayout, 2, true)}
-                  </StyledPayoutBalance>
+                  <div>
+                    <StyledPayoutBalance>
+                      + <Image src={USDPlus} width={22} height={22} unoptimized />
+                      <StyledPayoutBalanceContent>
+                        {formatUsd(payout?.clamPondLastPayoutUsd, 2)} USD+
+                      </StyledPayoutBalanceContent>
+                    </StyledPayoutBalance>
+                    <StyledPayoutBalance>
+                      =
+                      <Image src={CLAMCoin} width={22} height={22} unoptimized />
+                      <StyledPayoutBalanceContent>
+                        {formatClamDecimals(payout?.clamPondLastPayout, 2, true)}
+                      </StyledPayoutBalanceContent>
+                    </StyledPayoutBalance>
+                  </div>
                 </StyledInfoContainer>
               ) : null}
               <StyledInfoContainer>
