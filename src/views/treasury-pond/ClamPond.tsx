@@ -93,6 +93,7 @@ const StyledOtter = styled.img<{ delay: number }>`
   animation: ${Animation} 2000ms infinite;
   animation-delay: ${({ delay }) => delay}ms;
   animation-timing-function: steps(1);
+  pointer-events: none;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     position: absolute;

@@ -4,11 +4,11 @@ import styled from 'styled-components/macro'
 import { ContentSmall, Note } from 'styles/typography'
 import Image from 'next/image'
 import { trim } from 'helpers/trim'
-import { ClamPondToken } from 'contracts/functions'
+import { ReactElement } from 'react'
+import RealDropdown from 'components/RealDropdown'
 
-const StyledTokenSelector = styled.div<{ show: boolean }>`
-  display: ${({ show }) => (show ? 'flex' : 'none')};
-  position: absolute;
+const StyledDropdown = styled(RealDropdown)`
+  max-width: 200px;
   flex-direction: column;
   gap: 10px;
   background: ${({ theme }) => theme.colors.white};
@@ -50,25 +50,29 @@ export interface TokenInfo {
 }
 
 interface Props {
-  show: boolean
   tokens: Record<string, TokenInfo>
   onSelect: (token: TokenInfo) => void
+  children: ReactElement
 }
 
-export default function TokenSelector({ show, tokens, onSelect }: Props) {
-  return (
-    <StyledTokenSelector show={show}>
-      {Object.entries(tokens).map(([token, tokenInfo]) => (
-        <StyledSelectTokenRow key={token} onClick={() => onSelect(tokenInfo)}>
-          <Image width="22px" height="22px" src={tokenInfo.icon} layout="fixed" />
-          <StyledSelectTokenRightContainer>
-            <StyledSelectTokenName>{token}</StyledSelectTokenName>
-            <StyledSelectTokenAmount>
-              {`${tokenInfo.balance ? trim(formatUnits(tokenInfo.balance, tokenInfo.decimal), 4) : '0'} ${token}`}
-            </StyledSelectTokenAmount>
-          </StyledSelectTokenRightContainer>
-        </StyledSelectTokenRow>
-      ))}
-    </StyledTokenSelector>
-  )
+export default function TokenSelector({ tokens, children: child, onSelect }: Props) {
+  const renderContent = () => {
+    return (
+      <>
+        {Object.entries(tokens).map(([token, tokenInfo]) => (
+          <StyledSelectTokenRow key={token} onClick={() => onSelect(tokenInfo)}>
+            <Image width="22px" height="22px" src={tokenInfo.icon} layout="fixed" />
+            <StyledSelectTokenRightContainer>
+              <StyledSelectTokenName>{token}</StyledSelectTokenName>
+              <StyledSelectTokenAmount>
+                {`${tokenInfo.balance ? trim(formatUnits(tokenInfo.balance, tokenInfo.decimal), 4) : '0'} ${token}`}
+              </StyledSelectTokenAmount>
+            </StyledSelectTokenRightContainer>
+          </StyledSelectTokenRow>
+        ))}
+      </>
+    )
+  }
+
+  return <StyledDropdown content={renderContent}>{child}</StyledDropdown>
 }
