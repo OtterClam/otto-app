@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 const StyledContainer = styled.a`
   display: inline-block;
+  border: 2px ${({ theme }) => theme.colors.white} solid;
 `
 
 export default function SmallAd({ className }: { className?: string }) {
