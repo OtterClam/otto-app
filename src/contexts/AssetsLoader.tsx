@@ -45,7 +45,6 @@ export class AssetsLoader extends EventEmitter {
       return
     }
 
-    this.removeAllListeners('progress')
     console.log(`[assets-loader] load bundles: ${names}`)
     window.workbox.messageSW({
       type: EventType.UpdateBundleByNames,
