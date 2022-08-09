@@ -29,6 +29,9 @@
   "lint-staged": {
     "*.{png,jpeg,jpg,gif,svg}": [
       "node ./scripts/imagemin.mjs"
+    ],
+    "public/locales/**/*.json": [
+      "node ./scripts/gen-cn.mjs"
     ]
   },
   "dependencies": {
@@ -106,6 +109,7 @@
     "imagemin-optipng": "^8.0.0",
     "imagemin-svgo": "^10.0.1",
     "lint-staged": "^13.0.3",
+    "opencc-js": "^1.0.4",
     "prettier": "^2.5.1",
     "react-error-overlay": "6.0.9",
     "sass": "^1.54.1",
