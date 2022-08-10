@@ -1,6 +1,6 @@
 import { IS_SERVER } from 'constant'
 import useOnClickOutside from 'hooks/useOnClickOutside'
-import { cloneElement, isValidElement, ReactChild, ReactElement, useMemo, useRef, useState } from 'react'
+import { cloneElement, isValidElement, ReactChild, ReactElement, RefObject, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { CSSTransition } from 'react-transition-group'
 import styled from 'styled-components/macro'
@@ -10,9 +10,9 @@ const StyledContainer = styled.div<{ pos: { x: number; y: number } }>`
   z-index: var(--z-index-dropdown);
   left: ${({ pos }) => pos.x}px;
   top: ${({ pos }) => pos.y}px;
-  transform-origin: top center;
 
   &.slide-enter {
+    transform-origin: top center;
     opacity: 0.3;
     transform: scaleY(0);
   }
@@ -24,39 +24,41 @@ const StyledContainer = styled.div<{ pos: { x: number; y: number } }>`
   }
 
   &.slide-exit {
+    transform-origin: top center;
     opacity: 1;
     transform: scaleY(1);
   }
 
   &.slide-exit-active {
     opacity: 0.3;
-    transform: scaleY(0);
+    opacity: 0;
     transition: transform 0.2s, opacity 0.2s;
   }
 `
 
 export interface RealDropdownProps {
   children: ReactElement
-  content: () => ReactChild
+  content: (close: () => void) => ReactChild
   className?: string
 }
 
 export default function RealDropdown({ className, children, content }: RealDropdownProps) {
   const [show, setShow] = useState(false)
-  const ref = useRef<HTMLElement>()
+  const childRef = useRef<HTMLElement>()
+  const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
 
   const pos = useMemo(() => {
-    if (!ref.current) {
+    if (!childRef.current) {
       return { x: 0, y: 0 }
     }
-    const rect = ref.current.getBoundingClientRect()
+    const rect = childRef.current.getBoundingClientRect()
     return {
       x: rect.left,
       y: rect.top,
     }
-  }, [ref.current, show])
+  }, [childRef.current, show])
 
-  useOnClickOutside(ref, () => {
+  useOnClickOutside(containerRef, () => {
     setShow(false)
   })
 
@@ -65,7 +67,7 @@ export default function RealDropdown({ className, children, content }: RealDropd
   }
 
   const child = cloneElement(children as ReactElement, {
-    ref,
+    ref: childRef,
     onClick: (e: MouseEvent) => {
       e.stopPropagation()
       setShow(true)
@@ -77,8 +79,8 @@ export default function RealDropdown({ className, children, content }: RealDropd
       {child}
       {createPortal(
         <CSSTransition unmountOnExit in={show} timeout={200} classNames="slide">
-          <StyledContainer className={className} pos={pos}>
-            {content()}
+          <StyledContainer ref={containerRef} className={className} pos={pos}>
+            {content(() => setShow(false))}
           </StyledContainer>
         </CSSTransition>,
         document.querySelector('#modal-root')!

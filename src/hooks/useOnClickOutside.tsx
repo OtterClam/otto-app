@@ -1,8 +1,8 @@
 // https://usehooks.com/useOnClickOutside/
-import { useEffect, MutableRefObject } from 'react'
+import { useEffect, MutableRefObject, RefObject } from 'react'
 
 export default function useOnClickOutside(
-  ref: MutableRefObject<HTMLElement | undefined>,
+  ref: MutableRefObject<HTMLElement | undefined> | RefObject<HTMLElement | undefined>,
   handler: (event: TouchEvent | MouseEvent) => void
 ) {
   useEffect(

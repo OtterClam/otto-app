@@ -56,11 +56,17 @@ interface Props {
 }
 
 export default function TokenSelector({ tokens, children: child, onSelect }: Props) {
-  const renderContent = () => {
+  const renderContent = (close: () => void) => {
     return (
       <>
         {Object.entries(tokens).map(([token, tokenInfo]) => (
-          <StyledSelectTokenRow key={token} onClick={() => onSelect(tokenInfo)}>
+          <StyledSelectTokenRow
+            key={token}
+            onClick={() => {
+              onSelect(tokenInfo)
+              close()
+            }}
+          >
             <Image width="22px" height="22px" src={tokenInfo.icon} layout="fixed" />
             <StyledSelectTokenRightContainer>
               <StyledSelectTokenName>{token}</StyledSelectTokenName>
