@@ -12,9 +12,10 @@ import { theme } from 'styles'
 import { CurrencyProvider } from 'contexts/Currency'
 import useServiceWorker from 'hooks/useServiceWorker'
 import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
-import AssetsLoader from 'components/AssetsLoader'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
+
+const AssetsLoader = dynamic(() => import('components/AssetsLoader'), { ssr: false })
 
 const SideMenu = dynamic(() => import('components/SideMenu'), { ssr: false })
 
