@@ -19,6 +19,7 @@ export interface FlashSellResponse {
   popup_title: string
   popup_desc: string
   popup_image: string
+  guarantee_rarity: string
   start_time: number
   end_time: number
   products: Product[]
@@ -83,6 +84,7 @@ export class Api {
       luck: Number(details.stats.find((s: any) => s.name === 'LUK').value) || 0,
       dex: Number(details.stats.find((s: any) => s.name === 'DEX').value) || 0,
       cute: Number(details.stats.find((s: any) => s.name === 'CUTE').value) || 0,
+      def: Number(details.stats.find((s: any) => s.name === 'DEF').value) || 0,
       ...details,
     }
   }
