@@ -2,7 +2,6 @@ import ArrowDownIcon from 'assets/ui/arrow_down.svg'
 import TokenSelector, { TokenInfo } from 'components/TokenSelector'
 import { ClamPondToken } from 'contracts/functions'
 import { useTranslation } from 'next-i18next'
-import { useState } from 'react'
 import styled from 'styled-components/macro'
 import { RegularInput } from 'styles/typography'
 
@@ -22,7 +21,7 @@ const StyledSelectTokenButton = styled.button<{ icon: string }>`
   border-radius: 14px;
   padding: 2px 5px;
 
-  &:before {
+  &::before {
     content: '';
     display: block;
     background: no-repeat url(${({ icon }) => icon});
@@ -68,25 +67,16 @@ interface Props {
 
 export default function ClamPondInput({ tokens, selectedToken, value, onTokenSelected, onValueChanged }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
-  const [showTokenSelector, setShowTokenSelector] = useState(false)
   return (
     <StyledInputContainer>
-      <StyledSelectTokenButton icon={selectedToken.icon} onClick={() => setShowTokenSelector(show => !show)}>
-        {selectedToken.symbol}
-      </StyledSelectTokenButton>
+      <TokenSelector tokens={tokens} onSelect={onTokenSelected}>
+        <StyledSelectTokenButton icon={selectedToken.icon}>{selectedToken.symbol}</StyledSelectTokenButton>
+      </TokenSelector>
       <StyledClamInput
         placeholder={t('input_placeholder')}
         value={value}
         type="number"
         onChange={e => onValueChanged(Number.isNaN(e.target.value) ? '' : e.target.value)}
-      />
-      <TokenSelector
-        show={showTokenSelector}
-        tokens={tokens}
-        onSelect={token => {
-          setShowTokenSelector(false)
-          onTokenSelected(token)
-        }}
       />
     </StyledInputContainer>
   )

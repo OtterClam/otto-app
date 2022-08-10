@@ -10,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
       --z-index-header: 1000;
       --z-index-popup: 2000;
       --z-index-side-menu: 2001;
+      --z-index-dropdown: 2002;
 
       @media ${({ theme }) => theme.breakpoints.mobile} {
         --header-height: 100px;
