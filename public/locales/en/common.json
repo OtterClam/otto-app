@@ -139,7 +139,7 @@
   "home": {
     "pins": {
       "adventure": "Adventure",
-      "governance": "Governance",
+      "palace": "Palace",
       "mine": "Mine",
       "leaderboard": "Leaderboard",
       "pond": "Clam Pond",
@@ -675,7 +675,8 @@
   },
   "floatingNavButtons": {
     "giveaway": "Giveaway",
-    "news": "News"
+    "oldApp": "Old App",
+    "oldAppTip": "Looking for your old Pearl Chests? \n\nClick Here!"
   },
   "gameMenu": {
     "portals": "My Portals",

@@ -31,11 +31,6 @@ export const items = [
     link: '/my-ottos',
   },
   {
-    key: 'treasury',
-    image: treasuryImage,
-    link: '/treasury/dashboard',
-  },
-  {
     key: 'missions',
     image: missionsImage,
     link: '/missions',

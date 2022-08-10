@@ -12,7 +12,7 @@ import pondImage from './pond.png'
 import storeImage from './store.png'
 import adventureImage from './adventure.png'
 import bankImage from './bank.png'
-import governanceImage from './governance.png'
+import palaceImage from './palace.png'
 
 export interface PinData {
   key: string
@@ -101,9 +101,9 @@ export const pins: PinData[] = [
     },
   },
   {
-    key: 'governance',
-    image: governanceImage,
-    // link: '/Governance',
+    key: 'palace',
+    image: palaceImage,
+    link: '/treasury/dashboard',
     position: {
       x: 3,
       y: -14.7,
