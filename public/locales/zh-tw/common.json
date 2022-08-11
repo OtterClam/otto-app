@@ -657,13 +657,13 @@
   "floatingNavButtons": {
     "giveaway": "禮物",
     "oldApp": "舊 App",
-    "oldAppTip": "在找尋舊的珍珠寶箱嗎？\n\n點擊這裡！"
+    "oldAppTip": "還有舊版的質押貝殼尚未提領嗎？\n\n點擊這裡！"
   },
   "gameMenu": {
     "portals": "我的傳送門",
     "items": "我的裝備",
     "treasury": "國庫",
     "ottos": "我的阿獺",
-    "missions": "任務"
+    "missions": "我的任務"
   }
 }
