@@ -2,7 +2,6 @@ import itemsImage from './items.png'
 import missionsImage from './missions.png'
 import ottosImage from './ottos.png'
 import portalsImage from './portals.png'
-import treasuryImage from './treasury.png'
 
 export interface Item {
   key: string
