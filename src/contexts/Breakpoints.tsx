@@ -7,10 +7,11 @@ import { useMediaQuery } from 'react-responsive'
 
 export interface Breakpoints {
   isMobile: boolean
+  isSmallTablet: boolean
   isTablet: boolean
 }
 
-const defaultValue: Breakpoints = { isMobile: true, isTablet: true }
+const defaultValue: Breakpoints = { isMobile: true, isSmallTablet: true, isTablet: true }
 
 const BreakpointsContext = createContext<Breakpoints>(defaultValue)
 
@@ -19,6 +20,7 @@ export const BreakpointsProvider = ({ children }: PropsWithChildren<object>) => 
   const [ready, setReady] = useState(false)
   const isMobile = useMediaQuery({ query: breakpoints.mobile })
   const isTablet = useMediaQuery({ query: breakpoints.tablet })
+  const isSmallTablet = useMediaQuery({ query: breakpoints.smallTablet })
 
   const value = useMemo(
     () =>
@@ -27,6 +29,7 @@ export const BreakpointsProvider = ({ children }: PropsWithChildren<object>) => 
         : {
             isMobile,
             isTablet,
+            isSmallTablet,
           },
     [ready, isMobile, isTablet]
   )

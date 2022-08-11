@@ -9,7 +9,7 @@ const StyledLink = styled.a`
   display: flex !important;
 `
 
-export default function AdBanner() {
+export default function AdBanner({ showIndicators }: { showIndicators?: boolean }) {
   const [ads, setAds] = useState<Banner[]>([])
   const api = useApi()
 
@@ -25,7 +25,15 @@ export default function AdBanner() {
   }
 
   return (
-    <Carousel interval={6000} showThumbs={false} showArrows={false} showStatus={false} autoPlay infiniteLoop>
+    <Carousel
+      interval={6000}
+      showIndicators={showIndicators}
+      showThumbs={false}
+      showArrows={false}
+      showStatus={false}
+      autoPlay
+      infiniteLoop
+    >
       {ads.map(({ image, link }, i) => (
         <StyledLink key={i} href={link} target="_blank" style={{ display: 'block' }} rel="noreferrer">
           <Image unoptimized src={image} width={2000} height={500} />

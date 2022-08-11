@@ -13,6 +13,10 @@ const StyledTreasurySection = styled(TreasurySection)`
   display: flex;
   align-items: stretch;
 
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    height: calc(var(--body-height) - 84px);
+  }
+
   @media ${({ theme }) => theme.breakpoints.mobile} {
     height: unset;
     align-item: unset;

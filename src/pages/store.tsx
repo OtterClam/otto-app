@@ -2,7 +2,7 @@ import Board, { Background } from 'components/Board'
 import StoreView from 'views/store/StorePage'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
-import Layout from 'Layout'
+import DefaultLayout from 'layouts/DefaultLayout'
 import { NextPageWithLayout } from './_app'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
@@ -15,9 +15,9 @@ const StorePage: NextPageWithLayout = StoreView
 
 StorePage.getLayout = (page, i18n) => {
   return (
-    <Layout title={i18n.t('store.title')}>
+    <DefaultLayout title={i18n.t('store.title')}>
       <Board background={Background.Dark}>{page}</Board>
-    </Layout>
+    </DefaultLayout>
   )
 }
 

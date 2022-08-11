@@ -1,6 +1,5 @@
 import dynamic from 'next/dynamic'
 import styled from 'styled-components/macro'
-import useIsAtTop from 'hooks/useIsAtTop'
 import { useDispatch } from 'react-redux'
 import { connectWallet, showWalletPopup } from 'store/uiSlice'
 import { useEthers } from '@usedapp/core'
@@ -13,7 +12,7 @@ import MenuButton from './MenuButton'
 
 const WalletPopup = dynamic(() => import('./WalletPopup'), { ssr: false })
 
-const StyledContainer = styled.div<{ isAtTop: boolean }>`
+const StyledContainer = styled.div`
   position: fixed;
   z-index: var(--z-index-header);
   top: 0;
@@ -24,27 +23,7 @@ const StyledContainer = styled.div<{ isAtTop: boolean }>`
   width: 100%;
   padding: 5px 5% 10px;
   box-sizing: border-box;
-
-  &::after {
-    content: '';
-    background: linear-gradient(180deg, #5c3317 0%, #45240d 100%);
-    position: absolute;
-    z-index: -1;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  ${({ isAtTop }) =>
-    !isAtTop &&
-    `
-    &::after {
-      opacity: 1;
-    }
-  `}
+  background: linear-gradient(180deg, #5c3317 0%, #45240d 100%);
 `
 
 const StyledRow = styled.div`
@@ -54,12 +33,11 @@ const StyledRow = styled.div`
 `
 
 export default function PageHeader({ title }: PageHeaderProps) {
-  const isAtTop = useIsAtTop()
   const { account } = useEthers()
   const dispatch = useDispatch()
 
   return (
-    <StyledContainer isAtTop={isAtTop}>
+    <StyledContainer>
       <StyledRow>
         <Logo />
         <ClamBalance onClick={() => dispatch(account ? showWalletPopup() : connectWallet())} />

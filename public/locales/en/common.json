@@ -137,15 +137,18 @@
     "connect": "Connect"
   },
   "home": {
-    "menu": {
-      "buy_clam": "Buy CLAM",
-      "join_discord": "Join Discord",
-      "mint_portals": "Mint Portals",
-      "otter_dao": "Otter DAO",
-      "treasury": "Treasury",
-      "white_paper": "White Paper"
+    "pins": {
+      "adventure": "Adventure",
+      "palace": "Palace",
+      "mine": "Mine",
+      "leaderboard": "Leaderboard",
+      "pond": "Clam Pond",
+      "mint": "Mint Portal",
+      "market": "Market",
+      "foundry": "Foundry",
+      "store": "Store",
+      "bank": "Pearl Bank"
     },
-    "play": "Play",
     "title": "Ottopia"
   },
   "leaderboard": {
@@ -665,5 +668,17 @@
       "close_btn": "Close",
       "success_btn": "Back"
     }
+  },
+  "floatingNavButtons": {
+    "giveaway": "Giveaway",
+    "oldApp": "Old App",
+    "oldAppTip": "Looking for your old Pearl Chests? \n\nClick Here!"
+  },
+  "gameMenu": {
+    "portals": "My Portals",
+    "items": "My Items",
+    "treasury": "Treasury",
+    "ottos": "My Ottos",
+    "missions": "Missions"
   }
 }

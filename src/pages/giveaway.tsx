@@ -2,7 +2,7 @@ import Board from 'components/Board'
 import GiveawayView from 'views/giveaway/GiveawayPage'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
-import Layout from 'Layout'
+import DefaultLayout from 'layouts/DefaultLayout'
 import { NextPageWithLayout } from './_app'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
@@ -15,9 +15,9 @@ const GiveawayPage: NextPageWithLayout = GiveawayView
 
 GiveawayPage.getLayout = (page, i18n) => {
   return (
-    <Layout title={i18n.t('giveaway.title')}>
+    <DefaultLayout title={i18n.t('giveaway.title')}>
       <Board>{page}</Board>
-    </Layout>
+    </DefaultLayout>
   )
 }
 
