@@ -24,14 +24,15 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     if (!active || !payload?.length) {
       return null
     }
-    const items = payload.map(({ name, value, color }) => ({
+    const items = payload.map(({ name, value, choiceId }) => ({
       key: name,
       label: name,
       value: `${Math.round(value).toLocaleString(i18n.language)} ${i18n.t('treasury.governance.votes')}`,
-      color,
+      color: COLORS[choiceId % COLORS.length],
     }))
+
     // const footer = format(parseInt(payload[0]?.payload?.start ?? '0', 10) * 1000, 'LLL d, yyyy')
-    return <ChartTooltip items={items} /> // footer={footer}
+    return <ChartTooltip items={items} /> // footer={footer}headerColor={items}
   }
 
 export default function SnapshotProposalPieChart({ proposal }: SnapshotProposalPieChartProps) {
@@ -42,7 +43,7 @@ export default function SnapshotProposalPieChart({ proposal }: SnapshotProposalP
   // Map data from proposal object to Recharts-friendly dictionary
   let data: any[] = []
   for (let i = 0; i < proposal.choices.length; i++) {
-    if (proposal.scores?.[i] !== undefined || proposal.scores?.[i] !== 0) {
+    if (proposal.scores?.[i] !== undefined && proposal.scores?.[i] !== 0) {
       data.push({
         choice: proposal.choices?.[i],
         score: proposal.scores?.[i],
@@ -108,7 +109,16 @@ export default function SnapshotProposalPieChart({ proposal }: SnapshotProposalP
             ))}
           </Pie>
         ) : null}
-        <Legend fontFamily="Pangolin" style={{ fontFamily: 'Pangolin !important', overflow: 'scroll' }} height={36} />
+        <Legend
+          fontFamily="Pangolin"
+          style={{ fontFamily: 'Pangolin !important', overflow: 'scroll' }}
+          height={36}
+          payload={dao_votes.map((entry, index) => ({
+            id: index.toString(),
+            value: entry.choice,
+            color: COLORS[entry.choiceId % COLORS.length],
+          }))}
+        />
       </PieChart>
     </StyledContainer>
   )

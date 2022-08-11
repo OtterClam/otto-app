@@ -27,8 +27,7 @@ const StyledContainer = styled.div`
 const StyledCard = styled.div`
   padding: 15px;
   margin: 4px;
-  max-width: 45% !important;
-  display: inline-grid;
+  width: 100%;
   align-items: center;
   justify-items: center;
   justify-content: center;
@@ -43,32 +42,29 @@ const StyledCard = styled.div`
 const StyledTextBody = styled.div`
   font-family: 'Pangolin', 'naikaifont';
   white-space: pre-line;
-  overflow-y: scroll;
+  overflow-y: hidden;
   overflow-x: hidden;
-  max-height: 10em;
-  max-width: 80% !important;
+  max-height: 100%;
   padding: 15px;
   margin: 4px;
   border-radius: 10px;
   box-sizing: border-box;
-  border: 1px solid ${({ theme }) => theme.colors.darkBrown};
-  box-shadow: 0px 4px 0px ${({ theme }) => theme.colors.superDarkBrown},
-    inset 0px 0px 0px 4px ${({ theme }) => theme.colors.skin};
-  background: ${({ theme }) => theme.colors.white};
 `
 
-const CenteredHeadline = styled.span`
+const StyledProposalHeadline = styled.span`
   font-family: 'Pangolin', 'naikaifont';
-  max-width: 80%;
   font-size: 24px;
   font-weight: 400;
-  text-align: center;
   line-height: 1.5;
   @media ${({ theme }) => theme.breakpoints.mobile} {
     font-size: 20px;
   }
 `
+const StyledChartContainer = styled.div``
 
+const StyledInnerContainer = styled.div`
+  display: inline-flex;
+`
 export interface SnapshotProposalGroup {
   className?: string
   proposals: Proposal[]
@@ -80,9 +76,12 @@ export default function TreasuryCard({ className, proposals }: SnapshotProposalG
     <StyledContainer className={className}>
       {proposals.map(proposal => (
         <StyledCard key={proposal.id}>
-          <CenteredHeadline as="h1">{proposal.title}</CenteredHeadline>
-          <StyledTextBody>{proposal.body}</StyledTextBody>
-          <SnapshotProposalPieChart proposal={proposal} />
+          <StyledProposalHeadline as="h1">{proposal.title}</StyledProposalHeadline>
+          <StyledInnerContainer>
+            <StyledTextBody>{proposal.body}</StyledTextBody>
+            {/* <StyledChartContainer></StyledChartContainer> */}
+            <SnapshotProposalPieChart proposal={proposal} />
+          </StyledInnerContainer>
           {proposal.state === 'active' ? (
             <Button
               padding="6px 48px"
