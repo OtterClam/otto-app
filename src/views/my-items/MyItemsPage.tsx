@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic'
 import Dropdown from 'components/Dropdown'
 import Fullscreen from 'components/Fullscreen'
 import ItemCell from 'components/ItemCell'
@@ -10,9 +11,10 @@ import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall } from 'styles/typography'
 import EmptyStatus from './empty.png'
-import RedeemCouponPopup from './RedeemCouponPopup'
 import ItemDetails from './use-item/ItemDetails'
-import UseItemPopup from './use-item/ItemPopup'
+
+const RedeemCouponPopup = dynamic(() => import('./RedeemCouponPopup'), { ssr: false })
+const UseItemPopup = dynamic(() => import('./use-item/ItemPopup'), { ssr: false })
 
 const StyledMyItemsPage = styled.div`
   height: 100%;
@@ -161,7 +163,15 @@ const Sections: Record<SectionKey, Section> = {
   },
 }
 
-const SortedByOptions = ['latest_received', 'rarity_desc', 'rarity_asc', 'cute_desc', 'luck_desc', 'dex_desc']
+const SortedByOptions = [
+  'latest_received',
+  'rarity_desc',
+  'rarity_asc',
+  'def_desc',
+  'cute_desc',
+  'luck_desc',
+  'dex_desc',
+]
 const Filters = ['none', 'not_equipped', 'equipped', 'otto_specific', 'lottie_specific']
 
 export default function MyItemsPage() {
@@ -210,6 +220,9 @@ export default function MyItemsPage() {
           }
           if (sortedBy.key === 'cute_desc') {
             return b.cute - a.cute
+          }
+          if (sortedBy.key === 'def_desc') {
+            return b.def - a.def
           }
           return 0
         }),

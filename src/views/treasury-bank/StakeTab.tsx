@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic'
 import CLAM from 'assets/clam.svg'
 import CLAMCoin from 'assets/tokens/CLAM.svg'
 import Button from 'components/Button'
@@ -12,7 +13,8 @@ import styled from 'styled-components'
 import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } from 'styles/typography'
 import formatDate from 'date-fns/format'
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
-import StakeSuccessPopup from './StakeSuccessPopup'
+
+const StakeSuccessPopup = dynamic(() => import('./StakeSuccessPopup'), { ssr: false })
 
 const StyledStakeTab = styled.div`
   display: flex;
@@ -120,7 +122,7 @@ export default function StakeTab({ className }: Props) {
         </StyledFieldLabel>
       </StyledField>
       <StyledNote>
-        {t('unstake_note', {
+        {t('stake_note', {
           feeRate: trim((feeRate.toNumber() / feeBase.toNumber()) * 100, 2),
           date: formatDate(unlockTime, 'yyyy-MM-dd'),
           days: formatDistanceToNowStrict(unlockTime, { unit: 'day' }),

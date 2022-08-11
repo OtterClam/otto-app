@@ -1,5 +1,4 @@
 import { ContentSmall, Display1, Headline, ContentMedium } from 'styles/typography'
-import { OtterClamProposals_proposals } from 'graphs/__generated__/OtterClamProposals'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Proposal } from '../models/Proposal'
@@ -65,12 +64,12 @@ const StyledChartContainer = styled.div``
 const StyledInnerContainer = styled.div`
   display: inline-flex;
 `
-export interface SnapshotProposalGroup {
+export interface SnapshotProposalGroupInterface {
   className?: string
   proposals: Proposal[]
 }
 
-export default function TreasuryCard({ className, proposals }: SnapshotProposalGroup) {
+export default function SnapshotProposalGroup({ className, proposals }: SnapshotProposalGroupInterface) {
   const { t } = useTranslation()
   return (
     <StyledContainer className={className}>

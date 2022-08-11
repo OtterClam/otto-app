@@ -3,6 +3,32 @@
   "close": "關閉",
   "connect_help_text": "請連接你的錢包來參與阿獺王國吧",
   "connect_wallet": "連接錢包",
+  "new_version": "App 有新版本囉，要立刻重整畫面更新嗎？",
+  "assets_loader": {
+    "name": {
+      "0": "店長佩西",
+      "1": "水池管理員提米",
+      "2": "銀行經理阿奇波德"
+    },
+    "messages": {
+      "0": {
+        "0": "想要你的阿獺 NFT 變得更強嗎？在阿獺王國商店可以購買寶箱來開啟獲得裝備，並強化你的阿獺，嗚獺！",
+        "1": "商店不定期會有特賣活動，有機會得到稀有限定商品，請隨時關注最新消息喔，嗚獺！",
+        "2": "你夠幸運嗎？你可以試試地獄骰子來提升阿獺的稀有度喔！但如果不幸會骰出不好的事件，可能會降低阿獺的稀有度呢，嗚獺！",
+        "3": "你知道一次購買大量寶箱可以享有更多折扣嗎？快來商店看看吧，嗚獺！"
+      },
+      "1": {
+        "0": "把你的 CLAM 投到貝殼水池裡，水池就會幫你把 CLAM 自動複利，變出更多 CLAM 喔，嗚米！",
+        "1": "不需要擔心你丟進貝殼水池裡的 CLAM ，提米我會好好看管水池的～嗚米！",
+        "2": "小提醒，丟進去的 CLAM 在 30 天內提領出來會酌收 1% 提領手續費喔，嗚米！"
+      },
+      "2": {
+        "0": "別忘了每天領取你在珍珠銀行的 USD+ 獎勵！只需要一鍵就可以領取獎勵喔，阿波!",
+        "1": "小提醒，存進去的 CLAM 在 30 天內提領出來會酌收 1% 提領手續費喔，阿波！",
+        "2": "想要穩定地獲得報酬嗎？那把你的 CLAM 存進珍珠銀行就對啦！阿波！"
+      }
+    }
+  },
   "dice_banner": {
     "badge": "特殊活動",
     "button": "試試手氣！",
@@ -16,7 +42,7 @@
   "dice_popup": {
     "intro": {
       "call_to_action": "準備好要面對你的命運了嗎？",
-      "description": "地獄骰子每輪會骰出兩個事件，有的事件會暫時提升你的阿獺在這輪稀有度比賽的稀有度，但也有些事件會讓阿獺的稀有度變得更低。\n* 地獄骰子爾偶也會骰出命運選擇題，有的選項會讓阿獺獲得稀有度；但假如你選錯了選項，你的阿獺將會厄運纏身並掉稀有度。\n* 地獄骰子的稀有度加成僅會影響此輪稀有度比賽，此輪結束後，稀有度加成即會移除（不管是加分或扣分）。\n* 你知道你的阿獺 CUTE 值會影響骰出事件的機率嗎？ <strong>CUTE 值</strong>越高的阿獺，骰出好的事件機率會越高喔！想要知道 CUTE 值所影響的骰子事件機率表，請前往<a href=\"https://docs.ottopia.app/ottopia/gameplay/leaderboard/#dice-of-destiny-\" target=\"_blank\">這裡</a>。\n* 地獄骰子僅會影響你選擇的這隻阿獺。",
+      "description": "地獄骰子每輪會骰出兩個事件，有的事件會暫時提升你的阿獺在這輪稀有度比賽的稀有度，但也有些事件會讓阿獺的稀有度變得更低。\n* 地獄骰子爾偶也會骰出命運選擇題，有的選項會讓阿獺獲得稀有度；但假如你選錯了選項，你的阿獺將會厄運纏身並掉稀有度。\n* 地獄骰子的稀有度加成僅會影響此輪稀有度比賽，此輪結束後，稀有度加成即會移除（不管是加分或扣分）。\n* 你知道你的阿獺 DEF 值會影響骰出事件的機率嗎？ <strong>DEF 值</strong>越高的阿獺，骰出好的事件機率會越高喔！想要知道 DEF 值所影響的骰子事件機率表，請前往<a href=\"https://docs.ottopia.app/ottopia/gameplay/leaderboard/#dice-of-destiny-\" target=\"_blank\">這裡</a>。\n* 地獄骰子僅會影響你選擇的這隻阿獺。",
       "start_button": "骰骰子！",
       "title": "機會！命運？交給地獄骰子吧"
     },
@@ -106,16 +132,20 @@
     "connect": "連接"
   },
   "home": {
-    "menu": {
-      "buy_clam": "買 CLAM",
-      "join_discord": "加入 Discord",
-      "mint_portals": "鑄造傳送門",
-      "otter_dao": "Otter DAO",
-      "treasury": "國庫",
-      "white_paper": "白皮書"
+    "pins": {
+      "adventure": "冒險",
+      "palace": "王國大廳",
+      "mine": "礦場",
+      "leaderboard": "排行榜",
+      "pond": "貝殼水池",
+      "mint": "鑄造傳送門",
+      "market": "市場",
+      "foundry": "鑄造場",
+      "store": "商店",
+      "bank": "珍珠銀行"
     },
     "play": "開始玩",
-    "title": "阿獺王國"
+    "title": "歡迎來到阿獺王國"
   },
   "leaderboard": {
     "head": "成為最稀有的阿獺來贏得獎金!",
@@ -258,7 +288,8 @@
       "rarity_desc": "稀有度（從高到低）",
       "luck_desc": "幸運值",
       "dex_desc": "敏捷度",
-      "cute_desc": "可愛度"
+      "cute_desc": "可愛度",
+      "def_desc": "防御力"
     },
     "take_off": "脫掉",
     "take_off_item": {
@@ -428,14 +459,21 @@
     },
     "luk": { "must_desc": "R1 道具保證！" },
     "dex": { "must_desc": "R2 道具保證！" },
-    "cute": { "must_desc": "R2 道具保證！" }
+    "cute": { "must_desc": "R2 道具保證！" },
+    "def": { "must_desc": "R2 道具保證！" }
   },
   "question": {
     "submit_button": "確認"
   },
   "side_menu": {
     "follow_us": "關注我們",
-    "select_language": "選擇語言"
+    "more": "更多",
+    "select_language": "選擇語言",
+    "disconnect": "取消連結",
+    "more_items": {
+      "play": "如何玩",
+      "dao": "DAO"
+    }
   },
   "store": {
     "chest_desc": "阿獺王國的商店目前提供三種貝殼寶箱，每個寶箱都會開啟一個裝備，越高級的寶箱擁有越高機率的裝備掉落率喔！在我們的白皮書可以查看每個寶箱對應的機率喔，請點擊",
@@ -498,27 +536,25 @@
     "dashboard": {
       "title": "國庫概況",
       "clamPrice": "CLAM 價格",
-      "pearlPrice": "PEARL 價格",
-      "currentIndex": "當前指數",
-      "currentIndexTooltip": "當前指數從開始質押的時候開始追蹤 sCLAM 累積的數量。基本上就是一個人在一天當中可以擁有多少 sCLAM，如果他們質押或是持有單一顆 CLAM。",
-      "backing": "CLAM 單位支持額",
-      "backingTooltip": "國庫淨資產總值除以流通的 CLAM 數量。",
-      "tvd": "總計存額",
-      "tvdTooltip": "存款總額（Total Value Deposited，簡稱 TVL），是協定中所有 CLAM 賭注的金額。這個度量常常被 DeFi 的專案用來當作評估成長或健康度的指標。",
-      "staked": "CLAM 質押率",
-      "stakedTooltip": "CLAM 質押率, 是 sCLAM 對 CLAM 的比率 (staked / unstaked)",
+      "backing": "CLAM 單位價值",
+      "backingTooltip": "國庫的總資產價值除以 CLAM 流通量。已排除國庫中的 CLAM 價值。",
+      "tvd": "總存款額",
+      "tvdTooltip": "總存款額是所有質押在 Ottopia 中的 CLAM 總價值。通常被用來作為 DeFi 成長、健康度的指標。",
       "chartHeaderLabel": "總計",
-      "today": "今天",
-      "treasuryMarketValue": "國庫資產市價",
+      "today": "今日",
+      "treasuryMarketValue": "國庫資產市值",
       "treasuryRevenue": "國庫營收",
-      "clamCirculatingSupply": "CLAM 總流通量",
-      "buybacks": "回購",
-      "burned": "已燒毀的 CLAM",
-      "burnedTooltip": "由國庫回購並且燒毀的 CLAM 數量。",
-      "distributed": "已分發獎勵",
-      "distributedTooltip": "今天已分發之 USD+ 獎勵。獎勵來自貝殼水池及珍珠銀行所質押所分配的 USD+ 數量。",
-      "averageApr": "平均百分比收益率 (APY)",
-      "averageAprStartDate": "從 {{ date }}"
+      "treasuryRevenueTooltip": "國庫投資的每日營收。這不會呈現國庫資產的市場價格變化，只會考慮提領收益時的市價。",
+      "clamCirculatingSupply": "CLAM 流通量",
+      "clamCirculatingSupplyTooltip": "CLAM 流通量，和總量的差額為在 DAO 和 Ottopia 獎勵池的 CLAM。",
+      "burned": "燒掉的 CLAM",
+      "burnedTooltip": "被燒毀的 CLAM 數量，美金價格是利用每次燃燒時的市價計算。",
+      "distributed": "已分配利息 / APR",
+      "distributedTooltip": "已分配給質押者的利息總額！與利息年化報酬率。",
+      "averageApr": "平均年利率 APR",
+      "averageAprStartDate": "從 {{ date }}",
+      "marketcap": "CLAM 市值",
+      "marketcapTooltip": "流通中的 CLAM 數量乘以 CLAM 價格。"
     }
   },
   "stake": {
@@ -531,6 +567,7 @@
     "max": "最大值",
     "input_placeholder": "請輸入數量",
     "stake_btn": "投入貝殼幣",
+    "stake_note": "*當你投入貝殼幣後，在 30 天內提領貝殼幣，將會收取當次提領貝殼幣數量的 {{ feeRate }}% 手續費。",
     "unstake_btn": "領出貝殼幣",
     "tvl": "總投入價值 TVL:",
     "unstake_note": "*如果你在 30 天內提領貝殼幣，你將會被收取當次提領貝殼幣數量的 {{ feeRate }}% 手續費。減免手續費日期: {{ date }} (剩餘 {{ days }})",
@@ -563,8 +600,9 @@
     "max": "最大值",
     "input_placeholder": "請輸入數量",
     "stake_btn": "存入貝殼幣",
+    "stake_note": "當你投入貝殼幣後，在 30 天內提領貝殼幣，將會收取當次提領貝殼幣數量的 {{ feeRate }}% 手續費。",
     "unstake_btn": "提領貝殼幣",
-    "unstake_note": "*如果你在 30 天內提領貝殼幣，你將會被收取當次提領貝殼幣數量的 0.5% 手續費。減免手續費日期: {{ date }} (剩餘 {{ days }} 天)",
+    "unstake_note": "*如果你在 30 天內提領貝殼幣，你將會被收取當次提領貝殼幣數量的 {{feeRate}}% 手續費。減免手續費日期: {{ date }} (剩餘 {{ days }} 天)",
     "fee": "手續費 ({{ feeRate }}%)*",
     "unstake_receive_amount": "你將會得到",
     "tvl": "總存入價值 TVL:",
@@ -615,5 +653,17 @@
       "close_btn": "關閉",
       "success_btn": "返回"
     }
+  },
+  "floatingNavButtons": {
+    "giveaway": "禮物",
+    "oldApp": "舊 App",
+    "oldAppTip": "還有舊版的質押貝殼尚未提領嗎？\n\n點擊這裡！"
+  },
+  "gameMenu": {
+    "portals": "我的傳送門",
+    "items": "我的物品",
+    "treasury": "國庫",
+    "ottos": "我的阿獺",
+    "missions": "我的任務"
   }
 }

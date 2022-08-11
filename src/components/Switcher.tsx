@@ -1,7 +1,8 @@
+import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
 import noop from 'lodash/noop'
+import { RefObject, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
-import { useRef, useLayoutEffect, useState, RefObject } from 'react'
 
 const StyledContainer = styled.div<{ bgLeft: number; bgWidth: number }>`
   position: relative;
@@ -56,7 +57,7 @@ export default function Switcher<T>({ value, name, options, onChange = noop }: S
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const [size, setSize] = useState({ left: 0, width: 0 })
 
-  useLayoutEffect(() => {
+  useBrowserLayoutEffect(() => {
     if (!containerRef.current) {
       return
     }
@@ -66,7 +67,7 @@ export default function Switcher<T>({ value, name, options, onChange = noop }: S
       left: (rect?.left ?? 0) - containerRect.left,
       width: rect?.width ?? 0,
     })
-  }, [value, containerRef])
+  }, [value, containerRef.current])
 
   return (
     <StyledContainer bgLeft={size?.left ?? 0} bgWidth={size?.width ?? 0} ref={containerRef}>

@@ -8,7 +8,7 @@ const defaultValue = new ApolloClient({
 export const SnapshotContext = createContext(defaultValue)
 
 export default function SnapshotProvider({ children }: PropsWithChildren<object>) {
-  let uri = 'https://hub.snapshot.org/graphql'
+  const uri = 'https://hub.snapshot.org/graphql'
 
   const apolloClient = useMemo(
     () =>

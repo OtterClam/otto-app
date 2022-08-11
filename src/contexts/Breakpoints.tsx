@@ -1,15 +1,17 @@
+import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react'
 import { breakpoints } from 'styles/breakpoints'
-import { createContext, PropsWithChildren, useContext, useLayoutEffect, useMemo, useState } from 'react'
 
-import { useMediaQuery } from 'react-responsive'
 import { IS_SERVER } from 'constant'
+import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
+import { useMediaQuery } from 'react-responsive'
 
 export interface Breakpoints {
   isMobile: boolean
+  isSmallTablet: boolean
   isTablet: boolean
 }
 
-const defaultValue: Breakpoints = { isMobile: true, isTablet: true }
+const defaultValue: Breakpoints = { isMobile: true, isSmallTablet: true, isTablet: true }
 
 const BreakpointsContext = createContext<Breakpoints>(defaultValue)
 
@@ -18,6 +20,7 @@ export const BreakpointsProvider = ({ children }: PropsWithChildren<object>) => 
   const [ready, setReady] = useState(false)
   const isMobile = useMediaQuery({ query: breakpoints.mobile })
   const isTablet = useMediaQuery({ query: breakpoints.tablet })
+  const isSmallTablet = useMediaQuery({ query: breakpoints.smallTablet })
 
   const value = useMemo(
     () =>
@@ -26,12 +29,13 @@ export const BreakpointsProvider = ({ children }: PropsWithChildren<object>) => 
         : {
             isMobile,
             isTablet,
+            isSmallTablet,
           },
     [ready, isMobile, isTablet]
   )
 
   // if we change the dom tree structure before the hydration process is finished, something will be broken.
-  useLayoutEffect(() => {
+  useBrowserLayoutEffect(() => {
     setReady(true)
   }, [])
 

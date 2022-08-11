@@ -1,9 +1,9 @@
-import TreasuryLayout from 'components/TreasuryLayout'
-import Layout from 'Layout'
+import TreasuryLayout from 'layouts/TreasuryLayout'
+import DefaultLayout from 'layouts/DefaultLayout'
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { NextPageWithLayout } from 'pages/_app'
-import StakeView from 'views/treasury/stake/StakePage'
+import ClamPond from 'views/treasury-pond/ClamPond'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
@@ -11,14 +11,14 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   },
 })
 
-const TreasuryStakePage: NextPageWithLayout = StakeView
+const ClamPondPage: NextPageWithLayout = ClamPond
 
-TreasuryStakePage.getLayout = (page, i18n) => {
+ClamPondPage.getLayout = (page, i18n) => {
   return (
-    <Layout title={i18n.t('stake.title')}>
+    <DefaultLayout title={i18n.t('stake.title')}>
       <TreasuryLayout>{page}</TreasuryLayout>
-    </Layout>
+    </DefaultLayout>
   )
 }
 
-export default TreasuryStakePage
+export default ClamPondPage

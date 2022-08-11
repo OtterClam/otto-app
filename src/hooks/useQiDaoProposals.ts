@@ -26,7 +26,7 @@ export default function useQiDaoProposals(): {
         snapshot: x?.proposal?.snapshot,
         type: x?.proposal?.type,
         state: x?.proposal?.state,
-        //DAO vote allocation
+        // DAO vote allocation
         vote_power: x?.vp,
         voted_choices: x?.choice,
         voted: true,

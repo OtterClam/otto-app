@@ -73,6 +73,16 @@ const marketValues = [
     stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
   },
   {
+    label: 'TUSD/USDC (Penrose)',
+    dataKey: 'treasuryDystopiaPairUsdcTusdMarketValue',
+    stopColor: ['rgba(182, 233, 152, 1)', 'rgba(182, 233, 152, 0.5)'],
+  },
+  {
+    label: 'USD+/USDC (Penrose)',
+    dataKey: 'treasuryDystopiaPairUsdplusUsdcMarketValue',
+    stopColor: ['rgba(182, 233, 152, 1)', 'rgba(182, 233, 152, 0.5)'],
+  },
+  {
     label: 'Qi',
     dataKey: 'treasuryQiMarketValue',
     stopColor: ['#F4D258', 'rgba(244, 210, 88, 0.5)'],
@@ -168,7 +178,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       return null
     }
     const items = payload
-      .filter(({ value }) => Math.round(value) > 0)
+      .filter(({ value }) => Math.round(value) > 10)
       .map(({ name, value }) => ({
         key: name,
         label: keySettingMap[name].label,

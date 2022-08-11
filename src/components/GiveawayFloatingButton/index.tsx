@@ -19,6 +19,9 @@ const StyledButton = styled.img.attrs({
   height: 96px;
 `
 
+/**
+ * @deprecated use GiveawayButton instead
+ */
 export default function GiveawayFloatingButton() {
   return (
     <StyledGiveawayFloatingButton href="/giveaway" target="_blank" rel="noreferrer">

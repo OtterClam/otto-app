@@ -7,7 +7,7 @@ import useSize from 'hooks/useSize'
 import { useTranslation } from 'next-i18next'
 import { i18n } from 'i18next'
 import React, { RefObject, useRef, useMemo } from 'react'
-import { AreaChart, Area, Tooltip } from 'recharts'
+import { AreaChart, Area, Tooltip, BarChart, Bar } from 'recharts'
 import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
@@ -22,13 +22,23 @@ const xAxisTickProps = { fontSize: '12px' }
 const yAxisTickProps = { fontSize: '12px' }
 const tickCount = 3
 
-const ytickFormatter = (number: string) => `${number}%`
+const ytickFormatter = (number: string) =>
+  parseFloat(number) < 1000 ? `${Math.round(parseFloat(number))}%` : `${Math.round(parseFloat(number) / 1000)}k%`
 
 const displayedFields = [
   {
+    label: 'APY',
+    dataKey: 'apy',
+    stopColor: ['rgba(255, 172, 161, 1)', 'rgba(255, 172, 161, 0.5)'],
+  },
+  {
     label: 'APR',
     dataKey: 'apr',
-    // stopColor: ['rgba(56, 208, 117, 1)', 'rgba(56, 208, 117, 0)'],
+    stopColor: ['rgba(108, 111, 227, 1)', 'rgba(8, 95, 142, 0.5)'],
+  },
+  {
+    label: 'Reward Rate',
+    dataKey: 'rewardRate',
     stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
   },
 ]
@@ -52,21 +62,17 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     if (!active || !payload?.length) {
       return null
     }
-    const items = payload
-      .filter(({ value }) => Math.round(value) > 0)
-      .map(({ name, value }) => ({
-        key: name,
-        label: keySettingMap[name].label,
-        value: `${parseFloat(trim(value, 2)).toLocaleString(i18n.language)}%`,
-        color: keySettingMap[name].stopColor[0],
-      }))
+    const items = payload.map(({ name, value }) => ({
+      key: name,
+      label: keySettingMap[name].label,
+      value: `${parseFloat(parseFloat(value).toFixed(name === 'rewardRate' ? 3 : 1)).toLocaleString(i18n.language)}%`,
+      color: keySettingMap[name].stopColor[0],
+    }))
 
     const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
-    const headerLabel = i18n.t('treasury.dashboard.chartHeaderLabel')
+    const headerLabel = i18n.t('treasury.dashboard.dailyPayout')
 
-    return items.length > 0 ? (
-      <ChartTooltip headerLabel="APR: " headerValue={items[0].value} items={items.slice(1)} footer={footer} />
-    ) : null
+    return items.length > 0 ? <ChartTooltip headerLabel={headerLabel} items={items} footer={footer} /> : null
   }
 
 export default function BankAvgAprChart({ data, aprRange }: BankAvgAprChartProps) {
@@ -77,7 +83,7 @@ export default function BankAvgAprChart({ data, aprRange }: BankAvgAprChartProps
   const slicedData = data.slice(0, aprRange)
   return (
     <StyledContainer ref={containerRef}>
-      <AreaChart data={slicedData} width={size?.width ?? 300} height={size?.height ?? 260}>
+      <BarChart data={slicedData} width={size?.width ?? 300} height={size?.height ?? 260}>
         <defs>
           {displayedFields.map(({ dataKey: key, stopColor }) => (
             <linearGradient key={key} id={`color-${key}`} x1="0" y1="0" x2="0" y2="1">
@@ -104,27 +110,24 @@ export default function BankAvgAprChart({ data, aprRange }: BankAvgAprChartProps
           width={40}
           tick={yAxisTickProps}
           tickFormatter={(num: string) => ytickFormatter(num)}
-          domain={[0, 'auto']}
+          domain={[0, (dataMax: number) => (dataMax < 175 ? (dataMax * 1.1).toPrecision(2) : 175)]}
           connectNulls
           allowDataOverflow={false}
         />
-        <Tooltip
-          wrapperStyle={{ zIndex: 1 }}
-          formatter={(value: string) => trim(parseFloat(value), 2)}
-          content={renderTooltip(i18n) as any}
-        />
-        {displayedFields.map(({ dataKey, label }) => (
-          <Area
+        <Tooltip wrapperStyle={{ zIndex: 1 }} content={renderTooltip(i18n) as any} />
+        {displayedFields.map(({ dataKey, label }, i) => (
+          <Bar
             key={dataKey}
-            stroke="none"
+            stroke={`url(#color-${dataKey})`}
             dataKey={dataKey}
             label={label}
             fill={`url(#color-${dataKey})`}
             fillOpacity="1"
-            stackId="1"
+            stackId={i}
+            minPointSize={10}
           />
         ))}
-      </AreaChart>
+      </BarChart>
     </StyledContainer>
   )
 }

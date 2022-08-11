@@ -20,6 +20,7 @@ export interface GetTreasuryMetrics_protocolMetrics {
   totalBurnedClamMarketValue: any;
   treasuryMarketValue: any;
   treasuryMarketValueWithoutClam: any;
+  totalClamUsdPlusRebaseValue: any;
   treasuryWmaticMarketValue: any;
   treasuryDystMarketValue: any;
   treasuryVeDystMarketValue: any;
@@ -38,6 +39,8 @@ export interface GetTreasuryMetrics_protocolMetrics {
   treasuryDystopiaPairMaiClamMarketValue: any;
   treasuryDystopiaPairwMaticDystMarketValue: any;
   treasuryDystopiaPairQiTetuQiMarketValue: any;
+  treasuryDystopiaPairUsdcTusdMarketValue: any;
+  treasuryDystopiaPairUsdplusUsdcMarketValue: any;
 }
 
 export interface GetTreasuryMetrics {

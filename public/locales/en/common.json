@@ -1,7 +1,34 @@
 {
   "languages": {
     "en": "English",
-    "zh-tw": "中文"
+    "zh-tw": "繁体中文",
+    "zh-cn": "简体中文"
+  },
+  "new_version": "A newer version of this web app is available, reload to update?",
+  "assets_loader": {
+    "name": {
+      "0": "Percy the Clerk",
+      "1": "Timmy the Pond Keeper",
+      "2": "Archibald the Banker"
+    },
+    "messages": {
+      "0": {
+        "0": "Want your Otto NFT to look fancy and be stronger? Buy the Shell Chests and get special equipment in the Ottopia Store. Uta!",
+        "1": "Stores occasionally offer limited-time specials, so keep an eye on Discord for the latest info. Uta!",
+        "2": "Feeling lucky? Roll the Dice of Destiny to hopefully increase your Otto NFT’s rarity score. Be careful though, some are unlucky! Uta!",
+        "3": "Did you know we offer discounts for Chests purchased in larger quantities? Uta!"
+      },
+      "1": {
+        "0": "Throw your CLAM in CLAM Pond, and the pond will automatically compound your rewards! Omi!",
+        "1": "Rest easy and don't worry about auto-compounding your yields! The pond keeper does it all for you. Omi!",
+        "2": "Remember! There's a 1% fee for deposit withdrawals before 30 days have passed! Omi!"
+      },
+      "2": {
+        "0": "Don’t forget to claim your USD+ rewards everyday! You can claim USD+ in Pearl Bank with just one click. Apo!",
+        "1": "Remember! There's a 1% fee for deposit withdrawals before 30 days have passed!",
+        "2": "Want rewards without volatility? Then Pearl Bank is for you!"
+      }
+    }
   },
   "button_processing": "Processing",
   "close": "Close",
@@ -20,7 +47,7 @@
   "dice_popup": {
     "intro": {
       "call_to_action": "Get ready to face your destiny?",
-      "description": "The Dice of Destiny gives players a chance to temporarily boost your BRS for the current epoch in the Raking for Rarity Competition, but there’s a possibility that your Otto will lose some BRS as well.\n\n* Each roll produces a single, randomized result out of dozens of possible results.\n* Some of the results have a positive effect on your Otto’s BRS, While some have a negative effect on your Otto’s BRS.\n* Some results require an additional selection. Your choice will determine the fate of your Otto.\n* The BRS effect from rolling the Dice of Destiny only lasts for the current epoch, and will be removed as soon as it ends.\n* Do you know your Otto’s <strong>CUTE value</strong> can actually affect the result? The more CUTE your Otto has, the more likely the dice will roll good results. For more information about CUTE effects, click <a href=\"https://docs.ottopia.app/ottopia/gameplay/leaderboard/#dice-of-destiny-\" target=\"_blank\">here</a>.\n* The Dice results only affect the Otto you choose to roll a dice for.",
+      "description": "The Dice of Destiny gives players a chance to temporarily boost your BRS for the current epoch in the Raking for Rarity Competition, but there’s a possibility that your Otto will lose some BRS as well.\n\n* Each roll produces a single, randomized result out of dozens of possible results.\n* Some of the results have a positive effect on your Otto’s BRS, While some have a negative effect on your Otto’s BRS.\n* Some results require an additional selection. Your choice will determine the fate of your Otto.\n* The BRS effect from rolling the Dice of Destiny only lasts for the current epoch, and will be removed as soon as it ends.\n* Do you know your Otto’s <strong>DEF value</strong> can actually affect the result? The more DEF your Otto has, the more likely the dice will roll good results. For more information about DEF effects, click <a href=\"https://docs.ottopia.app/ottopia/gameplay/leaderboard/#dice-of-destiny-\" target=\"_blank\">here</a>.\n* The Dice results only affect the Otto you choose to roll a dice for.",
       "start_button": "Roll the Dice",
       "title": "Roll the Dice of Destiny!"
     },
@@ -110,15 +137,18 @@
     "connect": "Connect"
   },
   "home": {
-    "menu": {
-      "buy_clam": "Buy CLAM",
-      "join_discord": "Join Discord",
-      "mint_portals": "Mint Portals",
-      "otter_dao": "Otter DAO",
-      "treasury": "Treasury",
-      "white_paper": "White Paper"
+    "pins": {
+      "adventure": "Adventure",
+      "palace": "Palace",
+      "mine": "Mine",
+      "leaderboard": "Leaderboard",
+      "pond": "Clam Pond",
+      "mint": "Mint Portal",
+      "market": "Market",
+      "foundry": "Foundry",
+      "store": "Store",
+      "bank": "Pearl Bank"
     },
-    "play": "Play",
     "title": "Ottopia"
   },
   "leaderboard": {
@@ -262,7 +292,8 @@
       "rarity_desc": "Rarity  (From highest)",
       "luck_desc": "Luck  (From highest)",
       "dex_desc": "Dex  (From highest)",
-      "cute_desc": "Cute (From highest)"
+      "cute_desc": "Cute (From highest)",
+      "def_desc": "Def (From highest)"
     },
     "take_off": "Take Off",
     "take_off_item": {
@@ -438,6 +469,9 @@
     },
     "cute": {
       "must_desc": "R2 Item Guaranteed!"
+    },
+    "def": {
+      "must_desc": "R2 Item Guaranteed!"
     }
   },
   "question": {
@@ -445,7 +479,13 @@
   },
   "side_menu": {
     "follow_us": "Follow us",
-    "select_language": "Select Language"
+    "more": "More",
+    "select_language": "Select Language",
+    "disconnect": "Disconnect",
+    "more_items": {
+      "play": "How to Play",
+      "dao": "DAO"
+    }
   },
   "store": {
     "chest_desc": "The store is stocked with 3 types of Shell Chests for purchase! Your chances of finding Epic/Legendary equipment increases with each level of Shell Chest! To see the probability of obtaining different rarities with each Chest, please visit our ",
@@ -514,24 +554,25 @@
       "backingTooltip": "Market Value of Treasury Assets divided by the circulating supply of CLAM. The value of CLAM tokens in liquidity pools is NOT included in the backing price.",
       "tvd": "Total Value Deposited",
       "tvdTooltip": "Total Value Deposited, is the dollar amount of all CLAM staked in the protocol. This metric is often used as growth or health indicator in DeFi projects.",
-      "staked": "CLAM Staked",
-      "stakedTooltip": "CLAM Staked, is the ratio of sCLAM to CLAM (staked vs unstaked)",
       "chartHeaderLabel": "Total",
+      "dailyPayout": "Daily Payout:",
+      "rewardsTooltip": "Reward Rate is the daily percentage gain for staking in either pool.\nAnnual Percentage Rate (APR) is the daily reward rate multiplied over 365 days, the effective payout for Clam Pond.\nAnnual Percentage Yield (APY) is the yearly return accounting for the effect of daily auto-compounding in the Clam Pond.",
       "today": "Today",
       "treasuryMarketValue": "Market Value of Treasury Assets",
       "treasuryRevenue": "Treasury Revenue",
       "treasuryRevenueTooltip": "Daily income harvested from treasury investments. This does not reflect changes in the market value of treasury assets, only new liquid tokens entering the treasury.",
       "clamCirculatingSupply": "CLAM Circulating Supply",
       "clamCirculatingSupplyTooltip": "The amount of CLAM in circulation. The difference between the circulating and total supply is the amount of CLAM held by the DAO wallet and Ottopia reward pool.",
-      "buybacks": "Buybacks",
       "burned": "Burned CLAM",
-      "burnedTooltip": "Amount of CLAM permanently burned and removed from the supply. USD value is calculated from market price at the time of burning.",
+      "burnedTooltip": "Amount of CLAM permanently burned and removed from the supply. USD value is calculated from price at the time of burning. Percentage shown is the portion of the total CLAM supply burned.",
       "distributed": "Rewards Distributed",
-      "distributedTooltip": "Total USD value of rewards paid to CLAM stakers since launch!",
-      "averageApr": "Average APR",
-      "averageAprStartDate": "from {{ date }}",
+      "distributedTooltip": "Total USD value of rewards paid to CLAM stakers since launch. The APR is the annual percentage rate of rewards paid to CLAM stakers.",
+      "averageApy": "Average APY",
+      "averageApyStartDate": "from {{ date }}",
       "marketcap": "CLAM Market Cap",
-      "marketcapTooltip": "The circulating supply of CLAM tokens multiplied by the market price."
+      "marketcapTooltip": "The circulating supply of CLAM tokens multiplied by the market price.",
+      "stakedChartHeader": "Staked",
+      "autocompoundChartHeader": "Auto-Compound"
     },
     "governance": {
       "title": "Governance",
@@ -544,6 +585,8 @@
     "title": "Clam Pond",
     "stake_tab": "Deposit",
     "unstake_tab": "Withdraw",
+    "lastPayout": "Latest Reward",
+    "lastYield": "Latest Reward Yield",
     "welcome": "Welcome to Clam Pond!",
     "desc": "Deposit your CLAM to automatically compound your USD+ rewards into more CLAM and maximize your passive-income potential. You can deposit and withdraw CLAM at any time.",
     "available": "Available:",
@@ -552,7 +595,8 @@
     "stake_btn": "Deposit",
     "unstake_btn": "Withdraw",
     "tvl": "Total Locked Value:",
-    "unstake_note": "*If you unstake within 30 days, you will be charged and burned {{ feeRate }}% of the CLAM amount unstaked. Fully waived date: {{ date }} ({{ days }} left)",
+    "stake_note": "*If you withdraw within 30 days after deposit, you will be charged and burned {{ feeRate }}% of the CLAM amount withdrawn.",
+    "unstake_note": "*If you withdraw within 30 days, you will be charged and burned {{ feeRate }}% of the CLAM amount withdrawn. Fully waived date: {{ date }} ({{ days }} left)",
     "fee": "Early Withdraw Fee ({{ feeRate }}%)*",
     "unstake_receive_amount": "You will get",
     "staked_balance": "Your Staked Balance",
@@ -581,8 +625,11 @@
     "desc": "Stake your CLAM for PEARL to earn your share of protocol revenue and extra fancy rewards! Rewards are paid in USD+. You can collect your rewards at any time.",
     "available": "Available:",
     "max": "Max",
+    "lastPayout": "Latest Reward",
+    "lastYield": "Latest Reward Yield",
     "input_placeholder": "Enter your amount",
     "stake_btn": "Stake",
+    "stake_note": "*If you unstake within 30 days after staking, you will be charged and burned {{ feeRate }}% of the CLAM amount unstaked.",
     "unstake_btn": "Unstake",
     "unstake_note": "*If you unstake within 30 days, you will be charged and burned {{ feeRate }}% of the CLAM amount unstaked. Fully waived date: {{ date }} ({{ days }} days left)",
     "fee": "Early Withdraw Fee ({{ feeRate }}%)*",
@@ -635,5 +682,17 @@
       "close_btn": "Close",
       "success_btn": "Back"
     }
+  },
+  "floatingNavButtons": {
+    "giveaway": "Giveaway",
+    "oldApp": "Old App",
+    "oldAppTip": "Looking for your old Pearl Chests? \n\nClick Here!"
+  },
+  "gameMenu": {
+    "portals": "My Portals",
+    "items": "My Items",
+    "treasury": "Treasury",
+    "ottos": "My Ottos",
+    "missions": "Missions"
   }
 }

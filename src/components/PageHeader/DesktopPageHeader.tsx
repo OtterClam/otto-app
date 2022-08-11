@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic'
 import styled from 'styled-components/macro'
 import useIsAtTop from 'hooks/useIsAtTop'
 import { useRef, useState } from 'react'
@@ -10,36 +11,17 @@ import Title from './Title'
 import { PageHeaderProps } from './type'
 import { ClamBalance, FishBalance } from './Balance'
 import MenuButton from './MenuButton'
-import WalletPopup from './WalletPopup'
 
-const StyledContainer = styled.div<{ isAtTop: boolean }>`
+const WalletPopup = dynamic(() => import('./WalletPopup'), { ssr: false })
+
+const StyledContainer = styled.div`
   position: fixed;
   z-index: var(--z-index-header);
   top: 0;
   left: 0;
   width: 100%;
   height: var(--header-height);
-
-  &::after {
-    content: '';
-    background: linear-gradient(180deg, #5c3317 0%, #45240d 100%);
-    position: absolute;
-    z-index: -1;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  ${({ isAtTop }) =>
-    !isAtTop &&
-    `
-    &::after {
-      opacity: 1;
-    }
-  `}
+  background: linear-gradient(180deg, #5c3317 0%, #45240d 100%);
 `
 
 const StyledInnerContainer = styled.div`
@@ -54,13 +36,12 @@ const StyledInnerContainer = styled.div`
 `
 
 export default function PageHeader({ title }: PageHeaderProps) {
-  const isAtTop = useIsAtTop()
   const ref = useRef<HTMLDivElement>(null)
   const { account } = useEthers()
   const dispatch = useDispatch()
 
   return (
-    <StyledContainer isAtTop={isAtTop}>
+    <StyledContainer>
       <StyledInnerContainer>
         <Logo />
         <Title>{title}</Title>

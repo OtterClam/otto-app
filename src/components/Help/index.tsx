@@ -1,5 +1,5 @@
 import { PropsWithChildren, useEffect, useState } from 'react'
-import Tooltip from 'react-tooltip'
+import ReactTooltip from 'react-tooltip'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
 import InfoIcon from './info.svg'
@@ -20,6 +20,7 @@ const StyledIcon = styled.img`
 const StyledNote = styled(Note)`
   display: block;
   max-width: 300px;
+  white-space: break-spaces;
 `
 
 export interface HelpProps {
@@ -40,9 +41,9 @@ export default function Help({ children, message }: PropsWithChildren<HelpProps>
       {children}
       <StyledIcon data-tip data-for={id} src={InfoIcon.src} />
       {mounted && (
-        <Tooltip id={id} effect="solid">
+        <ReactTooltip id={id} effect="solid">
           <StyledNote>{message}</StyledNote>
-        </Tooltip>
+        </ReactTooltip>
       )}
     </StyledContainer>
   )

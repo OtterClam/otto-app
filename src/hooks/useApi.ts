@@ -2,6 +2,7 @@ import { ChainId, useEthers } from '@usedapp/core'
 import axios, { Axios } from 'axios'
 import { Dice } from 'models/Dice'
 import Item from 'models/Item'
+import { Notification, RawNotification } from 'models/Notification'
 import { OttoMeta } from 'models/Otto'
 import Product from 'models/store/Product'
 import { useMemo } from 'react'
@@ -19,6 +20,7 @@ export interface FlashSellResponse {
   popup_title: string
   popup_desc: string
   popup_image: string
+  guarantee_rarity: string
   start_time: number
   end_time: number
   products: Product[]
@@ -43,6 +45,16 @@ export class Api {
 
   public async getOttoMeta(ottoId: string, lang: string, details: boolean): Promise<OttoMeta> {
     return this.axios.get(`/ottos/metadata/${ottoId}`, { params: { details, lang } }).then(res => res.data)
+  }
+
+  public async getNotifications(): Promise<Notification[]> {
+    const res = await this.axios.get<RawNotification[]>('/notifications/home')
+    return res.data.map(raw => ({
+      key: raw.id,
+      imageUrl: raw.image_url,
+      text: raw.text,
+      url: raw.url,
+    }))
   }
 
   public async getOttoMetas(
@@ -83,6 +95,7 @@ export class Api {
       luck: Number(details.stats.find((s: any) => s.name === 'LUK').value) || 0,
       dex: Number(details.stats.find((s: any) => s.name === 'DEX').value) || 0,
       cute: Number(details.stats.find((s: any) => s.name === 'CUTE').value) || 0,
+      def: Number(details.stats.find((s: any) => s.name === 'DEF').value) || 0,
       ...details,
     }
   }
