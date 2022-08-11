@@ -39,6 +39,7 @@ export interface ClamPondInterface extends utils.Interface {
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "deposit(uint256)": FunctionFragment;
     "depositInfo(address)": FunctionFragment;
+    "depositPearl(uint256)": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
@@ -77,6 +78,7 @@ export interface ClamPondInterface extends utils.Interface {
     "withdrawFee(address,uint256)": FunctionFragment;
     "withdrawFeeDuration()": FunctionFragment;
     "withdrawFeeRate()": FunctionFragment;
+    "withdrawPearl(uint256)": FunctionFragment;
   };
 
   getFunction(
@@ -91,6 +93,7 @@ export interface ClamPondInterface extends utils.Interface {
       | "decreaseAllowance"
       | "deposit"
       | "depositInfo"
+      | "depositPearl"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
@@ -129,6 +132,7 @@ export interface ClamPondInterface extends utils.Interface {
       | "withdrawFee"
       | "withdrawFeeDuration"
       | "withdrawFeeRate"
+      | "withdrawPearl"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "CLAM", values?: undefined): string;
@@ -159,6 +163,10 @@ export interface ClamPondInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "depositInfo", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "depositPearl",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
     values: [BytesLike]
@@ -287,6 +295,10 @@ export interface ClamPondInterface extends utils.Interface {
     functionFragment: "withdrawFeeRate",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawPearl",
+    values: [BigNumberish]
+  ): string;
 
   decodeFunctionResult(functionFragment: "CLAM", data: BytesLike): Result;
   decodeFunctionResult(
@@ -308,6 +320,10 @@ export interface ClamPondInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "depositInfo",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositPearl",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -414,12 +430,18 @@ export interface ClamPondInterface extends utils.Interface {
     functionFragment: "withdrawFeeRate",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawPearl",
+    data: BytesLike
+  ): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
     "Approval(address,address,uint256)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "Deposit(address,uint256)": EventFragment;
+    "DepositPearl(address,uint256)": EventFragment;
+    "Initialized(uint8)": EventFragment;
     "LiquidityIndexUpdated(uint256,uint256,uint256)": EventFragment;
     "RewardManagerUpdated(address)": EventFragment;
     "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
@@ -428,12 +450,15 @@ export interface ClamPondInterface extends utils.Interface {
     "Transfer(address,address,uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
     "Withdraw(address,uint256)": EventFragment;
+    "WithdrawPearl(address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DepositPearl"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "LiquidityIndexUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RewardManagerUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleAdminChanged"): EventFragment;
@@ -442,6 +467,7 @@ export interface ClamPondInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "WithdrawPearl"): EventFragment;
 }
 
 export interface AdminChangedEventObject {
@@ -484,6 +510,24 @@ export interface DepositEventObject {
 export type DepositEvent = TypedEvent<[string, BigNumber], DepositEventObject>;
 
 export type DepositEventFilter = TypedEventFilter<DepositEvent>;
+
+export interface DepositPearlEventObject {
+  account: string;
+  amount: BigNumber;
+}
+export type DepositPearlEvent = TypedEvent<
+  [string, BigNumber],
+  DepositPearlEventObject
+>;
+
+export type DepositPearlEventFilter = TypedEventFilter<DepositPearlEvent>;
+
+export interface InitializedEventObject {
+  version: number;
+}
+export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
+
+export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
 export interface LiquidityIndexUpdatedEventObject {
   changeTime: BigNumber;
@@ -576,6 +620,17 @@ export type WithdrawEvent = TypedEvent<
 
 export type WithdrawEventFilter = TypedEventFilter<WithdrawEvent>;
 
+export interface WithdrawPearlEventObject {
+  account: string;
+  amount: BigNumber;
+}
+export type WithdrawPearlEvent = TypedEvent<
+  [string, BigNumber],
+  WithdrawPearlEventObject
+>;
+
+export type WithdrawPearlEventFilter = TypedEventFilter<WithdrawPearlEvent>;
+
 export interface ClamPond extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
@@ -640,6 +695,11 @@ export interface ClamPond extends BaseContract {
       arg0: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { timestamp: BigNumber }>;
+
+    depositPearl(
+      amount_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
 
@@ -785,6 +845,11 @@ export interface ClamPond extends BaseContract {
     withdrawFeeDuration(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     withdrawFeeRate(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    withdrawPearl(
+      amount_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
   CLAM(overrides?: CallOverrides): Promise<string>;
@@ -821,6 +886,11 @@ export interface ClamPond extends BaseContract {
   ): Promise<ContractTransaction>;
 
   depositInfo(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+  depositPearl(
+    amount_: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
 
@@ -964,6 +1034,11 @@ export interface ClamPond extends BaseContract {
 
   withdrawFeeRate(overrides?: CallOverrides): Promise<BigNumber>;
 
+  withdrawPearl(
+    amount_: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     CLAM(overrides?: CallOverrides): Promise<string>;
 
@@ -996,6 +1071,11 @@ export interface ClamPond extends BaseContract {
     deposit(amount_: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
     depositInfo(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    depositPearl(
+      amount_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
 
@@ -1136,6 +1216,11 @@ export interface ClamPond extends BaseContract {
     withdrawFeeDuration(overrides?: CallOverrides): Promise<BigNumber>;
 
     withdrawFeeRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    withdrawPearl(
+      amount_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -1169,6 +1254,15 @@ export interface ClamPond extends BaseContract {
       amount?: null
     ): DepositEventFilter;
     Deposit(account?: null, amount?: null): DepositEventFilter;
+
+    "DepositPearl(address,uint256)"(
+      account?: null,
+      amount?: null
+    ): DepositPearlEventFilter;
+    DepositPearl(account?: null, amount?: null): DepositPearlEventFilter;
+
+    "Initialized(uint8)"(version?: null): InitializedEventFilter;
+    Initialized(version?: null): InitializedEventFilter;
 
     "LiquidityIndexUpdated(uint256,uint256,uint256)"(
       changeTime?: null,
@@ -1238,6 +1332,12 @@ export interface ClamPond extends BaseContract {
       amount?: null
     ): WithdrawEventFilter;
     Withdraw(account?: null, amount?: null): WithdrawEventFilter;
+
+    "WithdrawPearl(address,uint256)"(
+      account?: null,
+      amount?: null
+    ): WithdrawPearlEventFilter;
+    WithdrawPearl(account?: null, amount?: null): WithdrawPearlEventFilter;
   };
 
   estimateGas: {
@@ -1275,6 +1375,11 @@ export interface ClamPond extends BaseContract {
     ): Promise<BigNumber>;
 
     depositInfo(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    depositPearl(
+      amount_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     getRoleAdmin(
       role: BytesLike,
@@ -1423,6 +1528,11 @@ export interface ClamPond extends BaseContract {
     withdrawFeeDuration(overrides?: CallOverrides): Promise<BigNumber>;
 
     withdrawFeeRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    withdrawPearl(
+      amount_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -1467,6 +1577,11 @@ export interface ClamPond extends BaseContract {
     depositInfo(
       arg0: string,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    depositPearl(
+      amount_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     getRoleAdmin(
@@ -1625,5 +1740,10 @@ export interface ClamPond extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     withdrawFeeRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    withdrawPearl(
+      amount_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
   };
 }

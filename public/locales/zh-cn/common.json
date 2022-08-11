@@ -284,7 +284,8 @@
       "rarity_desc": "稀有度（从高到低）",
       "luck_desc": "幸运值",
       "dex_desc": "敏捷度",
-      "cute_desc": "可爱度"
+      "cute_desc": "可爱度",
+      "def_desc": "防御力"
     },
     "take_off": "脱掉",
     "take_off_item": {
@@ -454,7 +455,8 @@
     },
     "luk": { "must_desc": "R1 道具保证！" },
     "dex": { "must_desc": "R2 道具保证！" },
-    "cute": { "must_desc": "R2 道具保证！" }
+    "cute": { "must_desc": "R2 道具保证！" },
+    "def": { "must_desc": "R2 道具保证！" }
   },
   "question": {
     "submit_button": "确认"

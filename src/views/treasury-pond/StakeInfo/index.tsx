@@ -2,7 +2,7 @@ import CLAMCoin from 'assets/tokens/CLAM.svg'
 import USDPlus from 'assets/tokens/USDPlus.png'
 import TreasurySection from 'components/TreasurySection'
 import { useBreakpoints } from 'contexts/Breakpoints'
-import { useDepositedAmount, useNextRewardTime } from 'contracts/views'
+import { useClamPondDepositInfo, useNextRewardTime } from 'contracts/views'
 import formatDistance from 'date-fns/formatDistanceStrict'
 import { trim } from 'helpers/trim'
 import useLastPayoutToAccount from 'hooks/useLastPayout'
@@ -229,7 +229,7 @@ interface Props {
 export default function StakeInfo({ className }: Props) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'stake' })
   const { isMobile } = useBreakpoints()
-  const depositedAmount = useDepositedAmount()
+  const { balance: depositedAmount } = useClamPondDepositInfo()
   const { latestMetrics } = usePearlBankMetrics()
   const { payout } = useLastPayoutToAccount()
 

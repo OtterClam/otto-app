@@ -67,6 +67,7 @@ const StyledOtter = styled.div`
   transform: translate(-600px);
   animation: ${Animation} 2000ms steps(1) infinite;
   background: left top / 200% 100% url(${Otto.src});
+  pointer-events: none;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     position: absolute;

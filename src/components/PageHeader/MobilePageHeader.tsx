@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic'
 import styled from 'styled-components/macro'
 import { useDispatch } from 'react-redux'
 import { connectWallet, showWalletPopup } from 'store/uiSlice'
@@ -8,7 +9,8 @@ import Title from './Title'
 import { PageHeaderProps } from './type'
 import { ClamBalance, FishBalance } from './Balance'
 import MenuButton from './MenuButton'
-import WalletPopup from './WalletPopup'
+
+const WalletPopup = dynamic(() => import('./WalletPopup'), { ssr: false })
 
 const StyledContainer = styled.div`
   position: fixed;

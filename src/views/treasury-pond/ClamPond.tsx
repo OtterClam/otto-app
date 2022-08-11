@@ -23,7 +23,7 @@ const StyledTreasurySection = styled(TreasurySection)`
   }
 `
 
-const StyledStakePage = styled.div`
+const StyledClamPond = styled.div`
   z-index: 0;
   background: no-repeat center / cover url(${BG.src});
   position: relative;
@@ -35,7 +35,7 @@ const StyledStakePage = styled.div`
   }
 `
 
-const StyledStakePageInner = styled.div`
+const StyledClamPondPageInner = styled.div`
   position: relative;
   flex: 1 100%;
   display: flex;
@@ -97,6 +97,7 @@ const StyledOtter = styled.img<{ delay: number }>`
   animation: ${Animation} 2000ms infinite;
   animation-delay: ${({ delay }) => delay}ms;
   animation-timing-function: steps(1);
+  pointer-events: none;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     position: absolute;
@@ -106,19 +107,19 @@ const StyledOtter = styled.img<{ delay: number }>`
   }
 `
 
-export default function StakePage() {
+export default function ClamPond() {
   return (
     <StyledTreasurySection showRope={false}>
       <StyledOtter src={Otter1.src} delay={0} />
       <StyledOtter src={Otter2.src} delay={1000} />
-      <StyledStakePage>
-        <StyledStakePageInner>
+      <StyledClamPond>
+        <StyledClamPondPageInner>
           <StyledStakeDialogContainer>
             <StyledStakeDialog />
           </StyledStakeDialogContainer>
           <StyledStakeInfo />
-        </StyledStakePageInner>
-      </StyledStakePage>
+        </StyledClamPondPageInner>
+      </StyledClamPond>
     </StyledTreasurySection>
   )
 }
