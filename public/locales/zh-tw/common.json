@@ -134,18 +134,18 @@
   "home": {
     "pins": {
       "adventure": "冒險",
-      "palace": "宮殿",
+      "palace": "王國大廳",
       "mine": "礦場",
       "leaderboard": "排行榜",
-      "pond": "貝殼水",
-      "mint": "鑄造們",
+      "pond": "貝殼水池",
+      "mint": "鑄造傳送門",
       "market": "市場",
-      "foundry": "噴水池",
+      "foundry": "鑄造場",
       "store": "商店",
       "bank": "珍珠銀行"
     },
     "play": "開始玩",
-    "title": "阿獺王國"
+    "title": "歡迎來到阿獺王國"
   },
   "leaderboard": {
     "head": "成為最稀有的阿獺來贏得獎金!",
