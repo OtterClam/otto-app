@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import { LIST_MY_ITEMS } from 'graphs/otto'
 import { ListItems, ListItemsVariables } from 'graphs/__generated__/ListItems'
-import useApi from './useApi'
+import { useApi } from 'contexts/Api'
 
 export default function useMyItems() {
   const [items, setItems] = useState<Item[]>([])
@@ -21,7 +21,7 @@ export default function useMyItems() {
     onCompleted: data => {
       const ids = data.ottoItems.map(item => String(item.tokenId))
       api
-        .getItems(ids, i18n.resolvedLanguage)
+        .getItems(ids)
         .then(items =>
           items.map((item, i) => ({
             ...item,

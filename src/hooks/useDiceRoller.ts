@@ -11,7 +11,7 @@ import { connectContractToSigner } from '@usedapp/core/dist/esm/src/hooks'
 import { useTranslation } from 'next-i18next'
 import { selectOttoInTheHell } from 'store/uiSlice'
 import { BigNumber } from 'ethers'
-import useApi from './useApi'
+import { useApi } from 'contexts/Api'
 
 export enum State {
   Intro = 1,
@@ -49,7 +49,7 @@ const useUnfinishDice = (ottoId?: string) => {
       return
     }
     api
-      .getAllDice(ottoId, i18n.resolvedLanguage)
+      .getAllDice(ottoId)
       .then(diceList => setDiceList(diceList))
       .catch(err => dispatch(setError(err)))
       .then(() => setLoading(false))
@@ -90,11 +90,11 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
       setState(State.Processing)
       const tx = await connectContractToSigner(ottoHellDiceRoller, {}, library).roll(otto.tokenId, BigNumber.from('1'))
       await tx.wait()
-      setDice(await api.rollTheDice(otto.tokenId, tx.hash, i18n.resolvedLanguage))
+      setDice(await api.rollTheDice(otto.tokenId, tx.hash))
       setState(State.FirstResult)
     } catch (err: any) {
       if (err.reason === 'repriced') {
-        setDice(await api.rollTheDice(otto.tokenId, err.replacement.hash, i18n.resolvedLanguage))
+        setDice(await api.rollTheDice(otto.tokenId, err.replacement.hash))
         setState(State.FirstResult)
       } else {
         window.alert(JSON.stringify(err))
@@ -110,7 +110,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
         return
       }
       api
-        .answerDiceQuestion(otto.tokenId, dice.tx, index, answer, i18n.resolvedLanguage)
+        .answerDiceQuestion(otto.tokenId, dice.tx, index, answer)
         .then(setDice)
         .catch(err => dispatch(setError(err)))
     },
