@@ -134,18 +134,18 @@
   "home": {
     "pins": {
       "adventure": "冒险",
-      "palace": "宫殿",
+      "palace": "王国大厅",
       "mine": "矿场",
       "leaderboard": "排行榜",
-      "pond": "贝壳水",
-      "mint": "铸造们",
+      "pond": "贝壳水池",
+      "mint": "铸造传送门",
       "market": "市场",
-      "foundry": "喷水池",
+      "foundry": "铸造场",
       "store": "商店",
       "bank": "珍珠银行"
     },
     "play": "开始玩",
-    "title": "阿獭王国"
+    "title": "欢迎来到阿獭王国"
   },
   "leaderboard": {
     "head": "成为最稀有的阿獭来赢得奖金!",
@@ -657,13 +657,13 @@
   "floatingNavButtons": {
     "giveaway": "礼物",
     "oldApp": "旧 App",
-    "oldAppTip": "在找寻旧的珍珠宝箱吗？\n\n点击这里！"
+    "oldAppTip": "还有旧版的质押贝壳尚未提领吗？\n\n点击这里！"
   },
   "gameMenu": {
     "portals": "我的传送门",
-    "items": "我的装备",
+    "items": "我的物品",
     "treasury": "国库",
     "ottos": "我的阿獭",
-    "missions": "任务"
+    "missions": "我的任务"
   }
 }
