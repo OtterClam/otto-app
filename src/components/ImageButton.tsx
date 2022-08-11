@@ -28,11 +28,9 @@ const StyledButton = styled.button<{ image: NextImage; states: string[]; scale: 
     )}
 `
 
-export interface ImageButtonProps {
+export type ImageButtonProps = ComponentProps<typeof StyledButton> & {
   image: NextImage
-  className?: string
   states?: string[]
-  as?: ComponentProps<typeof StyledButton>['as']
   scale?: number
 }
 

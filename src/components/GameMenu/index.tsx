@@ -78,20 +78,33 @@ export default function GameMenu({ className }: { className?: string }) {
   return (
     <StyledContainer className={className}>
       <StyledItems>
-        {items.map(item => (
-          <StyledItem show={item.key === 'missions'}>
-            <Link href={item.link} key={item.key} passHref>
+        {items.map(item =>
+          item.key === 'missions' ? (
+            <StyledItem>
               <ImageButton
-                as="a"
+                disabled
                 states={itemStates}
                 image={item.image}
                 scale={width / (item.image.width / itemStates.length)}
               >
                 <StyledLabel>{t(item.key)}</StyledLabel>
               </ImageButton>
-            </Link>
-          </StyledItem>
-        ))}
+            </StyledItem>
+          ) : (
+            <StyledItem>
+              <Link href={item.link} key={item.key} passHref>
+                <ImageButton
+                  as="a"
+                  states={itemStates}
+                  image={item.image}
+                  scale={width / (item.image.width / itemStates.length)}
+                >
+                  <StyledLabel>{t(item.key)}</StyledLabel>
+                </ImageButton>
+              </Link>
+            </StyledItem>
+          )
+        )}
       </StyledItems>
     </StyledContainer>
   )
