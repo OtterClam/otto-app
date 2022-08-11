@@ -6,8 +6,8 @@ import { useTranslation } from 'next-i18next'
 import React, { RefObject, useRef, useMemo } from 'react'
 import { PieChart, Pie, Tooltip, Legend, Cell } from 'recharts'
 import styled from 'styled-components/macro'
-import ChartTooltip from './ChartTooltip'
 import { GetPenroseVotes_votePosition_votes } from 'graphs/__generated__/GetPenroseVotes'
+import ChartTooltip from './ChartTooltip'
 
 const StyledContainer = styled.div`
   font-family: 'Pangolin', 'naikaifont' !important;
@@ -30,7 +30,7 @@ const renderTooltip: (i18nClient: i18n, index: number) => TooltipRenderer =
       color: COLORS[index],
     }))
     // const footer = format(parseInt(payload[0]?.payload?.start ?? '0', 10) * 1000, 'LLL d, yyyy')
-    return <ChartTooltip items={items} /> //footer={footer}
+    return <ChartTooltip items={items} /> // footer={footer}
   }
 
 export default function PenroseVotesPieChart({ votes }: PenroseVotesPieChartProps) {
@@ -38,14 +38,15 @@ export default function PenroseVotesPieChart({ votes }: PenroseVotesPieChartProp
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
 
-  //Map data from proposal object to Recharts-friendly dictionary
-  var data: any[] = []
+  // Map data from proposal object to Recharts-friendly dictionary
+  let data: any[] = []
   for (let i = 0; i < votes.length; i++) {
-    if (votes[i].vote < 1) continue
-    data.push({ choice: votes[i].id, score: parseFloat(votes[i].vote) })
+    if (votes[i].vote >= 1) {
+      data.push({ choice: votes[i].id, score: parseFloat(votes[i].vote) })
+    }
   }
 
-  if (data.length == 0) return null
+  if (data.length === 0) return null
   data = data.sort((a, b) => b.score - a.score)
 
   return (

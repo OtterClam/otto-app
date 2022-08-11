@@ -1,8 +1,8 @@
+import { ContentSmall, Display1, Headline, ContentMedium } from 'styles/typography'
 import { OtterClamProposals_proposals } from 'graphs/__generated__/OtterClamProposals'
-import { Proposal } from '../models/Proposal'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
-import { ContentSmall, Display1, Headline, ContentMedium } from 'styles/typography'
+import { Proposal } from '../models/Proposal'
 import Button from './Button'
 import SnapshotProposalPieChart from './SnapshotProposalPieChart'
 
@@ -80,15 +80,15 @@ export default function TreasuryCard({ className, proposals }: SnapshotProposalG
     <StyledContainer className={className}>
       {proposals.map(proposal => (
         <StyledCard key={proposal.id}>
-          <CenteredHeadline as="h1">{proposal!.title}</CenteredHeadline>
-          <StyledTextBody>{proposal!.body}</StyledTextBody>
-          <SnapshotProposalPieChart proposal={proposal}></SnapshotProposalPieChart>
-          {proposal.state == 'active' ? (
+          <CenteredHeadline as="h1">{proposal.title}</CenteredHeadline>
+          <StyledTextBody>{proposal.body}</StyledTextBody>
+          <SnapshotProposalPieChart proposal={proposal} />
+          {proposal.state === 'active' ? (
             <Button
               padding="6px 48px"
-              width={'70%'}
+              width="70%"
               Typography={Headline}
-              onClick={() => window.open(`https://snapshot.org/#/${proposal.space}/proposal/${proposal.id}`)} //${proposal.space.id}
+              onClick={() => window.open(`https://snapshot.org/#/${proposal.space}/proposal/${proposal.id}`)}
             >
               {t('treasury.governance.voteNow')}
             </Button>

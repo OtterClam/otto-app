@@ -28,10 +28,10 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       key: name,
       label: name,
       value: `${Math.round(value).toLocaleString(i18n.language)} ${i18n.t('treasury.governance.votes')}`,
-      color: color,
+      color,
     }))
     // const footer = format(parseInt(payload[0]?.payload?.start ?? '0', 10) * 1000, 'LLL d, yyyy')
-    return <ChartTooltip items={items} /> //footer={footer}
+    return <ChartTooltip items={items} /> // footer={footer}
   }
 
 export default function SnapshotProposalPieChart({ proposal }: SnapshotProposalPieChartProps) {
@@ -39,48 +39,48 @@ export default function SnapshotProposalPieChart({ proposal }: SnapshotProposalP
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
 
-  //Map data from proposal object to Recharts-friendly dictionary
-  var data: any[] = []
+  // Map data from proposal object to Recharts-friendly dictionary
+  let data: any[] = []
   for (let i = 0; i < proposal.choices.length; i++) {
-    if (proposal.scores![i] == undefined || proposal.scores![i] == 0) continue
-    data.push({
-      choice: proposal.choices![i],
-      score: proposal.scores![i],
-    })
+    if (proposal.scores?.[i] !== undefined || proposal.scores?.[i] !== 0) {
+      data.push({
+        choice: proposal.choices?.[i],
+        score: proposal.scores?.[i],
+      })
+    }
   }
 
-  //Also map the DAO-voted choices
-  var dao_votes: any[] = []
+  // Also map the DAO-voted choices
+  const dao_votes: any[] = []
   if (proposal.voted) {
-    let totalWeight = Object.values(proposal.voted_choices)
+    const totalWeight = Object.values(proposal.voted_choices)
       .map(Number)
       .reduce((a, b) => a + b, 0)
 
-    if (proposal.type == 'single-choice') {
-      let choiceId = parseInt(proposal.voted_choices) - 1
+    if (proposal.type === 'single-choice') {
+      const choiceId = parseInt(proposal.voted_choices, 10) - 1
       dao_votes.push({
-        choiceId: choiceId,
+        choiceId,
         choice: proposal.choices?.[choiceId],
         weight: 1,
         power: proposal.vote_power,
       })
     }
-    if (proposal.type == 'weighted') {
+    if (proposal.type === 'weighted') {
       for (let i = 0; i < Object.keys(proposal.voted_choices).length; i++) {
-        let choiceId = parseInt(Object.keys(proposal.voted_choices)[i]) - 1 //vote index starts at 1
-        let weight = proposal.voted_choices[Object.keys(proposal.voted_choices)[i]]
+        const choiceId = parseInt(Object.keys(proposal.voted_choices)[i], 10) - 1 // vote index starts at 1
+        const weight = proposal.voted_choices[Object.keys(proposal.voted_choices)[i]]
 
         dao_votes.push({
-          choiceId: choiceId,
+          choiceId,
           choice: proposal.choices?.[choiceId],
-          weight: weight,
+          weight,
           power: (weight / totalWeight) * (proposal.vote_power ?? 1),
         })
       }
     }
   }
-  console.log(dao_votes)
-  if (data.length == 0) return null
+  if (data.length === 0) return null
 
   data = data.sort((a, b) => b.score - a.score)
 
