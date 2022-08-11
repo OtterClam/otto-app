@@ -132,13 +132,17 @@
     "connect": "連接"
   },
   "home": {
-    "menu": {
-      "buy_clam": "買 CLAM",
-      "join_discord": "加入 Discord",
-      "mint_portals": "鑄造傳送門",
-      "otter_dao": "Otter DAO",
-      "treasury": "國庫",
-      "white_paper": "白皮書"
+    "pins": {
+      "adventure": "冒險",
+      "palace": "宮殿",
+      "mine": "礦場",
+      "leaderboard": "排行榜",
+      "pond": "貝殼水",
+      "mint": "鑄造們",
+      "market": "市場",
+      "foundry": "噴水池",
+      "store": "商店",
+      "bank": "珍珠銀行"
     },
     "play": "開始玩",
     "title": "阿獺王國"
@@ -649,5 +653,17 @@
       "close_btn": "關閉",
       "success_btn": "返回"
     }
+  },
+  "floatingNavButtons": {
+    "giveaway": "禮物",
+    "oldApp": "舊 App",
+    "oldAppTip": "在找尋舊的珍珠寶箱嗎？\n\n點擊這裡！"
+  },
+  "gameMenu": {
+    "portals": "我的傳送門",
+    "items": "我的裝備",
+    "treasury": "國庫",
+    "ottos": "我的阿獺",
+    "missions": "任務"
   }
 }
