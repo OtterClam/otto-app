@@ -2,7 +2,7 @@ import { Carousel } from 'react-responsive-carousel'
 import Image from 'next/image'
 import styled from 'styled-components/macro'
 import { useEffect, useState } from 'react'
-import useApi from 'hooks/useApi'
+import { useApi } from 'contexts/Api'
 import { Banner, BannerType } from 'models/Banner'
 
 const StyledLink = styled.a`

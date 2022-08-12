@@ -1,4 +1,5 @@
-import useApi, { OttoCandidateMeta } from 'hooks/useApi'
+import { useApi } from 'contexts/Api'
+import { OttoCandidateMeta } from 'libs/api'
 import Portal from 'models/Portal'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'

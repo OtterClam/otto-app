@@ -1,6 +1,6 @@
 import { TransactionState, TransactionStatus, useCalls, useContractFunction, useEthers } from '@usedapp/core'
 import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
-import useApi from 'hooks/useApi'
+import { useApi } from 'contexts/Api'
 import useContractAddresses from 'hooks/useContractAddresses'
 import Item from 'models/Item'
 import Product from 'models/store/Product'
@@ -81,7 +81,7 @@ export const useItem = () => {
         .find(e => e?.name === 'TransferSingle' && e.args[2] === account)?.args[3]
       if (receivedItemId) {
         api
-          .getItem(receivedItemId, i18n.resolvedLanguage)
+          .getItem(receivedItemId)
           .then(receivedItem => setUseItemState({ state: 'Success', status: state, receivedItem }))
       } else {
         setUseItemState({ state: 'Success', status: state })
@@ -186,7 +186,7 @@ export const useBuyProduct = (claim: boolean) => {
             return null
           })
           .filter(e => e?.name === 'TransferSingle' && e.args[2] === account)
-          .map(e => api.getItem(e?.args[3], i18n.resolvedLanguage))
+          .map(e => api.getItem(e?.args[3]))
       ).then(receivedItems =>
         setBuyState({
           state: 'Success',
@@ -241,7 +241,7 @@ export const useRedeemProduct = () => {
             return null
           })
           .filter(e => e?.name === 'TransferSingle' && e.args[2] === account)
-          .map(e => api.getItem(e?.args[3], i18n.resolvedLanguage))
+          .map(e => api.getItem(e?.args[3]))
       ).then(receivedItems =>
         setRedeemState({
           state: 'Success',

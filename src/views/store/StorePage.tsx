@@ -1,6 +1,7 @@
 import MarkdownWithHtml from 'components/MarkdownWithHtml'
 import { WHITE_PAPER_LINK } from 'constant'
-import useApi, { FlashSellResponse } from 'hooks/useApi'
+import { FlashSellResponse } from 'libs/api'
+import { useApi } from 'contexts/Api'
 import useProducts from 'models/store/useProducts'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -148,7 +149,7 @@ export default function StorePage() {
   useEffect(() => {
     if (products.length > 0) {
       api
-        .getFlashSell(i18n.resolvedLanguage)
+        .getFlashSell()
         .then(sell => {
           setFlashSell({
             ...sell,
