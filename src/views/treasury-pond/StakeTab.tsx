@@ -1,10 +1,12 @@
 import Button from 'components/Button'
+import { useWallet } from 'contexts/Wallet'
 import { ClamPondToken, useClamPondDeposit } from 'contracts/functions'
 import { useClamPondFee } from 'contracts/views'
 import formatDate from 'date-fns/format'
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 import { utils } from 'ethers'
 import { trim } from 'helpers/trim'
+import useContractAddresses from 'hooks/useContractAddresses'
 import { useTranslation } from 'next-i18next'
 import dynamic from 'next/dynamic'
 import { useEffect, useMemo, useState } from 'react'
@@ -65,6 +67,8 @@ interface Props {
 }
 
 export default function StakeTab({ className }: Props) {
+  const { CLAM } = useContractAddresses()
+  const wallet = useWallet()
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const tokens = usePondTokens()
   const [stakeAmount, setStakeAmount] = useState('')
@@ -73,12 +77,14 @@ export default function StakeTab({ className }: Props) {
   const { base: feeBase, feeRate, duration } = useClamPondFee()
   const { balance } = tokens[token]
   const unlockTime = useMemo(() => new Date(Date.now() + duration * 1000), [duration])
+
   useEffect(() => {
     if (stakeState.state === 'Fail' || stakeState.state === 'Exception') {
       window.alert(stakeState.status.errorMessage)
       resetStake()
     }
   }, [stakeState, resetStake])
+
   return (
     <StyledStakeTab className={className}>
       <Headline as="h1">{t('welcome')}</Headline>
@@ -125,7 +131,10 @@ export default function StakeTab({ className }: Props) {
         padding="6px"
         isWeb3
         loading={stakeState.state !== 'None'}
-        onClick={() => stake(stakeAmount)}
+        onClick={() => {
+          stake(stakeAmount)
+          wallet?.setBalance(CLAM, balance => balance.sub(utils.parseUnits(stakeAmount, 9)))
+        }}
       >
         {t('stake_btn')}
       </StyledButton>

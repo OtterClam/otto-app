@@ -1,12 +1,12 @@
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useBreakpoints } from 'contexts/Breakpoints'
-import { useEthers, useTokenBalance } from '@usedapp/core'
+import { useEthers } from '@usedapp/core'
 import { formatClamEthers } from 'utils/currency'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { constants } from 'ethers'
+import useTokenBalance from 'hooks/useTokenBalance'
 import ReactTooltip from 'react-tooltip'
 import styled, { useTheme } from 'styled-components/macro'
-import { ContentMedium, Note } from 'styles/typography'
+import { ContentMedium } from 'styles/typography'
 import Balance from './balance'
 import LargeClamBg from './header_clam_xl.png'
 import SmallClamBg from './header_clam_xs.png'
@@ -31,12 +31,11 @@ export const ClamBalance = ({ onClick }: Props) => {
     Boolean(typeof window !== 'undefined' ? localStorage.getItem(NEW_WALLET_TOOLTIP_SHOWED) : false)
   )
   const { CLAM, PEARL_BANK, CLAM_POND } = useContractAddresses()
-  const { account } = useEthers()
   const theme = useTheme()
   const tooltipRef = useRef(null)
-  const clamBalance = useTokenBalance(CLAM, account) || constants.Zero
-  const pearlBalance = useTokenBalance(PEARL_BANK, account) || 0
-  const clamPlusBalance = useTokenBalance(CLAM_POND, account) || 0
+  const clamBalance = useTokenBalance(CLAM)
+  const pearlBalance = useTokenBalance(PEARL_BANK)
+  const clamPlusBalance = useTokenBalance(CLAM_POND)
   const { isMobile } = useBreakpoints()
   const bg = isMobile ? SmallClamBg : LargeClamBg
   const width = isMobile ? 108 : 128

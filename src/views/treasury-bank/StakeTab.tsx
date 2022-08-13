@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
-import CLAM from 'assets/clam.svg'
-import CLAMCoin from 'assets/tokens/CLAM.svg'
+import CLAMImage from 'assets/clam.svg'
+import CLAMCoinImage from 'assets/tokens/CLAM.svg'
 import Button from 'components/Button'
 import { useStake } from 'contracts/functions'
 import { usePearlBankFee } from 'contracts/views'
@@ -8,11 +8,13 @@ import { utils } from 'ethers'
 import { trim } from 'helpers/trim'
 import useClamBalance from 'hooks/useClamBalance'
 import { useTranslation } from 'next-i18next'
-import { useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } from 'styles/typography'
 import formatDate from 'date-fns/format'
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
+import { useWallet } from 'contexts/Wallet'
+import useContractAddresses from 'hooks/useContractAddresses'
 
 const StakeSuccessPopup = dynamic(() => import('./StakeSuccessPopup'), { ssr: false })
 
@@ -35,7 +37,7 @@ const StyledClamBalanceText = styled.div`
   flex: 1;
   &:before {
     content: '';
-    background: no-repeat center/contain url(${CLAM.src});
+    background: no-repeat center/contain url(${CLAMImage.src});
     width: 16px;
     height: 16px;
     margin-right: 5px;
@@ -48,7 +50,7 @@ const StyledClamInput = styled(RegularInput)`
   padding: 20px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 10px;
-  background: url(${CLAMCoin.src}) no-repeat 20px;
+  background: url(${CLAMCoinImage.src}) no-repeat 20px;
   text-indent: 32px;
 
   ::placeholder {
@@ -81,17 +83,21 @@ interface Props {
 
 export default function StakeTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'bank' })
+  const { CLAM } = useContractAddresses()
+  const wallet = useWallet()
   const [clamAmount, setClamAmount] = useState('')
   const clamBalance = useClamBalance()
   const { stakeState, stake, resetStake } = useStake()
   const { base: feeBase, fee, feeRate, duration } = usePearlBankFee(utils.parseUnits(clamAmount || '0', 9))
   const unlockTime = useMemo(() => new Date(Date.now() + duration * 1000), [duration])
+
   useEffect(() => {
     if (stakeState.state === 'Fail' || stakeState.state === 'Exception') {
       window.alert(stakeState.status.errorMessage)
       resetStake()
     }
   }, [stakeState, resetStake])
+
   return (
     <StyledStakeTab className={className}>
       <Headline as="h1">{t('welcome')}</Headline>
@@ -133,7 +139,10 @@ export default function StakeTab({ className }: Props) {
         padding="6px"
         isWeb3
         loading={stakeState.state !== 'None'}
-        onClick={() => stake(clamAmount)}
+        onClick={() => {
+          stake(clamAmount)
+          wallet?.setBalance(CLAM, balance => balance.sub(utils.parseUnits(clamAmount, 9)))
+        }}
       >
         {t('stake_btn')}
       </StyledButton>

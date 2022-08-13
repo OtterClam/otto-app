@@ -13,6 +13,8 @@ import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Caption, Note, ContentLarge, ContentSmall, Headline, RegularInput } from 'styles/typography'
+import { useWallet } from 'contexts/Wallet'
+import useContractAddresses from 'hooks/useContractAddresses'
 
 const UnstakeSuccessPopup = dynamic(() => import('./UnstakeSuccessPopup'), { ssr: false })
 
@@ -85,8 +87,10 @@ interface Props {
 }
 
 export default function UnstakeTab({ className }: Props) {
+  const { CLAM } = useContractAddresses()
   const { t } = useTranslation('', { keyPrefix: 'bank' })
   const [clamAmount, setClamAmount] = useState('')
+  const wallet = useWallet()
   const { amount: stakedAmount, timestamp: lastStakeTimestamp } = useStakedInfo()
   const { unstakeState: state, unstake, resetState } = useUnstake()
   const { base: feeBase, fee, feeRate, duration } = usePearlBankFee(utils.parseUnits(clamAmount || '0', 9))
@@ -151,7 +155,10 @@ export default function UnstakeTab({ className }: Props) {
         padding="6px"
         isWeb3
         loading={state.state !== 'None'}
-        onClick={() => unstake(clamAmount)}
+        onClick={() => {
+          unstake(clamAmount)
+          wallet?.setBalance(CLAM, balance => balance.add(receiveAmount))
+        }}
       >
         {t('unstake_btn')}
       </StyledButton>

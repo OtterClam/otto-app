@@ -13,6 +13,8 @@ import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Caption, Note, ContentLarge, ContentSmall, Headline, RegularInput } from 'styles/typography'
+import useContractAddresses from 'hooks/useContractAddresses'
+import { useWallet } from 'contexts/Wallet'
 import ClamInput from './ClamPondInput'
 import usePondTokens from './usePondTokens'
 
@@ -87,6 +89,8 @@ interface Props {
 }
 
 export default function UnstakeTab({ className }: Props) {
+  const { CLAM } = useContractAddresses()
+  const wallet = useWallet()
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const tokens = usePondTokens()
   const [token, setToken] = useState<ClamPondToken>('CLAM')
@@ -156,7 +160,10 @@ export default function UnstakeTab({ className }: Props) {
         padding="6px"
         isWeb3
         loading={state.state !== 'None'}
-        onClick={() => unstake(unstakeAmount)}
+        onClick={() => {
+          unstake(unstakeAmount)
+          wallet?.setBalance(CLAM, balance => balance.add(receiveAmount))
+        }}
       >
         {t('unstake_btn')}
       </StyledButton>
