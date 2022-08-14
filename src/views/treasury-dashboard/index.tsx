@@ -370,7 +370,7 @@ export default function TreasuryDashboardPage() {
             <StyledChartHeader>
               <StyledTopBar>
                 <Help message={t('rewardsTooltip')}>
-                  <StyledChartTitle>{t('averageApy')}</StyledChartTitle>
+                  <StyledChartTitle>{t('averageApr')}</StyledChartTitle>
                 </Help>
                 <Switcher
                   name="pearl-bank-avg-apr-range"
@@ -385,7 +385,7 @@ export default function TreasuryDashboardPage() {
               <StyledChartKeyValue>
                 {avgApy ?? 0}%
                 <StyledChartKeyDate>
-                  {t('averageApyStartDate', { date: formatDate(pearlBankAvgAprRangeStartDate, 'MMM d') })}
+                  {t('averageAprStartDate', { date: formatDate(pearlBankAvgAprRangeStartDate, 'MMM d') })}
                 </StyledChartKeyDate>
               </StyledChartKeyValue>
             </StyledChartHeader>
