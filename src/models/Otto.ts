@@ -1,5 +1,10 @@
 import { getCroppedImageUrl } from 'utils/image'
 
+export enum TraitCollection {
+  Genesis = 'genesis',
+  Second = 'second',
+}
+
 export interface RawOtto {
   tokenId: any
   tokenURI: string
@@ -32,6 +37,8 @@ export interface Trait {
   stats: [Stat]
   unreturnable: boolean
   equippable_gender: string
+  collection: TraitCollection
+  collection_name: string
 }
 
 export interface Stat {

@@ -1,5 +1,5 @@
 import NonItem from './non-item.jpg'
-import { Trait } from './Otto'
+import { Trait, TraitCollection } from './Otto'
 
 export interface ItemStat {
   name: string
@@ -32,6 +32,8 @@ export default interface Item {
   cute: number
   def: number
   update_at: number
+  collection: TraitCollection
+  collection_name: string
 }
 
 export function traitToItem(trait: Trait): Item {
@@ -85,4 +87,6 @@ export const EmptyItem: Item = {
   dex: 0,
   cute: 0,
   def: 0,
+  collection: TraitCollection.Genesis,
+  collection_name: '',
 }
