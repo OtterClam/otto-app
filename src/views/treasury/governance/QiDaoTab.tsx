@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import { ContentSmall, Headline } from 'styles/typography'
 
 const StyledButton = styled(Button)``
-
 interface Props {
   className?: string
 }

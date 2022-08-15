@@ -274,7 +274,6 @@ export default function TreasuryDashboardPage() {
       return total + parseFloat(value.apr)
     }, 0) / pearlBankMetrics.length
 
-  console.log(pearlBankMetrics)
   return (
     <div>
       <TreasurySection>
