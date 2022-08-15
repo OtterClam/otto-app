@@ -25,13 +25,12 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     if (!active || !payload?.length) {
       return null
     }
-    const items = payload.map(({ name, value, choiceId }) => ({
+    const items = payload.map(({ name, value, payload }) => ({
       key: name,
       label: name,
       value: `${Math.round(value).toLocaleString(i18n.language)} ${i18n.t('treasury.governance.votes')}`,
-      color: COLORS[choiceId % COLORS.length],
+      color: payload.fill,
     }))
-
     // const footer = format(parseInt(payload[0]?.payload?.start ?? '0', 10) * 1000, 'LLL d, yyyy')
     return <ChartTooltip items={items} /> // footer={footer}headerColor={items}
   }
