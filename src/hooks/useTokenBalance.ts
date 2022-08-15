@@ -1,20 +1,19 @@
 import { useWallet } from 'contexts/Wallet'
 import { BigNumber } from 'ethers'
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer } from 'react'
 
 export default function useTokenBalance(tokenAddress: string) {
   const wallet = useWallet()
-  const [balance, setBanalce] = useState<BigNumber>(BigNumber.from(0))
+  const [, forceUpdate] = useReducer((x: number) => x + 1, 0)
 
   useEffect(() => {
     if (!wallet) {
-      setBanalce(BigNumber.from(0))
       return
     }
 
-    const eventHandler = (receivedTokenAddress: string, balance: BigNumber) => {
+    const eventHandler = (receivedTokenAddress: string) => {
       if (receivedTokenAddress === tokenAddress) {
-        setBanalce(balance)
+        forceUpdate()
       }
     }
 
@@ -27,5 +26,5 @@ export default function useTokenBalance(tokenAddress: string) {
     }
   }, [wallet, tokenAddress])
 
-  return balance
+  return wallet?.getBalance(tokenAddress) ?? BigNumber.from(0)
 }

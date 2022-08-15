@@ -109,6 +109,12 @@ export default function UnstakeTab({ className }: Props) {
     }
   }, [state, resetState])
 
+  useEffect(() => {
+    if (state.state === 'Success') {
+      wallet?.setBalance(CLAM, balance => balance.add(receiveAmount))
+    }
+  }, [state.state])
+
   return (
     <StyledUnstakeTab className={className}>
       <Headline as="h1">{t('welcome')}</Headline>
@@ -160,10 +166,7 @@ export default function UnstakeTab({ className }: Props) {
         padding="6px"
         isWeb3
         loading={state.state !== 'None'}
-        onClick={() => {
-          unstake(unstakeAmount)
-          wallet?.setBalance(CLAM, balance => balance.add(receiveAmount))
-        }}
+        onClick={() => unstake(unstakeAmount)}
       >
         {t('unstake_btn')}
       </StyledButton>

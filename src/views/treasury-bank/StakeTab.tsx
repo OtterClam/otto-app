@@ -98,6 +98,12 @@ export default function StakeTab({ className }: Props) {
     }
   }, [stakeState, resetStake])
 
+  useEffect(() => {
+    if (stakeState.state === 'Success') {
+      wallet?.setBalance(CLAM, balance => balance.sub(utils.parseUnits(clamAmount, 9)))
+    }
+  }, [stakeState.state])
+
   return (
     <StyledStakeTab className={className}>
       <Headline as="h1">{t('welcome')}</Headline>
@@ -139,10 +145,7 @@ export default function StakeTab({ className }: Props) {
         padding="6px"
         isWeb3
         loading={stakeState.state !== 'None'}
-        onClick={() => {
-          stake(clamAmount)
-          wallet?.setBalance(CLAM, balance => balance.sub(utils.parseUnits(clamAmount, 9)))
-        }}
+        onClick={() => stake(clamAmount)}
       >
         {t('stake_btn')}
       </StyledButton>

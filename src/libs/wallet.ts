@@ -1,7 +1,6 @@
 import { Erc20__factory } from 'contracts/__generated__'
 import { Erc20, TransferEventFilter } from 'contracts/__generated__/Erc20'
 import { BigNumber, providers } from 'ethers'
-import noop from 'lodash/noop'
 import debounce from 'lodash/debounce'
 import EventEmitter from 'events'
 
@@ -28,17 +27,24 @@ export default class Wallet extends EventEmitter {
     super()
     this.ethersProvider = options.ethersProvider
     this.accountAddress = options.accountAddress
+    this.setMaxListeners(Infinity)
+  }
+
+  private fireBalanceUpdatedEvent(tokenAddress: string, balance: BigNumber): void {
+    this.emit('balanceUpdated', tokenAddress, balance)
   }
 
   destroy() {
     Array.from(this.tokenInfo).forEach(([, info]) => {
-      const eventFilter = this.getTokenTransferEventFilter(info.contract)
-      this.ethersProvider.off(eventFilter, info.transferEventListender)
+      const eventFilters = this.getTokenTransferEventFilters(info.contract)
+      eventFilters.forEach(eventFilter => {
+        this.ethersProvider.off(eventFilter, info.transferEventListender)
+      })
     })
   }
 
-  private getTokenTransferEventFilter(token: Erc20): TransferEventFilter {
-    return token.filters.Transfer(null, this.accountAddress)
+  private getTokenTransferEventFilters(token: Erc20): TransferEventFilter[] {
+    return [token.filters.Transfer(null, this.accountAddress), token.filters.Transfer(this.accountAddress, null)]
   }
 
   async trackTokenBalance(tokenAddress: string): Promise<void> {
@@ -55,24 +61,27 @@ export default class Wallet extends EventEmitter {
 
     this.tokenInfo.set(tokenAddress, info)
 
-    const eventFilter = this.getTokenTransferEventFilter(info.contract)
-    this.ethersProvider.on(eventFilter, this.handleTokenTransferEvent)
+    const eventFilters = this.getTokenTransferEventFilters(info.contract)
+    eventFilters.forEach(eventFilter => {
+      this.ethersProvider.on(eventFilter, this.handleTokenTransferEvent)
+    })
 
     const [decimals, balance] = await Promise.all([
       info.contract.decimals(),
       info.contract.balanceOf(this.accountAddress),
     ])
+
     info.decimals = decimals
     info.balance = balance
 
-    this.emit('balanceUpdated', tokenAddress, info.balance)
+    this.fireBalanceUpdatedEvent(tokenAddress, info.balance)
   }
 
   private async handleTokenTransferEvent(tokenAddress: string) {
     const info = this.tokenInfo.get(tokenAddress)
     if (info) {
       info.balance = await info.contract.balanceOf(this.accountAddress)
-      this.emit('balanceUpdated', tokenAddress, info.balance)
+      this.fireBalanceUpdatedEvent(tokenAddress, info.balance)
     }
   }
 
@@ -80,7 +89,11 @@ export default class Wallet extends EventEmitter {
     const info = this.tokenInfo.get(tokenAddress)
     if (info) {
       info.balance = getBalance(info.balance)
-      this.emit('balanceUpdated', tokenAddress, info.balance)
+      this.fireBalanceUpdatedEvent(tokenAddress, info.balance)
     }
+  }
+
+  getBalance(tokenAddress: string): BigNumber {
+    return this.tokenInfo.get(tokenAddress)?.balance ?? BigNumber.from(0)
   }
 }
