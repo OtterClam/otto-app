@@ -556,7 +556,7 @@
       "tvdTooltip": "Total Value Deposited, is the dollar amount of all CLAM staked in the protocol. This metric is often used as growth or health indicator in DeFi projects.",
       "chartHeaderLabel": "Total",
       "dailyPayout": "Daily Payout:",
-      "rewardsTooltip": "Reward Rate is the daily percentage gain for staking in either pool.\nAnnual Percentage Rate (APR) is the daily reward rate multiplied over 365 days, the effective payout for Clam Pond.\nAnnual Percentage Yield (APY) is the yearly return accounting for the effect of daily auto-compounding in the Clam Pond.",
+      "rewardsTooltip": "Reward Rate is the daily percentage gain for staking in either pool.\nAnnual Percentage Rate (APR) is the daily reward rate multiplied over 365 days, the effective payout for Pearl Bank.\nAnnual Percentage Yield (APY) is the yearly return accounting for the effect of daily auto-compounding in the Clam Pond.",
       "today": "Today",
       "treasuryMarketValue": "Market Value of Treasury Assets",
       "treasuryRevenue": "Protocol Revenue",

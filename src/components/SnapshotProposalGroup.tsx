@@ -1,7 +1,7 @@
 import { ContentSmall, Display1, Headline, ContentMedium } from 'styles/typography'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
-import { Proposal } from '../models/Proposal'
+import { GovernanceTab, Proposal } from '../models/Proposal'
 import Button from './Button'
 import SnapshotProposalPieChart from './SnapshotProposalPieChart'
 
@@ -67,9 +67,10 @@ const StyledInnerContainer = styled.div`
 export interface SnapshotProposalGroupInterface {
   className?: string
   proposals: Proposal[]
+  tab: GovernanceTab
 }
 
-export default function SnapshotProposalGroup({ className, proposals }: SnapshotProposalGroupInterface) {
+export default function SnapshotProposalGroup({ className, proposals, tab }: SnapshotProposalGroupInterface) {
   const { t } = useTranslation()
   return (
     <StyledContainer className={className}>
@@ -79,7 +80,7 @@ export default function SnapshotProposalGroup({ className, proposals }: Snapshot
           <StyledInnerContainer>
             <StyledTextBody>{proposal.body}</StyledTextBody>
             {/* <StyledChartContainer></StyledChartContainer> */}
-            <SnapshotProposalPieChart proposal={proposal} />
+            <SnapshotProposalPieChart proposal={proposal} outerLegendOnly={tab === GovernanceTab.QIDAO} />
           </StyledInnerContainer>
           {proposal.state === 'active' ? (
             <Button

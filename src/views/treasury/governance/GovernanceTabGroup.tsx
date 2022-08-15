@@ -1,3 +1,4 @@
+import { GovernanceTab } from 'models/Proposal'
 import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
 import styled from 'styled-components'
@@ -38,33 +39,30 @@ const StyledBody = styled.div`
   background: ${({ theme }) => theme.colors.white};
 `
 
-type GovernanceTab = 'otterclam' | 'dyst_pen' | 'qidao'
-
 interface Props {
   className?: string
 }
 
 export default function GopvernanceTabGroup({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'governance' })
-  // const { proposals } = useOtterClamProposals()
-  const [tab, setTab] = useState<GovernanceTab>('otterclam')
+  const [tab, setTab] = useState<GovernanceTab>(GovernanceTab.OTTERCLAM)
   return (
     <StyledStakeDialog className={className}>
       <StyledTabs>
-        <StyledTab selected={tab === 'otterclam'} onClick={() => setTab('otterclam')}>
+        <StyledTab selected={tab === GovernanceTab.OTTERCLAM} onClick={() => setTab(GovernanceTab.OTTERCLAM)}>
           {t('otterclam_tab')}{' '}
         </StyledTab>
-        <StyledTab selected={tab === 'dyst_pen'} onClick={() => setTab('dyst_pen')}>
+        <StyledTab selected={tab === GovernanceTab.DYST_PEN} onClick={() => setTab(GovernanceTab.DYST_PEN)}>
           {t('dyst_pen_tab')}{' '}
         </StyledTab>
-        <StyledTab selected={tab === 'qidao'} onClick={() => setTab('qidao')}>
+        <StyledTab selected={tab === GovernanceTab.QIDAO} onClick={() => setTab(GovernanceTab.QIDAO)}>
           {t('qidao_tab')}{' '}
         </StyledTab>
       </StyledTabs>
       <StyledBody>
-        {tab === 'otterclam' && <OtterClamTab />}
-        {tab === 'dyst_pen' && <DystopiaPenroseTab />}
-        {tab === 'qidao' && <QiDaoTab />}
+        {tab === GovernanceTab.OTTERCLAM && <OtterClamTab />}
+        {tab === GovernanceTab.DYST_PEN && <DystopiaPenroseTab />}
+        {tab === GovernanceTab.QIDAO && <QiDaoTab />}
       </StyledBody>
     </StyledStakeDialog>
   )

@@ -14,6 +14,7 @@ const StyledContainer = styled.div`
 `
 export interface SnapshotProposalPieChartProps {
   proposal: Proposal
+  outerLegendOnly?: boolean
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
@@ -35,7 +36,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     return <ChartTooltip items={items} /> // footer={footer}headerColor={items}
   }
 
-export default function SnapshotProposalPieChart({ proposal }: SnapshotProposalPieChartProps) {
+export default function SnapshotProposalPieChart({ proposal, outerLegendOnly = false }: SnapshotProposalPieChartProps) {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
@@ -45,6 +46,7 @@ export default function SnapshotProposalPieChart({ proposal }: SnapshotProposalP
   for (let i = 0; i < proposal.choices.length; i++) {
     if (proposal.scores?.[i] !== undefined && proposal.scores?.[i] !== 0) {
       data.push({
+        choiceId: i,
         choice: proposal.choices?.[i],
         score: proposal.scores?.[i],
       })
@@ -109,16 +111,30 @@ export default function SnapshotProposalPieChart({ proposal }: SnapshotProposalP
             ))}
           </Pie>
         ) : null}
-        <Legend
-          fontFamily="Pangolin"
-          style={{ fontFamily: 'Pangolin !important', overflow: 'scroll' }}
-          height={36}
-          payload={dao_votes.map((entry, index) => ({
-            id: index.toString(),
-            value: entry.choice,
-            color: COLORS[entry.choiceId % COLORS.length],
-          }))}
-        />
+
+        {outerLegendOnly ? (
+          <Legend
+            fontFamily="Pangolin"
+            style={{ fontFamily: 'Pangolin !important', overflow: 'scroll' }}
+            height={36}
+            payload={dao_votes.map((entry, index) => ({
+              id: index.toString(),
+              value: entry.choice,
+              color: COLORS[entry.choiceId % COLORS.length],
+            }))}
+          />
+        ) : (
+          <Legend
+            fontFamily="Pangolin"
+            style={{ fontFamily: 'Pangolin !important', overflow: 'scroll' }}
+            height={36}
+            payload={data.map((entry, index) => ({
+              id: index.toString(),
+              value: entry.choice,
+              color: COLORS[entry.choiceId % COLORS.length],
+            }))}
+          />
+        )}
       </PieChart>
     </StyledContainer>
   )
