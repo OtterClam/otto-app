@@ -5,7 +5,7 @@ import hell from 'assets/hell.png'
 import bg from 'assets/dice-of-destiny-bg.jpg'
 import { ContentSmall, Headline } from 'styles/typography'
 import Button from 'components/Button'
-import useApi from 'hooks/useApi'
+import { useApi } from 'contexts/Api'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import { selectOttoInTheHell, showDicePopup } from 'store/uiSlice'
 import { useTranslation } from 'next-i18next'
@@ -105,7 +105,7 @@ const useAllDice = (ottoId: string) => {
       return
     }
     api
-      .getAllDice(ottoId, i18n.resolvedLanguage)
+      .getAllDice(ottoId)
       .then(diceList => setDiceList(diceList))
       .catch(err => dispatch(setError(err)))
   }, [api, ottoId, i18n.resolvedLanguage, ottoInTheHell, dispatch])

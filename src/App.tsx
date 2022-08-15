@@ -14,6 +14,7 @@ import { CurrencyProvider } from 'contexts/Currency'
 import useServiceWorker from 'hooks/useServiceWorker'
 import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
 import MintPopup from 'components/MintPopup'
+import { ApiProvider } from 'contexts/Api'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 
@@ -68,23 +69,27 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
   return (
     <ApolloProvider client={apollo}>
       <OtterSubgraphProvider>
-        <CurrencyProvider>
-          <ThemeProvider theme={theme}>
-            <BreakpointsProvider>
-              <MyOttosProvider>
-                <SnapshotProvider>
-                  <StyledApp>
-                    {children}
-                    <Error />
-                    <WalletSelector />
-                    <MintPopup />
-                    <SideMenu />
-                  </StyledApp>
-                </SnapshotProvider>
-              </MyOttosProvider>
-            </BreakpointsProvider>
-          </ThemeProvider>
-        </CurrencyProvider>
+        <ApiProvider>
+          <AssetsLoaderProvider>
+            <CurrencyProvider>
+              <ThemeProvider theme={theme}>
+                <BreakpointsProvider>
+                  <MyOttosProvider>
+                    <SnapshotProvider>
+                      <StyledApp>
+                        <StyledPageContainer>{children}</StyledPageContainer>
+                        <Error />
+                        <WalletSelector />
+                        <SideMenu />
+                        <AssetsLoader />
+                      </StyledApp>
+                    </SnapshotProvider>
+                  </MyOttosProvider>
+                </BreakpointsProvider>
+              </ThemeProvider>
+            </CurrencyProvider>
+          </AssetsLoaderProvider>
+        </ApiProvider>
       </OtterSubgraphProvider>
     </ApolloProvider>
   )

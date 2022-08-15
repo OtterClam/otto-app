@@ -2,7 +2,7 @@ import Otto, { OttoMeta, RawOtto } from 'models/Otto'
 import { MyOttosContext } from 'MyOttosProvider'
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
-import useApi from './useApi'
+import { useApi } from 'contexts/Api'
 
 type Falsy = false | 0 | '' | null | undefined
 
@@ -20,7 +20,7 @@ export default function useOtto(rawOtto: RawOtto | Falsy, details: boolean) {
       setMetadata(null)
       setError(null)
       api
-        .getOttoMeta(rawOtto.tokenId, i18n.resolvedLanguage, details)
+        .getOttoMeta(rawOtto.tokenId, details)
         .then(data => {
           setError(null)
           setMetadata(data)
@@ -49,7 +49,7 @@ export function useOttos(rawOttos: RawOtto[] | Falsy, { details, epoch }: { deta
       setError(null)
       const ids = rawOttos.map(raw => String(raw.tokenId))
       api
-        .getOttoMetas(ids, i18n.resolvedLanguage, { details, epoch })
+        .getOttoMetas(ids, { details, epoch })
         .then(data => data.map((meta, i) => new Otto(rawOttos[i], meta)))
         .then(ottos => setOttos(ottos.filter((o): o is Otto => Boolean(o))))
         .catch(err => {

@@ -50,7 +50,7 @@ export default function Notifications({ className }: { className?: string }) {
       {/* https://github.com/leandrowd/react-responsive-carousel/issues/321#issuecomment-507663251 */}
       {notifications.length > 0 && (
         <Carousel
-          interval={2000}
+          interval={5000}
           showIndicators={false}
           showThumbs={false}
           showArrows={false}

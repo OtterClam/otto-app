@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { IS_SERVER } from 'constant'
-import useApi from 'hooks/useApi'
+import { useApi } from 'contexts/Api'
 import { Notification } from 'models/Notification'
 import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react'
 
