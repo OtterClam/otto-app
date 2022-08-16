@@ -1,3 +1,4 @@
+import formatDate from 'date-fns/format'
 import Button from 'components/Button'
 import ItemCell from 'components/ItemCell'
 import ItemType from 'components/ItemType'
@@ -6,7 +7,7 @@ import TreasurySection from 'components/TreasurySection'
 import { Forge } from 'models/Forge'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
-import { ContentMedium, Display3, Headline, Note } from 'styles/typography'
+import { ContentExtraSmall, ContentMedium, Display3, Headline, Note } from 'styles/typography'
 
 const StyledContainer = styled.div`
   color: ${({ theme }) => theme.colors.white};
@@ -94,12 +95,21 @@ const StyledCount = styled(Note)`
   padding: 5px 10px;
 `
 
+const StyledAvaliableTime = styled(ContentExtraSmall)`
+  text-align: center;
+`
+
 export interface ForgeItemProps {
   forge: Forge
 }
 
+const TIME_FORMAT = 'LLL dd H:mm a'
+
 export default function ForgeItem({ forge }: ForgeItemProps) {
   const { t } = useTranslation('', { keyPrefix: 'foundry' })
+  const startTime = formatDate(forge.startTime, TIME_FORMAT)
+  const endTime = formatDate(forge.endTime, TIME_FORMAT)
+  const timeZone = formatDate(new Date(), 'z')
 
   return (
     <StyledContainer>
@@ -119,6 +129,7 @@ export default function ForgeItem({ forge }: ForgeItemProps) {
 
         <StyledMaterials showRope={false}>
           <Headline>{t('materials.title')}</Headline>
+
           <StyledMaterialList>
             {forge.materials.map((material, index) => (
               <StyledMaterialListItem key={index}>
@@ -128,9 +139,12 @@ export default function ForgeItem({ forge }: ForgeItemProps) {
               </StyledMaterialListItem>
             ))}
           </StyledMaterialList>
+
           <Button height="60px" Typography={Headline}>
             {t('forgeButton')}
           </Button>
+
+          <StyledAvaliableTime>{t('forgeAvaliableTime', { startTime, endTime, timeZone })}</StyledAvaliableTime>
         </StyledMaterials>
       </StyledDetails>
     </StyledContainer>
