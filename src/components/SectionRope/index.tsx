@@ -12,7 +12,8 @@ const StyledContainer = styled.div<{ vertical?: boolean }>`
     content: '';
     min-width: 20px;
     max-width: 20px;
-    height: 21px;
+    min-height: 21px;
+    max-height: 21px;
     background: center / 20px 21px url(${Rope.src});
   }
 
@@ -28,6 +29,21 @@ const StyledContainer = styled.div<{ vertical?: boolean }>`
     vertical &&
     `
     flex-direction: column;
+    max-width: 21px;
+    min-width: 21px;
+    
+    &::before, &::after {
+      transform-origin: center;
+      margin: 0;
+    }
+    
+    &::before {
+      transform: rotate(-90deg) translateX(-40px);
+    }
+
+    &::after {
+      transform: rotate(-90deg) translateX(40px);
+    }
   `}
 `
 

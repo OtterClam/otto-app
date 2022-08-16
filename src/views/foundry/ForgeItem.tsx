@@ -8,6 +8,7 @@ import { Forge } from 'models/Forge'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, ContentMedium, Display3, Headline, Note } from 'styles/typography'
+import { useBreakpoints } from 'contexts/Breakpoints'
 
 const StyledContainer = styled.div`
   color: ${({ theme }) => theme.colors.white};
@@ -27,6 +28,13 @@ const StyledDesc = styled(ContentMedium)`
 
 const StyledDetails = styled.div`
   display: flex;
+  position: relative;
+  z-index: 0;
+  width: 100%;
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    flex-direction: column;
+  }
 `
 
 const StyledResult = styled(TreasurySection).attrs({ showRope: false })`
@@ -40,6 +48,14 @@ const StyledResult = styled(TreasurySection).attrs({ showRope: false })`
   min-width: 300px;
   background: ${({ theme }) => theme.colors.darkGray400};
   min-height: 300px;
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    flex: 0 1 318px;
+    padding: 10px;
+    min-height: 318px;
+    max-width: unset;
+    min-width: unset;
+  }
 `
 
 const StyledResultItemPreview = styled(ItemCell)`
@@ -72,6 +88,7 @@ const StyledMaterialPreview = styled(ItemCell)`
 
 const StyledMaterialList = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 10px;
@@ -99,6 +116,11 @@ const StyledAvaliableTime = styled(ContentExtraSmall)`
   text-align: center;
 `
 
+const StyledSectionRope = styled(SectionRope)`
+  position: relative;
+  z-index: -1;
+`
+
 export interface ForgeItemProps {
   forge: Forge
 }
@@ -110,6 +132,7 @@ export default function ForgeItem({ forge }: ForgeItemProps) {
   const startTime = formatDate(forge.startTime, TIME_FORMAT)
   const endTime = formatDate(forge.endTime, TIME_FORMAT)
   const timeZone = formatDate(new Date(), 'z')
+  const { isTablet } = useBreakpoints()
 
   return (
     <StyledContainer>
@@ -125,7 +148,7 @@ export default function ForgeItem({ forge }: ForgeItemProps) {
           <StyledItemType type={forge.result.type} />
         </StyledResult>
 
-        <SectionRope vertical />
+        <StyledSectionRope vertical={!isTablet} />
 
         <StyledMaterials showRope={false}>
           <Headline>{t('materials.title')}</Headline>

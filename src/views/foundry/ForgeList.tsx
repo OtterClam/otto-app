@@ -4,6 +4,10 @@ import ForgeItem from './ForgeItem'
 
 const StyledContainer = styled.div`
   padding: 60px 74px 74px;
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    padding: 15px;
+  }
 `
 
 export interface ForgeListProps {
