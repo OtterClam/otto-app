@@ -7,14 +7,14 @@ import React, { RefObject, useRef, useMemo } from 'react'
 import { PieChart, Pie, Tooltip, Legend, Cell } from 'recharts'
 import styled from 'styled-components/macro'
 import ChartTooltip from './ChartTooltip'
-import { Proposal } from '../models/Proposal'
+import { GovernanceTab, Proposal } from '../models/Proposal'
 
 const StyledContainer = styled.div`
   font-family: 'Pangolin', 'naikaifont' !important;
 `
 export interface SnapshotProposalPieChartProps {
   proposal: Proposal
-  outerLegendOnly?: boolean
+  tab: GovernanceTab
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
@@ -31,11 +31,15 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       value: `${Math.round(value).toLocaleString(i18n.language)} ${i18n.t('treasury.governance.votes')}`,
       color: payload.fill,
     }))
-    // const footer = format(parseInt(payload[0]?.payload?.start ?? '0', 10) * 1000, 'LLL d, yyyy')
-    return <ChartTooltip items={items} /> // footer={footer}headerColor={items}
+    return (
+      <ChartTooltip
+        headerLabel={payload?.[0].dataKey === 'power' ? i18n.t('treasury.governance.ocvoted') : ''}
+        items={items}
+      />
+    )
   }
 
-export default function SnapshotProposalPieChart({ proposal, outerLegendOnly = false }: SnapshotProposalPieChartProps) {
+export default function SnapshotProposalPieChart({ proposal, tab }: SnapshotProposalPieChartProps) {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
@@ -95,7 +99,7 @@ export default function SnapshotProposalPieChart({ proposal, outerLegendOnly = f
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        {proposal.voted ? (
+        {proposal.voted && (
           <Pie
             data={dao_votes}
             labelLine={false}
@@ -109,9 +113,9 @@ export default function SnapshotProposalPieChart({ proposal, outerLegendOnly = f
               <Cell key={`cell-outer-${index}`} fill={COLORS[entry.choiceId % COLORS.length]} />
             ))}
           </Pie>
-        ) : null}
+        )}
 
-        {outerLegendOnly ? (
+        {tab === GovernanceTab.QIDAO ? (
           <Legend
             fontFamily="Pangolin"
             style={{ fontFamily: 'Pangolin !important', overflow: 'scroll' }}

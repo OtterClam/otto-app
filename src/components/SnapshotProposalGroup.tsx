@@ -1,6 +1,7 @@
 import { ContentSmall, Display1, Headline, ContentMedium } from 'styles/typography'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
+import { Marked } from '@ts-stack/markdown'
 import { GovernanceTab, Proposal } from '../models/Proposal'
 import Button from './Button'
 import SnapshotProposalPieChart from './SnapshotProposalPieChart'
@@ -24,7 +25,6 @@ const StyledContainer = styled.div`
 // `
 
 const StyledCard = styled.div`
-  padding: 15px;
   margin: 4px;
   width: 100%;
   align-items: center;
@@ -41,11 +41,9 @@ const StyledCard = styled.div`
 const StyledTextBody = styled.div`
   font-family: 'Pangolin', 'naikaifont';
   white-space: pre-line;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  max-height: 100%;
+  max-height: 300px;
+  overflow: hidden;
   padding: 15px;
-  margin: 4px;
   border-radius: 10px;
   box-sizing: border-box;
 `
@@ -55,11 +53,11 @@ const StyledProposalHeadline = styled.span`
   font-size: 24px;
   font-weight: 400;
   line-height: 1.5;
+  padding: 15px;
   @media ${({ theme }) => theme.breakpoints.mobile} {
     font-size: 20px;
   }
 `
-const StyledChartContainer = styled.div``
 
 const StyledInnerContainer = styled.div`
   display: inline-flex;
@@ -78,11 +76,10 @@ export default function SnapshotProposalGroup({ className, proposals, tab }: Sna
         <StyledCard key={proposal.id}>
           <StyledProposalHeadline as="h1">{proposal.title}</StyledProposalHeadline>
           <StyledInnerContainer>
-            <StyledTextBody>{proposal.body}</StyledTextBody>
-            {/* <StyledChartContainer></StyledChartContainer> */}
-            <SnapshotProposalPieChart proposal={proposal} outerLegendOnly={tab === GovernanceTab.QIDAO} />
+            <StyledTextBody dangerouslySetInnerHTML={{ __html: Marked.parse(proposal.body ?? '') }} />
+            <SnapshotProposalPieChart proposal={proposal} tab={tab} />
           </StyledInnerContainer>
-          {proposal.state === 'active' ? (
+          {(proposal.state === 'active' && tab === GovernanceTab.OTTERCLAM) ?? (
             <Button
               padding="6px 48px"
               width="70%"
@@ -91,8 +88,6 @@ export default function SnapshotProposalGroup({ className, proposals, tab }: Sna
             >
               {t('treasury.governance.voteNow')}
             </Button>
-          ) : (
-            <ContentMedium>{t('treasury.governance.votingClosed')}</ContentMedium>
           )}
         </StyledCard>
       ))}

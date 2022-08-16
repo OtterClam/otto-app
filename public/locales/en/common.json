@@ -578,7 +578,8 @@
       "title": "Governance",
       "voteNow": "Vote Now!",
       "votingClosed": "Voting Closed",
-      "votes": "Votes"
+      "votes": "Votes",
+      "ocvoted": "OtterClam Voted:"
     }
   },
   "stake": {
