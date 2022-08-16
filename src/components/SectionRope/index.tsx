@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 import Rope from './img_rope.png'
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ vertical?: boolean }>`
   display: flex;
   justify-content: space-between;
 
@@ -23,12 +23,19 @@ const StyledContainer = styled.div`
   &::after {
     margin-right: 40px;
   }
+
+  ${({ vertical }) =>
+    vertical &&
+    `
+    flex-direction: column;
+  `}
 `
 
 export interface SectionRopeProps {
   className?: string
+  vertical?: boolean
 }
 
-export default function SectionRope({ className }: SectionRopeProps) {
-  return <StyledContainer className={className} />
+export default function SectionRope({ className, vertical }: SectionRopeProps) {
+  return <StyledContainer className={className} vertical={vertical} />
 }

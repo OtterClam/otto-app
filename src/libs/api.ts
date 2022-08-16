@@ -1,7 +1,8 @@
 import { ChainId } from '@usedapp/core'
 import axios, { Axios } from 'axios'
 import { Dice } from 'models/Dice'
-import Item from 'models/Item'
+import { Forge, RawForge, rawForgeToForge } from 'models/Forge'
+import Item, { rawItmeToItem } from 'models/Item'
 import { Notification, RawNotification } from 'models/Notification'
 import { OttoMeta } from 'models/Otto'
 import Product from 'models/store/Product'
@@ -76,33 +77,14 @@ export class Api {
     return this.otterclamClient
       .get(`/items/metadata/${itemId}`)
       .then(res => res.data)
-      .then((data: any) => this.toItem(itemId, data))
+      .then((data: any) => rawItmeToItem(itemId, data))
   }
 
   public async getItems(ids: string[]): Promise<Item[]> {
     return this.otterclamClient
       .get(`/items/metadata?ids=${ids.join(',')}`)
       .then(res => res.data)
-      .then((data: any[]) => data.map((d, i) => this.toItem(ids[i], d)))
-  }
-
-  private toItem(id: string, { name, description, image, details }: any): Item {
-    return {
-      id,
-      name,
-      description,
-      image,
-      equipped: false,
-      amount: 1,
-      unreturnable: false,
-      isCoupon: details.type === 'Coupon',
-      total_rarity_score: details.base_rarity_score + details.relative_rarity_score,
-      luck: Number(details.stats.find((s: any) => s.name === 'LUK').value) || 0,
-      dex: Number(details.stats.find((s: any) => s.name === 'DEX').value) || 0,
-      cute: Number(details.stats.find((s: any) => s.name === 'CUTE').value) || 0,
-      def: Number(details.stats.find((s: any) => s.name === 'DEF').value) || 0,
-      ...details,
-    }
+      .then((data: any[]) => data.map((d, i) => rawItmeToItem(ids[i], d)))
   }
 
   public async rollTheDice(ottoId: string, tx: string): Promise<Dice> {
@@ -130,7 +112,14 @@ export class Api {
       ...res.data,
       start_time: new Date(res.data.start_time).valueOf(),
       end_time: new Date(res.data.end_time).valueOf(),
-      special_items: res.data.special_items.map((i: any) => this.toItem('', i)),
+      special_items: res.data.special_items.map((i: any) => rawItmeToItem('', i)),
     }))
   }
+
+  public async getFoundryForges(): Promise<Forge[]> {
+    const result = await this.otterclamClient.get<RawForge[]>('/foundry/forge')
+    return result.data.map(rawForgeToForge)
+  }
 }
+
+export const defaultApi = new Api(ChainId.Polygon)
