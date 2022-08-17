@@ -3,7 +3,7 @@ import DefaultLayout from 'layouts/DefaultLayout'
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { NextPageWithLayout } from 'pages/_app'
-import GovernancePageView from 'views/treasury-governance'
+import PalacePageView from 'views/treasury-palace'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
@@ -11,14 +11,14 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   },
 })
 
-const GovernancePage: NextPageWithLayout = GovernancePageView
+const PalacePage: NextPageWithLayout = PalacePageView
 
-GovernancePage.getLayout = (page, i18n) => {
+PalacePage.getLayout = (page, i18n) => {
   return (
-    <DefaultLayout title={i18n.t('treasury.governance.title')}>
+    <DefaultLayout title={i18n.t('treasury.palace.title')}>
       <TreasuryLayout>{page}</TreasuryLayout>
     </DefaultLayout>
   )
 }
 
-export default GovernancePage
+export default PalacePage

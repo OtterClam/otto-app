@@ -15,9 +15,3 @@ export interface Proposal {
   vote_power: number | null
   voted: boolean
 }
-
-export enum GovernanceTab {
-  OTTERCLAM,
-  DYST_PEN,
-  QIDAO,
-}

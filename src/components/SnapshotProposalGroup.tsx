@@ -1,8 +1,9 @@
 import { ContentSmall, Display1, Headline, ContentMedium } from 'styles/typography'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
-import { Marked } from '@ts-stack/markdown'
-import { GovernanceTab, Proposal } from '../models/Proposal'
+import ReactMarkdown from 'react-markdown'
+import { Proposal } from '../models/Proposal'
+import { GovernanceTab } from '../models/Tabs'
 import Button from './Button'
 import SnapshotProposalPieChart from './SnapshotProposalPieChart'
 
@@ -27,6 +28,7 @@ const StyledContainer = styled.div`
 const StyledCard = styled.div`
   margin: 4px;
   width: 100%;
+  padding: 15px;
   align-items: center;
   justify-items: center;
   justify-content: center;
@@ -43,9 +45,11 @@ const StyledTextBody = styled.div`
   white-space: pre-line;
   max-height: 300px;
   overflow: hidden;
-  padding: 15px;
   border-radius: 10px;
   box-sizing: border-box;
+  ul {
+    list-style-position: inside;
+  }
 `
 
 const StyledProposalHeadline = styled.span`
@@ -53,7 +57,6 @@ const StyledProposalHeadline = styled.span`
   font-size: 24px;
   font-weight: 400;
   line-height: 1.5;
-  padding: 15px;
   @media ${({ theme }) => theme.breakpoints.mobile} {
     font-size: 20px;
   }
@@ -62,10 +65,26 @@ const StyledProposalHeadline = styled.span`
 const StyledInnerContainer = styled.div`
   display: inline-flex;
 `
+
+const StyledActivityFlag = styled.div`
+  width: 33px;
+  height: 18px;
+
+  font-family: 'Pangolin';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+`
 export interface SnapshotProposalGroupInterface {
   className?: string
   proposals: Proposal[]
   tab: GovernanceTab
+}
+
+//capitalize only the first letter of the string.
+function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 export default function SnapshotProposalGroup({ className, proposals, tab }: SnapshotProposalGroupInterface) {
@@ -75,8 +94,11 @@ export default function SnapshotProposalGroup({ className, proposals, tab }: Sna
       {proposals.map(proposal => (
         <StyledCard key={proposal.id}>
           <StyledProposalHeadline as="h1">{proposal.title}</StyledProposalHeadline>
+          <StyledActivityFlag>{capitalizeFirstLetter(proposal.state ?? '')}</StyledActivityFlag>
           <StyledInnerContainer>
-            <StyledTextBody dangerouslySetInnerHTML={{ __html: Marked.parse(proposal.body ?? '') }} />
+            <StyledTextBody>
+              <ReactMarkdown>{proposal.body ?? ''}</ReactMarkdown>
+            </StyledTextBody>
             <SnapshotProposalPieChart proposal={proposal} tab={tab} />
           </StyledInnerContainer>
           {(proposal.state === 'active' && tab === GovernanceTab.OTTERCLAM) ?? (

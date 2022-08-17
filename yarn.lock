@@ -2198,13 +2198,6 @@
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
   integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
 
-"@ts-stack/markdown@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@ts-stack/markdown/-/markdown-1.4.0.tgz#da22d29c1455f7293f10a9ae2b8ac4f35079c008"
-  integrity sha512-z3fkD8wGSyqTCp+axZVlr9hFKyM18XKPHEyC8vmohyTcqf5sRRy9Sd0omYBJ85IDW57DLEcfvVatXfUt1unEew==
-  dependencies:
-    tslib "^2.0.0"
-
 "@typechain/ethers-v5@^10.0.0":
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/@typechain/ethers-v5/-/ethers-v5-10.0.0.tgz#1b6e292d2ed9afb0d2f7a4674cc199bb95bad714"

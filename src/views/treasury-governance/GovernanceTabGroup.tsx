@@ -1,13 +1,23 @@
-import { GovernanceTab } from 'models/Proposal'
+import AdBanner from 'components/AdBanner'
+import Image from 'next/image'
+import { GovernanceTab } from 'models/Tabs'
 import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
 import styled from 'styled-components'
-import { ContentMedium } from 'styles/typography'
+import { ContentMedium, Headline } from 'styles/typography'
 import DystopiaPenroseTab from './DystopiaPenroseTab'
 import OtterClamTab from './OtterClamTab'
 import QiDaoTab from './QiDaoTab'
+import Garden from './garden.png'
+import OtterVote from './otter-vote.png'
+import Arrow from 'views/store/StoreHero/arrow.svg'
+import TreasurySection from 'components/TreasurySection'
 
-const StyledStakeDialog = styled.div``
+const StyledContainer = styled.div``
+
+const StyledBanner = styled.div`
+  position: relative;
+`
 
 const StyledTabs = styled.div`
   display: flex;
@@ -36,6 +46,43 @@ const StyledBody = styled.div`
   padding: 20px;
 `
 
+const StyledDialog = styled.div`
+  color: ${({ theme }) => theme.colors.otterBlack};
+  background: white;
+  position: absolute;
+  top: 20%;
+  left: 15%;
+  width: 35%;
+  border-radius: 20px;
+  border: 4px solid ${({ theme }) => theme.colors.otterBlack};
+  padding: 20px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    visibility: hidden;
+  }
+
+  &:after {
+    content: '';
+    width: 28px;
+    height: 20px;
+    background-image: url(${Arrow.src});
+    background-size: 100% 100%;
+    position: absolute;
+    top: calc(50% - 9px);
+    right: -30px;
+  }
+`
+
+const StyledBg = styled.img`
+  width: 100%;
+`
+
+const StyledOtter = styled(Image)`
+  position: absolute;
+  top: 20%;
+  left: 15%;
+  width: 35%;
+`
 interface Props {
   className?: string
 }
@@ -44,23 +91,34 @@ export default function GopvernanceTabGroup({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'governance' })
   const [tab, setTab] = useState<GovernanceTab>(GovernanceTab.OTTERCLAM)
   return (
-    <StyledStakeDialog className={className}>
-      <StyledTabs>
-        <StyledTab selected={tab === GovernanceTab.OTTERCLAM} onClick={() => setTab(GovernanceTab.OTTERCLAM)}>
-          {t('otterclam_tab')}{' '}
-        </StyledTab>
-        <StyledTab selected={tab === GovernanceTab.DYST_PEN} onClick={() => setTab(GovernanceTab.DYST_PEN)}>
-          {t('dyst_pen_tab')}{' '}
-        </StyledTab>
-        <StyledTab selected={tab === GovernanceTab.QIDAO} onClick={() => setTab(GovernanceTab.QIDAO)}>
-          {t('qidao_tab')}{' '}
-        </StyledTab>
-      </StyledTabs>
-      <StyledBody>
-        {tab === GovernanceTab.OTTERCLAM && <OtterClamTab />}
-        {tab === GovernanceTab.DYST_PEN && <DystopiaPenroseTab />}
-        {tab === GovernanceTab.QIDAO && <QiDaoTab />}
-      </StyledBody>
-    </StyledStakeDialog>
+    <StyledContainer className={className}>
+      <TreasurySection>
+        <StyledBg src={Garden.src} width={2000} height={500} />
+        <StyledDialog>
+          <h1>Gdssa</h1>
+          <p>fds</p>
+        </StyledDialog>
+        <StyledOtter unoptimized src={OtterVote.src} width={948} height={268} objectFit="contain" />
+      </TreasurySection>
+
+      <TreasurySection>
+        <StyledTabs>
+          <StyledTab selected={tab === GovernanceTab.OTTERCLAM} onClick={() => setTab(GovernanceTab.OTTERCLAM)}>
+            {t('otterclam_tab')}{' '}
+          </StyledTab>
+          <StyledTab selected={tab === GovernanceTab.DYST_PEN} onClick={() => setTab(GovernanceTab.DYST_PEN)}>
+            {t('dyst_pen_tab')}{' '}
+          </StyledTab>
+          <StyledTab selected={tab === GovernanceTab.QIDAO} onClick={() => setTab(GovernanceTab.QIDAO)}>
+            {t('qidao_tab')}{' '}
+          </StyledTab>
+        </StyledTabs>
+        <StyledBody>
+          {tab === GovernanceTab.OTTERCLAM && <OtterClamTab />}
+          {tab === GovernanceTab.DYST_PEN && <DystopiaPenroseTab />}
+          {tab === GovernanceTab.QIDAO && <QiDaoTab />}
+        </StyledBody>
+      </TreasurySection>
+    </StyledContainer>
   )
 }

@@ -7,7 +7,9 @@ import React, { RefObject, useRef, useMemo } from 'react'
 import { PieChart, Pie, Tooltip, Legend, Cell } from 'recharts'
 import styled from 'styled-components/macro'
 import ChartTooltip from './ChartTooltip'
-import { GovernanceTab, Proposal } from '../models/Proposal'
+import { Proposal } from '../models/Proposal'
+import { Colors } from '../styles/colors'
+import { GovernanceTab } from '../models/Tabs'
 
 const StyledContainer = styled.div`
   font-family: 'Pangolin', 'naikaifont' !important;
@@ -29,7 +31,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       key: name,
       label: name,
       value: `${Math.round(value).toLocaleString(i18n.language)} ${i18n.t('treasury.governance.votes')}`,
-      color: payload.fill,
+      color: COLORS[payload.colorId % COLORS.length],
     }))
     return (
       <ChartTooltip
@@ -55,6 +57,11 @@ export default function SnapshotProposalPieChart({ proposal, tab }: SnapshotProp
       })
     }
   }
+  if (data.length === 0) return null
+
+  // sort values and figure out colours
+  data = data.sort((a, b) => b.score - a.score)
+  data.forEach((val, index) => (val.colorId = index))
 
   // Also map the DAO-voted choices
   const dao_votes: any[] = []
@@ -70,6 +77,7 @@ export default function SnapshotProposalPieChart({ proposal, tab }: SnapshotProp
         choice: proposal.choices?.[choiceId],
         weight: 1,
         power: proposal.vote_power,
+        colorId: data.findIndex(x => x.choiceId === choiceId),
       })
     }
     if (proposal.type === 'weighted') {
@@ -82,21 +90,18 @@ export default function SnapshotProposalPieChart({ proposal, tab }: SnapshotProp
           choice: proposal.choices?.[choiceId],
           weight,
           power: (weight / totalWeight) * (proposal.vote_power ?? 1),
+          colorId: data.findIndex(x => x.choiceId === choiceId),
         })
       }
     }
   }
-  if (data.length === 0) return null
-
-  data = data.sort((a, b) => b.score - a.score)
-
   return (
     <StyledContainer ref={containerRef}>
       <PieChart width={size?.width ?? 300} height={260}>
         <Tooltip wrapperStyle={{ zIndex: 1, fontSize: '12px !important' }} content={renderTooltip(i18n) as any} />
         <Pie data={data} labelLine={false} nameKey="choice" outerRadius={80} dataKey="score" minAngle={3}>
           {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            <Cell key={`cell-${index}`} fill={COLORS[entry.colorId % COLORS.length]} />
           ))}
         </Pie>
         {proposal.voted && (
@@ -110,7 +115,7 @@ export default function SnapshotProposalPieChart({ proposal, tab }: SnapshotProp
             minAngle={5}
           >
             {dao_votes.map((entry, index) => (
-              <Cell key={`cell-outer-${index}`} fill={COLORS[entry.choiceId % COLORS.length]} />
+              <Cell key={`cell-outer-${index}`} fill={COLORS[entry.colorId % COLORS.length]} />
             ))}
           </Pie>
         )}
@@ -123,7 +128,7 @@ export default function SnapshotProposalPieChart({ proposal, tab }: SnapshotProp
             payload={dao_votes.map((entry, index) => ({
               id: index.toString(),
               value: entry.choice,
-              color: COLORS[entry.choiceId % COLORS.length],
+              color: COLORS[entry.colorId % COLORS.length],
             }))}
           />
         ) : (
@@ -134,7 +139,7 @@ export default function SnapshotProposalPieChart({ proposal, tab }: SnapshotProp
             payload={data.map((entry, index) => ({
               id: index.toString(),
               value: entry.choice,
-              color: COLORS[entry.choiceId % COLORS.length],
+              color: COLORS[entry.colorId % COLORS.length],
             }))}
           />
         )}
