@@ -1,4 +1,6 @@
 import formatDate from 'date-fns/format'
+import isBefore from 'date-fns/isBefore'
+import isAfter from 'date-fns/isAfter'
 import Button from 'components/Button'
 import ItemCell from 'components/ItemCell'
 import ItemType from 'components/ItemType'
@@ -9,6 +11,12 @@ import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, ContentMedium, Display3, Headline, Note } from 'styles/typography'
 import { useBreakpoints } from 'contexts/Breakpoints'
+import { useForge, useSetApprovalForAll } from 'contracts/functions'
+import { useCallback, useEffect, useMemo } from 'react'
+import { useERC1155 } from 'contracts/contracts'
+import { useERC1155Approval } from 'contexts/ERC1155Approval'
+import { TransactionState, TransactionStatus, useEthers } from '@usedapp/core'
+import { MyItemAmounts } from './type'
 
 const StyledContainer = styled.div`
   color: ${({ theme }) => theme.colors.white};
@@ -123,16 +131,62 @@ const StyledSectionRope = styled(SectionRope)`
 
 export interface ForgeItemProps {
   forge: Forge
+  itemAmounts: MyItemAmounts
+  refetchMyItems: () => void
 }
 
 const TIME_FORMAT = 'LLL dd H:mm a'
 
-export default function ForgeItem({ forge }: ForgeItemProps) {
+const useAvaliableCount = (forge: Forge, itemCounts: MyItemAmounts): number => {
+  return useMemo(() => {
+    return Math.floor(
+      Math.min(
+        ...forge.materials.map((material, index) => {
+          const requiredAmount = forge.amounts[index]
+          return (itemCounts[material.id] ?? 0) / requiredAmount
+        })
+      )
+    )
+  }, [forge.materials, itemCounts])
+}
+
+const isProcessing = (state: TransactionStatus) => state.status === 'PendingSignature' || state.status === 'Mining'
+
+export default function ForgeItem({ forge, itemAmounts: itemCounts, refetchMyItems }: ForgeItemProps) {
   const { t } = useTranslation('', { keyPrefix: 'foundry' })
   const startTime = formatDate(forge.startTime, TIME_FORMAT)
   const endTime = formatDate(forge.endTime, TIME_FORMAT)
   const timeZone = formatDate(new Date(), 'z')
   const { isTablet } = useBreakpoints()
+  const { state: forgeState, send: sendForgeCall } = useForge()
+  const avaliableCount = useAvaliableCount(forge, itemCounts)
+  const now = new Date()
+  const disabled = avaliableCount === 0 || isBefore(now, forge.startTime) || isAfter(now, forge.endTime)
+  const { isApprovedForAll, updateApprovalStatus, erc1155, operator: forgeContractAddress } = useERC1155Approval()!
+  const { state: setApprovalState, send: sendSetApprovalCall } = useSetApprovalForAll(erc1155.address)
+  const approving = isProcessing(setApprovalState)
+  const forging = isProcessing(forgeState)
+  const processing = approving || forging
+
+  const callForge = useCallback(() => {
+    if (!isApprovedForAll) {
+      sendSetApprovalCall(forgeContractAddress, true, {})
+      return
+    }
+    sendForgeCall(forge.id, 1)
+  }, [disabled, forge.id, forgeContractAddress, avaliableCount, isApprovedForAll])
+
+  useEffect(() => {
+    if (setApprovalState.status === 'Success') {
+      updateApprovalStatus()
+    }
+  }, [setApprovalState.status])
+
+  useEffect(() => {
+    if (setApprovalState.status === 'Success') {
+      refetchMyItems()
+    }
+  }, [forgeState.status])
 
   return (
     <StyledContainer>
@@ -158,13 +212,15 @@ export default function ForgeItem({ forge }: ForgeItemProps) {
               <StyledMaterialListItem key={index}>
                 <StyledMaterialPreview item={material} />
                 <StyledMaterialName>{material.name}</StyledMaterialName>
-                <StyledCount>1 / {forge.amounts[index]}</StyledCount>
+                <StyledCount>
+                  {itemCounts[material.id] ?? 0} / {forge.amounts[index]}
+                </StyledCount>
               </StyledMaterialListItem>
             ))}
           </StyledMaterialList>
 
-          <Button height="60px" Typography={Headline}>
-            {t('forgeButton')}
+          <Button loading={processing} height="60px" disabled={disabled} Typography={Headline} onClick={callForge}>
+            {t(isBefore(now, forge.startTime) ? 'comingSoon' : isApprovedForAll ? 'forgeButton' : 'approve')}
           </Button>
 
           <StyledAvaliableTime>{t('forgeAvaliableTime', { startTime, endTime, timeZone })}</StyledAvaliableTime>

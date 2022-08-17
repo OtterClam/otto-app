@@ -5,11 +5,14 @@ import useContractAddresses from 'hooks/useContractAddresses'
 import Item from 'models/Item'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { NumericDictionary } from 'lodash'
 import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
 import {
   useClamPond,
+  useERC1155,
   useERC20,
+  useFoundry,
   useItemContract,
   useItemGiveaway,
   useOttoContract,
@@ -460,4 +463,14 @@ export const useClamPondWithdraw = (token: ClamPondToken) => {
     setUnstakeState({ state: state.status, status: state })
   }, [state])
   return { unstakeState, unstake, resetState }
+}
+
+export const useForge = () => {
+  const foundry = useFoundry()
+  return useContractFunction(foundry, 'forge')
+}
+
+export const useSetApprovalForAll = (contract: string) => {
+  const erc1155 = useERC1155(contract)
+  return useContractFunction(erc1155, 'setApprovalForAll', {})
 }

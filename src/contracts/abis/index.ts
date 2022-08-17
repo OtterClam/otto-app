@@ -13,6 +13,8 @@ import OttopiaPortalCreator from './OttopiaPortalCreator.json'
 import OttopiaStore from './OttopiaStore.json'
 import OttoSummoner from './OttoSummoner.json'
 import PearlBank from './PearlBank.json'
+import Foundry from './Foundry.json'
+import ERC1155 from './ERC1155Upgradeable.json'
 
 export const ERC20Abi = ERC20.abi
 export const OttoAbi = Otto.abi
@@ -29,3 +31,5 @@ export const PearlBankAbi = PearlBank.abi
 export const RewardManagerAbi = RewardManager.abi
 export const OtterWrappedUsdPlusAbi = OtterWrappedUsdPlus.abi
 export const AggregationRouterV4Abi = AggregationRouterV4
+export const FoundryAbi = Foundry.abi
+export const ERC1155Abi = ERC1155.abi
