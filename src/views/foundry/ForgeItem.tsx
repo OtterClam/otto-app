@@ -215,7 +215,15 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
             ))}
           </StyledMaterialList>
           <Button loading={processing} height="60px" disabled={disabled} Typography={Headline} onClick={callForge}>
-            {t(isBefore(now, formula.startTime) ? 'comingSoon' : isApprovedForAll ? 'forgeButton' : 'approve')}
+            {t(
+              isBefore(now, formula.startTime)
+                ? 'comingSoon'
+                : availableCount === 0
+                ? 'forgeButton_insufficient'
+                : isApprovedForAll
+                ? 'forgeButton'
+                : 'approve'
+            )}
           </Button>
           <StyledAvailableTime>{t('forgeAvailableTime', { startTime, endTime, timeZone })}</StyledAvailableTime>
         </StyledMaterials>
