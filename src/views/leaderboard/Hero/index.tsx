@@ -12,6 +12,7 @@ import Background from './background.png'
 import Clams from './clams.png'
 import Ottos from './ottos.png'
 import Rewards from './rewards.png'
+import RewardEmpty from './rewards_empty.png'
 import StreamerLeft from './streamer_left.png'
 import StreamerRight from './streamer_right.png'
 
@@ -233,7 +234,7 @@ export default function Hero() {
       <StyledStreamRight src={StreamerRight.src} />
       <StyledClam src={Clams.src} />
       <StyledOttos src={Ottos.src} />
-      <StyledRewardImg src={Rewards.src} />
+      <StyledRewardImg src={epochEnd ? RewardEmpty.src : Rewards.src} />
       <StyledCenterContainer>
         <StyledTitle>{t('title')}</StyledTitle>
         <StyledTotalReward>
