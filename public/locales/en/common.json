@@ -694,6 +694,7 @@
       "title": "Required Items:"
     },
     "forgeButton": "Forge",
+    "forgeButton_insufficient": "Forge (Insufficient Items)",
     "forgeAvailableTime": "Fusion available: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
     "comingSoon": "Coming soon...",
     "approve": "Approve",
