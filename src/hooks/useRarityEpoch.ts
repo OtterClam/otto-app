@@ -4,6 +4,7 @@ import { GET_EPOCH } from 'graphs/otto'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { GetEpoch, GetEpochVariables } from 'graphs/__generated__/GetEpoch'
+import { RARITY_S1_END } from 'constant'
 
 const START_DATE = new Date('2022-05-23').valueOf()
 const EPOCH_LENGTH = 14 * 86400 * 1000 // 14 days
@@ -19,10 +20,9 @@ export default function useRarityEpoch() {
     variables: { epoch },
     skip: epoch === -1,
   })
-
   const isLatestEpoch = epoch === -1 || epoch === latestEpoch
   const currentEpoch = isLatestEpoch ? latestEpoch : epoch
-  const epochEnd =
+  const epochEndTime =
     START_DATE +
     (currentEpoch + 1) * EPOCH_LENGTH +
     (currentEpoch >= 3 ? EPOCH_3_EXTEND : 0) +
@@ -34,7 +34,9 @@ export default function useRarityEpoch() {
   useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now()
-      if (now < START_DATE) setLatestEpoch(0)
+      if (now > RARITY_S1_END) {
+        setLatestEpoch(5) // TODO: remove this line after S2
+      } else if (now < START_DATE) setLatestEpoch(0)
       else if (now > START_DATE && now < START_DATE + EPOCH_LENGTH * 3)
         setLatestEpoch(Math.floor((now - START_DATE) / EPOCH_LENGTH))
       else if (now < START_DATE + EPOCH_3_EXTEND + 4 * EPOCH_LENGTH) setLatestEpoch(3)
@@ -46,7 +48,7 @@ export default function useRarityEpoch() {
 
   return {
     epoch,
-    epochEnd,
+    epochEndTime,
     latestEpoch,
     isLatestEpoch,
     hasPrevEpoch,
