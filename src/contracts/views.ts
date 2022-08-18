@@ -243,15 +243,15 @@ export function useIsApprovedForAll(contract: string, account: string, operator:
   const erc1155 = useERC1155(contract)
   const [isApprovedForAll, setIsApprovedForAll] = useState(false)
 
-  erc1155.isApprovedForAll(account, operator).then(setIsApprovedForAll)
-
   const updateApprovalStatus = useCallback(() => {
-    erc1155.isApprovedForAll(account, operator).then(setIsApprovedForAll)
-  }, [contract, operator, account])
+    if (account && operator) {
+      erc1155.isApprovedForAll(account, operator).then(setIsApprovedForAll)
+    }
+  }, [erc1155, operator, account])
 
   useEffect(() => {
     updateApprovalStatus()
-  }, [contract, operator, account])
+  }, [updateApprovalStatus])
 
   return {
     isApprovedForAll,

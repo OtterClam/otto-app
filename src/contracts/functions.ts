@@ -351,7 +351,7 @@ export function useStakedInfo() {
   const { account } = useEthers()
 
   const [result] = useCalls([
-    {
+    account && {
       contract: pearlBank,
       method: 'otterInfo',
       args: [account],
@@ -369,7 +369,7 @@ export function usePearlBankBalance(): BigNumber {
   const { account } = useEthers()
 
   const [result] = useCalls([
-    {
+    account && {
       contract: pearlBank,
       method: 'balanceOf',
       args: [account],
@@ -384,12 +384,12 @@ export function useClamPerPearl() {
   const { account } = useEthers()
 
   const [totalStakedResult, totalSupplyResult] = useCalls([
-    {
+    account && {
       contract: pearlBank,
       method: 'totalStaked',
       args: [account],
     },
-    {
+    account && {
       contract: pearlBank,
       method: 'totalSupply',
       args: [],
