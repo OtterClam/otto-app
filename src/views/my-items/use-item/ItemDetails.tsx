@@ -5,6 +5,7 @@ import styled from 'styled-components/macro'
 import { Caption, ContentSmall, Headline, Note } from 'styles/typography'
 import GenderSpecific from 'components/GenderSpecific'
 import { useTranslation } from 'next-i18next'
+import ItemCollectionBadge from 'components/ItemCollectionBadge'
 
 const StyledItemDetails = styled.section`
   display: flex;
@@ -143,6 +144,12 @@ const StyledButton = styled(Button)`
   height: 100%;
 `
 
+const StyledName = styled(Headline)`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`
+
 interface Props {
   item: Item
   onClose?: () => void
@@ -152,8 +159,8 @@ interface Props {
 
 export default function ItemDetails({ item, onClose, onUse, className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
-  const { id, name, image, rarity, type, description, equippable_gender, wearable } = item
-  console.log(`item id: ${id}`)
+  const { id, collection, collection_name, name, image, rarity, type, description, equippable_gender, wearable } = item
+
   return (
     <StyledItemDetails className={className}>
       {onClose && <StyledCloseButton onClose={onClose} />}
@@ -167,7 +174,9 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
         <Caption>{t(`section_title.${type}`)}</Caption>
       </StyledTag>
       <StyledTitleContainer>
-        <Headline>{name}</Headline>
+        <StyledName>
+          <ItemCollectionBadge collection={collection} collectionName={collection_name} /> {name}
+        </StyledName>
         <StyledRarityLabel rarity={rarity}>
           <ContentSmall>{rarity}</ContentSmall>
         </StyledRarityLabel>
