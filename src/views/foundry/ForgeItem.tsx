@@ -1,21 +1,20 @@
-import formatDate from 'date-fns/format'
-import isBefore from 'date-fns/isBefore'
-import isAfter from 'date-fns/isAfter'
+import { TransactionStatus } from '@usedapp/core'
 import Button from 'components/Button'
 import ItemCell from 'components/ItemCell'
 import ItemType from 'components/ItemType'
 import SectionRope from 'components/SectionRope'
 import TreasurySection from 'components/TreasurySection'
+import { useBreakpoints } from 'contexts/Breakpoints'
+import { useERC1155Approval } from 'contexts/ERC1155Approval'
+import { useForge, useSetApprovalForAll } from 'contracts/functions'
+import formatDate from 'date-fns/format'
+import isAfter from 'date-fns/isAfter'
+import isBefore from 'date-fns/isBefore'
 import { Forge } from 'models/Forge'
 import { useTranslation } from 'next-i18next'
+import { useCallback, useEffect, useMemo } from 'react'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, ContentMedium, Display3, Headline, Note } from 'styles/typography'
-import { useBreakpoints } from 'contexts/Breakpoints'
-import { useForge, useSetApprovalForAll } from 'contracts/functions'
-import { useCallback, useEffect, useMemo } from 'react'
-import { useERC1155 } from 'contracts/contracts'
-import { useERC1155Approval } from 'contexts/ERC1155Approval'
-import { TransactionState, TransactionStatus, useEthers } from '@usedapp/core'
 import { MyItemAmounts } from './type'
 
 const StyledContainer = styled.div`
@@ -120,7 +119,7 @@ const StyledCount = styled(Note)`
   padding: 5px 10px;
 `
 
-const StyledAvaliableTime = styled(ContentExtraSmall)`
+const StyledAvailableTime = styled(ContentExtraSmall)`
   text-align: center;
 `
 
@@ -137,7 +136,7 @@ export interface ForgeItemProps {
 
 const TIME_FORMAT = 'LLL dd H:mm a'
 
-const useAvaliableCount = (forge: Forge, itemCounts: MyItemAmounts): number => {
+const useAvailableCount = (forge: Forge, itemCounts: MyItemAmounts): number => {
   return useMemo(() => {
     return Math.floor(
       Math.min(
@@ -147,7 +146,7 @@ const useAvaliableCount = (forge: Forge, itemCounts: MyItemAmounts): number => {
         })
       )
     )
-  }, [forge.materials, itemCounts])
+  }, [forge, itemCounts])
 }
 
 const isProcessing = (state: TransactionStatus) => state.status === 'PendingSignature' || state.status === 'Mining'
@@ -159,34 +158,34 @@ export default function ForgeItem({ forge, itemAmounts: itemCounts, refetchMyIte
   const timeZone = formatDate(new Date(), 'z')
   const { isTablet } = useBreakpoints()
   const { state: forgeState, send: sendForgeCall } = useForge()
-  const avaliableCount = useAvaliableCount(forge, itemCounts)
+  const availableCount = useAvailableCount(forge, itemCounts)
   const now = new Date()
-  const disabled = avaliableCount === 0 || isBefore(now, forge.startTime) || isAfter(now, forge.endTime)
-  const { isApprovedForAll, updateApprovalStatus, erc1155, operator: forgeContractAddress } = useERC1155Approval()!
-  const { state: setApprovalState, send: sendSetApprovalCall } = useSetApprovalForAll(erc1155.address)
+  const disabled = availableCount === 0 || isBefore(now, forge.startTime) || isAfter(now, forge.endTime)
+  const { isApprovedForAll, updateApprovalStatus, erc1155, operator: forgeContractAddress } = useERC1155Approval() || {}
+  const { state: setApprovalState, send: sendSetApprovalCall } = useSetApprovalForAll(erc1155?.address || '')
   const approving = isProcessing(setApprovalState)
   const forging = isProcessing(forgeState)
   const processing = approving || forging
 
   const callForge = useCallback(() => {
-    if (!isApprovedForAll) {
+    if (!isApprovedForAll && forgeContractAddress) {
       sendSetApprovalCall(forgeContractAddress, true, {})
       return
     }
     sendForgeCall(forge.id, 1)
-  }, [disabled, forge.id, forgeContractAddress, avaliableCount, isApprovedForAll])
+  }, [isApprovedForAll, sendForgeCall, forge.id, sendSetApprovalCall, forgeContractAddress])
 
   useEffect(() => {
     if (setApprovalState.status === 'Success') {
-      updateApprovalStatus()
+      updateApprovalStatus?.()
     }
-  }, [setApprovalState.status])
+  }, [setApprovalState, updateApprovalStatus])
 
   useEffect(() => {
     if (setApprovalState.status === 'Success') {
       refetchMyItems()
     }
-  }, [forgeState.status])
+  }, [setApprovalState, refetchMyItems])
 
   return (
     <StyledContainer>
@@ -223,7 +222,7 @@ export default function ForgeItem({ forge, itemAmounts: itemCounts, refetchMyIte
             {t(isBefore(now, forge.startTime) ? 'comingSoon' : isApprovedForAll ? 'forgeButton' : 'approve')}
           </Button>
 
-          <StyledAvaliableTime>{t('forgeAvaliableTime', { startTime, endTime, timeZone })}</StyledAvaliableTime>
+          <StyledAvailableTime>{t('forgeAvailableTime', { startTime, endTime, timeZone })}</StyledAvailableTime>
         </StyledMaterials>
       </StyledDetails>
     </StyledContainer>

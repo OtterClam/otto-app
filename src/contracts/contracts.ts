@@ -130,7 +130,7 @@ export function useFoundry() {
   return new Contract(FOUNDRY, FoundryAbi, library) as Foundry
 }
 
-export function useERC1155(contract: string) {
+export function useERC1155(address: string) {
   const { library } = useEthers()
-  return new Contract(contract, ERC1155Abi, library) as ERC1155
+  return new Contract(address, ERC1155Abi, library) as ERC1155
 }

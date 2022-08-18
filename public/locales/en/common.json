@@ -694,7 +694,7 @@
       "title": "Required Items:"
     },
     "forgeButton": "Forge",
-    "forgeAvaliableTime": "Fusion available: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
+    "forgeAvailableTime": "Fusion available: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
     "comingSoon": "Coming soon...",
     "approve": "Approve"
   }

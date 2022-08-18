@@ -470,7 +470,7 @@ export const useForge = () => {
   return useContractFunction(foundry, 'forge')
 }
 
-export const useSetApprovalForAll = (contract: string) => {
-  const erc1155 = useERC1155(contract)
+export const useSetApprovalForAll = (address: string) => {
+  const erc1155 = useERC1155(address)
   return useContractFunction(erc1155, 'setApprovalForAll', {})
 }
