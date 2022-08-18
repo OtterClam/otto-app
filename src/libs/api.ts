@@ -1,8 +1,8 @@
 import { ChainId } from '@usedapp/core'
 import axios, { Axios } from 'axios'
 import { Dice } from 'models/Dice'
-import { Forge, RawForge, rawForgeToForge } from 'models/Forge'
-import Item, { rawItmeToItem } from 'models/Item'
+import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
+import Item, { rawItemToItem } from 'models/Item'
 import { Notification, RawNotification } from 'models/Notification'
 import { OttoMeta } from 'models/Otto'
 import Product from 'models/store/Product'
@@ -77,14 +77,14 @@ export class Api {
     return this.otterclamClient
       .get(`/items/metadata/${itemId}`)
       .then(res => res.data)
-      .then((data: any) => rawItmeToItem(itemId, data))
+      .then((data: any) => rawItemToItem(itemId, data))
   }
 
   public async getItems(ids: string[]): Promise<Item[]> {
     return this.otterclamClient
       .get(`/items/metadata?ids=${ids.join(',')}`)
       .then(res => res.data)
-      .then((data: any[]) => data.map((d, i) => rawItmeToItem(ids[i], d)))
+      .then((data: any[]) => data.map((d, i) => rawItemToItem(ids[i], d)))
   }
 
   public async rollTheDice(ottoId: string, tx: string): Promise<Dice> {
@@ -112,12 +112,12 @@ export class Api {
       ...res.data,
       start_time: new Date(res.data.start_time).valueOf(),
       end_time: new Date(res.data.end_time).valueOf(),
-      special_items: res.data.special_items.map((i: any) => rawItmeToItem('', i)),
+      special_items: res.data.special_items.map((i: any) => rawItemToItem('', i)),
     }))
   }
 
-  public async getFoundryForges(): Promise<Forge[]> {
-    const result = await this.otterclamClient.get<RawForge[]>('/foundry/forge')
+  public async getFoundryForges(): Promise<ForgeFormula[]> {
+    const result = await this.otterclamClient.get<RawForgeFormula[]>('/foundry/forge')
     return result.data.map(rawForgeToForge)
   }
 }

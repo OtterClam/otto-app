@@ -1,7 +1,7 @@
-import Item, { rawItmeToItem, traitToItem } from './Item'
+import Item, { rawItemToItem } from './Item'
 import { Trait } from './Otto'
 
-export interface Forge {
+export interface ForgeFormula {
   id: number
   result: Item
   materials: Item[]
@@ -12,7 +12,7 @@ export interface Forge {
   endTime: Date
 }
 
-export interface RawForge {
+export interface RawForgeFormula {
   id: number
   result: Trait
   materials: Trait[]
@@ -23,11 +23,11 @@ export interface RawForge {
   end_time: Date
 }
 
-export const rawForgeToForge = (raw: RawForge): Forge => {
+export const rawForgeToForge = (raw: RawForgeFormula): ForgeFormula => {
   return {
     id: raw.id,
-    result: rawItmeToItem('', raw.result),
-    materials: raw.materials.map(rawItem => rawItmeToItem('', rawItem)),
+    result: rawItemToItem('', raw.result),
+    materials: raw.materials.map(rawItem => rawItemToItem('', rawItem)),
     amounts: raw.amounts,
     title: raw.title,
     description: raw.description,

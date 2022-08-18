@@ -1,5 +1,4 @@
-import { Forge } from 'models/Forge'
-import Item from 'models/Item'
+import { ForgeFormula } from 'models/Forge'
 import styled from 'styled-components/macro'
 import ForgeItem from './ForgeItem'
 import { MyItemAmounts } from './type'
@@ -13,16 +12,16 @@ const StyledContainer = styled.div`
 `
 
 export interface ForgeListProps {
-  forges: Forge[]
+  formulas: ForgeFormula[]
   itemAmounts: MyItemAmounts
   refetchMyItems: () => void
 }
 
-export default function ForgeList({ forges, itemAmounts: itemCounts, refetchMyItems }: ForgeListProps) {
+export default function ForgeList({ formulas, itemAmounts: itemCounts, refetchMyItems }: ForgeListProps) {
   return (
     <StyledContainer>
-      {forges.map(forge => (
-        <ForgeItem key={forge.id} forge={forge} itemAmounts={itemCounts} refetchMyItems={refetchMyItems} />
+      {formulas.map(formula => (
+        <ForgeItem key={formula.id} formula={formula} itemAmounts={itemCounts} refetchMyItems={refetchMyItems} />
       ))}
     </StyledContainer>
   )

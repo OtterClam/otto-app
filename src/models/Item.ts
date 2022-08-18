@@ -51,7 +51,7 @@ export function traitToItem(trait: Trait): Item {
   }
 }
 
-export function rawItmeToItem(id: string, { id: traiId, name, description, image, details }: any): Item {
+export function rawItemToItem(id: string, { id: traiId, name, description, image, details }: any): Item {
   return {
     id: id || traiId,
     name,

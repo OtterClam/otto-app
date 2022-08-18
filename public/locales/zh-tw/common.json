@@ -681,6 +681,9 @@
     "forgeButton": "Forge",
     "forgeAvailableTime": "Fusion available: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
     "comingSoon": "Coming soon...",
-    "approve": "Approve"
+    "approve": "Approve",
+    "forge": {
+      "processing": "Forging..."
+    }
   }
 }

@@ -10,11 +10,12 @@ import { useForge, useSetApprovalForAll } from 'contracts/functions'
 import formatDate from 'date-fns/format'
 import isAfter from 'date-fns/isAfter'
 import isBefore from 'date-fns/isBefore'
-import { Forge } from 'models/Forge'
+import { ForgeFormula } from 'models/Forge'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useMemo } from 'react'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, ContentMedium, Display3, Headline, Note } from 'styles/typography'
+import ForgePopup from './ForgePopup'
 import { MyItemAmounts } from './type'
 
 const StyledContainer = styled.div`
@@ -129,42 +130,42 @@ const StyledSectionRope = styled(SectionRope)`
 `
 
 export interface ForgeItemProps {
-  forge: Forge
+  formula: ForgeFormula
   itemAmounts: MyItemAmounts
   refetchMyItems: () => void
 }
 
 const TIME_FORMAT = 'LLL dd H:mm a'
 
-const useAvailableCount = (forge: Forge, itemCounts: MyItemAmounts): number => {
+const useAvailableCount = (formula: ForgeFormula, itemCounts: MyItemAmounts): number => {
   return useMemo(() => {
     return Math.floor(
       Math.min(
-        ...forge.materials.map((material, index) => {
-          const requiredAmount = forge.amounts[index]
+        ...formula.materials.map((material, index) => {
+          const requiredAmount = formula.amounts[index]
           return (itemCounts[material.id] ?? 0) / requiredAmount
         })
       )
     )
-  }, [forge, itemCounts])
+  }, [formula, itemCounts])
 }
 
 const isProcessing = (state: TransactionStatus) => state.status === 'PendingSignature' || state.status === 'Mining'
 
-export default function ForgeItem({ forge, itemAmounts: itemCounts, refetchMyItems }: ForgeItemProps) {
+export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyItems }: ForgeItemProps) {
   const { t } = useTranslation('', { keyPrefix: 'foundry' })
-  const startTime = formatDate(forge.startTime, TIME_FORMAT)
-  const endTime = formatDate(forge.endTime, TIME_FORMAT)
+  const startTime = formatDate(formula.startTime, TIME_FORMAT)
+  const endTime = formatDate(formula.endTime, TIME_FORMAT)
   const timeZone = formatDate(new Date(), 'z')
   const { isTablet } = useBreakpoints()
-  const { state: forgeState, send: sendForgeCall } = useForge()
-  const availableCount = useAvailableCount(forge, itemCounts)
+  const { forgeState, forge, resetForge } = useForge()
+  const availableCount = useAvailableCount(formula, itemCounts)
   const now = new Date()
-  const disabled = availableCount === 0 || isBefore(now, forge.startTime) || isAfter(now, forge.endTime)
+  const disabled = availableCount === 0 || isBefore(now, formula.startTime) || isAfter(now, formula.endTime)
   const { isApprovedForAll, updateApprovalStatus, erc1155, operator: forgeContractAddress } = useERC1155Approval() || {}
   const { state: setApprovalState, send: sendSetApprovalCall } = useSetApprovalForAll(erc1155?.address || '')
   const approving = isProcessing(setApprovalState)
-  const forging = isProcessing(forgeState)
+  const forging = isProcessing(forgeState.status)
   const processing = approving || forging
 
   const callForge = useCallback(() => {
@@ -172,8 +173,8 @@ export default function ForgeItem({ forge, itemAmounts: itemCounts, refetchMyIte
       sendSetApprovalCall(forgeContractAddress, true, {})
       return
     }
-    sendForgeCall(forge.id, 1)
-  }, [isApprovedForAll, sendForgeCall, forge.id, sendSetApprovalCall, forgeContractAddress])
+    forge(formula.id, 1)
+  }, [isApprovedForAll, forgeContractAddress, forge, formula.id, sendSetApprovalCall])
 
   useEffect(() => {
     if (setApprovalState.status === 'Success') {
@@ -182,49 +183,44 @@ export default function ForgeItem({ forge, itemAmounts: itemCounts, refetchMyIte
   }, [setApprovalState, updateApprovalStatus])
 
   useEffect(() => {
-    if (setApprovalState.status === 'Success') {
-      refetchMyItems()
+    if (forgeState.state === 'Exception' || forgeState.state === 'Fail') {
+      window.alert(forgeState.status.errorMessage)
+      resetForge()
     }
-  }, [setApprovalState, refetchMyItems])
+  }, [forgeState, resetForge])
 
   return (
     <StyledContainer>
-      <StyledTitle>{forge.title}</StyledTitle>
-
-      <StyledDesc>{forge.description}</StyledDesc>
-
+      <StyledTitle>{formula.title}</StyledTitle>
+      <StyledDesc>{formula.description}</StyledDesc>
       <StyledDetails>
         <StyledResult>
           <Headline>{t('result.title')}</Headline>
-          <StyledResultItemPreview item={forge.result} />
-          <ContentMedium>{forge.result.name}</ContentMedium>
-          <StyledItemType type={forge.result.type} />
+          <StyledResultItemPreview item={formula.result} />
+          <ContentMedium>{formula.result.name}</ContentMedium>
+          <StyledItemType type={formula.result.type} />
         </StyledResult>
-
         <StyledSectionRope vertical={!isTablet} />
-
         <StyledMaterials showRope={false}>
           <Headline>{t('materials.title')}</Headline>
-
           <StyledMaterialList>
-            {forge.materials.map((material, index) => (
+            {formula.materials.map((material, index) => (
               <StyledMaterialListItem key={index}>
                 <StyledMaterialPreview item={material} />
                 <StyledMaterialName>{material.name}</StyledMaterialName>
                 <StyledCount>
-                  {itemCounts[material.id] ?? 0} / {forge.amounts[index]}
+                  {itemCounts[material.id] ?? 0} / {formula.amounts[index]}
                 </StyledCount>
               </StyledMaterialListItem>
             ))}
           </StyledMaterialList>
-
           <Button loading={processing} height="60px" disabled={disabled} Typography={Headline} onClick={callForge}>
-            {t(isBefore(now, forge.startTime) ? 'comingSoon' : isApprovedForAll ? 'forgeButton' : 'approve')}
+            {t(isBefore(now, formula.startTime) ? 'comingSoon' : isApprovedForAll ? 'forgeButton' : 'approve')}
           </Button>
-
           <StyledAvailableTime>{t('forgeAvailableTime', { startTime, endTime, timeZone })}</StyledAvailableTime>
         </StyledMaterials>
       </StyledDetails>
+      <ForgePopup state={forgeState} onClose={() => resetForge()} />
     </StyledContainer>
   )
 }

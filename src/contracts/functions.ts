@@ -1,5 +1,5 @@
 import { TransactionState, TransactionStatus, useCalls, useContractFunction, useEthers } from '@usedapp/core'
-import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
+import { BigNumber, constants, Contract, ethers, Transaction, utils } from 'ethers'
 import { useApi } from 'contexts/Api'
 import useContractAddresses from 'hooks/useContractAddresses'
 import Item from 'models/Item'
@@ -7,6 +7,7 @@ import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useState } from 'react'
 import { NumericDictionary } from 'lodash'
+import { Api } from 'libs/api'
 import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
 import {
   useClamPond,
@@ -133,7 +134,7 @@ interface OttoTransactionState {
   status: TransactionStatus
 }
 
-interface OttoBuyTransactionState extends OttoTransactionState {
+export interface OttoBuyTransactionState extends OttoTransactionState {
   receivedItems?: Item[]
 }
 
@@ -467,10 +468,66 @@ export const useClamPondWithdraw = (token: ClamPondToken) => {
 
 export const useForge = () => {
   const foundry = useFoundry()
-  return useContractFunction(foundry, 'forge')
+  const { account } = useEthers()
+  const api = useApi()
+  const { state, send, resetState } = useContractFunction(foundry, 'forge', {})
+  const [forgeState, setForgeState] = useState<OttoBuyTransactionState>({
+    state: 'None',
+    status: state,
+  })
+  const forge = async (formulaId: number, amount: number) => {
+    setForgeState({
+      state: 'PendingSignature',
+      status: state,
+    })
+    send(formulaId, amount)
+  }
+  const resetForge = () => {
+    resetState()
+    setForgeState({ state: 'None', status: state })
+  }
+  useEffect(() => {
+    if (state.status === 'Success') {
+      parseReceivedItems({ receipt: state.receipt, api, account }).then(receivedItems =>
+        setForgeState({
+          state: 'Success',
+          status: state,
+          receivedItems,
+        })
+      )
+    } else {
+      setForgeState({ state: state.status, status: state })
+    }
+  }, [account, api, state])
+  return { forgeState, forge, resetForge }
+}
+
+function parseReceivedItems({
+  receipt,
+  api,
+  account,
+}: {
+  receipt?: ethers.providers.TransactionReceipt
+  api: Api
+  account?: string
+}) {
+  const IItem = new utils.Interface(OttoItemAbi)
+  return Promise.all(
+    (receipt?.logs || [])
+      .map(log => {
+        try {
+          return IItem.parseLog(log)
+        } catch (err) {
+          // skip
+        }
+        return null
+      })
+      .filter(e => e?.name === 'TransferSingle' && e.args[2] === account)
+      .map(e => api.getItem(e?.args[3]))
+  )
 }
 
 export const useSetApprovalForAll = (address: string) => {
   const erc1155 = useERC1155(address)
-  return useContractFunction(erc1155, 'setApprovalForAll', {})
+  return useContractFunction(erc1155, 'setApprovalForAll')
 }

@@ -1,28 +1,16 @@
-import OttoDialog from 'components/OttoDialog'
 import { useApi } from 'contexts/Api'
 import { ERC1155ApprovalProvider } from 'contexts/ERC1155Approval'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useMyItems from 'hooks/useMyItems'
-import { Forge } from 'models/Forge'
-import { useTranslation } from 'next-i18next'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import styled from 'styled-components/macro'
-import { ContentExtraSmall, Headline } from 'styles/typography'
+import { ForgeFormula } from 'models/Forge'
+import { useEffect, useMemo, useState } from 'react'
 import ForgeList from './ForgeList'
 import FoundryHero from './FoundryHero'
 import { MyItemAmounts } from './type'
 
-const StyledHeader = styled.div`
-  height: 520px;
-`
-
-const StyledDialog = styled(OttoDialog)`
-  max-width: 378px;
-`
-
-const useForges = () => {
+const useForgeFormulas = () => {
   const api = useApi()
-  const [forges, setForges] = useState<Forge[]>([])
+  const [forges, setForges] = useState<ForgeFormula[]>([])
 
   useEffect(() => {
     api
@@ -51,13 +39,13 @@ const useMyItemAmounts = () => {
 
 export default function FoundryView() {
   const { OTTO_ITEM, FOUNDRY } = useContractAddresses()
-  const forges = useForges()
+  const forgeFormulas = useForgeFormulas()
   const { amounts, refetchMyItems } = useMyItemAmounts()
 
   return (
     <ERC1155ApprovalProvider contract={OTTO_ITEM} operator={FOUNDRY}>
       <FoundryHero />
-      <ForgeList forges={forges} itemAmounts={amounts} refetchMyItems={refetchMyItems} />
+      <ForgeList formulas={forgeFormulas} itemAmounts={amounts} refetchMyItems={refetchMyItems} />
     </ERC1155ApprovalProvider>
   )
 }
