@@ -1,18 +1,18 @@
 import ImageButton from 'components/ImageButton'
-import Link from 'next/link'
-import { useBreakpoints } from 'contexts/Breakpoints'
 import { useTranslation } from 'next-i18next'
+import Link from 'next/link'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
+import adventureImage from './adventure.png'
+import bankImage from './bank.png'
 import leaderboardImage from './leaderboard.png'
 import marketImage from './market.png'
 import mineImage from './mine.png'
 import mintImage from './mint.png'
+import palaceImage from './palace.png'
 import pondImage from './pond.png'
 import storeImage from './store.png'
-import adventureImage from './adventure.png'
-import bankImage from './bank.png'
-import palaceImage from './palace.png'
+import foundryImage from './foundry.png'
 
 export interface PinData {
   key: string
@@ -107,6 +107,15 @@ export const pins: PinData[] = [
     position: {
       x: 3,
       y: -14.7,
+    },
+  },
+  {
+    key: 'foundry',
+    image: foundryImage,
+    link: '/foundry',
+    position: {
+      x: 8,
+      y: 22,
     },
   },
 ]
