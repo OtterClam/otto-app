@@ -29,7 +29,7 @@ import {
   OttoHellDiceRoller,
   PearlBank,
 } from './__generated__'
-import { ERC1155Upgradeable } from './__generated__/ERC1155Upgradeable'
+import { ERC1155 } from './__generated__/ERC1155'
 import { Foundry } from './__generated__/Foundry'
 import { IOttoItemFactory } from './__generated__/IOttoItemFactory'
 import { Otto } from './__generated__/Otto'
@@ -132,5 +132,5 @@ export function useFoundry() {
 
 export function useERC1155(contract: string) {
   const { library } = useEthers()
-  return new Contract(contract, ERC1155Abi, library) as ERC1155Upgradeable
+  return new Contract(contract, ERC1155Abi, library) as ERC1155
 }

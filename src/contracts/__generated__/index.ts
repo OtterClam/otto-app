@@ -4,7 +4,7 @@
 export type { AggregationRouterV4 } from "./AggregationRouterV4";
 export type { ClamCirculatingSupply } from "./ClamCirculatingSupply";
 export type { ClamPond } from "./ClamPond";
-export type { ERC1155Upgradeable } from "./ERC1155Upgradeable";
+export type { ERC1155 } from "./ERC1155";
 export type { Foundry } from "./Foundry";
 export type { IOttoItemFactory } from "./IOttoItemFactory";
 export type { OtterRewardManager } from "./OtterRewardManager";
@@ -23,7 +23,7 @@ export * as factories from "./factories";
 export { AggregationRouterV4__factory } from "./factories/AggregationRouterV4__factory";
 export { ClamCirculatingSupply__factory } from "./factories/ClamCirculatingSupply__factory";
 export { ClamPond__factory } from "./factories/ClamPond__factory";
-export { ERC1155Upgradeable__factory } from "./factories/ERC1155Upgradeable__factory";
+export { ERC1155__factory } from "./factories/ERC1155__factory";
 export { Erc20__factory } from "./factories/Erc20__factory";
 export { Foundry__factory } from "./factories/Foundry__factory";
 export { IOttoItemFactory__factory } from "./factories/IOttoItemFactory__factory";

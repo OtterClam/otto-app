@@ -4,7 +4,7 @@
 export { AggregationRouterV4__factory } from "./AggregationRouterV4__factory";
 export { ClamCirculatingSupply__factory } from "./ClamCirculatingSupply__factory";
 export { ClamPond__factory } from "./ClamPond__factory";
-export { ERC1155Upgradeable__factory } from "./ERC1155Upgradeable__factory";
+export { ERC1155__factory } from "./ERC1155__factory";
 export { Foundry__factory } from "./Foundry__factory";
 export { IOttoItemFactory__factory } from "./IOttoItemFactory__factory";
 export { OtterRewardManager__factory } from "./OtterRewardManager__factory";

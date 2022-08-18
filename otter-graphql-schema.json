@@ -7734,6 +7734,22 @@
             "deprecationReason": null
           },
           {
+            "name": "treasuryDaiMarketValue",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "BigDecimal",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "treasuryClamMaiMarketValue",
             "description": null,
             "args": [],
@@ -9424,6 +9440,118 @@
           },
           {
             "name": "treasuryMaiMarketValue_not_in",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "BigDecimal",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDaiMarketValue",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "BigDecimal",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDaiMarketValue_not",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "BigDecimal",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDaiMarketValue_gt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "BigDecimal",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDaiMarketValue_lt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "BigDecimal",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDaiMarketValue_gte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "BigDecimal",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDaiMarketValue_lte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "BigDecimal",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDaiMarketValue_in",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "BigDecimal",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDaiMarketValue_not_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -12000,6 +12128,12 @@
           },
           {
             "name": "treasuryMaiMarketValue",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDaiMarketValue",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null

@@ -26,7 +26,7 @@ import type {
   OnEvent,
 } from "./common";
 
-export interface ERC1155UpgradeableInterface extends utils.Interface {
+export interface ERC1155Interface extends utils.Interface {
   functions: {
     "balanceOf(address,uint256)": FunctionFragment;
     "balanceOfBatch(address[],uint256[])": FunctionFragment;
@@ -177,12 +177,12 @@ export type URIEvent = TypedEvent<[string, BigNumber], URIEventObject>;
 
 export type URIEventFilter = TypedEventFilter<URIEvent>;
 
-export interface ERC1155Upgradeable extends BaseContract {
+export interface ERC1155 extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: ERC1155UpgradeableInterface;
+  interface: ERC1155Interface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,

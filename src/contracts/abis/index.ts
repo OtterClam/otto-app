@@ -14,7 +14,7 @@ import OttopiaStore from './OttopiaStore.json'
 import OttoSummoner from './OttoSummoner.json'
 import PearlBank from './PearlBank.json'
 import Foundry from './Foundry.json'
-import ERC1155 from './ERC1155Upgradeable.json'
+import ERC1155 from './ERC1155.json'
 
 export const ERC20Abi = ERC20.abi
 export const OttoAbi = Otto.abi
