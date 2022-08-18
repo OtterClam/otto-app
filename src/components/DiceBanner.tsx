@@ -15,6 +15,7 @@ import { setError } from 'store/errorSlice'
 import useRarityEpoch from 'hooks/useRarityEpoch'
 import { numberWithSign } from 'helpers/number'
 import { useIsMyOttos } from 'MyOttosProvider'
+import { RARITY_S1_END } from 'constant'
 import MarkdownWithHtml from './MarkdownWithHtml'
 import StyledRichContent from './RichContent'
 
@@ -119,7 +120,8 @@ export function DiceBanner({ otto }: DiceBannerProps) {
   const openPopup = () => dispatch(showDicePopup(otto.toJSON()))
   const { t } = useTranslation()
   const dices = useAllDice(otto.tokenId)
-  const { epochEnd } = useRarityEpoch()
+  const { epochEndTime } = useRarityEpoch()
+  const seasonEnd = Date.now() > epochEndTime
   const isMyOtto = useIsMyOttos(otto.tokenId)
   const effects = dices
     .map(dice => dice.events)
@@ -163,17 +165,24 @@ export function DiceBanner({ otto }: DiceBannerProps) {
               </MarkdownWithHtml>
             </li>
           )}
-          <li>
-            <MarkdownWithHtml>
-              {t('dice_banner.endTime', { time: new Date(epochEnd).toLocaleString() })}
-            </MarkdownWithHtml>
-          </li>
+          {!seasonEnd && (
+            <li>
+              <MarkdownWithHtml>
+                {t('dice_banner.endTime', { time: new Date(epochEndTime).toLocaleString() })}
+              </MarkdownWithHtml>
+            </li>
+          )}
         </ul>
       </StyledContent>
       {isMyOtto && (
         <StyledButtonContainer>
-          <Button padding={isMobile ? undefined : '6px 18px'} Typography={Headline} onClick={openPopup}>
-            {t('dice_banner.button')}
+          <Button
+            padding={isMobile ? undefined : '6px 18px'}
+            Typography={Headline}
+            disabled={seasonEnd}
+            onClick={openPopup}
+          >
+            {t(seasonEnd ? 'dice_banner.button_season_end' : 'dice_banner.button')}
           </Button>
         </StyledButtonContainer>
       )}
