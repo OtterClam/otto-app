@@ -665,5 +665,25 @@
     "treasury": "國庫",
     "ottos": "我的阿獺",
     "missions": "我的任務"
+  },
+  "foundry": {
+    "title": "Foundry",
+    "dialog": {
+      "title": "Welcome to the Foundry!",
+      "content": "Welcome to the Foundry, where you can re-forge several items to combine into new items, and also have the opportunity to get new items with higher rarity or attributes!"
+    },
+    "result": {
+      "title": "You’ll Get:"
+    },
+    "materials": {
+      "title": "Required Items:"
+    },
+    "forgeButton": "Forge",
+    "forgeAvailableTime": "Fusion available: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
+    "comingSoon": "Coming soon...",
+    "approve": "Approve",
+    "forge": {
+      "processing": "Forging..."
+    }
   }
 }

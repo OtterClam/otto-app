@@ -20,6 +20,7 @@ export interface Attr {
 }
 
 export interface Trait {
+  id: string
   type: string
   name: string
   image: string

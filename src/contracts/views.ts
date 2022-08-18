@@ -1,8 +1,10 @@
 import { useCall, useCalls, useEthers } from '@usedapp/core'
 import { BigNumber, constants } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
+import { useCallback, useEffect, useState } from 'react'
 import {
   useClamPond,
+  useERC1155,
   useItemContract,
   useOcUsdPlus,
   useOttoContract,
@@ -235,4 +237,24 @@ export function useNextRewardTime() {
     args: [],
   })
   return result?.value ? result?.value[0] : constants.Zero
+}
+
+export function useIsApprovedForAll(contract: string, account: string, operator: string) {
+  const erc1155 = useERC1155(contract)
+  const [isApprovedForAll, setIsApprovedForAll] = useState(false)
+
+  const updateApprovalStatus = useCallback(() => {
+    if (account && operator) {
+      erc1155.isApprovedForAll(account, operator).then(setIsApprovedForAll)
+    }
+  }, [erc1155, operator, account])
+
+  useEffect(() => {
+    updateApprovalStatus()
+  }, [updateApprovalStatus])
+
+  return {
+    isApprovedForAll,
+    updateApprovalStatus,
+  }
 }
