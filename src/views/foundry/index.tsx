@@ -5,10 +5,11 @@ import useContractAddresses from 'hooks/useContractAddresses'
 import useMyItems from 'hooks/useMyItems'
 import { Forge } from 'models/Forge'
 import { useTranslation } from 'next-i18next'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, Headline } from 'styles/typography'
 import ForgeList from './ForgeList'
+import FoundryHero from './FoundryHero'
 import { MyItemAmounts } from './type'
 
 const StyledHeader = styled.div`
@@ -50,18 +51,12 @@ const useMyItemAmounts = () => {
 
 export default function FoundryView() {
   const { OTTO_ITEM, FOUNDRY } = useContractAddresses()
-  const { t } = useTranslation('', { keyPrefix: 'foundry' })
   const forges = useForges()
   const { amounts, refetchMyItems } = useMyItemAmounts()
 
   return (
     <ERC1155ApprovalProvider contract={OTTO_ITEM} operator={FOUNDRY}>
-      <StyledHeader>
-        <StyledDialog>
-          <Headline>{t('dialog.title')}</Headline>
-          <ContentExtraSmall>{t('dialog.content')}</ContentExtraSmall>
-        </StyledDialog>
-      </StyledHeader>
+      <FoundryHero />
       <ForgeList forges={forges} itemAmounts={amounts} refetchMyItems={refetchMyItems} />
     </ERC1155ApprovalProvider>
   )
