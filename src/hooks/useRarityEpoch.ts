@@ -47,7 +47,7 @@ export default function useRarityEpoch() {
   }, [])
 
   return {
-    epoch,
+    epoch: currentEpoch,
     epochEndTime,
     latestEpoch,
     isLatestEpoch,
