@@ -175,7 +175,10 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
       </StyledTag>
       <StyledTitleContainer>
         <StyledName>
-          <ItemCollectionBadge collection={collection} collectionName={collection_name} /> {name}
+          {collection && collection_name && (
+            <ItemCollectionBadge collection={collection} collectionName={collection_name} />
+          )}
+          {name}
         </StyledName>
         <StyledRarityLabel rarity={rarity}>
           <ContentSmall>{rarity}</ContentSmall>

@@ -32,8 +32,8 @@ export default interface Item {
   cute: number
   def: number
   update_at: number
-  collection: TraitCollection
-  collection_name: string
+  collection?: TraitCollection
+  collection_name?: string
 }
 
 export function traitToItem(trait: Trait): Item {
