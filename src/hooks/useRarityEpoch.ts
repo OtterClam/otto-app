@@ -29,7 +29,7 @@ export default function useRarityEpoch() {
     (currentEpoch >= 4 ? EPOCH_4_EXTEND : 0)
   const hasPrevEpoch = (epoch === -1 || epoch > 0) && latestEpoch > 0
   const hasNextEpoch = epoch !== -1
-  const totalOttoSupply = epoch === -1 ? totalSupply - 250 : data?.epoches[0].totalOttos ?? 0
+  const totalOttoSupply = epoch === -1 ? totalSupply - 250 : (data?.epoches[0].totalOttos ?? 0) - 250
 
   useEffect(() => {
     const interval = setInterval(() => {
