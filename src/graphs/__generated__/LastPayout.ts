@@ -20,5 +20,5 @@ export interface LastPayout {
 }
 
 export interface LastPayoutVariables {
-  address: any;
+  address: string;
 }
