@@ -1,10 +1,9 @@
-const pkg = require('./package.json')
 const { DefinePlugin, Compilation } = require('webpack')
-const { i18n } = require('./next-i18next.config')
 const withPWA = require('next-pwa')
+const pkg = require('./package.json')
+const { i18n } = require('./next-i18next.config')
 const { AssetsManifestPlugin } = require('./webpack/assets-manifest')
 const withTM = require('next-transpile-modules')(['@usedapp/core'])
-
 
 module.exports = withPWA(
   withTM({
@@ -19,9 +18,7 @@ module.exports = withPWA(
           VERSION: pkg.version,
         })
       )
-      config.plugins.push(
-        new AssetsManifestPlugin()
-      )
+      config.plugins.push(new AssetsManifestPlugin())
       return config
     },
     i18n,

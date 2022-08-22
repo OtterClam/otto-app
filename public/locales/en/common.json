@@ -37,6 +37,7 @@
   "dice_banner": {
     "badge": "Special Offer",
     "button": "Give It a Try",
+    "button_season_end": "S1 End",
     "description": "The Dice of Destiny gives a chance to temporarily boost your BRS for the current epoch in Rarity Competition, but there’s a possibility that your BRS score will be lowered.",
     "times": "The Dice of Destiny was rolled <strong>x{{ times }}</strong>",
     "effects_blessed": "Fate has blessed this Otto with BRS <strong>{{ brs }}</strong>",
@@ -551,16 +552,16 @@
       "rewardsTooltip": "Reward Rate is the daily percentage gain for staking in either pool.\nAnnual Percentage Rate (APR) is the daily reward rate multiplied over 365 days, the effective payout for Clam Pond.\nAnnual Percentage Yield (APY) is the yearly return accounting for the effect of daily auto-compounding in the Clam Pond.",
       "today": "Today",
       "treasuryMarketValue": "Market Value of Treasury Assets",
-      "treasuryRevenue": "Treasury Revenue",
-      "treasuryRevenueTooltip": "Daily income harvested from treasury investments. This does not reflect changes in the market value of treasury assets, only new liquid tokens entering the treasury.",
+      "treasuryRevenue": "Protocol Revenue",
+      "treasuryRevenueTooltip": "Daily income harvested from treasury investments/Ottopia. This does not reflect changes in the market value of treasury assets, only new liquid tokens entering the treasury.",
       "clamCirculatingSupply": "CLAM Circulating Supply",
       "clamCirculatingSupplyTooltip": "The amount of CLAM in circulation. The difference between the circulating and total supply is the amount of CLAM held by the DAO wallet and Ottopia reward pool.",
       "burned": "Burned CLAM",
       "burnedTooltip": "Amount of CLAM permanently burned and removed from the supply. USD value is calculated from price at the time of burning. Percentage shown is the portion of the total CLAM supply burned.",
       "distributed": "Rewards Distributed",
       "distributedTooltip": "Total USD value of rewards paid to CLAM stakers since launch. The APR is the annual percentage rate of rewards paid to CLAM stakers.",
-      "averageApy": "Average APY",
-      "averageApyStartDate": "from {{ date }}",
+      "averageApr": "Average APR",
+      "averageAprStartDate": "from {{ date }}",
       "marketcap": "CLAM Market Cap",
       "marketcapTooltip": "The circulating supply of CLAM tokens multiplied by the market price.",
       "stakedChartHeader": "Staked",
@@ -680,5 +681,26 @@
     "treasury": "Treasury",
     "ottos": "My Ottos",
     "missions": "Missions"
+  },
+  "foundry": {
+    "title": "Foundry",
+    "dialog": {
+      "title": "Welcome to the Foundry!",
+      "content": "Welcome to the Foundry, where you can re-forge several items to combine into new items, and also have the opportunity to get new items with higher rarity or attributes!"
+    },
+    "result": {
+      "title": "You’ll Get:"
+    },
+    "materials": {
+      "title": "Required Items:"
+    },
+    "forgeButton": "Forge",
+    "forgeButton_insufficient": "Forge (Insufficient Items)",
+    "forgeAvailableTime": "Fusion available: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
+    "comingSoon": "Coming soon...",
+    "approve": "Approve",
+    "forge": {
+      "processing": "Forging..."
+    }
   }
 }

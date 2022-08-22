@@ -543,8 +543,8 @@
       "chartHeaderLabel": "總計",
       "today": "今日",
       "treasuryMarketValue": "國庫資產市值",
-      "treasuryRevenue": "國庫營收",
-      "treasuryRevenueTooltip": "國庫投資的每日營收。這不會呈現國庫資產的市場價格變化，只會考慮提領收益時的市價。",
+      "treasuryRevenue": "協議營收",
+      "treasuryRevenueTooltip": "國庫投資/Ottopia的每日營收。這不會呈現國庫資產的市場價格變化，只會考慮提領收益時的市價。",
       "clamCirculatingSupply": "CLAM 流通量",
       "clamCirculatingSupplyTooltip": "CLAM 流通量，和總量的差額為在 DAO 和 Ottopia 獎勵池的 CLAM。",
       "burned": "燒掉的 CLAM",
@@ -665,5 +665,26 @@
     "treasury": "國庫",
     "ottos": "我的阿獺",
     "missions": "我的任務"
+  },
+  "foundry": {
+    "title": "Foundry",
+    "dialog": {
+      "title": "Welcome to the Foundry!",
+      "content": "Welcome to the Foundry, where you can re-forge several items to combine into new items, and also have the opportunity to get new items with higher rarity or attributes!"
+    },
+    "result": {
+      "title": "You’ll Get:"
+    },
+    "materials": {
+      "title": "Required Items:"
+    },
+    "forgeButton": "Forge",
+    "forgeButton_insufficient": "Forge (Insufficient Items)",
+    "forgeAvailableTime": "Fusion available: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
+    "comingSoon": "Coming soon...",
+    "approve": "Approve",
+    "forge": {
+      "processing": "Forging..."
+    }
   }
 }

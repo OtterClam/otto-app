@@ -78,9 +78,9 @@ export default function GameMenu({ className }: { className?: string }) {
   return (
     <StyledContainer className={className}>
       <StyledItems>
-        {items.map(item =>
+        {items.map((item, i) =>
           item.key === 'missions' ? (
-            <StyledItem>
+            <StyledItem key={i}>
               <ImageButton
                 disabled
                 states={itemStates}
@@ -91,7 +91,7 @@ export default function GameMenu({ className }: { className?: string }) {
               </ImageButton>
             </StyledItem>
           ) : (
-            <StyledItem>
+            <StyledItem key={i}>
               <Link href={item.link} key={item.key} passHref>
                 <ImageButton
                   as="a"

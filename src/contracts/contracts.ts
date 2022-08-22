@@ -5,7 +5,9 @@ import { useMemo } from 'react'
 import {
   ClamCirculatingSupplyAbi,
   ClamPondAbi,
+  ERC1155Abi,
   ERC20Abi,
+  FoundryAbi,
   IOttoItemFactoryAbi,
   OtterWrappedUsdPlusAbi,
   OttoAbi,
@@ -27,6 +29,8 @@ import {
   OttoHellDiceRoller,
   PearlBank,
 } from './__generated__'
+import { ERC1155 } from './__generated__/ERC1155'
+import { Foundry } from './__generated__/Foundry'
 import { IOttoItemFactory } from './__generated__/IOttoItemFactory'
 import { Otto } from './__generated__/Otto'
 import { OttoItem } from './__generated__/OttoItem'
@@ -118,4 +122,15 @@ export function useOcUsdPlus() {
   const { OC_USD_PLUS } = useContractAddresses()
   const { library } = useEthers()
   return new Contract(OC_USD_PLUS, OtterWrappedUsdPlusAbi, library) as OtterWrappedUsdPlusToken
+}
+
+export function useFoundry() {
+  const { FOUNDRY } = useContractAddresses()
+  const { library } = useEthers()
+  return new Contract(FOUNDRY, FoundryAbi, library) as Foundry
+}
+
+export function useERC1155(address: string) {
+  const { library } = useEthers()
+  return new Contract(address, ERC1155Abi, library) as ERC1155
 }
