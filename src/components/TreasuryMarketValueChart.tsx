@@ -103,6 +103,11 @@ const marketValues = [
     stopColor: ['#F4D258', 'rgba(244, 210, 88, 0.5)'],
   },
   {
+    label: 'stMATIC/USD+ (Penrose)',
+    dataKey: 'treasuryDystopiaPairUsdplusStMaticMarketValue',
+    stopColor: ['#F4D258', 'rgba(131, 71, 229, 0.5)'],
+  },
+  {
     label: 'Qi/TetuQi (Penrose)',
     dataKey: 'treasuryDystopiaPairQiTetuQiMarketValue',
     stopColor: ['#CC48E1', 'rgba(244, 210, 88, 0.5)'],
