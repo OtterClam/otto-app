@@ -18,9 +18,9 @@ export const TWITTER_LINK = 'https://twitter.com/otterclam'
 
 export const YOUTUB_LINK = 'https://www.youtube.com/channel/UCDDMx916FeqHmCilGr5WuQw/video'
 
-export const MEDIUM_LINK = 'https://medium.com/@ottercla'
+export const MEDIUM_LINK = 'https://medium.com/@otterclam'
 
-export const GITHUB_LINK = 'https://github.com/ottercla'
+export const GITHUB_LINK = 'https://github.com/otterclam'
 
 export const TELEGRAM_LINK = 'https://t.me/otterclam_official'
 
