@@ -88,7 +88,7 @@ export const GET_TREASURY_REVENUE = gql`
 `
 
 export const GET_LAST_PAYOUT_TO_ADDRESS = gql`
-  query LastPayout($address: Bytes!) {
+  query LastPayout($address: ID!) {
     stakedBalances(where: { id: $address }) {
       id
       clamPondLastPayout

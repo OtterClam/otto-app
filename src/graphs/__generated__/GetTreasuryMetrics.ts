@@ -41,6 +41,7 @@ export interface GetTreasuryMetrics_protocolMetrics {
   treasuryDystopiaPairQiTetuQiMarketValue: any;
   treasuryDystopiaPairUsdcTusdMarketValue: any;
   treasuryDystopiaPairUsdplusUsdcMarketValue: any;
+  treasuryDystopiaPairUsdplusStMaticMarketValue: any;
 }
 
 export interface GetTreasuryMetrics {

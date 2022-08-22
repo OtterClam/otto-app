@@ -7974,6 +7974,22 @@
             "deprecationReason": null
           },
           {
+            "name": "treasuryDystopiaPairUsdplusStMaticMarketValue",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "BigDecimal",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "treasuryDystMarketValue",
             "description": null,
             "args": [],
@@ -11139,6 +11155,118 @@
             "deprecationReason": null
           },
           {
+            "name": "treasuryDystopiaPairUsdplusStMaticMarketValue",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "BigDecimal",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDystopiaPairUsdplusStMaticMarketValue_not",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "BigDecimal",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDystopiaPairUsdplusStMaticMarketValue_gt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "BigDecimal",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDystopiaPairUsdplusStMaticMarketValue_lt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "BigDecimal",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDystopiaPairUsdplusStMaticMarketValue_gte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "BigDecimal",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDystopiaPairUsdplusStMaticMarketValue_lte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "BigDecimal",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDystopiaPairUsdplusStMaticMarketValue_in",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "BigDecimal",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDystopiaPairUsdplusStMaticMarketValue_not_in",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "BigDecimal",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "treasuryDystMarketValue",
             "description": null,
             "type": {
@@ -12218,6 +12346,12 @@
           },
           {
             "name": "treasuryDystopiaPairUsdplusUsdcMarketValue",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "treasuryDystopiaPairUsdplusStMaticMarketValue",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
