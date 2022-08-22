@@ -10,6 +10,9 @@ export interface ForgeFormula {
   description: string
   startTime: Date
   endTime: Date
+  bgImage: string
+  leftImage: string
+  rightImage: string
 }
 
 export interface RawForgeFormula {
@@ -21,6 +24,9 @@ export interface RawForgeFormula {
   description: string
   start_time: Date
   end_time: Date
+  bg_img: string
+  left_img: string
+  right_img: string
 }
 
 export const rawForgeToForge = (raw: RawForgeFormula): ForgeFormula => {
@@ -33,5 +39,8 @@ export const rawForgeToForge = (raw: RawForgeFormula): ForgeFormula => {
     description: raw.description,
     startTime: new Date(raw.start_time),
     endTime: new Date(raw.end_time),
+    bgImage: raw.bg_img,
+    leftImage: raw.left_img,
+    rightImage: raw.right_img,
   }
 }
