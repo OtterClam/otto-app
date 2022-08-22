@@ -18,16 +18,20 @@ import { ContentExtraSmall, ContentMedium, Display3, Headline, Note } from 'styl
 import ForgePopup from './ForgePopup'
 import { MyItemAmounts } from './type'
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ leftImage: string; rightImage: string }>`
+  padding-top: 50px;
   color: ${({ theme }) => theme.colors.white};
   display: flex;
   flex-direction: column;
   gap: 20px;
   align-items: center;
+  background: url(${({ leftImage }) => leftImage}) left top / 20% auto no-repeat,
+    url(${({ leftImage }) => leftImage}) right top / 20% auto no-repeat;
 `
 
 const StyledTitle = styled(Display3)`
   text-align: center;
+  margin: 0 20% 0 20%;
 `
 
 const StyledDesc = styled(ContentMedium)`
@@ -45,7 +49,7 @@ const StyledDetails = styled.div`
   }
 `
 
-const StyledResult = styled(TreasurySection).attrs({ showRope: false })`
+const StyledResult = styled(TreasurySection).attrs({ showRope: false })<{ bgImage: string }>`
   flex: 0 300px;
   display: flex;
   gap: 10px;
@@ -54,7 +58,8 @@ const StyledResult = styled(TreasurySection).attrs({ showRope: false })`
   justify-content: center;
   max-width: 300px;
   min-width: 300px;
-  background: ${({ theme }) => theme.colors.darkGray400};
+  background: center / cover url(${({ bgImage }) => bgImage});
+  background-color: ${({ theme }) => theme.colors.darkGray400};
   min-height: 300px;
 
   @media ${({ theme }) => theme.breakpoints.tablet} {
@@ -190,11 +195,11 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
   }, [forgeState, resetForge])
 
   return (
-    <StyledContainer>
+    <StyledContainer leftImage={formula.leftImage} rightImage={formula.rightImage}>
       <StyledTitle>{formula.title}</StyledTitle>
       <StyledDesc>{formula.description}</StyledDesc>
       <StyledDetails>
-        <StyledResult>
+        <StyledResult bgImage={formula.bgImage}>
           <Headline>{t('result.title')}</Headline>
           <StyledResultItemPreview item={formula.result} />
           <ContentMedium>{formula.result.name}</ContentMedium>
