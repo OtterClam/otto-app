@@ -89,7 +89,7 @@ interface Props {
 }
 
 export default function UnstakeTab({ className }: Props) {
-  const { CLAM } = useContractAddresses()
+  const { CLAM, CLAM_POND } = useContractAddresses()
   const wallet = useWallet()
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const tokens = usePondTokens()
@@ -112,6 +112,7 @@ export default function UnstakeTab({ className }: Props) {
   useEffect(() => {
     if (state.state === 'Success') {
       wallet?.setBalance(CLAM, balance => balance.add(receiveAmount))
+      wallet?.setBalance(CLAM_POND, balance => balance.sub(receiveAmount))
     }
   }, [state.state])
 

@@ -67,7 +67,7 @@ interface Props {
 }
 
 export default function StakeTab({ className }: Props) {
-  const { CLAM } = useContractAddresses()
+  const { CLAM, CLAM_POND } = useContractAddresses()
   const wallet = useWallet()
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const tokens = usePondTokens()
@@ -88,6 +88,7 @@ export default function StakeTab({ className }: Props) {
   useEffect(() => {
     if (stakeState.state === 'Success') {
       wallet?.setBalance(CLAM, balance => balance.sub(utils.parseUnits(stakeAmount, 9)))
+      wallet?.setBalance(CLAM_POND, balance => balance.add(utils.parseUnits(stakeAmount, 9)))
     }
   }, [stakeState.state])
 

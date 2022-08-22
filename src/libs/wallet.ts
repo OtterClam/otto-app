@@ -1,6 +1,6 @@
 import { Erc20__factory } from 'contracts/__generated__'
 import { Erc20, TransferEventFilter } from 'contracts/__generated__/Erc20'
-import { BigNumber, providers } from 'ethers'
+import { BigNumber, ethers, providers } from 'ethers'
 import debounce from 'lodash/debounce'
 import EventEmitter from 'events'
 
@@ -77,7 +77,7 @@ export default class Wallet extends EventEmitter {
     this.fireBalanceUpdatedEvent(tokenAddress, info.balance)
   }
 
-  private async handleTokenTransferEvent(tokenAddress: string) {
+  handleTokenTransferEvent = async (tokenAddress: string) => {
     const info = this.tokenInfo.get(tokenAddress)
     if (info) {
       info.balance = await info.contract.balanceOf(this.accountAddress)

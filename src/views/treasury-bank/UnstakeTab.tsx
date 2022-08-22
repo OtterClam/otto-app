@@ -87,7 +87,7 @@ interface Props {
 }
 
 export default function UnstakeTab({ className }: Props) {
-  const { CLAM } = useContractAddresses()
+  const { CLAM, PEARL_BANK } = useContractAddresses()
   const { t } = useTranslation('', { keyPrefix: 'bank' })
   const [clamAmount, setClamAmount] = useState('')
   const wallet = useWallet()
@@ -108,6 +108,7 @@ export default function UnstakeTab({ className }: Props) {
   useEffect(() => {
     if (state.state === 'Success') {
       wallet?.setBalance(CLAM, balance => balance.add(receiveAmount))
+      wallet?.setBalance(PEARL_BANK, balance => balance.sub(receiveAmount))
     }
   }, [state.state])
 
