@@ -89,11 +89,12 @@ interface Props {
 }
 
 export default function UnstakeTab({ className }: Props) {
-  const { CLAM, CLAM_POND } = useContractAddresses()
+  const { CLAM, CLAM_POND, PEARL_BANK } = useContractAddresses()
   const wallet = useWallet()
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const tokens = usePondTokens()
   const [token, setToken] = useState<ClamPondToken>('CLAM')
+  const tokenAddress = token === 'CLAM' ? CLAM : PEARL_BANK
   const [unstakeAmount, setUnstakeAmount] = useState('')
   const { balance, timestamp: lastStakeTimestamp } = useClamPondDepositInfo()
   const { unstakeState: state, unstake, resetState } = useClamPondWithdraw(token)
@@ -111,7 +112,7 @@ export default function UnstakeTab({ className }: Props) {
 
   useEffect(() => {
     if (state.state === 'Success') {
-      wallet?.setBalance(CLAM, balance => balance.add(receiveAmount))
+      wallet?.setBalance(tokenAddress, balance => balance.add(receiveAmount))
       wallet?.setBalance(CLAM_POND, balance => balance.sub(receiveAmount))
     }
   }, [state.state])

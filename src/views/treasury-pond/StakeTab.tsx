@@ -67,12 +67,13 @@ interface Props {
 }
 
 export default function StakeTab({ className }: Props) {
-  const { CLAM, CLAM_POND } = useContractAddresses()
+  const { CLAM, CLAM_POND, PEARL_BANK } = useContractAddresses()
   const wallet = useWallet()
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const tokens = usePondTokens()
   const [stakeAmount, setStakeAmount] = useState('')
   const [token, setToken] = useState<ClamPondToken>('CLAM')
+  const tokenAddress = token === 'CLAM' ? CLAM : PEARL_BANK
   const { stakeState, stake, resetStake } = useClamPondDeposit(token)
   const { base: feeBase, feeRate, duration } = useClamPondFee()
   const { balance } = tokens[token]
@@ -88,7 +89,7 @@ export default function StakeTab({ className }: Props) {
   useEffect(() => {
     if (stakeState.state === 'Success') {
       wallet?.setBalance(CLAM, balance => balance.sub(utils.parseUnits(stakeAmount, 9)))
-      wallet?.setBalance(CLAM_POND, balance => balance.add(utils.parseUnits(stakeAmount, 9)))
+      wallet?.setBalance(tokenAddress, balance => balance.add(utils.parseUnits(stakeAmount, 9)))
     }
   }, [stakeState.state])
 
