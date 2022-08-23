@@ -1,19 +1,18 @@
-import { useEthers, useTokenBalance } from '@usedapp/core'
 import ClamPondIcon from 'assets/icons/icon_48_clam-pond.png'
 import PearlBankIcon from 'assets/icons/icon_48_pearl-bank.png'
 import CLAMPlusIcon from 'assets/tokens/CLAM+.svg'
 import CLAMIcon from 'assets/tokens/CLAM.svg'
 import PEARLIcon from 'assets/tokens/PEARL.svg'
 import BorderContainer from 'components/BorderContainer'
-import { BigNumber, constants } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useTranslation } from 'next-i18next'
-import { RefObject, useEffect, useRef } from 'react'
+import { RefObject, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { hideWalletPopup, selectShowWalletPopup } from 'store/uiSlice'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
+import useTokenBalance from 'hooks/useTokenBalance'
 import { formatClamEthers } from 'utils/currency'
 import BalanceCell from './BalanceCell'
 import Swap from './Swap'
@@ -91,12 +90,12 @@ export default function WalletPopup({ alignRef, className }: Props) {
   const show = useSelector(selectShowWalletPopup)
   const { t } = useTranslation('', { keyPrefix: 'wallet_popup' })
   const { CLAM, PEARL_BANK, CLAM_POND } = useContractAddresses()
-  const { account } = useEthers()
-  const clamBalance = useTokenBalance(CLAM, account) || constants.Zero
-  const pearlBalance = useTokenBalance(PEARL_BANK, account) || constants.Zero
-  const clamPlusBalance = useTokenBalance(CLAM_POND, account) || constants.Zero
+  const clamBalance = useTokenBalance(CLAM)
+  const pearlBalance = useTokenBalance(PEARL_BANK)
+  const clamPlusBalance = useTokenBalance(CLAM_POND)
   const dispatch = useDispatch()
   const onClose = () => dispatch(hideWalletPopup())
+
   useEffect(() => {
     if (show) {
       document.body.style.overflow = 'hidden'

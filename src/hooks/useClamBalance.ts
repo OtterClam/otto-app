@@ -1,8 +1,7 @@
-import { useEthers, useTokenBalance } from '@usedapp/core'
+import useTokenBalance from 'hooks/useTokenBalance'
 import useContractAddresses from './useContractAddresses'
 
 export default function useClamBalance() {
-  const { account, chainId } = useEthers()
   const { CLAM } = useContractAddresses()
-  return useTokenBalance(CLAM, account, { chainId })
+  return useTokenBalance(CLAM)
 }
