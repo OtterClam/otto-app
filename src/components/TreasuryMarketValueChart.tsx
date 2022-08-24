@@ -85,7 +85,12 @@ const marketValues = [
   {
     label: 'stMATIC/USD+ (Penrose)',
     dataKey: 'treasuryDystopiaPairUsdplusStMaticMarketValue',
-    stopColor: ['rgba(131, 71, 229, 0.5)', 'rgba(131, 71, 229, 0.5)'],
+    stopColor: ['rgba(131, 71, 229, 0.8)', 'rgba(131, 71, 229, 0.5)'],
+  },
+  {
+    label: 'stMATIC/MAI (QiDAO)',
+    dataKey: 'treasuryMaiStMaticMarketValue',
+    stopColor: ['rgba(131, 71, 229, 0.8)', 'rgba(131, 71, 229, 0.5)'],
   },
   {
     label: 'Qi',
