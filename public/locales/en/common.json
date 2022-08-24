@@ -686,7 +686,7 @@
     "title": "Foundry",
     "dialog": {
       "title": "Welcome to the Foundry!",
-      "content": "Welcome to the Foundry, where you can re-forge several items to combine into new items, and also have the opportunity to get new items with higher rarity or attributes!"
+      "content": "Welcome to the Foundry, where you can melt several items to create a new item with the possibility of getting a higher rarity score or better attributes!"
     },
     "result": {
       "title": "You’ll Get:"
@@ -696,7 +696,7 @@
     },
     "forgeButton": "Forge",
     "forgeButton_insufficient": "Forge (Insufficient Items)",
-    "forgeAvailableTime": "Fusion available: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
+    "forgeAvailableTime": "Event duration: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
     "comingSoon": "Coming soon...",
     "approve": "Approve",
     "forge": {
