@@ -163,16 +163,11 @@ const Sections: Record<SectionKey, Section> = {
   },
 }
 
-const SortedByOptions = [
-  'latest_received',
-  'rarity_desc',
-  'rarity_asc',
-  'def_desc',
-  'cute_desc',
-  'luck_desc',
-  'dex_desc',
-]
-const Filters = ['none', 'not_equipped', 'equipped', 'otto_specific', 'lottie_specific']
+const SortedByOptions = ['time_received', 'rarity', 'str', 'dex', 'luck', 'cute', 'def', 'int', 'con']
+
+const SortOrderOptions = ['desc', 'asc']
+
+const Filters = ['none', 'not_equipped', 'equipped', 'otto_can_equip', 'lottie_can_equip']
 
 export default function MyItemsPage() {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
@@ -183,6 +178,11 @@ export default function MyItemsPage() {
   const [redeemingCoupon, setRedeemingCoupon] = useState<Item | null>(null)
   const sortedByOptions = useMemo(() => SortedByOptions.map(key => ({ key, text: t(`sorted_by_options.${key}`) })), [t])
   const [sortedBy, setSortedBy] = useState(sortedByOptions[0])
+  const sortOrderOptions = useMemo(
+    () => SortOrderOptions.map(key => ({ key, text: t(`sort_order_options.${key}`) })),
+    [t]
+  )
+  const [sortOrder, setSortOrder] = useState(sortOrderOptions[0])
   const filters = useMemo(() => Filters.map(key => ({ key, text: t(`filters.${key}`) })), [t])
   const [filter, setFilter] = useState(filters[0])
   const { items, loading, refetch } = useMyItems()
@@ -195,38 +195,45 @@ export default function MyItemsPage() {
             result = result && !i.equipped
           } else if (filter.key === 'equipped') {
             result = result && i.equipped
-          } else if (filter.key === 'otto_specific') {
-            result = result && i.equippable_gender === 'Male'
-          } else if (filter.key === 'lottie_specific') {
-            result = result && i.equippable_gender === 'Female'
+          } else if (filter.key === 'otto_can_equip') {
+            result = result && (i.equippable_gender === 'Male' || i.equippable_gender === 'Both')
+          } else if (filter.key === 'lottie_can_equip') {
+            result = result && (i.equippable_gender === 'Female' || i.equippable_gender === 'Both')
           }
           return result
         })
         .sort((a, b) => {
-          if (sortedBy.key === 'latest_received') {
-            return b.update_at - a.update_at
+          const multiplier = sortOrder.key === 'desc' ? 1 : -1
+          if (sortedBy.key === 'time_received') {
+            return (b.update_at - a.update_at) * multiplier
           }
-          if (sortedBy.key === 'rarity_desc') {
-            return b.total_rarity_score - a.total_rarity_score
+          if (sortedBy.key === 'rarity') {
+            return (b.total_rarity_score - a.total_rarity_score) * multiplier
           }
-          if (sortedBy.key === 'rarity_asc') {
-            return a.total_rarity_score - b.total_rarity_score
+          if (sortedBy.key === 'luck') {
+            return (b.luck - a.luck) * multiplier
           }
-          if (sortedBy.key === 'luck_desc') {
-            return b.luck - a.luck
+          if (sortedBy.key === 'dex') {
+            return (b.dex - a.dex) * multiplier
           }
-          if (sortedBy.key === 'dex_desc') {
-            return b.dex - a.dex
+          if (sortedBy.key === 'cute') {
+            return (b.cute - a.cute) * multiplier
           }
-          if (sortedBy.key === 'cute_desc') {
-            return b.cute - a.cute
+          if (sortedBy.key === 'def') {
+            return (b.def - a.def) * multiplier
           }
-          if (sortedBy.key === 'def_desc') {
-            return b.def - a.def
+          if (sortedBy.key === 'str') {
+            return (b.str - a.str) * multiplier
+          }
+          if (sortedBy.key === 'int') {
+            return (b.int - a.int) * multiplier
+          }
+          if (sortedBy.key === 'con') {
+            return (b.con - a.con) * multiplier
           }
           return 0
         }),
-    [items, selectedSection, sortedBy, filter]
+    [items, selectedSection, sortedBy, sortOrder, filter]
   )
   const onUse = () => {
     if (selectedItem) {
@@ -263,6 +270,14 @@ export default function MyItemsPage() {
                 selected={sortedBy.text}
                 options={sortedByOptions.map(({ text }) => text)}
                 onSelect={text => setSortedBy(sortedByOptions.find(o => o.text === text) || sortedByOptions[0])}
+              />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <p>{t('sort_order')}</p>
+              <Dropdown
+                selected={sortOrder.text}
+                options={sortOrderOptions.map(({ text }) => text)}
+                onSelect={text => setSortOrder(sortOrderOptions.find(o => o.text === text) || sortOrderOptions[0])}
               />
             </StyledMenuItem>
             <StyledMenuItem>
