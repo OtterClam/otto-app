@@ -34,6 +34,7 @@ export interface GetTreasuryMetrics_protocolMetrics {
   treasuryMaiUsdcMarketValue: any;
   treasuryMaiUsdcQiInvestmentValue: any;
   treasuryQiWmaticMarketValue: any;
+  treasuryMaiStMaticMarketValue: any;
   treasuryQiWmaticQiInvestmentMarketValue: any;
   treasuryDystopiaPairUSDPLUSClamMarketValue: any;
   treasuryDystopiaPairMaiClamMarketValue: any;

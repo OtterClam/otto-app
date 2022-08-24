@@ -54,6 +54,7 @@ export const GET_TREASURY_METRICS = gql`
       treasuryMaiUsdcMarketValue
       treasuryMaiUsdcQiInvestmentValue
       treasuryQiWmaticMarketValue
+      treasuryMaiStMaticMarketValue
       treasuryQiWmaticQiInvestmentMarketValue
       treasuryDystopiaPairUSDPLUSClamMarketValue
       treasuryDystopiaPairMaiClamMarketValue
@@ -81,6 +82,8 @@ export const GET_TREASURY_REVENUE = gql`
       penDystMarketValue
       ottopiaClamAmount
       ottopiaMarketValue
+      ldoClamAmount
+      ldoMarketValue
       totalRevenueClamAmount
       totalRevenueMarketValue
     }

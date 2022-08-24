@@ -25,16 +25,18 @@ const dataKeysSettings = {
   [Currency.CLAM]: [
     { dataKey: 'qiClamAmount', colors: ['rgba(244, 210, 88, 1)', 'rgba(244, 210, 88, 0.5)'], label: 'Qi' },
     { dataKey: 'ottopiaClamAmount', colors: ['rgba(255, 172, 161, 1)', 'rgba(255, 172, 161, 0.5)'], label: 'CLAM' },
-    { dataKey: 'dystClamAmount', colors: ['rgba(8, 95, 142, 0.6)', 'rgba(8, 95, 142, 0.3)'], label: 'DYST' },
+    { dataKey: 'ldoClamAmount', colors: ['rgba(83, 211, 224, 1)', 'rgba(83, 200, 200, 0.5)'], label: 'Lido' },
+    { dataKey: 'dystClamAmount', colors: ['rgba(8, 95, 142, 1)', 'rgba(8, 95, 142, 0.5)'], label: 'DYST' },
     { dataKey: 'penDystClamAmount', colors: ['rgba(108, 111, 227, 1)', 'rgba(8, 95, 142, 0.5)'], label: 'penDYST' },
-    { dataKey: 'penClamAmount', colors: ['rgba(128, 131, 235, 0.8)', 'rgba(252, 236, 255, 0.5)'], label: 'PEN' },
+    { dataKey: 'penClamAmount', colors: ['rgba(128, 131, 235, 1)', 'rgba(252, 236, 255, 0.5)'], label: 'PEN' },
   ],
   [Currency.USD]: [
     { dataKey: 'qiMarketValue', colors: ['rgba(244, 210, 88, 1)', 'rgba(244, 210, 88, 0.5)'], label: 'Qi' },
     { dataKey: 'ottopiaMarketValue', colors: ['rgba(255, 172, 161, 1)', 'rgba(255, 172, 161, 0.5)'], label: 'CLAM' },
-    { dataKey: 'dystMarketValue', colors: ['rgba(8, 95, 142, 0.6)', 'rgba(8, 95, 142, 0.3)'], label: 'DYST' },
+    { dataKey: 'ldoMarketValue', colors: ['rgba(83, 200, 220, 1)', 'rgba(83, 211, 224, 0.5)'], label: 'Lido' },
+    { dataKey: 'dystMarketValue', colors: ['rgba(8, 95, 142, 1)', 'rgba(8, 95, 142, 0.5)'], label: 'DYST' },
     { dataKey: 'penDystMarketValue', colors: ['rgba(108, 111, 227, 1)', 'rgba(8, 95, 142, 0.5)'], label: 'penDYST' },
-    { dataKey: 'penMarketValue', colors: ['rgba(128, 131, 235, 0.8)', 'rgba(252, 236, 255, 0.5)'], label: 'PEN' },
+    { dataKey: 'penMarketValue', colors: ['rgba(128, 131, 235, 1)', 'rgba(252, 236, 255, 0.5)'], label: 'PEN' },
   ],
 }
 
