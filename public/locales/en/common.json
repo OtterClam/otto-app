@@ -292,12 +292,12 @@
       "rarity": "Rarity",
       "rarity_desc": "Rarity",
       "luck": "Luck",
-      "dex": "Dex",
+      "dex": "Dexterity",
       "cute": "Cute",
-      "def": "Def",
-      "str": "Str",
-      "int": "Int",
-      "con": "Con"
+      "def": "Defense",
+      "str": "Strength",
+      "int": "Intelligence",
+      "con": "Constitution"
     },
     "sort_order": "Order",
     "sort_order_options": {
