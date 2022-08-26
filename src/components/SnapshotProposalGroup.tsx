@@ -76,13 +76,18 @@ const StyledActivityFlag = styled.div`
   font-size: 12px;
   line-height: 18px;
 `
+
+const StyledSnapshotProposalPieChart = styled(SnapshotProposalPieChart)`
+  position: relative;
+  top: -20px;
+`
 export interface SnapshotProposalGroupInterface {
   className?: string
   proposals: Proposal[]
   tab: GovernanceTab
 }
 
-//capitalize only the first letter of the string.
+// capitalize only the first letter of the string.
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
@@ -99,7 +104,7 @@ export default function SnapshotProposalGroup({ className, proposals, tab }: Sna
             <StyledTextBody>
               <ReactMarkdown>{proposal.body ?? ''}</ReactMarkdown>
             </StyledTextBody>
-            <SnapshotProposalPieChart proposal={proposal} tab={tab} />
+            <StyledSnapshotProposalPieChart proposal={proposal} tab={tab} />
           </StyledInnerContainer>
           {(proposal.state === 'active' && tab === GovernanceTab.OTTERCLAM) ?? (
             <Button

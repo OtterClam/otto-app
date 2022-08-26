@@ -1,17 +1,17 @@
 import AdBanner from 'components/AdBanner'
 import Image from 'next/image'
+import Arrow from 'views/store/StoreHero/arrow.svg'
 import { GovernanceTab } from 'models/Tabs'
 import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { ContentMedium, Headline } from 'styles/typography'
+import TreasurySection from 'components/TreasurySection'
 import DystopiaPenroseTab from './DystopiaPenroseTab'
 import OtterClamTab from './OtterClamTab'
 import QiDaoTab from './QiDaoTab'
 import Garden from './garden.png'
 import OtterVote from './otter-vote.png'
-import Arrow from 'views/store/StoreHero/arrow.svg'
-import TreasurySection from 'components/TreasurySection'
 
 const StyledContainer = styled.div``
 
@@ -72,9 +72,21 @@ const StyledDialog = styled.div`
     right: -30px;
   }
 `
+const StyledTreasurySection = styled(TreasurySection)`
+  display: inline-flex;
+  > span {
+    display: contents !important;
+  }
+`
 
-const StyledBg = styled.img`
+const StyledBg = styled(Image)`
   width: 100%;
+  box-shadow: 0 0 0 2px #1d2654, inset 0 0 0 2px #1d2654;
+  display: contents;
+
+  span > span > img {
+    display: block !important;
+  }
 `
 
 const StyledOtter = styled(Image)`
@@ -82,7 +94,9 @@ const StyledOtter = styled(Image)`
   top: 20%;
   left: 15%;
   width: 35%;
+  max-height: unset !important;
 `
+
 interface Props {
   className?: string
 }
@@ -92,14 +106,14 @@ export default function GopvernanceTabGroup({ className }: Props) {
   const [tab, setTab] = useState<GovernanceTab>(GovernanceTab.OTTERCLAM)
   return (
     <StyledContainer className={className}>
-      <TreasurySection>
-        <StyledBg src={Garden.src} width={2000} height={500} />
+      <StyledTreasurySection>
+        <StyledBg unoptimized src={Garden.src} width={2000} height={500} objectFit="none" />
         <StyledDialog>
           <h1>Gdssa</h1>
           <p>fds</p>
         </StyledDialog>
         <StyledOtter unoptimized src={OtterVote.src} width={948} height={268} objectFit="contain" />
-      </TreasurySection>
+      </StyledTreasurySection>
 
       <TreasurySection>
         <StyledTabs>

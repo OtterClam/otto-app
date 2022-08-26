@@ -4,6 +4,7 @@ import { GovernanceTab } from 'models/Tabs'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components'
 import { ContentSmall, Headline } from 'styles/typography'
+
 interface Props {
   className?: string
 }

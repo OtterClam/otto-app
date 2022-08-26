@@ -21,6 +21,41 @@ export const GET_OTTERCLAM_PROPOSALS = gql`
   }
 `
 
+export const GET_OTTERCLAM_USER_VOTED_PROPOSALS = gql`
+  query OtterClamUserVotes($address: String!) {
+    votes(
+      first: 10
+      where: { space_in: ["qidao.eth"], voter_in: [$address] }
+      orderBy: "created"
+      orderDirection: desc
+    ) {
+      choice
+      vp
+      vp_by_strategy
+      proposal {
+        id
+        title
+        body
+        choices
+        start
+        end
+        snapshot
+        state
+        scores
+        votes
+        type
+        space {
+          id
+        }
+        strategies {
+          network
+          params
+        }
+      }
+    }
+  }
+`
+
 // export const GET_DYSTOPIA_PENROSE_PROPOSALS = gql`
 //   query DystopiaPenroseProposals {
 //     proposals(
