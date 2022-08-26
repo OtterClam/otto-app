@@ -29,6 +29,8 @@ const dataKeysSettings = {
     { dataKey: 'dystClamAmount', colors: ['rgba(8, 95, 142, 1)', 'rgba(8, 95, 142, 0.5)'], label: 'DYST' },
     { dataKey: 'penDystClamAmount', colors: ['rgba(108, 111, 227, 1)', 'rgba(8, 95, 142, 0.5)'], label: 'penDYST' },
     { dataKey: 'penClamAmount', colors: ['rgba(128, 131, 235, 1)', 'rgba(252, 236, 255, 0.5)'], label: 'PEN' },
+    { dataKey: 'daiClamAmount', colors: ['rgba(254, 129, 22,0.8)', 'rgba(254, 129, 22,0.5)'], label: 'DAI' },
+    { dataKey: 'usdPlusClamAmount', colors: ['rgba(72, 229, 8, 1)', 'rgba(72, 229, 8, 0.5)'], label: 'USD+' },
   ],
   [Currency.USD]: [
     { dataKey: 'qiMarketValue', colors: ['rgba(244, 210, 88, 1)', 'rgba(244, 210, 88, 0.5)'], label: 'Qi' },
@@ -37,6 +39,8 @@ const dataKeysSettings = {
     { dataKey: 'dystMarketValue', colors: ['rgba(8, 95, 142, 1)', 'rgba(8, 95, 142, 0.5)'], label: 'DYST' },
     { dataKey: 'penDystMarketValue', colors: ['rgba(108, 111, 227, 1)', 'rgba(8, 95, 142, 0.5)'], label: 'penDYST' },
     { dataKey: 'penMarketValue', colors: ['rgba(128, 131, 235, 1)', 'rgba(252, 236, 255, 0.5)'], label: 'PEN' },
+    { dataKey: 'daiMarketValue', colors: ['rgba(254, 129, 22,0.8)', 'rgba(254, 129, 22,0.5)'], label: 'DAI' },
+    { dataKey: 'usdPlusMarketValue', colors: ['rgba(72, 229, 8, 1)', 'rgba(72, 229, 8, 0.5)'], label: 'USD+' },
   ],
 }
 
