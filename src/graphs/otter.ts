@@ -48,6 +48,8 @@ export const GET_TREASURY_METRICS = gql`
       treasuryTetuQiMarketValue
       treasuryQiMarketValue
       treasuryOtterClamQiMarketValue
+      treasuryDaiMarketValue
+      treasuryUsdPlusMarketValue
 
       #treasury LPs
       treasuryClamMaiMarketValue
@@ -84,6 +86,10 @@ export const GET_TREASURY_REVENUE = gql`
       ottopiaMarketValue
       ldoClamAmount
       ldoMarketValue
+      usdPlusClamAmount
+      usdPlusMarketValue
+      daiClamAmount
+      daiMarketValue
       totalRevenueClamAmount
       totalRevenueMarketValue
     }

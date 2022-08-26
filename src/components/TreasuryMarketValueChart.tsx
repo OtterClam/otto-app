@@ -73,6 +73,16 @@ const marketValues = [
     stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
   },
   {
+    label: 'USD+',
+    dataKey: 'treasuryUsdPlusMarketValue',
+    stopColor: ['rgba(72, 229, 8, 1)', 'rgba(72, 229, 8, 0.5)'],
+  },
+  {
+    label: 'DAI (Gains)',
+    dataKey: 'treasuryDaiMarketValue',
+    stopColor: ['rgba(254, 129, 22,0.8)', 'rgba(254, 129, 22,0.5)'],
+  },
+  {
     label: 'TUSD/USDC (Penrose)',
     dataKey: 'treasuryDystopiaPairUsdcTusdMarketValue',
     stopColor: ['rgba(182, 233, 152, 1)', 'rgba(182, 233, 152, 0.5)'],
