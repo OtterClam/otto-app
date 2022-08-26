@@ -24,12 +24,24 @@ export interface Attr {
   value: string | number
 }
 
+export enum TraitRarity {
+  C3 = 'C3',
+  C2 = 'C2',
+  C1 = 'C1',
+  R3 = 'R3',
+  R2 = 'R2',
+  R1 = 'R1',
+  E3 = 'E3',
+  E2 = 'E2',
+  E1 = 'E1',
+}
+
 export interface Trait {
   id: string
   type: string
   name: string
   image: string
-  rarity: string
+  rarity: TraitRarity
   base_rarity_score: number
   relative_rarity_score: number
   total_rarity_score: number

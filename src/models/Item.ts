@@ -1,5 +1,5 @@
 import NonItem from './non-item.jpg'
-import { Trait, TraitCollection } from './Otto'
+import { Trait, TraitCollection, TraitRarity } from './Otto'
 
 export interface ItemStat {
   name: string
@@ -12,7 +12,7 @@ export default interface Item {
   type: string
   wearable: boolean
   image: string
-  rarity: string
+  rarity: TraitRarity
   description: string
   stats: ItemStat[]
   equipped: boolean
@@ -78,7 +78,7 @@ export const EmptyItem: Item = {
   image: NonItem.src,
   type: '',
   wearable: true,
-  rarity: 'C3',
+  rarity: TraitRarity.C3,
   description: '',
   stats: [
     { name: 'STR', value: '0' },

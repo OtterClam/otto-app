@@ -14,6 +14,8 @@ import useServiceWorker from 'hooks/useServiceWorker'
 import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
 import { WalletProvider } from 'contexts/Wallet'
 import { ApiProvider } from 'contexts/Api'
+import AdventurePopup from 'components/AdventurePopup'
+import { OverlayProvider } from 'contexts/Overlay'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 
@@ -75,13 +77,16 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                 <ThemeProvider theme={theme}>
                   <BreakpointsProvider>
                     <MyOttosProvider>
-                      <StyledApp>
-                        <StyledPageContainer>{children}</StyledPageContainer>
-                        <Error />
-                        <WalletSelector />
-                        <SideMenu />
-                        <AssetsLoader />
-                      </StyledApp>
+                      <OverlayProvider>
+                        <StyledApp>
+                          <StyledPageContainer>{children}</StyledPageContainer>
+                          <Error />
+                          <WalletSelector />
+                          <SideMenu />
+                          <AssetsLoader />
+                          <AdventurePopup />
+                        </StyledApp>
+                      </OverlayProvider>
                     </MyOttosProvider>
                   </BreakpointsProvider>
                 </ThemeProvider>

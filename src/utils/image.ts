@@ -1,6 +1,7 @@
 export interface CropImageOptions {
   w?: number
   h?: number
+  q?: number
 }
 
 export const getCroppedImageUrl = (url: string, options: CropImageOptions = {}): string => {

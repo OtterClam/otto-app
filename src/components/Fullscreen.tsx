@@ -1,6 +1,11 @@
 import ReactDOM from 'react-dom'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, RefObject, useRef } from 'react'
 import styled from 'styled-components/macro'
+import useDisableBodyScroll from 'hooks/useDisableBodyScroll'
+import noop from 'lodash/noop'
+import { CSSTransition } from 'react-transition-group'
+import useOnClickOutside from 'hooks/useOnClickOutside'
+import { useOverlay } from 'contexts/Overlay'
 
 const StyledPopup = styled.div`
   position: fixed;
@@ -12,16 +17,30 @@ const StyledPopup = styled.div`
   justify-content: center;
   align-items: center;
   z-index: var(--z-index-popup);
-`
 
-const Background = styled.button`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
+  &.fade-enter {
+    transform-origin: top center;
+    opacity: 0.1;
+    transform: scale(0.8);
+  }
+
+  &.fade-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: transform 0.2s, opacity 0.2s;
+  }
+
+  &.fade-exit {
+    transform-origin: top center;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &.fade-exit-active {
+    opacity: 0.1;
+    transform: scale(0.8);
+    transition: transform 0.2s, opacity 0.2s;
+  }
 `
 
 const Container = styled.div<{ width: string }>`
@@ -44,6 +63,7 @@ const Container = styled.div<{ width: string }>`
 `
 
 const StyledInnerContainer = styled.div<{ background?: string }>`
+  position: relative;
   border-radius: 10px;
   width: 100%;
   height: 100%;
@@ -66,37 +86,42 @@ interface Props {
   background?: string
   width?: string
   children: ReactNode
+  onRequestClose?: () => void
+  bodyClassName?: string
 }
 
-const Fullscreen = ({ show = true, background, width = '80%', children }: Props) => {
-  useEffect(() => {
-    if (show) {
-      document.body.style.overflow = 'hidden'
+const Fullscreen = ({
+  show = true,
+  background,
+  width = '80%',
+  onRequestClose = noop,
+  bodyClassName,
+  children,
+}: Props) => {
+  const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
 
-      return () => {
-        document.body.style.overflow = ''
-      }
-    }
-  }, [show])
+  useDisableBodyScroll(show)
 
-  if (!show) return null
+  useOverlay(show)
 
-  const dom = (
-    <StyledPopup>
-      <Background />
-      <Container width={width}>
-        <StyledInnerContainer background={background}>
-          <Content>{children}</Content>
-        </StyledInnerContainer>
-      </Container>
-    </StyledPopup>
-  )
+  useOnClickOutside(containerRef, onRequestClose)
 
   if (typeof document === 'undefined') {
     return null
   }
 
-  return ReactDOM.createPortal(dom, document.querySelector('#modal-root') ?? document.body)
+  return ReactDOM.createPortal(
+    <CSSTransition unmountOnExit in={show} timeout={200} classNames="fade">
+      <StyledPopup>
+        <Container width={width} ref={containerRef}>
+          <StyledInnerContainer className={bodyClassName} background={background}>
+            <Content>{children}</Content>
+          </StyledInnerContainer>
+        </Container>
+      </StyledPopup>
+    </CSSTransition>,
+    document.querySelector('#modal-root') ?? document.body
+  )
 }
 
 export default Fullscreen

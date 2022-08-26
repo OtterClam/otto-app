@@ -1,3 +1,5 @@
+import { TraitRarity } from 'models/Otto'
+
 export const colors = {
   white: '#fff',
   otterBlack: '#1D2654',
@@ -18,20 +20,29 @@ export const colors = {
   legendary: '#C2FFA5',
   legendaryGradient: 'linear-gradient(180deg, #C2FFA5 0%, #FCD0FD 53.12%, #AAB3FF 100%);',
   rarity: {
-    C3: '#7DEA88',
-    C2: '#ADF989',
-    C1: '#FDFF93',
-    R3: '#FFC978',
-    R2: '#FFB179',
-    R1: '#FF9587',
-    E3: '#B0E3FF',
-    E2: '#99B6FF',
-    E1: '#B3A4FF',
+    [TraitRarity.C3]: '#7DEA88',
+    [TraitRarity.C2]: '#ADF989',
+    [TraitRarity.C1]: '#FDFF93',
+    [TraitRarity.R3]: '#FFC978',
+    [TraitRarity.R2]: '#FFB179',
+    [TraitRarity.R1]: '#FF9587',
+    [TraitRarity.E3]: '#B0E3FF',
+    [TraitRarity.E2]: '#99B6FF',
+    [TraitRarity.E1]: '#B3A4FF',
   },
   darkBrown: '#5C3317',
   superDarkBrown: '#4F2A11',
   lightBrown: '#B07C47',
   skin: '#E2CDB7',
+  attr: {
+    STR: '#FF9587',
+    DEF: '#FFB179',
+    DEX: '#B0E3FF',
+    INT: '#B3A4FF',
+    LUK: '#7DEA88',
+    CON: '#FDFF93',
+    CUTE: '#99B6FF',
+  } as { [k: string]: string },
 }
 
 export type Colors = typeof colors
