@@ -40,8 +40,8 @@ const StyledContainer = styled.div<{ padding: number }>`
 
 const StyledFlag = styled.span<{ scale: number }>`
   position: absolute;
-  top: 12.8%;
-  left: 53.44%;
+  top: 16.8%;
+  left: 51.88%;
   width: ${({ scale }) => (flagImage.width / 2 / 3) * scale}px;
   height: ${({ scale }) => (flagImage.height / 2) * scale}px;
   background: left center / ${({ scale }) => (flagImage.width / 2) * scale}px
