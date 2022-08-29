@@ -67,7 +67,7 @@ const StyledNotifications = styled(Notifications)`
 `
 
 const MobileHomePage = () => {
-  const { isSmallTablet } = useBreakpoints()
+  const { isSmallTablet, isMobile } = useBreakpoints()
 
   return (
     <StyledContainer>
@@ -79,7 +79,7 @@ const MobileHomePage = () => {
         <StyledNotifications />
         <StyledSmallAd />
       </StyledTopLayer>
-      <StyledMap hideCloud={isSmallTablet} />
+      <StyledMap hideCloud={isSmallTablet || isMobile} />
       <SectionRope />
     </StyledContainer>
   )
