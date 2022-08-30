@@ -10,6 +10,7 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall } from 'styles/typography'
+import { FilterIcon, SortedIcon } from 'assets/icons'
 import EmptyStatus from './empty.png'
 import ItemDetails from './use-item/ItemDetails'
 
@@ -82,7 +83,7 @@ const StyledMenuBar = styled.div`
 const StyledMenuItem = styled(ContentSmall).attrs({ as: 'div' })`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
 `
 
 const StyledItemScrollContainer = styled.div`
@@ -265,15 +266,13 @@ export default function MyItemsPage() {
         <StyledLeftContainer>
           <StyledMenuBar>
             <StyledMenuItem>
-              <p>{t('sorted_by')}</p>
+              {isMobile ? <SortedIcon /> : <p>{t('sorted_by')}</p>}
               <Dropdown
                 selected={sortedBy.text}
                 options={sortedByOptions.map(({ text }) => text)}
                 onSelect={text => setSortedBy(sortedByOptions.find(o => o.text === text) || sortedByOptions[0])}
               />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <p>{t('sort_order')}</p>
+              {isMobile ? '' : <p>{t('sort_order')}</p>}
               <Dropdown
                 selected={sortOrder.text}
                 options={sortOrderOptions.map(({ text }) => text)}
@@ -281,7 +280,7 @@ export default function MyItemsPage() {
               />
             </StyledMenuItem>
             <StyledMenuItem>
-              <p>{t('filter')}</p>
+              {isMobile ? <FilterIcon /> : <p>{t('filter')}</p>}
               <Dropdown
                 selected={filter.text}
                 options={filters.map(({ text }) => text)}
