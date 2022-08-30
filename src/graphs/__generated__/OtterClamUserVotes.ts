@@ -14,7 +14,6 @@ export interface OtterClamUserVotes_votes_proposal_space {
 
 export interface OtterClamUserVotes_votes_proposal_strategies {
   __typename: "Strategy";
-  network: string | null;
   params: any | null;
 }
 

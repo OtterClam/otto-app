@@ -23,12 +23,7 @@ export const GET_OTTERCLAM_PROPOSALS = gql`
 
 export const GET_OTTERCLAM_USER_VOTED_PROPOSALS = gql`
   query OtterClamUserVotes($address: String!) {
-    votes(
-      first: 10
-      where: { space_in: ["qidao.eth"], voter_in: [$address] }
-      orderBy: "created"
-      orderDirection: desc
-    ) {
+    votes(first: 10, where: { space: "otterclam.eth", voter: $address }, orderBy: "created", orderDirection: desc) {
       choice
       vp
       vp_by_strategy
@@ -48,7 +43,6 @@ export const GET_OTTERCLAM_USER_VOTED_PROPOSALS = gql`
           id
         }
         strategies {
-          network
           params
         }
       }

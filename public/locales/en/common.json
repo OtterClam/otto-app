@@ -524,7 +524,7 @@
   },
   "unsupported_network": {
     "action": "Switch to Polygon",
-    "desc": "Only Polygon Mainnet are supported.",
+    "desc": "Only Polygon Mainnet is currently supported.",
     "title": "Unsupported Network"
   },
   "wallet_selector_head": "Connect to a wallet",
@@ -579,7 +579,8 @@
       "voteNow": "Vote Now!",
       "votingClosed": "Voting Closed",
       "votes": "Votes",
-      "ocvoted": "OtterClam Voted:"
+      "ocvoted": "OtterClam Voted:",
+      "youVoted": "You Voted:"
     }
   },
   "stake": {

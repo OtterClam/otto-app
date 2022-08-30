@@ -1,5 +1,5 @@
 import SnapshotProposalGroup from 'components/SnapshotProposalGroup'
-import useOtterClamProposals from 'hooks/useOtterClamProposals'
+import useOtterClamProposalsWithVotes from 'hooks/useOtterClamProposalsWithVotes'
 import { GovernanceTab } from 'models/Tabs'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components'
@@ -11,7 +11,7 @@ interface Props {
 
 export default function OtterClamTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'stake' })
-  const { proposals } = useOtterClamProposals()
+  const { proposals } = useOtterClamProposalsWithVotes()
   return (
     <div className={className}>
       <Headline as="h1">{t('welcome')}</Headline>

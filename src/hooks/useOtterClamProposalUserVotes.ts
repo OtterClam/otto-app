@@ -1,11 +1,11 @@
 import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
-import { GET_OTTERCLAM_USER_VOTED_PROPOSALS, GET_QIDAO_VOTED_PROPOSALS } from 'graphs/snapshot'
+import { GET_OTTERCLAM_USER_VOTED_PROPOSALS } from 'graphs/snapshot'
 import { OtterClamUserVotes } from 'graphs/__generated__/OtterClamUserVotes'
 import { Proposal } from '../models/Proposal'
 import { useSnapshotSubgraph } from './useSnapshotSubgraph'
 
-export default function useQiDaoProposals(): {
+export default function useOtterClamProposalUserVotes(): {
   loading: boolean
   proposals: Proposal[]
 } {
@@ -32,10 +32,11 @@ export default function useQiDaoProposals(): {
         snapshot: x?.proposal?.snapshot,
         type: x?.proposal?.type,
         state: x?.proposal?.state,
-        // DAO vote allocation
+        // vote allocation
         vote_power: x?.vp,
         voted_choices: x?.choice,
         voted: true,
+        vote_power_by_strategy: x?.vp_by_strategy,
       } as Proposal
     }) ?? []
 
