@@ -21,7 +21,7 @@ const StyledPopup = styled.div`
   &.fade-enter {
     transform-origin: top center;
     opacity: 0.1;
-    transform: scale(0.8);
+    transform: scale(0.9);
   }
 
   &.fade-enter-active {
@@ -38,7 +38,7 @@ const StyledPopup = styled.div`
 
   &.fade-exit-active {
     opacity: 0.1;
-    transform: scale(0.8);
+    transform: scale(0.9);
     transition: transform 0.2s, opacity 0.2s;
   }
 `
