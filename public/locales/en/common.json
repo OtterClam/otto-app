@@ -704,7 +704,11 @@
     }
   },
   "adventurePopup": {
-    "start": "Let's Go!"
+    "start": "Let's Go!",
+    "readyToGoStep": {
+      "title": "Ready to Go!",
+      "desc": "{{name}} has just departed to an adventure. Good luck!"
+    }
   },
   "ottoPreviewer": {
     "feedButton": "+ Food"

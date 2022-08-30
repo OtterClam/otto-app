@@ -7,10 +7,12 @@ import { useMyOttos } from 'MyOttosProvider'
 import { useEffect, useState } from 'react'
 import { LocationInfoStep } from './LocationInfoStep'
 import PreviewOttoStep from './PreviewOttoStep'
+import ReadyToGoStep from './ReadyToGoStep'
 
 enum Step {
   LocationInfo,
   PreviewOtto,
+  ReadyToGo,
 }
 
 const StyledStepContainer = styled.div`
@@ -47,7 +49,8 @@ export interface AdventurePopupProps {
 }
 
 export default function AdventurePopup({ show }: AdventurePopupProps) {
-  const [step, setStep] = useState(Step.PreviewOtto)
+  const [step, setStep] = useState(Step.ReadyToGo)
+  const { ottos } = useMyOttos()
 
   return (
     <Fullscreen show={show}>
@@ -63,6 +66,13 @@ export default function AdventurePopup({ show }: AdventurePopupProps) {
           <CSSTransition key={Step.PreviewOtto} timeout={200} classNames="fade">
             <StyledStepContainer>
               <PreviewOttoStep />
+            </StyledStepContainer>
+          </CSSTransition>
+        )}
+        {step === Step.ReadyToGo && ottos[0] && (
+          <CSSTransition key={Step.ReadyToGo} timeout={200} classNames="fade">
+            <StyledStepContainer>
+              <ReadyToGoStep otto={ottos[0]} />
             </StyledStepContainer>
           </CSSTransition>
         )}
