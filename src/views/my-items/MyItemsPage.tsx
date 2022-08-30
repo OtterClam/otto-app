@@ -9,7 +9,7 @@ import Item from 'models/Item'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
-import { ContentSmall } from 'styles/typography'
+import { Caption, ContentSmall } from 'styles/typography'
 import { FilterIcon, SortedIcon } from 'assets/icons'
 import EmptyStatus from './empty.png'
 import ItemDetails from './use-item/ItemDetails'
@@ -267,25 +267,31 @@ export default function MyItemsPage() {
           <StyledMenuBar>
             <StyledMenuItem>
               {isMobile ? <SortedIcon /> : <p>{t('sorted_by')}</p>}
-              <Dropdown
-                selected={sortedBy.text}
-                options={sortedByOptions.map(({ text }) => text)}
-                onSelect={text => setSortedBy(sortedByOptions.find(o => o.text === text) || sortedByOptions[0])}
-              />
+              <Caption>
+                <Dropdown
+                  selected={sortedBy.text}
+                  options={sortedByOptions.map(({ text }) => text)}
+                  onSelect={text => setSortedBy(sortedByOptions.find(o => o.text === text) || sortedByOptions[0])}
+                />
+              </Caption>
               {isMobile ? '' : <p>{t('sort_order')}</p>}
-              <Dropdown
-                selected={sortOrder.text}
-                options={sortOrderOptions.map(({ text }) => text)}
-                onSelect={text => setSortOrder(sortOrderOptions.find(o => o.text === text) || sortOrderOptions[0])}
-              />
+              <Caption>
+                <Dropdown
+                  selected={sortOrder.text}
+                  options={sortOrderOptions.map(({ text }) => text)}
+                  onSelect={text => setSortOrder(sortOrderOptions.find(o => o.text === text) || sortOrderOptions[0])}
+                />
+              </Caption>
             </StyledMenuItem>
             <StyledMenuItem>
               {isMobile ? <FilterIcon /> : <p>{t('filter')}</p>}
-              <Dropdown
-                selected={filter.text}
-                options={filters.map(({ text }) => text)}
-                onSelect={text => setFilter(filters.find(o => o.text === text) || filters[0])}
-              />
+              <Caption>
+                <Dropdown
+                  selected={filter.text}
+                  options={filters.map(({ text }) => text)}
+                  onSelect={text => setFilter(filters.find(o => o.text === text) || filters[0])}
+                />
+              </Caption>
             </StyledMenuItem>
           </StyledMenuBar>
           <StyledItemScrollContainer>
