@@ -9,9 +9,10 @@ export interface Breakpoints {
   isMobile: boolean
   isSmallTablet: boolean
   isTablet: boolean
+  isDesktop: boolean
 }
 
-const defaultValue: Breakpoints = { isMobile: true, isSmallTablet: true, isTablet: true }
+const defaultValue: Breakpoints = { isMobile: true, isSmallTablet: true, isTablet: true, isDesktop: true }
 
 const BreakpointsContext = createContext<Breakpoints>(defaultValue)
 
@@ -21,6 +22,7 @@ export const BreakpointsProvider = ({ children }: PropsWithChildren<object>) => 
   const isMobile = useMediaQuery({ query: breakpoints.mobile })
   const isTablet = useMediaQuery({ query: breakpoints.tablet })
   const isSmallTablet = useMediaQuery({ query: breakpoints.smallTablet })
+  const isDesktop = useMediaQuery({ query: breakpoints.desktop })
 
   const value = useMemo(
     () =>
@@ -30,6 +32,7 @@ export const BreakpointsProvider = ({ children }: PropsWithChildren<object>) => 
             isMobile,
             isTablet,
             isSmallTablet,
+            isDesktop,
           },
     [ready, isMobile, isTablet]
   )

@@ -35,16 +35,16 @@ export const pins: PinData[] = [
     image: leaderboardImage,
     link: '/leaderboard',
     position: {
-      x: -11.4,
-      y: -3,
+      x: -12.4,
+      y: 0,
     },
   },
   {
     key: 'market',
     image: marketImage,
     position: {
-      x: -1,
-      y: 24.6,
+      x: -2.7,
+      y: 25,
     },
   },
   {
@@ -52,7 +52,7 @@ export const pins: PinData[] = [
     image: mineImage,
     position: {
       x: 16.3,
-      y: -10.6,
+      y: -7.6,
     },
   },
   {
@@ -69,8 +69,8 @@ export const pins: PinData[] = [
     image: pondImage,
     link: '/treasury/pond',
     position: {
-      x: -5.7,
-      y: 11,
+      x: -7,
+      y: 13.6,
     },
   },
   {
@@ -78,8 +78,8 @@ export const pins: PinData[] = [
     image: bankImage,
     link: '/treasury/bank',
     position: {
-      x: 16.8,
-      y: 3.8,
+      x: 14.4,
+      y: 6,
     },
   },
   {
@@ -87,8 +87,8 @@ export const pins: PinData[] = [
     image: storeImage,
     link: '/store',
     position: {
-      x: 8.6,
-      y: 7.6,
+      x: 6.6,
+      y: 9.8,
     },
   },
   {
@@ -96,8 +96,8 @@ export const pins: PinData[] = [
     image: adventureImage,
     // link: '/adventure',
     position: {
-      x: -8.5,
-      y: -17.8,
+      x: -9.3,
+      y: -13.8,
     },
   },
   {
@@ -105,8 +105,8 @@ export const pins: PinData[] = [
     image: palaceImage,
     link: '/treasury/dashboard',
     position: {
-      x: 3,
-      y: -14.7,
+      x: 1.35,
+      y: -11,
     },
   },
   {
@@ -114,8 +114,8 @@ export const pins: PinData[] = [
     image: foundryImage,
     link: '/foundry',
     position: {
-      x: 8,
-      y: 22,
+      x: 6,
+      y: 24,
     },
   },
 ]
