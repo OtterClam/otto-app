@@ -1,10 +1,11 @@
 // ui scripts are allowed to import this file
 
-export const CACHE_VERSION = 'v2'
+export const CACHE_VERSION = 'v3'
 
 export enum BundleName {
   Basic = 'basic',
   HomePage = 'home-page',
+  FoundryPage = 'foundry-page',
 }
 
 export enum EventType {
