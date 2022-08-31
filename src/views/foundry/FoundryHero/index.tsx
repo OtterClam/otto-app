@@ -1,12 +1,9 @@
 import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
-import Button from 'components/Button'
 import Bg from './foundry_bg.jpg'
-import Fg1 from './foundry_fg1.png'
-import Fg2 from './foundry_fg2.png'
-import Otto1 from './otto_smith1.png'
-import Otto2 from './otto_smith2.png'
+import Fg from './foundry_fg.png'
+import Otto from './otto_smith.png'
 import Arrow from './arrow.svg'
 
 const StyledFoundryHero = styled.div`
@@ -25,37 +22,36 @@ const StyledBg = styled.div`
 `
 
 const Animation = keyframes`
-  0%   {opacity: 0;}
-  50%  {opacity: 1;}
+  0%   { background-position: left top }
+  50%  { background-position: right top }
 `
 
-const StyledFg = styled.div<{ src: string; delay: number }>`
+const StyledFg = styled.div`
   width: 100%;
   height: 520px;
-  background: no-repeat center / cover url(${({ src }) => src});
+  background: no-repeat left top / auto 100% url(${Fg.src});
   position: absolute;
   top: 0;
   left: 0;
-  animation: ${Animation} 2000ms infinite;
-  animation-delay: ${({ delay }) => delay}ms;
-  animation-timing-function: steps(1);
+  animation: ${Animation} 2000ms steps(1) infinite;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     height: 400px;
   }
 `
 
-const StyledOtto = styled.img<{ delay: number }>`
+const StyledOtto = styled.div`
   width: 382px;
+  height: 414px;
   position: absolute;
   bottom: 0;
   right: 15%;
-  animation: ${Animation} 2000ms infinite;
-  animation-delay: ${({ delay }) => delay}ms;
-  animation-timing-function: steps(1);
+  background: no-repeat left top / auto 100% url(${Otto.src});
+  animation: ${Animation} 2000ms steps(1) infinite;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 179px;
+    height: 194px;
     right: 5%;
   }
 `
@@ -107,10 +103,8 @@ export default function FoundryHero() {
   return (
     <StyledFoundryHero>
       <StyledBg />
-      <StyledFg src={Fg1.src} delay={0} />
-      <StyledFg src={Fg2.src} delay={1000} />
-      <StyledOtto src={Otto1.src} delay={0} />
-      <StyledOtto src={Otto2.src} delay={1000} />
+      <StyledFg />
+      <StyledOtto />
       <StyledDialog>
         <StyledTitle as="h1">{t('dialog.title')}</StyledTitle>
         <StyledSubtitle as="p">{t('dialog.content')}</StyledSubtitle>
