@@ -71,10 +71,6 @@ const StyledDialog = styled.div`
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   padding: 20px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    visibility: hidden;
-  }
-
   &:after {
     content: '';
     width: 28px;
@@ -84,6 +80,21 @@ const StyledDialog = styled.div`
     position: absolute;
     top: calc(50% - 9px);
     right: -30px;
+  }
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    width: auto;
+
+    &:after {
+      transform: rotate(90deg);
+      left: calc(50% - 9px);
+      right: unset;
+      bottom: -29px;
+      top: unset;
+    }
   }
 `
 
