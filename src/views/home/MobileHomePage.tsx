@@ -43,6 +43,7 @@ const StyledBannerAndActionsContainer = styled.div`
 const StyledActionButtons = styled(FloatingNavButtons)`
   pointer-events: auto;
   margin-top: 12px;
+  align-items: start;
 `
 
 const StyledBanner = styled(Banner)`
@@ -52,8 +53,12 @@ const StyledBanner = styled(Banner)`
 `
 
 const StyledSmallAd = styled(SmallAd)`
-  max-width: 100px;
   pointer-events: auto;
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    max-width: 100px;
+    width: 100%;
+  }
 `
 
 const StyledMap = styled(FixedMap)`
@@ -67,7 +72,7 @@ const StyledNotifications = styled(Notifications)`
 `
 
 const MobileHomePage = () => {
-  const { isSmallTablet } = useBreakpoints()
+  const { isSmallTablet, isMobile } = useBreakpoints()
 
   return (
     <StyledContainer>
@@ -79,7 +84,7 @@ const MobileHomePage = () => {
         <StyledNotifications />
         <StyledSmallAd />
       </StyledTopLayer>
-      <StyledMap hideCloud={isSmallTablet} />
+      <StyledMap hideCloud={isSmallTablet || isMobile} />
       <SectionRope />
     </StyledContainer>
   )

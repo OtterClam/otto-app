@@ -261,10 +261,10 @@
     "filter": "过滤",
     "filters": {
       "equipped": "已装备",
-      "lottie_specific": "Lottie 专用",
+      "lottie_can_equip": "Lottie 可用",
       "none": "无",
       "not_equipped": "未装备",
-      "otto_specific": "Otto 专用"
+      "otto_can_equip": "Otto 可用"
     },
     "legendary_warning": "警告：如果你装备/更换其他物品到传奇阿獭身上，传奇外框将会隐藏，且会扣除额外的传奇加成：基本稀有度 (BRS) +100。",
     "no_selected_item": "请选择物品检视详细资讯",
@@ -283,13 +283,20 @@
     },
     "sorted_by": "排序",
     "sorted_by_options": {
-      "latest_received": "收到时间",
-      "rarity_asc": "稀有度（从低到高）",
-      "rarity_desc": "稀有度（从高到低）",
-      "luck_desc": "幸运值",
-      "dex_desc": "敏捷度",
-      "cute_desc": "可爱度",
-      "def_desc": "防御力"
+      "time_received": "收到时间",
+      "rarity": "稀有度",
+      "luck": "幸运值",
+      "dex": "敏捷度",
+      "cute": "可爱度",
+      "def": "防御力",
+      "str": "力量度",
+      "int": "智力度",
+      "con": "宪法度"
+    },
+    "sort_order": "排序",
+    "sort_order_options": {
+      "asc": "从低到高",
+      "desc": "从高到低"
     },
     "take_off": "脱掉",
     "take_off_item": {

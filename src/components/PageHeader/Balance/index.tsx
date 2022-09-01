@@ -7,6 +7,7 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import ReactTooltip from 'react-tooltip'
 import styled, { useTheme } from 'styled-components/macro'
 import { ContentMedium } from 'styles/typography'
+import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
 import Balance from './balance'
 import LargeClamBg from './header_clam_xl.png'
 import SmallClamBg from './header_clam_xs.png'
@@ -26,10 +27,24 @@ interface Props {
 
 const NEW_WALLET_TOOLTIP_SHOWED = 'new-wallet-tooltip-showed'
 
+const useNewWalletTooltipShowed = () => {
+  const [newWalletTooltipShowed, setNewWalletTooltipShowed] = useState(false)
+
+  useBrowserLayoutEffect(() => {
+    setNewWalletTooltipShowed(Boolean(localStorage.getItem(NEW_WALLET_TOOLTIP_SHOWED)))
+  }, [])
+
+  return {
+    newWalletTooltipShowed,
+    setNewWalletTooltipShowed: (newVal: boolean) => {
+      setNewWalletTooltipShowed(true)
+      localStorage.setItem(NEW_WALLET_TOOLTIP_SHOWED, 'true')
+    },
+  }
+}
+
 export const ClamBalance = ({ onClick }: Props) => {
-  const [newWalletTooltipShowed, setNewWalletTooltipShowed] = useState(() =>
-    Boolean(typeof window !== 'undefined' ? localStorage.getItem(NEW_WALLET_TOOLTIP_SHOWED) : false)
-  )
+  const { newWalletTooltipShowed, setNewWalletTooltipShowed } = useNewWalletTooltipShowed()
   const { CLAM, PEARL_BANK, CLAM_POND } = useContractAddresses()
   const theme = useTheme()
   const tooltipRef = useRef(null)
@@ -55,7 +70,6 @@ export const ClamBalance = ({ onClick }: Props) => {
         balance={balance}
         onClick={() => {
           setNewWalletTooltipShowed(true)
-          localStorage.setItem(NEW_WALLET_TOOLTIP_SHOWED, 'true')
           onClick()
         }}
       />

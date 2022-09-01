@@ -5,8 +5,8 @@ import DesktopHomePage from './DesktopHomePage'
 import MobileHomePage from './MobileHomePage'
 
 export default function HomePage() {
-  const { isTablet, isMobile } = useBreakpoints()
-  const desktopVersion = !(isTablet || isMobile)
+  const { isTablet, isMobile, isDesktop } = useBreakpoints()
+  const desktopVersion = !(isTablet || isMobile || isDesktop)
 
   useAssetsBundles([BundleName.HomePage])
 

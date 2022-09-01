@@ -266,10 +266,10 @@
     "filter": "Filter",
     "filters": {
       "equipped": "Equipped",
-      "lottie_specific": "Lottie Specific",
       "none": "None",
       "not_equipped": "Not Equipped",
-      "otto_specific": "Otto Specific"
+      "otto_can_equip": "Otto Can Equip",
+      "lottie_can_equip": "Lottie Can Equip"
     },
     "legendary_warning": "Warning: If you add or replace any items to the Legendary Otto, the Legendary frame will be removed and the BRS +100 bonus will be withdrawn.",
     "no_selected_item": "Select an item to view the detail.",
@@ -288,13 +288,16 @@
     },
     "sorted_by": "Sorted By",
     "sorted_by_options": {
-      "latest_received": "Latest Received",
-      "rarity_asc": "Rarity  (From lowest)",
-      "rarity_desc": "Rarity  (From highest)",
-      "luck_desc": "Luck  (From highest)",
-      "dex_desc": "Dex  (From highest)",
-      "cute_desc": "Cute (From highest)",
-      "def_desc": "Def (From highest)"
+      "rarity_desc": "Rarity",
+      "time_received": "Time Received",
+      "str": "Str",
+      "rarity": "Rarity",
+      "luck": "Luck",
+      "int": "Int",
+      "dex": "Dex",
+      "def": "Def",
+      "cute": "Cute",
+      "con": "Con"
     },
     "take_off": "Take Off",
     "take_off_item": {
@@ -316,7 +319,12 @@
       "current_equipped": "Currently Equipped",
       "replaced": "Replaced With...",
       "title": "Select an Otto to wear this item"
-    }
+    },
+    "sort_order_options": {
+      "asc": "Ascending",
+      "desc": "Descending"
+    },
+    "sort_order": "Order"
   },
   "my_ottos": {
     "mint_portal": "Mint Portal",
@@ -389,7 +397,7 @@
       "Voice": "Voice",
       "title": "{{type}}: {{name}}"
     },
-    "unreturnable": "Unreturnable",
+    "unreturnable": "Nonreturnable",
     "unreturnable_hint": "This item came along with the Otto the moment it was minted, so it cannot be detached and returned to your item inventory. You can still wear another wearable item to replace and hide it. If the other wearable item is taken off, this item will be visible again on the Otter.",
     "voice": "Voice: {{voice}}",
     "wearable_traits_tab": "Wearable Traits",
@@ -462,10 +470,18 @@
       "must_desc": "R3 Item Guaranteed!",
       "name": "Silver Chest"
     },
-    "luk": { "must_desc": "R1 Item Guaranteed!" },
-    "dex": { "must_desc": "R2 Item Guaranteed!" },
-    "cute": { "must_desc": "R2 Item Guaranteed!" },
-    "def": { "must_desc": "R2 Item Guaranteed!" }
+    "luk": {
+      "must_desc": "R1 Item Guaranteed!"
+    },
+    "dex": {
+      "must_desc": "R2 Item Guaranteed!"
+    },
+    "cute": {
+      "must_desc": "R2 Item Guaranteed!"
+    },
+    "def": {
+      "must_desc": "R2 Item Guaranteed!"
+    }
   },
   "question": {
     "submit_button": "Confirm"
@@ -686,7 +702,7 @@
     "title": "Foundry",
     "dialog": {
       "title": "Welcome to the Foundry!",
-      "content": "Welcome to the Foundry, where you can re-forge several items to combine into new items, and also have the opportunity to get new items with higher rarity or attributes!"
+      "content": "Welcome to the Foundry, where you can melt several items to create a new item with the possibility of getting a higher rarity score or better attributes!"
     },
     "result": {
       "title": "You’ll Get:"
@@ -696,12 +712,15 @@
     },
     "forgeButton": "Forge",
     "forgeButton_insufficient": "Forge (Insufficient Items)",
-    "forgeAvailableTime": "Fusion available: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
+    "forgeAvailableTime": "Event duration: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
     "comingSoon": "Coming soon...",
     "approve": "Approve",
     "forge": {
       "processing": "Forging..."
     }
+  },
+  "ottoPreviewer": {
+    "feedButton": "+ Food"
   },
   "adventurePopup": {
     "start": "Let's Go!",
@@ -719,17 +738,14 @@
       "buy_now": "Buy NOW>"
     }
   },
-  "ottoPreviewer": {
-    "feedButton": "+ Food"
-  },
-  "adventureBoosts": {
-    "conditionalBoosts": "Conditional Boosts"
-  },
   "adventureLocation": {
     "successRate": "Success rate",
     "adventureTime": "Adventure time",
     "restingTime": "Resting time",
     "successRateHelp": "message",
     "restingTimeHelp": "message"
+  },
+  "adventureBoosts": {
+    "conditionalBoosts": "Conditional Boosts"
   }
 }
