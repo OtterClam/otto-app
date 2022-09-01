@@ -21,8 +21,9 @@ const StyledBg = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100%;
+  height: 520px;
   background: no-repeat center / cover url(${Bg.src});
+  overflow: hidden;
 
   &::before,
   &::after {
@@ -36,6 +37,10 @@ const StyledBg = styled.div`
   &::after {
     background-position: right top;
     animation-delay: 1s;
+  }
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    height: 400px;
   }
 `
 
