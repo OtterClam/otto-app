@@ -708,6 +708,15 @@
     "readyToGoStep": {
       "title": "Ready to Go!",
       "desc": "{{name}} has just departed to an adventure. Good luck!"
+    },
+    "exploringStep": {
+      "title": "{{name}} is exploring...",
+      "remaining": "Remaining: {{time}}",
+      "finish_immediately_btn": "Finish Immediately",
+      "speed_up_btn": "Speed Up",
+      "see_results_btn": "See Results",
+      "wants_more": "Want more Speed-Up Potions?",
+      "buy_now": "Buy NOW>"
     }
   },
   "ottoPreviewer": {
