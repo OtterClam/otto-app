@@ -73,11 +73,12 @@ export const OverlayProvider = ({ children }: PropsWithChildren<object>) => {
   return (
     <OverlayContext.Provider value={value}>
       {children}
-      {createPortal((
+      {createPortal(
         <CSSTransition unmountOnExit in={Boolean(counter)} timeout={200} classNames="fade">
           <StyledOverlay />
-        </CSSTransition>
-      ), document.body.querySelector('#modal-root')!)}
+        </CSSTransition>,
+        document.body.querySelector('#modal-root')!
+      )}
     </OverlayContext.Provider>
   )
 }
