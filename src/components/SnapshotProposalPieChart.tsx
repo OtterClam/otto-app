@@ -13,6 +13,8 @@ import { GovernanceTab } from '../models/Tabs'
 
 const StyledContainer = styled.div`
   font-family: 'Pangolin', 'naikaifont' !important;
+  position: relative;
+  top: -100px;
 `
 export interface SnapshotProposalPieChartProps {
   proposal: Proposal
@@ -46,7 +48,6 @@ export default function SnapshotProposalPieChart({ proposal, tab }: SnapshotProp
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
-  console.log(proposal)
 
   // Map data from proposal object to Recharts-friendly dictionary
   let data: any[] = []
@@ -99,7 +100,7 @@ export default function SnapshotProposalPieChart({ proposal, tab }: SnapshotProp
 
   return (
     <StyledContainer ref={containerRef}>
-      <PieChart width={size?.width ?? 300} height={260}>
+      <PieChart width={300} height={261}>
         <Tooltip wrapperStyle={{ zIndex: 1, fontSize: '12px !important' }} content={renderTooltip(i18n, tab) as any} />
         <Pie data={data} labelLine={false} nameKey="choice" outerRadius={80} dataKey="score" minAngle={3}>
           {data.map((entry, index) => (

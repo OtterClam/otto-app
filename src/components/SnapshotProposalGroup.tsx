@@ -6,6 +6,7 @@ import { Proposal } from '../models/Proposal'
 import { GovernanceTab } from '../models/Tabs'
 import Button from './Button'
 import SnapshotProposalPieChart from './SnapshotProposalPieChart'
+import { theme } from 'styles'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -13,6 +14,7 @@ const StyledContainer = styled.div`
   flex-direction: row;
   gap: 4px;
   justify-content: space-evenly;
+  font-family: 'Pangolin', 'naikaifont' !important;
 `
 // `
 //   padding: 15px;
@@ -27,6 +29,7 @@ const StyledContainer = styled.div`
 
 const StyledCard = styled.div`
   margin: 4px;
+  max-height: 261px;
   width: 100%;
   padding: 15px;
   align-items: center;
@@ -41,9 +44,9 @@ const StyledCard = styled.div`
 `
 
 const StyledTextBody = styled.div`
-  font-family: 'Pangolin', 'naikaifont';
   white-space: pre-line;
-  max-height: 300px;
+  max-height: 60%;
+  max-width: 60%;
   overflow: hidden;
   border-radius: 10px;
   box-sizing: border-box;
@@ -53,34 +56,42 @@ const StyledTextBody = styled.div`
 `
 
 const StyledProposalHeadline = styled.span`
-  font-family: 'Pangolin', 'naikaifont';
   font-size: 24px;
   font-weight: 400;
+  max-width: 60%;
   line-height: 1.5;
   @media ${({ theme }) => theme.breakpoints.mobile} {
     font-size: 20px;
   }
+  max-height: 3em;
 `
 
 const StyledInnerContainer = styled.div`
   display: inline-flex;
+  margin: 4px;
+`
+const StyledActivityFlag = styled.div<{ flagColor: string }>`
+  height: 18px;
+  background-color: ${({ flagColor }) => flagColor};
+  border-radius: 4px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  color: white;
+  line-height: 18px;
+  padding: 4px;
+  margin: 4px;
+  display: inline;
 `
 
-const StyledActivityFlag = styled.div`
-  width: 33px;
-  height: 18px;
-
-  font-family: 'Pangolin';
+const StyledInlineText = styled.span`
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
+  color: ${({ theme }) => theme.colors.darkGray200};
 `
 
-const StyledSnapshotProposalPieChart = styled(SnapshotProposalPieChart)`
-  position: relative;
-  top: -20px;
-`
 export interface SnapshotProposalGroupInterface {
   className?: string
   proposals: Proposal[]
@@ -88,23 +99,32 @@ export interface SnapshotProposalGroupInterface {
 }
 
 // capitalize only the first letter of the string.
+// TODO: Replace with translations
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
+const flagColorFromProposalState: Record<string, string> = {
+  active: theme.colors.clamPink,
+  closed: theme.colors.darkGray200,
+}
+
 export default function SnapshotProposalGroup({ className, proposals, tab }: SnapshotProposalGroupInterface) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('', { keyPrefix: 'treasury.governance' })
   return (
     <StyledContainer className={className}>
       {proposals.map(proposal => (
         <StyledCard key={proposal.id}>
           <StyledProposalHeadline as="h1">{proposal.title}</StyledProposalHeadline>
-          <StyledActivityFlag>{capitalizeFirstLetter(proposal.state ?? '')}</StyledActivityFlag>
+          <StyledActivityFlag flagColor={flagColorFromProposalState[proposal.state ?? '']}>
+            {capitalizeFirstLetter(proposal.state ?? '')}
+          </StyledActivityFlag>
+          <StyledInlineText>{`${proposal.votes} ${t('votes')}`}</StyledInlineText>
           <StyledInnerContainer>
             <StyledTextBody>
               <ReactMarkdown>{proposal.body ?? ''}</ReactMarkdown>
             </StyledTextBody>
-            <StyledSnapshotProposalPieChart proposal={proposal} tab={tab} />
+            <SnapshotProposalPieChart proposal={proposal} tab={tab} />
           </StyledInnerContainer>
           {(proposal.state === 'active' && tab === GovernanceTab.OTTERCLAM) ?? (
             <Button
