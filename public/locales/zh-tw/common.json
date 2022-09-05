@@ -285,13 +285,13 @@
     "sorted_by_options": {
       "time_received": "收到時間",
       "rarity": "稀有度",
-      "luck": "幸運值",
-      "dex": "敏捷度",
+      "luck": "幸運",
+      "dex": "敏捷",
       "cute": "可愛度",
-      "def": "防御力",
-      "str": "力量度",
-      "int": "智力度",
-      "con": "憲法度"
+      "def": "防御",
+      "str": "力量",
+      "int": "智力",
+      "con": "體力"
     },
     "sort_order": "排序",
     "sort_order_options": {
