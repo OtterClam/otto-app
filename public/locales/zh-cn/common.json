@@ -285,13 +285,13 @@
     "sorted_by_options": {
       "time_received": "收到时间",
       "rarity": "稀有度",
-      "luck": "幸运值",
-      "dex": "敏捷度",
+      "luck": "幸运",
+      "dex": "敏捷",
       "cute": "可爱度",
-      "def": "防御力",
-      "str": "力量度",
-      "int": "智力度",
-      "con": "宪法度"
+      "def": "防御",
+      "str": "力量",
+      "int": "智力",
+      "con": "体力"
     },
     "sort_order": "排序",
     "sort_order_options": {
@@ -672,5 +672,26 @@
     "treasury": "国库",
     "ottos": "我的阿獭",
     "missions": "我的任务"
+  },
+  "foundry": {
+    "title": "Foundry",
+    "dialog": {
+      "title": "Welcome to the Foundry!",
+      "content": "Welcome to the Foundry, where you can re-forge several items to combine into new items, and also have the opportunity to get new items with higher rarity or attributes!"
+    },
+    "result": {
+      "title": "You’ll Get:"
+    },
+    "materials": {
+      "title": "Required Items:"
+    },
+    "forgeButton": "Forge",
+    "forgeButton_insufficient": "Forge (Insufficient Items)",
+    "forgeAvailableTime": "Fusion available: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
+    "comingSoon": "Coming soon...",
+    "approve": "Approve",
+    "forge": {
+      "processing": "Forging..."
+    }
   }
 }
