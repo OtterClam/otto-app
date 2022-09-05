@@ -9,12 +9,14 @@ import { LocationInfoStep } from './LocationInfoStep'
 import PreviewOttoStep from './PreviewOttoStep'
 import ReadyToGoStep from './ReadyToGoStep'
 import ExploringStep from './ExploringStep'
+import ResultStep from './ResultStep'
 
 enum Step {
   LocationInfo,
   PreviewOtto,
   ReadyToGo,
   Exploring,
+  Result,
 }
 
 const StyledStepContainer = styled.div`
@@ -51,7 +53,7 @@ export interface AdventurePopupProps {
 }
 
 export default function AdventurePopup({ show }: AdventurePopupProps) {
-  const [step, setStep] = useState(Step.Exploring)
+  const [step, setStep] = useState(Step.Result)
   const { ottos } = useMyOttos()
 
   return (
@@ -82,6 +84,13 @@ export default function AdventurePopup({ show }: AdventurePopupProps) {
           <CSSTransition key={Step.Exploring} timeout={200} classNames="fade">
             <StyledStepContainer>
               <ExploringStep otto={ottos[0]} />
+            </StyledStepContainer>
+          </CSSTransition>
+        )}
+        {step === Step.Result && ottos[0] && (
+          <CSSTransition key={Step.Result} timeout={200} classNames="fade">
+            <StyledStepContainer>
+              <ResultStep otto={ottos[0]} />
             </StyledStepContainer>
           </CSSTransition>
         )}

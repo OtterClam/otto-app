@@ -736,6 +736,24 @@
       "see_results_btn": "See Results",
       "wants_more": "Want more Speed-Up Potions?",
       "buy_now": "Buy NOW>"
+    },
+    "resultStep": {
+      "journal": "Adventure Journal",
+      "reward": "Adventure Reward",
+      "skip_journal_btn": "Skip",
+      "result_label": "Adventure Result:",
+      "result_succeeded": "SUCCEEDED",
+      "result_failed": "FAILED",
+      "found_items": "Found Items",
+      "treasury_chest": "Treasury Chest",
+      "explore_again_btn": "Explore Again",
+      "switch_place_btn": "Switch to another place...",
+      "revive_btn": "Revive",
+      "give_up_btn": "Give Up (Discard all Rewards)",
+      "give_up_yes_btn": "Yes. Give up",
+      "give_up_back_btn": "Back",
+      "failed_desc": "Because your Otto FAILED the adventure, you can not claim those rewards.",
+      "failed_hint": "Wanna collected the rewards?\nRevive so that you can claim all of them. If you choose to give up, the rewards will be all discarded and there’s no way back."
     }
   },
   "adventureLocation": {

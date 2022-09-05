@@ -1,17 +1,15 @@
 import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
-import Item from 'models/Item'
-import { useState } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useApi } from 'contexts/Api'
 import { LIST_MY_ITEMS } from 'graphs/otto'
 import { ListItems, ListItemsVariables } from 'graphs/__generated__/ListItems'
-import { useApi } from 'contexts/Api'
+import Item from 'models/Item'
+import { useState } from 'react'
 
 export default function useMyItems() {
   const [items, setItems] = useState<Item[]>([])
   const [loading, setLoading] = useState(true)
   const api = useApi()
-  const { i18n } = useTranslation()
   const { account } = useEthers()
   const { refetch } = useQuery<ListItems, ListItemsVariables>(LIST_MY_ITEMS, {
     notifyOnNetworkStatusChange: true,

@@ -11,6 +11,7 @@ const StyledItemCell = styled.button<{ rarity: string; selected: boolean; canCli
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 5px;
   position: relative;
+  z-index: 0;
 
   background: ${({ canClick, selected }) => (canClick ? (selected ? 'var(--selected-bg)' : 'white') : 'white')};
 };
