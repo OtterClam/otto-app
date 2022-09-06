@@ -40,6 +40,7 @@ export const RARITY_S1_END = 1660867200000
 
 export enum Token {
   Clam = 'CLAM',
+  Fish = 'FISH',
 }
 
 export const reserveOttoAmount = (chainId?: number) => (chainId === 137 ? 250 : 0)
