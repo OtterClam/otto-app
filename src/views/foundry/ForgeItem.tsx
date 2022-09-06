@@ -2,14 +2,18 @@ import { TransactionStatus } from '@usedapp/core'
 import Button from 'components/Button'
 import ItemCell from 'components/ItemCell'
 import ItemType from 'components/ItemType'
+import PaymentButton from 'components/PaymentButton'
 import SectionRope from 'components/SectionRope'
 import TreasurySection from 'components/TreasurySection'
+import { Token } from 'constant'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import { useERC1155Approval } from 'contexts/ERC1155Approval'
 import { useForge, useSetApprovalForAll } from 'contracts/functions'
 import formatDate from 'date-fns/format'
 import isAfter from 'date-fns/isAfter'
 import isBefore from 'date-fns/isBefore'
+import { BigNumber } from 'ethers'
+import useContractAddresses from 'hooks/useContractAddresses'
 import { ForgeFormula } from 'models/Forge'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useMemo } from 'react'
@@ -158,6 +162,7 @@ const useAvailableCount = (formula: ForgeFormula, itemCounts: MyItemAmounts): nu
 const isProcessing = (state: TransactionStatus) => state.status === 'PendingSignature' || state.status === 'Mining'
 
 export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyItems }: ForgeItemProps) {
+  const { FOUNDRY } = useContractAddresses()
   const { t } = useTranslation('', { keyPrefix: 'foundry' })
   const startTime = formatDate(formula.startTime, TIME_FORMAT)
   const endTime = formatDate(formula.endTime, TIME_FORMAT)
@@ -219,7 +224,18 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
               </StyledMaterialListItem>
             ))}
           </StyledMaterialList>
-          <Button loading={processing} height="60px" disabled={disabled} Typography={Headline} onClick={callForge}>
+          <PaymentButton
+            spenderAddress={FOUNDRY}
+            token={Token.Fish}
+            amount={formula.fish}
+            loading={processing}
+            height="60px"
+            disabled={disabled}
+            Typography={Headline}
+            showSymbol
+            onSuccess={callForge}
+            onClick={callForge}
+          >
             {t(
               isBefore(now, formula.startTime)
                 ? 'comingSoon'
@@ -229,7 +245,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
                 ? 'forgeButton'
                 : 'approve'
             )}
-          </Button>
+          </PaymentButton>
           <StyledAvailableTime>{t('forgeAvailableTime', { startTime, endTime, timeZone })}</StyledAvailableTime>
         </StyledMaterials>
       </StyledDetails>

@@ -11,6 +11,7 @@ import FoundryHero from './FoundryHero'
 import { MyItemAmounts } from './type'
 
 const useForgeFormulas = () => {
+  const now = new Date()
   const api = useApi()
   const [forges, setForges] = useState<ForgeFormula[]>([])
 
@@ -31,7 +32,7 @@ const useMyItemAmounts = () => {
 
   const amounts = useMemo(() => {
     return items.reduce((counts, item) => {
-      counts[item.id] = item.amount ?? 0
+      counts[item.id] = (item.amount ?? 0) - (item.equipped_count ?? 0)
       return counts
     }, {} as MyItemAmounts)
   }, [items])

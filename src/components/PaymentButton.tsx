@@ -7,9 +7,12 @@ import useContractAddresses from 'hooks/useContractAddresses'
 import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ethers, BigNumber } from 'ethers'
+import noop from 'lodash/noop'
 
 export interface PaymentButtonProps extends PriceProps, TxButtonProps {
   spenderAddress: string
+  showSymbol?: boolean
+  onSuccess?: () => void
 }
 
 const StyledWrapper = styled.div`
@@ -30,12 +33,15 @@ enum BtnState {
 export default function PaymentButton({
   children,
   spenderAddress,
+  showSymbol,
+  onSuccess = noop,
   // PriceProps
   token,
   amount,
   // TxButtonProps
-  onClick,
+  onClick = noop,
   disabled,
+  loading,
   ...btnProps
 }: PaymentButtonProps) {
   const addresses = useContractAddresses()
@@ -46,25 +52,22 @@ export default function PaymentButton({
   const { account, chainId } = useEthers()
   const allowance = useTokenAllowance(tokenAddress, account, spenderAddress, { chainId })
   const { approve, approveState } = useApprove(tokenAddress)
-  const loading = allowance === undefined || btnState === BtnState.WaitingApprove
+  const approving = allowance === undefined || btnState === BtnState.WaitingApprove
+  const noAmount = BigNumber.from(amount).eq(0)
 
   const pay = useCallback(() => {
-    if (!allowance || BigNumber.from(amount).gt(allowance)) {
+    if (!noAmount && (!allowance || BigNumber.from(amount).gt(allowance))) {
       setBtnState(BtnState.WaitingApprove)
       approve(spenderAddress, ethers.constants.MaxUint256)
       return
     }
-    if (onClick) {
-      onClick()
-    }
+    onClick()
   }, [onClick, amount, allowance, spenderAddress, approve])
 
   useEffect(() => {
     if (btnState === BtnState.WaitingApprove && allowance && BigNumber.from(amount).lte(allowance)) {
       setBtnState(BtnState.WaitingClick)
-      if (onClick) {
-        onClick()
-      }
+      onClick()
     }
   }, [btnState, allowance, amount, onClick])
 
@@ -74,10 +77,16 @@ export default function PaymentButton({
     }
   }, [approveState.status])
 
+  useEffect(() => {
+    if (approveState.status === 'Success') {
+      onSuccess()
+    }
+  }, [approveState.status])
+
   return (
-    <TxButton onClick={pay} loading={loading} {...btnProps}>
+    <TxButton onClick={pay} disabled={disabled || loading || approving} loading={loading || approving} {...btnProps}>
       <StyledWrapper>
-        <Price token={token} amount={amount} />
+        {!noAmount && <Price showSymbol={showSymbol} token={token} amount={amount} />}
         {children && <StyledButtonText>{children}</StyledButtonText>}
       </StyledWrapper>
     </TxButton>
