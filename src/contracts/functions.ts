@@ -554,5 +554,16 @@ export const useBuyFish = () => {
     setBuyFishState({ state: 'None', status: state })
   }
 
+  useEffect(() => {
+    if (state.status === 'Success') {
+      setBuyFishState({
+        state: 'Success',
+        status: state,
+      })
+    } else {
+      setBuyFishState({ state: state.status, status: state })
+    }
+  }, [state])
+
   return { buyFishState, buyFish, resetBuyFish }
 }

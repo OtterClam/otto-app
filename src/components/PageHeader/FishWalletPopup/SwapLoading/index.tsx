@@ -1,6 +1,5 @@
 import LoadingIndicator from 'assets/ui/loading-indicator.svg'
 import Button from 'components/Button'
-import { formatUnits } from 'ethers/lib/utils'
 import { trim } from 'helpers/trim'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -102,9 +101,10 @@ export default function SwapLoading({ swapState, fromTokenInfo, toTokenInfo, onC
   switch (swapState.state) {
     case 'Success':
       title = t('tx_success_title')
+      console.log(swapState)
       desc = t('tx_success_desc', {
         to: toTokenInfo.symbol,
-        amount: trim(formatUnits(swapState.amountOut || '0', toTokenInfo.decimal), 4),
+        amount: trim(swapState.amountOut || '0', 4),
       })
       body = (
         <StyledSuccessBody>

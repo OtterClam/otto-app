@@ -259,20 +259,16 @@ export function useIsApprovedForAll(contract: string, account: string, operator:
   }
 }
 
-export const useFishPrice = () => {
-  const oneClam = BigNumber.from(1e9)
-  const oneFish = BigNumber.from(1e18)
-  const fishAmount = useBuyFishReturn(oneClam)
-  return oneClam.mul(1e9).div(fishAmount).mul(oneFish)
-}
-
 export const useBuyFishReturn = (clamAmount: BigNumberish) => {
   const store = useStoreContract()
+  const { library } = useEthers()
   const [fishAmount, setFishAmount] = useState<BigNumberish>(0)
 
   useEffect(() => {
-    store.toFish(clamAmount).then(setFishAmount)
-  }, [clamAmount])
+    if (library) {
+      store.toFish(clamAmount).then(setFishAmount)
+    }
+  }, [clamAmount.toString(), library])
 
   return fishAmount
 }

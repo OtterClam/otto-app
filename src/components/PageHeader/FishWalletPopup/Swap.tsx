@@ -12,6 +12,7 @@ import { useBuyFish } from 'contracts/functions'
 import PaymentButton from 'components/PaymentButton'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { Token } from 'constant'
+import { ethers } from 'ethers'
 import { useTokenInfo } from './token-info'
 import SwapLoading from './SwapLoading'
 import BuyFISHIcon from './buy-fish.png'
@@ -200,15 +201,15 @@ export default function Swap({ onClose }: Props) {
   const [clamAmount, setClamAmount] = useState<string>('1')
   const { buyFishState, buyFish, resetBuyFish } = useBuyFish()
   const tokenInfo = useTokenInfo()
-  const fishReturn = useBuyFishReturn(clamAmount)
-  const fishAmount = useMemo(() => trim(formatUnits(tokenInfo.FISH.balance, tokenInfo.FISH.decimal), 4), [fishReturn])
+  const fishReturn = useBuyFishReturn(ethers.utils.parseUnits(clamAmount, 9))
+  const fishAmount = useMemo(() => ethers.utils.formatUnits(fishReturn, tokenInfo.FISH.decimal), [fishReturn])
   const enoughBalance =
     tokenInfo.CLAM.balance &&
     tokenInfo.CLAM.balance.gte(clamAmount ? parseUnits(clamAmount, tokenInfo.CLAM.decimal) : 0)
   const swapState = useMemo(
     () => ({
       ...buyFishState,
-      outAmount: fishAmount,
+      amountOut: fishAmount,
     }),
     [buyFishState, fishAmount]
   )
@@ -255,9 +256,7 @@ export default function Swap({ onClose }: Props) {
               placeholder={t('placeholder')}
               value={clamAmount}
               min={1}
-              onChange={e =>
-                Number.isNaN(Number(e.target.value)) ? setClamAmount(clamAmount) : setClamAmount(e.target.value)
-              }
+              onChange={e => setClamAmount(e.target.value || '1')}
             />
           </StyledTokenInputRow>
         </StyledTokenInput>
@@ -270,7 +269,7 @@ export default function Swap({ onClose }: Props) {
               <ContentSmall>{tokenInfo.FISH.symbol}</ContentSmall>
             </StyledTokenSymbol>
             <ContentSmall>
-              <StyledInput value={fishAmount} disabled />
+              <StyledInput value={trim(fishAmount, 4)} disabled />
             </ContentSmall>
           </StyledTokenInputRow>
         </StyledTokenInput>
