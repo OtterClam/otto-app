@@ -65,6 +65,7 @@ export const GET_TREASURY_METRICS = gql`
       treasuryDystopiaPairUsdcTusdMarketValue
       treasuryDystopiaPairUsdplusUsdcMarketValue
       treasuryDystopiaPairUsdplusStMaticMarketValue
+      treasuryPenroseHedgedMaticMarketValue
     }
   }
 `
