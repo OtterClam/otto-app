@@ -34,11 +34,13 @@ export declare namespace Foundry {
     result: BigNumberish;
     startedAt: BigNumberish;
     endedAt: BigNumberish;
+    fishPrice: BigNumberish;
   };
 
   export type FormulaStructOutput = [
     BigNumber[],
     BigNumber[],
+    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber
@@ -48,15 +50,17 @@ export declare namespace Foundry {
     result: BigNumber;
     startedAt: BigNumber;
     endedAt: BigNumber;
+    fishPrice: BigNumber;
   };
 }
 
 export interface FoundryInterface extends utils.Interface {
   functions: {
     "DEFAULT_ADMIN_ROLE()": FunctionFragment;
+    "FISH()": FunctionFragment;
     "ITEM()": FunctionFragment;
     "MANAGER_ROLE()": FunctionFragment;
-    "addFormula((uint256[],uint256[],uint256,uint256,uint256))": FunctionFragment;
+    "addFormula((uint256[],uint256[],uint256,uint256,uint256,uint256))": FunctionFragment;
     "forge(uint256,uint256)": FunctionFragment;
     "formula(uint256)": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
@@ -66,7 +70,8 @@ export interface FoundryInterface extends utils.Interface {
     "proxiableUUID()": FunctionFragment;
     "renounceRole(bytes32,address)": FunctionFragment;
     "revokeRole(bytes32,address)": FunctionFragment;
-    "setFormula(uint256,(uint256[],uint256[],uint256,uint256,uint256))": FunctionFragment;
+    "setFish(address)": FunctionFragment;
+    "setFormula(uint256,(uint256[],uint256[],uint256,uint256,uint256,uint256))": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "totalFormulas()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
@@ -76,6 +81,7 @@ export interface FoundryInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "DEFAULT_ADMIN_ROLE"
+      | "FISH"
       | "ITEM"
       | "MANAGER_ROLE"
       | "addFormula"
@@ -88,6 +94,7 @@ export interface FoundryInterface extends utils.Interface {
       | "proxiableUUID"
       | "renounceRole"
       | "revokeRole"
+      | "setFish"
       | "setFormula"
       | "supportsInterface"
       | "totalFormulas"
@@ -99,6 +106,7 @@ export interface FoundryInterface extends utils.Interface {
     functionFragment: "DEFAULT_ADMIN_ROLE",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "FISH", values?: undefined): string;
   encodeFunctionData(functionFragment: "ITEM", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "MANAGER_ROLE",
@@ -141,6 +149,7 @@ export interface FoundryInterface extends utils.Interface {
     functionFragment: "revokeRole",
     values: [BytesLike, string]
   ): string;
+  encodeFunctionData(functionFragment: "setFish", values: [string]): string;
   encodeFunctionData(
     functionFragment: "setFormula",
     values: [BigNumberish, Foundry.FormulaStruct]
@@ -163,6 +172,7 @@ export interface FoundryInterface extends utils.Interface {
     functionFragment: "DEFAULT_ADMIN_ROLE",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "FISH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ITEM", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "MANAGER_ROLE",
@@ -187,6 +197,7 @@ export interface FoundryInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setFish", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setFormula", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
@@ -203,14 +214,14 @@ export interface FoundryInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "AddFormula(uint256,uint256[],uint256[],uint256,uint256,uint256)": EventFragment;
+    "AddFormula(uint256,uint256[],uint256[],uint256,uint256,uint256,uint256)": EventFragment;
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
     "RoleGranted(bytes32,address,address)": EventFragment;
     "RoleRevoked(bytes32,address,address)": EventFragment;
-    "SetFormula(uint256,uint256[],uint256[],uint256,uint256,uint256)": EventFragment;
+    "SetFormula(uint256,uint256[],uint256[],uint256,uint256,uint256,uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
@@ -232,9 +243,18 @@ export interface AddFormulaEventObject {
   result: BigNumber;
   startedAt: BigNumber;
   endedAt: BigNumber;
+  fishPrice: BigNumber;
 }
 export type AddFormulaEvent = TypedEvent<
-  [BigNumber, BigNumber[], BigNumber[], BigNumber, BigNumber, BigNumber],
+  [
+    BigNumber,
+    BigNumber[],
+    BigNumber[],
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ],
   AddFormulaEventObject
 >;
 
@@ -312,9 +332,18 @@ export interface SetFormulaEventObject {
   result: BigNumber;
   startedAt: BigNumber;
   endedAt: BigNumber;
+  fishPrice: BigNumber;
 }
 export type SetFormulaEvent = TypedEvent<
-  [BigNumber, BigNumber[], BigNumber[], BigNumber, BigNumber, BigNumber],
+  [
+    BigNumber,
+    BigNumber[],
+    BigNumber[],
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ],
   SetFormulaEventObject
 >;
 
@@ -355,6 +384,8 @@ export interface Foundry extends BaseContract {
 
   functions: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
+    FISH(overrides?: CallOverrides): Promise<[string]>;
 
     ITEM(overrides?: CallOverrides): Promise<[string]>;
 
@@ -409,6 +440,11 @@ export interface Foundry extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    setFish(
+      fish_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     setFormula(
       id: BigNumberish,
       formula_: Foundry.FormulaStruct,
@@ -435,6 +471,8 @@ export interface Foundry extends BaseContract {
   };
 
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  FISH(overrides?: CallOverrides): Promise<string>;
 
   ITEM(overrides?: CallOverrides): Promise<string>;
 
@@ -489,6 +527,11 @@ export interface Foundry extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setFish(
+    fish_: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   setFormula(
     id: BigNumberish,
     formula_: Foundry.FormulaStruct,
@@ -515,6 +558,8 @@ export interface Foundry extends BaseContract {
 
   callStatic: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    FISH(overrides?: CallOverrides): Promise<string>;
 
     ITEM(overrides?: CallOverrides): Promise<string>;
 
@@ -566,6 +611,8 @@ export interface Foundry extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setFish(fish_: string, overrides?: CallOverrides): Promise<void>;
+
     setFormula(
       id: BigNumberish,
       formula_: Foundry.FormulaStruct,
@@ -592,13 +639,14 @@ export interface Foundry extends BaseContract {
   };
 
   filters: {
-    "AddFormula(uint256,uint256[],uint256[],uint256,uint256,uint256)"(
+    "AddFormula(uint256,uint256[],uint256[],uint256,uint256,uint256,uint256)"(
       id?: BigNumberish | null,
       materials?: null,
       values?: null,
       result?: null,
       startedAt?: null,
-      endedAt?: null
+      endedAt?: null,
+      fishPrice?: null
     ): AddFormulaEventFilter;
     AddFormula(
       id?: BigNumberish | null,
@@ -606,7 +654,8 @@ export interface Foundry extends BaseContract {
       values?: null,
       result?: null,
       startedAt?: null,
-      endedAt?: null
+      endedAt?: null,
+      fishPrice?: null
     ): AddFormulaEventFilter;
 
     "AdminChanged(address,address)"(
@@ -659,13 +708,14 @@ export interface Foundry extends BaseContract {
       sender?: string | null
     ): RoleRevokedEventFilter;
 
-    "SetFormula(uint256,uint256[],uint256[],uint256,uint256,uint256)"(
+    "SetFormula(uint256,uint256[],uint256[],uint256,uint256,uint256,uint256)"(
       id?: BigNumberish | null,
       materials?: null,
       values?: null,
       result?: null,
       startedAt?: null,
-      endedAt?: null
+      endedAt?: null,
+      fishPrice?: null
     ): SetFormulaEventFilter;
     SetFormula(
       id?: BigNumberish | null,
@@ -673,7 +723,8 @@ export interface Foundry extends BaseContract {
       values?: null,
       result?: null,
       startedAt?: null,
-      endedAt?: null
+      endedAt?: null,
+      fishPrice?: null
     ): SetFormulaEventFilter;
 
     "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
@@ -682,6 +733,8 @@ export interface Foundry extends BaseContract {
 
   estimateGas: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    FISH(overrides?: CallOverrides): Promise<BigNumber>;
 
     ITEM(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -736,6 +789,11 @@ export interface Foundry extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    setFish(
+      fish_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     setFormula(
       id: BigNumberish,
       formula_: Foundry.FormulaStruct,
@@ -765,6 +823,8 @@ export interface Foundry extends BaseContract {
     DEFAULT_ADMIN_ROLE(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    FISH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     ITEM(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -819,6 +879,11 @@ export interface Foundry extends BaseContract {
     revokeRole(
       role: BytesLike,
       account: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setFish(
+      fish_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

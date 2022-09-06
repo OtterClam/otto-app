@@ -1,5 +1,5 @@
 import { useCall, useCalls, useEthers } from '@usedapp/core'
-import { BigNumber, constants } from 'ethers'
+import { BigNumber, BigNumberish, constants } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useCallback, useEffect, useState } from 'react'
 import {
@@ -257,4 +257,22 @@ export function useIsApprovedForAll(contract: string, account: string, operator:
     isApprovedForAll,
     updateApprovalStatus,
   }
+}
+
+export const useFishPrice = () => {
+  const oneClam = BigNumber.from(1e9)
+  const oneFish = BigNumber.from(1e18)
+  const fishAmount = useBuyFishReturn(oneClam)
+  return oneClam.mul(1e9).div(fishAmount).mul(oneFish)
+}
+
+export const useBuyFishReturn = (clamAmount: BigNumberish) => {
+  const store = useStoreContract()
+  const [fishAmount, setFishAmount] = useState<BigNumberish>(0)
+
+  useEffect(() => {
+    store.toFish(clamAmount).then(setFishAmount)
+  }, [clamAmount])
+
+  return fishAmount
 }

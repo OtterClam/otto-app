@@ -531,3 +531,28 @@ export const useSetApprovalForAll = (address: string) => {
   const erc1155 = useERC1155(address)
   return useContractFunction(erc1155, 'setApprovalForAll')
 }
+
+export const useBuyFish = () => {
+  const store = useStoreContract()
+  const { state, send, resetState } = useContractFunction(store, 'buyFish', {})
+
+  const [buyFishState, setBuyFishState] = useState<OttoTransactionState>({
+    state: 'None',
+    status: state,
+  })
+
+  const buyFish = async (clamAmount: BigNumber) => {
+    setBuyFishState({
+      state: 'PendingSignature',
+      status: state,
+    })
+    send(clamAmount)
+  }
+
+  const resetBuyFish = () => {
+    resetState()
+    setBuyFishState({ state: 'None', status: state })
+  }
+
+  return { buyFishState, buyFish, resetBuyFish }
+}

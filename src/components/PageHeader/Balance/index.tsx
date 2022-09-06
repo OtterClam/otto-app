@@ -88,9 +88,9 @@ export const ClamBalance = ({ onClick }: Props) => {
   )
 }
 
-export const FishBalance = () => {
+export const FishBalance = ({ onClick }: Props) => {
   const { isMobile } = useBreakpoints()
   const bg = isMobile ? SmallFishBg : LargeFishBg
   const width = isMobile ? 103 : 155
-  return <Balance disabled showBuyButton background={bg.src} width={width} balance="--" />
+  return <Balance disabled showBuyButton background={bg.src} width={width} balance="--" onClick={onClick} />
 }
