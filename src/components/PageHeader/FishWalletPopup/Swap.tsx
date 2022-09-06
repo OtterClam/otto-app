@@ -218,7 +218,7 @@ export default function Swap({ onClose }: Props) {
     }
   }, [swapState.state])
 
-  if (buyFishState.state === 'PendingSignature' || buyFishState.state === 'Mining') {
+  if (buyFishState.state !== 'None') {
     return (
       <SwapLoading
         swapState={swapState}
