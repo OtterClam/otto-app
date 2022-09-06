@@ -7,6 +7,8 @@ import ReactTooltip from 'react-tooltip'
 import styled, { useTheme } from 'styled-components/macro'
 import { ContentMedium } from 'styles/typography'
 import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
+import { ethers } from 'ethers'
+import { trim } from 'helpers/trim'
 import Balance from './balance'
 import LargeClamBg from './header_clam_xl.png'
 import SmallClamBg from './header_clam_xs.png'
@@ -89,7 +91,17 @@ export const ClamBalance = ({ onClick }: Props) => {
 
 export const FishBalance = ({ onClick }: Props) => {
   const { isMobile } = useBreakpoints()
+  const { FISH } = useContractAddresses()
   const bg = isMobile ? SmallFishBg : LargeFishBg
   const width = isMobile ? 103 : 155
-  return <Balance showBuyButton background={bg.src} width={width} balance="--" onClick={onClick} />
+  const fishBalance = useTokenBalance(FISH)
+  return (
+    <Balance
+      showBuyButton
+      background={bg.src}
+      width={width}
+      balance={trim(ethers.utils.formatUnits(fishBalance, 18), 4)}
+      onClick={onClick}
+    />
+  )
 }
