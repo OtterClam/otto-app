@@ -103,7 +103,7 @@ const marketValues = [
     stopColor: ['rgba(131, 71, 229, 0.8)', 'rgba(131, 71, 229, 0.5)'],
   },
   {
-    label: 'Hedged MATIC (Penrose)',
+    label: 'Hedged USDC/MATIC (Penrose)',
     dataKey: 'treasuryPenroseHedgedMaticMarketValue',
     stopColor: ['rgba(131, 71, 229, 0.8)', 'rgba(131, 71, 229, 0.5)'],
   },
