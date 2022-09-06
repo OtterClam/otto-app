@@ -1,20 +1,9 @@
-import ClamPondIcon from 'assets/icons/icon_48_clam-pond.png'
-import PearlBankIcon from 'assets/icons/icon_48_pearl-bank.png'
-import CLAMPlusIcon from 'assets/tokens/CLAM+.svg'
-import CLAMIcon from 'assets/tokens/CLAM.svg'
-import PEARLIcon from 'assets/tokens/PEARL.svg'
 import BorderContainer from 'components/BorderContainer'
-import useContractAddresses from 'hooks/useContractAddresses'
-import { useTranslation } from 'next-i18next'
 import { RefObject, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { hideFishWalletPopup, selectShowFishWalletPopup } from 'store/uiSlice'
 import styled from 'styled-components/macro'
-import { Caption } from 'styles/typography'
-import useTokenBalance from 'hooks/useTokenBalance'
-import { formatClamEthers } from 'utils/currency'
-import BalanceCell from './BalanceCell'
 import Swap from './Swap'
 
 const StyledPopup = styled.div<{ show: boolean }>`
@@ -66,7 +55,6 @@ interface Props {
 
 export default function FishWalletPopup({ alignRef, className }: Props) {
   const show = useSelector(selectShowFishWalletPopup)
-  const { CLAM, PEARL_BANK, CLAM_POND } = useContractAddresses()
   const dispatch = useDispatch()
   const onClose = () => dispatch(hideFishWalletPopup())
 
