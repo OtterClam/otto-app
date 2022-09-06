@@ -39,6 +39,7 @@ export default function PaymentButton({
   // TxButtonProps
   onClick = noop,
   disabled,
+  loading,
   ...btnProps
 }: PaymentButtonProps) {
   const addresses = useContractAddresses()
@@ -49,7 +50,7 @@ export default function PaymentButton({
   const { account, chainId } = useEthers()
   const allowance = useTokenAllowance(tokenAddress, account, spenderAddress, { chainId })
   const { approve, approveState } = useApprove(tokenAddress)
-  const loading = allowance === undefined || btnState === BtnState.WaitingApprove
+  const approving = allowance === undefined || btnState === BtnState.WaitingApprove
   const noAmount = BigNumber.from(amount).eq(0)
 
   const pay = useCallback(() => {
@@ -75,7 +76,7 @@ export default function PaymentButton({
   }, [approveState.status])
 
   return (
-    <TxButton onClick={pay} loading={loading} {...btnProps}>
+    <TxButton onClick={pay} loading={loading || approving} {...btnProps}>
       <StyledWrapper>
         {!noAmount && <Price showSymbol={showSymbol} token={token} amount={amount} />}
         {children && <StyledButtonText>{children}</StyledButtonText>}
