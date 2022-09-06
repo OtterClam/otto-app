@@ -36,7 +36,7 @@ const config: Config = {
   readOnlyChainId: ChainId.Polygon,
   readOnlyUrls: {
     [ChainId.Polygon]: 'https://polygon-rpc.com',
-    // [ChainId.Mumbai]: process.env.NEXT_PUBLIC_RPC_ENDPOINT_MUMBAI || '',
+    [ChainId.Mumbai]: process.env.NEXT_PUBLIC_RPC_ENDPOINT_MUMBAI || '',
     // [ChainId.Hardhat]: 'http://127.0.0.1:8545',
   },
   multicallAddresses: {
