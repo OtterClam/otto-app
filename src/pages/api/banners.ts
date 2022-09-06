@@ -1,13 +1,16 @@
+import camelCase from 'lodash/camelCase'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import airtable from './_libs/airtable'
 
 const extractFields = (fields: string[], record: { fields?: { [key: string]: unknown } }) =>
-  fields.reduce((data, key) => Object.assign(data, { [key.toLocaleLowerCase()]: (record.fields ?? {})[key] }), {})
+  fields.reduce((data, key) => Object.assign(data, { [camelCase(key)]: (record.fields ?? {})[key] }), {})
 
 const validate = (fields: string[], data: { [key: string]: unknown }) =>
-  fields.reduce((valid, key) => valid && Boolean(data[key.toLocaleLowerCase()]), true)
+  fields.reduce((valid, key) => valid && Boolean(data[camelCase(key)]), true)
 
 const fields = ['Name', 'Type', 'Image', 'Link']
+
+const optionalFiels = ['OpenNewTab']
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { refresh } = req.query
@@ -27,7 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .status(200)
     .json(
       (data.records ?? [])
-        .map((record: any) => extractFields(fields, record))
+        .map((record: any) => extractFields(fields.concat(optionalFiels), record))
         .filter((record: any) => validate(fields, record))
     )
 }
