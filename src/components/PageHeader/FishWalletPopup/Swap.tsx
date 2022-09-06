@@ -1,21 +1,22 @@
-import ArrowDownIcon from 'assets/ui/arrow_down.svg'
 import Button from 'components/Button'
+import PaymentButton from 'components/PaymentButton'
+import { Token } from 'constant'
+import { useWallet } from 'contexts/Wallet'
+import { useBuyFish } from 'contracts/functions'
+import { useBuyFishReturn } from 'contracts/views'
+import { ethers, utils } from 'ethers'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { trim } from 'helpers/trim'
+import useContractAddresses from 'hooks/useContractAddresses'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } from 'styles/typography'
-import { useBuyFishReturn } from 'contracts/views'
-import { useBuyFish } from 'contracts/functions'
-import PaymentButton from 'components/PaymentButton'
-import useContractAddresses from 'hooks/useContractAddresses'
-import { Token } from 'constant'
-import { ethers } from 'ethers'
-import { useTokenInfo } from './token-info'
-import SwapLoading from './SwapLoading'
+import { formatClamDecimals, formatClamEthers } from 'utils/currency'
 import BuyFISHIcon from './buy-fish.png'
+import SwapLoading from './SwapLoading'
+import { useTokenInfo } from './token-info'
 
 const StyledSwap = styled.div`
   display: flex;
@@ -121,18 +122,6 @@ const StyledInput = styled(RegularInput)`
   }
 `
 
-const StyledInverseButton = styled.button`
-  display: flex;
-  justify-content: center;
-  padding: 6px;
-  border-radius: 14px;
-  background: ${({ theme }) => theme.colors.white};
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
-  position: absolute;
-  left: calc(50% - 14px);
-  top: calc(50% - 14px);
-`
-
 const StyledSwapInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -198,9 +187,11 @@ interface Props {
 export default function Swap({ onClose }: Props) {
   const { OTTOPIA_STORE } = useContractAddresses()
   const { t } = useTranslation('', { keyPrefix: 'wallet_popup.swap' })
-  const [clamAmount, setClamAmount] = useState<string>('1')
+  const [clamAmount, setClamAmount] = useState('1')
   const { buyFishState, buyFish, resetBuyFish } = useBuyFish()
+  const { CLAM, FISH } = useContractAddresses()
   const tokenInfo = useTokenInfo()
+  const wallet = useWallet()
   const fishReturn = useBuyFishReturn(ethers.utils.parseUnits(clamAmount, 9))
   const fishAmount = useMemo(() => ethers.utils.formatUnits(fishReturn, tokenInfo.FISH.decimal), [fishReturn])
   const enoughBalance =
@@ -213,12 +204,21 @@ export default function Swap({ onClose }: Props) {
     }),
     [buyFishState, fishAmount]
   )
-
   const setMax = () => {
     setClamAmount(trim(formatUnits(tokenInfo.CLAM.balance, tokenInfo.CLAM.decimal), 4))
   }
+  useEffect(() => {
+    if (swapState.state === 'Success') {
+      wallet?.setBalance(CLAM, balance => balance.sub(utils.parseUnits(clamAmount, 9)))
+      wallet?.setBalance(FISH, balance => balance.add(utils.parseEther(fishAmount)))
+    }
+    if (swapState.state === 'Fail' || swapState.state === 'Exception') {
+      window.alert(swapState.status.errorMessage)
+      resetBuyFish()
+    }
+  }, [swapState.state])
 
-  if (buyFishState.state !== 'None') {
+  if (buyFishState.state === 'PendingSignature' || buyFishState.state === 'Mining') {
     return (
       <SwapLoading
         swapState={swapState}
@@ -236,9 +236,9 @@ export default function Swap({ onClose }: Props) {
       <StyledAvailable>
         {t('available')}
         <StyledAvailableToken src={tokenInfo.CLAM.icon} width="18px" height="18px" />
-        <StyledAvailableAmount>{`${
-          tokenInfo.CLAM.balance ? trim(formatUnits(tokenInfo.CLAM.balance, tokenInfo.CLAM.decimal), 4) : '-'
-        } ${tokenInfo.CLAM.symbol}`}</StyledAvailableAmount>
+        <StyledAvailableAmount>{`${tokenInfo.CLAM.balance ? formatClamEthers(tokenInfo.CLAM.balance) : '-'} ${
+          tokenInfo.CLAM.symbol
+        }`}</StyledAvailableAmount>
       </StyledAvailable>
       <StyledTokenInputContainer>
         <StyledTokenInput>

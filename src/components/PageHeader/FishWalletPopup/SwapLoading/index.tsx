@@ -5,7 +5,7 @@ import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentLarge, ContentSmall, Headline } from 'styles/typography'
-import { TokenInfo, SwapTransactionState } from '../token-info'
+import { SwapTransactionState, TokenInfo } from '../token-info'
 import ArrowRight from './arrow-right.svg'
 
 interface Props {

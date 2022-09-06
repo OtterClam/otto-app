@@ -100,7 +100,7 @@ export const FishBalance = ({ onClick }: Props) => {
       showBuyButton
       background={bg.src}
       width={width}
-      balance={trim(ethers.utils.formatUnits(fishBalance, 18), 4)}
+      balance={trim(ethers.utils.formatEther(fishBalance), 4)}
       onClick={onClick}
     />
   )

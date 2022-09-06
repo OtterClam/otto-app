@@ -1,5 +1,5 @@
 import { useWallet } from 'contexts/Wallet'
-import { BigNumber } from 'ethers'
+import { constants } from 'ethers'
 import { useEffect, useReducer } from 'react'
 
 export default function useTokenBalance(tokenAddress: string) {
@@ -26,5 +26,5 @@ export default function useTokenBalance(tokenAddress: string) {
     }
   }, [wallet, tokenAddress])
 
-  return wallet?.getBalance(tokenAddress) ?? BigNumber.from(0)
+  return wallet?.getBalance(tokenAddress) ?? constants.Zero
 }
