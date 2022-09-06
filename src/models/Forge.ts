@@ -1,4 +1,4 @@
-import { BigNumber, ethers } from 'ethers'
+import { BigNumber } from 'ethers'
 import Item, { rawItemToItem } from './Item'
 import { Trait } from './Otto'
 
@@ -14,7 +14,7 @@ export interface ForgeFormula {
   bgImage: string
   leftImage: string
   rightImage: string
-  fishPrice: BigNumber
+  fish: BigNumber
 }
 
 export interface RawForgeFormula {
@@ -29,7 +29,7 @@ export interface RawForgeFormula {
   bg_img: string
   left_img: string
   right_img: string
-  fish_price: string
+  fish: string
 }
 
 export const rawForgeToForge = (raw: RawForgeFormula): ForgeFormula => {
@@ -45,6 +45,6 @@ export const rawForgeToForge = (raw: RawForgeFormula): ForgeFormula => {
     bgImage: raw.bg_img,
     leftImage: raw.left_img,
     rightImage: raw.right_img,
-    fishPrice: ethers.utils.parseUnits(raw.fish_price ?? '0', 18),
+    fish: BigNumber.from(raw.fish),
   }
 }

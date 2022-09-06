@@ -1,6 +1,5 @@
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useBreakpoints } from 'contexts/Breakpoints'
-import { useEthers } from '@usedapp/core'
 import { formatClamEthers } from 'utils/currency'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import useTokenBalance from 'hooks/useTokenBalance'
@@ -92,5 +91,5 @@ export const FishBalance = ({ onClick }: Props) => {
   const { isMobile } = useBreakpoints()
   const bg = isMobile ? SmallFishBg : LargeFishBg
   const width = isMobile ? 103 : 155
-  return <Balance disabled showBuyButton background={bg.src} width={width} balance="--" onClick={onClick} />
+  return <Balance showBuyButton background={bg.src} width={width} balance="--" onClick={onClick} />
 }

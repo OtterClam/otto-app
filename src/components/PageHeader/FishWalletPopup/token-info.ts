@@ -1,11 +1,10 @@
 import { BigNumber } from 'ethers'
 import CLAMIcon from 'assets/tokens/CLAM.svg'
+import FISHIcon from 'assets/tokens/FISH.svg'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
 import { TransactionState, TransactionStatus } from '@usedapp/core'
-
-const FISHIcon = CLAMIcon
 
 export interface SwapTransactionState {
   state: TransactionState

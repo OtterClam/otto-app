@@ -57,28 +57,6 @@ const StyledBorderContainer = styled(BorderContainer)`
   overflow: hidden;
 `
 
-const StyledBalancesContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  color: ${({ theme }) => theme.colors.white};
-  background: ${({ theme }) => theme.colors.otterBlack};
-  padding: 12px 12px 15px 12px;
-`
-
-const StyledBalanceTitle = styled(Caption).attrs({ as: 'h2' })`
-  text-align: center;
-`
-
-const StyledBalanceCells = styled.div`
-  display: flex;
-  gap: 10px;
-`
-
-const StyledBalanceCell = styled(BalanceCell)`
-  flex: 1;
-`
-
 const StyledSwap = styled(Swap)``
 
 interface Props {
@@ -88,11 +66,7 @@ interface Props {
 
 export default function FishWalletPopup({ alignRef, className }: Props) {
   const show = useSelector(selectShowFishWalletPopup)
-  const { t } = useTranslation('', { keyPrefix: 'wallet_popup' })
   const { CLAM, PEARL_BANK, CLAM_POND } = useContractAddresses()
-  const clamBalance = useTokenBalance(CLAM)
-  const pearlBalance = useTokenBalance(PEARL_BANK)
-  const clamPlusBalance = useTokenBalance(CLAM_POND)
   const dispatch = useDispatch()
   const onClose = () => dispatch(hideFishWalletPopup())
 
@@ -114,28 +88,6 @@ export default function FishWalletPopup({ alignRef, className }: Props) {
       <StyledBackground onClick={onClose} />
       <StyledWalletPopup className={className} top={bottom} left={left}>
         <StyledBorderContainer size="xs">
-          <StyledBalancesContainer>
-            <StyledBalanceTitle>{t('balance_title')}</StyledBalanceTitle>
-            <StyledBalanceCells>
-              <StyledBalanceCell
-                name={t('wallet')}
-                balance={formatClamEthers(clamBalance, 2)}
-                balanceIcon={CLAMIcon.src}
-              />
-              <StyledBalanceCell
-                name={t('clam_pond')}
-                icon={ClamPondIcon.src}
-                balance={formatClamEthers(clamPlusBalance, 2)}
-                balanceIcon={CLAMPlusIcon.src}
-              />
-              <StyledBalanceCell
-                name={t('pearl_bank')}
-                icon={PearlBankIcon.src}
-                balance={formatClamEthers(pearlBalance, 2)}
-                balanceIcon={PEARLIcon.src}
-              />
-            </StyledBalanceCells>
-          </StyledBalancesContainer>
           <StyledSwap onClose={onClose} />
         </StyledBorderContainer>
       </StyledWalletPopup>

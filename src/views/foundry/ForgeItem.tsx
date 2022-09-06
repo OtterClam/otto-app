@@ -227,7 +227,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
           <PaymentButton
             spenderAddress={FOUNDRY}
             token={Token.Fish}
-            amount={formula.fishPrice}
+            amount={formula.fish}
             loading={processing}
             height="60px"
             disabled={disabled}

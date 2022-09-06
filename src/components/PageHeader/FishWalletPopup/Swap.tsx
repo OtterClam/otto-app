@@ -14,7 +14,7 @@ import useContractAddresses from 'hooks/useContractAddresses'
 import { Token } from 'constant'
 import { useTokenInfo } from './token-info'
 import SwapLoading from './SwapLoading'
-import BuyCLAMIcon from './buy-clam.png'
+import BuyFISHIcon from './buy-fish.png'
 
 const StyledSwap = styled.div`
   display: flex;
@@ -30,12 +30,12 @@ const StyledTitle = styled(ContentLarge).attrs({ as: 'h2' })`
   &:before {
     width: 43px;
     content: ' ';
-    background: center / 43px 38px url(${BuyCLAMIcon.src}) no-repeat;
+    background: center / 43px 38px url(${BuyFISHIcon.src}) no-repeat;
   }
   &:after {
     width: 43px;
     content: ' ';
-    background: center / 43px 38px url(${BuyCLAMIcon.src}) no-repeat;
+    background: center / 43px 38px url(${BuyFISHIcon.src}) no-repeat;
   }
 `
 
@@ -86,7 +86,7 @@ const StyledMaxButton = styled.button`
   }
 `
 
-const StyledSelectTokenButton = styled.button<{ icon: string }>`
+const StyledTokenSymbol = styled.div<{ icon: string }>`
   display: flex;
   gap: 5px;
   align-items: center;
@@ -100,18 +100,6 @@ const StyledSelectTokenButton = styled.button<{ icon: string }>`
     background-size: 100% 100%;
     width: 22px;
     height: 22px;
-  }
-
-  &::after {
-    display: ${({ disabled }) => (disabled ? 'none' : 'block')};
-    content: '';
-    width: 12px;
-    height: 12px;
-    background: url(${ArrowDownIcon.src}) no-repeat center/12px 12px;
-  }
-
-  &:hover {
-    background: ${({ theme, disabled }) => (disabled ? theme.colors.white : theme.colors.lightGray200)};
   }
 
   &:disabled {
@@ -209,7 +197,7 @@ interface Props {
 export default function Swap({ onClose }: Props) {
   const { OTTOPIA_STORE } = useContractAddresses()
   const { t } = useTranslation('', { keyPrefix: 'wallet_popup.swap' })
-  const [clamAmount, setClamAmount] = useState<string>('0')
+  const [clamAmount, setClamAmount] = useState<string>('1')
   const { buyFishState, buyFish, resetBuyFish } = useBuyFish()
   const tokenInfo = useTokenInfo()
   const fishReturn = useBuyFishReturn(clamAmount)
@@ -260,12 +248,13 @@ export default function Swap({ onClose }: Props) {
             </StyledMaxButton>
           </StyledTokenInputRow>
           <StyledTokenInputRow>
-            <StyledSelectTokenButton icon={tokenInfo.CLAM.icon.src}>
+            <StyledTokenSymbol icon={tokenInfo.CLAM.icon.src}>
               <ContentSmall>{tokenInfo.CLAM.symbol}</ContentSmall>
-            </StyledSelectTokenButton>
+            </StyledTokenSymbol>
             <StyledInput
               placeholder={t('placeholder')}
               value={clamAmount}
+              min={1}
               onChange={e =>
                 Number.isNaN(Number(e.target.value)) ? setClamAmount(clamAmount) : setClamAmount(e.target.value)
               }
@@ -277,9 +266,9 @@ export default function Swap({ onClose }: Props) {
             <StyledTokenHeader>{t('to')}</StyledTokenHeader>
           </StyledTokenInputRow>
           <StyledTokenInputRow>
-            <StyledSelectTokenButton icon={tokenInfo.FISH.icon.src}>
+            <StyledTokenSymbol icon={tokenInfo.FISH.icon.src}>
               <ContentSmall>{tokenInfo.FISH.symbol}</ContentSmall>
-            </StyledSelectTokenButton>
+            </StyledTokenSymbol>
             <ContentSmall>
               <StyledInput value={fishAmount} disabled />
             </ContentSmall>
@@ -291,12 +280,6 @@ export default function Swap({ onClose }: Props) {
           <p>1 {tokenInfo.CLAM.symbol}</p>
           <p>
             {fishAmount && clamAmount ? trim(Number(fishAmount) / Number(clamAmount), 4) : '-'} {tokenInfo.FISH.symbol}
-          </p>
-        </StyledSwapInfo>
-        <StyledSwapInfo>
-          <p>1 {tokenInfo.FISH.symbol}</p>
-          <p>
-            {fishAmount && clamAmount ? trim(Number(clamAmount) / Number(fishAmount), 4) : '-'} {tokenInfo.CLAM.symbol}
           </p>
         </StyledSwapInfo>
       </StyledSwapInfoContainer>
