@@ -1,6 +1,5 @@
 import { useApi } from 'contexts/Api'
 import { ERC1155ApprovalProvider } from 'contexts/ERC1155Approval'
-import isAfter from 'date-fns/isAfter'
 import useAssetsBundles from 'hooks/useAssetsBundles'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useMyItems from 'hooks/useMyItems'
@@ -19,7 +18,6 @@ const useForgeFormulas = () => {
   useEffect(() => {
     api
       .getFoundryForges()
-      .then(formulas => formulas.filter(formula => isAfter(formula.endTime, now)))
       .then(setForges)
       .catch(err => {
         console.warn(err)
