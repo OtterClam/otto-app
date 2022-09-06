@@ -233,6 +233,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
             disabled={disabled}
             Typography={Headline}
             showSymbol
+            onSuccess={callForge}
             onClick={callForge}
           >
             {t(

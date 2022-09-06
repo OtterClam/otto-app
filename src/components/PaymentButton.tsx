@@ -12,6 +12,7 @@ import noop from 'lodash/noop'
 export interface PaymentButtonProps extends PriceProps, TxButtonProps {
   spenderAddress: string
   showSymbol?: boolean
+  onSuccess?: () => void
 }
 
 const StyledWrapper = styled.div`
@@ -33,6 +34,7 @@ export default function PaymentButton({
   children,
   spenderAddress,
   showSymbol,
+  onSuccess = noop,
   // PriceProps
   token,
   amount,
@@ -72,6 +74,12 @@ export default function PaymentButton({
   useEffect(() => {
     if (approveState.status === 'Exception') {
       setBtnState(BtnState.WaitingClick)
+    }
+  }, [approveState.status])
+
+  useEffect(() => {
+    if (approveState.status === 'Success') {
+      onSuccess()
     }
   }, [approveState.status])
 
