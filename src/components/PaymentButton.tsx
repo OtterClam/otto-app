@@ -84,7 +84,7 @@ export default function PaymentButton({
   }, [approveState.status])
 
   return (
-    <TxButton onClick={pay} loading={loading || approving} {...btnProps}>
+    <TxButton onClick={pay} disabled={disabled || loading || approving} loading={loading || approving} {...btnProps}>
       <StyledWrapper>
         {!noAmount && <Price showSymbol={showSymbol} token={token} amount={amount} />}
         {children && <StyledButtonText>{children}</StyledButtonText>}
