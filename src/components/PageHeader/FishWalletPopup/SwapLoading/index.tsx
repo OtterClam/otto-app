@@ -71,7 +71,7 @@ const StyledCoinFace = styled.div`
     transform: translateZ(0.1em);
   }
   &:nth-child(5) {
-    transform: translateZ(0.2em);
+    transform: translateZ(0.2em) scaleX(-1);
   }
 `
 
@@ -101,7 +101,6 @@ export default function SwapLoading({ swapState, fromTokenInfo, toTokenInfo, onC
   switch (swapState.state) {
     case 'Success':
       title = t('tx_success_title')
-      console.log(swapState)
       desc = t('tx_success_desc', {
         to: toTokenInfo.symbol,
         amount: trim(swapState.amountOut || '0', 4),
