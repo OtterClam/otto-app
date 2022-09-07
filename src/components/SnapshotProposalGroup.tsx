@@ -7,11 +7,12 @@ import { GovernanceTab } from '../models/Tabs'
 import Button from './Button'
 import SnapshotProposalPieChart from './SnapshotProposalPieChart'
 import { theme } from 'styles'
+import { useMemo, useState } from 'react'
 
 const StyledContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
+  flex-direction: column;
   gap: 4px;
   justify-content: space-evenly;
   font-family: 'Pangolin', 'naikaifont' !important;
@@ -29,24 +30,21 @@ const StyledContainer = styled.div`
 
 const StyledCard = styled.div`
   margin: 4px;
-  max-height: 261px;
+  height: 268px;
   width: 100%;
-  padding: 15px;
-  align-items: center;
-  justify-items: center;
-  justify-content: center;
+  padding: 4px;
   border-radius: 10px;
   box-sizing: border-box;
   border: 1px solid ${({ theme }) => theme.colors.darkBrown};
   box-shadow: 0px 4px 0px ${({ theme }) => theme.colors.superDarkBrown},
     inset 0px 0px 0px 4px ${({ theme }) => theme.colors.skin};
   background: ${({ theme }) => theme.colors.white};
+  display: flex;
 `
 
 const StyledTextBody = styled.div`
   white-space: pre-line;
-  max-height: 60%;
-  max-width: 60%;
+  padding-top: 8px;
   overflow: hidden;
   border-radius: 10px;
   box-sizing: border-box;
@@ -58,8 +56,7 @@ const StyledTextBody = styled.div`
 const StyledProposalHeadline = styled.span`
   font-size: 24px;
   font-weight: 400;
-  max-width: 60%;
-  line-height: 1.5;
+  line-height: 1.5em;
   @media ${({ theme }) => theme.breakpoints.mobile} {
     font-size: 20px;
   }
@@ -67,8 +64,11 @@ const StyledProposalHeadline = styled.span`
 `
 
 const StyledInnerContainer = styled.div`
-  display: inline-flex;
   margin: 4px;
+  padding: 8px 8px 0 8px;
+  height: calc(100% - 3.2em);
+  overflow: hidden;
+  padding-bottom: 48px;
 `
 const StyledActivityFlag = styled.div<{ flagColor: string }>`
   height: 18px;
@@ -92,6 +92,18 @@ const StyledInlineText = styled.span`
   color: ${({ theme }) => theme.colors.darkGray200};
 `
 
+const StyledSeeAll = styled.a`
+  color: blue;
+  align-self: flex-end;
+  flex: none;
+  display: block;
+  position: relative;
+  right: 88px;
+  width: 0;
+  white-space: nowrap;
+  bottom: 20px;
+`
+
 export interface SnapshotProposalGroupInterface {
   className?: string
   proposals: Proposal[]
@@ -111,21 +123,32 @@ const flagColorFromProposalState: Record<string, string> = {
 
 export default function SnapshotProposalGroup({ className, proposals, tab }: SnapshotProposalGroupInterface) {
   const { t } = useTranslation('', { keyPrefix: 'treasury.governance' })
+  const [maximisedProposal, setmaximisedProposal] = useState<string>('')
+
+  function toggleMaximisedProposal(key: string) {
+    if (key === maximisedProposal) {
+      setmaximisedProposal('')
+    } else {
+      setmaximisedProposal(key)
+    }
+  }
+
   return (
     <StyledContainer className={className}>
       {proposals.map(proposal => (
-        <StyledCard key={proposal.id}>
-          <StyledProposalHeadline as="h1">{proposal.title}</StyledProposalHeadline>
-          <StyledActivityFlag flagColor={flagColorFromProposalState[proposal.state ?? '']}>
-            {capitalizeFirstLetter(proposal.state ?? '')}
-          </StyledActivityFlag>
-          <StyledInlineText>{`${proposal.votes} ${t('votes')}`}</StyledInlineText>
+        <StyledCard key={proposal.id} style={{ height: maximisedProposal === proposal.id ? '100%' : '' }}>
           <StyledInnerContainer>
+            <StyledProposalHeadline as="h1">{proposal.title}</StyledProposalHeadline>
+            <StyledActivityFlag flagColor={flagColorFromProposalState[proposal.state ?? '']}>
+              {capitalizeFirstLetter(proposal.state ?? '')}
+            </StyledActivityFlag>
+            <StyledInlineText>{`${proposal.votes} ${t('voters')}`}</StyledInlineText>
             <StyledTextBody>
               <ReactMarkdown>{proposal.body ?? ''}</ReactMarkdown>
             </StyledTextBody>
-            <SnapshotProposalPieChart proposal={proposal} tab={tab} />
           </StyledInnerContainer>
+          <StyledSeeAll onClick={() => toggleMaximisedProposal(proposal.id)}>...See All</StyledSeeAll>
+          <SnapshotProposalPieChart proposal={proposal} tab={tab} />
           {(proposal.state === 'active' && tab === GovernanceTab.OTTERCLAM) ?? (
             <Button
               padding="6px 48px"

@@ -13,8 +13,6 @@ import { GovernanceTab } from '../models/Tabs'
 
 const StyledContainer = styled.div`
   font-family: 'Pangolin', 'naikaifont' !important;
-  position: relative;
-  top: -100px;
 `
 export interface SnapshotProposalPieChartProps {
   proposal: Proposal
@@ -36,12 +34,8 @@ const renderTooltip: (i18nClient: i18n, tab: GovernanceTab) => TooltipRenderer =
       color: COLORS[payload.colorId % COLORS.length],
     }))
     const isOuterRing = payload?.[0].dataKey === 'power'
-    return (
-      <ChartTooltip
-        headerLabel={isOuterRing ? i18n.t(tab === GovernanceTab.OTTERCLAM ? 'youVoted' : 'ocvoted') : ''}
-        items={items}
-      />
-    )
+    const msg = tab === GovernanceTab.OTTERCLAM ? 'youVoted' : 'ocvoted'
+    return <ChartTooltip headerLabel={isOuterRing ? i18n.t(`treasury.governance.${msg}`) : ''} items={items} />
   }
 
 export default function SnapshotProposalPieChart({ proposal, tab }: SnapshotProposalPieChartProps) {
@@ -100,7 +94,7 @@ export default function SnapshotProposalPieChart({ proposal, tab }: SnapshotProp
 
   return (
     <StyledContainer ref={containerRef}>
-      <PieChart width={300} height={261}>
+      <PieChart width={300} height={250}>
         <Tooltip wrapperStyle={{ zIndex: 1, fontSize: '12px !important' }} content={renderTooltip(i18n, tab) as any} />
         <Pie data={data} labelLine={false} nameKey="choice" outerRadius={80} dataKey="score" minAngle={3}>
           {data.map((entry, index) => (
@@ -123,29 +117,23 @@ export default function SnapshotProposalPieChart({ proposal, tab }: SnapshotProp
           </Pie>
         )}
 
-        {tab === GovernanceTab.QIDAO ? (
-          <Legend
-            fontFamily="Pangolin"
-            style={{ fontFamily: 'Pangolin !important', overflow: 'scroll' }}
-            height={36}
-            payload={votes.map((entry, index) => ({
-              id: index.toString(),
-              value: entry.choice,
-              color: COLORS[entry.colorId % COLORS.length],
-            }))}
-          />
-        ) : (
-          <Legend
-            fontFamily="Pangolin"
-            style={{ fontFamily: 'Pangolin !important', overflow: 'scroll' }}
-            height={36}
-            payload={data.map((entry, index) => ({
-              id: index.toString(),
-              value: entry.choice,
-              color: COLORS[entry.colorId % COLORS.length],
-            }))}
-          />
-        )}
+        <Legend
+          fontFamily="Pangolin"
+          style={{ fontFamily: 'Pangolin !important', overflow: 'scroll' }}
+          payload={
+            proposal.voted
+              ? votes.map((entry, index) => ({
+                  id: index.toString(),
+                  value: entry.choice,
+                  color: COLORS[entry.colorId % COLORS.length],
+                }))
+              : data.map((entry, index) => ({
+                  id: index.toString(),
+                  value: entry.choice,
+                  color: COLORS[entry.colorId % COLORS.length],
+                }))
+          }
+        />
       </PieChart>
     </StyledContainer>
   )
