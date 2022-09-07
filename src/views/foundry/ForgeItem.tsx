@@ -1,5 +1,4 @@
 import { TransactionStatus } from '@usedapp/core'
-import Button from 'components/Button'
 import ItemCell from 'components/ItemCell'
 import ItemType from 'components/ItemType'
 import PaymentButton from 'components/PaymentButton'
@@ -12,7 +11,6 @@ import { useForge, useSetApprovalForAll } from 'contracts/functions'
 import formatDate from 'date-fns/format'
 import isAfter from 'date-fns/isAfter'
 import isBefore from 'date-fns/isBefore'
-import { BigNumber } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { ForgeFormula } from 'models/Forge'
 import { useTranslation } from 'next-i18next'
@@ -96,6 +94,10 @@ const StyledMaterials = styled(TreasurySection)`
   gap: 20px;
   background: ${({ theme }) => theme.colors.darkGray400};
   padding: 34px 74px;
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    padding: 30px 10px;
+  }
 `
 
 const StyledMaterialPreview = styled(ItemCell)`
@@ -121,6 +123,12 @@ const StyledMaterialListItem = styled.div`
 
 const StyledMaterialName = styled(Note)`
   color: ${({ theme }) => theme.colors.white};
+`
+
+const StyledMetrialSectionTitle = styled(Headline)`
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    text-align: center;
+  }
 `
 
 const StyledCount = styled(Note)`
@@ -212,7 +220,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
         </StyledResult>
         <StyledSectionRope vertical={!isTablet} />
         <StyledMaterials showRope={false}>
-          <Headline>{t('materials.title')}</Headline>
+          <StyledMetrialSectionTitle>{t('materials.title')}</StyledMetrialSectionTitle>
           <StyledMaterialList>
             {formula.materials.map((material, index) => (
               <StyledMaterialListItem key={index}>
