@@ -41,11 +41,7 @@ const StyledCard = styled.div<{ maxH: string }>`
     inset 0px 0px 0px 4px ${({ theme }) => theme.colors.skin};
   background: ${({ theme }) => theme.colors.white};
   display: flex;
-  // -webkit-transition: max-height 0.5s linear, 0.5s linear;
-  // -moz-transition: max-height 0.5s linear, 0.5s linear;
-  // -ms-transition: max-height 0.5s linear, 0.5s linear;
-  // -o-transition: max-height 0.5s linear, 0.5s linear;
-  transition: all 0.5s ease-in-out;
+  transition: max-height 0.5s ease-in-out;
 `
 
 const StyledTextBody = styled.div`
@@ -142,7 +138,7 @@ export default function SnapshotProposalGroup({ className, proposals, tab }: Sna
   return (
     <StyledContainer className={className}>
       {proposals.map(proposal => (
-        <StyledCard key={proposal.id} maxH={maximisedProposal === proposal.id ? '100vh' : '268px'}>
+        <StyledCard key={proposal.id} maxH={maximisedProposal === proposal.id ? '80vh' : '268px'}>
           <StyledInnerContainer>
             <StyledProposalHeadline as="h1">{proposal.title}</StyledProposalHeadline>
             <StyledActivityFlag flagColor={flagColorFromProposalState[proposal.state ?? '']}>

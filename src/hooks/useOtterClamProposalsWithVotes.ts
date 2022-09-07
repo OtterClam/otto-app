@@ -7,11 +7,8 @@ export default function useOtterClamProposalsWithVotes(): {
   loading: boolean
   proposals: Proposal[]
 } {
-  const { account } = useEthers()
   const { loading: loadingVotes, proposals: votedProposals } = useOtterClamProposalUserVotes()
   const { loading, proposals } = useOtterClamProposals()
-  console.log(proposals, votedProposals)
-
   let finalProposals: Proposal[] = []
 
   // iterate all OtterClam proposals

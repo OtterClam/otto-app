@@ -529,6 +529,7 @@
   },
   "wallet_selector_head": "Connect to a wallet",
   "treasury": {
+    "comingSoon": "Coming Soon!",
     "layout": {
       "nav": {
         "label": {
