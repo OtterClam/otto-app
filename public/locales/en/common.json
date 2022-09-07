@@ -703,9 +703,9 @@
       "title": "Required Items:"
     },
     "forgeButton": "Forge",
-    "forgeButton_insufficient": "Forge (Insufficient Items)",
-    "forgeAvailableTime": "Event duration: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
-    "comingSoon": "Coming soon...",
+    "forgeButton_insufficient": "Forge",
+    "forgeAvailableTime": "Recipe available: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
+    "comingSoon": "Coming soon",
     "approve": "Approve",
     "forge": {
       "processing": "Forging..."
