@@ -1,4 +1,4 @@
-import { useEthers } from '@usedapp/core'
+import { ChainId, useEthers } from '@usedapp/core'
 import { Api, defaultApi } from 'libs/api'
 import { useTranslation } from 'next-i18next'
 import { createContext, PropsWithChildren, useContext, useEffect, useMemo } from 'react'
@@ -11,14 +11,10 @@ export function ApiProvider({ children }: PropsWithChildren<object>) {
 
   const api = useMemo(() => {
     if (!chainId) {
-      return defaultApi
+      return new Api(ChainId.Polygon, i18n.resolvedLanguage)
     }
-    return new Api(chainId)
-  }, [chainId])
-
-  useEffect(() => {
-    api.setLanguage(i18n.resolvedLanguage)
-  }, [i18n.resolvedLanguage, api])
+    return new Api(chainId, i18n.resolvedLanguage)
+  }, [chainId, i18n.resolvedLanguage])
 
   return <ApiContext.Provider value={api}>{children}</ApiContext.Provider>
 }
