@@ -674,24 +674,24 @@
     "missions": "我的任务"
   },
   "foundry": {
-    "title": "Foundry",
+    "title": "铸造厂",
     "dialog": {
-      "title": "Welcome to the Foundry!",
-      "content": "Welcome to the Foundry, where you can re-forge several items to combine into new items, and also have the opportunity to get new items with higher rarity or attributes!"
+      "title": "欢淫来到铸造厂！",
+      "content": "欢淫来到铸造厂，在这里你可以将多个物品重新铸造成一个新物品, 并且有机会得到稀有度或数值较高的物品！"
     },
     "result": {
-      "title": "You’ll Get:"
+      "title": "黁将会得到："
     },
     "materials": {
-      "title": "Required Items:"
+      "title": "必要的物品："
     },
-    "forgeButton": "Forge",
-    "forgeButton_insufficient": "Forge (Insufficient Items)",
-    "forgeAvailableTime": "Fusion available: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
-    "comingSoon": "Coming soon...",
-    "approve": "Approve",
+    "forgeButton": "铸造",
+    "forgeButton_insufficient": "铸造（没有足够的材料）",
+    "forgeAvailableTime": "融合开放的时间: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
+    "comingSoon": "即将开放...",
+    "approve": "授权",
     "forge": {
-      "processing": "Forging..."
+      "processing": "铸造..."
     }
   }
 }
