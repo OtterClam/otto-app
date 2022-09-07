@@ -28,11 +28,12 @@ const StyledContainer = styled.div`
 //   background: ${({ theme }) => theme.colors.white};
 // `
 
-const StyledCard = styled.div`
+const StyledCard = styled.div<{ maxH: string }>`
   margin: 4px;
-  height: 268px;
   width: 100%;
   padding: 4px;
+  height: auto;
+  max-height: ${({ maxH }) => maxH};
   border-radius: 10px;
   box-sizing: border-box;
   border: 1px solid ${({ theme }) => theme.colors.darkBrown};
@@ -40,6 +41,11 @@ const StyledCard = styled.div`
     inset 0px 0px 0px 4px ${({ theme }) => theme.colors.skin};
   background: ${({ theme }) => theme.colors.white};
   display: flex;
+  // -webkit-transition: max-height 0.5s linear, 0.5s linear;
+  // -moz-transition: max-height 0.5s linear, 0.5s linear;
+  // -ms-transition: max-height 0.5s linear, 0.5s linear;
+  // -o-transition: max-height 0.5s linear, 0.5s linear;
+  transition: all 0.5s ease-in-out;
 `
 
 const StyledTextBody = styled.div`
@@ -66,9 +72,9 @@ const StyledProposalHeadline = styled.span`
 const StyledInnerContainer = styled.div`
   margin: 4px;
   padding: 8px 8px 0 8px;
-  height: calc(100% - 3.2em);
+  height: auto;
   overflow: hidden;
-  padding-bottom: 48px;
+  margin-bottom: 49px;
 `
 const StyledActivityFlag = styled.div<{ flagColor: string }>`
   height: 18px;
@@ -136,7 +142,7 @@ export default function SnapshotProposalGroup({ className, proposals, tab }: Sna
   return (
     <StyledContainer className={className}>
       {proposals.map(proposal => (
-        <StyledCard key={proposal.id} style={{ height: maximisedProposal === proposal.id ? '100%' : '' }}>
+        <StyledCard key={proposal.id} maxH={maximisedProposal === proposal.id ? '100vh' : '268px'}>
           <StyledInnerContainer>
             <StyledProposalHeadline as="h1">{proposal.title}</StyledProposalHeadline>
             <StyledActivityFlag flagColor={flagColorFromProposalState[proposal.state ?? '']}>
