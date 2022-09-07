@@ -31,10 +31,12 @@ const useMyItemAmounts = () => {
   const { items, refetch: refetchMyItems } = useMyItems()
 
   const amounts = useMemo(() => {
-    return items.reduce((counts, item) => {
-      counts[item.id] = item.amount ?? 0
-      return counts
-    }, {} as MyItemAmounts)
+    return items
+      .filter(item => !item.equipped)
+      .reduce((counts, item) => {
+        counts[item.id] = item.amount ?? 0
+        return counts
+      }, {} as MyItemAmounts)
   }, [items])
 
   return { amounts, refetchMyItems }
