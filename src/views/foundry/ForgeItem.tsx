@@ -1,5 +1,4 @@
 import { TransactionStatus } from '@usedapp/core'
-import Button from 'components/Button'
 import ItemCell from 'components/ItemCell'
 import ItemType from 'components/ItemType'
 import PaymentButton from 'components/PaymentButton'
@@ -12,7 +11,6 @@ import { useForge, useSetApprovalForAll } from 'contracts/functions'
 import formatDate from 'date-fns/format'
 import isAfter from 'date-fns/isAfter'
 import isBefore from 'date-fns/isBefore'
-import { BigNumber } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { ForgeFormula } from 'models/Forge'
 import { useTranslation } from 'next-i18next'
@@ -31,6 +29,10 @@ const StyledContainer = styled.div<{ leftImage: string; rightImage: string }>`
   align-items: center;
   background: url(${({ leftImage }) => leftImage}) left top / 20% auto no-repeat,
     url(${({ leftImage }) => leftImage}) right top / 20% auto no-repeat;
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    background-position: left 50px, right 50px;
+  }
 `
 
 const StyledTitle = styled(Display3)`
@@ -65,6 +67,18 @@ const StyledResult = styled(TreasurySection).attrs({ showRope: false })<{ bgImag
   background: center / cover url(${({ bgImage }) => bgImage});
   background-color: ${({ theme }) => theme.colors.darkGray400};
   min-height: 300px;
+  z-index: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: -1;
+  }
 
   @media ${({ theme }) => theme.breakpoints.tablet} {
     flex: 0 1 318px;
@@ -96,6 +110,10 @@ const StyledMaterials = styled(TreasurySection)`
   gap: 20px;
   background: ${({ theme }) => theme.colors.darkGray400};
   padding: 34px 74px;
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    padding: 30px 10px;
+  }
 `
 
 const StyledMaterialPreview = styled(ItemCell)`
@@ -121,6 +139,12 @@ const StyledMaterialListItem = styled.div`
 
 const StyledMaterialName = styled(Note)`
   color: ${({ theme }) => theme.colors.white};
+`
+
+const StyledMetrialSectionTitle = styled(Headline)`
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    text-align: center;
+  }
 `
 
 const StyledCount = styled(Note)`
@@ -212,7 +236,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
         </StyledResult>
         <StyledSectionRope vertical={!isTablet} />
         <StyledMaterials showRope={false}>
-          <Headline>{t('materials.title')}</Headline>
+          <StyledMetrialSectionTitle>{t('materials.title')}</StyledMetrialSectionTitle>
           <StyledMaterialList>
             {formula.materials.map((material, index) => (
               <StyledMaterialListItem key={index}>
@@ -229,8 +253,8 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
             token={Token.Fish}
             amount={formula.fish}
             loading={processing}
-            height="60px"
             disabled={disabled}
+            padding="5px 0"
             Typography={Headline}
             showSymbol
             onSuccess={callForge}
