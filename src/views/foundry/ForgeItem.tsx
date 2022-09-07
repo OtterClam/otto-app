@@ -29,6 +29,10 @@ const StyledContainer = styled.div<{ leftImage: string; rightImage: string }>`
   align-items: center;
   background: url(${({ leftImage }) => leftImage}) left top / 20% auto no-repeat,
     url(${({ leftImage }) => leftImage}) right top / 20% auto no-repeat;
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    background-position: left 50px, right 50px;
+  }
 `
 
 const StyledTitle = styled(Display3)`
