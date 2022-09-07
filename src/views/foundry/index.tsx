@@ -16,6 +16,7 @@ const useForgeFormulas = () => {
   const [forges, setForges] = useState<ForgeFormula[]>([])
 
   useEffect(() => {
+    console.log('===', 123)
     api
       .getFoundryForges()
       .then(setForges)

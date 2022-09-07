@@ -36,13 +36,10 @@ const otterclamApiEndpoint: { [key: number]: string } = {
 export class Api {
   private otterclamClient: Axios
 
-  constructor(chainId: ChainId) {
+  constructor(chainId: ChainId, lang = 'en') {
     this.otterclamClient = axios.create({
       baseURL: otterclamApiEndpoint[chainId],
     })
-  }
-
-  setLanguage(lang: string): void {
     this.otterclamClient.defaults.headers.common['Accept-language'] = lang
   }
 
