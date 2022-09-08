@@ -163,15 +163,15 @@ export default function SnapshotProposalGroup({ className, tab }: SnapshotPropos
     }
   }
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, {
-      passive: true,
-    })
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll, {
+  //     passive: true,
+  //   })
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll)
+  //   }
+  // }, [])
 
   return (
     <StyledContainer className={className}>

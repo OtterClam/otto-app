@@ -236,14 +236,16 @@ export enum PearlBankAvgAprRange {
 const usePearlBankApr = () => {
   const [range, setRange] = useState(PearlBankAvgAprRange.Week)
   const { metrics: pearlBankMetrics } = usePearlBankMetrics()
-  const startDate = useMemo(
-    () => subDays(Number(pearlBankMetrics[0]?.timestamp ?? 0) * 1000, range),
-    [range, pearlBankMetrics]
-  )
-  const avgApy = useMemo(() => {
+  const startDate = useMemo(() => {
+    let pastDayFromRange = subDays(Number(pearlBankMetrics[0]?.timestamp ?? 0) * 1000, range - 1)
+    let oldestDataDate = new Date((pearlBankMetrics[pearlBankMetrics.length - 1]?.timestamp ?? 0) * 1000)
+
+    return pastDayFromRange > oldestDataDate ? pastDayFromRange : oldestDataDate
+  }, [range, pearlBankMetrics])
+  const avgApr = useMemo(() => {
     const metricsSlice = pearlBankMetrics.slice(0, range)
     const totalSum = metricsSlice.reduce((total, value) => {
-      return total + parseFloat(value.apy)
+      return total + parseFloat(value.apr)
     }, 0)
 
     const average = totalSum / metricsSlice.length
@@ -252,7 +254,7 @@ const usePearlBankApr = () => {
   }, [range, pearlBankMetrics])
 
   return {
-    avgApy,
+    avgApr,
     startDate,
     pearlBankAvgAprRange: range,
     setPearlBankAvgAprRange: setRange,
@@ -268,8 +270,13 @@ export default function TreasuryDashboardPage() {
     latestMetrics: pearlBankLatestMetrics,
   } = usePearlBankMetrics()
   const { loading: revenuesLoading, revenues, latestRevenues } = useTreasuryRevenues()
-  const { avgApy, pearlBankAvgAprRange, setPearlBankAvgAprRange } = usePearlBankApr()
-  const pearlBankAvgAprRangeStartDate = subDays(new Date(), pearlBankAvgAprRange)
+  const {
+    avgApr,
+    startDate: pearlBankAvgAprRangeStartDate,
+    pearlBankAvgAprRange,
+    setPearlBankAvgAprRange,
+  } = usePearlBankApr()
+
   const { currency } = useCurrency()
 
   const pctBurnt = trim((parseFloat(latestMetrics?.totalBurnedClam) / parseFloat(latestMetrics?.totalSupply)) * 100, 2)
@@ -390,7 +397,7 @@ export default function TreasuryDashboardPage() {
                 />
               </StyledTopBar>
               <StyledChartKeyValue>
-                {avgApy ?? 0}%
+                {avgApr ?? 0}%
                 <StyledChartKeyDate>
                   {t('averageAprStartDate', { date: formatDate(pearlBankAvgAprRangeStartDate, 'MMM d') })}
                 </StyledChartKeyDate>

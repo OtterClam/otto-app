@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { ContentMedium } from 'styles/typography'
 import GovernancePage from 'views/treasury-governance'
 import Tooltip from 'components/Tooltip'
+import Link from 'next/link'
 
 const StyledTabs = styled.div`
   display: flex;
@@ -36,16 +37,22 @@ const StyledBody = styled.div``
 export default function PalacePage() {
   const { t } = useTranslation('', { keyPrefix: 'treasury' })
   const [tab, setTab] = useState<PalaceTab>(PalaceTab.DASHBOARD)
+
+  const [href, setHref] = useState<string>('')
+
   return (
     <div>
       <StyledTabs>
-        <StyledTab selected={tab === PalaceTab.DASHBOARD} onClick={() => setTab(PalaceTab.DASHBOARD)}>
-          {t('dashboard_tab')}{' '}
-        </StyledTab>
-
-        <StyledTab selected={tab === PalaceTab.GOVERNANCE} onClick={() => setTab(PalaceTab.GOVERNANCE)}>
-          {t('governance_tab')}{' '}
-        </StyledTab>
+        <Link href={'#dash'} replace>
+          <StyledTab selected={tab === PalaceTab.DASHBOARD} onClick={() => setTab(PalaceTab.DASHBOARD)}>
+            {t('dashboard_tab')}{' '}
+          </StyledTab>
+        </Link>
+        <Link href={'#gov'} replace>
+          <StyledTab selected={tab === PalaceTab.GOVERNANCE} onClick={() => setTab(PalaceTab.GOVERNANCE)}>
+            {t('governance_tab')}{' '}
+          </StyledTab>
+        </Link>
         <Tooltip content={<div>{t('comingSoon')}</div>} place="bottom">
           <span>
             <StyledTab selected={tab === PalaceTab.INVESTMENTS} onClick={() => setTab(PalaceTab.INVESTMENTS)} disabled>
