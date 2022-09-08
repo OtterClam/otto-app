@@ -7,6 +7,7 @@ import styled, { keyframes } from 'styled-components/macro'
 import { Caption, ContentLarge, Headline, Note } from 'styles/typography'
 import YellowRibbonXL from 'assets/ui/ribbon-yellow-xl.svg'
 import Star from 'assets/ui/star.svg'
+import Image from 'next/image'
 import useProductBorderColor from '../useProductBorderColor'
 
 const StyledProductCard = styled(BorderContainer)`
@@ -101,7 +102,18 @@ interface Props {
 }
 
 export default function BuyProductCard({
-  product: { type, name, image, price, displayPrice, discountPrice, displayDiscountPrice, amount, mustDesc },
+  product: {
+    type,
+    name,
+    image,
+    price,
+    displayPrice,
+    discountPrice,
+    displayDiscountPrice,
+    amount,
+    mustDesc,
+    guarantee_rarity,
+  },
   onClick,
 }: Props) {
   const { t } = useTranslation()
@@ -122,7 +134,11 @@ export default function BuyProductCard({
       <Button Typography={Headline} onClick={onClick}>
         {t('store.popup.buy_now')}
       </Button>
-      {mustDesc && <StyledMustItemRibbon>{mustDesc}</StyledMustItemRibbon>}
+      {mustDesc && (
+        <StyledMustItemRibbon>
+          {guarantee_rarity ? t('product.must_desc', { rarity: guarantee_rarity }) : mustDesc}
+        </StyledMustItemRibbon>
+      )}
     </StyledProductCard>
   )
 }
