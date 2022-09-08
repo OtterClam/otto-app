@@ -1,7 +1,7 @@
 {
   "languages": {
     "en": "English",
-    "zh-tw": "繁體中文",
+    "zh-tw": "繁体中文",
     "zh-cn": "简体中文"
   },
   "new_version": "A newer version of this web app is available, reload to update?",
@@ -455,6 +455,7 @@
     }
   },
   "product": {
+    "must_desc": "{{rarity}} Item Guaranteed!",
     "diamond": {
       "desc": "From armor that can stand the mightiest of blows, to hats that'll catch even the sleepiest Otter's attention, Shell Chests hold the equipment you need to make your dream come true! A diamond chest has a 87% chance to open R-level items, and a 3% chance to open E-level items.",
       "must_desc": "E3 Item Guaranteed!",

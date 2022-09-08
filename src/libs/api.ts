@@ -20,7 +20,6 @@ export interface FlashSellResponse {
   popup_title: string
   popup_desc: string
   popup_image: string
-  guarantee_rarity: string
   start_time: number
   end_time: number
   products: Product[]
