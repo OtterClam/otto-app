@@ -7,9 +7,13 @@ import { useSnapshotSubgraph } from './useSnapshotSubgraph'
 export default function useOtterClamProposals(): {
   loading: boolean
   proposals: Proposal[]
+  fetchMore: any
 } {
   const snapshotSubgraph = useSnapshotSubgraph()
-  const result = useQuery<OtterClamProposals>(GET_OTTERCLAM_PROPOSALS, { client: snapshotSubgraph })
+  const result = useQuery<OtterClamProposals>(GET_OTTERCLAM_PROPOSALS, {
+    client: snapshotSubgraph,
+    variables: { first: 5, skip: 0 },
+  })
   const proposals =
     result?.data?.proposals?.flatMap(x => {
       return {
@@ -32,5 +36,6 @@ export default function useOtterClamProposals(): {
   return {
     loading: Boolean(result?.loading),
     proposals,
+    fetchMore: result.fetchMore,
   }
 }

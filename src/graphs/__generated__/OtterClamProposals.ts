@@ -31,3 +31,8 @@ export interface OtterClamProposals_proposals {
 export interface OtterClamProposals {
   proposals: (OtterClamProposals_proposals | null)[] | null;
 }
+
+export interface OtterClamProposalsVariables {
+  first: number;
+  skip: number;
+}

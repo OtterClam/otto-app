@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const GET_OTTERCLAM_PROPOSALS = gql`
-  query OtterClamProposals {
-    proposals(first: 4, skip: 0, where: { space_in: ["otterclam.eth"] }, orderBy: "created", orderDirection: desc) {
+  query OtterClamProposals($first: Int!, $skip: Int!) {
+    proposals(first: $first, skip: $skip, where: { space: "otterclam.eth" }, orderBy: "created", orderDirection: desc) {
       id
       title
       body
@@ -23,7 +23,7 @@ export const GET_OTTERCLAM_PROPOSALS = gql`
 
 export const GET_OTTERCLAM_USER_VOTED_PROPOSALS = gql`
   query OtterClamUserVotes($address: String!) {
-    votes(first: 10, where: { space: "otterclam.eth", voter: $address }, orderBy: "created", orderDirection: desc) {
+    votes(where: { space: "otterclam.eth", voter: $address }, orderBy: "created", orderDirection: desc) {
       choice
       vp
       vp_by_strategy

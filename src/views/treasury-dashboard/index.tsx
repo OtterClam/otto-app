@@ -230,6 +230,7 @@ const formatBigNumber = (num: BigNumberish, decimal = 9, digits = 2) => {
 export enum PearlBankAvgAprRange {
   Week = 7,
   Month = 30,
+  ThreeMonth = 90,
 }
 
 const usePearlBankApr = () => {
@@ -260,9 +261,13 @@ const usePearlBankApr = () => {
 
 export default function TreasuryDashboardPage() {
   const { t } = useTranslation('', { keyPrefix: 'treasury.dashboard' })
-  const { metrics, latestMetrics } = useTreasuryMetrics()
-  const { metrics: pearlBankMetrics, latestMetrics: pearlBankLatestMetrics } = usePearlBankMetrics()
-  const { revenues, latestRevenues } = useTreasuryRevenues()
+  const { loading, metrics, latestMetrics } = useTreasuryMetrics()
+  const {
+    loading: pearlBankLoading,
+    metrics: pearlBankMetrics,
+    latestMetrics: pearlBankLatestMetrics,
+  } = usePearlBankMetrics()
+  const { loading: revenuesLoading, revenues, latestRevenues } = useTreasuryRevenues()
   const { avgApy, pearlBankAvgAprRange, setPearlBankAvgAprRange } = usePearlBankApr()
   const pearlBankAvgAprRangeStartDate = subDays(new Date(), pearlBankAvgAprRange)
   const { currency } = useCurrency()
@@ -284,7 +289,7 @@ export default function TreasuryDashboardPage() {
           <StyledTreasuryCard>
             <StyledTokenContainer>
               <StyledTokenLabel>{t('clamPrice')}</StyledTokenLabel>
-              <StyledTokenPrice>{formatUsd(latestMetrics?.clamPrice, 2)}</StyledTokenPrice>
+              <StyledTokenPrice>{loading ? '--' : formatUsd(latestMetrics?.clamPrice, 2)}</StyledTokenPrice>
               <StyledTokenIcon src={ClamIcon.src} />
             </StyledTokenContainer>
           </StyledTreasuryCard>
@@ -293,7 +298,7 @@ export default function TreasuryDashboardPage() {
             <Help message={t('marketcapTooltip')}>
               <ContentExtraSmall>{t('marketcap')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatUsd(latestMetrics?.marketCap)}</ContentMedium>
+            <ContentMedium>{loading ? '--' : formatUsd(latestMetrics?.marketCap)}</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
@@ -301,7 +306,8 @@ export default function TreasuryDashboardPage() {
               <ContentExtraSmall>{t('clamCirculatingSupply')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {formatClamString(latestMetrics?.clamCirculatingSupply)} / {formatClamString(latestMetrics?.totalSupply)}
+              {loading ? '--' : formatClamString(latestMetrics?.clamCirculatingSupply)} /
+              {loading ? '--' : formatClamString(latestMetrics?.totalSupply)}
             </ContentMedium>
           </StyledTreasuryCard>
 
@@ -309,7 +315,7 @@ export default function TreasuryDashboardPage() {
             <Help message={t('backingTooltip')}>
               <ContentExtraSmall>{t('backing')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatUsd(latestMetrics?.clamBacking, 2)}</ContentMedium>
+            <ContentMedium>{loading ? '--' : formatUsd(latestMetrics?.clamBacking, 2)}</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
@@ -317,9 +323,9 @@ export default function TreasuryDashboardPage() {
               <ContentExtraSmall>{t('burned')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {formatClamString(latestMetrics?.totalBurnedClam)}
-              {` 🔥 ${formatUsd(latestMetrics?.totalBurnedClamMarketValue)}`}
-              {` 🔥 ${pctBurnt}%`}
+              {loading ? '--' : formatClamString(latestMetrics?.totalBurnedClam)}
+              {` 🔥 ${loading ? '--' : formatUsd(latestMetrics?.totalBurnedClamMarketValue)}`}
+              {` 🔥 ${loading ? '--' : pctBurnt}%`}
             </ContentMedium>
           </StyledTreasuryCard>
 
@@ -328,7 +334,8 @@ export default function TreasuryDashboardPage() {
               <ContentExtraSmall>{t('distributed')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {formatUsd(pearlBankLatestMetrics?.cumulativeRewardPayoutMarketValue)} @ {trim(allTimeAvgApr, 1)}% APR
+              {pearlBankLoading ? '--' : formatUsd(pearlBankLatestMetrics?.cumulativeRewardPayoutMarketValue)} @{' '}
+              {pearlBankLoading ? '--' : trim(allTimeAvgApr, 1)}% APR
             </ContentMedium>
           </StyledTreasuryCard>
         </StyledMetricsContainer>
@@ -340,7 +347,7 @@ export default function TreasuryDashboardPage() {
             <StyledChartHeader>
               <StyledChartTitle>{t('treasuryMarketValue')}</StyledChartTitle>
               <StyledChartKeyValue>
-                {formatUsd(latestMetrics?.treasuryMarketValue)}
+                {pearlBankLoading ? '--' : formatUsd(latestMetrics?.treasuryMarketValue)}
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
               </StyledChartKeyValue>
             </StyledChartHeader>
@@ -357,8 +364,8 @@ export default function TreasuryDashboardPage() {
               </StyledTopBar>
               <StyledChartKeyValue>
                 {currency === Currency.CLAM
-                  ? `${formatClamString(latestRevenues?.totalRevenueClamAmount, true)}`
-                  : formatUsd(latestRevenues?.totalRevenueMarketValue)}
+                  ? `${revenuesLoading ? '--' : formatClamString(latestRevenues?.totalRevenueClamAmount, true)}`
+                  : `${revenuesLoading ? '--' : formatUsd(latestRevenues?.totalRevenueMarketValue)}`}
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
               </StyledChartKeyValue>
             </StyledChartHeader>
@@ -378,6 +385,7 @@ export default function TreasuryDashboardPage() {
                   options={[
                     { label: 'Week', value: PearlBankAvgAprRange.Week },
                     { label: 'Month', value: PearlBankAvgAprRange.Month },
+                    { label: '3 Months', value: PearlBankAvgAprRange.ThreeMonth },
                   ]}
                 />
               </StyledTopBar>

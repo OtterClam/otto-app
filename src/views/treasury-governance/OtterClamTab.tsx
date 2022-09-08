@@ -7,6 +7,5 @@ interface Props {
 }
 
 export default function OtterClamTab({ className }: Props) {
-  const { proposals } = useOtterClamProposalsWithVotes()
-  return <SnapshotProposalGroup className={className} proposals={proposals} tab={GovernanceTab.OTTERCLAM} />
+  return <SnapshotProposalGroup className={className} tab={GovernanceTab.OTTERCLAM} />
 }

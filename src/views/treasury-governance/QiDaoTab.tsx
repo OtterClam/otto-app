@@ -18,7 +18,7 @@ export default function QiDaoTab({ className }: Props) {
     <div className={className}>
       <Headline as="h1">{t('welcome')}</Headline>
       <ContentSmall as="p">{t('desc')}</ContentSmall>
-      <SnapshotProposalGroup proposals={proposals} tab={GovernanceTab.QIDAO} />
+      <SnapshotProposalGroup tab={GovernanceTab.QIDAO} />
     </div>
   )
 }

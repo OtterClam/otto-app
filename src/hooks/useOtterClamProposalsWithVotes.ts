@@ -6,9 +6,10 @@ import useOtterClamProposalUserVotes from './useOtterClamProposalUserVotes'
 export default function useOtterClamProposalsWithVotes(): {
   loading: boolean
   proposals: Proposal[]
+  fetchMore: any
 } {
   const { loading: loadingVotes, proposals: votedProposals } = useOtterClamProposalUserVotes()
-  const { loading, proposals } = useOtterClamProposals()
+  const { loading, proposals, fetchMore } = useOtterClamProposals()
   let finalProposals: Proposal[] = []
 
   // iterate all OtterClam proposals
@@ -28,6 +29,7 @@ export default function useOtterClamProposalsWithVotes(): {
   return {
     loading: loading && loadingVotes,
     proposals: finalProposals,
+    fetchMore,
   }
 }
 

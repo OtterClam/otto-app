@@ -7,7 +7,9 @@ import { GovernanceTab } from '../models/Tabs'
 import Button from './Button'
 import SnapshotProposalPieChart from './SnapshotProposalPieChart'
 import { theme } from 'styles'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import useOtterClamProposalsWithVotes from 'hooks/useOtterClamProposalsWithVotes'
+import useQiDaoProposals from 'hooks/useQiDaoProposals'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -108,7 +110,6 @@ const StyledSeeAll = styled.a`
 
 export interface SnapshotProposalGroupInterface {
   className?: string
-  proposals: Proposal[]
   tab: GovernanceTab
 }
 
@@ -123,11 +124,21 @@ const flagColorFromProposalState: Record<string, string> = {
   closed: theme.colors.darkGray200,
 }
 
-export default function SnapshotProposalGroup({ className, proposals, tab }: SnapshotProposalGroupInterface) {
+export default function SnapshotProposalGroup({ className, tab }: SnapshotProposalGroupInterface) {
   const { t } = useTranslation('', { keyPrefix: 'treasury.governance' })
   const [maximisedProposal, setmaximisedProposal] = useState<string>('')
+  const { proposals, fetchMore: otterFetchMore } = useOtterClamProposalsWithVotes()
+  // const { proposals: qiProps } = useQiDaoProposals()
 
-  function toggleMaximisedProposal(key: string) {
+  // let proposals: Proposal[] = []
+  // if (tab === GovernanceTab.OTTERCLAM) {
+  //   proposals = otterProps
+  // }
+  // if (tab === GovernanceTab.QIDAO) {
+  //   proposals = qiProps
+  // }
+
+  const toggleMaximisedProposal = (key: string) => {
     if (key === maximisedProposal) {
       setmaximisedProposal('')
     } else {
@@ -135,9 +146,37 @@ export default function SnapshotProposalGroup({ className, proposals, tab }: Sna
     }
   }
 
+  const handleScroll = (e: any) => {
+    const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 30
+    if (bottom) {
+      otterFetchMore({
+        variables: {
+          skip: proposals.length,
+        },
+      })
+      // .then(fetchMoreResult: any => {
+      //   // Update variables.limit for the original query to include
+      //   // the newly added feed items.
+      //   console.log(fetchMoreResult)
+      // })
+      console.log(proposals)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, {
+      passive: true,
+    })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   return (
     <StyledContainer className={className}>
       {proposals.map(proposal => (
+        // How do animations work with dynamic max-height pls help
         <StyledCard key={proposal.id} maxH={maximisedProposal === proposal.id ? '80vh' : '268px'}>
           <StyledInnerContainer>
             <StyledProposalHeadline as="h1">{proposal.title}</StyledProposalHeadline>
