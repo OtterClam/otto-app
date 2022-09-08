@@ -91,6 +91,7 @@ const StyledTreasuryCard = styled(TreasuryCard)`
 
 const StyledChartCard = styled(TreasuryCard)`
   min-height: 260px;
+  width: 100%;
 `
 
 const StyledTokenContainer = styled.div`

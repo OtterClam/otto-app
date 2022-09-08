@@ -201,10 +201,11 @@ export default function TreasuryMarketValueChart({ data }: TreasuryMarketValueCh
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
+  console.log
 
   return (
     <StyledContainer ref={containerRef}>
-      <AreaChart data={data} width={size?.width ?? 300} height={size?.height ?? 260}>
+      <AreaChart data={data} width={size?.width} height={size?.height}>
         <defs>
           {marketValues.map(({ dataKey: key, stopColor }) => (
             <linearGradient key={key} id={`color-${key}`} x1="0" y1="0" x2="0" y2="1">

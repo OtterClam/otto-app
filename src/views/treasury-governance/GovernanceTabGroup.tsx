@@ -92,7 +92,7 @@ const StyledBg = styled(Image)`
 const StyledOtter = styled(Image)`
   position: absolute;
   top: 20%;
-  left: 15%;
+  left: 65% !important;
   width: 35%;
   max-height: unset !important;
 `
