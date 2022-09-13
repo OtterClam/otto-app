@@ -1,4 +1,5 @@
 import clam from 'assets/clam.png'
+import fish from 'assets/fish.png'
 import { trim } from 'helpers/trim'
 import { Token } from 'constant'
 import styled from 'styled-components/macro'
@@ -22,22 +23,27 @@ const StyledIcon = styled.span<StyledIconProps>`
 
 const icons = {
   [Token.Clam]: clam.src,
+  [Token.Fish]: fish.src,
 }
 
 const tokenDecimal = {
   [Token.Clam]: 9,
+  [Token.Fish]: 18,
 }
 
 export interface PriceProps {
   token: Token
   amount: BigNumberish
+  showSymbol?: boolean
 }
 
-export default function Price({ token, amount }: PriceProps) {
+export default function Price({ token, amount, showSymbol }: PriceProps) {
   return (
     <StyledContainer>
       <StyledIcon image={icons[token]} />
-      <span>{trim(utils.formatUnits(amount, tokenDecimal[token]), 2)}</span>
+      <span>
+        {trim(utils.formatUnits(amount, tokenDecimal[token]), 2)} {showSymbol && token.toLocaleUpperCase()}
+      </span>
     </StyledContainer>
   )
 }

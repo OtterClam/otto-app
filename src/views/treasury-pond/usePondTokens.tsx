@@ -1,4 +1,3 @@
-import { useEthers, useTokenBalance } from '@usedapp/core'
 import useClamBalance from 'hooks/useClamBalance'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useMemo } from 'react'
@@ -6,12 +5,12 @@ import SMALL_CLAM from 'assets/clam.svg'
 import SMALL_PEARL from 'assets/pearl.png'
 import CLAMCoin from 'assets/tokens/CLAM.svg'
 import PEARLCoin from 'assets/tokens/PEARL.svg'
+import useTokenBalance from 'hooks/useTokenBalance'
 
 export default function usePondTokens() {
-  const { account } = useEthers()
   const { CLAM, PEARL_BANK } = useContractAddresses()
   const clamBalance = useClamBalance()
-  const pearlBalance = useTokenBalance(PEARL_BANK, account)
+  const pearlBalance = useTokenBalance(PEARL_BANK)
   return useMemo(
     () => ({
       CLAM: {

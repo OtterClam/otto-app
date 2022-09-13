@@ -18,9 +18,9 @@ export const TWITTER_LINK = 'https://twitter.com/otterclam'
 
 export const YOUTUB_LINK = 'https://www.youtube.com/channel/UCDDMx916FeqHmCilGr5WuQw/video'
 
-export const MEDIUM_LINK = 'https://medium.com/@ottercla'
+export const MEDIUM_LINK = 'https://medium.com/@otterclam'
 
-export const GITHUB_LINK = 'https://github.com/ottercla'
+export const GITHUB_LINK = 'https://github.com/otterclam'
 
 export const TELEGRAM_LINK = 'https://t.me/otterclam_official'
 
@@ -36,9 +36,11 @@ ottoClick.load()
 export const TOTAL_RARITY_REWARD = 16000
 export const ROUND_RARITY_REWARD_BEFORE_3 = 2500
 export const ROUND_RARITY_REWARD_AFTER_3 = 3000
+export const RARITY_S1_END = 1660867200000
 
 export enum Token {
   Clam = 'CLAM',
+  Fish = 'FISH',
 }
 
 export const reserveOttoAmount = (chainId?: number) => (chainId === 137 ? 250 : 0)

@@ -1,7 +1,8 @@
 import { ChainId } from '@usedapp/core'
 import axios, { Axios } from 'axios'
 import { Dice } from 'models/Dice'
-import Item from 'models/Item'
+import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
+import Item, { rawItemToItem } from 'models/Item'
 import { Notification, RawNotification } from 'models/Notification'
 import { OttoMeta } from 'models/Otto'
 import Product from 'models/store/Product'
@@ -19,7 +20,6 @@ export interface FlashSellResponse {
   popup_title: string
   popup_desc: string
   popup_image: string
-  guarantee_rarity: string
   start_time: number
   end_time: number
   products: Product[]
@@ -35,13 +35,10 @@ const otterclamApiEndpoint: { [key: number]: string } = {
 export class Api {
   private otterclamClient: Axios
 
-  constructor(chainId: ChainId) {
+  constructor(chainId: ChainId, lang = 'en') {
     this.otterclamClient = axios.create({
       baseURL: otterclamApiEndpoint[chainId],
     })
-  }
-
-  setLanguage(lang: string): void {
     this.otterclamClient.defaults.headers.common['Accept-language'] = lang
   }
 
@@ -76,33 +73,14 @@ export class Api {
     return this.otterclamClient
       .get(`/items/metadata/${itemId}`)
       .then(res => res.data)
-      .then((data: any) => this.toItem(itemId, data))
+      .then((data: any) => rawItemToItem(itemId, data))
   }
 
   public async getItems(ids: string[]): Promise<Item[]> {
     return this.otterclamClient
       .get(`/items/metadata?ids=${ids.join(',')}`)
       .then(res => res.data)
-      .then((data: any[]) => data.map((d, i) => this.toItem(ids[i], d)))
-  }
-
-  private toItem(id: string, { name, description, image, details }: any): Item {
-    return {
-      id,
-      name,
-      description,
-      image,
-      equipped: false,
-      amount: 1,
-      unreturnable: false,
-      isCoupon: details.type === 'Coupon',
-      total_rarity_score: details.base_rarity_score + details.relative_rarity_score,
-      luck: Number(details.stats.find((s: any) => s.name === 'LUK').value) || 0,
-      dex: Number(details.stats.find((s: any) => s.name === 'DEX').value) || 0,
-      cute: Number(details.stats.find((s: any) => s.name === 'CUTE').value) || 0,
-      def: Number(details.stats.find((s: any) => s.name === 'DEF').value) || 0,
-      ...details,
-    }
+      .then((data: any[]) => data.map((d, i) => rawItemToItem(ids[i], d)))
   }
 
   public async rollTheDice(ottoId: string, tx: string): Promise<Dice> {
@@ -130,7 +108,14 @@ export class Api {
       ...res.data,
       start_time: new Date(res.data.start_time).valueOf(),
       end_time: new Date(res.data.end_time).valueOf(),
-      special_items: res.data.special_items.map((i: any) => this.toItem('', i)),
+      special_items: res.data.special_items.map((i: any) => rawItemToItem('', i)),
     }))
   }
+
+  public async getFoundryForges(): Promise<ForgeFormula[]> {
+    const result = await this.otterclamClient.get<RawForgeFormula[]>('/foundry/forge')
+    return result.data.map(rawForgeToForge)
+  }
 }
+
+export const defaultApi = new Api(ChainId.Polygon)

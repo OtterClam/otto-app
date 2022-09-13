@@ -9,6 +9,11 @@ const StyledLink = styled.a`
   display: flex !important;
 `
 
+const newTabProps = {
+  target: '_blank',
+  rel: 'noreferrer',
+}
+
 export default function AdBanner({ showIndicators }: { showIndicators?: boolean }) {
   const [ads, setAds] = useState<Banner[]>([])
   const api = useApi()
@@ -34,8 +39,8 @@ export default function AdBanner({ showIndicators }: { showIndicators?: boolean 
       autoPlay
       infiniteLoop
     >
-      {ads.map(({ image, link }, i) => (
-        <StyledLink key={i} href={link} target="_blank" style={{ display: 'block' }} rel="noreferrer">
+      {ads.map(({ image, link, openNewTab }, i) => (
+        <StyledLink key={i} href={link} style={{ display: 'block' }} {...(openNewTab ? newTabProps : {})}>
           <Image unoptimized src={image} width={2000} height={500} />
         </StyledLink>
       ))}

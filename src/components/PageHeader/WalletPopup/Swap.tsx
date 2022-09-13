@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } from 'styles/typography'
+import { useWallet } from 'contexts/Wallet'
 import { Token, use1inchQuote, use1inchSwap, useTokenList } from './1inchHelper'
 import BuyCLAMIcon from './buy-clam.png'
 import SwapLoading from './SwapLoading'
@@ -205,6 +206,7 @@ interface Props {
 export default function Swap({ onClose }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'wallet_popup.swap' })
   const slippage = 1
+  const wallet = useWallet()
   const tokens = useTokenList()
   const [fromToken, setFromToken] = useState<Token>('USDC')
   const [toToken, setToToken] = useState<Token>('CLAM')
@@ -215,19 +217,23 @@ export default function Swap({ onClose }: Props) {
   const { swap, swapState, resetSwap } = use1inchSwap()
   const fromTokenInfo = tokens[fromToken]
   const toTokenInfo = tokens[toToken]
+
   const { amountOut } = use1inchQuote({
     fromToken: fromTokenInfo.address,
     toToken: toTokenInfo.address,
     amount: fromAmount && parseUnits(fromAmount, fromTokenInfo.decimal).toString(),
   })
+
   useEffect(() => {
     setToAmount(amountOut ? trim(formatUnits(amountOut, toTokenInfo.decimal), 4) : '')
   }, [amountOut, toTokenInfo.decimal])
+
   const setMax = () => {
     if (fromTokenInfo.balance) {
       setFromAmount(formatUnits(fromTokenInfo.balance, fromTokenInfo.decimal))
     }
   }
+
   const performSwap = () => {
     if (fromAmount) {
       swap({
@@ -238,12 +244,14 @@ export default function Swap({ onClose }: Props) {
       })
     }
   }
+
   const inverseSwap = () => {
     const originFrom = fromToken
     setFromToken(toToken)
     setToToken(originFrom)
     setFromAmount('')
   }
+
   const enoughBalance =
     fromTokenInfo.balance && fromTokenInfo.balance.gte(fromAmount ? parseUnits(fromAmount, fromTokenInfo.decimal) : 0)
 

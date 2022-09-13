@@ -1,18 +1,18 @@
 import ImageButton from 'components/ImageButton'
-import Link from 'next/link'
-import { useBreakpoints } from 'contexts/Breakpoints'
 import { useTranslation } from 'next-i18next'
+import Link from 'next/link'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
+import adventureImage from './adventure.png'
+import bankImage from './bank.png'
 import leaderboardImage from './leaderboard.png'
 import marketImage from './market.png'
 import mineImage from './mine.png'
 import mintImage from './mint.png'
+import palaceImage from './palace.png'
 import pondImage from './pond.png'
 import storeImage from './store.png'
-import adventureImage from './adventure.png'
-import bankImage from './bank.png'
-import palaceImage from './palace.png'
+import foundryImage from './foundry.png'
 
 export interface PinData {
   key: string
@@ -35,16 +35,16 @@ export const pins: PinData[] = [
     image: leaderboardImage,
     link: '/leaderboard',
     position: {
-      x: -11.4,
-      y: -3,
+      x: -12.4,
+      y: 0,
     },
   },
   {
     key: 'market',
     image: marketImage,
     position: {
-      x: -1,
-      y: 24.6,
+      x: -2.7,
+      y: 25,
     },
   },
   {
@@ -52,7 +52,7 @@ export const pins: PinData[] = [
     image: mineImage,
     position: {
       x: 16.3,
-      y: -10.6,
+      y: -7.6,
     },
   },
   {
@@ -69,8 +69,8 @@ export const pins: PinData[] = [
     image: pondImage,
     link: '/treasury/pond',
     position: {
-      x: -5.7,
-      y: 11,
+      x: -7,
+      y: 13.6,
     },
   },
   {
@@ -78,8 +78,8 @@ export const pins: PinData[] = [
     image: bankImage,
     link: '/treasury/bank',
     position: {
-      x: 16.8,
-      y: 3.8,
+      x: 14.4,
+      y: 6,
     },
   },
   {
@@ -87,8 +87,8 @@ export const pins: PinData[] = [
     image: storeImage,
     link: '/store',
     position: {
-      x: 8.6,
-      y: 7.6,
+      x: 6.6,
+      y: 9.8,
     },
   },
   {
@@ -96,8 +96,8 @@ export const pins: PinData[] = [
     image: adventureImage,
     // link: '/adventure',
     position: {
-      x: -8.5,
-      y: -17.8,
+      x: -9.3,
+      y: -13.8,
     },
   },
   {
@@ -105,8 +105,17 @@ export const pins: PinData[] = [
     image: palaceImage,
     link: '/treasury/palace',
     position: {
-      x: 3,
-      y: -14.7,
+      x: 1.35,
+      y: -11,
+    },
+  },
+  {
+    key: 'foundry',
+    image: foundryImage,
+    link: '/foundry',
+    position: {
+      x: 6,
+      y: 24,
     },
   },
 ]

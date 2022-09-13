@@ -14,6 +14,7 @@ import { CurrencyProvider } from 'contexts/Currency'
 import useServiceWorker from 'hooks/useServiceWorker'
 import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
 import MintPopup from 'components/MintPopup'
+import { WalletProvider } from 'contexts/Wallet'
 import { ApiProvider } from 'contexts/Api'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
@@ -69,27 +70,29 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
   return (
     <ApolloProvider client={apollo}>
       <OtterSubgraphProvider>
-        <ApiProvider>
-          <AssetsLoaderProvider>
-            <CurrencyProvider>
-              <ThemeProvider theme={theme}>
-                <BreakpointsProvider>
-                  <MyOttosProvider>
-                    <SnapshotProvider>
-                      <StyledApp>
-                        <StyledPageContainer>{children}</StyledPageContainer>
-                        <Error />
-                        <WalletSelector />
-                        <SideMenu />
-                        <AssetsLoader />
-                      </StyledApp>
-                    </SnapshotProvider>
-                  </MyOttosProvider>
-                </BreakpointsProvider>
-              </ThemeProvider>
-            </CurrencyProvider>
-          </AssetsLoaderProvider>
-        </ApiProvider>
+        <WalletProvider>
+          <ApiProvider>
+            <AssetsLoaderProvider>
+              <CurrencyProvider>
+                <ThemeProvider theme={theme}>
+                  <BreakpointsProvider>
+                    <MyOttosProvider>
+                      <SnapshotProvider>
+                        <StyledApp>
+                          <StyledPageContainer>{children}</StyledPageContainer>
+                          <Error />
+                          <WalletSelector />
+                          <SideMenu />
+                          <AssetsLoader />
+                        </StyledApp>
+                      </SnapshotProvider>
+                    </MyOttosProvider>
+                  </BreakpointsProvider>
+                </ThemeProvider>
+              </CurrencyProvider>
+            </AssetsLoaderProvider>
+          </ApiProvider>
+        </WalletProvider>
       </OtterSubgraphProvider>
     </ApolloProvider>
   )

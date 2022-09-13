@@ -21,6 +21,12 @@ export interface GetTreasuryRevenue_treasuryRevenues {
   penDystMarketValue: any;
   ottopiaClamAmount: any;
   ottopiaMarketValue: any;
+  ldoClamAmount: any;
+  ldoMarketValue: any;
+  usdPlusClamAmount: any;
+  usdPlusMarketValue: any;
+  daiClamAmount: any;
+  daiMarketValue: any;
   totalRevenueClamAmount: any;
   totalRevenueMarketValue: any;
 }

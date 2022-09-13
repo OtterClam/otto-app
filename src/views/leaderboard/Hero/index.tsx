@@ -12,6 +12,7 @@ import Background from './background.png'
 import Clams from './clams.png'
 import Ottos from './ottos.png'
 import Rewards from './rewards.png'
+import RewardEmpty from './rewards_empty.png'
 import StreamerLeft from './streamer_left.png'
 import StreamerRight from './streamer_right.png'
 
@@ -224,7 +225,8 @@ const StyledRoundEnd = styled(ContentSmall).attrs({ as: 'div' })`
 
 export default function Hero() {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.hero' })
-  const { isLatestEpoch, epochEnd } = useRarityEpoch()
+  const { isLatestEpoch, epochEndTime } = useRarityEpoch()
+  const epochEnd = Date.now() > epochEndTime
   return (
     <StyledHero>
       <StyledBackground src={Background.src} />
@@ -232,7 +234,7 @@ export default function Hero() {
       <StyledStreamRight src={StreamerRight.src} />
       <StyledClam src={Clams.src} />
       <StyledOttos src={Ottos.src} />
-      <StyledRewardImg src={Rewards.src} />
+      <StyledRewardImg src={epochEnd ? RewardEmpty.src : Rewards.src} />
       <StyledCenterContainer>
         <StyledTitle>{t('title')}</StyledTitle>
         <StyledTotalReward>
@@ -240,21 +242,23 @@ export default function Hero() {
           <ContentSmall>CLAM</ContentSmall>
         </StyledTotalReward>
         <StyledRewardAt>
-          {t('reward_at', { time: new Date(epochEnd).toLocaleString() })}
+          {t('reward_at', { time: new Date(epochEndTime).toLocaleString() })}
           <StyledHint>{t('tooltip')}</StyledHint>
         </StyledRewardAt>
-        {isLatestEpoch ? (
-          <Countdown target={epochEnd} />
+        {!epochEnd ? (
+          <Countdown target={epochEndTime} />
         ) : (
           <StyledRoundEnd>
             {t('round_end')}
-            <Link href="?epoch=-1">
-              <a>
-                <Button primaryColor="white" width="fit-content" Typography={Headline}>
-                  {t('back_to_current')}
-                </Button>
-              </a>
-            </Link>
+            {!isLatestEpoch && (
+              <Link href="?epoch=-1">
+                <a>
+                  <Button primaryColor="white" width="fit-content" Typography={Headline}>
+                    {t('back_to_current')}
+                  </Button>
+                </a>
+              </Link>
+            )}
           </StyledRoundEnd>
         )}
       </StyledCenterContainer>
