@@ -127,7 +127,11 @@ const flagColorFromProposalState: Record<string, string> = {
 export default function SnapshotProposalGroup({ className, tab }: SnapshotProposalGroupInterface) {
   const { t } = useTranslation('', { keyPrefix: 'treasury.governance' })
   const [maximisedProposal, setmaximisedProposal] = useState<string>('')
-  const { proposals, fetchMore: otterFetchMore } = useOtterClamProposalsWithVotes()
+  const { proposals: ocProposals, fetchMore: otterFetchMore } = useOtterClamProposalsWithVotes()
+
+  const [needsFetch, setNeedsFetch] = useState<boolean>(false)
+
+  let proposals = ocProposals
   // const { proposals: qiProps } = useQiDaoProposals()
 
   // let proposals: Proposal[] = []
@@ -149,29 +153,40 @@ export default function SnapshotProposalGroup({ className, tab }: SnapshotPropos
   const handleScroll = (e: any) => {
     const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 30
     if (bottom) {
-      otterFetchMore({
-        variables: {
-          skip: proposals.length,
-        },
-      })
+      setNeedsFetch(true)
       // .then(fetchMoreResult: any => {
       //   // Update variables.limit for the original query to include
       //   // the newly added feed items.
       //   console.log(fetchMoreResult)
       // })
-      console.log(proposals)
     }
   }
 
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll, {
-  //     passive: true,
-  //   })
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, {
+      passive: true,
+    })
 
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll)
-  //   }
-  // }, [])
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  useMemo(() => {
+    if (needsFetch) {
+      otterFetchMore({
+        variables: {
+          skip: proposals.length,
+        },
+      }).then(fetchMoreResult: any => {
+        // Update variables.limit for the original query to include
+        // the newly added feed items.
+        console.log(fetchMoreResult)
+      })
+      setNeedsFetch(false)
+      console.log(proposals)
+    }
+  }, [needsFetch, proposals, setNeedsFetch])
 
   return (
     <StyledContainer className={className}>

@@ -1,11 +1,11 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { createContext, PropsWithChildren, useMemo } from 'react'
 
-const cache = new InMemoryCache({
+let cache = new InMemoryCache({
   typePolicies: {
     OtterClamProposals: {
       fields: {
-        skip: {
+        proposals: {
           // Don't cache separate results based on
           // any of this field's arguments.
           keyArgs: false,
