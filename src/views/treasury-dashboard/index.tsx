@@ -244,8 +244,8 @@ const usePearlBankApr = () => {
   const [range, setRange] = useState(PearlBankAvgAprRange.Week)
   const { metrics: pearlBankMetrics } = usePearlBankMetrics()
   const startDate = useMemo(() => {
-    let pastDayFromRange = subDays(Number(pearlBankMetrics[0]?.timestamp ?? 0) * 1000, range - 1)
-    let oldestDataDate = new Date((pearlBankMetrics[pearlBankMetrics.length - 1]?.timestamp ?? 0) * 1000)
+    const pastDayFromRange = subDays(Number(pearlBankMetrics[0]?.timestamp ?? 0) * 1000, range - 1)
+    const oldestDataDate = new Date((pearlBankMetrics[pearlBankMetrics.length - 1]?.timestamp ?? 0) * 1000)
 
     return pastDayFromRange > oldestDataDate ? pastDayFromRange : oldestDataDate
   }, [range, pearlBankMetrics])

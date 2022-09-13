@@ -1,15 +1,15 @@
+import { useEffect, useMemo, useState } from 'react'
 import { ContentSmall, Display1, Headline, ContentMedium } from 'styles/typography'
+import { theme } from 'styles'
+import useQiDaoProposals from 'hooks/useQiDaoProposals'
+import useOtterClamProposalsWithVotes from 'hooks/useOtterClamProposalsWithVotes'
+import { Proposal } from 'models/Proposal'
+import ReactMarkdown from 'react-markdown'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
-import ReactMarkdown from 'react-markdown'
-import { Proposal } from '../models/Proposal'
 import { GovernanceTab } from '../models/Tabs'
-import Button from './Button'
 import SnapshotProposalPieChart from './SnapshotProposalPieChart'
-import { theme } from 'styles'
-import { useEffect, useMemo, useState } from 'react'
-import useOtterClamProposalsWithVotes from 'hooks/useOtterClamProposalsWithVotes'
-import useQiDaoProposals from 'hooks/useQiDaoProposals'
+import Button from './Button'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -113,8 +113,8 @@ export interface SnapshotProposalGroupInterface {
   tab: GovernanceTab
 }
 
-// capitalize only the first letter of the string.
 // TODO: Replace with translations
+// { active: 'Active', closed: 'Closed'}
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
@@ -128,19 +128,19 @@ export default function SnapshotProposalGroup({ className, tab }: SnapshotPropos
   const { t } = useTranslation('', { keyPrefix: 'treasury.governance' })
   const [maximisedProposal, setmaximisedProposal] = useState<string>('')
   const { proposals: ocProposals, fetchMore: otterFetchMore } = useOtterClamProposalsWithVotes()
+  const { proposals: qiProposals } = useQiDaoProposals()
 
   const [needsFetch, setNeedsFetch] = useState<boolean>(false)
 
-  let proposals = ocProposals
-  // const { proposals: qiProps } = useQiDaoProposals()
-
-  // let proposals: Proposal[] = []
-  // if (tab === GovernanceTab.OTTERCLAM) {
-  //   proposals = otterProps
-  // }
-  // if (tab === GovernanceTab.QIDAO) {
-  //   proposals = qiProps
-  // }
+  // Could inject proposals from parent,
+  // but we need to propogate the fetchMore function from query for caching
+  let proposals: Proposal[] = []
+  if (tab === GovernanceTab.OTTERCLAM) {
+    proposals = ocProposals
+  }
+  if (tab === GovernanceTab.QIDAO) {
+    proposals = qiProposals
+  }
 
   const toggleMaximisedProposal = (key: string) => {
     if (key === maximisedProposal) {
@@ -178,20 +178,21 @@ export default function SnapshotProposalGroup({ className, tab }: SnapshotPropos
         variables: {
           skip: proposals.length,
         },
-      }).then(fetchMoreResult: any => {
-        // Update variables.limit for the original query to include
-        // the newly added feed items.
-        console.log(fetchMoreResult)
       })
+      // .then(fetchMoreResult: any => {
+      //   // Update variables.limit for the original query to include
+      //   // the newly added feed items.
+      //   console.log(fetchMoreResult)
+      // })
       setNeedsFetch(false)
-      console.log(proposals)
+      // console.log(proposals)
     }
-  }, [needsFetch, proposals, setNeedsFetch])
+  }, [needsFetch, proposals, setNeedsFetch, otterFetchMore])
 
   return (
     <StyledContainer className={className}>
       {proposals.map(proposal => (
-        // How do animations work with dynamic max-height pls help
+        // How do animations work with dynamic content max-height pls help
         <StyledCard key={proposal.id} maxH={maximisedProposal === proposal.id ? '80vh' : '268px'}>
           <StyledInnerContainer>
             <StyledProposalHeadline as="h1">{proposal.title}</StyledProposalHeadline>

@@ -40,15 +40,16 @@ export default function PalacePage() {
 
   const [href, setHref] = useState<string>('')
 
+  // WIP: directly link to tabs with the Link href
   return (
     <div>
       <StyledTabs>
-        <Link href={'#dash'} replace>
+        <Link href="#dash" replace>
           <StyledTab selected={tab === PalaceTab.DASHBOARD} onClick={() => setTab(PalaceTab.DASHBOARD)}>
             {t('dashboard_tab')}{' '}
           </StyledTab>
         </Link>
-        <Link href={'#gov'} replace>
+        <Link href="#gov" replace>
           <StyledTab selected={tab === PalaceTab.GOVERNANCE} onClick={() => setTab(PalaceTab.GOVERNANCE)}>
             {t('governance_tab')}{' '}
           </StyledTab>

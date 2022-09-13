@@ -64,7 +64,6 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
   useServiceWorker()
   useContractAddresses()
   const apollo = useApollo()
-
   useRealWindowSize()
 
   return (

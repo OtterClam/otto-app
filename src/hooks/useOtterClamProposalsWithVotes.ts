@@ -10,12 +10,12 @@ export default function useOtterClamProposalsWithVotes(): {
 } {
   const { loading: loadingVotes, proposals: votedProposals } = useOtterClamProposalUserVotes()
   const { loading, proposals, fetchMore } = useOtterClamProposals()
-  let finalProposals: Proposal[] = []
+  const finalProposals: Proposal[] = []
 
   // iterate all OtterClam proposals
   for (let i = 0; i < proposals.length; i++) {
     // check if user voted on this proposal
-    let voted = votedProposals.find(x => x.id === proposals[i].id)
+    const voted = votedProposals.find(x => x.id === proposals[i].id)
     if (voted) {
       // match the vote with the proposal
       finalProposals.push(setMatchedProposalProperties(proposals[i], voted))

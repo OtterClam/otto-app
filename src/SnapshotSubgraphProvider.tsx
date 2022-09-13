@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { createContext, PropsWithChildren, useMemo } from 'react'
 
-let cache = new InMemoryCache({
+const cache = new InMemoryCache({
   typePolicies: {
     OtterClamProposals: {
       fields: {
@@ -12,7 +12,7 @@ let cache = new InMemoryCache({
 
           // Concatenate the incoming list items with
           // the existing list items.
-          merge(existing = [], incoming) {
+          merge(existing, incoming) {
             return [...existing, ...incoming]
           },
         },
@@ -22,7 +22,7 @@ let cache = new InMemoryCache({
 })
 
 const defaultValue = new ApolloClient({
-  cache: cache,
+  cache,
 })
 export const SnapshotContext = createContext(defaultValue)
 
@@ -33,7 +33,7 @@ export default function SnapshotProvider({ children }: PropsWithChildren<object>
     () =>
       new ApolloClient({
         uri,
-        cache: cache,
+        cache,
       }),
     [uri]
   )
