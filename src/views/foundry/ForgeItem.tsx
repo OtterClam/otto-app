@@ -61,6 +61,7 @@ const StyledResult = styled(TreasurySection).attrs({ showRope: false })<{ bgImag
   gap: 10px;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   justify-content: center;
   max-width: 300px;
   min-width: 300px;
