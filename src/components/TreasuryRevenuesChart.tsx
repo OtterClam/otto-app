@@ -31,6 +31,7 @@ const dataKeysSettings = {
     { dataKey: 'penClamAmount', colors: ['rgba(128, 131, 235, 1)', 'rgba(252, 236, 255, 0.5)'], label: 'PEN' },
     { dataKey: 'daiClamAmount', colors: ['rgba(254, 129, 22,0.8)', 'rgba(254, 129, 22,0.5)'], label: 'DAI' },
     { dataKey: 'usdPlusClamAmount', colors: ['rgba(72, 229, 8, 1)', 'rgba(72, 229, 8, 0.5)'], label: 'USD+' },
+    { dataKey: 'kncClamAmount', colors: ['rgba(72, 229, 8, 1)', 'rgba(72, 229, 8, 0.5)'], label: 'KNC' },
   ],
   [Currency.USD]: [
     { dataKey: 'qiMarketValue', colors: ['rgba(244, 210, 88, 1)', 'rgba(244, 210, 88, 0.5)'], label: 'Qi' },
@@ -41,6 +42,7 @@ const dataKeysSettings = {
     { dataKey: 'penMarketValue', colors: ['rgba(128, 131, 235, 1)', 'rgba(252, 236, 255, 0.5)'], label: 'PEN' },
     { dataKey: 'daiMarketValue', colors: ['rgba(254, 129, 22,0.8)', 'rgba(254, 129, 22,0.5)'], label: 'DAI' },
     { dataKey: 'usdPlusMarketValue', colors: ['rgba(72, 229, 8, 1)', 'rgba(72, 229, 8, 0.5)'], label: 'USD+' },
+    { dataKey: 'kncMarketValue', colors: ['rgba(49, 203, 158, 1)', 'rgba(49, 203, 158, 0.5)'], label: 'KNC' },
   ],
 }
 
