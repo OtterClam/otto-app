@@ -7,6 +7,7 @@ const StyledContainer = styled(Note).attrs({ as: 'div' })`
   display: flex;
   gap: 5px;
   align-items: center;
+  flex-wrap: wrap;
 `
 
 const StyledLabel = styled.span<{ large?: boolean; matched?: boolean; boost?: boolean }>`
