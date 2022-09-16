@@ -6,6 +6,7 @@ import { Caption, ContentSmall, Headline, Note } from 'styles/typography'
 import GenderSpecific from 'components/GenderSpecific'
 import { useTranslation } from 'next-i18next'
 import ItemCollectionBadge from 'components/ItemCollectionBadge'
+import TraitLabels from 'components/TraitLabels'
 
 const StyledItemDetails = styled.section`
   display: flex;
@@ -159,7 +160,7 @@ interface Props {
 
 export default function ItemDetails({ item, onClose, onUse, className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
-  const { id, collection, collection_name, name, image, rarity, type, description, equippable_gender, wearable } = item
+  const { collection, collection_name, name, image, rarity, type, description, equippable_gender, wearable } = item
 
   return (
     <StyledItemDetails className={className}>
@@ -186,6 +187,8 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
       </StyledTitleContainer>
       <GenderSpecific equippableGender={equippable_gender} />
       <StyledDesc>{description}</StyledDesc>
+      {/* the following typing issue has been solved in adventure branch */}
+      <TraitLabels trait={item as any} small highlightMatched />
       {wearable && (
         <>
           <StyledRarityScore>

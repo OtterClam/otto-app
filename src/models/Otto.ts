@@ -40,6 +40,8 @@ export interface Trait {
   equippable_gender: string
   collection: TraitCollection
   collection_name: string
+  labels: string[]
+  theme_boost: number
 }
 
 export interface Stat {
@@ -54,7 +56,7 @@ export interface OttoMeta {
   attributes: [Attr]
   otto_attrs: [Attr]
   otto_traits: [Attr]
-  otto_details?: [Trait]
+  otto_details?: Trait[]
   animation_url: string
 }
 

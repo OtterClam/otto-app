@@ -37,6 +37,8 @@ export default interface Item {
   update_at: number
   collection?: TraitCollection
   collection_name?: string
+  theme_boost: number
+  labels: string[]
 }
 
 export function traitToItem(trait: Trait): Item {
@@ -119,4 +121,6 @@ export const EmptyItem: Item = {
   con: 0,
   collection: TraitCollection.Genesis,
   collection_name: '',
+  theme_boost: 0,
+  labels: [],
 }
