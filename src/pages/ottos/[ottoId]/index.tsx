@@ -4,6 +4,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { NextPageWithLayout } from 'pages/_app'
 import DefaultLayout from 'layouts/DefaultLayout'
+import { LeaderboardEpochProvider } from 'contexts/LeaderboardEpoch'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
@@ -23,7 +24,9 @@ const OttoPage: NextPageWithLayout = OttoView
 OttoPage.getLayout = (page, i18n) => {
   return (
     <DefaultLayout title={i18n.t('otto.title')}>
-      <Board>{page}</Board>
+      <LeaderboardEpochProvider>
+        <Board>{page}</Board>
+      </LeaderboardEpochProvider>
     </DefaultLayout>
   )
 }
