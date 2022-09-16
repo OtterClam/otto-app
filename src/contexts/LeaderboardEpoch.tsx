@@ -1,7 +1,7 @@
 import { throttle } from 'lodash'
 import noop from 'lodash/noop'
 import { LeaderboardEpoch } from 'models/LeaderboardEpoch'
-import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react'
+import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useApi } from './Api'
 
 const defaultEpoch: LeaderboardEpoch = {
@@ -45,6 +45,8 @@ export const LeaderboardEpochProvider = ({ children }: PropsWithChildren<object>
     }),
     [loading, epoch, api]
   )
+
+  useEffect(refetch, [api])
 
   return <LeaderboardEpochContext.Provider value={value}>{children}</LeaderboardEpochContext.Provider>
 }
