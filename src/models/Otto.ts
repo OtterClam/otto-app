@@ -97,6 +97,10 @@ export default class Otto {
 
   public readonly diceCount?: number
 
+  public readonly themeCombo: number = 1
+
+  public readonly themeComboBoost: number = 0
+
   constructor(raw: RawOtto, metadata: OttoMeta) {
     this.raw = raw
     this.metadata = metadata
@@ -134,6 +138,10 @@ export default class Otto {
         this.ranking = Number(value)
       } else if (trait_type === 'Zodiac Sign') {
         this.zodiacSign = String(value)
+      } else if (trait_type === 'Theme Combo') {
+        this.themeCombo = Number(value ?? '1')
+      } else if (trait_type === 'Theme Combo Boost') {
+        this.themeComboBoost = Number(value ?? '0')
       }
     }
 

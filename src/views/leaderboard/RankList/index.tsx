@@ -166,6 +166,7 @@ const StyledTags = styled.div`
   display: flex;
   gap: 5px;
   grid-column-start: span 2;
+  flex-wrap: wrap;
 
   @media ${({ theme }) => theme.breakpoints.tablet} {
     flex-direction: column;
@@ -261,11 +262,7 @@ const StyledChosenOne = styled(Caption).attrs({ as: 'div' })`
   }
 `
 
-const StyledHelldiceBoost = styled(StyledChosenOne)`
-  background: ${({ theme }) => theme.colors.lightGray300};
-`
-
-const StyledZodiacSignBonus = styled(StyledChosenOne)`
+const StyledTag = styled(StyledChosenOne)`
   background: ${({ theme }) => theme.colors.lightGray300};
 `
 
@@ -391,6 +388,7 @@ export default function RankList({ className }: Props) {
       zodiacSign,
       epochRarityBoost,
       diceCount,
+      themeComboBoost,
     }: Otto
   ) => {
     return (
@@ -411,16 +409,22 @@ export default function RankList({ className }: Props) {
                       {t('chosen_one')}
                     </StyledChosenOne>
                   ) : (
-                    <StyledZodiacSignBonus>
+                    <StyledTag>
                       <img src={Constellations[zodiacSign]} alt={zodiacSign} />
                       {t('zodiac_boost', { zodiac: zodiacSign })}
-                    </StyledZodiacSignBonus>
+                    </StyledTag>
                   ))}
                 {(diceCount ?? 0) > 0 && (
-                  <StyledHelldiceBoost>
+                  <StyledTag>
                     <img src="/trait-icons/Dice.png" alt="Hell Dice" />
                     {t('hell_dice', { diceCount, boost: numberWithSign(epochRarityBoost ?? 0) })}
-                  </StyledHelldiceBoost>
+                  </StyledTag>
+                )}
+                {themeComboBoost > 0 && (
+                  <StyledTag>
+                    <img src="/trait-icons/Theme.png" alt="Theme Boost" />
+                    {t('theme_boost', { boost: themeComboBoost })}
+                  </StyledTag>
                 )}
               </StyledTags>
               <StyledReward as="div">{getEstimatedReward(rank)}</StyledReward>
@@ -445,16 +449,22 @@ export default function RankList({ className }: Props) {
                           {t('chosen_one')}
                         </StyledChosenOne>
                       ) : (
-                        <StyledZodiacSignBonus>
+                        <StyledTag>
                           <img src={Constellations[zodiacSign]} alt={zodiacSign} />
                           {t('zodiac_boost', { zodiac: zodiacSign })}
-                        </StyledZodiacSignBonus>
+                        </StyledTag>
                       ))}
                     {(diceCount ?? 0) > 0 && (
-                      <StyledHelldiceBoost>
+                      <StyledTag>
                         <img src="/trait-icons/Dice.png" alt="Hell Dice" />
                         {t('hell_dice', { diceCount, boost: numberWithSign(epochRarityBoost ?? 0) })}
-                      </StyledHelldiceBoost>
+                      </StyledTag>
+                    )}
+                    {themeComboBoost > 0 && (
+                      <StyledTag>
+                        <img src="/trait-icons/Theme.png" alt="Theme Boost" />
+                        {t('theme_boost', { boost: themeComboBoost })}
+                      </StyledTag>
                     )}
                   </StyledTags>
                 </StyledNameColumn>
