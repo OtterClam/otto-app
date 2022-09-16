@@ -4,11 +4,12 @@ import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import styled from 'styled-components/macro'
 import { Display3, Headline } from 'styles/typography'
+import { useLeaderboardEpoch } from 'contexts/LeaderboardEpoch'
 import Hero from './Hero'
 import Info from './Info'
-import M4Carbin from './m4-carbin.png'
+import RightInfo from './right-info.png'
 import RankList from './RankList'
-import RewardInfo from './reward-info.png'
+import LeftInfo from './left-info.png'
 
 const StyledLeaderboardPage = styled.div`
   display: flex;
@@ -53,6 +54,10 @@ const StyledRankList = styled(RankList)`
 export default function LeaderboardPage() {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard' })
   const { epoch, latestEpoch, hasPrevEpoch, hasNextEpoch } = useRarityEpoch()
+  const {
+    epoch: { themes },
+  } = useLeaderboardEpoch()
+
   return (
     <StyledLeaderboardPage>
       <StyledHead>
@@ -93,18 +98,11 @@ export default function LeaderboardPage() {
       <StyledHero />
       <StyledInfos>
         <Info
-          image={RewardInfo.src}
-          desc={t('reward_desc')}
-          links={[{ text: t('reward_link'), href: 'https://otterclam.medium.com/raking-for-rarity-8e1ac83588d3' }]}
+          image={LeftInfo.src}
+          desc={t('left_info', { themes })}
+          links={[{ text: t('left_info_link'), href: 'https://otterclam.medium.com/raking-for-rarity-8e1ac83588d3' }]}
         />
-        <Info
-          image={M4Carbin.src}
-          desc={t('item_desc')}
-          links={[
-            { text: t('shell_chest_link'), href: '/store', internal: true },
-            { text: t('mint_portal_link'), href: '/mint', internal: true },
-          ]}
-        />
+        <Info image={RightInfo.src} desc={t('right_info')} links={[]} />
       </StyledInfos>
       <StyledRankList />
     </StyledLeaderboardPage>

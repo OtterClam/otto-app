@@ -163,7 +163,7 @@
       "title": "Total Rewards this Round",
       "tooltip": "The ranking and estimated rewards on the leaderboard will change until the displayed time. The final ranking and prizes will be determined by the snapshot of at that time."
     },
-    "item_desc": "Increase your Otto’s rarity by equipping the epic items, or you can summon a genetically rare Otto!",
+    "right_info": "The upcoming epoch falls to <span style=\"color: #FFDC77\">Capricorn</span>. The god of Capricorn has blessed every Capricorn Otto, Lottie and Cleo with glory and power! <span style=\"color: #FF6854\">BRS +50</span>",
     "mint_portal_link": "Mint Portal >",
     "next": "Next Round >",
     "prev": "< Previous Round",
@@ -184,8 +184,8 @@
       "your_rank": "Your Ottos’ rank currently:",
       "zodiac_boost": "{{zodiac}} (BRS+50)"
     },
-    "reward_desc": "The higher your rank, the more prize you will win! All top 50% Ottos can win the rewards.",
-    "reward_link": "See how the rank vs prize works >",
+    "left_info": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #FFDC77\">{{ themes }}</span> will receive extra BRS boosts.",
+    "left_info_link": "See how themes vs BRS boost works >",
     "shell_chest_link": "Buy Shell Chest >",
     "title": "Leaderboard"
   },
