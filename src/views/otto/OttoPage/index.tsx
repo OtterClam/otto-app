@@ -21,9 +21,11 @@ import { useRouter } from 'next/router'
 import { GET_OTTO } from 'graphs/otto'
 import { GetOtto, GetOttoVariables } from 'graphs/__generated__/GetOtto'
 import { useEthers } from '@usedapp/core'
+import OttoThemeBoostLabels from 'components/OttoThemeBoostLabels'
 import PlayIcon from './icons/play-voice.svg'
 import OttoTraitDetails from './OttoTraitDetails'
 import TheOtter from './icons/the_otter.png'
+import Theme from './icons/theme.png'
 
 const DicePopup = dynamic(() => import('components/DicePopup'), {
   ssr: false,
@@ -339,6 +341,17 @@ export default function OttoPage() {
                     constellation: otto.zodiacSign,
                   })}
                   <StyledBoost>BRS+{otto.zodiacBoost}!</StyledBoost>
+                </ContentSmall>
+              </StyledBoostBox>
+            )}
+
+            {otto && otto.themeComboBoost > 0 && (
+              <StyledBoostBox>
+                <img src={Theme.src} alt="the Otter" />
+                <ContentSmall>
+                  {t('otto.theme_boost')}
+                  <StyledBoost>BRS+{otto.themeComboBoost}</StyledBoost>
+                  <OttoThemeBoostLabels otto={otto} />
                 </ContentSmall>
               </StyledBoostBox>
             )}

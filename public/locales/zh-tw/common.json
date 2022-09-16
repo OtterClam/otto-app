@@ -695,5 +695,8 @@
     "forge": {
       "processing": "鑄造..."
     }
+  },
+  "themeBoost": {
+    "comboTag": "COMBO Boost x {{ combo }} 🔥"
   }
 }

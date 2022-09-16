@@ -712,5 +712,8 @@
     "forge": {
       "processing": "Forging..."
     }
+  },
+  "themeBoost": {
+    "comboTag": "COMBO Boost x {{ combo }} 🔥"
   }
 }
