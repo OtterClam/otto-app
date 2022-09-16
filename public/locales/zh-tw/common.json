@@ -168,7 +168,6 @@
       "est_reward": "預估獎金",
       "expand": "展開顯示所有 {{count}} 隻阿獺",
       "hell_dice": "Dice X{{ diceCount }} (BRS{{ boost }})",
-      "theme_boost": "主題加成 (BRS+{{ boost }})",
       "name": "阿獺名稱",
       "next": "下一頁",
       "prev": "上一頁",
@@ -346,6 +345,7 @@
   "otto": {
     "birthday": "生日： {{birthday}}",
     "chosen_one": "這隻是天選之獺！\n這一輪的稀有度大賽日期落在了 {{birthday}}，所有與此日期相同生日的阿獺、蘿提及克蕾歐都會被阿獺之神祝福並賜予特殊效果。",
+    "theme_boost": "主題加成",
     "classic": "經典",
     "classic_note": "經典阿獺是阿獺王國裡最大宗、且最人見人愛的王國居民。",
     "coatOfArms": "阿獺王國共有 5 大家族，這隻阿獺是屬於{{arms}}，快尋找同樣家徽的阿獺吧！",

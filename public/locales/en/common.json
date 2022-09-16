@@ -173,7 +173,6 @@
       "est_reward": "Est. Reward",
       "expand": "Expand all your {{count}} Ottos",
       "hell_dice": "Dice X{{ diceCount }} (BRS{{ boost }})",
-      "theme_boost": "Theme Boost (BRS+{{ boost }})",
       "name": "Otto Name",
       "next": "Next >",
       "prev": "< Previous",
@@ -352,6 +351,7 @@
   "otto": {
     "birthday": "Birthday: {{birthday}}",
     "chosen_one": "This Otto is the chosen one!\nThe upcoming epoch falls to {{birthday}}. All Otto, Lotties and Cleo that the Birthday is same to the date are blessed with special boosts!",
+    "theme_boost": "Theme Boost",
     "classic": "Classic",
     "classic_note": "A general Otto that shares the peace all over the Otter Kingdom.",
     "coatOfArms": "This Otter’s coat of arms is {{arms}}",

@@ -250,6 +250,10 @@ const StyledBoost = styled.span`
   margin-left: 10px;
 `
 
+const StyledOttoThemeBoostLabels = styled(OttoThemeBoostLabels)`
+  margin-top: 10px;
+`
+
 export default function OttoPage() {
   const { t } = useTranslation()
   const { chainId } = useEthers()
@@ -351,7 +355,7 @@ export default function OttoPage() {
                 <ContentSmall>
                   {t('otto.theme_boost')}
                   <StyledBoost>BRS+{otto.themeComboBoost}</StyledBoost>
-                  <OttoThemeBoostLabels otto={otto} />
+                  <StyledOttoThemeBoostLabels otto={otto} />
                 </ContentSmall>
               </StyledBoostBox>
             )}

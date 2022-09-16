@@ -15,7 +15,9 @@ const StyledLabel = styled.span<{ boost?: boolean }>`
   align-items: center;
   height: 28px;
   padding: 0 10px;
-  background: ${({ theme, boost }) => (boost ? theme.colors.lightGray200 : theme.colors.crownYellow)};
+  background: ${({ theme, boost }) => (boost ? theme.colors.crownYellow : theme.colors.lightGray200)};
+  border-radius: 14px;
+  gap: 2px;
 `
 
 const StyledIcon = styled.span<{ type: string }>`
@@ -26,14 +28,15 @@ const StyledIcon = styled.span<{ type: string }>`
 
 export interface OttoThemeBoostLabelsProps {
   otto: Otto
+  className?: string
 }
 
-export default function OttoThemeBoostLabels({ otto }: OttoThemeBoostLabelsProps) {
+export default function OttoThemeBoostLabels({ otto, className }: OttoThemeBoostLabelsProps) {
   const traits = (otto.metadata.otto_details ?? []).filter(trait => trait.theme_boost > 0)
   const { t } = useTranslation('', { keyPrefix: 'themeBoost' })
 
   return (
-    <StyledContainer>
+    <StyledContainer className={className}>
       {traits.map(trait => (
         <StyledLabel key={trait.type}>
           <StyledIcon type={trait.type} />

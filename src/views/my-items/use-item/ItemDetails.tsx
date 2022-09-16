@@ -187,8 +187,6 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
       </StyledTitleContainer>
       <GenderSpecific equippableGender={equippable_gender} />
       <StyledDesc>{description}</StyledDesc>
-      {/* the following typing issue has been solved in adventure branch */}
-      <TraitLabels trait={item as any} small highlightMatched />
       {wearable && (
         <>
           <StyledRarityScore>
@@ -211,6 +209,8 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
           ))}
         </StyledAttrs>
       )}
+      {/* the following typing issue has been solved in adventure branch */}
+      {item.theme_boost > 0 && <TraitLabels trait={item as any} large highlightMatched />}
       {onUse && (
         <StyledButton Typography={Headline} onClick={() => onUse(item)}>
           {item.wearable ? (item.equipped ? t('take_off') : t('wear')) : item.isCoupon ? t('open') : t('use')}
