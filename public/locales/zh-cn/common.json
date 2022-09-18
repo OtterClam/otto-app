@@ -42,7 +42,7 @@
   "dice_popup": {
     "intro": {
       "call_to_action": "准备好要面对你的命运了吗？",
-      "description": "地狱骰子每轮会骰出两个事件，有的事件会暂时提升你的阿獭在这轮稀有度比赛的稀有度，但也有些事件会让阿獭的稀有度变得更低。\n* 地狱骰子尔偶也会骰出命运选择题，有的选项会让阿獭获得稀有度；但假如你选错了选项，你的阿獭将会厄运缠身并掉稀有度。\n* 地狱骰子的稀有度加成仅会影响此轮稀有度比赛，此轮结束后，稀有度加成即会移除（不管是加分或扣分）。\n* 你知道你的阿獭 DEF 值会影响骰出事件的机率吗？ <strong>DEF 值</strong>越高的阿獭，骰出好的事件机率会越高喔！想要知道 DEF 值所影响的骰子事件机率表，请前往<a href=\"https://docs.ottopia.app/ottopia/gameplay/leaderboard/#dice-of-destiny-\" target=\"_blank\">这里</a>。\n* 地狱骰子仅会影响你选择的这只阿獭。",
+      "description": "地狱骰子每轮会骰出两个事件，有的事件会暂时提升你的阿獭在这轮稀有度比赛的稀有度，但也有些事件会让阿獭的稀有度变得更低。\n* 地狱骰子尔偶也会骰出命运选择题，有的选项会让阿獭获得稀有度；但假如你选错了选项，你的阿獭将会厄运缠身并掉稀有度。\n* 地狱骰子的稀有度加成仅会影响此轮稀有度比赛，此轮结束后，稀有度加成即会移除（不管是加分或扣分）。\n* 想要知道更多地狱骰子资讯，请前往<a href=\"https://docs.ottopia.app/ottopia/events/rarity-competition-s2#dice-of-destiny-" target=\"_blank\">这里</a>。\n* 地狱骰子仅会影响你选择的这只阿獭。",
       "start_button": "骰骰子！",
       "title": "机会！命运？交给地狱骰子吧"
     },
@@ -155,19 +155,20 @@
       "get_updated": "在 Discord 获得最新情报",
       "reward_at": "奖金发放时间: {{time}}!",
       "round_end": "此轮比赛已结束且奖励已发送。",
-      "title": "这一轮比赛总奖金",
+      "title": "这季比赛总奖金",
       "tooltip": "排行榜上的名次及预估奖金会持续变动直到显示时间归零，而最终名次及奖励会透过结束当下的截图画面决定。"
     },
-    "item_desc": "装备稀有物品让你的阿獭拥有更高的稀有值，或者你也可以直接铸造传送门招唤一只全新的阿獭！",
+    "right_info": "The upcoming epoch falls to <span style=\"color: #FFDC77\">Capricorn</span>. The god of Capricorn has blessed every Capricorn Otto, Lottie and Cleo with glory and power! <span style=\"color: #FF6854\">BRS +50</span>",
     "mint_portal_link": "铸造传送门 >",
-    "next": "下一回合 >",
-    "prev": "< 前一回合",
+    "next": "下一轮 >",
+    "prev": "< 前一轮",
     "rank_list": {
       "brs": "BRS",
+      "theme_boost": "主题加成 (BRS+{{ boost }})",
       "chosen_one": "天选之獭 (BRS+150)",
       "est_reward": "预估奖金",
       "expand": "展开显示所有 {{count}} 只阿獭",
-      "hell_dice": "Dice X{{ diceCount }} (BRS{{ boost }})",
+      "hell_dice": "骰子 X{{ diceCount }} (BRS{{ boost }})",
       "name": "阿獭名称",
       "next": "下一页",
       "prev": "上一页",
@@ -175,11 +176,11 @@
       "rarity_score": "稀有度",
       "rrs": "RRS",
       "show_less": "收合",
-      "your_rank": "你的阿獭目前稀有度排名:",
+      "your_rank": "你的阿獭稀有度排名:",
       "zodiac_boost": "{{zodiac}} (BRS+50)"
     },
-    "reward_desc": "稀有度排名越高，得到的奖金就会越丰厚。排名前 50% 的阿獭都可以得到奖金呦！",
-    "reward_link": "看看排名机制及奖金制度 >",
+    "left_info": "只要你的阿獭 NFT 穿上的物品符合此轮比赛所指定的主题标签： <span style=\"color: #FFDC77\">{{ themes }}</span> ，就可以得到额外稀有度分数加成！",
+    "left_info_link": "主题加成如何运作 >",
     "shell_chest_link": "购买贝壳宝箱 >",
     "title": "排行榜"
   },
@@ -345,6 +346,7 @@
   "otto": {
     "birthday": "生日： {{birthday}}",
     "chosen_one": "这只是天选之獭！\n这一轮的稀有度大赛日期落在了 {{birthday}}，所有与此日期相同生日的阿獭、萝提及克蕾欧都会被阿獭之神祝福并赐予特殊效果。",
+    "theme_boost": "主题加成",
     "classic": "经典",
     "classic_note": "经典阿獭是阿獭王国里最大宗、且最人见人爱的王国居民。",
     "coatOfArms": "阿獭王国共有 5 大家族，这只阿獭是属于{{arms}}，快寻找同样家徽的阿獭吧！",
@@ -449,6 +451,7 @@
     }
   },
   "product": {
+    "must_desc": "{{rarity}} 道具保证！",
     "diamond": {
       "desc": "钻石宝箱是 3 种宝箱中最高级的宝箱，获得 R 级稀有度的装备机率高达 87%、且获得 E 级稀有度的装备机率也提升到 3%。想要你的阿獭拥有最稀有、最高端的装备吗？来购买最闪亮的钻石宝箱吧！",
       "must_desc": "E3 道具保证！",
@@ -686,12 +689,15 @@
       "title": "必要的物品："
     },
     "forgeButton": "铸造",
-    "forgeButton_insufficient": "铸造（没有足够的材料）",
-    "forgeAvailableTime": "融合开放的时间: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
+    "forgeButton_insufficient": "铸造（无足够材料）",
+    "forgeAvailableTime": "可铸造期限: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
     "comingSoon": "即将开放...",
     "approve": "授权",
     "forge": {
       "processing": "铸造..."
     }
+  },
+  "themeBoost": {
+    "boostMultiplier": "物品连击加成 x {{ multiplier }} 🔥"
   }
 }
