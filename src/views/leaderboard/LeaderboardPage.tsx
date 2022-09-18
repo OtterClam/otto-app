@@ -100,7 +100,7 @@ export default function LeaderboardPage() {
         <Info
           image={LeftInfo.src}
           desc={t('left_info', { themes })}
-          links={[{ text: t('left_info_link'), href: 'https://otterclam.medium.com/raking-for-rarity-8e1ac83588d3' }]}
+          links={[{ text: t('left_info_link'), href: 'https://docs.ottopia.app/ottopia/events/rarity-competition-s2' }]}
         />
         <Info image={RightInfo.src} desc={t('right_info')} links={[]} />
       </StyledInfos>
