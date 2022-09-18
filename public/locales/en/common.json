@@ -185,7 +185,7 @@
       "zodiac_boost": "{{zodiac}} (BRS+50)"
     },
     "left_info": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #FFDC77\">{{ themes }}</span> will receive extra BRS boosts.",
-    "left_info_link": "See how themes vs BRS boost works >",
+    "left_info_link": "See how BRS boost works >",
     "shell_chest_link": "Buy Shell Chest >",
     "title": "Leaderboard"
   },
