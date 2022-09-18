@@ -402,7 +402,7 @@ export default function RankList({ className }: Props) {
     }: Otto
   ) => {
     return (
-      <a key={rank} href={`/ottos/${tokenId}`} target="_blank" rel="noreferrer">
+      <a key={rank} href={`/ottos/${tokenId}`} target="_self" rel="noreferrer">
         {isMobile ? (
           <StyledMobileRow>
             <StyledTd>
