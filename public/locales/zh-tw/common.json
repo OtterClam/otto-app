@@ -164,6 +164,7 @@
     "prev": "< 前一回合",
     "rank_list": {
       "brs": "BRS",
+      "theme_boost": "主題加成 (BRS+{{ boost }})",
       "chosen_one": "天選之獺 (BRS+150)",
       "est_reward": "預估獎金",
       "expand": "展開顯示所有 {{count}} 隻阿獺",
@@ -697,6 +698,6 @@
     }
   },
   "themeBoost": {
-    "comboTag": "COMBO Boost x {{ combo }} 🔥"
+    "boostMultiplier": "COMBO Boost x {{ multiplier }} 🔥"
   }
 }

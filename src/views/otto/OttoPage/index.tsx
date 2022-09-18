@@ -349,12 +349,12 @@ export default function OttoPage() {
               </StyledBoostBox>
             )}
 
-            {otto && otto.themeComboBoost > 0 && (
+            {otto && otto.themeBoost > 0 && (
               <StyledBoostBox>
                 <img src={Theme.src} alt="the Otter" />
                 <ContentSmall>
                   {t('otto.theme_boost')}
-                  <StyledBoost>BRS+{otto.themeComboBoost}</StyledBoost>
+                  <StyledBoost>BRS+{otto.themeBoost}</StyledBoost>
                   <StyledOttoThemeBoostLabels otto={otto} />
                 </ContentSmall>
               </StyledBoostBox>

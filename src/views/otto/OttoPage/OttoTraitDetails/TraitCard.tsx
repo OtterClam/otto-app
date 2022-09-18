@@ -113,7 +113,7 @@ export default function TraitCard({ trait }: Props) {
           <StyledRarityScore as="p">
             {t('otto.rarity_score', { score: total_rarity_score, brs: base_rarity_score, rrs: relative_rarity_score })}
           </StyledRarityScore>
-          <TraitLabels trait={trait} />
+          <TraitLabels highlightMatched trait={trait} />
           <StyledWearCount>{t('otto.trait_count', { count: equipped_count })}</StyledWearCount>
           <StyledStats>
             {stats.map(({ name, value }, i) => (

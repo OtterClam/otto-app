@@ -169,6 +169,7 @@
     "prev": "< Previous Round",
     "rank_list": {
       "brs": "BRS",
+      "theme_boost": "Theme Boost (BRS+{{ boost }})",
       "chosen_one": "The Chosen Otto (BRS+150)",
       "est_reward": "Est. Reward",
       "expand": "Expand all your {{count}} Ottos",
@@ -714,6 +715,6 @@
     }
   },
   "themeBoost": {
-    "comboTag": "COMBO Boost x {{ combo }} 🔥"
+    "boostMultiplier": "Boost Multiplier x {{ multiplier }} 🔥"
   }
 }

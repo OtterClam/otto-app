@@ -388,7 +388,7 @@ export default function RankList({ className }: Props) {
       zodiacSign,
       epochRarityBoost,
       diceCount,
-      themeComboBoost,
+      themeBoost,
     }: Otto
   ) => {
     return (
@@ -420,10 +420,10 @@ export default function RankList({ className }: Props) {
                     {t('hell_dice', { diceCount, boost: numberWithSign(epochRarityBoost ?? 0) })}
                   </StyledTag>
                 )}
-                {themeComboBoost > 0 && (
+                {themeBoost > 0 && (
                   <StyledTag>
                     <img src="/trait-icons/Theme.png" alt="Theme Boost" />
-                    {t('theme_boost', { boost: themeComboBoost })}
+                    {t('theme_boost', { boost: themeBoost })}
                   </StyledTag>
                 )}
               </StyledTags>
@@ -460,10 +460,10 @@ export default function RankList({ className }: Props) {
                         {t('hell_dice', { diceCount, boost: numberWithSign(epochRarityBoost ?? 0) })}
                       </StyledTag>
                     )}
-                    {themeComboBoost > 0 && (
+                    {themeBoost > 0 && (
                       <StyledTag>
                         <img src="/trait-icons/Theme.png" alt="Theme Boost" />
-                        {t('theme_boost', { boost: themeComboBoost })}
+                        {t('theme_boost', { boost: themeBoost })}
                       </StyledTag>
                     )}
                   </StyledTags>

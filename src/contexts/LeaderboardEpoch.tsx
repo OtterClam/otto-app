@@ -54,18 +54,3 @@ export const LeaderboardEpochProvider = ({ children }: PropsWithChildren<object>
 export const useLeaderboardEpoch = () => {
   return useContext(LeaderboardEpochContext)
 }
-
-export const useThemeMatcher = () => {
-  const { epoch } = useLeaderboardEpoch()
-
-  const themesMap = useMemo(() => {
-    return epoch.themes.reduce((map, theme) => Object.assign(map, { [theme]: 1 }), {} as { [k: string]: number })
-  }, [epoch])
-
-  return useCallback(
-    (label: string) => {
-      return Boolean(themesMap[label])
-    },
-    [themesMap]
-  )
-}

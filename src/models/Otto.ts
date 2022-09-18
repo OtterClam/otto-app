@@ -24,6 +24,11 @@ export interface Attr {
   value: string | number
 }
 
+export interface TraitLabel {
+  name: string
+  match: boolean
+}
+
 export interface Trait {
   id: string
   type: string
@@ -40,7 +45,7 @@ export interface Trait {
   equippable_gender: string
   collection: TraitCollection
   collection_name: string
-  labels: string[]
+  labels: TraitLabel[]
   theme_boost: number
 }
 
@@ -97,9 +102,9 @@ export default class Otto {
 
   public readonly diceCount?: number
 
-  public readonly themeCombo: number = 1
+  public readonly themeBoost: number = 0
 
-  public readonly themeComboBoost: number = 0
+  public readonly themeBoostMultiplier: number = 1
 
   constructor(raw: RawOtto, metadata: OttoMeta) {
     this.raw = raw
@@ -138,10 +143,10 @@ export default class Otto {
         this.ranking = Number(value)
       } else if (trait_type === 'Zodiac Sign') {
         this.zodiacSign = String(value)
-      } else if (trait_type === 'Theme Combo') {
-        this.themeCombo = Number(value ?? '1')
-      } else if (trait_type === 'Theme Combo Boost') {
-        this.themeComboBoost = Number(value ?? '0')
+      } else if (trait_type === 'Theme Boost') {
+        this.themeBoost = Number(value ?? '0')
+      } else if (trait_type === 'Theme Boost Multiplier') {
+        this.themeBoostMultiplier = Number(value ?? '1')
       }
     }
 

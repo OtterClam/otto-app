@@ -1,5 +1,5 @@
 import NonItem from './non-item.jpg'
-import { Trait, TraitCollection } from './Otto'
+import { Trait, TraitCollection, TraitLabel } from './Otto'
 
 export interface ItemStat {
   name: string
@@ -38,7 +38,7 @@ export default interface Item {
   collection?: TraitCollection
   collection_name?: string
   theme_boost: number
-  labels: string[]
+  labels: TraitLabel[]
 }
 
 export function traitToItem(trait: Trait): Item {

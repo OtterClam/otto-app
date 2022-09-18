@@ -43,7 +43,7 @@ export default function OttoThemeBoostLabels({ otto, className }: OttoThemeBoost
           BRS+{trait.theme_boost}
         </StyledLabel>
       ))}
-      <StyledLabel boost>{t('comboTag', { combo: otto.themeCombo })}</StyledLabel>
+      <StyledLabel boost>{t('boostMultiplier', { multiplier: otto.themeBoostMultiplier / 100 })}</StyledLabel>
     </StyledContainer>
   )
 }
