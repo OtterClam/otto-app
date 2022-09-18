@@ -119,7 +119,7 @@ export class Api {
   }
 
   public async getLeaderBoardEpoch(): Promise<LeaderboardEpoch> {
-    const result = await this.otterclamClient.get<RawLeaderboardEpoch>('/leaderborad/epoch')
+    const result = await this.otterclamClient.get<RawLeaderboardEpoch>('/leaderboard/epoch')
     return rawLeaderboardEpochToLeaderboardEpoch(result.data)
   }
 }
