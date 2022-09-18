@@ -15,7 +15,12 @@ import OttOLoading from 'assets/ui/otto-loading.jpg'
 import { useMyOttos } from 'MyOttosProvider'
 import { trim } from 'helpers/trim'
 import Otto from 'models/Otto'
-import { ROUND_RARITY_REWARD_AFTER_3, ROUND_RARITY_REWARD_BEFORE_3, TOTAL_RARITY_REWARD } from 'constant'
+import {
+  ROUND_RARITY_REWARD_AFTER_3,
+  ROUND_RARITY_REWARD_BEFORE_3,
+  ROUND_RARITY_REWARD_S2,
+  TOTAL_RARITY_REWARD,
+} from 'constant'
 import Constellations from 'assets/constellations'
 import useRarityEpoch from 'hooks/useRarityEpoch'
 import { createSearchParams } from 'utils/url'
@@ -358,7 +363,12 @@ export default function RankList({ className }: Props) {
   const prizeCount = Math.floor(totalOttoSupply * 0.5)
   const topReward = useMemo(() => {
     let sum = 0
-    const totalReward = epoch > 3 || epoch === -1 ? ROUND_RARITY_REWARD_AFTER_3 : ROUND_RARITY_REWARD_BEFORE_3
+    const totalReward =
+      epoch >= 6
+        ? ROUND_RARITY_REWARD_S2
+        : epoch > 3 || epoch === -1
+        ? ROUND_RARITY_REWARD_AFTER_3
+        : ROUND_RARITY_REWARD_BEFORE_3
     for (let i = 1; i <= prizeCount; i++) {
       sum += 1 / i
     }

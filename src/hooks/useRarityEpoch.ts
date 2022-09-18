@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react'
 import { GetEpoch, GetEpochVariables } from 'graphs/__generated__/GetEpoch'
 import { RARITY_S1_END } from 'constant'
 
-const START_DATE = new Date('2022-05-23').valueOf()
+const S1_START_DATE = new Date('2022-05-23').valueOf()
+const S2_START_DATE = Date.now() // FIXME: replace with new Date('2022-09-19').valueOf()
 const EPOCH_LENGTH = 14 * 86400 * 1000 // 14 days
 const EPOCH_3_EXTEND = 2 * 86400 * 1000 // 2 days
 const EPOCH_4_EXTEND = 2 * 86400 * 1000
@@ -23,10 +24,12 @@ export default function useRarityEpoch() {
   const isLatestEpoch = epoch === -1 || epoch === latestEpoch
   const currentEpoch = isLatestEpoch ? latestEpoch : epoch
   const epochEndTime =
-    START_DATE +
-    (currentEpoch + 1) * EPOCH_LENGTH +
-    (currentEpoch >= 3 ? EPOCH_3_EXTEND : 0) +
-    (currentEpoch >= 4 ? EPOCH_4_EXTEND : 0)
+    currentEpoch >= 6
+      ? S2_START_DATE + (currentEpoch - 5) * EPOCH_LENGTH
+      : S1_START_DATE +
+        (currentEpoch + 1) * EPOCH_LENGTH +
+        (currentEpoch >= 3 ? EPOCH_3_EXTEND : 0) +
+        (currentEpoch >= 4 ? EPOCH_4_EXTEND : 0)
   const hasPrevEpoch = (epoch === -1 || epoch > 0) && latestEpoch > 0
   const hasNextEpoch = epoch !== -1
   const totalOttoSupply = epoch === -1 ? totalSupply - 250 : (data?.epoches[0].totalOttos ?? 0) - 250
@@ -34,14 +37,16 @@ export default function useRarityEpoch() {
   useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now()
-      if (now > RARITY_S1_END) {
-        setLatestEpoch(5) // TODO: remove this line after S2
-      } else if (now < START_DATE) setLatestEpoch(0)
-      else if (now > START_DATE && now < START_DATE + EPOCH_LENGTH * 3)
-        setLatestEpoch(Math.floor((now - START_DATE) / EPOCH_LENGTH))
-      else if (now < START_DATE + EPOCH_3_EXTEND + 4 * EPOCH_LENGTH) setLatestEpoch(3)
-      else if (now < START_DATE + EPOCH_3_EXTEND + EPOCH_4_EXTEND + 5 * EPOCH_LENGTH) setLatestEpoch(4)
-      else setLatestEpoch(Math.floor((now - START_DATE - EPOCH_3_EXTEND - EPOCH_4_EXTEND) / EPOCH_LENGTH))
+      if (now >= S2_START_DATE) {
+        setLatestEpoch(Math.floor((now - S2_START_DATE) / EPOCH_LENGTH) + 6)
+      } else if (now > RARITY_S1_END) {
+        setLatestEpoch(5)
+      } else if (now < S1_START_DATE) setLatestEpoch(0)
+      else if (now > S1_START_DATE && now < S1_START_DATE + EPOCH_LENGTH * 3)
+        setLatestEpoch(Math.floor((now - S1_START_DATE) / EPOCH_LENGTH))
+      else if (now < S1_START_DATE + EPOCH_3_EXTEND + 4 * EPOCH_LENGTH) setLatestEpoch(3)
+      else if (now < S1_START_DATE + EPOCH_3_EXTEND + EPOCH_4_EXTEND + 5 * EPOCH_LENGTH) setLatestEpoch(4)
+      else setLatestEpoch(Math.floor((now - S1_START_DATE - EPOCH_3_EXTEND - EPOCH_4_EXTEND) / EPOCH_LENGTH))
     }, 1000)
     return () => clearInterval(interval)
   }, [])
