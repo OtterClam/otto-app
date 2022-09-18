@@ -352,7 +352,7 @@
   "otto": {
     "birthday": "Birthday: {{birthday}}",
     "chosen_one": "This Otto is the chosen one!\nThe upcoming epoch falls to {{birthday}}. All Otto, Lotties and Cleo that the Birthday is same to the date are blessed with special boosts!",
-    "theme_boost": "Theme Boost",
+    "theme_boost": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #3B4BD8\">{{ labels }}</span> will receive extra BRS boosts.",
     "classic": "Classic",
     "classic_note": "A general Otto that shares the peace all over the Otter Kingdom.",
     "coatOfArms": "This Otter’s coat of arms is {{arms}}",

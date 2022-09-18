@@ -22,6 +22,7 @@ import { GET_OTTO } from 'graphs/otto'
 import { GetOtto, GetOttoVariables } from 'graphs/__generated__/GetOtto'
 import { useEthers } from '@usedapp/core'
 import OttoThemeBoostLabels from 'components/OttoThemeBoostLabels'
+import { useLeaderboardEpoch } from 'contexts/LeaderboardEpoch'
 import PlayIcon from './icons/play-voice.svg'
 import OttoTraitDetails from './OttoTraitDetails'
 import TheOtter from './icons/the_otter.png'
@@ -256,6 +257,9 @@ const StyledOttoThemeBoostLabels = styled(OttoThemeBoostLabels)`
 
 export default function OttoPage() {
   const { t } = useTranslation()
+  const {
+    epoch: { themes },
+  } = useLeaderboardEpoch()
   const { chainId } = useEthers()
   const router = useRouter()
   const ottoId = router.query.ottoId as string
@@ -353,7 +357,11 @@ export default function OttoPage() {
               <StyledBoostBox>
                 <img src={Theme.src} alt="the Otter" />
                 <ContentSmall>
-                  {t('otto.theme_boost')}
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: t('otto.theme_boost', { labels: themes.map(theme => `#${theme}`).join(', ') }),
+                    }}
+                  />
                   <StyledBoost>BRS+{otto.themeBoost}</StyledBoost>
                   <StyledOttoThemeBoostLabels otto={otto} />
                 </ContentSmall>
