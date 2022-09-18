@@ -3,6 +3,7 @@ import axios, { Axios } from 'axios'
 import { Dice } from 'models/Dice'
 import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
 import Item, { rawItemToItem } from 'models/Item'
+import { LeaderboardEpoch, RawLeaderboardEpoch, rawLeaderboardEpochToLeaderboardEpoch } from 'models/LeaderboardEpoch'
 import { Notification, RawNotification } from 'models/Notification'
 import { OttoMeta } from 'models/Otto'
 import Product from 'models/store/Product'
@@ -115,6 +116,11 @@ export class Api {
   public async getFoundryForges(): Promise<ForgeFormula[]> {
     const result = await this.otterclamClient.get<RawForgeFormula[]>('/foundry/forge')
     return result.data.map(rawForgeToForge)
+  }
+
+  public async getLeaderBoardEpoch(): Promise<LeaderboardEpoch> {
+    const result = await this.otterclamClient.get<RawLeaderboardEpoch>('/leaderboard/epoch')
+    return rawLeaderboardEpochToLeaderboardEpoch(result.data)
   }
 }
 

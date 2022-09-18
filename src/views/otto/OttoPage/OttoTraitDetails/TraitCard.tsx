@@ -7,6 +7,7 @@ import { useMemo } from 'react'
 import { traitToItem } from 'models/Item'
 import GenderSpecific from 'components/GenderSpecific'
 import UnreturnableHint from 'components/UnreturnableHint'
+import TraitLabels from 'components/TraitLabels'
 
 const StyledTraitCard = styled.div`
   display: flex;
@@ -112,6 +113,7 @@ export default function TraitCard({ trait }: Props) {
           <StyledRarityScore as="p">
             {t('otto.rarity_score', { score: total_rarity_score, brs: base_rarity_score, rrs: relative_rarity_score })}
           </StyledRarityScore>
+          <TraitLabels highlightMatched trait={trait} />
           <StyledWearCount>{t('otto.trait_count', { count: equipped_count })}</StyledWearCount>
           <StyledStats>
             {stats.map(({ name, value }, i) => (

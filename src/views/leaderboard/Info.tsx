@@ -3,6 +3,7 @@ import styled from 'styled-components/macro'
 import { ContentMedium, ContentSmall } from 'styles/typography'
 
 const StyledInfo = styled.div`
+  flex: 1 50%;
   display: flex;
   align-items: center;
   border-radius: 20px;
@@ -50,7 +51,7 @@ export default function Info({ image, desc, links }: Props) {
     <StyledInfo>
       <StyledImage src={image} />
       <StyledContent>
-        <StyledDesc>{desc}</StyledDesc>
+        <StyledDesc dangerouslySetInnerHTML={{ __html: desc }} />
         <StyledLinks>
           {links.map((link, index) =>
             link.internal ? (

@@ -21,9 +21,12 @@ import { useRouter } from 'next/router'
 import { GET_OTTO } from 'graphs/otto'
 import { GetOtto, GetOttoVariables } from 'graphs/__generated__/GetOtto'
 import { useEthers } from '@usedapp/core'
+import OttoThemeBoostLabels from 'components/OttoThemeBoostLabels'
+import { useLeaderboardEpoch } from 'contexts/LeaderboardEpoch'
 import PlayIcon from './icons/play-voice.svg'
 import OttoTraitDetails from './OttoTraitDetails'
 import TheOtter from './icons/the_otter.png'
+import Theme from './icons/theme.png'
 
 const DicePopup = dynamic(() => import('components/DicePopup'), {
   ssr: false,
@@ -248,8 +251,15 @@ const StyledBoost = styled.span`
   margin-left: 10px;
 `
 
+const StyledOttoThemeBoostLabels = styled(OttoThemeBoostLabels)`
+  margin-top: 10px;
+`
+
 export default function OttoPage() {
   const { t } = useTranslation()
+  const {
+    epoch: { themes },
+  } = useLeaderboardEpoch()
   const { chainId } = useEthers()
   const router = useRouter()
   const ottoId = router.query.ottoId as string
@@ -339,6 +349,21 @@ export default function OttoPage() {
                     constellation: otto.zodiacSign,
                   })}
                   <StyledBoost>BRS+{otto.zodiacBoost}!</StyledBoost>
+                </ContentSmall>
+              </StyledBoostBox>
+            )}
+
+            {otto && otto.themeBoost > 0 && (
+              <StyledBoostBox>
+                <img src={Theme.src} alt="the Otter" />
+                <ContentSmall>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: t('otto.theme_boost', { labels: themes.map(theme => `#${theme}`).join(', ') }),
+                    }}
+                  />
+                  <StyledBoost>BRS+{otto.themeBoost}</StyledBoost>
+                  <StyledOttoThemeBoostLabels otto={otto} />
                 </ContentSmall>
               </StyledBoostBox>
             )}

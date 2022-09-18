@@ -15,7 +15,12 @@ import OttOLoading from 'assets/ui/otto-loading.jpg'
 import { useMyOttos } from 'MyOttosProvider'
 import { trim } from 'helpers/trim'
 import Otto from 'models/Otto'
-import { ROUND_RARITY_REWARD_AFTER_3, ROUND_RARITY_REWARD_BEFORE_3, TOTAL_RARITY_REWARD } from 'constant'
+import {
+  ROUND_RARITY_REWARD_AFTER_3,
+  ROUND_RARITY_REWARD_BEFORE_3,
+  ROUND_RARITY_REWARD_S2,
+  TOTAL_RARITY_REWARD,
+} from 'constant'
 import Constellations from 'assets/constellations'
 import useRarityEpoch from 'hooks/useRarityEpoch'
 import { createSearchParams } from 'utils/url'
@@ -166,6 +171,7 @@ const StyledTags = styled.div`
   display: flex;
   gap: 5px;
   grid-column-start: span 2;
+  flex-wrap: wrap;
 
   @media ${({ theme }) => theme.breakpoints.tablet} {
     flex-direction: column;
@@ -261,11 +267,7 @@ const StyledChosenOne = styled(Caption).attrs({ as: 'div' })`
   }
 `
 
-const StyledHelldiceBoost = styled(StyledChosenOne)`
-  background: ${({ theme }) => theme.colors.lightGray300};
-`
-
-const StyledZodiacSignBonus = styled(StyledChosenOne)`
+const StyledTag = styled(StyledChosenOne)`
   background: ${({ theme }) => theme.colors.lightGray300};
 `
 
@@ -361,7 +363,12 @@ export default function RankList({ className }: Props) {
   const prizeCount = Math.floor(totalOttoSupply * 0.5)
   const topReward = useMemo(() => {
     let sum = 0
-    const totalReward = epoch > 3 || epoch === -1 ? ROUND_RARITY_REWARD_AFTER_3 : ROUND_RARITY_REWARD_BEFORE_3
+    const totalReward =
+      epoch >= 6
+        ? ROUND_RARITY_REWARD_S2
+        : epoch > 3 || epoch === -1
+        ? ROUND_RARITY_REWARD_AFTER_3
+        : ROUND_RARITY_REWARD_BEFORE_3
     for (let i = 1; i <= prizeCount; i++) {
       sum += 1 / i
     }
@@ -391,10 +398,11 @@ export default function RankList({ className }: Props) {
       zodiacSign,
       epochRarityBoost,
       diceCount,
+      themeBoost,
     }: Otto
   ) => {
     return (
-      <a key={rank} href={`/ottos/${tokenId}`} target="_blank" rel="noreferrer">
+      <a key={rank} href={`/ottos/${tokenId}`} target="_self" rel="noreferrer">
         {isMobile ? (
           <StyledMobileRow>
             <StyledTd>
@@ -411,16 +419,22 @@ export default function RankList({ className }: Props) {
                       {t('chosen_one')}
                     </StyledChosenOne>
                   ) : (
-                    <StyledZodiacSignBonus>
+                    <StyledTag>
                       <img src={Constellations[zodiacSign]} alt={zodiacSign} />
                       {t('zodiac_boost', { zodiac: zodiacSign })}
-                    </StyledZodiacSignBonus>
+                    </StyledTag>
                   ))}
                 {(diceCount ?? 0) > 0 && (
-                  <StyledHelldiceBoost>
+                  <StyledTag>
                     <img src="/trait-icons/Dice.png" alt="Hell Dice" />
                     {t('hell_dice', { diceCount, boost: numberWithSign(epochRarityBoost ?? 0) })}
-                  </StyledHelldiceBoost>
+                  </StyledTag>
+                )}
+                {themeBoost > 0 && (
+                  <StyledTag>
+                    <img src="/trait-icons/Theme.png" alt="Theme Boost" />
+                    {t('theme_boost', { boost: themeBoost })}
+                  </StyledTag>
                 )}
               </StyledTags>
               <StyledReward as="div">{getEstimatedReward(rank)}</StyledReward>
@@ -445,16 +459,22 @@ export default function RankList({ className }: Props) {
                           {t('chosen_one')}
                         </StyledChosenOne>
                       ) : (
-                        <StyledZodiacSignBonus>
+                        <StyledTag>
                           <img src={Constellations[zodiacSign]} alt={zodiacSign} />
                           {t('zodiac_boost', { zodiac: zodiacSign })}
-                        </StyledZodiacSignBonus>
+                        </StyledTag>
                       ))}
                     {(diceCount ?? 0) > 0 && (
-                      <StyledHelldiceBoost>
+                      <StyledTag>
                         <img src="/trait-icons/Dice.png" alt="Hell Dice" />
                         {t('hell_dice', { diceCount, boost: numberWithSign(epochRarityBoost ?? 0) })}
-                      </StyledHelldiceBoost>
+                      </StyledTag>
+                    )}
+                    {themeBoost > 0 && (
+                      <StyledTag>
+                        <img src="/trait-icons/Theme.png" alt="Theme Boost" />
+                        {t('theme_boost', { boost: themeBoost })}
+                      </StyledTag>
                     )}
                   </StyledTags>
                 </StyledNameColumn>
