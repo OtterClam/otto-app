@@ -698,6 +698,6 @@
     }
   },
   "themeBoost": {
-    "boostMultiplier": "COMBO Boost x {{ multiplier }} 🔥"
+    "boostMultiplier": "物品連擊加成 x {{ multiplier }} 🔥"
   }
 }
