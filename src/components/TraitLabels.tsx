@@ -34,6 +34,11 @@ export default function TraitLabels({ trait, highlightMatched, large }: TraitLab
           {label.name}
         </StyledLabel>
       ))}
+      {trait.theme_boost > 0 && (
+        <StyledLabel matched key="__boost">
+          BRS + {trait.theme_boost} 🔥
+        </StyledLabel>
+      )}
     </StyledContainer>
   )
 }
