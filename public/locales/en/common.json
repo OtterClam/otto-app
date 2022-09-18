@@ -48,7 +48,7 @@
   "dice_popup": {
     "intro": {
       "call_to_action": "Get ready to face your destiny?",
-      "description": "The Dice of Destiny gives players a chance to temporarily boost your BRS for the current epoch in the Raking for Rarity Competition, but there’s a possibility that your Otto will lose some BRS as well.\n\n* Each roll produces a single, randomized result out of dozens of possible results.\n* Some of the results have a positive effect on your Otto’s BRS, While some have a negative effect on your Otto’s BRS.\n* Some results require an additional selection. Your choice will determine the fate of your Otto.\n* The BRS effect from rolling the Dice of Destiny only lasts for the current epoch, and will be removed as soon as it ends.\n* Do you know your Otto’s <strong>DEF value</strong> can actually affect the result? The more DEF your Otto has, the more likely the dice will roll good results. For more information about DEF effects, click <a href=\"https://docs.ottopia.app/ottopia/gameplay/leaderboard/#dice-of-destiny-\" target=\"_blank\">here</a>.\n* The Dice results only affect the Otto you choose to roll a dice for.",
+      "description": "The Dice of Destiny gives players a chance to temporarily boost your BRS for the current epoch in the Raking for Rarity Competition, but there’s a possibility that your Otto will lose some BRS as well.\n\n* Each roll produces a single, randomized result out of dozens of possible results.\n* Some of the results have a positive effect on your Otto’s BRS, While some have a negative effect on your Otto’s BRS.\n* Some results require an additional selection. Your choice will determine the fate of your Otto.\n* The BRS effect from rolling the Dice of Destiny only lasts for the current epoch, and will be removed as soon as it ends.\n* For more information about Dice of Destiny, click <a href=\"https://docs.ottopia.app/ottopia/events/rarity-competition-s2#dice-of-destiny-" target=\"_blank\">here</a>.\n* The Dice results only affect the Otto you choose to roll a dice for.",
       "start_button": "Roll the Dice",
       "title": "Roll the Dice of Destiny!"
     },
@@ -155,18 +155,18 @@
   "leaderboard": {
     "head": "Be the rarest Otto to win the prize!",
     "hero": {
-      "back_to_current": "Back to Current Round >>",
+      "back_to_current": "Back to Current Epoch >>",
       "coming_soon": "COMING SOON!",
       "get_updated": "Get updated on Discord",
       "reward_at": "Rewarding at: {{time}}!",
-      "round_end": "This round has ended and the rewards have been granted.",
-      "title": "Total Rewards this Round",
+      "round_end": "This epoch has ended and the rewards have been granted.",
+      "title": "Total Rewards this Season",
       "tooltip": "The ranking and estimated rewards on the leaderboard will change until the displayed time. The final ranking and prizes will be determined by the snapshot of at that time."
     },
     "right_info": "The upcoming epoch falls to <span style=\"color: #FFDC77\">Capricorn</span>. The god of Capricorn has blessed every Capricorn Otto, Lottie and Cleo with glory and power! <span style=\"color: #FF6854\">BRS +50</span>",
     "mint_portal_link": "Mint Portal >",
-    "next": "Next Round >",
-    "prev": "< Previous Round",
+    "next": "Next Epoch >",
+    "prev": "< Previous Epoch",
     "rank_list": {
       "brs": "BRS",
       "theme_boost": "Theme Boost (BRS+{{ boost }})",
@@ -181,7 +181,7 @@
       "rarity_score": "Rarity Score",
       "rrs": "RRS",
       "show_less": "Show less",
-      "your_rank": "Your Ottos’ rank currently:",
+      "your_rank": "Your Ottos’ rank:",
       "zodiac_boost": "{{zodiac}} (BRS+50)"
     },
     "left_info": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #FFDC77\">{{ themes }}</span> will receive extra BRS boosts.",
