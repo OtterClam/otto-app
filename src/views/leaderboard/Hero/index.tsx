@@ -81,6 +81,7 @@ const StyledRewardImg = styled.img`
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     position: static;
+    width: 70%;
   }
 `
 
