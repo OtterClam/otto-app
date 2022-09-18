@@ -7,7 +7,7 @@ import { GetEpoch, GetEpochVariables } from 'graphs/__generated__/GetEpoch'
 import { RARITY_S1_END } from 'constant'
 
 const S1_START_DATE = new Date('2022-05-23').valueOf()
-const S2_START_DATE = Date.now() // FIXME: replace with new Date('2022-09-19').valueOf()
+const S2_START_DATE = new Date('2022-09-19').valueOf()
 const EPOCH_LENGTH = 14 * 86400 * 1000 // 14 days
 const EPOCH_3_EXTEND = 2 * 86400 * 1000 // 2 days
 const EPOCH_4_EXTEND = 2 * 86400 * 1000
