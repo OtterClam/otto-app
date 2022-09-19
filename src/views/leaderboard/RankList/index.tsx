@@ -168,7 +168,12 @@ export default function RankList({ className }: Props) {
     loading: loadingGraph,
     refetch,
   } = useQuery<ListRankedOttos, ListRankedOttosVariables>(LIST_RANKED_OTTOS, {
-    variables: { skip: page * PAGE, first: PAGE, epoch },
+    variables: {
+      skip: page * PAGE,
+      first: PAGE,
+      epoch,
+    },
+    skip: epoch === -1,
   })
   const { ottos, loading: loadingApi } = useOttos(data?.ottos, { details: true, epoch })
   const { ottos: myOttos } = useMyOttos()

@@ -1,6 +1,6 @@
 import Otto, { OttoMeta, RawOtto } from 'models/Otto'
 import { MyOttosContext } from 'MyOttosProvider'
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import { useApi } from 'contexts/Api'
 
@@ -42,9 +42,9 @@ export function useOttos(rawOttos: RawOtto[] | Falsy, { details, epoch }: { deta
   const [error, setError] = useState<any | null>(null)
   const [loading, setLoading] = useState(true)
   const [ottos, setOttos] = useState<Otto[]>([])
-  const [fetchCount, setFetchCount] = useState(0)
-  useEffect(() => {
-    if (rawOttos && rawOttos.length > 0) {
+
+  const refetch = useCallback(() => {
+    if (rawOttos && rawOttos.length > 0 && epoch !== -1) {
       setLoading(true)
       setError(null)
       const ids = rawOttos.map(raw => String(raw.tokenId))
@@ -58,7 +58,9 @@ export function useOttos(rawOttos: RawOtto[] | Falsy, { details, epoch }: { deta
         })
         .finally(() => setLoading(false))
     }
-  }, [rawOttos, i18n.resolvedLanguage, fetchCount])
-  const refetch = () => setFetchCount(fetchCount + 1)
+  }, [rawOttos, i18n.resolvedLanguage, epoch])
+
+  useEffect(refetch, [rawOttos, i18n.resolvedLanguage, epoch])
+
   return { loading, ottos, error, refetch }
 }
