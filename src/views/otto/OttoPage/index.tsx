@@ -255,6 +255,10 @@ const StyledOttoThemeBoostLabels = styled(OttoThemeBoostLabels)`
   margin-top: 10px;
 `
 
+const StyledThemeBoostDesc = styled.div`
+  display: inline-block;
+`
+
 export default function OttoPage() {
   const { t } = useTranslation()
   const {
@@ -357,7 +361,7 @@ export default function OttoPage() {
               <StyledBoostBox>
                 <img src={Theme.src} alt="the Otter" />
                 <ContentSmall>
-                  <div
+                  <StyledThemeBoostDesc
                     dangerouslySetInnerHTML={{
                       __html: t('otto.theme_boost', { labels: themes.map(theme => `#${theme}`).join(', ') }),
                     }}
