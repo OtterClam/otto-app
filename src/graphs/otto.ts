@@ -28,7 +28,24 @@ export const LIST_MY_ITEMS = gql`
 export const GET_EPOCH = gql`
   query GetEpoch($epoch: Int!) {
     epoches(where: { num: $epoch }) {
+      num
       totalOttos
+      startedAt
+      endedAt
+      themeLabels
+      themeBoostBase
+      constellation
+      constellationBoost
+    }
+    latestEpoch: epoches(orderBy: num, orderDirection: desc, first: 1) {
+      num
+      totalOttos
+      startedAt
+      endedAt
+      themeLabels
+      themeBoostBase
+      constellation
+      constellationBoost
     }
   }
 `

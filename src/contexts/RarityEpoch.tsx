@@ -1,90 +1,52 @@
 import { useQuery } from '@apollo/client'
-import { useOttoInfo } from 'contracts/views'
 import { GET_EPOCH } from 'graphs/otto'
-import { useRouter } from 'next/router'
-import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react'
 import { GetEpoch, GetEpochVariables } from 'graphs/__generated__/GetEpoch'
-import { RARITY_S1_END } from 'constant'
+import { useTranslation } from 'next-i18next'
+import { useRouter } from 'next/router'
+import { createContext, PropsWithChildren, useContext, useMemo } from 'react'
 
-const S1_START_DATE = new Date('2022-05-23').valueOf()
-const S2_START_DATE = new Date('2022-09-19').valueOf()
-const EPOCH_LENGTH = 14 * 86400 * 1000 // 14 days
-const EPOCH_3_EXTEND = 2 * 86400 * 1000 // 2 days
-const EPOCH_4_EXTEND = 2 * 86400 * 1000
-
-const RaityEpochContext = createContext<{
-  epoch: number
-  epochEndTime: number
-  latestEpoch: number
-  isLatestEpoch: boolean
-  hasPrevEpoch: boolean
-  hasNextEpoch: boolean
-  totalOttoSupply: number
-}>({
+const RarityEpochContext = createContext({
   epoch: 0,
   epochEndTime: 0,
-  latestEpoch: 0,
   isLatestEpoch: false,
   hasPrevEpoch: false,
   hasNextEpoch: false,
   totalOttoSupply: 0,
+  constellation: '',
+  constellationBoost: 50,
 })
 
-export const RaityEpochProvider = ({ children }: PropsWithChildren<object>) => {
+export const RarityEpochProvider = ({ children }: PropsWithChildren<object>) => {
+  const { t } = useTranslation()
   const router = useRouter()
-  const epoch = Number(router.query.epoch || -1)
-  const [latestEpoch, setLatestEpoch] = useState(epoch)
-  const [totalSupply] = useOttoInfo()
+  const epochNum = Number(router.query.epoch || -1)
   const { data } = useQuery<GetEpoch, GetEpochVariables>(GET_EPOCH, {
-    variables: { epoch },
-    skip: epoch === -1,
+    variables: { epoch: epochNum },
   })
-  const isLatestEpoch = epoch === -1 || epoch === latestEpoch
-  const currentEpoch = isLatestEpoch ? latestEpoch : epoch
-  const epochEndTime =
-    currentEpoch >= 6
-      ? S2_START_DATE + (currentEpoch - 5) * EPOCH_LENGTH
-      : S1_START_DATE +
-        (currentEpoch + 1) * EPOCH_LENGTH +
-        (currentEpoch >= 3 ? EPOCH_3_EXTEND : 0) +
-        (currentEpoch >= 4 ? EPOCH_4_EXTEND : 0)
-  const hasPrevEpoch = (epoch === -1 || epoch > 0) && latestEpoch > 0
-  const hasNextEpoch = epoch !== -1
-  const totalOttoSupply = epoch === -1 ? totalSupply - 250 : (data?.epoches[0].totalOttos ?? 0) - 250
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = Date.now()
-      if (now >= S2_START_DATE) {
-        setLatestEpoch(Math.floor((now - S2_START_DATE) / EPOCH_LENGTH) + 6)
-      } else if (now > RARITY_S1_END) {
-        setLatestEpoch(5)
-      } else if (now < S1_START_DATE) setLatestEpoch(0)
-      else if (now > S1_START_DATE && now < S1_START_DATE + EPOCH_LENGTH * 3)
-        setLatestEpoch(Math.floor((now - S1_START_DATE) / EPOCH_LENGTH))
-      else if (now < S1_START_DATE + EPOCH_3_EXTEND + 4 * EPOCH_LENGTH) setLatestEpoch(3)
-      else if (now < S1_START_DATE + EPOCH_3_EXTEND + EPOCH_4_EXTEND + 5 * EPOCH_LENGTH) setLatestEpoch(4)
-      else setLatestEpoch(Math.floor((now - S1_START_DATE - EPOCH_3_EXTEND - EPOCH_4_EXTEND) / EPOCH_LENGTH))
-    }, 1000)
-    return () => clearInterval(interval)
-  }, [])
-
+  const latestEpoch = data?.latestEpoch[0]
+  const epoch = data?.epoches[0] || data?.latestEpoch[0]
+  const isLatestEpoch = data?.epoches?.length === 0 || epoch?.num === latestEpoch?.num
+  const epochEndTime = (epoch?.endedAt || 0) * 1000
+  const hasPrevEpoch = (epochNum === -1 || epochNum > 0) && (latestEpoch?.num || 0) > 0
+  const hasNextEpoch = !isLatestEpoch
+  const totalOttoSupply = (epoch?.totalOttos ?? 0) - 250
   const value = useMemo(
     () => ({
-      epoch: currentEpoch,
+      epoch: epoch?.num || -1,
       epochEndTime,
-      latestEpoch,
       isLatestEpoch,
       hasPrevEpoch,
       hasNextEpoch,
       totalOttoSupply,
+      constellation: t(`constellation.${epoch?.constellation}`),
+      constellationBoost: epoch?.constellationBoost || 50,
     }),
-    [currentEpoch, epochEndTime, latestEpoch, isLatestEpoch, hasPrevEpoch, hasNextEpoch, totalOttoSupply]
+    [epoch, epochEndTime, isLatestEpoch, hasPrevEpoch, hasNextEpoch, totalOttoSupply]
   )
 
-  return <RaityEpochContext.Provider value={value}>{children}</RaityEpochContext.Provider>
+  return <RarityEpochContext.Provider value={value}>{children}</RarityEpochContext.Provider>
 }
 
 export function useRarityEpoch() {
-  return useContext(RaityEpochContext)
+  return useContext(RarityEpochContext)
 }
