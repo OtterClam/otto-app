@@ -1,9 +1,10 @@
 import Otto from 'models/Otto'
 import { numberWithSign } from 'helpers/number'
-import Constellations from 'assets/constellations'
+import ConstellationIcons from 'assets/constellations'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -61,7 +62,7 @@ export default function OttoBoostLabels({ otto }: OttoBoostLabelsProps) {
           </StyledChosenOne>
         ) : (
           <StyledLabel>
-            <img src={Constellations[zodiacSign]} alt={zodiacSign} />
+            <Image src={ConstellationIcons[zodiacSign]} width="21px" height="21px" alt={zodiacSign} />
             {t('zodiac_boost', { zodiac: zodiacSign })}
           </StyledLabel>
         ))}

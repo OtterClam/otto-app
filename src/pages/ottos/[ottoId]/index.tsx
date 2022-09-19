@@ -5,7 +5,7 @@ import { GetStaticProps, GetStaticPaths } from 'next'
 import { NextPageWithLayout } from 'pages/_app'
 import DefaultLayout from 'layouts/DefaultLayout'
 import { LeaderboardEpochProvider } from 'contexts/LeaderboardEpoch'
-import { RaityEpochProvider } from 'contexts/RarityEpoch'
+import { RarityEpochProvider } from 'contexts/RarityEpoch'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
@@ -26,9 +26,9 @@ OttoPage.getLayout = (page, i18n) => {
   return (
     <DefaultLayout title={i18n.t('otto.title')}>
       <LeaderboardEpochProvider>
-        <RaityEpochProvider>
+        <RarityEpochProvider>
           <Board>{page}</Board>
-        </RaityEpochProvider>
+        </RarityEpochProvider>
       </LeaderboardEpochProvider>
     </DefaultLayout>
   )

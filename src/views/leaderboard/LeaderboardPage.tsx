@@ -53,7 +53,7 @@ const StyledRankList = styled(RankList)`
 
 export default function LeaderboardPage() {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard' })
-  const { epoch, latestEpoch, hasPrevEpoch, hasNextEpoch } = useRarityEpoch()
+  const { constellation, epoch, hasPrevEpoch, hasNextEpoch } = useRarityEpoch()
   const {
     epoch: { themes },
   } = useLeaderboardEpoch()
@@ -65,7 +65,7 @@ export default function LeaderboardPage() {
           <Link
             href={{
               pathname: '/leaderboard',
-              search: `?epoch=${epoch === -1 ? latestEpoch - 1 : epoch - 1}`,
+              search: `?epoch=${epoch - 1}`,
             }}
           >
             <a>
@@ -82,7 +82,7 @@ export default function LeaderboardPage() {
           <Link
             href={{
               pathname: '/leaderboard',
-              search: `?epoch=${epoch + 1 === latestEpoch ? -1 : epoch + 1}`,
+              search: `?epoch=${epoch + 1}`,
             }}
           >
             <a>
@@ -102,7 +102,7 @@ export default function LeaderboardPage() {
           desc={t('left_info', { themes })}
           links={[{ text: t('left_info_link'), href: 'https://docs.ottopia.app/ottopia/events/rarity-competition-s2' }]}
         />
-        <Info image={RightInfo.src} desc={t('right_info')} links={[]} />
+        <Info image={RightInfo.src} desc={t('right_info', { constellation })} links={[]} />
       </StyledInfos>
       <StyledRankList />
     </StyledLeaderboardPage>
