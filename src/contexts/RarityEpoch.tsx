@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { useOttoInfo } from 'contracts/views'
 import { GET_EPOCH } from 'graphs/otto'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react'
 import { GetEpoch, GetEpochVariables } from 'graphs/__generated__/GetEpoch'
 import { RARITY_S1_END } from 'constant'
 
@@ -12,7 +12,25 @@ const EPOCH_LENGTH = 14 * 86400 * 1000 // 14 days
 const EPOCH_3_EXTEND = 2 * 86400 * 1000 // 2 days
 const EPOCH_4_EXTEND = 2 * 86400 * 1000
 
-export default function useRarityEpoch() {
+const RaityEpochContext = createContext<{
+  epoch: number
+  epochEndTime: number
+  latestEpoch: number
+  isLatestEpoch: boolean
+  hasPrevEpoch: boolean
+  hasNextEpoch: boolean
+  totalOttoSupply: number
+}>({
+  epoch: 0,
+  epochEndTime: 0,
+  latestEpoch: 0,
+  isLatestEpoch: false,
+  hasPrevEpoch: false,
+  hasNextEpoch: false,
+  totalOttoSupply: 0,
+})
+
+export const RaityEpochProvider = ({ children }: PropsWithChildren<object>) => {
   const router = useRouter()
   const epoch = Number(router.query.epoch || -1)
   const [latestEpoch, setLatestEpoch] = useState(epoch)
@@ -51,13 +69,22 @@ export default function useRarityEpoch() {
     return () => clearInterval(interval)
   }, [])
 
-  return {
-    epoch: currentEpoch,
-    epochEndTime,
-    latestEpoch,
-    isLatestEpoch,
-    hasPrevEpoch,
-    hasNextEpoch,
-    totalOttoSupply,
-  }
+  const value = useMemo(
+    () => ({
+      epoch: currentEpoch,
+      epochEndTime,
+      latestEpoch,
+      isLatestEpoch,
+      hasPrevEpoch,
+      hasNextEpoch,
+      totalOttoSupply,
+    }),
+    [currentEpoch, epochEndTime, latestEpoch, isLatestEpoch, hasPrevEpoch, hasNextEpoch, totalOttoSupply]
+  )
+
+  return <RaityEpochContext.Provider value={value}>{children}</RaityEpochContext.Provider>
+}
+
+export function useRarityEpoch() {
+  return useContext(RaityEpochContext)
 }
