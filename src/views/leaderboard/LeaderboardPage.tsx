@@ -1,5 +1,5 @@
 import Button from 'components/Button'
-import useRarityEpoch from 'hooks/useRarityEpoch'
+import { useRarityEpoch } from 'contexts/RarityEpoch'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import styled from 'styled-components/macro'
