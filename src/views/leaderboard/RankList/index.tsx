@@ -27,6 +27,7 @@ import { createSearchParams } from 'utils/url'
 import { useRouter } from 'next/router'
 import { LIST_RANKED_OTTOS } from 'graphs/otto'
 import { ListRankedOttos, ListRankedOttosVariables } from 'graphs/__generated__/ListRankedOttos'
+import OttoBoostLabels from 'components/OttoBoostLabels'
 import RarityScore from './rarity_score.png'
 import LoadingGif from './loading.gif'
 import FirstRank from './Icon/Rank/1st.png'
@@ -384,23 +385,9 @@ export default function RankList({ className }: Props) {
     refetch({ skip: page * PAGE, first: PAGE })
   }, [page])
   const loading = loadingGraph || loadingApi
-  const renderRow = (
-    rank: number,
-    {
-      tokenId,
-      smallImage: image,
-      name,
-      totalRarityScore,
-      baseRarityScore,
-      relativeRarityScore,
-      zodiacBoost,
-      isChosenOne,
-      zodiacSign,
-      epochRarityBoost,
-      diceCount,
-      themeBoost,
-    }: Otto
-  ) => {
+  const renderRow = (rank: number, otto: Otto) => {
+    const { tokenId, smallImage: image, name, totalRarityScore, baseRarityScore, relativeRarityScore } = otto
+
     return (
       <a key={rank} href={`/ottos/${tokenId}`} target="_self" rel="noreferrer">
         {isMobile ? (
@@ -411,32 +398,7 @@ export default function RankList({ className }: Props) {
             <StyledOttoAvatar src={image} />
             <StyledMobileContent>
               <StyledAvatarName>{name}</StyledAvatarName>
-              <StyledTags>
-                {zodiacBoost > 0 &&
-                  (isChosenOne ? (
-                    <StyledChosenOne>
-                      <img src="/trait-icons/Birthday.png" alt="The Otter" />
-                      {t('chosen_one')}
-                    </StyledChosenOne>
-                  ) : (
-                    <StyledTag>
-                      <img src={Constellations[zodiacSign]} alt={zodiacSign} />
-                      {t('zodiac_boost', { zodiac: zodiacSign })}
-                    </StyledTag>
-                  ))}
-                {(diceCount ?? 0) > 0 && (
-                  <StyledTag>
-                    <img src="/trait-icons/Dice.png" alt="Hell Dice" />
-                    {t('hell_dice', { diceCount, boost: numberWithSign(epochRarityBoost ?? 0) })}
-                  </StyledTag>
-                )}
-                {themeBoost > 0 && (
-                  <StyledTag>
-                    <img src="/trait-icons/Theme.png" alt="Theme Boost" />
-                    {t('theme_boost', { boost: themeBoost })}
-                  </StyledTag>
-                )}
-              </StyledTags>
+              <OttoBoostLabels otto={otto} />
               <StyledReward as="div">{getEstimatedReward(rank)}</StyledReward>
               <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
             </StyledMobileContent>
@@ -451,32 +413,7 @@ export default function RankList({ className }: Props) {
                 <StyledOttoAvatar src={image} />
                 <StyledNameColumn>
                   {name}
-                  <StyledTags>
-                    {zodiacBoost > 0 &&
-                      (isChosenOne ? (
-                        <StyledChosenOne>
-                          <img src="/trait-icons/Birthday.png" alt="The Otter" />
-                          {t('chosen_one')}
-                        </StyledChosenOne>
-                      ) : (
-                        <StyledTag>
-                          <img src={Constellations[zodiacSign]} alt={zodiacSign} />
-                          {t('zodiac_boost', { zodiac: zodiacSign })}
-                        </StyledTag>
-                      ))}
-                    {(diceCount ?? 0) > 0 && (
-                      <StyledTag>
-                        <img src="/trait-icons/Dice.png" alt="Hell Dice" />
-                        {t('hell_dice', { diceCount, boost: numberWithSign(epochRarityBoost ?? 0) })}
-                      </StyledTag>
-                    )}
-                    {themeBoost > 0 && (
-                      <StyledTag>
-                        <img src="/trait-icons/Theme.png" alt="Theme Boost" />
-                        {t('theme_boost', { boost: themeBoost })}
-                      </StyledTag>
-                    )}
-                  </StyledTags>
+                  <OttoBoostLabels otto={otto} />
                 </StyledNameColumn>
               </StyledAvatarName>
             </StyledTd>
@@ -498,11 +435,17 @@ export default function RankList({ className }: Props) {
         {myOttos.length > 0 && (
           <StyledMyOttoSection isLatestEpoch={isLatestEpoch}>
             <StyledHint>{t('your_rank')}</StyledHint>
-            {(expand ? sortedMyOttos : sortedMyOttos.slice(0, 1)).map(
-              (
-                { tokenId, name, smallImage: image, ranking, totalRarityScore, baseRarityScore, relativeRarityScore },
-                index
-              ) => (
+            {(expand ? sortedMyOttos : sortedMyOttos.slice(0, 1)).map((otto, index) => {
+              const {
+                tokenId,
+                name,
+                smallImage: image,
+                ranking,
+                totalRarityScore,
+                baseRarityScore,
+                relativeRarityScore,
+              } = otto
+              return (
                 <a key={index} href={`/my-ottos/${tokenId}`} target="_blank" rel="noreferrer">
                   {isMobile ? (
                     <StyledMobileRow>
@@ -510,6 +453,7 @@ export default function RankList({ className }: Props) {
                       <StyledOttoAvatar src={image} />
                       <StyledMobileContent>
                         <StyledAvatarName>{name}</StyledAvatarName>
+                        <OttoBoostLabels otto={otto} />
                         <StyledReward as="div">{getEstimatedReward(ranking)}</StyledReward>
                         <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
                       </StyledMobileContent>
@@ -520,7 +464,10 @@ export default function RankList({ className }: Props) {
                       <StyledTd>
                         <StyledAvatarName>
                           <StyledMyOttoAvatar src={image} />
-                          <StyledNameColumn>{name}</StyledNameColumn>
+                          <StyledNameColumn>
+                            {name}
+                            <OttoBoostLabels otto={otto} />
+                          </StyledNameColumn>
                         </StyledAvatarName>
                       </StyledTd>
                       <StyledTd>
@@ -533,7 +480,7 @@ export default function RankList({ className }: Props) {
                   )}
                 </a>
               )
-            )}
+            })}
             <StyledExpandColumn as="div" expand={expand} onClick={() => setExpand(expand => !expand)}>
               {expand ? t('show_less') : t('expand', { count: myOttos.length })}
             </StyledExpandColumn>
