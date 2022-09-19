@@ -6,8 +6,10 @@ import Otto from 'models/Otto'
 import Link from 'next/link'
 import { memo } from 'react'
 import { ContentLarge } from 'styles/typography'
+import Image from 'next/image'
 import OttoBoostLabels from 'components/OttoBoostLabels'
 import useEstimatedReward from 'hooks/useEstimatedReward'
+import { getCroppedImageUrl } from 'utils/image'
 import FirstRank from './Icon/Rank/1st.png'
 import SecondRank from './Icon/Rank/2nd.png'
 import ThirdRank from './Icon/Rank/3rd.png'
@@ -130,17 +132,20 @@ const StyledNameColumn = styled.div`
   gap: 5px;
 `
 
-const StyledOttoAvatar = styled.img<{ isMyOttoRow?: boolean }>`
+const StyledOttoAvatarContainer = styled.div<{ isMyOttoRow?: boolean }>`
+  position: relative;
   width: ${({ isMyOttoRow }) => (isMyOttoRow ? 60 : 100)}px;
-  height: ${({ isMyOttoRow }) => (isMyOttoRow ? 60 : 100)}px;
-  min-height: ${({ isMyOttoRow }) => (isMyOttoRow ? 60 : 100)}px;
-  background: url(${OttOLoading.src});
-  background-size: 100% 100%;
+  min-width: ${({ isMyOttoRow }) => (isMyOttoRow ? 60 : 100)}px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 60px;
-    height: 60px;
     min-width: 60px;
+  }
+
+  &::before {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
   }
 `
 
@@ -199,7 +204,9 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
             <StyledTd>
               <StyledRank rank={rank}>{rank}</StyledRank>
             </StyledTd>
-            <StyledOttoAvatar src={image} />
+            <StyledOttoAvatarContainer>
+              <Image src={getCroppedImageUrl(image, { w: 200 })} layout="fill" unoptimized />
+            </StyledOttoAvatarContainer>
             <StyledMobileContent>
               <StyledAvatarName>{name}</StyledAvatarName>
               <OttoBoostLabels otto={otto} />
@@ -221,7 +228,9 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
           </StyledTd>
           <StyledTd>
             <StyledAvatarName>
-              <StyledOttoAvatar isMyOttoRow={isMyOttoRow} src={image} />
+              <StyledOttoAvatarContainer isMyOttoRow={isMyOttoRow}>
+                <Image src={getCroppedImageUrl(image, { w: 200 })} layout="fill" unoptimized />
+              </StyledOttoAvatarContainer>
               <StyledNameColumn>
                 {name}
                 <OttoBoostLabels otto={otto} />
