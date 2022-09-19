@@ -42,7 +42,7 @@
   "dice_popup": {
     "intro": {
       "call_to_action": "准备好要面对你的命运了吗？",
-      "description": "地狱骰子每轮会骰出两个事件，有的事件会暂时提升你的阿獭在这轮稀有度比赛的稀有度，但也有些事件会让阿獭的稀有度变得更低。\n* 地狱骰子尔偶也会骰出命运选择题，有的选项会让阿獭获得稀有度；但假如你选错了选项，你的阿獭将会厄运缠身并掉稀有度。\n* 地狱骰子的稀有度加成仅会影响此轮稀有度比赛，此轮结束后，稀有度加成即会移除（不管是加分或扣分）。\n* 想要知道更多地狱骰子资讯，请前往<a href=\"https://docs.ottopia.app/ottopia/events/rarity-competition-s2#dice-of-destiny-" target=\"_blank\">这里</a>。\n* 地狱骰子仅会影响你选择的这只阿獭。",
+      "description": "地狱骰子每轮会骰出两个事件，有的事件会暂时提升你的阿獭在这轮稀有度比赛的稀有度，但也有些事件会让阿獭的稀有度变得更低。\n* 地狱骰子尔偶也会骰出命运选择题，有的选项会让阿獭获得稀有度；但假如你选错了选项，你的阿獭将会厄运缠身并掉稀有度。\n* 地狱骰子的稀有度加成仅会影响此轮稀有度比赛，此轮结束后，稀有度加成即会移除（不管是加分或扣分）。\n* 想要知道更多地狱骰子资讯，请前往<a href=\"https://docs.ottopia.app/ottopia/events/rarity-competition-s2#dice-of-destiny-\" target=\"_blank\">这里</a>。\n* 地狱骰子仅会影响你选择的这只阿獭。",
       "start_button": "骰骰子！",
       "title": "机会！命运？交给地狱骰子吧"
     },
@@ -158,7 +158,7 @@
       "title": "这季比赛总奖金",
       "tooltip": "排行榜上的名次及预估奖金会持续变动直到显示时间归零，而最终名次及奖励会透过结束当下的截图画面决定。"
     },
-    "right_info": "The upcoming epoch falls to <span style=\"color: #FFDC77\">Capricorn</span>. The god of Capricorn has blessed every Capricorn Otto, Lottie and Cleo with glory and power! <span style=\"color: #FF6854\">BRS +50</span>",
+    "right_info": "这一轮比赛奖励星座落在<span style=\"color: #FFDC77\">处女座</span>，所有此星座的阿獭、萝提及克蕾欧都会被神祝福并赐予特殊效果： <span style=\"color: #FF6854\">BRS +50</span>",
     "mint_portal_link": "铸造传送门 >",
     "next": "下一轮 >",
     "prev": "< 前一轮",
