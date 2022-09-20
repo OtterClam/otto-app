@@ -292,7 +292,8 @@
       "def": "防御",
       "str": "力量",
       "int": "智力",
-      "con": "体力"
+      "con": "体力",
+      "theme_boost": "主题加成"
     },
     "sort_order": "排序",
     "sort_order_options": {

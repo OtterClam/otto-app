@@ -298,7 +298,8 @@
       "def": "Def",
       "str": "Str",
       "int": "Int",
-      "con": "Con"
+      "con": "Con",
+      "theme_boost": "Theme Boost"
     },
     "sort_order": "Order",
     "sort_order_options": {
