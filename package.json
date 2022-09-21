@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "start": "next start",
-    "build": "yarn codegen:cn && next build",
+    "build": "yarn check-trans && yarn codegen:cn && next build",
     "check-types": "tsc --noemit",
+    "check-trans": "node ./scripts/validate-translation-files.mjs",
     "download-schema:otto": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otto-dev otto-graphql-schema.json",
     "download-schema:otter": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otterclam otter-graphql-schema.json",
     "codegen:contract": "typechain --target ethers-v5 --out-dir=src/contracts/__generated__ 'src/contracts/abis/*.json'",
