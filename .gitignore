@@ -29,3 +29,6 @@ public/worker-*.js.map
 
 # tsc
 tsconfig.tsbuildinfo
+
+# generated files
+public/locales/zh-cn/*.json

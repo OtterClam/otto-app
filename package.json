@@ -5,13 +5,15 @@
   "scripts": {
     "dev": "next dev",
     "start": "next start",
-    "build": "next build",
+    "build": "yarn check-trans && yarn codegen:cn && next build",
     "check-types": "tsc --noemit",
+    "check-trans": "node ./scripts/validate-translation-files.mjs",
     "download-schema:otto": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otto-dev otto-graphql-schema.json",
     "download-schema:otter": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otterclam otter-graphql-schema.json",
     "codegen:contract": "typechain --target ethers-v5 --out-dir=src/contracts/__generated__ 'src/contracts/abis/*.json'",
     "codegen:otto-graph": "yarn download-schema:otto && apollo codegen:generate --includes=src/graphs/otto.ts --localSchemaFile=otto-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=./src/__generated__/otto/global-types.ts",
     "codegen:otter-graph": "yarn download-schema:otter && apollo codegen:generate --includes=src/graphs/otter.ts --localSchemaFile=otter-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=./src/__generated__/otter/global-types.ts && rm ./src/__generated__/otter/global-types.ts",
+    "codegen:cn": "node ./scripts/gen-cn.mjs ./public/locales/zh-tw/common.json",
     "codegen": "yarn codegen:contract && yarn codegen:otto-graph && yarn codegen:otter-graph",
     "prepare": "husky install"
   },
@@ -30,9 +32,6 @@
   "lint-staged": {
     "*.{png,jpeg,jpg,gif,svg}": [
       "node ./scripts/imagemin.mjs"
-    ],
-    "public/locales/**/*.json": [
-      "node ./scripts/gen-cn.mjs"
     ]
   },
   "dependencies": {
