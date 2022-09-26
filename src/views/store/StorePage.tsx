@@ -36,6 +36,7 @@ const StyledHeroSection = styled.section`
   color: ${({ theme }) => theme.colors.white};
   background: ${({ theme }) => theme.colors.otterBlack};
   margin-top: -20px;
+  margin-bottom: 20px;
 `
 
 const StyledFlashSellBody = styled.section`
