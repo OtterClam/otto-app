@@ -371,6 +371,7 @@
     "opensea_link": "View on OpenSea",
     "personality": "Personality: {{personality}}",
     "play_voice": "Hear this Otto's voice",
+    "total_rarity_score": "Total Rarity Score: {{score}} (BRS {{brs}} + RRS {{rrs}})",
     "rarity": {
       "C1": "Uncommon",
       "C2": "Common",
