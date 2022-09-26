@@ -365,6 +365,7 @@
     "opensea_link": "在 OpenSea 上瞧瞧",
     "personality": "個性： {{personality}}",
     "play_voice": "聽聽這隻阿獺的聲音",
+    "total_rarity_score": "稀有度總計： {{score}} (BRS {{brs}} + RRS {{rrs}})",
     "rarity": {
       "C1": "不常見",
       "C2": "常見",
