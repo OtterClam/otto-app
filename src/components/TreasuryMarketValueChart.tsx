@@ -68,6 +68,11 @@ const marketValues = [
     stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
   },
   {
+    label: 'MAI/USDC (UniV3)',
+    dataKey: 'treasuryUniV3UsdcMaiStrategyMarketValue',
+    stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
+  },
+  {
     label: 'MAI/USDC',
     dataKey: 'treasuryMaiUsdcMarketValue',
     stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
