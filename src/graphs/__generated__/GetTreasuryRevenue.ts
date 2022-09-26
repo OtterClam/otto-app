@@ -29,6 +29,10 @@ export interface GetTreasuryRevenue_treasuryRevenues {
   daiMarketValue: any;
   kncClamAmount: any;
   kncMarketValue: any;
+  maiClamAmount: any;
+  maiMarketValue: any;
+  usdcClamAmount: any;
+  usdcMarketValue: any;
   totalRevenueClamAmount: any;
   totalRevenueMarketValue: any;
 }
