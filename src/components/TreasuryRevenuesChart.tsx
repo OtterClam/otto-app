@@ -23,10 +23,11 @@ const yAxisTickProps = { fontSize: '12px' }
 
 const dataKeysSettings = {
   [Currency.CLAM]: [
-    { dataKey: 'qiClamAmount', colors: ['rgba(244, 210, 88, 1)', 'rgba(244, 210, 88, 0.5)'], label: 'Qi' },
     { dataKey: 'ottopiaClamAmount', colors: ['rgba(255, 172, 161, 1)', 'rgba(255, 172, 161, 0.5)'], label: 'CLAM' },
+    { dataKey: 'qiClamAmount', colors: ['rgba(244, 210, 88, 1)', 'rgba(244, 210, 88, 0.5)'], label: 'Qi' },
     { dataKey: 'ldoClamAmount', colors: ['rgba(83, 211, 224, 1)', 'rgba(83, 200, 200, 0.5)'], label: 'Lido' },
     { dataKey: 'kncClamAmount', colors: ['rgba(49, 203, 158, 1)', 'rgba(49, 203, 158, 0.5)'], label: 'KNC' },
+    { dataKey: 'maticClamAmount', colors: ['rgba(131, 71, 229, 1)', 'rgba(131, 71, 229, 0.5)'], label: 'MATIC' },
     { dataKey: 'dystClamAmount', colors: ['rgba(8, 95, 142, 1)', 'rgba(8, 95, 142, 0.5)'], label: 'DYST' },
     { dataKey: 'penDystClamAmount', colors: ['rgba(108, 111, 227, 1)', 'rgba(8, 95, 142, 0.5)'], label: 'penDYST' },
     { dataKey: 'penClamAmount', colors: ['rgba(128, 131, 235, 1)', 'rgba(252, 236, 255, 0.5)'], label: 'PEN' },
@@ -36,10 +37,11 @@ const dataKeysSettings = {
     { dataKey: 'maiClamAmount', colors: ['rgba(219, 55, 55, 1)', 'rgba(219, 55, 55, 0.5)'], label: 'MAI' },
   ],
   [Currency.USD]: [
-    { dataKey: 'qiMarketValue', colors: ['rgba(244, 210, 88, 1)', 'rgba(244, 210, 88, 0.5)'], label: 'Qi' },
     { dataKey: 'ottopiaMarketValue', colors: ['rgba(255, 172, 161, 1)', 'rgba(255, 172, 161, 0.5)'], label: 'CLAM' },
+    { dataKey: 'qiMarketValue', colors: ['rgba(244, 210, 88, 1)', 'rgba(244, 210, 88, 0.5)'], label: 'Qi' },
     { dataKey: 'ldoMarketValue', colors: ['rgba(83, 200, 220, 1)', 'rgba(83, 211, 224, 0.5)'], label: 'Lido' },
     { dataKey: 'kncMarketValue', colors: ['rgba(49, 203, 158, 1)', 'rgba(49, 203, 158, 0.5)'], label: 'KNC' },
+    { dataKey: 'maticMarketValue', colors: ['rgba(131, 71, 229, 1)', 'rgba(131, 71, 229, 0.5)'], label: 'MATIC' },
     { dataKey: 'dystMarketValue', colors: ['rgba(8, 95, 142, 1)', 'rgba(8, 95, 142, 0.5)'], label: 'DYST' },
     { dataKey: 'penDystMarketValue', colors: ['rgba(108, 111, 227, 1)', 'rgba(8, 95, 142, 0.5)'], label: 'penDYST' },
     { dataKey: 'penMarketValue', colors: ['rgba(128, 131, 235, 1)', 'rgba(252, 236, 255, 0.5)'], label: 'PEN' },
