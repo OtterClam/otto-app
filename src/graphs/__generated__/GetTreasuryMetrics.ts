@@ -47,6 +47,7 @@ export interface GetTreasuryMetrics_protocolMetrics {
   treasuryDystopiaPairUsdplusStMaticMarketValue: any;
   treasuryPenroseHedgedMaticMarketValue: any;
   treasuryKyberswapMaticStMaticHedgedMarketValue: any;
+  treasuryUniV3HedgedMaticUsdcStrategyMarketValue: any;
   treasuryUniV3UsdcMaiStrategyMarketValue: any;
 }
 
