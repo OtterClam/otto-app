@@ -320,6 +320,18 @@
       "current_equipped": "目前裝備",
       "replaced": "被取代成...",
       "title": "選擇一隻阿獺來裝備此物品"
+    },
+    "transfer_btn": "Transfer",
+    "opensea_link": "View on Opensea",
+    "transfer": {
+      "title": "Transfer",
+      "amount": "Amount",
+      "address": "Receiver Address",
+      "note": "Note: Please note that by transferring the item, the receiver's address will receive the item. This transaction will only cost you a gas fee.",
+      "transfer_btn": "Transfer",
+      "success_title": "Transfer Successful!",
+      "success_desc": "Transaction completed. Your otter mate will receive your item(s) soon.",
+      "close_btn": "Close"
     }
   },
   "my_ottos": {

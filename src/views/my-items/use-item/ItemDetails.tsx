@@ -7,6 +7,11 @@ import GenderSpecific from 'components/GenderSpecific'
 import { useTranslation } from 'next-i18next'
 import ItemCollectionBadge from 'components/ItemCollectionBadge'
 import TraitLabels from 'components/TraitLabels'
+import { getOpenSeaItemLink } from 'constant'
+import NewWindowIcon from 'assets/icons/new-window.svg'
+import Image from 'next/image'
+import { useState } from 'react'
+import TransferItemPopup from './TransferItemPopup'
 
 const StyledItemDetails = styled.section`
   display: flex;
@@ -19,6 +24,19 @@ const StyledItemDetails = styled.section`
     border: 2px solid ${({ theme }) => theme.colors.otterBlack};
     border-radius: 10px;
   }
+`
+
+const StyledActionBar = styled.section`
+  display: flex;
+  gap: 10px;
+`
+
+const StyledActionButton = styled.button`
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  border: 2px solid ${({ theme }) => theme.colors.otterBlack};
+  border-radius: 6px;
 `
 
 const StyledCloseButton = styled(CloseButton)`
@@ -161,9 +179,23 @@ interface Props {
 export default function ItemDetails({ item, onClose, onUse, className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
   const { collection, collection_name, name, image, rarity, type, description, equippable_gender, wearable } = item
+  const [showTransferPopup, setShowTransferPopup] = useState(false)
 
   return (
     <StyledItemDetails className={className}>
+      <StyledActionBar>
+        {!item.equipped && (
+          <StyledActionButton onClick={() => setShowTransferPopup(true)}>
+            <Caption>{t('transfer_btn')}</Caption>
+          </StyledActionButton>
+        )}
+        <a href={getOpenSeaItemLink(item.id)} target="_blank" rel="noreferrer">
+          <StyledActionButton>
+            <Caption>{t('opensea_link')}</Caption>
+            <Image src={NewWindowIcon} />
+          </StyledActionButton>
+        </a>
+      </StyledActionBar>
       {onClose && <StyledCloseButton onClose={onClose} />}
       <StyledItemImageContainer rarity={rarity}>
         <StyledItemImage src={image} />
@@ -215,6 +247,14 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
         <StyledButton Typography={Headline} onClick={() => onUse(item)}>
           {item.wearable ? (item.equipped ? t('take_off') : t('wear')) : item.isCoupon ? t('open') : t('use')}
         </StyledButton>
+      )}
+      {showTransferPopup && (
+        <TransferItemPopup
+          item={item}
+          onClose={() => {
+            setShowTransferPopup(false)
+          }}
+        />
       )}
     </StyledItemDetails>
   )

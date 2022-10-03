@@ -4,10 +4,10 @@ import styled from 'styled-components/macro'
 import { ContentLarge, Note } from 'styles/typography'
 import SelectedFrame from './selected-frame.svg'
 
-const StyledItemCell = styled.button<{ rarity: string; selected: boolean; canClick: boolean }>`
+const StyledItemCell = styled.button<{ size?: number; rarity: string; selected: boolean; canClick: boolean }>`
   --selected-bg: radial-gradient(63.75% 63.75% at 50% 50%, rgba(116, 205, 255, 0) 56.25%, #74cdff 100%);
-  width: 115px;
-  height: 115px;
+  width: ${({ size }) => `${size || 115}px`};
+  height: ${({ size }) => `${size || 115}px`};
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 5px;
   position: relative;
@@ -97,6 +97,7 @@ const StyledEquipped = styled.div`
 
 interface Props {
   item: Item
+  size?: number
   selected?: boolean
   onClick?: () => void
   className?: string
@@ -104,6 +105,7 @@ interface Props {
 
 export default function ItemCell({
   item: { image, rarity, equipped, amount },
+  size,
   selected = false,
   onClick,
   className,
@@ -111,6 +113,7 @@ export default function ItemCell({
   const { t } = useTranslation()
   return (
     <StyledItemCell
+      size={size}
       rarity={rarity}
       selected={selected}
       canClick={Boolean(onClick)}

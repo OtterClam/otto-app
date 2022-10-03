@@ -1,13 +1,12 @@
 import { TransactionState, TransactionStatus, useCalls, useContractFunction, useEthers } from '@usedapp/core'
-import { BigNumber, constants, Contract, ethers, Transaction, utils } from 'ethers'
 import { useApi } from 'contexts/Api'
+import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
+import { Api } from 'libs/api'
 import Item from 'models/Item'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useState } from 'react'
-import { NumericDictionary } from 'lodash'
-import { Api } from 'libs/api'
 import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
 import {
   useClamPond,
@@ -566,4 +565,15 @@ export const useBuyFish = () => {
   }, [state])
 
   return { buyFishState, buyFish, resetBuyFish }
+}
+
+export const useTransferItem = () => {
+  const { account } = useEthers()
+  const item = useItemContract()
+  const { state, send, resetState } = useContractFunction(item, 'safeTransferFrom')
+  const transfer = useCallback(
+    (itemId: string, to: string, amount: number) => send(account || '', to, itemId, amount, []),
+    [account, send]
+  )
+  return { transferState: state, transfer, resetTransfer: resetState }
 }

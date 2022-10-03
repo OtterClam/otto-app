@@ -326,6 +326,18 @@
       "current_equipped": "Currently Equipped",
       "replaced": "Replaced With...",
       "title": "Select an Otto to wear this item"
+    },
+    "transfer_btn": "Transfer",
+    "opensea_link": "View on Opensea",
+    "transfer": {
+      "title": "Transfer",
+      "amount": "Amount",
+      "address": "Receiver Address",
+      "note": "Note: Please note that by transferring the item, the receiver's address will receive the item. This transaction will only cost you a gas fee.",
+      "transfer_btn": "Transfer",
+      "success_title": "Transfer Successful!",
+      "success_desc": "Transaction completed. Your otter mate will receive your item(s) soon.",
+      "close_btn": "Close"
     }
   },
   "my_ottos": {

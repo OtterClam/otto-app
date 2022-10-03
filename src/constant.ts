@@ -30,6 +30,10 @@ export function getOpenSeaLink(tokenId: string) {
   return `${OPENSEA_NFT_LINK}${tokenId}`
 }
 
+export const OPENSEA_ITEM_LINK = 'https://opensea.io/assets/matic/0xBd29ee9a2cE0C794Eaf09BEdCa9387F4566377D5/'
+
+export const getOpenSeaItemLink = (itemId: string) => `${OPENSEA_ITEM_LINK}${itemId}`
+
 export const ottoClick = IS_SERVER ? { play: noop, load: noop } : new Audio('https://ottopia.app/ottoclick.mp3')
 ottoClick.load()
 
