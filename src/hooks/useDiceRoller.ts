@@ -102,7 +102,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
         dispatch(setError(err as any))
       }
     }
-  }, [otto, account, product, library])
+  }, [api, otto, account, product, library])
 
   const answerQuestion = useCallback(
     (index: number, answer: number) => {
@@ -114,7 +114,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
         .then(setDice)
         .catch(err => dispatch(setError(err)))
     },
-    [dice, otto]
+    [api, dice, otto]
   )
 
   const nextEvent = useCallback(() => {
