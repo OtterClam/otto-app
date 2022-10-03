@@ -331,7 +331,8 @@
       "transfer_btn": "Transfer",
       "success_title": "Transfer Successful!",
       "success_desc": "Transaction completed. Your otter mate will receive your item(s) soon.",
-      "close_btn": "Close"
+      "close_btn": "Close",
+      "invalid_address": "Invalid address"
     }
   },
   "my_ottos": {
