@@ -1,13 +1,12 @@
 import { useQuery } from '@apollo/client'
 import ArrowDown from 'assets/ui/arrow_down.svg'
 import Button from 'components/Button'
-import { useOttos } from 'hooks/useOtto'
+import { useMyOttos, useOttos } from 'hooks/useOtto'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import styled from 'styled-components/macro'
 import { ContentMedium, Headline } from 'styles/typography'
-import { useMyOttos } from 'MyOttosProvider'
 import { useRarityEpoch } from 'contexts/RarityEpoch'
 import { createSearchParams } from 'utils/url'
 import { useRouter } from 'next/router'
@@ -176,7 +175,7 @@ export default function RankList({ className }: Props) {
     skip: epoch === -1,
   })
   const { ottos, loading: loadingApi } = useOttos(data?.ottos, { details: true, epoch })
-  const { ottos: myOttos } = useMyOttos()
+  const { ottos: myOttos } = useMyOttos(epoch)
   const sortedMyOttos = useMemo(() => myOttos.sort((a, b) => a.ranking - b.ranking), [myOttos])
   const [expand, setExpand] = useState(false)
   const loading = loadingGraph || loadingApi
