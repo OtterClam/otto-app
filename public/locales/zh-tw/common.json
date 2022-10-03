@@ -321,18 +321,18 @@
       "replaced": "被取代成...",
       "title": "選擇一隻阿獺來裝備此物品"
     },
-    "transfer_btn": "Transfer",
-    "opensea_link": "View on Opensea",
+    "transfer_btn": "發送物品",
+    "opensea_link": "在 Opensea 上查看",
     "transfer": {
-      "title": "Transfer",
-      "amount": "Amount",
-      "address": "Receiver Address",
-      "note": "Note: Please note that by transferring the item, the receiver's address will receive the item. This transaction will only cost you a gas fee.",
-      "transfer_btn": "Transfer",
-      "success_title": "Transfer Successful!",
-      "success_desc": "Transaction completed. Your otter mate will receive your item(s) soon.",
-      "close_btn": "Close",
-      "invalid_address": "Invalid address"
+      "title": "發送物品",
+      "amount": "數量",
+      "address": "接收者地址",
+      "note": "注意：你所選擇的物品及數量將會傳送至上面所輸入之錢包地址。此交易僅會收取礦工費（gas fee）。",
+      "transfer_btn": "發送",
+      "success_title": "物品發送成功!",
+      "success_desc": "交易已完成。你的阿獺好夥伴很快就會收到物品。",
+      "close_btn": "關閉視窗",
+      "invalid_address": "無效的錢包地址"
     }
   },
   "my_ottos": {
