@@ -30,10 +30,13 @@ export interface GetTreasuryMetrics_protocolMetrics {
   treasuryTetuQiMarketValue: any;
   treasuryQiMarketValue: any;
   treasuryOtterClamQiMarketValue: any;
+  treasuryDaiMarketValue: any;
+  treasuryUsdPlusMarketValue: any;
   treasuryClamMaiMarketValue: any;
   treasuryMaiUsdcMarketValue: any;
   treasuryMaiUsdcQiInvestmentValue: any;
   treasuryQiWmaticMarketValue: any;
+  treasuryMaiStMaticMarketValue: any;
   treasuryQiWmaticQiInvestmentMarketValue: any;
   treasuryDystopiaPairUSDPLUSClamMarketValue: any;
   treasuryDystopiaPairMaiClamMarketValue: any;
@@ -41,6 +44,7 @@ export interface GetTreasuryMetrics_protocolMetrics {
   treasuryDystopiaPairQiTetuQiMarketValue: any;
   treasuryDystopiaPairUsdcTusdMarketValue: any;
   treasuryDystopiaPairUsdplusUsdcMarketValue: any;
+  treasuryDystopiaPairUsdplusStMaticMarketValue: any;
 }
 
 export interface GetTreasuryMetrics {

@@ -5,11 +5,15 @@ import useContractAddresses from 'hooks/useContractAddresses'
 import Item from 'models/Item'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { Api } from 'libs/api'
 import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
 import {
+  useAdventureContract,
   useClamPond,
+  useERC1155,
   useERC20,
+  useFoundry,
   useItemContract,
   useItemGiveaway,
   useOttoContract,
@@ -18,6 +22,7 @@ import {
   usePortalCreatorContract,
   useStoreContract,
 } from './contracts'
+import { useIsApprovedForAll } from './views'
 
 export const useApprove = (tokenAddress?: string) => {
   const { CLAM } = useContractAddresses()
@@ -130,7 +135,7 @@ interface OttoTransactionState {
   status: TransactionStatus
 }
 
-interface OttoBuyTransactionState extends OttoTransactionState {
+export interface OttoBuyTransactionState extends OttoTransactionState {
   receivedItems?: Item[]
 }
 
@@ -348,7 +353,7 @@ export function useStakedInfo() {
   const { account } = useEthers()
 
   const [result] = useCalls([
-    {
+    account && {
       contract: pearlBank,
       method: 'otterInfo',
       args: [account],
@@ -366,7 +371,7 @@ export function usePearlBankBalance(): BigNumber {
   const { account } = useEthers()
 
   const [result] = useCalls([
-    {
+    account && {
       contract: pearlBank,
       method: 'balanceOf',
       args: [account],
@@ -381,12 +386,12 @@ export function useClamPerPearl() {
   const { account } = useEthers()
 
   const [totalStakedResult, totalSupplyResult] = useCalls([
-    {
+    account && {
       contract: pearlBank,
       method: 'totalStaked',
       args: [account],
     },
-    {
+    account && {
       contract: pearlBank,
       method: 'totalSupply',
       args: [],
@@ -460,4 +465,132 @@ export const useClamPondWithdraw = (token: ClamPondToken) => {
     setUnstakeState({ state: state.status, status: state })
   }, [state])
   return { unstakeState, unstake, resetState }
+}
+
+export const useForge = () => {
+  const foundry = useFoundry()
+  const { account } = useEthers()
+  const api = useApi()
+  const { state, send, resetState } = useContractFunction(foundry, 'forge', {})
+  const [forgeState, setForgeState] = useState<OttoBuyTransactionState>({
+    state: 'None',
+    status: state,
+  })
+  const forge = async (formulaId: number, amount: number) => {
+    setForgeState({
+      state: 'PendingSignature',
+      status: state,
+    })
+    send(formulaId, amount)
+  }
+  const resetForge = () => {
+    resetState()
+    setForgeState({ state: 'None', status: state })
+  }
+  useEffect(() => {
+    if (state.status === 'Success') {
+      parseReceivedItems({ receipt: state.receipt, api, account }).then(receivedItems =>
+        setForgeState({
+          state: 'Success',
+          status: state,
+          receivedItems,
+        })
+      )
+    } else {
+      setForgeState({ state: state.status, status: state })
+    }
+  }, [account, api, state])
+  return { forgeState, forge, resetForge }
+}
+
+function parseReceivedItems({
+  receipt,
+  api,
+  account,
+}: {
+  receipt?: ethers.providers.TransactionReceipt
+  api: Api
+  account?: string
+}) {
+  const IItem = new utils.Interface(OttoItemAbi)
+  return Promise.all(
+    (receipt?.logs || [])
+      .map(log => {
+        try {
+          return IItem.parseLog(log)
+        } catch (err) {
+          // skip
+        }
+        return null
+      })
+      .filter(e => e?.name === 'TransferSingle' && e.args[2] === account)
+      .map(e => api.getItem(e?.args[3]))
+  )
+}
+
+export const useSetApprovalForAll = (address: string) => {
+  const erc1155 = useERC1155(address)
+  return useContractFunction(erc1155, 'setApprovalForAll')
+}
+
+export const useAdventureDeparture = () => {
+  const { OTTO, OTTO_ITEM } = useContractAddresses()
+  const [loading, setLoading] = useState(false)
+  const adventure = useAdventureContract()
+  const { account, library } = useEthers()
+  const api = useApi()
+  const ottoApproved = useIsApprovedForAll(OTTO, account ?? '', adventure.address)
+  const itemApproved = useIsApprovedForAll(OTTO_ITEM, account ?? '', adventure.address)
+  const { send: sendDeparture, state: departureState } = useContractFunction(adventure, 'departure')
+  const { send: sendApproveOtto, state: approveOttoState } = useSetApprovalForAll(OTTO)
+  const { send: snedApproveOttoItem, state: approveItemState } = useSetApprovalForAll(OTTO_ITEM)
+  const [readyToGo, setReadyToGo] = useState(false)
+
+  const departure = useCallback(
+    (ottoId: string, locationId: number) => {
+      if (!account || !library) {
+        return
+      }
+      setLoading(true)
+      Promise.resolve()
+        .then(() => ottoApproved || sendApproveOtto(adventure.address, true))
+        .then(() => itemApproved || snedApproveOttoItem(adventure.address, true))
+        .then(() => api.departure(ottoId, locationId, account))
+        .then(inputs => sendDeparture(...inputs))
+        .then(() => setReadyToGo(true))
+        .finally(() => setLoading(false))
+    },
+    [api, account, ottoApproved, itemApproved]
+  )
+
+  return {
+    loading,
+    departure,
+    readyToGo,
+    // readyToGo: departureState.status === 'Success' && approveOttoState.status === 'Success' && approveItemState.status === 'Success',
+  }
+}
+
+export const useAdventureFinish = () => {
+  const api = useApi()
+  const adventure = useAdventureContract()
+  const { account } = useEthers()
+  const [loading, setLoading] = useState(false)
+  const { send, state } = useContractFunction(adventure, 'finish')
+
+  const finish = useCallback(
+    (ottoId: string) => {
+      if (!account) {
+        return
+      }
+      setLoading(true)
+      api
+        .finish(ottoId, account)
+        .then(inputs => (send as any)(...inputs))
+        .finally(() => setLoading(false))
+    },
+    [api, account]
+  )
+
+  return { loading, finish }
 }

@@ -1,22 +1,25 @@
 import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
+import { useAdventureOttos } from 'contexts/AdventureOttos'
 import { LIST_MY_OTTOS } from 'graphs/otto'
 import { useOttos } from 'hooks/useOtto'
-import Otto from 'models/Otto'
+import useRawOttos from 'hooks/useRawOttos'
+import { sortBy } from 'lodash'
+import Otto, { RawOtto } from 'models/Otto'
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo } from 'react'
 import { ListMyOttos, ListMyOttosVariables } from './graphs/__generated__/ListMyOttos'
 
 interface MyOttos {
   loading: boolean
   ottos: Otto[]
-  reload: () => void
+  reload: () => Promise<void>
 }
 
 export const MyOttosContext = createContext<MyOttos>({
   loading: true,
   ottos: [],
   reload: () => {
-    // noop
+    return Promise.resolve()
   },
 })
 
@@ -32,21 +35,27 @@ export function useIsMyOttos(ottoTokenId?: string): boolean {
   }, [ottos, ottoTokenId])
 }
 
+// this component must to be wrapped by AdventureOttosProvider
 export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
-  const { account } = useEthers()
-  const { data, loading, refetch } = useQuery<ListMyOttos, ListMyOttosVariables>(LIST_MY_OTTOS, {
-    variables: { owner: account || '' },
-    skip: !account,
-  })
-  const { ottos, loading: loadingMeta, refetch: refetchMeta } = useOttos(data?.ottos, { details: true })
-  const reload = useCallback(() => refetch().then(refetchMeta), [refetch, refetchMeta])
+  const { ottos: adventureOttos, refetch: refetchAdventureOttos, loading } = useAdventureOttos()
+
+  const adventureOttoIds = useMemo(() => adventureOttos.map(o => String(o.id)), [adventureOttos])
+  const { data: adventureRawOttosData, loading: loadingRaw } = useRawOttos(adventureOttoIds)
+
+  const { ottos, loading: loadingMeta } = useOttos(adventureRawOttosData?.ottos, { details: true })
+
+  const reload = useCallback(() => {
+    return refetchAdventureOttos()
+  }, [])
+
   const myOttos = useMemo(
     () => ({
-      loading: loading || loadingMeta,
+      loading: loading || loadingRaw || loadingMeta,
       ottos,
       reload,
     }),
     [loading, loadingMeta, ottos, reload]
   )
+
   return <MyOttosContext.Provider value={myOttos}>{children}</MyOttosContext.Provider>
 }

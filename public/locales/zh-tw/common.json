@@ -261,10 +261,10 @@
     "filter": "過濾",
     "filters": {
       "equipped": "已裝備",
-      "lottie_specific": "Lottie 專用",
+      "lottie_can_equip": "Lottie 可用",
       "none": "無",
       "not_equipped": "未裝備",
-      "otto_specific": "Otto 專用"
+      "otto_can_equip": "Otto 可用"
     },
     "legendary_warning": "警告：如果你裝備/更換其他物品到傳奇阿獺身上，傳奇外框將會隱藏，且會扣除額外的傳奇加成：基本稀有度 (BRS) +100。",
     "no_selected_item": "請選擇物品檢視詳細資訊",
@@ -283,13 +283,20 @@
     },
     "sorted_by": "排序",
     "sorted_by_options": {
-      "latest_received": "收到時間",
-      "rarity_asc": "稀有度（從低到高）",
-      "rarity_desc": "稀有度（從高到低）",
-      "luck_desc": "幸運值",
-      "dex_desc": "敏捷度",
-      "cute_desc": "可愛度",
-      "def_desc": "防御力"
+      "time_received": "收到時間",
+      "rarity": "稀有度",
+      "luck": "幸運值",
+      "dex": "敏捷度",
+      "cute": "可愛度",
+      "def": "防御力",
+      "str": "力量度",
+      "int": "智力度",
+      "con": "憲法度"
+    },
+    "sort_order": "排序",
+    "sort_order_options": {
+      "asc": "從低到高",
+      "desc": "從高到低"
     },
     "take_off": "脫掉",
     "take_off_item": {
@@ -543,8 +550,8 @@
       "chartHeaderLabel": "總計",
       "today": "今日",
       "treasuryMarketValue": "國庫資產市值",
-      "treasuryRevenue": "國庫營收",
-      "treasuryRevenueTooltip": "國庫投資的每日營收。這不會呈現國庫資產的市場價格變化，只會考慮提領收益時的市價。",
+      "treasuryRevenue": "協議營收",
+      "treasuryRevenueTooltip": "國庫投資/Ottopia的每日營收。這不會呈現國庫資產的市場價格變化，只會考慮提領收益時的市價。",
       "clamCirculatingSupply": "CLAM 流通量",
       "clamCirculatingSupplyTooltip": "CLAM 流通量，和總量的差額為在 DAO 和 Ottopia 獎勵池的 CLAM。",
       "burned": "燒掉的 CLAM",
@@ -665,5 +672,26 @@
     "treasury": "國庫",
     "ottos": "我的阿獺",
     "missions": "我的任務"
+  },
+  "foundry": {
+    "title": "Foundry",
+    "dialog": {
+      "title": "Welcome to the Foundry!",
+      "content": "Welcome to the Foundry, where you can re-forge several items to combine into new items, and also have the opportunity to get new items with higher rarity or attributes!"
+    },
+    "result": {
+      "title": "You’ll Get:"
+    },
+    "materials": {
+      "title": "Required Items:"
+    },
+    "forgeButton": "Forge",
+    "forgeButton_insufficient": "Forge (Insufficient Items)",
+    "forgeAvailableTime": "Fusion available: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
+    "comingSoon": "Coming soon...",
+    "approve": "Approve",
+    "forge": {
+      "processing": "Forging..."
+    }
   }
 }

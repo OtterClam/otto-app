@@ -1,7 +1,18 @@
 import { ChainId } from '@usedapp/core'
 import axios, { Axios } from 'axios'
+import {
+  RawAdventureDepartureArgs,
+  AdventureLocation,
+  RawAdventureLocation,
+  rawAdventureLocationToAdventureLocation,
+  AdventureDepartureArgs,
+  AdventureFinishArgs,
+} from 'models/AdventureLocation'
+import { AdventureOtto, RawAdventureOtto, rawAdventureOttoToAdventureOtto } from 'models/AdventureOtto'
+import { AdventurePrevew, RawAdventurePreview, rawAdventurePreviewToAdventurePrevew } from 'models/AdventurePreview'
 import { Dice } from 'models/Dice'
-import Item from 'models/Item'
+import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
+import Item, { rawItemToItem } from 'models/Item'
 import { Notification, RawNotification } from 'models/Notification'
 import { OttoMeta } from 'models/Otto'
 import Product from 'models/store/Product'
@@ -33,12 +44,21 @@ const otterclamApiEndpoint: { [key: number]: string } = {
 }
 
 export class Api {
+  private chainId: ChainId
+
   private otterclamClient: Axios
 
   constructor(chainId: ChainId) {
+    this.chainId = chainId
     this.otterclamClient = axios.create({
       baseURL: otterclamApiEndpoint[chainId],
     })
+  }
+
+  withAbortController(abortController: AbortController) {
+    const newClient = new Api(this.chainId)
+    newClient.otterclamClient.defaults.signal = abortController.signal
+    return newClient
   }
 
   setLanguage(lang: string): void {
@@ -76,33 +96,14 @@ export class Api {
     return this.otterclamClient
       .get(`/items/metadata/${itemId}`)
       .then(res => res.data)
-      .then((data: any) => this.toItem(itemId, data))
+      .then((data: any) => rawItemToItem(itemId, data))
   }
 
   public async getItems(ids: string[]): Promise<Item[]> {
     return this.otterclamClient
       .get(`/items/metadata?ids=${ids.join(',')}`)
       .then(res => res.data)
-      .then((data: any[]) => data.map((d, i) => this.toItem(ids[i], d)))
-  }
-
-  private toItem(id: string, { name, description, image, details }: any): Item {
-    return {
-      id,
-      name,
-      description,
-      image,
-      equipped: false,
-      amount: 1,
-      unreturnable: false,
-      isCoupon: details.type === 'Coupon',
-      total_rarity_score: details.base_rarity_score + details.relative_rarity_score,
-      luck: Number(details.stats.find((s: any) => s.name === 'LUK').value) || 0,
-      dex: Number(details.stats.find((s: any) => s.name === 'DEX').value) || 0,
-      cute: Number(details.stats.find((s: any) => s.name === 'CUTE').value) || 0,
-      def: Number(details.stats.find((s: any) => s.name === 'DEF').value) || 0,
-      ...details,
-    }
+      .then((data: any[]) => data.map((d, i) => rawItemToItem(ids[i], d)))
   }
 
   public async rollTheDice(ottoId: string, tx: string): Promise<Dice> {
@@ -130,7 +131,66 @@ export class Api {
       ...res.data,
       start_time: new Date(res.data.start_time).valueOf(),
       end_time: new Date(res.data.end_time).valueOf(),
-      special_items: res.data.special_items.map((i: any) => this.toItem('', i)),
+      special_items: res.data.special_items.map((i: any) => rawItemToItem('', i)),
     }))
   }
+
+  public async getFoundryForges(): Promise<ForgeFormula[]> {
+    const result = await this.otterclamClient.get<RawForgeFormula[]>('/foundry/forge')
+    return result.data.map(rawForgeToForge)
+  }
+
+  public async getAdventureOttos(wallet: string): Promise<AdventureOtto[]> {
+    const result = await this.otterclamClient.get<RawAdventureOtto[]>(`/adventure/wallets/${wallet}`)
+    return result.data.map(rawAdventureOttoToAdventureOtto)
+  }
+
+  public async getOttoAdventurePreview(
+    ottoId: string,
+    locationId: number,
+    replacedItemIds: string[] = []
+  ): Promise<AdventurePrevew> {
+    let url = `/ottos/${ottoId}/adventure/locations/${locationId}/preview`
+    if (replacedItemIds.length) {
+      url += `?items=${replacedItemIds.join(',')}`
+    }
+    const result = await this.otterclamClient.get<RawAdventurePreview>(url)
+    return rawAdventurePreviewToAdventurePrevew(result.data)
+  }
+
+  public async getAdventureLocations(): Promise<AdventureLocation[]> {
+    const result = await this.otterclamClient.get<RawAdventureLocation[]>('/adventure/locations')
+    return result.data.map(rawAdventureLocationToAdventureLocation)
+  }
+
+  public async departure(ottoId: string, locationId: number, wallet: string): Promise<AdventureDepartureArgs> {
+    const result = await this.otterclamClient.post<RawAdventureDepartureArgs>('/adventure/departure', {
+      otto_id: Number(ottoId),
+      loc_id: locationId,
+      wallet,
+      actions: [],
+    })
+    const raw = result.data
+    return [
+      raw[0],
+      raw[1],
+      raw[2],
+      raw[3].map(([typ, itemId, fromOttoId]) => ({ typ, itemId, fromOttoId })),
+      {
+        nonce: raw[4][0],
+        digest: raw[4][1],
+        signed: raw[4][2],
+      },
+    ]
+  }
+
+  public async finish(ottoId: string, wallet: string) {
+    const result = await this.otterclamClient.post<AdventureFinishArgs>('/adventure/finish', {
+      otto_id: ottoId,
+      wallet,
+    })
+    return result.data
+  }
 }
+
+export const defaultApi = new Api(ChainId.Polygon)

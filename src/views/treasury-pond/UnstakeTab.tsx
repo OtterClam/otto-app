@@ -13,6 +13,8 @@ import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Caption, Note, ContentLarge, ContentSmall, Headline, RegularInput } from 'styles/typography'
+import useContractAddresses from 'hooks/useContractAddresses'
+import { useWallet } from 'contexts/Wallet'
 import ClamInput from './ClamPondInput'
 import usePondTokens from './usePondTokens'
 
@@ -87,9 +89,12 @@ interface Props {
 }
 
 export default function UnstakeTab({ className }: Props) {
+  const { CLAM, CLAM_POND, PEARL_BANK } = useContractAddresses()
+  const wallet = useWallet()
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const tokens = usePondTokens()
   const [token, setToken] = useState<ClamPondToken>('CLAM')
+  const tokenAddress = token === 'CLAM' ? CLAM : PEARL_BANK
   const [unstakeAmount, setUnstakeAmount] = useState('')
   const { balance, timestamp: lastStakeTimestamp } = useClamPondDepositInfo()
   const { unstakeState: state, unstake, resetState } = useClamPondWithdraw(token)
@@ -104,6 +109,13 @@ export default function UnstakeTab({ className }: Props) {
       resetState()
     }
   }, [state, resetState])
+
+  useEffect(() => {
+    if (state.state === 'Success') {
+      wallet?.setBalance(tokenAddress, balance => balance.add(receiveAmount))
+      wallet?.setBalance(CLAM_POND, balance => balance.sub(receiveAmount))
+    }
+  }, [state.state])
 
   return (
     <StyledUnstakeTab className={className}>

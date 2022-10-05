@@ -14,6 +14,20 @@ export const LIST_MY_OTTOS = gql`
   }
 `
 
+export const GET_OTTOS = gql`
+  query GetOttos($tokenIds: [String!]) {
+    ottos(where: { tokenId_in: $tokenIds, epoch: -1 }, orderBy: tokenId) {
+      tokenId
+      tokenURI
+      mintAt
+      legendary
+      brs
+      rrs
+      rarityScore
+    }
+  }
+`
+
 export const LIST_MY_ITEMS = gql`
   query ListItems($owner: Bytes!) {
     ottoItems(where: { rootOwner: $owner, amount_gt: 0 }, first: 1000) {

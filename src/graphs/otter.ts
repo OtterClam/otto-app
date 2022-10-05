@@ -48,12 +48,15 @@ export const GET_TREASURY_METRICS = gql`
       treasuryTetuQiMarketValue
       treasuryQiMarketValue
       treasuryOtterClamQiMarketValue
+      treasuryDaiMarketValue
+      treasuryUsdPlusMarketValue
 
       #treasury LPs
       treasuryClamMaiMarketValue
       treasuryMaiUsdcMarketValue
       treasuryMaiUsdcQiInvestmentValue
       treasuryQiWmaticMarketValue
+      treasuryMaiStMaticMarketValue
       treasuryQiWmaticQiInvestmentMarketValue
       treasuryDystopiaPairUSDPLUSClamMarketValue
       treasuryDystopiaPairMaiClamMarketValue
@@ -61,6 +64,7 @@ export const GET_TREASURY_METRICS = gql`
       treasuryDystopiaPairQiTetuQiMarketValue
       treasuryDystopiaPairUsdcTusdMarketValue
       treasuryDystopiaPairUsdplusUsdcMarketValue
+      treasuryDystopiaPairUsdplusStMaticMarketValue
     }
   }
 `
@@ -80,6 +84,12 @@ export const GET_TREASURY_REVENUE = gql`
       penDystMarketValue
       ottopiaClamAmount
       ottopiaMarketValue
+      ldoClamAmount
+      ldoMarketValue
+      usdPlusClamAmount
+      usdPlusMarketValue
+      daiClamAmount
+      daiMarketValue
       totalRevenueClamAmount
       totalRevenueMarketValue
     }
@@ -87,7 +97,7 @@ export const GET_TREASURY_REVENUE = gql`
 `
 
 export const GET_LAST_PAYOUT_TO_ADDRESS = gql`
-  query LastPayout($address: Bytes!) {
+  query LastPayout($address: ID!) {
     stakedBalances(where: { id: $address }) {
       id
       clamPondLastPayout

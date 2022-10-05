@@ -1,4 +1,4 @@
-import { TransactionState, TransactionStatus, useEthers, useSendTransaction, useTokenBalance } from '@usedapp/core'
+import { TransactionState, TransactionStatus, useEthers, useSendTransaction } from '@usedapp/core'
 import CLAMIcon from 'assets/tokens/CLAM.svg'
 import USDCIcon from 'assets/tokens/USDC.svg'
 import USDPlusIcon from 'assets/tokens/USDPlus.png'
@@ -10,6 +10,7 @@ import { BigNumber, ethers } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import { useEffect, useMemo, useState } from 'react'
+import useTokenBalance from 'hooks/useTokenBalance'
 
 export type Token = 'CLAM' | 'USD+' | 'USDC' | 'WMATIC'
 
@@ -24,14 +25,13 @@ export interface TokenInfo {
 const FEE = 1 // 1% fee to DAO
 
 export function useTokenList() {
-  const { account } = useEthers()
   const {
     tokens: { CLAM, USDC, USDPlus, WMATIC },
   } = useContractAddresses()
-  const clamBalance = useTokenBalance(CLAM, account)
-  const usdcBalance = useTokenBalance(USDC, account)
-  const usdPlusBalance = useTokenBalance(USDPlus, account)
-  const wmaticBalance = useTokenBalance(WMATIC, account)
+  const clamBalance = useTokenBalance(CLAM)
+  const usdcBalance = useTokenBalance(USDC)
+  const usdPlusBalance = useTokenBalance(USDPlus)
+  const wmaticBalance = useTokenBalance(WMATIC)
   return useMemo(
     () => ({
       CLAM: {

@@ -37,6 +37,7 @@
   "dice_banner": {
     "badge": "Special Offer",
     "button": "Give It a Try",
+    "button_season_end": "S1 End",
     "description": "The Dice of Destiny gives a chance to temporarily boost your BRS for the current epoch in Rarity Competition, but there’s a possibility that your BRS score will be lowered.",
     "times": "The Dice of Destiny was rolled <strong>x{{ times }}</strong>",
     "effects_blessed": "Fate has blessed this Otto with BRS <strong>{{ brs }}</strong>",
@@ -265,10 +266,10 @@
     "filter": "Filter",
     "filters": {
       "equipped": "Equipped",
-      "lottie_specific": "Lottie Specific",
       "none": "None",
       "not_equipped": "Not Equipped",
-      "otto_specific": "Otto Specific"
+      "otto_can_equip": "Otto Can Equip",
+      "lottie_can_equip": "Lottie Can Equip"
     },
     "legendary_warning": "Warning: If you add or replace any items to the Legendary Otto, the Legendary frame will be removed and the BRS +100 bonus will be withdrawn.",
     "no_selected_item": "Select an item to view the detail.",
@@ -287,13 +288,16 @@
     },
     "sorted_by": "Sorted By",
     "sorted_by_options": {
-      "latest_received": "Latest Received",
-      "rarity_asc": "Rarity  (From lowest)",
-      "rarity_desc": "Rarity  (From highest)",
-      "luck_desc": "Luck  (From highest)",
-      "dex_desc": "Dex  (From highest)",
-      "cute_desc": "Cute (From highest)",
-      "def_desc": "Def (From highest)"
+      "rarity_desc": "Rarity",
+      "time_received": "Time Received",
+      "str": "Str",
+      "rarity": "Rarity",
+      "luck": "Luck",
+      "int": "Int",
+      "dex": "Dex",
+      "def": "Def",
+      "cute": "Cute",
+      "con": "Con"
     },
     "take_off": "Take Off",
     "take_off_item": {
@@ -315,7 +319,12 @@
       "current_equipped": "Currently Equipped",
       "replaced": "Replaced With...",
       "title": "Select an Otto to wear this item"
-    }
+    },
+    "sort_order_options": {
+      "asc": "Ascending",
+      "desc": "Descending"
+    },
+    "sort_order": "Order"
   },
   "my_ottos": {
     "mint_portal": "Mint Portal",
@@ -388,7 +397,7 @@
       "Voice": "Voice",
       "title": "{{type}}: {{name}}"
     },
-    "unreturnable": "Unreturnable",
+    "unreturnable": "Nonreturnable",
     "unreturnable_hint": "This item came along with the Otto the moment it was minted, so it cannot be detached and returned to your item inventory. You can still wear another wearable item to replace and hide it. If the other wearable item is taken off, this item will be visible again on the Otter.",
     "voice": "Voice: {{voice}}",
     "wearable_traits_tab": "Wearable Traits",
@@ -461,10 +470,18 @@
       "must_desc": "R3 Item Guaranteed!",
       "name": "Silver Chest"
     },
-    "luk": { "must_desc": "R1 Item Guaranteed!" },
-    "dex": { "must_desc": "R2 Item Guaranteed!" },
-    "cute": { "must_desc": "R2 Item Guaranteed!" },
-    "def": { "must_desc": "R2 Item Guaranteed!" }
+    "luk": {
+      "must_desc": "R1 Item Guaranteed!"
+    },
+    "dex": {
+      "must_desc": "R2 Item Guaranteed!"
+    },
+    "cute": {
+      "must_desc": "R2 Item Guaranteed!"
+    },
+    "def": {
+      "must_desc": "R2 Item Guaranteed!"
+    }
   },
   "question": {
     "submit_button": "Confirm"
@@ -551,16 +568,16 @@
       "rewardsTooltip": "Reward Rate is the daily percentage gain for staking in either pool.\nAnnual Percentage Rate (APR) is the daily reward rate multiplied over 365 days, the effective payout for Clam Pond.\nAnnual Percentage Yield (APY) is the yearly return accounting for the effect of daily auto-compounding in the Clam Pond.",
       "today": "Today",
       "treasuryMarketValue": "Market Value of Treasury Assets",
-      "treasuryRevenue": "Treasury Revenue",
-      "treasuryRevenueTooltip": "Daily income harvested from treasury investments. This does not reflect changes in the market value of treasury assets, only new liquid tokens entering the treasury.",
+      "treasuryRevenue": "Protocol Revenue",
+      "treasuryRevenueTooltip": "Daily income harvested from treasury investments/Ottopia. This does not reflect changes in the market value of treasury assets, only new liquid tokens entering the treasury.",
       "clamCirculatingSupply": "CLAM Circulating Supply",
       "clamCirculatingSupplyTooltip": "The amount of CLAM in circulation. The difference between the circulating and total supply is the amount of CLAM held by the DAO wallet and Ottopia reward pool.",
       "burned": "Burned CLAM",
       "burnedTooltip": "Amount of CLAM permanently burned and removed from the supply. USD value is calculated from price at the time of burning. Percentage shown is the portion of the total CLAM supply burned.",
       "distributed": "Rewards Distributed",
       "distributedTooltip": "Total USD value of rewards paid to CLAM stakers since launch. The APR is the annual percentage rate of rewards paid to CLAM stakers.",
-      "averageApy": "Average APY",
-      "averageApyStartDate": "from {{ date }}",
+      "averageApr": "Average APR",
+      "averageAprStartDate": "from {{ date }}",
       "marketcap": "CLAM Market Cap",
       "marketcapTooltip": "The circulating supply of CLAM tokens multiplied by the market price.",
       "stakedChartHeader": "Staked",
@@ -680,5 +697,167 @@
     "treasury": "Treasury",
     "ottos": "My Ottos",
     "missions": "Missions"
+  },
+  "foundry": {
+    "title": "Foundry",
+    "dialog": {
+      "title": "Welcome to the Foundry!",
+      "content": "Welcome to the Foundry, where you can melt several items to create a new item with the possibility of getting a higher rarity score or better attributes!"
+    },
+    "result": {
+      "title": "You’ll Get:"
+    },
+    "materials": {
+      "title": "Required Items:"
+    },
+    "forgeButton": "Forge",
+    "forgeButton_insufficient": "Forge (Insufficient Items)",
+    "forgeAvailableTime": "Event duration: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
+    "comingSoon": "Coming soon...",
+    "approve": "Approve",
+    "forge": {
+      "processing": "Forging..."
+    }
+  },
+  "ottoPreviewer": {
+    "feedButton": "+ Food"
+  },
+  "adventurePopup": {
+    "start": "Let's Go!",
+    "prevewOttoTitle": "Choose an Otto to go on adventure:",
+    "readyToGoStep": {
+      "title": "Ready to Go!",
+      "desc": "{{name}} has just departed to an adventure. Good luck!"
+    },
+    "exploringStep": {
+      "title": "{{name}} is exploring...",
+      "remaining": "Remaining: {{time}}",
+      "finish_immediately_btn": "Finish Immediately",
+      "speed_up_btn": "Speed Up",
+      "see_results_btn": "See Results",
+      "wants_more": "Want more Speed-Up Potions?",
+      "buy_now": "Buy NOW>",
+      "use": "Use 1"
+    },
+    "resultStep": {
+      "journal": "Adventure Journal",
+      "reward": "Adventure Reward",
+      "skip_journal_btn": "Skip",
+      "result_label": "Adventure Result:",
+      "result_succeeded": "SUCCEEDED",
+      "result_failed": "FAILED",
+      "found_items": "Found Items",
+      "treasury_chest": "Treasury Chest",
+      "explore_again_btn": "Explore Again",
+      "switch_place_btn": "Switch to another place...",
+      "revive_btn": "Revive",
+      "give_up_btn": "Give Up (Discard all Rewards)",
+      "give_up_yes_btn": "Yes. Give up",
+      "give_up_back_btn": "Back",
+      "failed_desc": "Because your Otto FAILED the adventure, you can not claim those rewards.",
+      "failed_hint": "Wanna collected the rewards?\nRevive so that you can claim all of them. If you choose to give up, the rewards will be all discarded and there’s no way back."
+    }
+  },
+  "ottoPreviewer": {
+    "feedButton": "+ Food"
+  },
+  "adventureOttoList": {
+    "title": "The Ottos currently exploring this place"
+  },
+  "adventureBoostTarget": {
+    "success_rate": "Total Success +{{ amount }}%",
+    "additional_item": "Found Item +{{ amount }}",
+    "additional_artwork": "Found Artwork Item +{{ amount }}"
+  },
+  "adventureLocation": {
+    "successRate": "Success rate",
+    "adventureTime": "Adventure time",
+    "restingTime": "Resting time",
+    "successRateHelp": "message",
+    "restingTimeHelp": "message",
+    "rewardSectionTitle": "Success Rewards"
+  },
+  "adventureLocationPopup": {
+    "difficulty": "Difficulty:",
+    "nextStep": "Continue"
+  },
+  "adventureBoosts": {
+    "conditionalBoosts": "Conditional Boosts"
+  },
+  "ottoItemsPopup": {
+    "title": "Change {{ type }}",
+    "sort": "Sorted by",
+    "order": "Order",
+    "filter": "Filter",
+    "wear": "Wear",
+    "wearBy": "{{ name }} is wearing this item",
+    "unavailable": "Unavailable",
+    "noItems": "No Items Found"
+  },
+  "itemFilters": {
+    "attrs": {
+      "timeReceived": "Time Received",
+      "rarity": "Rarity",
+      "str": "Str",
+      "dex": "Dex",
+      "luck": "Luck",
+      "cute": "Cute",
+      "def": "Def",
+      "int": "Int",
+      "con": "Con"
+    },
+    "order": {
+      "desc": "Descending",
+      "asc": "Ascending"
+    },
+    "filters": {
+      "equipped": "Equipped",
+      "lottie_specific": "Lottie Specific",
+      "none": "None",
+      "not_equipped": "Not Equipped",
+      "otto_specific": "Otto Specific"
+    }
+  },
+  "adventure": {
+    "title": "Adventure",
+    "continue": "To Be Continue...",
+    "listTitle": "Overview",
+    "viewSwitcher": {
+      "map": "Map",
+      "list": "Overview"
+    }
+  },
+  "treasueyChestLevel": {
+    "title": "Treasury Chest",
+    "desc": "Collect points on adventure to open the Treasure Chest!",
+    "value": "{{ tcp }}/100 TCP"
+  },
+  "adventureStatus": {
+    "all": "All",
+    "finished": "Finished",
+    "ongoing": "Ongoing",
+    "resting": "Resting",
+    "ready": "Ready",
+    "unavailable": "Unavailable"
+  },
+  "adventureOttoCard": {
+    "checkOtto": "Check >",
+    "viewLabel": "View"
+  },
+  "conditionalBoosts": {
+    "title": "Conditional Boosts",
+    "help": "test",
+    "effectiveUntil": "<span style='color: #FFDC77'>{{ duration }}</span>",
+    "legendary": "Legendary Otto:",
+    "zodiac": "Zodiac sign:",
+    "birthday": "Birthday today:",
+    "level_up": "Level-up bonus:",
+    "first_match_group": "If {{ attr }} {{ operator }} {{ value }}, ",
+    "fixed_level": "LV{{ value }}:"
+  },
+  "ongoingOttos": {
+    "title": "The Ottos currently exploring this place",
+    "view": "View",
+    "noOtto": "No Otto is here"
   }
 }

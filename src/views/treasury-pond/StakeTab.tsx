@@ -1,10 +1,12 @@
 import Button from 'components/Button'
+import { useWallet } from 'contexts/Wallet'
 import { ClamPondToken, useClamPondDeposit } from 'contracts/functions'
 import { useClamPondFee } from 'contracts/views'
 import formatDate from 'date-fns/format'
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 import { utils } from 'ethers'
 import { trim } from 'helpers/trim'
+import useContractAddresses from 'hooks/useContractAddresses'
 import { useTranslation } from 'next-i18next'
 import dynamic from 'next/dynamic'
 import { useEffect, useMemo, useState } from 'react'
@@ -65,20 +67,32 @@ interface Props {
 }
 
 export default function StakeTab({ className }: Props) {
+  const { CLAM, CLAM_POND, PEARL_BANK } = useContractAddresses()
+  const wallet = useWallet()
   const { t } = useTranslation('', { keyPrefix: 'stake' })
   const tokens = usePondTokens()
   const [stakeAmount, setStakeAmount] = useState('')
   const [token, setToken] = useState<ClamPondToken>('CLAM')
+  const tokenAddress = token === 'CLAM' ? CLAM : PEARL_BANK
   const { stakeState, stake, resetStake } = useClamPondDeposit(token)
   const { base: feeBase, feeRate, duration } = useClamPondFee()
   const { balance } = tokens[token]
   const unlockTime = useMemo(() => new Date(Date.now() + duration * 1000), [duration])
+
   useEffect(() => {
     if (stakeState.state === 'Fail' || stakeState.state === 'Exception') {
       window.alert(stakeState.status.errorMessage)
       resetStake()
     }
   }, [stakeState, resetStake])
+
+  useEffect(() => {
+    if (stakeState.state === 'Success') {
+      wallet?.setBalance(tokenAddress, balance => balance.sub(utils.parseUnits(stakeAmount, 9)))
+      wallet?.setBalance(CLAM_POND, balance => balance.add(utils.parseUnits(stakeAmount, 9)))
+    }
+  }, [stakeState.state])
+
   return (
     <StyledStakeTab className={className}>
       <Headline as="h1">{t('welcome')}</Headline>

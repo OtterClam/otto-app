@@ -1,9 +1,11 @@
 import styled from 'styled-components/macro'
-import Rope from './img_rope.png'
+import ropeImage from './rope.png'
+import bottomImage from './bottom.png'
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ vertical?: boolean }>`
   display: flex;
   justify-content: space-between;
+  height: 21px;
 
   &::before,
   &::after {
@@ -12,8 +14,9 @@ const StyledContainer = styled.div`
     content: '';
     min-width: 20px;
     max-width: 20px;
-    height: 21px;
-    background: center / 20px 21px url(${Rope.src});
+    min-height: 100%;
+    max-height: 100%;
+    background: bottom / 20px 12px url(${bottomImage.src}) no-repeat, bottom / 20px 9px url(${ropeImage.src});
   }
 
   &::before {
@@ -23,12 +26,34 @@ const StyledContainer = styled.div`
   &::after {
     margin-right: 40px;
   }
+
+  ${({ vertical }) =>
+    vertical &&
+    `
+    flex-direction: column;
+    max-width: 21px;
+    min-width: 21px;
+    
+    &::before, &::after {
+      transform-origin: center;
+      margin: 0;
+    }
+    
+    &::before {
+      transform: rotate(-90deg) translateX(-40px);
+    }
+
+    &::after {
+      transform: rotate(-90deg) translateX(40px);
+    }
+  `}
 `
 
 export interface SectionRopeProps {
   className?: string
+  vertical?: boolean
 }
 
-export default function SectionRope({ className }: SectionRopeProps) {
-  return <StyledContainer className={className} />
+export default function SectionRope({ className, vertical }: SectionRopeProps) {
+  return <StyledContainer className={className} vertical={vertical} />
 }

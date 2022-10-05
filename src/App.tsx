@@ -12,7 +12,11 @@ import { theme } from 'styles'
 import { CurrencyProvider } from 'contexts/Currency'
 import useServiceWorker from 'hooks/useServiceWorker'
 import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
+import { WalletProvider } from 'contexts/Wallet'
 import { ApiProvider } from 'contexts/Api'
+import AdventurePopup from 'components/AdventurePopup'
+import { OverlayProvider } from 'contexts/Overlay'
+import { AdventureOttosProvider } from 'contexts/AdventureOttos'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 
@@ -35,7 +39,7 @@ const config: Config = {
   readOnlyChainId: ChainId.Polygon,
   readOnlyUrls: {
     [ChainId.Polygon]: 'https://polygon-rpc.com',
-    // [ChainId.Mumbai]: process.env.NEXT_PUBLIC_RPC_ENDPOINT_MUMBAI || '',
+    [ChainId.Mumbai]: process.env.NEXT_PUBLIC_RPC_ENDPOINT_MUMBAI || '',
     // [ChainId.Hardhat]: 'http://127.0.0.1:8545',
   },
   multicallAddresses: {
@@ -67,25 +71,31 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
   return (
     <ApolloProvider client={apollo}>
       <OtterSubgraphProvider>
-        <ApiProvider>
-          <AssetsLoaderProvider>
-            <CurrencyProvider>
-              <ThemeProvider theme={theme}>
-                <BreakpointsProvider>
-                  <MyOttosProvider>
-                    <StyledApp>
-                      <StyledPageContainer>{children}</StyledPageContainer>
-                      <Error />
-                      <WalletSelector />
-                      <SideMenu />
-                      <AssetsLoader />
-                    </StyledApp>
-                  </MyOttosProvider>
-                </BreakpointsProvider>
-              </ThemeProvider>
-            </CurrencyProvider>
-          </AssetsLoaderProvider>
-        </ApiProvider>
+        <WalletProvider>
+          <ApiProvider>
+            <AssetsLoaderProvider>
+              <CurrencyProvider>
+                <ThemeProvider theme={theme}>
+                  <BreakpointsProvider>
+                    <AdventureOttosProvider>
+                      <MyOttosProvider>
+                        <OverlayProvider>
+                          <StyledApp>
+                            <StyledPageContainer>{children}</StyledPageContainer>
+                            <Error />
+                            <WalletSelector />
+                            <SideMenu />
+                            <AssetsLoader />
+                          </StyledApp>
+                        </OverlayProvider>
+                      </MyOttosProvider>
+                    </AdventureOttosProvider>
+                  </BreakpointsProvider>
+                </ThemeProvider>
+              </CurrencyProvider>
+            </AssetsLoaderProvider>
+          </ApiProvider>
+        </WalletProvider>
       </OtterSubgraphProvider>
     </ApolloProvider>
   )

@@ -1,5 +1,10 @@
 import { getCroppedImageUrl } from 'utils/image'
 
+export enum TraitCollection {
+  Genesis = 'genesis',
+  Second = 'second',
+}
+
 export interface RawOtto {
   tokenId: any
   tokenURI: string
@@ -19,19 +24,40 @@ export interface Attr {
   value: string | number
 }
 
+export enum TraitRarity {
+  C3 = 'C3',
+  C2 = 'C2',
+  C1 = 'C1',
+  R3 = 'R3',
+  R2 = 'R2',
+  R1 = 'R1',
+  E3 = 'E3',
+  E2 = 'E2',
+  E1 = 'E1',
+}
+
+export enum OttoGender {
+  Male = 'Male',
+  Female = 'Female',
+  Both = 'both',
+}
+
 export interface Trait {
+  id: string
   type: string
   name: string
   image: string
-  rarity: string
+  rarity: TraitRarity
   base_rarity_score: number
   relative_rarity_score: number
   total_rarity_score: number
   equipped_count: number
   wearable: boolean
-  stats: [Stat]
+  stats: Stat[]
   unreturnable: boolean
-  equippable_gender: string
+  equippable_gender: OttoGender
+  collection?: TraitCollection
+  collection_name?: string
 }
 
 export interface Stat {
@@ -43,10 +69,10 @@ export interface OttoMeta {
   name: string
   image: string
   description: string
-  attributes: [Attr]
-  otto_attrs: [Attr]
-  otto_traits: [Attr]
-  otto_details?: [Trait]
+  attributes: Attr[]
+  otto_attrs: Attr[]
+  otto_traits: Attr[]
+  otto_details?: Trait[]
   animation_url: string
 }
 
@@ -203,4 +229,41 @@ export default class Otto {
   static fromJSON({ raw, metadata }: ReturnType<Otto['toJSON']>) {
     return new Otto(raw, metadata)
   }
+}
+
+export interface OttoAttrsDiff {
+  [k: string]: number
+}
+
+export function diffTraitAttrs(a: Trait, b: Trait): OttoAttrsDiff {
+  const stats = a.stats.reduce(
+    (map, stat) => Object.assign(map, { [stat.name]: stat.value }),
+    {} as { [k: string]: number }
+  )
+  const result: OttoAttrsDiff = {}
+  b.stats.forEach(stat => {
+    const aValue = isNaN(Number(stat.value)) ? 0 : Number(stat.value)
+    const bValue = isNaN(Number(stats[stat.name])) ? 0 : Number(Number(stats[stat.name]))
+    result[stat.name] = aValue - bValue
+  })
+  return result
+}
+
+export function mergeTraitDiffs(a: OttoAttrsDiff, b: OttoAttrsDiff): OttoAttrsDiff {
+  const result: OttoAttrsDiff = {}
+  Object.entries(b).forEach(([key, val]) => {
+    result[key] = val + (a[key] ?? 0)
+  })
+  return result
+}
+
+export function applyAttrsDiffToOtto(otto: Otto, diff: OttoAttrsDiff): Otto {
+  const metadata = {
+    ...otto.metadata,
+    otto_attrs: otto.metadata.otto_attrs.map(attr => ({
+      trait_type: attr.trait_type,
+      value: Number(attr.value) + (diff[attr.trait_type] ?? 0),
+    })),
+  }
+  return new Otto(otto.raw, metadata)
 }

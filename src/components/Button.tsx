@@ -113,6 +113,7 @@ function useProcessingText(processing: boolean, text: string) {
 }
 
 export interface ButtonProps {
+  href?: string
   width?: string
   height?: string
   onClick?: () => void
@@ -128,6 +129,7 @@ export interface ButtonProps {
 }
 
 const Button = ({
+  href,
   children,
   width,
   height,
@@ -156,6 +158,8 @@ const Button = ({
 
   return (
     <StyledButton
+      as={href ? 'a' : 'button'}
+      href={href}
       className={className}
       primaryColor={primaryColor}
       disabled={_disabled}

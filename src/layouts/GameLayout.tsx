@@ -1,5 +1,4 @@
 import GameMenu from 'components/GameMenu'
-import NotificationCenterProvider from 'contexts/NotificationCenter'
 import { PropsWithChildren } from 'react'
 import styled from 'styled-components/macro'
 import PageHeader from '../components/PageHeader'
@@ -9,7 +8,7 @@ export const Body = styled.div`
   width: 90%;
   display: flex;
   justify-content: space-around;
-  margin: var(--header-margin) auto 0;
+  margin: var(--header-margin) auto 60px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 100%;
@@ -17,7 +16,8 @@ export const Body = styled.div`
 `
 
 const StyledGameMenu = styled(GameMenu)`
-  position: absolute;
+  position: fixed;
+  z-index: 1;
   left: 0;
   bottom: 0;
   width: 100%;
@@ -27,11 +27,11 @@ interface Props {
   title: string
 }
 
-export default function DefaultLayout({ title, children }: PropsWithChildren<Props>) {
+export default function GameLayout({ title, children }: PropsWithChildren<Props>) {
   return (
     <>
       <PageHeader title={title} />
-      <NotificationCenterProvider>{children}</NotificationCenterProvider>
+      {children}
       <StyledGameMenu />
     </>
   )

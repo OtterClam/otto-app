@@ -115,7 +115,7 @@ const StyledTokenIcon = styled.img`
   height: 48px;
 `
 
-const StyledChartsContainer = styled(ContentMedium)`
+const StyledChartsContainer = styled(ContentMedium).attrs({ as: 'div' })`
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   grid-gap: 20px;
@@ -191,7 +191,12 @@ const StyledChartHeaderHorizontalList = styled.ul`
   display: flex;
   justify-content: space-evenly;
   align-items: baseline;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    flex-direction: column;
+  }
 `
+
 const StyledChartHeaderHorizontalListItem = styled.li`
   list-style: none;
   display: flex;
@@ -207,6 +212,7 @@ const StyledChartHeaderHorizontalListItem = styled.li`
   &:nth-child(1):before {
     color: rgba(108, 111, 227, 1);
   }
+
   &:nth-child(2):before {
     color: rgba(255, 172, 161, 1);
   }
@@ -274,7 +280,6 @@ export default function TreasuryDashboardPage() {
       return total + parseFloat(value.apr)
     }, 0) / pearlBankMetrics.length
 
-  console.log(pearlBankMetrics)
   return (
     <div>
       <TreasurySection>
@@ -370,7 +375,7 @@ export default function TreasuryDashboardPage() {
             <StyledChartHeader>
               <StyledTopBar>
                 <Help message={t('rewardsTooltip')}>
-                  <StyledChartTitle>{t('averageApy')}</StyledChartTitle>
+                  <StyledChartTitle>{t('averageApr')}</StyledChartTitle>
                 </Help>
                 <Switcher
                   name="pearl-bank-avg-apr-range"
@@ -385,7 +390,7 @@ export default function TreasuryDashboardPage() {
               <StyledChartKeyValue>
                 {avgApy ?? 0}%
                 <StyledChartKeyDate>
-                  {t('averageApyStartDate', { date: formatDate(pearlBankAvgAprRangeStartDate, 'MMM d') })}
+                  {t('averageAprStartDate', { date: formatDate(pearlBankAvgAprRangeStartDate, 'MMM d') })}
                 </StyledChartKeyDate>
               </StyledChartKeyValue>
             </StyledChartHeader>
