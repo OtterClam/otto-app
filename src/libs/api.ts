@@ -205,8 +205,14 @@ export class Api {
   }
 
   public async getAdventureResult(tx: string) {
-    const result = await this.otterclamClient.get(`/adventure/result/${tx}`)
-    return result.data
+    const result = await this.otterclamClient.get(`/adventure/results/${tx}`)
+    return {
+      ...result.data,
+      rewards: {
+        ...result.data.rewards,
+        items: result.data.rewards.items.map((i: any) => rawItemToItem(i.id, i)),
+      },
+    }
   }
 }
 

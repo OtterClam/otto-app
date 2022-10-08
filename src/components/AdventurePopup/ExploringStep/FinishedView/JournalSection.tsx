@@ -1,92 +1,25 @@
 import TreasurySection from 'components/TreasurySection'
 import { format } from 'date-fns'
+import { AdventureJournalEntry, AdventureResult } from 'models/AdventureLocation'
 import { useTranslation } from 'next-i18next'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components/macro'
 import { Caption, ContentSmall, Headline } from 'styles/typography'
 import AdventureJournalBg from './adventure_journal_bg.png'
 
-interface JournalEntry {
-  timestamp: number
-  text: string
-}
-
 interface Props {
   className?: string
-  succeeded: boolean
+  result: AdventureResult
 }
 
-export default function AdventureJournal({ className, succeeded }: Props) {
+export default function AdventureJournal({ className, result }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.resultStep' })
-  const journalEntries: JournalEntry[] = [
-    {
-      timestamp: 1620000000000,
-      text: '克蕾歐和**無良的律師**一起在馬路上私奔',
-    },
-    {
-      timestamp: 1621000000000,
-      text: '大家在酒吧裡喝酒',
-    },
-    {
-      timestamp: 1622000000000,
-      text: '玩了一場麻將',
-    },
-    {
-      timestamp: 1623000000000,
-      text: '吃了一頓美食',
-    },
-    {
-      timestamp: 1623000000000,
-      text: '打了一場籃球',
-    },
-    {
-      timestamp: 1620000000000,
-      text: '克蕾歐和**無良的律師**一起在馬路上私奔',
-    },
-    {
-      timestamp: 1621000000000,
-      text: '大家在酒吧裡喝酒',
-    },
-    {
-      timestamp: 1622000000000,
-      text: '玩了一場麻將',
-    },
-    {
-      timestamp: 1623000000000,
-      text: '吃了一頓美食',
-    },
-    {
-      timestamp: 1623000000000,
-      text: '打了一場籃球',
-    },
-    {
-      timestamp: 1620000000000,
-      text: '克蕾歐和**無良的律師**一起在馬路上私奔',
-    },
-    {
-      timestamp: 1621000000000,
-      text: '大家在酒吧裡喝酒',
-    },
-    {
-      timestamp: 1622000000000,
-      text: '玩了一場麻將',
-    },
-    {
-      timestamp: 1623000000000,
-      text: '吃了一頓美食',
-    },
-    {
-      timestamp: 1623000000000,
-      text: '打了一場籃球',
-    },
-  ]
-
   return (
     <StyledJournalSection className={className}>
       <StyledTitle>{t('journal')}</StyledTitle>
       <StyledScrollContainer>
         <StyledJournalEntryContainer>
-          {journalEntries.map((entry, i) => (
+          {result.journal.map((entry, i) => (
             <DisplayJournalEntry key={i} {...entry} />
           ))}
         </StyledJournalEntryContainer>
@@ -94,8 +27,8 @@ export default function AdventureJournal({ className, succeeded }: Props) {
 
       <StyledResultContainer>
         <StyledResultLabel>{t('result_label')}</StyledResultLabel>
-        <StyledResultValue succeeded={succeeded}>
-          {t(succeeded ? 'result_succeeded' : 'result_failed')}
+        <StyledResultValue succeeded={result.success}>
+          {t(result.success ? 'result_succeeded' : 'result_failed')}
         </StyledResultValue>
       </StyledResultContainer>
     </StyledJournalSection>
@@ -132,7 +65,9 @@ const StyledScrollContainer = styled.div`
 const StyledJournalEntryContainer = styled.section`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   padding: 0 15px;
+  gap: 5px;
 `
 
 const StyledResultContainer = styled.div`
@@ -162,10 +97,10 @@ const StyledResultValue = styled(ContentSmall)<{ succeeded: boolean }>`
   -webkit-background-clip: text;
 `
 
-function DisplayJournalEntry({ timestamp, text }: JournalEntry) {
+function DisplayJournalEntry({ happened_at, text }: AdventureJournalEntry) {
   return (
     <StyledJournalEntry>
-      <StyledJournalEntryTimestamp>{format(timestamp, 'HH:mm')}</StyledJournalEntryTimestamp>
+      <StyledJournalEntryTimestamp>{format(happened_at, 'HH:mm')}</StyledJournalEntryTimestamp>
       <StyledJournalEntryText>
         <ReactMarkdown>{text}</ReactMarkdown>
       </StyledJournalEntryText>
@@ -175,18 +110,17 @@ function DisplayJournalEntry({ timestamp, text }: JournalEntry) {
 
 const StyledJournalEntry = styled(Caption).attrs({ as: 'div' })`
   display: flex;
-  align-items: center;
-  gap: 5px;
-  height: 21px;
+  align-items: flex-start;
 `
 
-const StyledJournalEntryTimestamp = styled.span`
+const StyledJournalEntryTimestamp = styled.div`
   width: 40px;
+  flex-shrink: 0;
   color: ${({ theme }) => theme.colors.lightGray400};
   font-family: 'VT323';
 `
 
-const StyledJournalEntryText = styled.span`
+const StyledJournalEntryText = styled(Caption)`
   color: ${({ theme }) => theme.colors.white};
   strong {
     color: ${({ theme }) => theme.colors.crownYellow};

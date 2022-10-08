@@ -1,6 +1,9 @@
 import Button from 'components/Button'
 import { useSelectedAdventureLocation } from 'contexts/AdventureUIState'
+import { useApi } from 'contexts/Api'
+import { AdventureResult } from 'models/AdventureLocation'
 import { useTranslation } from 'next-i18next'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
 import JournalSection from './JournalSection'
@@ -31,14 +34,22 @@ const StyledButtons = styled.div`
 
 export default function FinishedView() {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.resultStep' })
-  const succeeded = false
   const location = useSelectedAdventureLocation()!
+  const api = useApi()
+  const [result, setResult] = useState<AdventureResult | null>(null)
+
+  // TODO: use true value
+  useEffect(() => {
+    api
+      .getAdventureResult('0xa7581518772e7f308fbe55247a5428c5bea59aa18a267bf8657d4750d32db18d')
+      .then(data => setResult(data))
+  }, [api])
 
   return (
     <StyledResultStep bg={location.bgImageBlack}>
       <StyledBody>
-        <StyledJournalSection succeeded={succeeded} />
-        <StyledRewardSection succeeded={succeeded} />
+        {result && <StyledJournalSection result={result} />}
+        {result && <StyledRewardSection result={result} />}
         <StyledButtons>
           <Button Typography={Headline}>{t('explore_again_btn')}</Button>
           <Button Typography={Headline} primaryColor="white">

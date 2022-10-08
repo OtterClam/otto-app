@@ -6,40 +6,39 @@ import { useTranslation } from 'next-i18next'
 import Image, { StaticImageData } from 'next/image'
 import styled from 'styled-components/macro'
 import { ContentSmall, Note } from 'styles/typography'
+import { AdventureResult } from 'models/AdventureLocation'
 import ProgressBar from './ProgressBar'
 import ExpIcon from './EXP.png'
 import TcpIcon from './TCP.png'
 
 interface Props {
   className?: string
-  succeeded: boolean
+  result: AdventureResult
 }
 
-export default function RewardSection({ className, succeeded }: Props) {
+export default function RewardSection({ className, result }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.resultStep' })
-  const { items } = useMyItems()
-  const itemsFound = items.slice(0, 3)
   return (
     <StyledRewardSection className={className} showRope={false}>
       <StyledRewardTitle>{t('reward')}</StyledRewardTitle>
-      {itemsFound.length > 0 && (
+      {result.rewards.items.length > 0 && (
         <StyledFoundItemsContainer>
-          {succeeded && <StyledFoundItemTitle>{t('found_items')}</StyledFoundItemTitle>}
+          {result.success && <StyledFoundItemTitle>{t('found_items')}</StyledFoundItemTitle>}
           <StyledFoundItemList>
-            {itemsFound.map(item => (
+            {result.rewards.items.map(item => (
               <StyledItemCell key={item.id} item={item} />
             ))}
           </StyledFoundItemList>
         </StyledFoundItemsContainer>
       )}
-      {succeeded && (
+      {result.success && (
         <>
           <StyledInfoContainer>
             <Image src={ExpIcon} width={60} height={60} />
             <StyledInfoRightContainer>
               <ContentSmall>LV1</ContentSmall>
               <StyledInfoDetailsContainer>
-                <StyledIncrease>+50 EXP</StyledIncrease>
+                <StyledIncrease>+{result.rewards.exp} EXP</StyledIncrease>
                 <ContentSmall>100/100 EXP</ContentSmall>
               </StyledInfoDetailsContainer>
               <StyledProgressBar progress={40} color="linear-gradient(90deg, #9CFE9F 0%, #9CE0FF 50%, #FFADA9 100%)" />
@@ -50,7 +49,7 @@ export default function RewardSection({ className, succeeded }: Props) {
             <StyledInfoRightContainer>
               <ContentSmall>{t('treasury_chest')}</ContentSmall>
               <StyledInfoDetailsContainer>
-                <StyledIncrease>+5 TCP</StyledIncrease>
+                <StyledIncrease>+{result.rewards.tcp} TCP</StyledIncrease>
                 <ContentSmall>100/100 TCP</ContentSmall>
               </StyledInfoDetailsContainer>
               <StyledProgressBar progress={40} color="#FFDC77" />
@@ -58,11 +57,11 @@ export default function RewardSection({ className, succeeded }: Props) {
           </StyledInfoContainer>
         </>
       )}
-      {!succeeded && (
+      {!result.success && (
         <>
           <StyledFailedInfoContainer>
-            <FailedInfo image={ExpIcon} text="+50 EXP" />
-            <FailedInfo image={TcpIcon} text="+5 TCP" />
+            <FailedInfo image={ExpIcon} text={`+${result.rewards.exp} EXP`} />
+            <FailedInfo image={TcpIcon} text={`+${result.rewards.tcp} TCP`} />
           </StyledFailedInfoContainer>
           <StyledFailedMask />
           <StyledFailedDesc>{t('failed_desc')}</StyledFailedDesc>
