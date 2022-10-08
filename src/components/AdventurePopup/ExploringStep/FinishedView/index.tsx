@@ -1,9 +1,15 @@
 import Button from 'components/Button'
-import { useSelectedAdventureLocation } from 'contexts/AdventureUIState'
+import PaymentButton from 'components/PaymentButton'
+import { Token } from 'constant'
+import { AdventureUIActionType, useAdventureUIState, useSelectedAdventureLocation } from 'contexts/AdventureUIState'
 import { useApi } from 'contexts/Api'
+import { useOtto } from 'contexts/Otto'
+import { useAdventureRevive } from 'contracts/functions'
+import { ethers } from 'ethers'
+import useContractAddresses from 'hooks/useContractAddresses'
 import { AdventureResult } from 'models/AdventureLocation'
 import { useTranslation } from 'next-i18next'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
 import JournalSection from './JournalSection'
@@ -32,30 +38,70 @@ const StyledButtons = styled.div`
   padding-top: 20px;
 `
 
-export default function FinishedView() {
+interface Props {
+  tx: string
+}
+
+export default function FinishedView({ tx }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.resultStep' })
   const location = useSelectedAdventureLocation()!
   const api = useApi()
   const [result, setResult] = useState<AdventureResult | null>(null)
+  const { revive, reviveState, resetRevive } = useAdventureRevive()
+  const { otto } = useOtto()
+  const { ADVENTURE } = useContractAddresses()
+  const { dispatch } = useAdventureUIState()
 
-  // TODO: use true value
+  const closePopup = useCallback(() => {
+    dispatch({ type: AdventureUIActionType.ClosePopup })
+  }, [dispatch])
+
+  const getAdventureResult = useCallback(() => api.getAdventureResult(tx).then(data => setResult(data)), [api, tx])
+
   useEffect(() => {
-    api
-      .getAdventureResult('0xa7581518772e7f308fbe55247a5428c5bea59aa18a267bf8657d4750d32db18d')
-      .then(data => setResult(data))
-  }, [api])
+    getAdventureResult()
+  }, [getAdventureResult])
+
+  useEffect(() => {
+    if (reviveState.status === 'Success') {
+      getAdventureResult()
+    }
+    if (reviveState.status === 'Exception' || reviveState.status === 'Fail') {
+      alert(reviveState.errorMessage)
+      resetRevive()
+    }
+  }, [getAdventureResult, reviveState, resetRevive])
 
   return (
     <StyledResultStep bg={location.bgImageBlack}>
       <StyledBody>
         {result && <StyledJournalSection result={result} />}
         {result && <StyledRewardSection result={result} />}
-        <StyledButtons>
-          <Button Typography={Headline}>{t('explore_again_btn')}</Button>
-          <Button Typography={Headline} primaryColor="white">
-            {t('switch_place_btn')}
-          </Button>
-        </StyledButtons>
+        {(result?.success || result?.revived) && (
+          <StyledButtons>
+            <Button Typography={Headline}>{t('explore_again_btn')}</Button>
+            <Button Typography={Headline} primaryColor="white" onClick={closePopup}>
+              {t('close_btn')}
+            </Button>
+          </StyledButtons>
+        )}
+        {!(result?.success || result?.revived) && (
+          <StyledButtons>
+            <PaymentButton
+              Typography={Headline}
+              loading={reviveState.status === 'PendingSignature' || reviveState.status === 'Mining'}
+              spenderAddress={ADVENTURE}
+              token={Token.Clam}
+              amount={ethers.utils.parseUnits('1', 9)}
+              onClick={() => otto && revive(otto.tokenId)}
+            >
+              {t('revive_btn')}
+            </PaymentButton>
+            <Button Typography={Headline} primaryColor="white" onClick={closePopup}>
+              {t('close_btn')}
+            </Button>
+          </StyledButtons>
+        )}
       </StyledBody>
     </StyledResultStep>
   )

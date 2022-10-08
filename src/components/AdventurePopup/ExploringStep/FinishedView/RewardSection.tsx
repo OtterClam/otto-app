@@ -57,7 +57,7 @@ export default function RewardSection({ className, result }: Props) {
           </StyledInfoContainer>
         </>
       )}
-      {!result.success && (
+      {!result.success && !result.revived && (
         <>
           <StyledFailedInfoContainer>
             <FailedInfo image={ExpIcon} text={`+${result.rewards.exp} EXP`} />

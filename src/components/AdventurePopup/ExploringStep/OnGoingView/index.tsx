@@ -128,7 +128,7 @@ const StyledName = styled(AdventureLocationName)`
 
 interface Props {
   state: TransactionState
-  onFinish: () => void
+  onFinish: (immediately: boolean, potions: string[]) => void
 }
 
 export default function OnGoingView({ state, onFinish }: Props) {
@@ -163,7 +163,7 @@ export default function OnGoingView({ state, onFinish }: Props) {
           <>
             <Button
               Typography={ContentLarge}
-              onClick={onFinish}
+              onClick={() => onFinish(false, [])}
               loading={state === 'Mining' || state === 'PendingSignature'}
             >
               {t('see_results_btn')}
@@ -204,6 +204,7 @@ export default function OnGoingView({ state, onFinish }: Props) {
               token={Token.Clam}
               Typography={ContentLarge}
               padding="6px 20px 0"
+              onClick={() => onFinish(true, [])}
             >
               {t('finish_immediately_btn')}
             </PaymentButton>

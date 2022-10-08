@@ -11,11 +11,7 @@ export default function ExploringStep() {
   const { otto } = useOtto()
   const adventureOtto = useAdventureOtto(otto?.tokenId)
   const { finishState, finish, resetFinish } = useAdventureFinish()
-  const api = useApi()
-
-  // useEffect(() => {
-  //   api.getAdventureResult('0xa7581518772e7f308fbe55247a5428c5bea59aa18a267bf8657d4750d32db18d')
-  // }, [api])
+  const onFinish = (immediately: boolean, potions: string[]) => otto && finish(otto.tokenId, immediately, potions)
 
   useEffect(() => {
     if (finishState.state === 'Exception' || finishState.state === 'Fail') {
@@ -25,12 +21,13 @@ export default function ExploringStep() {
   }, [finishState, resetFinish])
 
   if (!otto || !adventureOtto) return null
+
   return (
     <div>
       {finishState.state === 'Success' ? (
-        <FinishedView />
+        <FinishedView tx={finishState.status.transaction?.hash || ''} />
       ) : (
-        <OnGoingView state={finishState.state} onFinish={() => finish(otto.tokenId, false, [])} /> // TODO: set immediately / apply potion
+        <OnGoingView state={finishState.state} onFinish={onFinish} />
       )}
     </div>
   )

@@ -605,3 +605,9 @@ export const useAdventureFinish = () => {
 
   return { finishState, finish, resetFinish: resetState }
 }
+
+export const useAdventureRevive = () => {
+  const adventure = useAdventureContract()
+  const { send, state, resetState } = useContractFunction(adventure, 'revive')
+  return { reviveState: state, revive: send, resetRevive: resetState }
+}
