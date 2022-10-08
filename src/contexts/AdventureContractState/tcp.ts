@@ -9,15 +9,16 @@ import { AdventureContractStateAction, AdventureContractStateActionType } from '
 export function useTcpWatcher(dispatch: (action: AdventureContractStateAction) => void) {
   const { account } = useEthers()
   const adventureContract = useAdventureContract()
-  const logsResult = useLogs({ contract: adventureContract, event: 'TcpChanged', args: [] })
+  // FIXME: useLogs has block limit
+  // const logsResult = useLogs({ contract: adventureContract, event: 'TcpChanged', args: [] })
 
-  useEffect(() => {
-    if (logsResult && logsResult.value && logsResult.value[0]) {
-      const sortedLogs = sortBy(logsResult.value, 'blockNumber')
-      const lastLog = sortedLogs[sortedLogs.length - 1]
-      dispatch({ type: AdventureContractStateActionType.UpdateWalletTcp, data: lastLog.data.to.mod(100) })
-    }
-  }, [logsResult])
+  // useEffect(() => {
+  //   if (logsResult && logsResult.value && logsResult.value[0]) {
+  //     const sortedLogs = sortBy(logsResult.value, 'blockNumber')
+  //     const lastLog = sortedLogs[sortedLogs.length - 1]
+  //     dispatch({ type: AdventureContractStateActionType.UpdateWalletTcp, data: lastLog.data.to.mod(100) })
+  //   }
+  // }, [logsResult])
 
   const result = useCall({ contract: adventureContract, method: 'accumulativeTcp', args: [account ?? ''] })
   const tcp = (result?.value ?? [BIG_NUM_ZERO])[0]

@@ -111,11 +111,11 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
         )}
 
         {otto.status === AdventureOttoStatus.Resting && otto.restingUntil !== undefined && (
-          <RemainingTime onClick={check} targetDate={otto.restingUntil} />
+          <RemainingTime onClick={check} start={new Date()} end={otto.restingUntil} />
         )}
 
         {otto.status === AdventureOttoStatus.Ongoing && otto.canFinishedAt !== undefined && (
-          <RemainingTime onClick={check} targetDate={otto.canFinishedAt} />
+          <RemainingTime onClick={check} start={new Date()} end={otto.canFinishedAt} />
         )}
       </StyledAction>
     </StyledContainer>

@@ -1,21 +1,22 @@
-import Otto from 'models/Otto'
+import { TransactionState, TransactionStatus } from '@usedapp/core'
+import TimeIcon from 'assets/icons/icon_time.svg'
+import AdventureLocationName from 'components/AdventureLocationName'
+import Button from 'components/Button'
+import PaymentButton from 'components/PaymentButton'
+import { AdventurePotion, Token } from 'constant'
+import { useAdventureOtto } from 'contexts/AdventureOttos'
+import { useSelectedAdventureLocation } from 'contexts/AdventureUIState'
+import { useOtto } from 'contexts/Otto'
+import useAdventurePotion from 'hooks/useAdventurePotion'
+import useContractAddresses from 'hooks/useContractAddresses'
+import useFormattedDuration from 'hooks/useFormattedDuration'
+import { AdventureOttoStatus } from 'models/AdventureOtto'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentLarge, ContentMedium, Note } from 'styles/typography'
-import TimeIcon from 'assets/icons/icon_time.svg'
-import { useSelectedAdventureLocation } from 'contexts/AdventureUIState'
-import { useOtto } from 'contexts/Otto'
-import { useAdventureOtto } from 'contexts/AdventureOttos'
-import useFormatedDuration from 'hooks/useFormatedDuration'
-import { formatDuration, intervalToDuration } from 'date-fns'
-import PaymentButton from 'components/PaymentButton'
-import { AdventurePotion, Token } from 'constant'
-import useContractAddresses from 'hooks/useContractAddresses'
-import useAdventurePotion from 'hooks/useAdventurePotion'
-import AdventureLocationName from 'components/AdventureLocationName'
-import SpeedUpPotion from './SpeedUpPotion'
 import SpeedPotion from './speed-up-potion.png'
+import SpeedUpPotion from './SpeedUpPotion'
 
 const jump = keyframes`
   0% {
@@ -115,27 +116,35 @@ const StyledHint = styled(Note).attrs({ as: 'p' })`
   }
 `
 
+const StyledSeeResultHint = styled(Note).attrs({ as: 'p' })`
+  text-align: center;
+`
+
 const StyledName = styled(AdventureLocationName)`
   position: absolute;
   top: 0;
   left: -2px;
 `
 
-export default function OnGoingView() {
+interface Props {
+  state: TransactionState
+  onFinish: () => void
+}
+
+export default function OnGoingView({ state, onFinish }: Props) {
   const { ADVENTURE } = useContractAddresses()
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.exploringStep' })
   const location = useSelectedAdventureLocation()!
   const { otto } = useOtto()
   const adventureOtto = useAdventureOtto(otto?.tokenId)
-  const formatedDuration = useFormatedDuration(adventureOtto?.canFinishedAt ?? new Date())
-  const duration = intervalToDuration({
-    start: new Date(),
-    end: adventureOtto?.canFinishedAt ?? new Date(),
-  })
+  const now = new Date()
+  const canFinishAt = adventureOtto?.canFinishedAt ?? now
+  const formattedDuration = useFormattedDuration(adventureOtto?.departuredAt ?? now, canFinishAt)
+  const remainingDuration = useFormattedDuration(now, canFinishAt)
   const { amounts, usePotion: applyPotion, loading } = useAdventurePotion()
 
   if (!otto || !adventureOtto) {
-    return <div />
+    return null
   }
 
   return (
@@ -147,47 +156,63 @@ export default function OnGoingView() {
           <StyledOtto src={adventureOtto.imageWoBg} />
           <StyledDuration>
             <Image src={TimeIcon} width={18} height={18} unoptimized />
-            {formatedDuration}
+            {formattedDuration}
           </StyledDuration>
         </StyledOttoPlace>
-        <StyledRemaining>{t('remaining', { time: formatDuration(duration) })}</StyledRemaining>
-        <StyledPotionContainer>
-          <SpeedUpPotion
-            loading={loading}
-            onClick={() => applyPotion(AdventurePotion.OneHourSpeedy, otto.tokenId)}
-            image={SpeedPotion.src}
-            hasAmount={amounts[AdventurePotion.OneHourSpeedy]}
-            reducedTime="1h"
-          />
-          <SpeedUpPotion
-            loading={loading}
-            onClick={() => applyPotion(AdventurePotion.ThreeHourSpeedy, otto.tokenId)}
-            image={SpeedPotion.src}
-            hasAmount={amounts[AdventurePotion.ThreeHourSpeedy]}
-            reducedTime="3h"
-          />
-          <SpeedUpPotion
-            loading={loading}
-            onClick={() => applyPotion(AdventurePotion.SixHourSpeedy, otto.tokenId)}
-            image={SpeedPotion.src}
-            hasAmount={amounts[AdventurePotion.SixHourSpeedy]}
-            reducedTime="6h"
-          />
-        </StyledPotionContainer>
-        <PaymentButton
-          width="100%"
-          spenderAddress={ADVENTURE}
-          amount={4 * 1e9}
-          token={Token.Clam}
-          Typography={ContentLarge}
-          padding="6px 20px 0"
-        >
-          {t('finish_immediately_btn')}
-        </PaymentButton>
-        <StyledHint>
-          {t('wants_more')}
-          <a target="_blank">{t('buy_now')}</a>
-        </StyledHint>
+        {adventureOtto.status === AdventureOttoStatus.Finished && (
+          <>
+            <Button
+              Typography={ContentLarge}
+              onClick={onFinish}
+              loading={state === 'Mining' || state === 'PendingSignature'}
+            >
+              {t('see_results_btn')}
+            </Button>
+            <StyledSeeResultHint>{t('see_results_hint')}</StyledSeeResultHint>
+          </>
+        )}
+        {adventureOtto.status === AdventureOttoStatus.Ongoing && (
+          <>
+            <StyledRemaining>{t('remaining', { time: remainingDuration })}</StyledRemaining>
+            <StyledPotionContainer>
+              <SpeedUpPotion
+                loading={loading}
+                onClick={() => applyPotion(AdventurePotion.OneHourSpeedy, otto.tokenId)}
+                image={SpeedPotion.src}
+                hasAmount={amounts[AdventurePotion.OneHourSpeedy]}
+                reducedTime="1h"
+              />
+              <SpeedUpPotion
+                loading={loading}
+                onClick={() => applyPotion(AdventurePotion.ThreeHourSpeedy, otto.tokenId)}
+                image={SpeedPotion.src}
+                hasAmount={amounts[AdventurePotion.ThreeHourSpeedy]}
+                reducedTime="3h"
+              />
+              <SpeedUpPotion
+                loading={loading}
+                onClick={() => applyPotion(AdventurePotion.SixHourSpeedy, otto.tokenId)}
+                image={SpeedPotion.src}
+                hasAmount={amounts[AdventurePotion.SixHourSpeedy]}
+                reducedTime="6h"
+              />
+            </StyledPotionContainer>
+            <PaymentButton
+              width="100%"
+              spenderAddress={ADVENTURE}
+              amount={4 * 1e9}
+              token={Token.Clam}
+              Typography={ContentLarge}
+              padding="6px 20px 0"
+            >
+              {t('finish_immediately_btn')}
+            </PaymentButton>
+            <StyledHint>
+              {t('wants_more')}
+              <a target="_blank">{t('buy_now')}</a>
+            </StyledHint>
+          </>
+        )}
       </StyledContent>
     </StyledExploringStep>
   )

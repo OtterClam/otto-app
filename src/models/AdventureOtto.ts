@@ -18,6 +18,7 @@ export interface RawAdventureOtto {
   resting_until?: string
   location_id?: number
   level: number
+  finished_tx?: string
 }
 
 export interface AdventureOtto {
@@ -32,6 +33,7 @@ export interface AdventureOtto {
   restingUntil?: Date
   locationId?: number
   level: number
+  finishedTx?: string
 }
 
 export const rawAdventureOttoToAdventureOtto = (raw: RawAdventureOtto): AdventureOtto => {
@@ -50,5 +52,6 @@ export const rawAdventureOttoToAdventureOtto = (raw: RawAdventureOtto): Adventur
     restingUntil: raw.resting_until ? new Date(raw.resting_until) : undefined,
     locationId: raw.location_id,
     level: raw.level,
+    finishedTx: raw.finished_tx,
   }
 }

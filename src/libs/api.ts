@@ -9,7 +9,7 @@ import {
   AdventureFinishArgs,
 } from 'models/AdventureLocation'
 import { AdventureOtto, RawAdventureOtto, rawAdventureOttoToAdventureOtto } from 'models/AdventureOtto'
-import { AdventurePrevew, RawAdventurePreview, rawAdventurePreviewToAdventurePrevew } from 'models/AdventurePreview'
+import { AdventurePreview, RawAdventurePreview, rawAdventurePreviewToAdventurePreview } from 'models/AdventurePreview'
 import { Dice } from 'models/Dice'
 import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
 import Item, { rawItemToItem } from 'models/Item'
@@ -149,13 +149,13 @@ export class Api {
     ottoId: string,
     locationId: number,
     replacedItemIds: string[] = []
-  ): Promise<AdventurePrevew> {
+  ): Promise<AdventurePreview> {
     let url = `/ottos/${ottoId}/adventure/locations/${locationId}/preview`
     if (replacedItemIds.length) {
       url += `?items=${replacedItemIds.join(',')}`
     }
     const result = await this.otterclamClient.get<RawAdventurePreview>(url)
-    return rawAdventurePreviewToAdventurePrevew(result.data)
+    return rawAdventurePreviewToAdventurePreview(result.data)
   }
 
   public async getAdventureLocations(): Promise<AdventureLocation[]> {
@@ -184,11 +184,28 @@ export class Api {
     ]
   }
 
-  public async finish(ottoId: string, wallet: string) {
+  public async finish({
+    ottoId,
+    wallet,
+    immediately,
+    potions,
+  }: {
+    ottoId: string
+    wallet: string
+    immediately: boolean
+    potions: string[]
+  }) {
     const result = await this.otterclamClient.post<AdventureFinishArgs>('/adventure/finish', {
       otto_id: ottoId,
       wallet,
+      immediately,
+      potions,
     })
+    return result.data
+  }
+
+  public async getAdventureResult(tx: string) {
+    const result = await this.otterclamClient.get(`/adventure/result/${tx}`)
     return result.data
   }
 }

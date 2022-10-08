@@ -1,4 +1,4 @@
-import { AdventurePrevew } from 'models/AdventurePreview'
+import { AdventurePreview } from 'models/AdventurePreview'
 import Otto from 'models/Otto'
 import { createContext, PropsWithChildren, useContext, useMemo } from 'react'
 
@@ -11,7 +11,7 @@ export const AdventureOttoProvider = ({
   otto,
   preview,
   children,
-}: PropsWithChildren<{ otto?: Otto; preview?: AdventurePrevew }>) => {
+}: PropsWithChildren<{ otto?: Otto; preview?: AdventurePreview }>) => {
   const draftOtto = useMemo(() => {
     if (!(otto && preview)) {
       return

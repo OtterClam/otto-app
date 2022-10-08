@@ -6,11 +6,11 @@ export interface RawAdventurePreview extends OttoMeta {
   location: RawAdventureLocation
 }
 
-export interface AdventurePrevew extends OttoMeta {
+export interface AdventurePreview extends OttoMeta {
   location: AdventureLocation
 }
 
-export function rawAdventurePreviewToAdventurePrevew(raw: RawAdventurePreview): AdventurePrevew {
+export function rawAdventurePreviewToAdventurePreview(raw: RawAdventurePreview): AdventurePreview {
   return {
     ...omit(raw, 'location'),
     location: rawAdventureLocationToAdventureLocation(raw.location),

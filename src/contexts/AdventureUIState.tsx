@@ -1,9 +1,8 @@
 import { Step as AdventurePopupStep, Step } from 'components/AdventurePopup'
 import noop from 'lodash/noop'
-import { AdventurePrevew } from 'models/AdventurePreview'
+import { AdventurePreview } from 'models/AdventurePreview'
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useReducer } from 'react'
 import { useAdventureLocation } from './AdventureLocations'
-import { useApiCall } from './Api'
 
 export enum AdventureUIActionType {
   OpenPopup,
@@ -31,7 +30,7 @@ export interface AdventureUIState {
   selectedLocationId?: number
   popupOpened: boolean
   popupStep: AdventurePopupStep
-  preview?: AdventurePrevew
+  preview?: AdventurePreview
 }
 
 export interface AdventureUIStateDispatcher {
@@ -88,7 +87,7 @@ export const useSelectedAdventureLocation = () => {
 
 export const useCloseAdventurePopup = () => {
   const { dispatch } = useAdventureUIState()
-  return useCallback(() => dispatch({ type: AdventureUIActionType.ClosePopup }), [])
+  return useCallback(() => dispatch({ type: AdventureUIActionType.ClosePopup }), [dispatch])
 }
 
 export const useGoToAdventurePopupStep = () => {
@@ -104,6 +103,6 @@ export const useOpenAdventurePopup = () => {
   return useCallback(
     (locationId: number, step: AdventurePopupStep) =>
       dispatch({ type: AdventureUIActionType.OpenPopup, data: { locationId, popupStep: step } }),
-    []
+    [dispatch]
   )
 }

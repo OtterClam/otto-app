@@ -585,22 +585,23 @@ export const useAdventureFinish = () => {
   const api = useApi()
   const adventure = useAdventureContract()
   const { account } = useEthers()
-  const [loading, setLoading] = useState(false)
-  const { send, state } = useContractFunction(adventure, 'finish')
+  const { send, state, resetState } = useContractFunction(adventure, 'finish')
+  const [finishState, setFinishState] = useState<OttoTransactionState>({ status: state, state: 'None' })
+
+  useEffect(() => {
+    setFinishState({ status: state, state: state.status })
+  }, [state])
 
   const finish = useCallback(
-    (ottoId: string) => {
+    (ottoId: string, immediately: boolean, potions: string[]) => {
       if (!account) {
         return
       }
-      setLoading(true)
-      api
-        .finish(ottoId, account)
-        .then(inputs => (send as any)(...inputs))
-        .finally(() => setLoading(false))
+      setFinishState({ status: state, state: 'PendingSignature' })
+      api.finish({ ottoId, wallet: account, immediately, potions }).then(inputs => (send as any)(...inputs))
     },
-    [api, account]
+    [api, account, send, state]
   )
 
-  return { loading, finish }
+  return { finishState, finish, resetFinish: resetState }
 }

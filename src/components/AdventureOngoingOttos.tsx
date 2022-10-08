@@ -1,6 +1,6 @@
 import { useAdventureUIState } from 'contexts/AdventureUIState'
 import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
-import useFormatedDuration from 'hooks/useFormatedDuration'
+import useFormattedDuration from 'hooks/useFormattedDuration'
 import { AdventureOtto, AdventureOttoStatus } from 'models/AdventureOtto'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
@@ -64,7 +64,7 @@ const StyledNoOtto = styled(Note).attrs({ as: 'div' })`
 
 function ListItem({ otto }: { otto: AdventureOtto }) {
   const { t } = useTranslation('', { keyPrefix: 'ongoingOttos' })
-  const duration = useFormatedDuration(otto.canFinishedAt ?? new Date())
+  const duration = useFormattedDuration(new Date(), otto.canFinishedAt ?? new Date())
 
   return (
     <StyledListItem>
