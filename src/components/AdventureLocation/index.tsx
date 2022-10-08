@@ -7,6 +7,7 @@ import { AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUI
 import { useCallback } from 'react'
 import { Step as AdventurePopupStep } from 'components/AdventurePopup'
 import { AdventureOttoStatus } from 'models/AdventureOtto'
+import { useAdventureOttos } from 'contexts/AdventureOttos'
 import lockImage from './lock.svg'
 import CroppedImage from '../CroppedImage'
 import AdventureRibbonText from '../AdventureRibbonText'
@@ -117,8 +118,9 @@ export interface AdventureLocationProps {
 export default function AdventureLocation({ id, className }: AdventureLocationProps) {
   const { dispatch } = useAdventureUIState()
   const location = useAdventureLocation(id)
+  const { ottos: allOttos } = useAdventureOttos()
   const ottos = useAdventureOttosAtLocation(id).slice(0, 5)
-  const locked = !ottos.find(
+  const locked = !allOttos.find(
     otto => location && otto.level >= location.minLevel && otto.status === AdventureOttoStatus.Ready
   )
   const top = (location?.mapPositionY ?? 0) * 100

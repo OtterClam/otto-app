@@ -539,8 +539,8 @@ export const useAdventureDeparture = () => {
   const adventure = useAdventureContract()
   const { account, library } = useEthers()
   const api = useApi()
-  const ottoApproved = useIsApprovedForAll(OTTO, account ?? '', adventure.address)
-  const itemApproved = useIsApprovedForAll(OTTO_ITEM, account ?? '', adventure.address)
+  const { isApprovedForAll: ottoApproved } = useIsApprovedForAll(OTTO, account ?? '', adventure.address)
+  const { isApprovedForAll: itemApproved } = useIsApprovedForAll(OTTO_ITEM, account ?? '', adventure.address)
   const { send: sendDeparture, state: departureState } = useContractFunction(adventure, 'departure')
   const { send: sendApproveOtto, state: approveOttoState } = useSetApprovalForAll(OTTO)
   const { send: snedApproveOttoItem, state: approveItemState } = useSetApprovalForAll(OTTO_ITEM)
@@ -552,12 +552,22 @@ export const useAdventureDeparture = () => {
         return
       }
       setLoading(true)
+      console.log(ottoApproved, itemApproved)
       Promise.resolve()
-        .then(() => ottoApproved || sendApproveOtto(adventure.address, true))
-        .then(() => itemApproved || snedApproveOttoItem(adventure.address, true))
+        .then(() => {
+          if (!ottoApproved) {
+            return sendApproveOtto(adventure.address, true)
+          }
+        })
+        .then(() => {
+          if (!itemApproved) {
+            return snedApproveOttoItem(adventure.address, true)
+          }
+        })
         .then(() => api.departure(ottoId, locationId, account))
         .then(inputs => sendDeparture(...inputs))
         .then(() => setReadyToGo(true))
+        .catch(err => console.error(err))
         .finally(() => setLoading(false))
     },
     [api, account, ottoApproved, itemApproved]

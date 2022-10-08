@@ -61,23 +61,25 @@ export declare namespace Adventure {
     items: BigNumberish[];
   };
 
-  export type RewardsStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber[]
-  ] & { exp: BigNumber; ap: BigNumber; tcp: BigNumber; items: BigNumber[] };
+  export type RewardsStructOutput = [number, number, number, BigNumber[]] & {
+    exp: number;
+    ap: number;
+    tcp: number;
+    items: BigNumber[];
+  };
 
   export type PassStruct = {
     locId: BigNumberish;
     ottoId: BigNumberish;
-    departuredAt: BigNumberish;
-    canFinishedAt: BigNumberish;
+    departureAt: BigNumberish;
+    canFinishAt: BigNumberish;
     finishedAt: BigNumberish;
     seed: BigNumberish;
     success: boolean;
     revived: boolean;
     rewards: Adventure.RewardsStruct;
+    expMultiplier: BigNumberish;
+    itemAmountMultiplier: BigNumberish;
   };
 
   export type PassStructOutput = [
@@ -89,120 +91,121 @@ export declare namespace Adventure {
     BigNumber,
     boolean,
     boolean,
-    Adventure.RewardsStructOutput
+    Adventure.RewardsStructOutput,
+    number,
+    number
   ] & {
     locId: BigNumber;
     ottoId: BigNumber;
-    departuredAt: BigNumber;
-    canFinishedAt: BigNumber;
+    departureAt: BigNumber;
+    canFinishAt: BigNumber;
     finishedAt: BigNumber;
     seed: BigNumber;
     success: boolean;
     revived: boolean;
     rewards: Adventure.RewardsStructOutput;
+    expMultiplier: number;
+    itemAmountMultiplier: number;
   };
 }
 
 export interface AdventureInterface extends utils.Interface {
   functions: {
+    "CLAM()": FunctionFragment;
     "DEFAULT_ADMIN_ROLE()": FunctionFragment;
     "ITEM()": FunctionFragment;
     "MANAGER_ROLE()": FunctionFragment;
     "ONE_HUNDRED_PERCENT()": FunctionFragment;
     "OTTO()": FunctionFragment;
+    "PASS()": FunctionFragment;
+    "POTION_EFFECT_MANAGER_ROLE()": FunctionFragment;
     "RAND()": FunctionFragment;
+    "STORE()": FunctionFragment;
     "accumulativeTcp(address)": FunctionFragment;
-    "approve(address,uint256)": FunctionFragment;
-    "balanceOf(address)": FunctionFragment;
+    "canFinishAt(uint256)": FunctionFragment;
     "departure(uint256,uint256,uint256,(uint8,uint256,uint256)[],(string,bytes32,bytes))": FunctionFragment;
-    "finish(uint256,uint256,uint256,(uint256,uint256,uint256,uint256[]),(string,bytes32,bytes))": FunctionFragment;
-    "getApproved(uint256)": FunctionFragment;
+    "expMultiplierOf(uint256)": FunctionFragment;
+    "finish(uint256,uint256,uint256,(uint32,uint32,uint32,uint256[]),bool,uint256[],(string,bytes32,bytes))": FunctionFragment;
+    "finishFee(uint256)": FunctionFragment;
+    "finishImmediatelyProduct()": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
-    "initialize(address,address,address,address)": FunctionFragment;
-    "isApprovedForAll(address,address)": FunctionFragment;
+    "initialize(address,address,address,address,address,address,address)": FunctionFragment;
+    "itemAmountMultiplierOf(uint256)": FunctionFragment;
     "latestPassOf(uint256)": FunctionFragment;
-    "name()": FunctionFragment;
     "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": FunctionFragment;
     "onERC1155Received(address,address,uint256,uint256,bytes)": FunctionFragment;
     "onERC721Received(address,address,uint256,bytes)": FunctionFragment;
-    "ownerOf(uint256)": FunctionFragment;
     "pass(uint256)": FunctionFragment;
-    "passIdTracker()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceRole(bytes32,address)": FunctionFragment;
     "restingUntil(uint256)": FunctionFragment;
     "revive(uint256)": FunctionFragment;
+    "reviveProduct()": FunctionFragment;
     "revokeRole(bytes32,address)": FunctionFragment;
-    "safeTransferFrom(address,address,uint256)": FunctionFragment;
-    "safeTransferFrom(address,address,uint256,bytes)": FunctionFragment;
-    "setApprovalForAll(address,bool)": FunctionFragment;
-    "setSigner(address)": FunctionFragment;
+    "setExpMultiplier(uint256,uint32)": FunctionFragment;
+    "setItemAmountMultiplier(uint256,uint32)": FunctionFragment;
+    "shortenCooldown(uint256,uint256)": FunctionFragment;
+    "shortenDuration(uint256,uint256)": FunctionFragment;
     "signer()": FunctionFragment;
     "stakedOttosOf(address)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
-    "symbol()": FunctionFragment;
-    "tokenByIndex(uint256)": FunctionFragment;
-    "tokenOfOwnerByIndex(address,uint256)": FunctionFragment;
-    "tokenURI(uint256)": FunctionFragment;
-    "totalSupply()": FunctionFragment;
-    "transferFrom(address,address,uint256)": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
+    "usePotions(uint256,uint256[])": FunctionFragment;
     "usedSignatures(bytes)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "CLAM"
       | "DEFAULT_ADMIN_ROLE"
       | "ITEM"
       | "MANAGER_ROLE"
       | "ONE_HUNDRED_PERCENT"
       | "OTTO"
+      | "PASS"
+      | "POTION_EFFECT_MANAGER_ROLE"
       | "RAND"
+      | "STORE"
       | "accumulativeTcp"
-      | "approve"
-      | "balanceOf"
+      | "canFinishAt"
       | "departure"
+      | "expMultiplierOf"
       | "finish"
-      | "getApproved"
+      | "finishFee"
+      | "finishImmediatelyProduct"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
       | "initialize"
-      | "isApprovedForAll"
+      | "itemAmountMultiplierOf"
       | "latestPassOf"
-      | "name"
       | "onERC1155BatchReceived"
       | "onERC1155Received"
       | "onERC721Received"
-      | "ownerOf"
       | "pass"
-      | "passIdTracker"
       | "proxiableUUID"
       | "renounceRole"
       | "restingUntil"
       | "revive"
+      | "reviveProduct"
       | "revokeRole"
-      | "safeTransferFrom(address,address,uint256)"
-      | "safeTransferFrom(address,address,uint256,bytes)"
-      | "setApprovalForAll"
-      | "setSigner"
+      | "setExpMultiplier"
+      | "setItemAmountMultiplier"
+      | "shortenCooldown"
+      | "shortenDuration"
       | "signer"
       | "stakedOttosOf"
       | "supportsInterface"
-      | "symbol"
-      | "tokenByIndex"
-      | "tokenOfOwnerByIndex"
-      | "tokenURI"
-      | "totalSupply"
-      | "transferFrom"
       | "upgradeTo"
       | "upgradeToAndCall"
+      | "usePotions"
       | "usedSignatures"
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: "CLAM", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "DEFAULT_ADMIN_ROLE",
     values?: undefined
@@ -217,16 +220,21 @@ export interface AdventureInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "OTTO", values?: undefined): string;
+  encodeFunctionData(functionFragment: "PASS", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "POTION_EFFECT_MANAGER_ROLE",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "RAND", values?: undefined): string;
+  encodeFunctionData(functionFragment: "STORE", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "accumulativeTcp",
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "approve",
-    values: [string, BigNumberish]
+    functionFragment: "canFinishAt",
+    values: [BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
   encodeFunctionData(
     functionFragment: "departure",
     values: [
@@ -238,18 +246,28 @@ export interface AdventureInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "expMultiplierOf",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "finish",
     values: [
       BigNumberish,
       BigNumberish,
       BigNumberish,
       Adventure.RewardsStruct,
+      boolean,
+      BigNumberish[],
       Adventure.SignatureStruct
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "getApproved",
+    functionFragment: "finishFee",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "finishImmediatelyProduct",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
@@ -265,17 +283,16 @@ export interface AdventureInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [string, string, string, string]
+    values: [string, string, string, string, string, string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "isApprovedForAll",
-    values: [string, string]
+    functionFragment: "itemAmountMultiplierOf",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "latestPassOf",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "onERC1155BatchReceived",
     values: [string, string, BigNumberish[], BigNumberish[], BytesLike]
@@ -288,15 +305,7 @@ export interface AdventureInterface extends utils.Interface {
     functionFragment: "onERC721Received",
     values: [string, string, BigNumberish, BytesLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "ownerOf",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(functionFragment: "pass", values: [BigNumberish]): string;
-  encodeFunctionData(
-    functionFragment: "passIdTracker",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
@@ -314,22 +323,29 @@ export interface AdventureInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "reviveProduct",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "revokeRole",
     values: [BytesLike, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "safeTransferFrom(address,address,uint256)",
-    values: [string, string, BigNumberish]
+    functionFragment: "setExpMultiplier",
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "safeTransferFrom(address,address,uint256,bytes)",
-    values: [string, string, BigNumberish, BytesLike]
+    functionFragment: "setItemAmountMultiplier",
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "setApprovalForAll",
-    values: [string, boolean]
+    functionFragment: "shortenCooldown",
+    values: [BigNumberish, BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "setSigner", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "shortenDuration",
+    values: [BigNumberish, BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "signer", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "stakedOttosOf",
@@ -339,37 +355,21 @@ export interface AdventureInterface extends utils.Interface {
     functionFragment: "supportsInterface",
     values: [BytesLike]
   ): string;
-  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "tokenByIndex",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokenOfOwnerByIndex",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tokenURI",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "totalSupply",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
-  ): string;
   encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
   encodeFunctionData(
     functionFragment: "upgradeToAndCall",
     values: [string, BytesLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "usePotions",
+    values: [BigNumberish, BigNumberish[]]
+  ): string;
+  encodeFunctionData(
     functionFragment: "usedSignatures",
     values: [BytesLike]
   ): string;
 
+  decodeFunctionResult(functionFragment: "CLAM", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "DEFAULT_ADMIN_ROLE",
     data: BytesLike
@@ -384,17 +384,30 @@ export interface AdventureInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "OTTO", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "PASS", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "POTION_EFFECT_MANAGER_ROLE",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "RAND", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "STORE", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "accumulativeTcp",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "departure", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "finish", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getApproved",
+    functionFragment: "canFinishAt",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "departure", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "expMultiplierOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "finish", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "finishFee", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "finishImmediatelyProduct",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -405,14 +418,13 @@ export interface AdventureInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "isApprovedForAll",
+    functionFragment: "itemAmountMultiplierOf",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "latestPassOf",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "onERC1155BatchReceived",
     data: BytesLike
@@ -425,12 +437,7 @@ export interface AdventureInterface extends utils.Interface {
     functionFragment: "onERC721Received",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pass", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "passIdTracker",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
     data: BytesLike
@@ -444,20 +451,27 @@ export interface AdventureInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "revive", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "reviveProduct",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "safeTransferFrom(address,address,uint256)",
+    functionFragment: "setExpMultiplier",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "safeTransferFrom(address,address,uint256,bytes)",
+    functionFragment: "setItemAmountMultiplier",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setApprovalForAll",
+    functionFragment: "shortenCooldown",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "setSigner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "shortenDuration",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "signer", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "stakedOttosOf",
@@ -467,29 +481,12 @@ export interface AdventureInterface extends utils.Interface {
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "tokenByIndex",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "tokenOfOwnerByIndex",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "tokenURI", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "totalSupply",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferFrom",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "usePotions", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "usedSignatures",
     data: BytesLike
@@ -497,34 +494,34 @@ export interface AdventureInterface extends utils.Interface {
 
   events: {
     "AdminChanged(address,address)": EventFragment;
-    "Approval(address,address,uint256)": EventFragment;
-    "ApprovalForAll(address,address,bool)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
-    "Departure(uint256,uint256,uint256)": EventFragment;
-    "Finish(uint256,uint256,uint256,bool)": EventFragment;
+    "Departure(uint256,uint256)": EventFragment;
+    "Finish(uint256,uint256,bool)": EventFragment;
     "Initialized(uint8)": EventFragment;
+    "PassUpdated(uint256,uint256)": EventFragment;
+    "PotionsUsed(uint256,uint256,uint256[])": EventFragment;
+    "RestingUntilUpdated(uint256,uint256,uint256)": EventFragment;
     "Revive(uint256,uint256)": EventFragment;
     "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
     "RoleGranted(bytes32,address,address)": EventFragment;
     "RoleRevoked(bytes32,address,address)": EventFragment;
-    "TcpIncreased(address,uint256,uint256)": EventFragment;
-    "Transfer(address,address,uint256)": EventFragment;
+    "TcpChanged(address,uint256,uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ApprovalForAll"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Departure"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Finish"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "PassUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "PotionsUsed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RestingUntilUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Revive"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleAdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleGranted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleRevoked"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TcpIncreased"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TcpChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -539,30 +536,6 @@ export type AdminChangedEvent = TypedEvent<
 
 export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
 
-export interface ApprovalEventObject {
-  owner: string;
-  approved: string;
-  tokenId: BigNumber;
-}
-export type ApprovalEvent = TypedEvent<
-  [string, string, BigNumber],
-  ApprovalEventObject
->;
-
-export type ApprovalEventFilter = TypedEventFilter<ApprovalEvent>;
-
-export interface ApprovalForAllEventObject {
-  owner: string;
-  operator: string;
-  approved: boolean;
-}
-export type ApprovalForAllEvent = TypedEvent<
-  [string, string, boolean],
-  ApprovalForAllEventObject
->;
-
-export type ApprovalForAllEventFilter = TypedEventFilter<ApprovalForAllEvent>;
-
 export interface BeaconUpgradedEventObject {
   beacon: string;
 }
@@ -576,10 +549,9 @@ export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
 export interface DepartureEventObject {
   passId: BigNumber;
   ottoId: BigNumber;
-  at: BigNumber;
 }
 export type DepartureEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
+  [BigNumber, BigNumber],
   DepartureEventObject
 >;
 
@@ -588,11 +560,10 @@ export type DepartureEventFilter = TypedEventFilter<DepartureEvent>;
 export interface FinishEventObject {
   passId: BigNumber;
   ottoId: BigNumber;
-  at: BigNumber;
   success: boolean;
 }
 export type FinishEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber, boolean],
+  [BigNumber, BigNumber, boolean],
   FinishEventObject
 >;
 
@@ -604,6 +575,42 @@ export interface InitializedEventObject {
 export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
 
 export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
+
+export interface PassUpdatedEventObject {
+  passId: BigNumber;
+  ottoId: BigNumber;
+}
+export type PassUpdatedEvent = TypedEvent<
+  [BigNumber, BigNumber],
+  PassUpdatedEventObject
+>;
+
+export type PassUpdatedEventFilter = TypedEventFilter<PassUpdatedEvent>;
+
+export interface PotionsUsedEventObject {
+  passId: BigNumber;
+  ottoId: BigNumber;
+  potions: BigNumber[];
+}
+export type PotionsUsedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber[]],
+  PotionsUsedEventObject
+>;
+
+export type PotionsUsedEventFilter = TypedEventFilter<PotionsUsedEvent>;
+
+export interface RestingUntilUpdatedEventObject {
+  ottoId: BigNumber;
+  restingUntil: BigNumber;
+  delta: BigNumber;
+}
+export type RestingUntilUpdatedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber],
+  RestingUntilUpdatedEventObject
+>;
+
+export type RestingUntilUpdatedEventFilter =
+  TypedEventFilter<RestingUntilUpdatedEvent>;
 
 export interface ReviveEventObject {
   passId: BigNumber;
@@ -650,29 +657,17 @@ export type RoleRevokedEvent = TypedEvent<
 
 export type RoleRevokedEventFilter = TypedEventFilter<RoleRevokedEvent>;
 
-export interface TcpIncreasedEventObject {
+export interface TcpChangedEventObject {
   wallet: string;
   from: BigNumber;
   to: BigNumber;
 }
-export type TcpIncreasedEvent = TypedEvent<
+export type TcpChangedEvent = TypedEvent<
   [string, BigNumber, BigNumber],
-  TcpIncreasedEventObject
+  TcpChangedEventObject
 >;
 
-export type TcpIncreasedEventFilter = TypedEventFilter<TcpIncreasedEvent>;
-
-export interface TransferEventObject {
-  from: string;
-  to: string;
-  tokenId: BigNumber;
-}
-export type TransferEvent = TypedEvent<
-  [string, string, BigNumber],
-  TransferEventObject
->;
-
-export type TransferEventFilter = TypedEventFilter<TransferEvent>;
+export type TcpChangedEventFilter = TypedEventFilter<TcpChangedEvent>;
 
 export interface UpgradedEventObject {
   implementation: string;
@@ -708,6 +703,8 @@ export interface Adventure extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    CLAM(overrides?: CallOverrides): Promise<[string]>;
+
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
     ITEM(overrides?: CallOverrides): Promise<[string]>;
@@ -718,20 +715,23 @@ export interface Adventure extends BaseContract {
 
     OTTO(overrides?: CallOverrides): Promise<[string]>;
 
+    PASS(overrides?: CallOverrides): Promise<[string]>;
+
+    POTION_EFFECT_MANAGER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
     RAND(overrides?: CallOverrides): Promise<[string]>;
+
+    STORE(overrides?: CallOverrides): Promise<[string]>;
 
     accumulativeTcp(
       arg0: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    approve(
-      to: string,
-      tokenId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    balanceOf(owner: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+    canFinishAt(
+      ottoId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     departure(
       ottoId_: BigNumberish,
@@ -742,19 +742,28 @@ export interface Adventure extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    expMultiplierOf(
+      ottoId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number]>;
+
     finish(
       ottoId_: BigNumberish,
       cooldown_: BigNumberish,
       sr_: BigNumberish,
       rewards_: Adventure.RewardsStruct,
+      immediately_: boolean,
+      potions_: BigNumberish[],
       sig_: Adventure.SignatureStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    getApproved(
-      tokenId: BigNumberish,
+    finishFee(
+      passId_: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[string]>;
+    ): Promise<[BigNumber]>;
+
+    finishImmediatelyProduct(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
 
@@ -772,24 +781,24 @@ export interface Adventure extends BaseContract {
 
     initialize(
       rand_: string,
+      pass_: string,
       otto_: string,
       item_: string,
+      clam_: string,
+      store_: string,
       signer_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    isApprovedForAll(
-      owner: string,
-      operator: string,
+    itemAmountMultiplierOf(
+      ottoId_: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    ): Promise<[number]>;
 
     latestPassOf(
       ottoId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[Adventure.PassStructOutput]>;
-
-    name(overrides?: CallOverrides): Promise<[string]>;
 
     onERC1155BatchReceived(
       arg0: string,
@@ -817,17 +826,10 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    ownerOf(
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
     pass(
       passId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[Adventure.PassStructOutput]>;
-
-    passIdTracker(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
@@ -847,35 +849,35 @@ export interface Adventure extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    reviveProduct(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     revokeRole(
       role: BytesLike,
       account: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    "safeTransferFrom(address,address,uint256)"(
-      from: string,
-      to: string,
-      tokenId: BigNumberish,
+    setExpMultiplier(
+      ottoId: BigNumberish,
+      multiplier: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    "safeTransferFrom(address,address,uint256,bytes)"(
-      from: string,
-      to: string,
-      tokenId: BigNumberish,
-      data: BytesLike,
+    setItemAmountMultiplier(
+      ottoId: BigNumberish,
+      multiplier: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    setApprovalForAll(
-      operator: string,
-      approved: boolean,
+    shortenCooldown(
+      ottoId: BigNumberish,
+      sec: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    setSigner(
-      signer_: string,
+    shortenDuration(
+      ottoId: BigNumberish,
+      sec: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -891,33 +893,6 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    symbol(overrides?: CallOverrides): Promise<[string]>;
-
-    tokenByIndex(
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    tokenOfOwnerByIndex(
-      owner: string,
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    tokenURI(
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    transferFrom(
-      from: string,
-      to: string,
-      tokenId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     upgradeTo(
       newImplementation: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -929,11 +904,19 @@ export interface Adventure extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    usePotions(
+      ottoId_: BigNumberish,
+      potions_: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     usedSignatures(
       arg0: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
+
+  CLAM(overrides?: CallOverrides): Promise<string>;
 
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -945,17 +928,20 @@ export interface Adventure extends BaseContract {
 
   OTTO(overrides?: CallOverrides): Promise<string>;
 
+  PASS(overrides?: CallOverrides): Promise<string>;
+
+  POTION_EFFECT_MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
+
   RAND(overrides?: CallOverrides): Promise<string>;
+
+  STORE(overrides?: CallOverrides): Promise<string>;
 
   accumulativeTcp(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  approve(
-    to: string,
-    tokenId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
+  canFinishAt(
+    ottoId_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   departure(
     ottoId_: BigNumberish,
@@ -966,19 +952,28 @@ export interface Adventure extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  expMultiplierOf(
+    ottoId_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<number>;
+
   finish(
     ottoId_: BigNumberish,
     cooldown_: BigNumberish,
     sr_: BigNumberish,
     rewards_: Adventure.RewardsStruct,
+    immediately_: boolean,
+    potions_: BigNumberish[],
     sig_: Adventure.SignatureStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  getApproved(
-    tokenId: BigNumberish,
+  finishFee(
+    passId_: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<string>;
+  ): Promise<BigNumber>;
+
+  finishImmediatelyProduct(overrides?: CallOverrides): Promise<BigNumber>;
 
   getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
 
@@ -996,24 +991,24 @@ export interface Adventure extends BaseContract {
 
   initialize(
     rand_: string,
+    pass_: string,
     otto_: string,
     item_: string,
+    clam_: string,
+    store_: string,
     signer_: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  isApprovedForAll(
-    owner: string,
-    operator: string,
+  itemAmountMultiplierOf(
+    ottoId_: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<boolean>;
+  ): Promise<number>;
 
   latestPassOf(
     ottoId_: BigNumberish,
     overrides?: CallOverrides
   ): Promise<Adventure.PassStructOutput>;
-
-  name(overrides?: CallOverrides): Promise<string>;
 
   onERC1155BatchReceived(
     arg0: string,
@@ -1041,14 +1036,10 @@ export interface Adventure extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
   pass(
     passId_: BigNumberish,
     overrides?: CallOverrides
   ): Promise<Adventure.PassStructOutput>;
-
-  passIdTracker(overrides?: CallOverrides): Promise<BigNumber>;
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
@@ -1068,35 +1059,35 @@ export interface Adventure extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  reviveProduct(overrides?: CallOverrides): Promise<BigNumber>;
+
   revokeRole(
     role: BytesLike,
     account: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  "safeTransferFrom(address,address,uint256)"(
-    from: string,
-    to: string,
-    tokenId: BigNumberish,
+  setExpMultiplier(
+    ottoId: BigNumberish,
+    multiplier: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  "safeTransferFrom(address,address,uint256,bytes)"(
-    from: string,
-    to: string,
-    tokenId: BigNumberish,
-    data: BytesLike,
+  setItemAmountMultiplier(
+    ottoId: BigNumberish,
+    multiplier: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  setApprovalForAll(
-    operator: string,
-    approved: boolean,
+  shortenCooldown(
+    ottoId: BigNumberish,
+    sec: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  setSigner(
-    signer_: string,
+  shortenDuration(
+    ottoId: BigNumberish,
+    sec: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1110,30 +1101,6 @@ export interface Adventure extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  symbol(overrides?: CallOverrides): Promise<string>;
-
-  tokenByIndex(
-    index: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  tokenOfOwnerByIndex(
-    owner: string,
-    index: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  tokenURI(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-  totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-  transferFrom(
-    from: string,
-    to: string,
-    tokenId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   upgradeTo(
     newImplementation: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -1145,9 +1112,17 @@ export interface Adventure extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  usePotions(
+    ottoId_: BigNumberish,
+    potions_: BigNumberish[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   usedSignatures(arg0: BytesLike, overrides?: CallOverrides): Promise<boolean>;
 
   callStatic: {
+    CLAM(overrides?: CallOverrides): Promise<string>;
+
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
     ITEM(overrides?: CallOverrides): Promise<string>;
@@ -1158,20 +1133,23 @@ export interface Adventure extends BaseContract {
 
     OTTO(overrides?: CallOverrides): Promise<string>;
 
+    PASS(overrides?: CallOverrides): Promise<string>;
+
+    POTION_EFFECT_MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
+
     RAND(overrides?: CallOverrides): Promise<string>;
+
+    STORE(overrides?: CallOverrides): Promise<string>;
 
     accumulativeTcp(
       arg0: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    approve(
-      to: string,
-      tokenId: BigNumberish,
+    canFinishAt(
+      ottoId_: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<void>;
-
-    balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
+    ): Promise<BigNumber>;
 
     departure(
       ottoId_: BigNumberish,
@@ -1182,19 +1160,28 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    expMultiplierOf(
+      ottoId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<number>;
+
     finish(
       ottoId_: BigNumberish,
       cooldown_: BigNumberish,
       sr_: BigNumberish,
       rewards_: Adventure.RewardsStruct,
+      immediately_: boolean,
+      potions_: BigNumberish[],
       sig_: Adventure.SignatureStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    getApproved(
-      tokenId: BigNumberish,
+    finishFee(
+      passId_: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<string>;
+    ): Promise<BigNumber>;
+
+    finishImmediatelyProduct(overrides?: CallOverrides): Promise<BigNumber>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
 
@@ -1212,24 +1199,24 @@ export interface Adventure extends BaseContract {
 
     initialize(
       rand_: string,
+      pass_: string,
       otto_: string,
       item_: string,
+      clam_: string,
+      store_: string,
       signer_: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    isApprovedForAll(
-      owner: string,
-      operator: string,
+    itemAmountMultiplierOf(
+      ottoId_: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<number>;
 
     latestPassOf(
       ottoId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<Adventure.PassStructOutput>;
-
-    name(overrides?: CallOverrides): Promise<string>;
 
     onERC1155BatchReceived(
       arg0: string,
@@ -1257,14 +1244,10 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
     pass(
       passId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<Adventure.PassStructOutput>;
-
-    passIdTracker(overrides?: CallOverrides): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
@@ -1281,34 +1264,37 @@ export interface Adventure extends BaseContract {
 
     revive(ottoId_: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
+    reviveProduct(overrides?: CallOverrides): Promise<BigNumber>;
+
     revokeRole(
       role: BytesLike,
       account: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "safeTransferFrom(address,address,uint256)"(
-      from: string,
-      to: string,
-      tokenId: BigNumberish,
+    setExpMultiplier(
+      ottoId: BigNumberish,
+      multiplier: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "safeTransferFrom(address,address,uint256,bytes)"(
-      from: string,
-      to: string,
-      tokenId: BigNumberish,
-      data: BytesLike,
+    setItemAmountMultiplier(
+      ottoId: BigNumberish,
+      multiplier: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setApprovalForAll(
-      operator: string,
-      approved: boolean,
+    shortenCooldown(
+      ottoId: BigNumberish,
+      sec: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setSigner(signer_: string, overrides?: CallOverrides): Promise<void>;
+    shortenDuration(
+      ottoId: BigNumberish,
+      sec: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     signer(overrides?: CallOverrides): Promise<string>;
 
@@ -1322,30 +1308,6 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    symbol(overrides?: CallOverrides): Promise<string>;
-
-    tokenByIndex(
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    tokenOfOwnerByIndex(
-      owner: string,
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    tokenURI(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-    transferFrom(
-      from: string,
-      to: string,
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     upgradeTo(
       newImplementation: string,
       overrides?: CallOverrides
@@ -1354,6 +1316,12 @@ export interface Adventure extends BaseContract {
     upgradeToAndCall(
       newImplementation: string,
       data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    usePotions(
+      ottoId_: BigNumberish,
+      potions_: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1373,59 +1341,64 @@ export interface Adventure extends BaseContract {
       newAdmin?: null
     ): AdminChangedEventFilter;
 
-    "Approval(address,address,uint256)"(
-      owner?: string | null,
-      approved?: string | null,
-      tokenId?: BigNumberish | null
-    ): ApprovalEventFilter;
-    Approval(
-      owner?: string | null,
-      approved?: string | null,
-      tokenId?: BigNumberish | null
-    ): ApprovalEventFilter;
-
-    "ApprovalForAll(address,address,bool)"(
-      owner?: string | null,
-      operator?: string | null,
-      approved?: null
-    ): ApprovalForAllEventFilter;
-    ApprovalForAll(
-      owner?: string | null,
-      operator?: string | null,
-      approved?: null
-    ): ApprovalForAllEventFilter;
-
     "BeaconUpgraded(address)"(
       beacon?: string | null
     ): BeaconUpgradedEventFilter;
     BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
 
-    "Departure(uint256,uint256,uint256)"(
+    "Departure(uint256,uint256)"(
       passId?: BigNumberish | null,
-      ottoId?: BigNumberish | null,
-      at?: null
+      ottoId?: BigNumberish | null
     ): DepartureEventFilter;
     Departure(
       passId?: BigNumberish | null,
-      ottoId?: BigNumberish | null,
-      at?: null
+      ottoId?: BigNumberish | null
     ): DepartureEventFilter;
 
-    "Finish(uint256,uint256,uint256,bool)"(
+    "Finish(uint256,uint256,bool)"(
       passId?: BigNumberish | null,
       ottoId?: BigNumberish | null,
-      at?: null,
       success?: null
     ): FinishEventFilter;
     Finish(
       passId?: BigNumberish | null,
       ottoId?: BigNumberish | null,
-      at?: null,
       success?: null
     ): FinishEventFilter;
 
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
+
+    "PassUpdated(uint256,uint256)"(
+      passId?: BigNumberish | null,
+      ottoId?: BigNumberish | null
+    ): PassUpdatedEventFilter;
+    PassUpdated(
+      passId?: BigNumberish | null,
+      ottoId?: BigNumberish | null
+    ): PassUpdatedEventFilter;
+
+    "PotionsUsed(uint256,uint256,uint256[])"(
+      passId?: BigNumberish | null,
+      ottoId?: BigNumberish | null,
+      potions?: null
+    ): PotionsUsedEventFilter;
+    PotionsUsed(
+      passId?: BigNumberish | null,
+      ottoId?: BigNumberish | null,
+      potions?: null
+    ): PotionsUsedEventFilter;
+
+    "RestingUntilUpdated(uint256,uint256,uint256)"(
+      ottoId?: BigNumberish | null,
+      restingUntil?: null,
+      delta?: null
+    ): RestingUntilUpdatedEventFilter;
+    RestingUntilUpdated(
+      ottoId?: BigNumberish | null,
+      restingUntil?: null,
+      delta?: null
+    ): RestingUntilUpdatedEventFilter;
 
     "Revive(uint256,uint256)"(
       passId?: BigNumberish | null,
@@ -1469,33 +1442,24 @@ export interface Adventure extends BaseContract {
       sender?: string | null
     ): RoleRevokedEventFilter;
 
-    "TcpIncreased(address,uint256,uint256)"(
+    "TcpChanged(address,uint256,uint256)"(
       wallet?: string | null,
       from?: null,
       to?: null
-    ): TcpIncreasedEventFilter;
-    TcpIncreased(
+    ): TcpChangedEventFilter;
+    TcpChanged(
       wallet?: string | null,
       from?: null,
       to?: null
-    ): TcpIncreasedEventFilter;
-
-    "Transfer(address,address,uint256)"(
-      from?: string | null,
-      to?: string | null,
-      tokenId?: BigNumberish | null
-    ): TransferEventFilter;
-    Transfer(
-      from?: string | null,
-      to?: string | null,
-      tokenId?: BigNumberish | null
-    ): TransferEventFilter;
+    ): TcpChangedEventFilter;
 
     "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
     Upgraded(implementation?: string | null): UpgradedEventFilter;
   };
 
   estimateGas: {
+    CLAM(overrides?: CallOverrides): Promise<BigNumber>;
+
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
     ITEM(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1506,20 +1470,23 @@ export interface Adventure extends BaseContract {
 
     OTTO(overrides?: CallOverrides): Promise<BigNumber>;
 
+    PASS(overrides?: CallOverrides): Promise<BigNumber>;
+
+    POTION_EFFECT_MANAGER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
     RAND(overrides?: CallOverrides): Promise<BigNumber>;
+
+    STORE(overrides?: CallOverrides): Promise<BigNumber>;
 
     accumulativeTcp(
       arg0: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    approve(
-      to: string,
-      tokenId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    canFinishAt(
+      ottoId_: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     departure(
       ottoId_: BigNumberish,
@@ -1530,19 +1497,28 @@ export interface Adventure extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    expMultiplierOf(
+      ottoId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     finish(
       ottoId_: BigNumberish,
       cooldown_: BigNumberish,
       sr_: BigNumberish,
       rewards_: Adventure.RewardsStruct,
+      immediately_: boolean,
+      potions_: BigNumberish[],
       sig_: Adventure.SignatureStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    getApproved(
-      tokenId: BigNumberish,
+    finishFee(
+      passId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    finishImmediatelyProduct(overrides?: CallOverrides): Promise<BigNumber>;
 
     getRoleAdmin(
       role: BytesLike,
@@ -1563,15 +1539,17 @@ export interface Adventure extends BaseContract {
 
     initialize(
       rand_: string,
+      pass_: string,
       otto_: string,
       item_: string,
+      clam_: string,
+      store_: string,
       signer_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    isApprovedForAll(
-      owner: string,
-      operator: string,
+    itemAmountMultiplierOf(
+      ottoId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1579,8 +1557,6 @@ export interface Adventure extends BaseContract {
       ottoId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    name(overrides?: CallOverrides): Promise<BigNumber>;
 
     onERC1155BatchReceived(
       arg0: string,
@@ -1608,14 +1584,7 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    ownerOf(
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     pass(passId_: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-
-    passIdTracker(overrides?: CallOverrides): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1635,35 +1604,35 @@ export interface Adventure extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    reviveProduct(overrides?: CallOverrides): Promise<BigNumber>;
+
     revokeRole(
       role: BytesLike,
       account: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    "safeTransferFrom(address,address,uint256)"(
-      from: string,
-      to: string,
-      tokenId: BigNumberish,
+    setExpMultiplier(
+      ottoId: BigNumberish,
+      multiplier: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    "safeTransferFrom(address,address,uint256,bytes)"(
-      from: string,
-      to: string,
-      tokenId: BigNumberish,
-      data: BytesLike,
+    setItemAmountMultiplier(
+      ottoId: BigNumberish,
+      multiplier: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    setApprovalForAll(
-      operator: string,
-      approved: boolean,
+    shortenCooldown(
+      ottoId: BigNumberish,
+      sec: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    setSigner(
-      signer_: string,
+    shortenDuration(
+      ottoId: BigNumberish,
+      sec: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1679,33 +1648,6 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    symbol(overrides?: CallOverrides): Promise<BigNumber>;
-
-    tokenByIndex(
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    tokenOfOwnerByIndex(
-      owner: string,
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    tokenURI(
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-    transferFrom(
-      from: string,
-      to: string,
-      tokenId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     upgradeTo(
       newImplementation: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1717,6 +1659,12 @@ export interface Adventure extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    usePotions(
+      ottoId_: BigNumberish,
+      potions_: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     usedSignatures(
       arg0: BytesLike,
       overrides?: CallOverrides
@@ -1724,6 +1672,8 @@ export interface Adventure extends BaseContract {
   };
 
   populateTransaction: {
+    CLAM(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     DEFAULT_ADMIN_ROLE(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1738,21 +1688,23 @@ export interface Adventure extends BaseContract {
 
     OTTO(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    PASS(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    POTION_EFFECT_MANAGER_ROLE(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     RAND(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    STORE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     accumulativeTcp(
       arg0: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    approve(
-      to: string,
-      tokenId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    balanceOf(
-      owner: string,
+    canFinishAt(
+      ottoId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1765,17 +1717,28 @@ export interface Adventure extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    expMultiplierOf(
+      ottoId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     finish(
       ottoId_: BigNumberish,
       cooldown_: BigNumberish,
       sr_: BigNumberish,
       rewards_: Adventure.RewardsStruct,
+      immediately_: boolean,
+      potions_: BigNumberish[],
       sig_: Adventure.SignatureStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    getApproved(
-      tokenId: BigNumberish,
+    finishFee(
+      passId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    finishImmediatelyProduct(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1798,15 +1761,17 @@ export interface Adventure extends BaseContract {
 
     initialize(
       rand_: string,
+      pass_: string,
       otto_: string,
       item_: string,
+      clam_: string,
+      store_: string,
       signer_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    isApprovedForAll(
-      owner: string,
-      operator: string,
+    itemAmountMultiplierOf(
+      ottoId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1814,8 +1779,6 @@ export interface Adventure extends BaseContract {
       ottoId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     onERC1155BatchReceived(
       arg0: string,
@@ -1843,17 +1806,10 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    ownerOf(
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     pass(
       passId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    passIdTracker(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1873,35 +1829,35 @@ export interface Adventure extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    reviveProduct(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     revokeRole(
       role: BytesLike,
       account: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    "safeTransferFrom(address,address,uint256)"(
-      from: string,
-      to: string,
-      tokenId: BigNumberish,
+    setExpMultiplier(
+      ottoId: BigNumberish,
+      multiplier: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    "safeTransferFrom(address,address,uint256,bytes)"(
-      from: string,
-      to: string,
-      tokenId: BigNumberish,
-      data: BytesLike,
+    setItemAmountMultiplier(
+      ottoId: BigNumberish,
+      multiplier: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    setApprovalForAll(
-      operator: string,
-      approved: boolean,
+    shortenCooldown(
+      ottoId: BigNumberish,
+      sec: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    setSigner(
-      signer_: string,
+    shortenDuration(
+      ottoId: BigNumberish,
+      sec: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1917,33 +1873,6 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    tokenByIndex(
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    tokenOfOwnerByIndex(
-      owner: string,
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    tokenURI(
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    transferFrom(
-      from: string,
-      to: string,
-      tokenId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     upgradeTo(
       newImplementation: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1953,6 +1882,12 @@ export interface Adventure extends BaseContract {
       newImplementation: string,
       data: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    usePotions(
+      ottoId_: BigNumberish,
+      potions_: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     usedSignatures(

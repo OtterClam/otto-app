@@ -9,7 +9,7 @@ import { AdventureContractStateAction, AdventureContractStateActionType } from '
 export function useTcpWatcher(dispatch: (action: AdventureContractStateAction) => void) {
   const { account } = useEthers()
   const adventureContract = useAdventureContract()
-  const logsResult = useLogs({ contract: adventureContract, event: 'TcpIncreased', args: [] })
+  const logsResult = useLogs({ contract: adventureContract, event: 'TcpChanged', args: [] })
 
   useEffect(() => {
     if (logsResult && logsResult.value && logsResult.value[0]) {
