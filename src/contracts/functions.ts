@@ -469,21 +469,19 @@ export const useForge = () => {
   const foundry = useFoundry()
   const { account } = useEthers()
   const api = useApi()
-  const { state, send, resetState } = useContractFunction(foundry, 'forge', {})
+  const { state, send, resetState } = useContractFunction(foundry, 'fuse', {})
   const [forgeState, setForgeState] = useState<OttoBuyTransactionState>({
     state: 'None',
     status: state,
   })
-  const forge = async (formulaId: number, amount: number) => {
-    setForgeState({
-      state: 'PendingSignature',
-      status: state,
-    })
-    send(formulaId, amount)
-  }
-  const resetForge = () => {
-    resetState()
-    setForgeState({ state: 'None', status: state })
+  const forge = async (formulaId: number) => {
+    if (account) {
+      setForgeState({
+        state: 'PendingSignature',
+        status: state,
+      })
+      api.getForgeCalldata(formulaId, account).then(calldata => (send as any)(...calldata))
+    }
   }
   useEffect(() => {
     if (state.status === 'Success') {
@@ -498,7 +496,7 @@ export const useForge = () => {
       setForgeState({ state: state.status, status: state })
     }
   }, [account, api, state])
-  return { forgeState, forge, resetForge }
+  return { forgeState, forge, resetForge: resetState }
 }
 
 function parseReceivedItems({

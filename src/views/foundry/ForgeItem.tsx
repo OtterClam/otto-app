@@ -14,6 +14,7 @@ import isBefore from 'date-fns/isBefore'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { ForgeFormula } from 'models/Forge'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import { useCallback, useEffect, useMemo } from 'react'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, ContentMedium, Display3, Headline, Note } from 'styles/typography'
@@ -95,6 +96,11 @@ const StyledResultItemPreview = styled(ItemCell)`
   height: 180px;
 `
 
+const StyledResultPreviewImg = styled.img`
+  width: 180px;
+  height: 180px;
+`
+
 const StyledItemType = styled(ItemType)`
   color: ${({ theme }) => theme.colors.crownYellow};
 
@@ -142,7 +148,7 @@ const StyledMaterialName = styled(Note)`
   color: ${({ theme }) => theme.colors.white};
 `
 
-const StyledMetrialSectionTitle = styled(Headline)`
+const StyledMaterialSectionTitle = styled(Headline)`
   @media ${({ theme }) => theme.breakpoints.tablet} {
     text-align: center;
   }
@@ -176,7 +182,7 @@ const useAvailableCount = (formula: ForgeFormula, itemCounts: MyItemAmounts): nu
     return Math.floor(
       Math.min(
         ...formula.materials.map((material, index) => {
-          const requiredAmount = formula.amounts[index]
+          const requiredAmount = formula.materialAmounts[index]
           return (itemCounts[material.id] ?? 0) / requiredAmount
         })
       )
@@ -208,7 +214,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
       sendSetApprovalCall(forgeContractAddress, true, {})
       return
     }
-    forge(formula.id, 1)
+    forge(formula.id)
   }, [isApprovedForAll, forgeContractAddress, forge, formula.id, sendSetApprovalCall])
 
   useEffect(() => {
@@ -231,20 +237,30 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
       <StyledDetails>
         <StyledResult bgImage={formula.bgImage}>
           <Headline>{t('result.title')}</Headline>
-          <StyledResultItemPreview item={formula.result} />
-          <ContentMedium>{formula.result.name}</ContentMedium>
-          <StyledItemType type={formula.result.type} />
+          {formula.result && (
+            <>
+              <StyledResultItemPreview item={formula.result} />
+              <ContentMedium>{formula.result.name}</ContentMedium>
+              <StyledItemType type={formula.result.type} />
+            </>
+          )}
+          {!formula.result && (
+            <>
+              <StyledResultPreviewImg src={formula.resultImage} />
+              <ContentMedium>{formula.resultText}</ContentMedium>
+            </>
+          )}
         </StyledResult>
         <StyledSectionRope vertical={!isTablet} />
         <StyledMaterials showRope={false}>
-          <StyledMetrialSectionTitle>{t('materials.title')}</StyledMetrialSectionTitle>
+          <StyledMaterialSectionTitle>{t('materials.title')}</StyledMaterialSectionTitle>
           <StyledMaterialList>
             {formula.materials.map((material, index) => (
               <StyledMaterialListItem key={index}>
                 <StyledMaterialPreview item={material} />
                 <StyledMaterialName>{material.name}</StyledMaterialName>
                 <StyledCount>
-                  {itemCounts[material.id] ?? 0} / {formula.amounts[index]}
+                  {itemCounts[material.id] ?? 0} / {formula.materialAmounts[index]}
                 </StyledCount>
               </StyledMaterialListItem>
             ))}

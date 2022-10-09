@@ -11,7 +11,6 @@ import FoundryHero from './FoundryHero'
 import { MyItemAmounts } from './type'
 
 const useForgeFormulas = () => {
-  const now = new Date()
   const api = useApi()
   const [forges, setForges] = useState<ForgeFormula[]>([])
 
