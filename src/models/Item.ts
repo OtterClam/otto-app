@@ -1,3 +1,4 @@
+import { ItemActionType } from 'constant'
 import NonItem from './non-item.jpg'
 import { Trait, Stat, TraitCollection, TraitRarity, OttoGender } from './Otto'
 
@@ -114,4 +115,10 @@ export const EmptyItem: Item = {
   con: 0,
   collection: TraitCollection.Genesis,
   collection_name: '',
+}
+
+export interface ItemAction {
+  type: ItemActionType
+  item_id: number
+  from_otto_id: number
 }

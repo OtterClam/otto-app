@@ -1,5 +1,6 @@
 import { ChainId } from '@usedapp/core'
 import axios, { Axios } from 'axios'
+import { BigNumberish } from 'ethers'
 import {
   RawAdventureDepartureArgs,
   AdventureLocation,
@@ -12,7 +13,7 @@ import { AdventureOtto, RawAdventureOtto, rawAdventureOttoToAdventureOtto } from
 import { AdventurePreview, RawAdventurePreview, rawAdventurePreviewToAdventurePreview } from 'models/AdventurePreview'
 import { Dice } from 'models/Dice'
 import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
-import Item, { rawItemToItem } from 'models/Item'
+import Item, { ItemAction, rawItemToItem } from 'models/Item'
 import { Notification, RawNotification } from 'models/Notification'
 import { OttoMeta } from 'models/Otto'
 import Product from 'models/store/Product'
@@ -163,19 +164,28 @@ export class Api {
     return result.data.map(rawAdventureLocationToAdventureLocation)
   }
 
-  public async departure(ottoId: string, locationId: number, wallet: string): Promise<AdventureDepartureArgs> {
+  public async departure(
+    ottoId: string,
+    locationId: number,
+    wallet: string,
+    itemActions: ItemAction[]
+  ): Promise<AdventureDepartureArgs> {
     const result = await this.otterclamClient.post<RawAdventureDepartureArgs>('/adventure/departure', {
       otto_id: Number(ottoId),
       loc_id: locationId,
       wallet,
-      actions: [],
+      actions: itemActions,
     })
     const raw = result.data
     return [
       raw[0],
       raw[1],
       raw[2],
-      raw[3].map(([typ, itemId, fromOttoId]) => ({ typ, itemId, fromOttoId })),
+      raw[3].map(([typ, itemId, fromOttoId]: [BigNumberish, BigNumberish, BigNumberish]) => ({
+        typ,
+        itemId,
+        fromOttoId,
+      })),
       {
         nonce: raw[4][0],
         digest: raw[4][1],

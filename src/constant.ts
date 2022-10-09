@@ -54,3 +54,10 @@ export enum AdventurePotion {
   Exp = 16711832,
   Str = 16711854,
 }
+
+export enum ItemActionType {
+  Equip = 0,
+  Use = 1,
+  TakeOff = 2,
+  EquipFromOtto = 3,
+}

@@ -7,6 +7,7 @@ import OttoAttributes from 'components/OttoAttributes'
 import OttoLevels from 'components/OttoLevels'
 import OttoPreviewer from 'components/OttoPreviewer'
 import OttoSelector from 'components/OttoSelector'
+import { ItemActionType } from 'constant'
 import { AdventureLocationProvider } from 'contexts/AdventureLocation'
 import { AdventureOttoProvider } from 'contexts/AdventureOtto'
 import { useAdventureOttos } from 'contexts/AdventureOttos'
@@ -18,8 +19,10 @@ import {
 import { useApiCall } from 'contexts/Api'
 import { useOtto } from 'contexts/Otto'
 import { useAdventureDeparture } from 'contracts/functions'
+import useAdventurePotion from 'hooks/useAdventurePotion'
+import { ItemAction } from 'models/Item'
 import { useTranslation } from 'next-i18next'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentMedium, Headline } from 'styles/typography'
 import { Step } from '.'
@@ -80,21 +83,54 @@ const StyledTitle = styled(ContentMedium)`
 export default function PreviewOttoStep() {
   const { otto, equippedItems, loading: loadingOttos, reload: reloadMyOttos } = useOtto()
   const { loading: loadingAdventureOttos, refetch: reloadAdventureOttos } = useAdventureOttos()
+  const [usedPitionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
   const { t } = useTranslation()
   const location = useSelectedAdventureLocation()!
   const close = useCloseAdventurePopup()
   const goToStep = useGoToAdventurePopupStep()
 
-  const itemIds = equippedItems.map(item => item.id)
+  const itemIds = useMemo(() => {
+    const itemIds = equippedItems.map(item => item.id)
+    Object.keys(usedPitionAmounts).forEach(potion => {
+      const amount = usedPitionAmounts[potion]
+      for (let i = 0; i <= amount; i += 1) {
+        itemIds.push(potion)
+      }
+    })
+    return itemIds
+  }, [equippedItems, usedPitionAmounts])
 
   const { result: preview } = useApiCall(
     'getOttoAdventurePreview',
     [otto?.tokenId ?? '', location?.id ?? -1, itemIds],
     Boolean(otto && location),
-    [otto, location, itemIds.join(', ')]
+    [otto, location, itemIds]
   )
 
   const { departure, loading, readyToGo } = useAdventureDeparture()
+
+  const handleDepartureButtonClick = useCallback(() => {
+    if (!otto || !location) {
+      return
+    }
+
+    const potionActions = Object.keys(usedPitionAmounts)
+      .map(potion => {
+        const actions: ItemAction[] = []
+        const amount = usedPitionAmounts[potion]
+        for (let i = 0; i < amount; i += 1) {
+          actions.push({
+            type: ItemActionType.Use,
+            item_id: Number(potion),
+            from_otto_id: Number(otto.tokenId),
+          })
+        }
+        return actions
+      })
+      .reduce((all, list) => all.concat(list), [] as ItemAction[])
+
+    departure(otto.tokenId, location.id, potionActions)
+  }, [usedPitionAmounts, otto?.tokenId, location?.id, equippedItems])
 
   useEffect(() => {
     if (readyToGo) {
@@ -131,7 +167,7 @@ export default function PreviewOttoStep() {
 
             <StyledLocation>
               <AdventureConditionalBoosts />
-              <AdventureRewards />
+              <AdventureRewards canUsePotions onUsePotion={setUsedPotionAmounts} />
             </StyledLocation>
           </StyledMain>
 
@@ -139,7 +175,7 @@ export default function PreviewOttoStep() {
             padding="3px 0 0"
             Typography={Headline}
             loading={loading || loadingOttos || loadingAdventureOttos}
-            onClick={() => departure(otto!.tokenId, location!.id)}
+            onClick={handleDepartureButtonClick}
           >
             {t('adventurePopup.start')}
           </Button>

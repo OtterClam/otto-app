@@ -2,7 +2,7 @@ import { TransactionState, TransactionStatus, useCalls, useContractFunction, use
 import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
 import { useApi } from 'contexts/Api'
 import useContractAddresses from 'hooks/useContractAddresses'
-import Item from 'models/Item'
+import Item, { ItemAction } from 'models/Item'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useState } from 'react'
@@ -547,12 +547,11 @@ export const useAdventureDeparture = () => {
   const [readyToGo, setReadyToGo] = useState(false)
 
   const departure = useCallback(
-    (ottoId: string, locationId: number) => {
+    (ottoId: string, locationId: number, itemActions: ItemAction[]) => {
       if (!account || !library) {
         return
       }
       setLoading(true)
-      console.log(ottoApproved, itemApproved)
       Promise.resolve()
         .then(() => {
           if (!ottoApproved) {
@@ -564,7 +563,7 @@ export const useAdventureDeparture = () => {
             return snedApproveOttoItem(adventure.address, true)
           }
         })
-        .then(() => api.departure(ottoId, locationId, account))
+        .then(() => api.departure(ottoId, locationId, account, itemActions))
         .then(inputs => sendDeparture(...inputs))
         .then(() => setReadyToGo(true))
         .catch(err => console.error(err))

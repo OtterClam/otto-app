@@ -733,12 +733,13 @@
       "title": "{{name}} is exploring...",
       "remaining": "Remaining: {{time}}",
       "finish_immediately_btn": "Finish Immediately",
+      "speedup_btn": "Speed Up",
       "speed_up_btn": "Speed Up",
       "see_results_btn": "See Results",
       "see_results_hint": "To check the Adventure Journal, you will proceed a transaction.",
       "wants_more": "Want more Speed-Up Potions?",
       "buy_now": "Buy NOW>",
-      "use": "Use 1"
+      "used": "Use {{ amount }}"
     },
     "resultStep": {
       "journal": "Adventure Journal",
@@ -776,7 +777,10 @@
     "restingTime": "Resting time",
     "successRateHelp": "message",
     "restingTimeHelp": "message",
-    "rewardSectionTitle": "Success Rewards"
+    "rewardSectionTitle": "Success Rewards",
+    "usePotion": "Use",
+    "noPotion": "You have 0",
+    "usedPotion": "Used {{ amount }}"
   },
   "adventureLocationPopup": {
     "difficulty": "Difficulty:",

@@ -13,6 +13,7 @@ import useFormattedDuration from 'hooks/useFormattedDuration'
 import { AdventureOttoStatus } from 'models/AdventureOtto'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
+import { useMemo, useState } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentLarge, ContentMedium, Note } from 'styles/typography'
 import SpeedPotion from './speed-up-potion.png'
@@ -141,7 +142,19 @@ export default function OnGoingView({ state, onFinish }: Props) {
   const canFinishAt = adventureOtto?.canFinishedAt ?? now
   const formattedDuration = useFormattedDuration(adventureOtto?.departuredAt ?? now, canFinishAt)
   const remainingDuration = useFormattedDuration(now, canFinishAt)
-  const { amounts, usePotion: applyPotion, loading } = useAdventurePotion()
+  const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
+  const { amounts, loading } = useAdventurePotion()
+  const usedPotions = useMemo(() => {
+    return Object.keys(usedPotionAmounts).map(key => {
+      const amount = usedPotionAmounts[key]
+      const idList: string[] = []
+      for (let i = 0; i < amount; i += 1) {
+        idList.push(key)
+      }
+      return idList
+    })
+  }, [usedPotionAmounts]).reduce((all, list) => all.concat(list), [] as string[])
+  const potionButtonDisabled = loading || state === 'Mining'
 
   if (!otto || !adventureOtto) {
     return null
@@ -171,43 +184,63 @@ export default function OnGoingView({ state, onFinish }: Props) {
             <StyledSeeResultHint>{t('see_results_hint')}</StyledSeeResultHint>
           </>
         )}
-        {adventureOtto.status === AdventureOttoStatus.Ongoing && (
+        {adventureOtto.status !== AdventureOttoStatus.Ongoing && (
           <>
             <StyledRemaining>{t('remaining', { time: remainingDuration })}</StyledRemaining>
             <StyledPotionContainer>
               <SpeedUpPotion
-                loading={loading}
-                onClick={() => applyPotion(AdventurePotion.OneHourSpeedy, otto.tokenId)}
+                disabled={potionButtonDisabled}
+                potion={AdventurePotion.OneHourSpeedy}
+                onChanged={setUsedPotionAmounts}
                 image={SpeedPotion.src}
-                hasAmount={amounts[AdventurePotion.OneHourSpeedy]}
+                amounts={amounts}
+                usedAmounts={usedPotionAmounts}
                 reducedTime="1h"
               />
               <SpeedUpPotion
-                loading={loading}
-                onClick={() => applyPotion(AdventurePotion.ThreeHourSpeedy, otto.tokenId)}
+                disabled={potionButtonDisabled}
+                potion={AdventurePotion.ThreeHourSpeedy}
+                onChanged={setUsedPotionAmounts}
                 image={SpeedPotion.src}
-                hasAmount={amounts[AdventurePotion.ThreeHourSpeedy]}
+                amounts={amounts}
+                usedAmounts={usedPotionAmounts}
                 reducedTime="3h"
               />
               <SpeedUpPotion
-                loading={loading}
-                onClick={() => applyPotion(AdventurePotion.SixHourSpeedy, otto.tokenId)}
+                disabled={potionButtonDisabled}
+                potion={AdventurePotion.SixHourSpeedy}
+                onChanged={setUsedPotionAmounts}
                 image={SpeedPotion.src}
-                hasAmount={amounts[AdventurePotion.SixHourSpeedy]}
+                amounts={amounts}
+                usedAmounts={usedPotionAmounts}
                 reducedTime="6h"
               />
             </StyledPotionContainer>
-            <PaymentButton
-              width="100%"
-              spenderAddress={ADVENTURE}
-              amount={4 * 1e9}
-              token={Token.Clam}
-              Typography={ContentLarge}
-              padding="6px 20px 0"
-              onClick={() => onFinish(true, [])}
-            >
-              {t('finish_immediately_btn')}
-            </PaymentButton>
+            {usedPotions.length <= 0 && (
+              <PaymentButton
+                width="100%"
+                spenderAddress={ADVENTURE}
+                loading={state === 'Mining'}
+                amount={4 * 1e9}
+                token={Token.Clam}
+                Typography={ContentLarge}
+                padding="6px 20px 0"
+                onClick={() => onFinish(true, [])}
+              >
+                {t('finish_immediately_btn')}
+              </PaymentButton>
+            )}
+            {usedPotions.length > 0 && (
+              <Button
+                loading={state === 'Mining'}
+                width="100%"
+                Typography={ContentLarge}
+                padding="6px 20px 0"
+                onClick={() => onFinish(true, usedPotions)}
+              >
+                {t('speedup_btn')}
+              </Button>
+            )}
             <StyledHint>
               {t('wants_more')}
               <a target="_blank">{t('buy_now')}</a>

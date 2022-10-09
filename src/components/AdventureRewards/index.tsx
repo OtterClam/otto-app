@@ -11,6 +11,17 @@ import itemsImage from 'assets/adventure/reward/items.png'
 import AdventureRibbonText from 'components/AdventureRibbonText'
 import { useAdventureLocation } from 'contexts/AdventureLocation'
 import { BoostTarget } from 'models/AdventureLocation'
+import useAdventurePotion from 'hooks/useAdventurePotion'
+import { AdventurePotion } from 'constant'
+import noop from 'lodash/noop'
+import { useCallback, useEffect, useState } from 'react'
+import expPotionIcon from '../../assets/potions/exp.png'
+import strPotionIcon from '../../assets/potions/str.png'
+
+const potionIcons: { [k: string]: any } = {
+  [AdventurePotion.Exp]: expPotionIcon,
+  [AdventurePotion.Str]: strPotionIcon,
+}
 
 const StyledLocationDetails = styled.div`
   display: flex;
@@ -77,9 +88,67 @@ const StyledRope = styled(SectionRope)`
   height: 30px;
 `
 
-export default function AdventureRewards() {
-  const { t } = useTranslation()
+const StyledPotionButton = styled(Note).attrs({ as: 'button' })<{ disabled: boolean }>`
+  color: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.otterBlue};
+  border-radius: 4px;
+  padding: 0px 5px;
+  display: flex;
+  align-items: center;
+  height: 18px;
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.darkGray200};
+    background: ${({ theme }) => theme.colors.otterBlack};
+  }
+`
+
+const StyledPotionIcon = styled.div<{ potion: AdventurePotion }>`
+  width: 16px;
+  height: 16px;
+  background: center / cover url(${({ potion }) => potionIcons[potion].src});
+`
+
+function PotionButton({
+  potion,
+  potionAmounts,
+  usedPotionAmounts,
+  onUse,
+}: {
+  potion: AdventurePotion
+  potionAmounts: { [k: string]: number }
+  usedPotionAmounts: { [k: string]: number }
+  onUse: (potion: AdventurePotion) => void
+}) {
+  const { t } = useTranslation('', { keyPrefix: 'adventureLocation' })
+  const amount = potionAmounts[potion] ?? 0
+  const usedAmount = usedPotionAmounts[potion] ?? 0
+  return (
+    <StyledPotionButton disabled={amount - usedAmount <= 0} onClick={() => onUse(potion)}>
+      <StyledPotionIcon potion={potion} />
+      {usedAmount > 0 && t('usedPotion', { amount: usedAmount })}
+      {usedAmount === 0 && amount === 0 && t('noPotion')}
+      {usedAmount === 0 && amount > 0 && t('usePotion')}
+    </StyledPotionButton>
+  )
+}
+
+export interface AdventureRewardsProps {
+  canUsePotions?: boolean
+  onUsePotion?: (usedPotionAmounts: { [k: string]: number }) => void
+}
+
+export default function AdventureRewards({ canUsePotions, onUsePotion = noop }: AdventureRewardsProps) {
+  const { t } = useTranslation('', { keyPrefix: 'adventureLocation' })
   const location = useAdventureLocation()
+  const { amounts: potionAmounts } = useAdventurePotion()
+  const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
+  const applyPotion = useCallback((potion: AdventurePotion) => {
+    setUsedPotionAmounts(usedPotionAmounts => ({
+      ...usedPotionAmounts,
+      [potion]: (usedPotionAmounts[potion] ?? 0) + 1,
+    }))
+  }, [])
   const effectiveBoosts = (location?.conditionalBoosts ?? []).filter(boost => boost.effective)
   const itemReward = effectiveBoosts.reduce(
     ([min, max], boost) => {
@@ -110,6 +179,10 @@ export default function AdventureRewards() {
     itemReward[1] += location.successRewards.item.max ?? 0
   }
 
+  useEffect(() => {
+    onUsePotion(usedPotionAmounts)
+  }, [usedPotionAmounts])
+
   return (
     <div>
       {location && (
@@ -117,17 +190,17 @@ export default function AdventureRewards() {
           <StyledLocationDetails>
             <StyledLocationDetail>
               <StyledLocationDetailLabel>
-                {t('adventureLocation.successRate')} <HelpButton message={t('adventureLocation.successRateHelp')} />
+                {t('successRate')} <HelpButton message={t('successRateHelp')} />
               </StyledLocationDetailLabel>
               <StyledLocationDetailValue>{location.successRate}%</StyledLocationDetailValue>
             </StyledLocationDetail>
             <StyledLocationDetail>
-              <StyledLocationDetailLabel>{t('adventureLocation.adventureTime')}</StyledLocationDetailLabel>
+              <StyledLocationDetailLabel>{t('adventureTime')}</StyledLocationDetailLabel>
               <StyledLocationDetailValue>{formatDuration(location.adventureTime)}</StyledLocationDetailValue>
             </StyledLocationDetail>
             <StyledLocationDetail>
               <StyledLocationDetailLabel>
-                {t('adventureLocation.restingTime')} <HelpButton message={t('adventureLocation.restingTimeHelp')} />
+                {t('restingTime')} <HelpButton message={t('restingTimeHelp')} />
               </StyledLocationDetailLabel>
               <StyledLocationDetailValue>{formatDuration(location.restingTime)}</StyledLocationDetailValue>
             </StyledLocationDetail>
@@ -136,18 +209,34 @@ export default function AdventureRewards() {
           <StyledRope />
 
           <StyledTitle>
-            <AdventureRibbonText>{t('adventureLocation.rewardSectionTitle')}</AdventureRibbonText>
+            <AdventureRibbonText>{t('rewardSectionTitle')}</AdventureRibbonText>
           </StyledTitle>
 
           <StyledSection showRope={false}>
             <StyledReward>
               <StyledRewardIcon icon={expImage.src} />
               <StyledRewardValue>+{location.successRewards.exp?.fixed ?? 0} EXP</StyledRewardValue>
+              {canUsePotions && (
+                <PotionButton
+                  potion={AdventurePotion.Exp}
+                  potionAmounts={potionAmounts}
+                  usedPotionAmounts={usedPotionAmounts}
+                  onUse={applyPotion}
+                />
+              )}
             </StyledReward>
 
             <StyledReward>
               <StyledRewardIcon icon={itemsImage.src} />
               <StyledRewardValue>{itemReward.join('~')} items</StyledRewardValue>
+              {canUsePotions && (
+                <PotionButton
+                  potion={AdventurePotion.Str}
+                  potionAmounts={potionAmounts}
+                  usedPotionAmounts={usedPotionAmounts}
+                  onUse={applyPotion}
+                />
+              )}
             </StyledReward>
 
             <StyledReward>

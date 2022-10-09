@@ -2,6 +2,7 @@ import styled from 'styled-components/macro'
 import Image from 'next/image'
 import { ContentLarge, Note } from 'styles/typography'
 import { useTranslation } from 'next-i18next'
+import { AdventurePotion } from 'constant'
 
 const StyledSpeedUpPotion = styled.div`
   display: flex;
@@ -44,25 +45,92 @@ const StyledUseButton = styled(Note).attrs({ as: 'button' })<{ disabled?: boolea
   }
 `
 
+const StyledAmountSelector = styled(Note)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.otterBlack};
+  gap: 2px;
+  padding: 2px;
+  border-radius: 4px;
+  width: 100%;
+  user-select: none;
+`
+
+const StyledIncreaseAmountButton = styled(Note).attrs({ as: 'button' })`
+  color: ${({ theme }) => theme.colors.white};
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  background: ${({ theme }) => theme.colors.otterBlue};
+`
+
+const StyledDecreaseAmountButton = styled(Note).attrs({ as: 'button' })`
+  color: ${({ theme }) => theme.colors.white};
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  background: ${({ theme }) => theme.colors.darkGray200};
+`
+
 interface Props {
-  hasAmount: number
+  potion: AdventurePotion
+  amounts: { [k: string]: number }
+  usedAmounts: { [k: string]: number }
   image: string
   reducedTime: string
-  loading: boolean
-  onClick: () => void
+  onChanged: (usedAmounts: { [k: string]: number }) => void
+  disabled?: boolean
 }
 
-export default function SpeedUpPotion({ hasAmount, image, reducedTime, loading, onClick }: Props) {
+export default function SpeedUpPotion({
+  amounts,
+  usedAmounts,
+  potion,
+  disabled,
+  image,
+  reducedTime,
+  onChanged,
+}: Props) {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.exploringStep' })
+  const amount = amounts[potion] ?? 0
+  const usedAmount = usedAmounts[potion] ?? 0
+  const hasAmount = amount - usedAmount > 0
 
   return (
-    <StyledSpeedUpPotion onClick={onClick}>
+    <StyledSpeedUpPotion>
       <StyledPotionContainer>
         <Image src={image} width={64} height={64} unoptimized />
-        {hasAmount > 0 && <StyledAmount>x{hasAmount}</StyledAmount>}
+        {hasAmount && <StyledAmount>x{amount - usedAmount}</StyledAmount>}
         <StyledReducedTime>{reducedTime}</StyledReducedTime>
       </StyledPotionContainer>
-      <StyledUseButton disabled={!hasAmount || loading}>{t('use')}</StyledUseButton>
+      {!disabled && hasAmount && (
+        <StyledAmountSelector>
+          <StyledIncreaseAmountButton
+            onClick={() =>
+              onChanged({
+                ...usedAmounts,
+                [potion]: Math.max(usedAmount - 1, 0),
+              })
+            }
+          >
+            -
+          </StyledIncreaseAmountButton>
+          {usedAmount}
+          <StyledDecreaseAmountButton
+            onClick={() =>
+              onChanged({
+                ...usedAmounts,
+                [potion]: usedAmount + 1,
+              })
+            }
+          >
+            +
+          </StyledDecreaseAmountButton>
+        </StyledAmountSelector>
+      )}
+      {disabled || (!hasAmount && <StyledUseButton disabled>{t('used', { amount: usedAmount })}</StyledUseButton>)}
     </StyledSpeedUpPotion>
   )
 }
