@@ -21,7 +21,7 @@ export interface ForgeFormula {
 
 export interface RawForgeFormula {
   id: number
-  results?: Trait
+  result?: Trait
   materials: Trait[]
   amounts: number[]
   title: string
@@ -39,7 +39,7 @@ export interface RawForgeFormula {
 export const rawForgeToForge = (raw: RawForgeFormula): ForgeFormula => {
   return {
     id: raw.id,
-    result: raw.results && rawItemToItem('', raw.results),
+    result: raw.result && rawItemToItem('', raw.result),
     materials: raw.materials.map(rawItem => rawItemToItem('', rawItem)),
     materialAmounts: raw.amounts,
     title: raw.title,
