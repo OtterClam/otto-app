@@ -4,9 +4,9 @@ import { Trait } from './Otto'
 
 export interface ForgeFormula {
   id: number
-  result: Item
+  result?: Item
   materials: Item[]
-  amounts: number[]
+  materialAmounts: number[]
   title: string
   description: string
   startTime: Date
@@ -15,11 +15,13 @@ export interface ForgeFormula {
   leftImage: string
   rightImage: string
   fish: BigNumber
+  resultImage: string
+  resultText: string
 }
 
 export interface RawForgeFormula {
   id: number
-  result: Trait
+  result?: Trait
   materials: Trait[]
   amounts: number[]
   title: string
@@ -30,14 +32,16 @@ export interface RawForgeFormula {
   left_img: string
   right_img: string
   fish: string
+  result_image: string
+  result_text: string
 }
 
 export const rawForgeToForge = (raw: RawForgeFormula): ForgeFormula => {
   return {
     id: raw.id,
-    result: rawItemToItem('', raw.result),
+    result: raw.result && rawItemToItem('', raw.result),
     materials: raw.materials.map(rawItem => rawItemToItem('', rawItem)),
-    amounts: raw.amounts,
+    materialAmounts: raw.amounts,
     title: raw.title,
     description: raw.description,
     startTime: new Date(raw.start_time),
@@ -46,5 +50,7 @@ export const rawForgeToForge = (raw: RawForgeFormula): ForgeFormula => {
     leftImage: raw.left_img,
     rightImage: raw.right_img,
     fish: BigNumber.from(raw.fish),
+    resultImage: raw.result_image,
+    resultText: raw.result_text,
   }
 }
