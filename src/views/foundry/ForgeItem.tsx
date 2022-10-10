@@ -4,7 +4,7 @@ import ItemType from 'components/ItemType'
 import PaymentButton from 'components/PaymentButton'
 import SectionRope from 'components/SectionRope'
 import TreasurySection from 'components/TreasurySection'
-import { Token } from 'constant'
+import { getOpenSeaItemLink, Token } from 'constant'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import { useERC1155Approval } from 'contexts/ERC1155Approval'
 import { useForge, useSetApprovalForAll } from 'contracts/functions'
@@ -239,7 +239,9 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
           <Headline>{t('result.title')}</Headline>
           {formula.result && (
             <>
-              <StyledResultItemPreview item={formula.result} />
+              <a href={getOpenSeaItemLink(formula.result.id)} target="_blank" rel="noreferrer">
+                <StyledResultItemPreview item={formula.result} />
+              </a>
               <ContentMedium>{formula.result.name}</ContentMedium>
               <StyledItemType type={formula.result.type} />
             </>
@@ -257,7 +259,9 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
           <StyledMaterialList>
             {formula.materials.map((material, index) => (
               <StyledMaterialListItem key={index}>
-                <StyledMaterialPreview item={material} />
+                <a href={getOpenSeaItemLink(material.id)} target="_blank" rel="noreferrer">
+                  <StyledMaterialPreview item={material} />
+                </a>
                 <StyledMaterialName>{material.name}</StyledMaterialName>
                 <StyledCount>
                   {itemCounts[material.id] ?? 0} / {formula.materialAmounts[index]}
