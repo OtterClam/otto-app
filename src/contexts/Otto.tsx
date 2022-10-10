@@ -1,12 +1,10 @@
 import { ItemActionType } from 'constant'
 import useMyItems from 'hooks/useMyItems'
 import noop from 'lodash/noop'
-import { AdventureOttoStatus } from 'models/AdventureOtto'
 import Item, { ItemAction } from 'models/Item'
-import Otto, { Trait } from 'models/Otto'
+import Otto from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import { createContext, FC, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react'
-import { useAdventureOttos } from './AdventureOttos'
 
 const OttoContext = createContext<{
   otto?: Otto
@@ -55,7 +53,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
       .filter(item => item.equipped)
       .reduce((map, item) => Object.assign(map, { [item.type]: item }), {} as { [k: string]: Item })
     /*
-      const ottoIdToOtto = ottos.reduce((map, otto) => Object.assign(map, { [otto.tokenId]: otto }), {} as { [k: string]: Otto })
+      const ottoIdToOtto = ottos.reduce((map, otto) => Object.assign(map, { [otto.id]: otto }), {} as { [k: string]: Otto })
       const equippedItemToOtto = adventureOttos
         .filter(otto => otto.status === AdventureOttoStatus.Ready)
         .map(({ id }) => ottoIdToOtto[id])
@@ -90,7 +88,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
             return {
               type: ItemActionType.TakeOff,
               item_id: Number(ottoItems[type]),
-              from_otto_id: Number(otto.tokenId),
+              from_otto_id: Number(otto.id),
             }
           }
 
@@ -98,14 +96,14 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
             return {
               type: ItemActionType.EquipFromOtto,
               item_id: Number(itemId),
-              from_otto_id: Number(otto.tokenId),
+              from_otto_id: Number(otto.id),
             }
           }
 
           return {
             type: ItemActionType.Equip,
             item_id: Number(itemId),
-            from_otto_id: Number(otto.tokenId),
+            from_otto_id: Number(otto.id),
           }
         })
 

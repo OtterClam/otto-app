@@ -1,12 +1,12 @@
 import omit from 'lodash/omit'
 import { RawAdventureLocation, rawAdventureLocationToAdventureLocation, AdventureLocation } from './AdventureLocation'
-import { OttoMeta } from './Otto'
+import { RawOtto } from './Otto'
 
-export interface RawAdventurePreview extends OttoMeta {
+export interface RawAdventurePreview extends RawOtto {
   location: RawAdventureLocation
 }
 
-export interface AdventurePreview extends OttoMeta {
+export interface AdventurePreview extends RawOtto {
   location: AdventureLocation
 }
 

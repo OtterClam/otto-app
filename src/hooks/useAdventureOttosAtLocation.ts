@@ -1,11 +1,10 @@
 import { useAdventureOttos } from 'contexts/AdventureOttos'
-import { AdventureOtto } from 'models/AdventureOtto'
+import Otto from 'models/Otto'
 import { useMemo } from 'react'
 
-export default function useAdventureOttosAtLocation(locationId?: number): AdventureOtto[] {
+export default function useAdventureOttosAtLocation(locationId?: number): Otto[] {
   const { ottos } = useAdventureOttos()
-
   return useMemo(() => {
-    return ottos.filter(otto => otto.locationId === locationId)
+    return ottos.filter(otto => otto.latestAdventurePass?.locationId === locationId)
   }, [ottos, locationId])
 }

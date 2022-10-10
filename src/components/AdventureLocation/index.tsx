@@ -1,16 +1,14 @@
-import styled from 'styled-components/macro'
 import { useAdventureLocation } from 'contexts/AdventureLocations'
-import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
-import { Note } from 'styles/typography'
-import format from 'date-fns/format'
-import { AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
-import { useCallback } from 'react'
-import { Step as AdventurePopupStep } from 'components/AdventurePopup'
-import { AdventureOttoStatus } from 'models/AdventureOtto'
 import { useAdventureOttos } from 'contexts/AdventureOttos'
-import lockImage from './lock.svg'
-import CroppedImage from '../CroppedImage'
+import { AdventurePopupStep, AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
+import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
+import { AdventureOttoStatus } from 'models/Otto'
+import { useCallback } from 'react'
+import styled from 'styled-components/macro'
+import { Note } from 'styles/typography'
 import AdventureRibbonText from '../AdventureRibbonText'
+import CroppedImage from '../CroppedImage'
+import lockImage from './lock.svg'
 
 const WIDTH = 134
 const HEIGHT = 150
@@ -121,7 +119,7 @@ export default function AdventureLocation({ id, className }: AdventureLocationPr
   const { ottos: allOttos } = useAdventureOttos()
   const ottos = useAdventureOttosAtLocation(id).slice(0, 5)
   const locked = !allOttos.find(
-    otto => location && otto.level >= location.minLevel && otto.status === AdventureOttoStatus.Ready
+    otto => location && otto.level >= location.minLevel && otto.adventureStatus === AdventureOttoStatus.Ready
   )
   const top = (location?.mapPositionY ?? 0) * 100
   const left = (location?.mapPositionX ?? 0) * 100

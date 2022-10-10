@@ -82,14 +82,14 @@ export default function OttoPreviewer({ itemsPopupWidth, itemPopupHeight, itemPo
           <StyledTraitGroup>
             {otto &&
               wearableTraits.map(({ type, trait }) => (
-                <TraitButton type={type} trait={trait} key={otto.tokenId + type} onSelect={selectTrait} />
+                <TraitButton type={type} trait={trait} key={otto.id + type} onSelect={selectTrait} />
               ))}
           </StyledTraitGroup>
 
           <StyledPreviewImage>
             <AdventureRibbonText>{otto?.name}</AdventureRibbonText>
             <StyledImageContainer>
-              {otto && <CroppedImage key={otto.tokenId} src={otto.image} layout="fill" />}
+              {otto && <CroppedImage key={otto.id} src={otto.image} layout="fill" />}
             </StyledImageContainer>
           </StyledPreviewImage>
 
@@ -97,13 +97,7 @@ export default function OttoPreviewer({ itemsPopupWidth, itemPopupHeight, itemPo
             {otto?.geneticTraits
               ?.filter(trait => trait.image)
               ?.map(trait => (
-                <TraitButton
-                  locked
-                  type={trait.type}
-                  trait={trait}
-                  key={otto.tokenId + trait.type}
-                  onSelect={selectTrait}
-                />
+                <TraitButton locked type={trait.type} trait={trait} key={otto.id + trait.type} onSelect={selectTrait} />
               ))}
             <FeedButton />
           </StyledTraitGroup>

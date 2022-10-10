@@ -1,17 +1,15 @@
 import { useAdventureOtto } from 'contexts/AdventureOttos'
-import { useApi } from 'contexts/Api'
 import { useOtto } from 'contexts/Otto'
 import { useAdventureFinish } from 'contracts/functions'
-import { AdventureOttoStatus } from 'models/AdventureOtto'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import FinishedView from './FinishedView'
 import OnGoingView from './OnGoingView'
 
 export default function ExploringStep() {
   const { otto } = useOtto()
-  const adventureOtto = useAdventureOtto(otto?.tokenId)
+  const adventureOtto = useAdventureOtto(otto?.id)
   const { finishState, finish, resetFinish } = useAdventureFinish()
-  const onFinish = (immediately: boolean, potions: string[]) => otto && finish(otto.tokenId, immediately, potions)
+  const onFinish = (immediately: boolean, potions: string[]) => otto && finish(otto.id, immediately, potions)
 
   useEffect(() => {
     if (finishState.state === 'Exception' || finishState.state === 'Fail') {

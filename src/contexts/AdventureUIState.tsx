@@ -1,4 +1,3 @@
-import { Step as AdventurePopupStep, Step } from 'components/AdventurePopup'
 import noop from 'lodash/noop'
 import { AdventurePreview } from 'models/AdventurePreview'
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useReducer } from 'react'
@@ -8,6 +7,14 @@ export enum AdventureUIActionType {
   OpenPopup,
   ClosePopup,
   SetPopupStep,
+}
+
+export enum AdventurePopupStep {
+  LocationInfo,
+  PreviewOtto,
+  ReadyToGo,
+  Exploring,
+  Result,
 }
 
 export type AdventureUIAction =

@@ -1,4 +1,4 @@
-import { TransactionState, TransactionStatus } from '@usedapp/core'
+import { TransactionState } from '@usedapp/core'
 import TimeIcon from 'assets/icons/icon_time.svg'
 import AdventureLocationName from 'components/AdventureLocationName'
 import Button from 'components/Button'
@@ -10,7 +10,6 @@ import { useOtto } from 'contexts/Otto'
 import useAdventurePotion from 'hooks/useAdventurePotion'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useFormattedDuration from 'hooks/useFormattedDuration'
-import { AdventureOttoStatus } from 'models/AdventureOtto'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useMemo, useState } from 'react'
@@ -137,10 +136,10 @@ export default function OnGoingView({ state, onFinish }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.exploringStep' })
   const location = useSelectedAdventureLocation()!
   const { otto } = useOtto()
-  const adventureOtto = useAdventureOtto(otto?.tokenId)
+  const adventureOtto = useAdventureOtto(otto?.id)
   const now = new Date()
-  const canFinishAt = adventureOtto?.canFinishedAt ?? now
-  const formattedDuration = useFormattedDuration(adventureOtto?.departuredAt ?? now, canFinishAt)
+  const canFinishAt = adventureOtto?.latestAdventurePass?.canFinishedAt ?? now
+  const formattedDuration = useFormattedDuration(adventureOtto?.latestAdventurePass?.departuredAt ?? now, canFinishAt)
   const remainingDuration = useFormattedDuration(now, canFinishAt)
   const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
   const { amounts, loading } = useAdventurePotion()
@@ -172,7 +171,7 @@ export default function OnGoingView({ state, onFinish }: Props) {
             {formattedDuration}
           </StyledDuration>
         </StyledOttoPlace>
-        {adventureOtto.status === AdventureOttoStatus.Finished && (
+        {now >= canFinishAt && (
           <>
             <Button
               Typography={ContentLarge}
@@ -184,7 +183,7 @@ export default function OnGoingView({ state, onFinish }: Props) {
             <StyledSeeResultHint>{t('see_results_hint')}</StyledSeeResultHint>
           </>
         )}
-        {adventureOtto.status !== AdventureOttoStatus.Ongoing && (
+        {now < canFinishAt && (
           <>
             <StyledRemaining>{t('remaining', { time: remainingDuration })}</StyledRemaining>
             <StyledPotionContainer>

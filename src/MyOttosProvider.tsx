@@ -31,30 +31,24 @@ export function useMyOttos() {
 export function useIsMyOttos(ottoTokenId?: string): boolean {
   const { ottos } = useMyOttos()
   return useMemo(() => {
-    return Boolean(ottos.find(otto => otto.tokenId === ottoTokenId))
+    return Boolean(ottos.find(otto => otto.id === ottoTokenId))
   }, [ottos, ottoTokenId])
 }
 
 // this component must to be wrapped by AdventureOttosProvider
 export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
-  const { ottos: adventureOttos, refetch: refetchAdventureOttos, loading } = useAdventureOttos()
-
-  const adventureOttoIds = useMemo(() => adventureOttos.map(o => String(o.id)), [adventureOttos])
-  const { data: adventureRawOttosData, loading: loadingRaw } = useRawOttos(adventureOttoIds)
-
-  const { ottos, loading: loadingMeta } = useOttos(adventureRawOttosData?.ottos, { details: true })
-
+  const { ottos, refetch: refetchAdventureOttos, loading } = useAdventureOttos()
   const reload = useCallback(() => {
     return refetchAdventureOttos()
-  }, [])
+  }, [refetchAdventureOttos])
 
   const myOttos = useMemo(
     () => ({
-      loading: loading || loadingRaw || loadingMeta,
+      loading,
       ottos,
       reload,
     }),
-    [loading, loadingMeta, ottos, reload]
+    [loading, ottos, reload]
   )
 
   return <MyOttosContext.Provider value={myOttos}>{children}</MyOttosContext.Provider>

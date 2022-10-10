@@ -120,7 +120,7 @@ const StyledOttoImage = styled.div`
 const useOttos = (item?: Item, selectedOtto?: Otto) => {
   const ottos = useAdventureOttosWithItem(item?.id ?? '')
   const ottosExceptSelectedOtto = useMemo(() => {
-    return ottos.filter(otto => String(otto.id) !== selectedOtto?.tokenId)
+    return ottos.filter(otto => String(otto.id) !== selectedOtto?.id)
   }, [item, selectedOtto])
   return ottosExceptSelectedOtto
 }

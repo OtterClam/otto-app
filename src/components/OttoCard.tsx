@@ -110,8 +110,8 @@ export default function OttoCard({ otto, oldOtto, item, takeOff = false, classNa
   const diffAttrs = useMemo(() => {
     const diff: Record<string, string> = {}
     if (oldOtto) {
-      otto.metadata.otto_attrs.forEach(({ trait_type, value }) => {
-        const oldAttr = oldOtto.metadata.otto_attrs.find(({ trait_type: t }) => t === trait_type)
+      otto.raw.otto_attrs.forEach(({ trait_type, value }) => {
+        const oldAttr = oldOtto.raw.otto_attrs.find(({ trait_type: t }) => t === trait_type)
         const diffValue = Number(value) - Number(oldAttr?.value ?? 0)
         diff[trait_type] = String(diffValue > 0 ? `+${diffValue}` : diffValue)
       })

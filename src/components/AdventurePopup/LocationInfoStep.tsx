@@ -1,15 +1,19 @@
+import AdventureConditionalBoosts from 'components/AdventureConditionalBoosts'
+import AdventureLocationName from 'components/AdventureLocationName'
+import AdventureOngoingOttos from 'components/AdventureOngoingOttos'
 import AdventureRewards from 'components/AdventureRewards'
+import Button from 'components/Button'
 import CroppedImage from 'components/CroppedImage'
-import { AdventureUIActionType, useAdventureUIState, useSelectedAdventureLocation } from 'contexts/AdventureUIState'
+import { AdventureLocationProvider } from 'contexts/AdventureLocation'
+import {
+  AdventurePopupStep,
+  AdventureUIActionType,
+  useAdventureUIState,
+  useSelectedAdventureLocation,
+} from 'contexts/AdventureUIState'
+import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
-import { useTranslation } from 'next-i18next'
-import AdventureConditionalBoosts from 'components/AdventureConditionalBoosts'
-import AdventureOngoingOttos from 'components/AdventureOngoingOttos'
-import Button from 'components/Button'
-import { AdventureLocationProvider } from 'contexts/AdventureLocation'
-import AdventureLocationName from 'components/AdventureLocationName'
-import { Step } from '.'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -76,7 +80,7 @@ export function LocationInfoStep() {
   const location = useSelectedAdventureLocation()
 
   const preview = () => {
-    dispatch({ type: AdventureUIActionType.SetPopupStep, data: Step.PreviewOtto })
+    dispatch({ type: AdventureUIActionType.SetPopupStep, data: AdventurePopupStep.PreviewOtto })
   }
 
   return (

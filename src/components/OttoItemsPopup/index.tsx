@@ -92,7 +92,7 @@ export default memo(function OttoItemsPopup({ className, height, maxWidth, onReq
 
   useEffect(() => {
     refetch()
-  }, [otto?.tokenId])
+  }, [otto?.id])
 
   return (
     <ItemFiltersProvider items={filteredItems}>

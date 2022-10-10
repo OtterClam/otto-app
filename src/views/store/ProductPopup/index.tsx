@@ -167,7 +167,7 @@ export default function ProductPopup({
                 setState(State.Loading)
                 buy(
                   main,
-                  ottos.map(o => o.tokenId)
+                  ottos.map(o => o.id)
                 )
               }}
             />

@@ -253,10 +253,7 @@ export default function OttoPage() {
   const { chainId } = useEthers()
   const router = useRouter()
   const ottoId = router.query.ottoId as string
-  const { data } = useQuery<GetOtto, GetOttoVariables>(GET_OTTO, {
-    variables: { ottoId },
-  })
-  const { otto } = useOtto(data?.ottos[0], true)
+  const { otto } = useOtto(ottoId, true)
   const infos = useMemo(
     () =>
       otto
@@ -371,7 +368,7 @@ export default function OttoPage() {
                     <StyledStatIcon src={otto.legendary ? LegendaryIcon.src : ClassicIcon.src} />
                     <StyledStatTitle>{t(otto.legendary ? 'otto.legendary' : 'otto.classic')}</StyledStatTitle>
                     <StyledStatDesc>{t(otto.legendary ? 'otto.legendary_note' : 'otto.classic_note')}</StyledStatDesc>
-                    {Number(otto.tokenId) >= reserveOttoAmount(chainId) && otto.legendary && (
+                    {Number(otto.id) >= reserveOttoAmount(chainId) && otto.legendary && (
                       <StyledLegendaryBoost>
                         {t('otto.legendary_boost', {
                           context: (otto.raw.legendaryBoost || 0) > 0 ? 'added' : 'removed',

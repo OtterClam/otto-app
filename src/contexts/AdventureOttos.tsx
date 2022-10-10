@@ -1,11 +1,11 @@
 import { useEthers } from '@usedapp/core'
-import { AdventureOtto } from 'models/AdventureOtto'
+import Otto from 'models/Otto'
 import { createContext, PropsWithChildren, useContext, useEffect, useMemo } from 'react'
 import { useApi, useApiCall } from './Api'
 
 export interface AdventureOttoState {
   refetch: () => Promise<void>
-  ottos: AdventureOtto[]
+  ottos: Otto[]
   loading: boolean
 }
 
@@ -23,12 +23,9 @@ export const AdventureOttosProvider = ({ children }: PropsWithChildren<object>) 
     result: ottos,
     refetch,
   } = useApiCall('getAdventureOttos', [account ?? ''], Boolean(account), [account])
-
-  console.log('ottos', ottos)
-
   const value = useMemo(
     () => ({
-      ottos: (ottos ?? []).filter(otto => otto.imageWoBg),
+      ottos: ottos ?? [],
       refetch,
       loading,
     }),

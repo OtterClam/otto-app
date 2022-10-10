@@ -1,11 +1,9 @@
-import { useGoToAdventurePopupStep, useSelectedAdventureLocation } from 'contexts/AdventureUIState'
+import { AdventurePopupStep, useGoToAdventurePopupStep, useSelectedAdventureLocation } from 'contexts/AdventureUIState'
 import { useOtto } from 'contexts/Otto'
-import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import { useEffect } from 'react'
 import styled from 'styled-components/macro'
 import { ContentLarge, Display1 } from 'styles/typography'
-import { Step } from '.'
 
 const StyledReadyToGoStep = styled.div<{ bg: string }>`
   display: flex;
@@ -38,7 +36,7 @@ export default function ReadyToGoStep() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      goToStep(Step.Exploring)
+      goToStep(AdventurePopupStep.Exploring)
     }, 5000)
     return () => {
       clearTimeout(timer)

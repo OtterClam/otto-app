@@ -1,7 +1,7 @@
 import { useAdventureUIState } from 'contexts/AdventureUIState'
 import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
 import useFormattedDuration from 'hooks/useFormattedDuration'
-import { AdventureOtto, AdventureOttoStatus } from 'models/AdventureOtto'
+import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
 import styled from 'styled-components/macro'
@@ -62,9 +62,9 @@ const StyledNoOtto = styled(Note).attrs({ as: 'div' })`
   padding: 10px;
 `
 
-function ListItem({ otto }: { otto: AdventureOtto }) {
+function ListItem({ otto }: { otto: Otto }) {
   const { t } = useTranslation('', { keyPrefix: 'ongoingOttos' })
-  const duration = useFormattedDuration(new Date(), otto.canFinishedAt ?? new Date())
+  const duration = useFormattedDuration(new Date(), otto.latestAdventurePass?.canFinishedAt ?? new Date())
 
   return (
     <StyledListItem>
@@ -84,7 +84,10 @@ export default function AdventureOngoingOttos() {
     state: { selectedLocationId },
   } = useAdventureUIState()
   const ottos = useAdventureOttosAtLocation(selectedLocationId)
-  const ongoingOttos = useMemo(() => ottos.filter(otto => otto.status === AdventureOttoStatus.Ongoing), [ottos])
+  const ongoingOttos = useMemo(
+    () => ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ongoing),
+    [ottos]
+  )
 
   return (
     <AdventureInfoSection title={t('title')}>

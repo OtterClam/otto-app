@@ -13,6 +13,7 @@ import { AdventureLocationProvider } from 'contexts/AdventureLocation'
 import { AdventureOttoProvider } from 'contexts/AdventureOtto'
 import { useAdventureOttos } from 'contexts/AdventureOttos'
 import {
+  AdventurePopupStep,
   useCloseAdventurePopup,
   useGoToAdventurePopupStep,
   useSelectedAdventureLocation,
@@ -26,7 +27,6 @@ import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentMedium, Headline } from 'styles/typography'
-import { Step } from '.'
 
 const StyledContainer = styled.div<{ bg: string }>`
   display: flex;
@@ -111,7 +111,7 @@ export default function PreviewOttoStep() {
         actions.push({
           type: ItemActionType.Use,
           item_id: Number(potion),
-          from_otto_id: Number(otto.tokenId),
+          from_otto_id: Number(otto.id),
         })
       }
     })
@@ -120,7 +120,7 @@ export default function PreviewOttoStep() {
 
   const { result: preview } = useApiCall(
     'getOttoAdventurePreview',
-    [otto?.tokenId ?? '', location?.id ?? -1, actions],
+    [otto?.id ?? '', location?.id ?? -1, actions],
     Boolean(otto && location),
     [otto, location, actions]
   )
@@ -140,19 +140,19 @@ export default function PreviewOttoStep() {
           actions.push({
             type: ItemActionType.Use,
             item_id: Number(potion),
-            from_otto_id: Number(otto.tokenId),
+            from_otto_id: Number(otto.id),
           })
         }
         return actions
       })
       .reduce((all, list) => all.concat(list), [] as ItemAction[])
 
-    departure(otto.tokenId, location.id, potionActions)
-  }, [usedPitionAmounts, otto?.tokenId, location?.id, equippedItemActions])
+    departure(otto.id, location.id, potionActions)
+  }, [usedPitionAmounts, otto?.id, location?.id, equippedItemActions])
 
   useEffect(() => {
     if (departureState.state === 'Success') {
-      Promise.all([reloadMyOttos(), reloadAdventureOttos()]).then(() => goToStep(Step.ReadyToGo))
+      Promise.all([reloadMyOttos(), reloadAdventureOttos()]).then(() => goToStep(AdventurePopupStep.ReadyToGo))
     }
     if (departureState.state === 'Fail') {
       alert(departureState.status.errorMessage)
@@ -177,7 +177,7 @@ export default function PreviewOttoStep() {
               primaryColor="white"
               Typography={ContentMedium}
               padding="0 10px"
-              onClick={() => goToStep(Step.LocationInfo)}
+              onClick={() => goToStep(AdventurePopupStep.LocationInfo)}
             >
               {'<'}
             </Button>
