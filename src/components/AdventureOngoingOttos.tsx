@@ -20,7 +20,7 @@ const StyledImageContainer = styled.div`
   min-width: 24px;
   max-width: 24px;
   height: 24px;
-  box-sizibg: border-box;
+  box-sizing: border-box;
   border-radius: 4px;
   border: 1px ${({ theme }) => theme.colors.otterBlack} solid;
   position: relative;

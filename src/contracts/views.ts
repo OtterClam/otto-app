@@ -239,22 +239,11 @@ export function useNextRewardTime() {
   return result?.value ? result?.value[0] : constants.Zero
 }
 
-export function useIsApprovedForAll(contract: string, account: string, operator: string) {
+export function useIsApprovedForAll(contract: string, operator: string) {
   const erc1155 = useERC1155(contract)
-  const [isApprovedForAll, setIsApprovedForAll] = useState(false)
-
-  const updateApprovalStatus = useCallback(() => {
-    if (account && operator) {
-      erc1155.isApprovedForAll(account, operator).then(setIsApprovedForAll)
-    }
-  }, [erc1155, operator, account])
-
-  useEffect(() => {
-    updateApprovalStatus()
-  }, [updateApprovalStatus])
-
+  const { account } = useEthers()
+  const result = useCall(account && { contract: erc1155, method: 'isApprovedForAll', args: [account, operator] })
   return {
-    isApprovedForAll,
-    updateApprovalStatus,
+    isApprovedForAll: result?.value ? result?.value[0] : false,
   }
 }

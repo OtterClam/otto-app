@@ -107,7 +107,7 @@ export default function PreviewOttoStep() {
     [otto, location, itemIds]
   )
 
-  const { departure, loading, readyToGo } = useAdventureDeparture()
+  const { departure, departureState, resetDeparture } = useAdventureDeparture()
 
   const handleDepartureButtonClick = useCallback(() => {
     if (!otto || !location) {
@@ -133,10 +133,14 @@ export default function PreviewOttoStep() {
   }, [usedPitionAmounts, otto?.tokenId, location?.id, equippedItems])
 
   useEffect(() => {
-    if (readyToGo) {
+    if (departureState.state === 'Success') {
       Promise.all([reloadMyOttos(), reloadAdventureOttos()]).then(() => goToStep(Step.ReadyToGo))
     }
-  }, [readyToGo])
+    if (departureState.state === 'Fail') {
+      alert(departureState.status.errorMessage)
+      resetDeparture()
+    }
+  }, [departureState])
 
   return (
     <AdventureLocationProvider location={preview?.location}>
@@ -174,7 +178,7 @@ export default function PreviewOttoStep() {
           <Button
             padding="3px 0 0"
             Typography={Headline}
-            loading={loading || loadingOttos || loadingAdventureOttos}
+            loading={departureState.state === 'Processing' || loadingOttos || loadingAdventureOttos}
             onClick={handleDepartureButtonClick}
           >
             {t('adventurePopup.start')}
