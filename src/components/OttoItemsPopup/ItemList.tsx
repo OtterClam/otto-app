@@ -4,6 +4,9 @@ import ItemCell from 'components/ItemCell'
 import Otto from 'models/Otto'
 import { Note } from 'styles/typography'
 import { useTranslation } from 'next-i18next'
+import { useMemo } from 'react'
+import { useTrait } from 'contexts/TraitContext'
+import Item, { traitToItem } from 'models/Item'
 
 const StyledItems = styled.div`
   display: grid;
@@ -30,7 +33,20 @@ export interface ItemListProps {
 
 export default function ItemList({ otto, isWearable, selectItem, selectedItemId }: ItemListProps) {
   const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
+  const { traitType } = useTrait()
   const { filteredItems } = useItemFilters()
+  const { currentItem, restItems } = useMemo(() => {
+    const trait = otto?.wearableTraits.find(trait => trait.type === traitType)
+    const restItems = filteredItems.slice()
+    const currentItemIndex = filteredItems.findIndex(item => item.id === trait?.id)
+    let currentItem: Item | undefined
+    if (currentItemIndex !== -1) {
+      currentItem = restItems[currentItemIndex]
+    } else if (trait) {
+      currentItem = traitToItem(trait)
+    }
+    return { currentItem, restItems }
+  }, [filteredItems, traitType, otto])
 
   if (!filteredItems.length) {
     return <StyledNoItems>{t('noItems')}</StyledNoItems>
@@ -38,7 +54,16 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
 
   return (
     <StyledItems>
-      {filteredItems.map(item => (
+      {currentItem && (
+        <StyledItem
+          key={currentItem.id}
+          item={currentItem}
+          currentOtto={otto}
+          onClick={() => selectItem(currentItem.id)}
+          selected={selectedItemId === currentItem.id}
+        />
+      )}
+      {restItems.map(item => (
         <StyledItem
           key={item.id}
           unavailable={!isWearable(item.id)}

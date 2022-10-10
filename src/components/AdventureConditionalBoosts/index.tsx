@@ -7,15 +7,6 @@ import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
 import Boost from './Boost'
 
-const StyledTitle = styled(Note)`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 31px;
-  background: ${({ theme }) => theme.colors.darkGray300};
-`
-
 const StyledBoosts = styled.div`
   position: relative;
   padding: 10px;

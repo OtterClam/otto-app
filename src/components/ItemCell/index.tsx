@@ -7,6 +7,7 @@ import Otto from 'models/Otto'
 import { memo } from 'react'
 import selectedFrameCornerImage from './seelcted-frame-corner.svg'
 import chainedImage from './chained.svg'
+import nonReturnableImage from './nonreturnable.png'
 
 const StyledItemCell = styled.button<{ rarity: string; selected: boolean; unavailable: boolean; canClick: boolean }>`
   width: 115px;
@@ -127,6 +128,29 @@ const StyledEquipped = styled.div`
   border-radius: 0 5px 5px 5px;
 `
 
+const StyledUonreturnable = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 0;
+  left: -2px;
+  top: -2px;
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border: 2px solid ${({ theme }) => theme.colors.otterBlack};
+  background: ${({ theme }) => theme.colors.white};
+
+  &::before {
+    content: '';
+    width: 18px;
+    height: 18px;
+    background: center / cover url(${nonReturnableImage.src});
+  }
+`
+
 interface Props {
   item: Item
   currentOtto?: Otto
@@ -136,8 +160,8 @@ interface Props {
   className?: string
 }
 
-export default memo(function ItemCell({
-  item: { id, image, rarity, equipped, amount },
+export default function ItemCell({
+  item: { id, image, rarity, equipped, amount, unreturnable },
   currentOtto,
   unavailable = false,
   selected = false,
@@ -150,7 +174,7 @@ export default memo(function ItemCell({
   return (
     <StyledItemCell
       rarity={rarity}
-      unavailable={unavailable}
+      unavailable={unavailable && !equippedByCurrentOtto}
       selected={selected}
       canClick={Boolean(onClick)}
       className={className}
@@ -178,6 +202,7 @@ export default memo(function ItemCell({
           <StyledSelectedFrame right />
         </>
       )}
+      {unreturnable && <StyledUonreturnable />}
     </StyledItemCell>
   )
-})
+}

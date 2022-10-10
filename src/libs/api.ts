@@ -149,11 +149,11 @@ export class Api {
   public async getOttoAdventurePreview(
     ottoId: string,
     locationId: number,
-    replacedItemIds: string[] = []
+    actions: ItemAction[]
   ): Promise<AdventurePreview> {
     let url = `/ottos/${ottoId}/adventure/locations/${locationId}/preview`
-    if (replacedItemIds.length) {
-      url += `?items=${replacedItemIds.join(',')}`
+    if (actions.length) {
+      url += `?actions=${JSON.stringify(actions)}`
     }
     const result = await this.otterclamClient.get<RawAdventurePreview>(url)
     return rawAdventurePreviewToAdventurePreview(result.data)
