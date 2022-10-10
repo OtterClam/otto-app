@@ -6,19 +6,23 @@ export enum AdventureOttoStatus {
   Unavailable = 'unavailable',
 }
 
+export interface RawAdventurePass {
+  location_id: number
+  finished_tx?: string
+  departured_at: string
+  can_finished_at: string
+  finished_at?: string
+}
+
 export interface RawAdventureOtto {
   id: number
   name: string
   image: string
   image_wo_bg: string
-  status: AdventureOttoStatus
-  departured_at?: string
-  can_finished_at?: string
-  finished_at?: string
+  adventure_status: AdventureOttoStatus
   resting_until?: string
-  location_id?: number
   level: number
-  finished_tx?: string
+  latest_adventure_pass: RawAdventurePass
 }
 
 export interface AdventureOtto {
@@ -34,24 +38,38 @@ export interface AdventureOtto {
   locationId?: number
   level: number
   finishedTx?: string
+  latestAdventurePass?: AdventurePass
+}
+
+export interface AdventurePass {
+  locationId: number
+  finishedAt?: Date
+  finishedTx?: string
+  departuredAt: Date
+  canFinishedAt: Date
 }
 
 export const rawAdventureOttoToAdventureOtto = (raw: RawAdventureOtto): AdventureOtto => {
-  if (!Object.values(AdventureOttoStatus).includes(raw.status)) {
-    throw new Error(`unknown status: ${raw.status}`)
+  if (!Object.values(AdventureOttoStatus).includes(raw.adventure_status)) {
+    throw new Error(`unknown status: ${raw.adventure_status}`)
   }
+  const latestAdventurePass = raw.latest_adventure_pass
+    ? {
+        finishedTx: raw.latest_adventure_pass.finished_tx,
+        locationId: raw.latest_adventure_pass.location_id,
+        departuredAt: new Date(raw.latest_adventure_pass.departured_at),
+        finishedAt: raw.latest_adventure_pass.finished_at ? new Date(raw.latest_adventure_pass.finished_at) : undefined,
+        canFinishedAt: new Date(raw.latest_adventure_pass.can_finished_at),
+      }
+    : undefined
   return {
     id: raw.id,
     name: raw.name,
     image: raw.image,
     imageWoBg: raw.image_wo_bg,
-    status: raw.status,
-    departuredAt: raw.departured_at ? new Date(raw.departured_at) : undefined,
-    finishedAt: raw.finished_at ? new Date(raw.finished_at) : undefined,
-    canFinishedAt: raw.can_finished_at ? new Date(raw.can_finished_at) : undefined,
+    status: raw.adventure_status,
     restingUntil: raw.resting_until ? new Date(raw.resting_until) : undefined,
-    locationId: raw.location_id,
     level: raw.level,
-    finishedTx: raw.finished_tx,
+    latestAdventurePass,
   }
 }
