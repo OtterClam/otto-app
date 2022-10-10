@@ -1,13 +1,6 @@
-import { useQuery } from '@apollo/client'
-import { useEthers } from '@usedapp/core'
 import { useAdventureOttos } from 'contexts/AdventureOttos'
-import { LIST_MY_OTTOS } from 'graphs/otto'
-import { useOttos } from 'hooks/useOtto'
-import useRawOttos from 'hooks/useRawOttos'
-import { sortBy } from 'lodash'
-import Otto, { RawOtto } from 'models/Otto'
+import Otto from 'models/Otto'
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo } from 'react'
-import { ListMyOttos, ListMyOttosVariables } from './graphs/__generated__/ListMyOttos'
 
 interface MyOttos {
   loading: boolean
