@@ -167,7 +167,7 @@ export const useBuyProduct = (claim: boolean) => {
         await (await clam.approve(OTTOPIA_STORE, constants.MaxUint256)).wait()
       }
       send(account || '', id, '1', {
-        gasLimit: 1000000,
+        gasLimit: 2500000,
       })
     }
   }

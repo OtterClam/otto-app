@@ -69,10 +69,8 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
   const [dice, setDice] = useState<Dice>()
   const { account } = useEthers()
   const product = useHellDiceProduct()
-  const store = useStoreContract()
   const ottoHellDiceRoller = useOttoHellDiceRoller()
   const { library } = useEthers()
-  const { i18n } = useTranslation()
 
   useEffect(() => {
     if (unfinishDice) {
@@ -88,7 +86,10 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
 
     try {
       setState(State.Processing)
-      const tx = await connectContractToSigner(ottoHellDiceRoller, {}, library).roll(otto.tokenId, BigNumber.from('1'))
+      const tx = await connectContractToSigner(ottoHellDiceRoller, {}, library.getSigner()).roll(
+        otto.tokenId,
+        BigNumber.from('1')
+      )
       await tx.wait()
       setDice(await api.rollTheDice(otto.tokenId, tx.hash))
       setState(State.FirstResult)
