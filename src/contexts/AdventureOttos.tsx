@@ -24,6 +24,8 @@ export const AdventureOttosProvider = ({ children }: PropsWithChildren<object>) 
     refetch,
   } = useApiCall('getAdventureOttos', [account ?? ''], Boolean(account), [account])
 
+  console.log('ottos', ottos)
+
   const value = useMemo(
     () => ({
       ottos: (ottos ?? []).filter(otto => otto.imageWoBg),

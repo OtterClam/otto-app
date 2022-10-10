@@ -1,23 +1,26 @@
+import { ItemActionType } from 'constant'
+import useMyItems from 'hooks/useMyItems'
 import noop from 'lodash/noop'
+import { AdventureOttoStatus } from 'models/AdventureOtto'
+import Item, { ItemAction } from 'models/Item'
 import Otto, { Trait } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
-import { createContext, FC, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, FC, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react'
+import { useAdventureOttos } from './AdventureOttos'
 
 const OttoContext = createContext<{
   otto?: Otto
   setOtto: (otto?: Otto) => void
-  loading: boolean
   resetEquippedItems: () => void
-  equipItem: (trait: Trait) => void
-  equippedItems: Trait[]
-  reload: () => Promise<void>
+  equipItem: (traitType: string, traitId: string) => void
+  removeItem: (traitType: string) => void
+  itemActions: ItemAction[]
 }>({
   setOtto: noop,
-  loading: true,
   resetEquippedItems: noop,
   equipItem: noop,
-  equippedItems: [],
-  reload: () => Promise.resolve(),
+  removeItem: noop,
+  itemActions: [],
 })
 
 export function withOtto<P>(Component: FC<P>): FC<P> {
@@ -29,32 +32,13 @@ export function withOtto<P>(Component: FC<P>): FC<P> {
 }
 
 export function OttoProvider({ children }: PropsWithChildren<object>) {
-  const { ottos, loading, reload } = useMyOttos()
-  const [initialized, setInitialized] = useState(false)
+  const { ottos } = useMyOttos()
+  // const { ottos: adventureOttos } = useAdventureOttos()
+  const { items } = useMyItems()
   const [otto, setOtto] = useState<Otto | undefined>()
-  const [equippedItems, setEquippedItems] = useState<Trait[]>([])
-
-  const equipItem = useCallback((trait: Trait) => {
-    setEquippedItems(equippedItems => {
-      const traits = equippedItems.filter(currTrait => currTrait.type !== trait.type)
-      traits?.push(trait)
-      return traits
-    })
-  }, [])
-
-  const resetEquippedItems = useCallback(() => {
-    setEquippedItems([])
-  }, [])
-
-  useEffect(() => {
-    reload()
-  }, [])
-
-  useEffect(() => {
-    if (!loading) {
-      setInitialized(true)
-    }
-  }, [loading])
+  const [draftItems, setDraftItems] = useState<{
+    [traitType: string]: string | null
+  }>({})
 
   useEffect(() => {
     if (!otto && ottos.length > 0) {
@@ -63,21 +47,96 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
   }, [ottos])
 
   useEffect(() => {
-    resetEquippedItems()
+    setDraftItems({})
   }, [otto])
 
-  const value = useMemo(
-    () => ({
+  const value = useMemo(() => {
+    const equippedItems = items
+      .filter(item => item.equipped)
+      .reduce((map, item) => Object.assign(map, { [item.type]: item }), {} as { [k: string]: Item })
+    /*
+      const ottoIdToOtto = ottos.reduce((map, otto) => Object.assign(map, { [otto.tokenId]: otto }), {} as { [k: string]: Otto })
+      const equippedItemToOtto = adventureOttos
+        .filter(otto => otto.status === AdventureOttoStatus.Ready)
+        .map(({ id }) => ottoIdToOtto[id])
+        .filter(Boolean)
+        .map(otto => otto.wearableTraits.reduce((map, trait) => Object.assign(map, { [trait.id]: otto }), {} as { [k: string]: Otto }))
+        .reduce((all, map) => Object.assign(all, map), {} as { [k: string]: Otto })
+      */
+
+    const ottoItems = (otto?.wearableTraits ?? []).reduce(
+      (map, trait) => Object.assign(map, { [trait.type]: trait.id }),
+      {} as { [k: string]: string }
+    )
+
+    const cleanedDraftItems = Object.keys(draftItems).reduce(
+      (items, type) => {
+        if (items[type] !== null && ottoItems[type] === items[type]) {
+          delete items[type]
+        } else if (items[type] === null && !ottoItems[type]) {
+          delete items[type]
+        }
+        return items
+      },
+      { ...draftItems }
+    )
+
+    const actions = !otto
+      ? []
+      : Object.keys(cleanedDraftItems).map(type => {
+          const itemId = cleanedDraftItems[type]
+
+          if (itemId === null) {
+            return {
+              type: ItemActionType.TakeOff,
+              item_id: Number(ottoItems[type]),
+              from_otto_id: Number(otto.tokenId),
+            }
+          }
+
+          if (equippedItems[itemId]) {
+            return {
+              type: ItemActionType.EquipFromOtto,
+              item_id: Number(itemId),
+              from_otto_id: Number(otto.tokenId),
+            }
+          }
+
+          return {
+            type: ItemActionType.Equip,
+            item_id: Number(itemId),
+            from_otto_id: Number(otto.tokenId),
+          }
+        })
+
+    return {
       otto,
       setOtto,
-      loading: !initialized || loading,
-      equipItem,
-      resetEquippedItems,
-      equippedItems,
-      reload,
-    }),
-    [loading, initialized, otto, equippedItems]
-  )
+      equipItem: (traitType: string, traitId: string) => {
+        setDraftItems(map => {
+          return {
+            ...map,
+            [traitType]: traitId,
+          }
+        })
+      },
+      removeItem: (traitType: string) => {
+        setDraftItems(map => {
+          const newMap = { ...map }
+          if (newMap[traitType]) {
+            newMap[traitType] = null
+          } else {
+            delete newMap[traitType]
+          }
+          return newMap
+        })
+      },
+      resetEquippedItems: () => {
+        setDraftItems({})
+      },
+      itemActions: actions,
+    }
+  }, [otto, draftItems, items])
 
   return <OttoContext.Provider value={value}>{children}</OttoContext.Provider>
 }

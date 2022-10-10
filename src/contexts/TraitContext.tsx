@@ -2,19 +2,19 @@ import noop from 'lodash/noop'
 import { Trait } from 'models/Otto'
 import { createContext, FC, PropsWithChildren, useContext, useMemo, useState } from 'react'
 
-const TraitContext = createContext<{ trait?: Trait; setTrait: (trait?: Trait) => void }>({
-  setTrait: noop,
+const TraitContext = createContext<{ traitType?: string; setTraitType: (type?: string) => void }>({
+  setTraitType: noop,
 })
 
 export const TraitProvider = ({ children }: PropsWithChildren<object>) => {
-  const [trait, setTrait] = useState<Trait | undefined>(undefined)
+  const [traitType, setTraitType] = useState<string | undefined>(undefined)
 
   const value = useMemo(
     () => ({
-      trait,
-      setTrait,
+      traitType,
+      setTraitType,
     }),
-    [trait]
+    [traitType]
   )
 
   return <TraitContext.Provider value={value}>{children}</TraitContext.Provider>

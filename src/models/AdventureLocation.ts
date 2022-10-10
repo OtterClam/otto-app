@@ -68,7 +68,7 @@ export interface RawAdventureLocationConditionalBoost {
   condition: BoostCondition
   amounts: BoostAmounts
   effective: boolean
-  effective_until: string
+  effective_until?: string
 }
 
 export interface AdventureLocationConditionalBoost {
@@ -76,7 +76,7 @@ export interface AdventureLocationConditionalBoost {
   condition: BoostCondition
   amounts: BoostAmounts
   effective: boolean
-  effectiveUntil: Date
+  effectiveUntil?: Date
 }
 
 export interface RawAdventureLocation {
@@ -187,7 +187,7 @@ function rawConditionalBoostToConditionalBoost(
     condition: raw.condition,
     amounts: raw.amounts,
     effective: raw.effective,
-    effectiveUntil: new Date(raw.effective_until),
+    effectiveUntil: raw.effective_until ? new Date(raw.effective_until) : undefined,
   }
 }
 
