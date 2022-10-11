@@ -139,8 +139,6 @@ export default class Otto {
 
   public readonly diceCount?: number
 
-  public adventureStatus: AdventureOttoStatus
-
   public latestAdventurePass?: AdventurePass | undefined
 
   constructor(raw: RawOtto) {
@@ -152,7 +150,6 @@ export default class Otto {
     this.totalRarityScore = this.raw.rarityScore ? String(this.raw.rarityScore) : '?'
     this.epochRarityBoost = this.raw.epochRarityBoost
     this.diceCount = this.raw.diceCount
-    this.adventureStatus = this.raw.adventure_status
 
     if (this.raw.latest_adventure_pass)
       this.latestAdventurePass = {
@@ -268,12 +265,33 @@ export default class Otto {
     return this.raw.level
   }
 
+  get adventureStatus(): AdventureOttoStatus {
+    if (this.latestAdventurePass) {
+      const now = new Date()
+      if (this.latestAdventurePass.canFinishAt > now) {
+        return AdventureOttoStatus.Ongoing
+      }
+      if (this.restingUntil && this.restingUntil > now) {
+        return AdventureOttoStatus.Resting
+      }
+      if (!this.latestAdventurePass.finishedAt) {
+        return AdventureOttoStatus.Finished
+      }
+    }
+    return AdventureOttoStatus.Ready
+  }
+
+  get currentLocationId(): number | undefined {
+    if (this.latestAdventurePass && !this.latestAdventurePass.finishedAt) {
+      return this.latestAdventurePass.locationId
+    }
+  }
+
   public playVoice() {
     this.voice?.play()
   }
 
   public explore(pass: Adventure.PassStruct) {
-    this.adventureStatus = AdventureOttoStatus.Ongoing
     this.latestAdventurePass = {
       locationId: BigNumber.from(pass.locId).toNumber(),
       departureAt: new Date(BigNumber.from(pass.departureAt).toNumber() * 1000),

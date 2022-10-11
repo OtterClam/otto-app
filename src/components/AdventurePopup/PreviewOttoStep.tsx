@@ -147,8 +147,8 @@ export default function PreviewOttoStep() {
       })
       .reduce((all, list) => all.concat(list), [] as ItemAction[])
 
-    explore(otto.id, location.id, potionActions)
-  }, [usedPotionAmounts, otto?.id, location?.id, equippedItemActions])
+    explore(otto.id, location.id, [...potionActions, ...equippedItemActions])
+  }, [otto, location, usedPotionAmounts, explore, equippedItemActions])
 
   useEffect(() => {
     if (exploreState.state === 'Success' && exploreState.passId && otto) {

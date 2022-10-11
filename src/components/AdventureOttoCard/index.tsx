@@ -69,7 +69,7 @@ export interface AdventureOttoCardProps {
 }
 
 export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps) {
-  const location = useAdventureLocation(otto.latestAdventurePass?.locationId)
+  const location = useAdventureLocation(otto.currentLocationId)
   const { t } = useTranslation('', { keyPrefix: 'adventureOttoCard' })
   const { setOtto } = useOtto()
   const openPopup = useOpenAdventurePopup()
