@@ -72,13 +72,11 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
   const location = useAdventureLocation(otto.latestAdventurePass?.locationId)
   const { t } = useTranslation('', { keyPrefix: 'adventureOttoCard' })
   const { setOtto } = useOtto()
-  const { ottos } = useMyOttos()
   const openPopup = useOpenAdventurePopup()
 
   const check = () => {
-    const myOtto = ottos.find(o => o.id === String(otto.id))
-    if (myOtto && location) {
-      setOtto(myOtto)
+    if (location) {
+      setOtto(otto)
       openPopup(location.id, AdventurePopupStep.Exploring)
     }
   }

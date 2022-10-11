@@ -4,12 +4,11 @@ import AdventureLocationName from 'components/AdventureLocationName'
 import Button from 'components/Button'
 import PaymentButton from 'components/PaymentButton'
 import { AdventurePotion, Token } from 'constant'
-import { useAdventureOtto } from 'contexts/AdventureOttos'
 import { useSelectedAdventureLocation } from 'contexts/AdventureUIState'
-import { useOtto } from 'contexts/Otto'
 import useAdventurePotion from 'hooks/useAdventurePotion'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useFormattedDuration from 'hooks/useFormattedDuration'
+import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useMemo, useState } from 'react'
@@ -127,19 +126,18 @@ const StyledName = styled(AdventureLocationName)`
 `
 
 interface Props {
+  otto: Otto
   state: TransactionState
   onFinish: (immediately: boolean, potions: string[]) => void
 }
 
-export default function OnGoingView({ state, onFinish }: Props) {
+export default function OnGoingView({ otto, state, onFinish }: Props) {
   const { ADVENTURE } = useContractAddresses()
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.exploringStep' })
   const location = useSelectedAdventureLocation()!
-  const { otto } = useOtto()
-  const adventureOtto = useAdventureOtto(otto?.id)
   const now = new Date()
-  const canFinishAt = adventureOtto?.latestAdventurePass?.canFinishedAt ?? now
-  const formattedDuration = useFormattedDuration(adventureOtto?.latestAdventurePass?.departuredAt ?? now, canFinishAt)
+  const canFinishAt = otto?.latestAdventurePass?.canFinishedAt ?? now
+  const formattedDuration = useFormattedDuration(otto?.latestAdventurePass?.departuredAt ?? now, canFinishAt)
   const remainingDuration = useFormattedDuration(now, canFinishAt)
   const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
   const { amounts, loading } = useAdventurePotion()
@@ -155,7 +153,7 @@ export default function OnGoingView({ state, onFinish }: Props) {
   }, [usedPotionAmounts]).reduce((all, list) => all.concat(list), [] as string[])
   const potionButtonDisabled = loading || state === 'Mining'
 
-  if (!otto || !adventureOtto) {
+  if (!otto) {
     return null
   }
 
@@ -165,7 +163,7 @@ export default function OnGoingView({ state, onFinish }: Props) {
         <StyledTitle>{t('title', { name: otto.name })}</StyledTitle>
         <StyledOttoPlace bg={location.bgImage}>
           <StyledName location={location} />
-          <StyledOtto src={adventureOtto.imageWoBg} />
+          <StyledOtto src={otto.imageWoBg} />
           <StyledDuration>
             <Image src={TimeIcon} width={18} height={18} unoptimized />
             {formattedDuration}

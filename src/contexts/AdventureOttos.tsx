@@ -55,8 +55,3 @@ export const AdventureOttosProvider = ({ children }: PropsWithChildren<object>) 
 export const useAdventureOttos = () => {
   return useContext(AdventureOttosContext)
 }
-
-export const useAdventureOtto = (ottoId?: string) => {
-  const { ottos } = useAdventureOttos()
-  return ottos.find(otto => String(otto.id) === ottoId)
-}
