@@ -9,13 +9,12 @@ import {
   AdventureDepartureArgs,
   AdventureFinishArgs,
 } from 'models/AdventureLocation'
-import { AdventureOtto, RawAdventureOtto, rawAdventureOttoToAdventureOtto } from 'models/AdventureOtto'
 import { AdventurePreview, RawAdventurePreview, rawAdventurePreviewToAdventurePreview } from 'models/AdventurePreview'
 import { Dice } from 'models/Dice'
 import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
 import Item, { ItemAction, rawItemToItem } from 'models/Item'
 import { Notification, RawNotification } from 'models/Notification'
-import { OttoMeta } from 'models/Otto'
+import Otto, { RawOtto } from 'models/Otto'
 import Product from 'models/store/Product'
 
 export interface OttoCandidateMeta {
@@ -70,7 +69,7 @@ export class Api {
     return this.otterclamClient.get(`/ottos/candidates/metadata/${portalId}`).then(res => res.data)
   }
 
-  public async getOttoMeta(ottoId: string, details: boolean): Promise<OttoMeta> {
+  public async getOttoMeta(ottoId: string, details: boolean): Promise<RawOtto> {
     return this.otterclamClient.get(`/ottos/metadata/${ottoId}`, { params: { details } }).then(res => res.data)
   }
 
@@ -87,7 +86,7 @@ export class Api {
   public async getOttoMetas(
     ids: string[],
     { details, epoch }: { details: boolean; epoch?: number }
-  ): Promise<OttoMeta[]> {
+  ): Promise<RawOtto[]> {
     return this.otterclamClient
       .get(`/ottos/metadata?ids=${ids.join(',')}`, { params: { details, epoch } })
       .then(res => res.data)
@@ -141,19 +140,19 @@ export class Api {
     return result.data.map(rawForgeToForge)
   }
 
-  public async getAdventureOttos(wallet: string): Promise<AdventureOtto[]> {
-    const result = await this.otterclamClient.get<RawAdventureOtto[]>(`/adventure/wallets/${wallet}`)
-    return result.data.map(rawAdventureOttoToAdventureOtto)
+  public async getAdventureOttos(wallet: string): Promise<Otto[]> {
+    const result = await this.otterclamClient.get<RawOtto[]>(`/adventure/wallets/${wallet}`)
+    return result.data.map(raw => new Otto(raw))
   }
 
   public async getOttoAdventurePreview(
     ottoId: string,
     locationId: number,
-    replacedItemIds: string[] = []
+    actions: ItemAction[]
   ): Promise<AdventurePreview> {
     let url = `/ottos/${ottoId}/adventure/locations/${locationId}/preview`
-    if (replacedItemIds.length) {
-      url += `?items=${replacedItemIds.join(',')}`
+    if (actions.length) {
+      url += `?actions=${JSON.stringify(actions)}`
     }
     const result = await this.otterclamClient.get<RawAdventurePreview>(url)
     return rawAdventurePreviewToAdventurePreview(result.data)

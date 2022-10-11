@@ -1,6 +1,6 @@
 import AdventureOttoCard from 'components/AdventureOttoCard'
 import { useAdventureOttos } from 'contexts/AdventureOttos'
-import { AdventureOttoStatus } from 'models/AdventureOtto'
+import { AdventureOttoStatus } from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
@@ -70,7 +70,7 @@ export default function OttoList() {
     if (!selectedStatus) {
       return ottos
     }
-    return ottos.filter(otto => otto.status === selectedStatus)
+    return ottos.filter(otto => otto.adventureStatus === selectedStatus)
   }, [ottos, selectedStatus])
 
   return (

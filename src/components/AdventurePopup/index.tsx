@@ -2,20 +2,12 @@ import styled from 'styled-components/macro'
 import Fullscreen from 'components/Fullscreen'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { useOtto } from 'contexts/Otto'
-import { AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
+import { AdventurePopupStep, AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
 import { useCallback } from 'react'
 import { LocationInfoStep } from './LocationInfoStep'
 import PreviewOttoStep from './PreviewOttoStep'
 import ReadyToGoStep from './ReadyToGoStep'
 import ExploringStep from './ExploringStep'
-
-export enum Step {
-  LocationInfo,
-  PreviewOtto,
-  ReadyToGo,
-  Exploring,
-  Result,
-}
 
 const StyledStepContainer = styled.div`
   &.left-enter {
@@ -96,29 +88,29 @@ export default function AdventurePopup() {
       onRequestClose={closePopup}
     >
       <TransitionGroup>
-        {adventureUIState.popupStep === Step.LocationInfo && (
-          <CSSTransition key={Step.LocationInfo} timeout={200} classNames="left">
+        {adventureUIState.popupStep === AdventurePopupStep.LocationInfo && (
+          <CSSTransition key={AdventurePopupStep.LocationInfo} timeout={200} classNames="left">
             <StyledStepContainer>
               <LocationInfoStep />
             </StyledStepContainer>
           </CSSTransition>
         )}
-        {adventureUIState.popupStep === Step.PreviewOtto && (
-          <CSSTransition key={Step.PreviewOtto} timeout={200} classNames="right">
+        {adventureUIState.popupStep === AdventurePopupStep.PreviewOtto && (
+          <CSSTransition key={AdventurePopupStep.PreviewOtto} timeout={200} classNames="right">
             <StyledStepContainer>
               <PreviewOttoStep />
             </StyledStepContainer>
           </CSSTransition>
         )}
-        {adventureUIState.popupStep === Step.ReadyToGo && otto && (
-          <CSSTransition key={Step.ReadyToGo} timeout={200} classNames="right">
+        {adventureUIState.popupStep === AdventurePopupStep.ReadyToGo && otto && (
+          <CSSTransition key={AdventurePopupStep.ReadyToGo} timeout={200} classNames="right">
             <StyledStepContainer>
               <ReadyToGoStep />
             </StyledStepContainer>
           </CSSTransition>
         )}
-        {adventureUIState.popupStep === Step.Exploring && otto && (
-          <CSSTransition key={Step.Exploring} timeout={200} classNames="right">
+        {adventureUIState.popupStep === AdventurePopupStep.Exploring && otto && (
+          <CSSTransition key={AdventurePopupStep.Exploring} timeout={200} classNames="right">
             <StyledStepContainer>
               <ExploringStep />
             </StyledStepContainer>

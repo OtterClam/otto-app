@@ -533,50 +533,108 @@ export const useSetApprovalForAll = (address: string) => {
   return useContractFunction(erc1155, 'setApprovalForAll')
 }
 
+type OttoTxState = 'None' | 'Processing' | 'Success' | 'Fail'
+
+function txState(state: TransactionState): OttoTxState {
+  switch (state) {
+    case 'PendingSignature':
+    case 'Mining':
+      return 'Processing'
+    case 'Success':
+      return 'Success'
+    case 'Fail':
+    case 'Exception':
+      return 'Fail'
+    default:
+      return 'None'
+  }
+}
+
+interface OttoTransactionWriteState {
+  state: OttoTxState
+  status: TransactionStatus
+}
+
 export const useAdventureDeparture = () => {
   const { OTTO, OTTO_ITEM } = useContractAddresses()
-  const [loading, setLoading] = useState(false)
   const adventure = useAdventureContract()
   const { account, library } = useEthers()
   const api = useApi()
-  const { isApprovedForAll: ottoApproved } = useIsApprovedForAll(OTTO, account ?? '', adventure.address)
-  const { isApprovedForAll: itemApproved } = useIsApprovedForAll(OTTO_ITEM, account ?? '', adventure.address)
-  const { send: sendDeparture, state: departureState } = useContractFunction(adventure, 'departure')
-  const { send: sendApproveOtto, state: approveOttoState } = useSetApprovalForAll(OTTO)
-  const { send: snedApproveOttoItem, state: approveItemState } = useSetApprovalForAll(OTTO_ITEM)
-  const [readyToGo, setReadyToGo] = useState(false)
+  const { isApprovedForAll: ottoApproved } = useIsApprovedForAll(OTTO, adventure.address)
+  const { isApprovedForAll: itemApproved } = useIsApprovedForAll(OTTO_ITEM, adventure.address)
+  const { send: sendDeparture, state, resetState } = useContractFunction(adventure, 'departure')
+  const otto = useOttoContract()
+  const {
+    send: approveOttoSpending,
+    state: approveOttoState,
+    resetState: resetOtto,
+  } = useContractFunction(otto, 'setApprovalForAll')
+  const item = useItemContract()
+  const {
+    send: approveItemSpending,
+    state: approveItemState,
+    resetState: resetItem,
+  } = useContractFunction(item, 'setApprovalForAll')
+  const [departureState, setDepartureState] = useState<OttoTransactionWriteState>({
+    state: 'None',
+    status: state,
+  })
+  useEffect(() => {
+    setDepartureState({
+      state: txState(state.status),
+      status: state,
+    })
+  }, [state])
+  useEffect(() => {
+    setDepartureState({
+      state: txState(approveOttoState.status),
+      status: approveOttoState,
+    })
+  }, [approveOttoState])
+  useEffect(() => {
+    setDepartureState({
+      state: txState(approveItemState.status),
+      status: approveItemState,
+    })
+  }, [approveItemState])
+
+  const resetDeparture = () => {
+    resetItem()
+    resetOtto()
+    resetState()
+  }
 
   const departure = useCallback(
-    (ottoId: string, locationId: number, itemActions: ItemAction[]) => {
+    async (ottoId: string, locationId: number, itemActions: ItemAction[]) => {
       if (!account || !library) {
         return
       }
-      setLoading(true)
-      Promise.resolve()
-        .then(() => {
-          if (!ottoApproved) {
-            return sendApproveOtto(adventure.address, true)
-          }
-        })
-        .then(() => {
-          if (!itemApproved) {
-            return snedApproveOttoItem(adventure.address, true)
-          }
-        })
-        .then(() => api.departure(ottoId, locationId, account, itemActions))
-        .then(inputs => sendDeparture(...inputs))
-        .then(() => setReadyToGo(true))
-        .catch(err => console.error(err))
-        .finally(() => setLoading(false))
+      setDepartureState({
+        state: 'Processing',
+        status: state,
+      })
+      if (!ottoApproved) {
+        const tx = await approveOttoSpending(adventure.address, true)
+        if (!tx) {
+          return
+        }
+      }
+      if (!itemApproved) {
+        const tx = approveItemSpending(adventure.address, true)
+        if (!tx) {
+          return
+        }
+      }
+      const data = await api.departure(ottoId, locationId, account, itemActions)
+      sendDeparture(...data)
     },
     [api, account, ottoApproved, itemApproved]
   )
 
   return {
-    loading,
     departure,
-    readyToGo,
-    // readyToGo: departureState.status === 'Success' && approveOttoState.status === 'Success' && approveItemState.status === 'Success',
+    departureState,
+    resetDeparture,
   }
 }
 

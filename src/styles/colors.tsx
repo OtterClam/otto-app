@@ -1,5 +1,4 @@
-import { AdventureOttoStatus } from 'models/AdventureOtto'
-import { TraitRarity } from 'models/Otto'
+import { AdventureOttoStatus, TraitRarity } from 'models/Otto'
 
 export const colors = {
   white: '#fff',

@@ -1,26 +1,23 @@
 import { useAdventureOttos } from 'contexts/AdventureOttos'
-import { AdventureOtto, AdventureOttoStatus } from 'models/AdventureOtto'
-import Otto from 'models/Otto'
+import Item from 'models/Item'
+import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import { useCallback, useMemo } from 'react'
-import useMyItems from './useMyItems'
 
-export default function useIsWearable(): (itemId?: string, currentOttoId?: string) => boolean {
+export default function useIsWearable(items: Item[]): (itemId?: string, currentOttoId?: string) => boolean {
   const { ottos } = useAdventureOttos()
-
-  const { items } = useMyItems()
 
   const { ottos: myOttos } = useMyOttos()
 
-  const ongoingOttosMap = useMemo(() => {
+  const readyOttosMap = useMemo(() => {
     return ottos
-      .filter(otto => otto.status === AdventureOttoStatus.Ongoing)
+      .filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready)
       .reduce(
         (map, otto) =>
           Object.assign(map, {
             [otto.id]: otto,
           }),
-        {} as { [k: string]: AdventureOtto }
+        {} as { [k: string]: Otto }
       )
   }, [ottos])
 
@@ -32,14 +29,14 @@ export default function useIsWearable(): (itemId?: string, currentOttoId?: strin
 
       const itemAmount = items.filter(item => !item.equipped).find(item => item.id === itemId)?.amount ?? 0
 
-      const myOngoingOttosWithItem = myOttos
-        .filter(otto => ongoingOttosMap[otto.tokenId])
+      const myReadyOttosWithItem = myOttos
+        .filter(otto => readyOttosMap[otto.id])
         .filter(otto => otto.wearableTraits.find(trait => trait.id === itemId))
 
-      const avaliableAmount = itemAmount - myOngoingOttosWithItem.length
+      const avaliableAmount = itemAmount - myReadyOttosWithItem.length
 
       return avaliableAmount > 0
     },
-    [ongoingOttosMap]
+    [readyOttosMap]
   )
 }

@@ -1,29 +1,26 @@
-import dynamic from 'next/dynamic'
-import { useQuery } from '@apollo/client'
+import { useEthers } from '@usedapp/core'
+import ClassicIcon from 'assets/badge/classic.png'
+import FirstGenIcon from 'assets/badge/first-gen.png'
+import LegendaryIcon from 'assets/badge/legendary.png'
+import Constellations from 'assets/constellations'
 import OpenSeaBlue from 'assets/opensea-blue.svg'
+import RankingIcon from 'assets/ranking.png'
 import Button from 'components/Button'
+import { DiceBanner } from 'components/DiceBanner'
 import Loading from 'components/Loading'
 import { getOpenSeaLink, reserveOttoAmount } from 'constant'
 import { format } from 'date-fns'
 import useOtto from 'hooks/useOtto'
-import { useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Display3, Headline, Note } from 'styles/typography'
-import RankingIcon from 'assets/ranking.png'
-import ClassicIcon from 'assets/badge/classic.png'
-import LegendaryIcon from 'assets/badge/legendary.png'
-import FirstGenIcon from 'assets/badge/first-gen.png'
-import Constellations from 'assets/constellations'
-import { DiceBanner } from 'components/DiceBanner'
-import { useRouter } from 'next/router'
-import { GET_OTTO } from 'graphs/otto'
-import { GetOtto, GetOttoVariables } from 'graphs/__generated__/GetOtto'
-import { useEthers } from '@usedapp/core'
 import PlayIcon from './icons/play-voice.svg'
-import OttoTraitDetails from './OttoTraitDetails'
 import TheOtter from './icons/the_otter.png'
+import OttoTraitDetails from './OttoTraitDetails'
 
 const DicePopup = dynamic(() => import('components/DicePopup'), {
   ssr: false,
@@ -253,10 +250,7 @@ export default function OttoPage() {
   const { chainId } = useEthers()
   const router = useRouter()
   const ottoId = router.query.ottoId as string
-  const { data } = useQuery<GetOtto, GetOttoVariables>(GET_OTTO, {
-    variables: { ottoId },
-  })
-  const { otto } = useOtto(data?.ottos[0], true)
+  const { otto } = useOtto(ottoId, true)
   const infos = useMemo(
     () =>
       otto
@@ -371,7 +365,7 @@ export default function OttoPage() {
                     <StyledStatIcon src={otto.legendary ? LegendaryIcon.src : ClassicIcon.src} />
                     <StyledStatTitle>{t(otto.legendary ? 'otto.legendary' : 'otto.classic')}</StyledStatTitle>
                     <StyledStatDesc>{t(otto.legendary ? 'otto.legendary_note' : 'otto.classic_note')}</StyledStatDesc>
-                    {Number(otto.tokenId) >= reserveOttoAmount(chainId) && otto.legendary && (
+                    {Number(otto.id) >= reserveOttoAmount(chainId) && otto.legendary && (
                       <StyledLegendaryBoost>
                         {t('otto.legendary_boost', {
                           context: (otto.raw.legendaryBoost || 0) > 0 ? 'added' : 'removed',

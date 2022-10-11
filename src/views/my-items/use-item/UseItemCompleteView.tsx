@@ -87,7 +87,7 @@ interface Props {
 export default function UseItemCompleteView({ otto, receivedItem, onClose }: Props) {
   const { t } = useTranslation()
   const [newOttoReady, setNewOttoReady] = useState(false)
-  const { otto: newOtto, refetch } = useOtto(otto?.raw, true)
+  const { otto: newOtto, refetch } = useOtto(otto?.id, true)
   useEffect(() => {
     if (newOtto?.image === otto?.image) {
       setTimeout(() => refetch(), 5000)

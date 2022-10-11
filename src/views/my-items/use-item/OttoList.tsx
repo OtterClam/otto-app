@@ -66,7 +66,7 @@ export default function OttoList({ itemId, selectedOtto, onSelect }: Props) {
   const { ottos } = useContext(MyOttosContext)
   const applicable = useItemApplicable(
     itemId,
-    ottos.map(otto => otto.tokenId)
+    ottos.map(otto => otto.id)
   )
   return (
     <StyledOttoList>

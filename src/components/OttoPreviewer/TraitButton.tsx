@@ -4,9 +4,9 @@ import styled from 'styled-components/macro'
 import React from 'react'
 import lockImage from './lock.svg'
 
-const StyledButton = styled.button<{ trait?: Trait; locked?: boolean }>`
+const StyledButton = styled.button<{ traitType: string; trait?: Trait; locked?: boolean }>`
   position: relative;
-  background: ${({ theme, trait }) => (trait ? theme.colors.rarity[trait.rarity] : theme.colors.darkGray400)};
+  background: ${({ theme, trait }) => (trait ? theme.colors.rarity[trait.rarity] : theme.colors.darkGray200)};
   padding: 2px;
   width: 40px;
   height: 40px;
@@ -20,9 +20,8 @@ const StyledButton = styled.button<{ trait?: Trait; locked?: boolean }>`
     ${({ locked }) => (locked ? 'left: 0' : 'right: 0')};
     transform: ${({ locked }) => (locked ? 'translate(-14px, -11px)' : 'translate(14px, -11px)')};
     z-index: 1;
-    display: ${({ trait }) => (trait ? 'block' : 'none')};
     content: '';
-    background: center / 16px 16px url(${({ trait }) => encodeURI(`/trait-icons/${trait?.type}.png`)}) no-repeat;
+    background: center / 16px 16px url(${({ traitType }) => encodeURI(`/trait-icons/${traitType}.png`)}) no-repeat;
     background-color: ${({ theme }) => theme.colors.white};
     width: 22px;
     height: 22px;
@@ -51,15 +50,22 @@ const StyledImage = styled.div`
 `
 
 export interface TraitButtonProps {
+  type: string
   trait?: Trait
   locked?: boolean
-  onSelect: (trait?: Trait) => void
+  onSelect: (type: string, trait?: Trait) => void
 }
 
 export default React.memo(
-  function TraitButton({ trait, locked, onSelect }: TraitButtonProps) {
+  function TraitButton({ type, trait, locked, onSelect }: TraitButtonProps) {
     return (
-      <StyledButton disabled={locked} trait={trait} locked={locked} onClick={() => onSelect(trait)}>
+      <StyledButton
+        disabled={locked}
+        traitType={type}
+        trait={trait}
+        locked={locked}
+        onClick={() => onSelect(type, trait)}
+      >
         <StyledImage>{trait && <CroppedImage src={trait.image} width={34} height={34} />}</StyledImage>
       </StyledButton>
     )

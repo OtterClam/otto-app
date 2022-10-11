@@ -120,7 +120,7 @@ const StyledOttoImage = styled.div`
 const useOttos = (item?: Item, selectedOtto?: Otto) => {
   const ottos = useAdventureOttosWithItem(item?.id ?? '')
   const ottosExceptSelectedOtto = useMemo(() => {
-    return ottos.filter(otto => String(otto.id) !== selectedOtto?.tokenId)
+    return ottos.filter(otto => String(otto.id) !== selectedOtto?.id)
   }, [item, selectedOtto])
   return ottosExceptSelectedOtto
 }
@@ -133,11 +133,12 @@ export interface ItemPreviewProps {
 
 export default memo(
   function ItemPreview({ item, onClose, unavailable = false }: ItemPreviewProps) {
-    const { equipItem } = useOtto()
+    const { equipItem, removeItem } = useOtto()
     const { draftOtto: otto } = useAdventureOtto()
     const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
     const containerRef = useRef<HTMLDivElement | null>(null)
     const ottos = useOttos(item, otto)
+    const equippedByCurrentOtto = Boolean(otto?.wearableTraits.find(trait => trait.id === item?.id))
 
     useOnClickOutside(containerRef, onClose)
 
@@ -180,9 +181,25 @@ export default memo(
                   ))}
                 </StyledOttos>
               )}
-              <StyledButton disabled={unavailable} Typography={Headline} onClick={() => equipItem(item)}>
-                {t(unavailable ? 'unavailable' : 'wear')}
-              </StyledButton>
+              {!equippedByCurrentOtto && (
+                <StyledButton
+                  disabled={unavailable}
+                  Typography={Headline}
+                  onClick={() => equipItem(item.type, item.id)}
+                >
+                  {t(unavailable ? 'unavailable' : 'wear')}
+                </StyledButton>
+              )}
+              {equippedByCurrentOtto && (
+                <StyledButton
+                  disabled={item.unreturnable}
+                  primaryColor="white"
+                  Typography={Headline}
+                  onClick={() => removeItem(item.type)}
+                >
+                  {t(item.unreturnable ? 'unavailable' : 'takeOff')}
+                </StyledButton>
+              )}
             </>
           )}
         </StyledItemPreview>

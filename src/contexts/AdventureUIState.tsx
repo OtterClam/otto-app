@@ -1,4 +1,3 @@
-import { Step as AdventurePopupStep, Step } from 'components/AdventurePopup'
 import noop from 'lodash/noop'
 import { AdventureResultEvents } from 'models/AdventureLocation'
 import { AdventurePreview } from 'models/AdventurePreview'
@@ -11,6 +10,14 @@ export enum AdventureUIActionType {
   SetPopupStep,
   LevelUp,
   DistributeAttributePoints,
+}
+
+export enum AdventurePopupStep {
+  LocationInfo,
+  PreviewOtto,
+  ReadyToGo,
+  Exploring,
+  Result,
 }
 
 export type AdventureUIAction =

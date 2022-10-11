@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
-import { AdventureOttoStatus } from 'models/AdventureOtto'
 import { useTranslation } from 'next-i18next'
 import { Note } from 'styles/typography'
+import { AdventureOttoStatus } from 'models/Otto'
 
 const StyledContainer = styled(Note)<{ status: AdventureOttoStatus }>`
   background: ${({ theme, status }) => theme.colors.adventureStatus[status]};

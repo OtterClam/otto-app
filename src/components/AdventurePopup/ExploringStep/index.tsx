@@ -1,17 +1,13 @@
-import { useAdventureOtto } from 'contexts/AdventureOttos'
-import { useApi } from 'contexts/Api'
 import { useOtto } from 'contexts/Otto'
 import { useAdventureFinish } from 'contracts/functions'
-import { AdventureOttoStatus } from 'models/AdventureOtto'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import FinishedView from './FinishedView'
 import OnGoingView from './OnGoingView'
 
 export default function ExploringStep() {
   const { otto } = useOtto()
-  const adventureOtto = useAdventureOtto(otto?.tokenId)
   const { finishState, finish, resetFinish } = useAdventureFinish()
-  const onFinish = (immediately: boolean, potions: string[]) => otto && finish(otto.tokenId, immediately, potions)
+  const onFinish = (immediately: boolean, potions: string[]) => otto && finish(otto.id, immediately, potions)
 
   useEffect(() => {
     if (finishState.state === 'Exception' || finishState.state === 'Fail') {
@@ -20,14 +16,14 @@ export default function ExploringStep() {
     }
   }, [finishState, resetFinish])
 
-  if (!otto || !adventureOtto) return null
+  if (!otto) return null
 
   return (
     <div>
       {finishState.state === 'Success' ? (
         <FinishedView tx={finishState.status.transaction?.hash || ''} />
       ) : (
-        <OnGoingView state={finishState.state} onFinish={onFinish} />
+        <OnGoingView otto={otto} state={finishState.state} onFinish={onFinish} />
       )}
     </div>
   )

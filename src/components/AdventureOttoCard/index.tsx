@@ -1,12 +1,11 @@
-import { Step } from 'components/AdventurePopup'
 import AdventureStatus from 'components/AdventureStatus'
 import Button from 'components/Button'
 import CroppedImage from 'components/CroppedImage'
 import { useAdventureLocation } from 'contexts/AdventureLocations'
-import { useAdventureUIState, useGoToAdventurePopupStep, useOpenAdventurePopup } from 'contexts/AdventureUIState'
+import { AdventurePopupStep, useOpenAdventurePopup } from 'contexts/AdventureUIState'
 import { useOtto } from 'contexts/Otto'
 import isEqual from 'lodash/isEqual'
-import { AdventureOtto, AdventureOttoStatus } from 'models/AdventureOtto'
+import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import { memo } from 'react'
@@ -66,26 +65,24 @@ const StyledAvatarContainer = styled.div<{ size: number }>`
 const StyledAvatar = styled(CroppedImage)``
 
 export interface AdventureOttoCardProps {
-  otto: AdventureOtto
+  otto: Otto
 }
 
 export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps) {
-  const location = useAdventureLocation(otto.locationId)
+  const location = useAdventureLocation(otto.latestAdventurePass?.locationId)
   const { t } = useTranslation('', { keyPrefix: 'adventureOttoCard' })
   const { setOtto } = useOtto()
-  const { ottos } = useMyOttos()
   const openPopup = useOpenAdventurePopup()
 
   const check = () => {
-    const myOtto = ottos.find(myOtto => myOtto.tokenId === String(otto.id))
-    if (myOtto && location) {
-      setOtto(myOtto)
-      openPopup(location.id, Step.Exploring)
+    if (location) {
+      setOtto(otto)
+      openPopup(location.id, AdventurePopupStep.Exploring)
     }
   }
 
   return (
-    <StyledContainer disabled={otto.status === AdventureOttoStatus.Unavailable}>
+    <StyledContainer disabled={otto.adventureStatus === AdventureOttoStatus.Unavailable}>
       <StyledAvatarContainer size={50}>
         <StyledAvatar layout="fill" src={otto.image} />
       </StyledAvatarContainer>
@@ -93,7 +90,7 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
       <StyledDetails>
         <StyledName>{otto.name}</StyledName>
         <StyledLocationContainer>
-          <AdventureStatus status={otto.status} />
+          <AdventureStatus status={otto.adventureStatus} />
           {location && (
             <StyledLocation>
               <StyledLocationImage width={21} height={21} src={location.image} />
@@ -104,19 +101,20 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
       </StyledDetails>
 
       <StyledAction>
-        {otto.status === AdventureOttoStatus.Finished && (
+        {otto.adventureStatus === AdventureOttoStatus.Finished && (
           <Button onClick={check} Typography={ContentMedium} primaryColor="white" padding="3px 10px">
             {t('checkOtto')}
           </Button>
         )}
 
-        {otto.status === AdventureOttoStatus.Resting && otto.restingUntil !== undefined && (
+        {otto.adventureStatus === AdventureOttoStatus.Resting && otto.restingUntil !== undefined && (
           <RemainingTime onClick={check} start={new Date()} end={otto.restingUntil} />
         )}
 
-        {otto.status === AdventureOttoStatus.Ongoing && otto.canFinishedAt !== undefined && (
-          <RemainingTime onClick={check} start={new Date()} end={otto.canFinishedAt} />
-        )}
+        {otto.adventureStatus === AdventureOttoStatus.Ongoing &&
+          otto.latestAdventurePass?.canFinishedAt !== undefined && (
+            <RemainingTime onClick={check} start={new Date()} end={otto.latestAdventurePass?.canFinishedAt} />
+          )}
       </StyledAction>
     </StyledContainer>
   )

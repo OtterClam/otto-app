@@ -368,7 +368,8 @@ export default function RankList({ className }: Props) {
     return totalReward / sum
   }, [prizeCount, epoch])
   const getEstimatedReward = (rank: number) => (rank <= prizeCount ? trim(topReward * (1 / rank), 2) : '-')
-  const { ottos, loading: loadingApi } = useOttos(data?.ottos, { details: true, epoch })
+  const ottoIds = useMemo(() => data?.ottos.map(o => o.tokenId) || [], [data])
+  const { ottos, loading: loadingApi } = useOttos(ottoIds, { details: true, epoch })
   const { ottos: myOttos } = useMyOttos()
   const sortedMyOttos = useMemo(() => myOttos.sort((a, b) => a.ranking - b.ranking), [myOttos])
   const [expand, setExpand] = useState(false)
@@ -380,7 +381,7 @@ export default function RankList({ className }: Props) {
   const renderRow = (
     rank: number,
     {
-      tokenId,
+      id,
       smallImage: image,
       name,
       totalRarityScore,
@@ -394,7 +395,7 @@ export default function RankList({ className }: Props) {
     }: Otto
   ) => {
     return (
-      <a key={rank} href={`/ottos/${tokenId}`} target="_blank" rel="noreferrer">
+      <a key={rank} href={`/ottos/${id}`} target="_blank" rel="noreferrer">
         {isMobile ? (
           <StyledMobileRow>
             <StyledTd>
@@ -480,10 +481,10 @@ export default function RankList({ className }: Props) {
             <StyledHint>{t('your_rank')}</StyledHint>
             {(expand ? sortedMyOttos : sortedMyOttos.slice(0, 1)).map(
               (
-                { tokenId, name, smallImage: image, ranking, totalRarityScore, baseRarityScore, relativeRarityScore },
+                { id, name, smallImage: image, ranking, totalRarityScore, baseRarityScore, relativeRarityScore },
                 index
               ) => (
-                <a key={index} href={`/my-ottos/${tokenId}`} target="_blank" rel="noreferrer">
+                <a key={index} href={`/my-ottos/${id}`} target="_blank" rel="noreferrer">
                   {isMobile ? (
                     <StyledMobileRow>
                       <StyledRank rank={ranking}>{ranking}</StyledRank>

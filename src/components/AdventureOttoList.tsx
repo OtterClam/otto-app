@@ -1,5 +1,5 @@
 import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
-import { AdventureOtto } from 'models/AdventureOtto'
+import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import AdventureInfoSection from './AdventureInfoSection'
@@ -8,7 +8,7 @@ const StyledItem = styled.div`
   display: flex;
 `
 
-function ListItem({ otto }: { otto: AdventureOtto }) {
+function ListItem({ otto }: { otto: Otto }) {
   return <StyledItem />
 }
 

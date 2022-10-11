@@ -93,7 +93,7 @@ export default function FinishedView({ tx }: Props) {
               spenderAddress={ADVENTURE}
               token={Token.Clam}
               amount={ethers.utils.parseUnits('1', 9)}
-              onClick={() => otto && revive(otto.tokenId)}
+              onClick={() => otto && revive(otto.id)}
             >
               {t('revive_btn')}
             </PaymentButton>

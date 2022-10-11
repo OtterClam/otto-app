@@ -119,10 +119,10 @@ export function DiceBanner({ otto }: DiceBannerProps) {
   const dispatch = useDispatch()
   const openPopup = () => dispatch(showDicePopup(otto.toJSON()))
   const { t } = useTranslation()
-  const dices = useAllDice(otto.tokenId)
+  const dices = useAllDice(otto.id)
   const { epochEndTime } = useRarityEpoch()
   const seasonEnd = Date.now() > epochEndTime
-  const isMyOtto = useIsMyOttos(otto.tokenId)
+  const isMyOtto = useIsMyOttos(otto.id)
   const effects = dices
     .map(dice => dice.events)
     .reduce(

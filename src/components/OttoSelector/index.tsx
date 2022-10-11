@@ -1,14 +1,12 @@
+import useResizeObserver from '@react-hook/resize-observer'
 import CroppedImage from 'components/CroppedImage'
-import { useSwipeable } from 'react-swipeable'
+import { useAdventureOttos } from 'contexts/AdventureOttos'
 import { useOtto } from 'contexts/Otto'
-import Otto from 'models/Otto'
+import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import React, { useLayoutEffect, useReducer, useRef, useState } from 'react'
+import { useSwipeable } from 'react-swipeable'
 import styled from 'styled-components/macro'
-import useResizeObserver from '@react-hook/resize-observer'
-import { useSelectedAdventureLocation } from 'contexts/AdventureUIState'
-import { useAdventureOttos } from 'contexts/AdventureOttos'
-import { AdventureOttoStatus } from 'models/AdventureOtto'
 import arrowImage from './arrow.svg'
 
 const imageSize = 50
@@ -69,16 +67,16 @@ const OttoItem = React.memo(
       </StyledItem>
     )
   },
-  (propsA, propsB) => propsA.otto.tokenId === propsB.otto.tokenId && propsA.actived === propsB.actived
+  (propsA, propsB) => propsA.otto.id === propsB.otto.id && propsA.actived === propsB.actived
 )
 
 const useReadyOttos = () => {
   const { ottos } = useMyOttos()
   const { ottos: adventureOttos } = useAdventureOttos()
   const map = adventureOttos
-    .filter(otto => otto.status === AdventureOttoStatus.Ready)
+    .filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready)
     .reduce((map, otto) => Object.assign(map, { [otto.id]: true }), {} as { [k: string]: boolean })
-  return ottos.filter(otto => map[otto.tokenId])
+  return ottos.filter(otto => map[otto.id])
 }
 
 export default function OttoSelector() {
@@ -93,7 +91,7 @@ export default function OttoSelector() {
   const conveyorRect = conveyorRef.current?.getBoundingClientRect() ?? { left: 0, right: 0, width: 0 }
   const centerOffset = (-1 * conveyorRect.width) / 2
   const totalOffset = centerOffset + currentOffset + offsetDelta
-  const selectedIndex = ottos.findIndex(otto => otto.tokenId === selectedOtto?.tokenId) ?? 0
+  const selectedIndex = ottos.findIndex(otto => otto.id === selectedOtto?.id) ?? 0
 
   const swipeableHandlers = useSwipeable({
     trackMouse: true,
@@ -130,12 +128,7 @@ export default function OttoSelector() {
       <StyledConveyor {...swipeableHandlers} ref={conveyorRef} offset={totalOffset}>
         <StyledArrow index={selectedIndex} />
         {ottos.map(otto => (
-          <OttoItem
-            key={otto.tokenId}
-            otto={otto}
-            actived={selectedOtto?.tokenId === otto.tokenId}
-            onSelect={selectOtto}
-          />
+          <OttoItem key={otto.id} otto={otto} actived={selectedOtto?.id === otto.id} onSelect={selectOtto} />
         ))}
       </StyledConveyor>
     </StyledContainer>

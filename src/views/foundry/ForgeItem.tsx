@@ -167,7 +167,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
   const availableCount = useAvailableCount(formula, itemCounts)
   const now = new Date()
   const disabled = availableCount === 0 || isBefore(now, formula.startTime) || isAfter(now, formula.endTime)
-  const { isApprovedForAll, updateApprovalStatus, erc1155, operator: forgeContractAddress } = useERC1155Approval() || {}
+  const { isApprovedForAll, erc1155, operator: forgeContractAddress } = useERC1155Approval() || {}
   const { state: setApprovalState, send: sendSetApprovalCall } = useSetApprovalForAll(erc1155?.address || '')
   const approving = isProcessing(setApprovalState)
   const forging = isProcessing(forgeState.status)
@@ -180,12 +180,6 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
     }
     forge(formula.id, 1)
   }, [isApprovedForAll, forgeContractAddress, forge, formula.id, sendSetApprovalCall])
-
-  useEffect(() => {
-    if (setApprovalState.status === 'Success') {
-      updateApprovalStatus?.()
-    }
-  }, [setApprovalState, updateApprovalStatus])
 
   useEffect(() => {
     if (forgeState.state === 'Exception' || forgeState.state === 'Fail') {

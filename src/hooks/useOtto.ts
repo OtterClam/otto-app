@@ -1,29 +1,28 @@
-import Otto, { OttoMeta, RawOtto } from 'models/Otto'
-import { MyOttosContext } from 'MyOttosProvider'
-import { useContext, useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'next-i18next'
 import { useApi } from 'contexts/Api'
+import Otto, { RawOtto } from 'models/Otto'
+import { useTranslation } from 'next-i18next'
+import { useEffect, useMemo, useState } from 'react'
 
 type Falsy = false | 0 | '' | null | undefined
 
-export default function useOtto(rawOtto: RawOtto | Falsy, details: boolean) {
+export default function useOtto(id: string | Falsy, details: boolean) {
   const api = useApi()
   const { i18n } = useTranslation()
   const [error, setError] = useState<any | null>(null)
   const [loading, setLoading] = useState(true)
   const [fetchCount, setFetchCount] = useState(0)
-  const [metadata, setMetadata] = useState<OttoMeta | null>(null)
-  const otto = useMemo(() => (rawOtto && metadata ? new Otto(rawOtto, metadata) : null), [rawOtto, metadata])
+  const [raw, setRaw] = useState<RawOtto | null>(null)
+  const otto = useMemo(() => (raw ? new Otto(raw) : null), [raw])
   useEffect(() => {
-    if (rawOtto) {
+    if (id) {
       setLoading(true)
-      setMetadata(null)
+      setRaw(null)
       setError(null)
       api
-        .getOttoMeta(rawOtto.tokenId, details)
+        .getOttoMeta(id, details)
         .then(data => {
           setError(null)
-          setMetadata(data)
+          setRaw(data)
         })
         .catch(err => {
           setError(err)
@@ -31,12 +30,12 @@ export default function useOtto(rawOtto: RawOtto | Falsy, details: boolean) {
         })
         .finally(() => setLoading(false))
     }
-  }, [rawOtto, i18n.resolvedLanguage, fetchCount])
+  }, [id, i18n.resolvedLanguage, fetchCount, api, details])
   const refetch = () => setFetchCount(fetchCount + 1)
   return { loading, otto, error, refetch }
 }
 
-export function useOttos(rawOttos: RawOtto[] | Falsy, { details, epoch }: { details: boolean; epoch?: number }) {
+export function useOttos(ids: string[] | Falsy, { details, epoch }: { details: boolean; epoch?: number }) {
   const api = useApi()
   const { i18n } = useTranslation()
   const [error, setError] = useState<any | null>(null)
@@ -44,13 +43,12 @@ export function useOttos(rawOttos: RawOtto[] | Falsy, { details, epoch }: { deta
   const [ottos, setOttos] = useState<Otto[]>([])
   const [fetchCount, setFetchCount] = useState(0)
   useEffect(() => {
-    if (rawOttos && rawOttos.length > 0) {
+    if (ids && ids.length > 0) {
       setLoading(true)
       setError(null)
-      const ids = rawOttos.map(raw => String(raw.tokenId))
       api
         .getOttoMetas(ids, { details, epoch })
-        .then(data => data.map((meta, i) => new Otto(rawOttos[i], meta)))
+        .then(data => data.map(raw => new Otto(raw)))
         .then(ottos => setOttos(ottos.filter((o): o is Otto => Boolean(o))))
         .catch(err => {
           setError(err)
@@ -58,7 +56,7 @@ export function useOttos(rawOttos: RawOtto[] | Falsy, { details, epoch }: { deta
         })
         .finally(() => setLoading(false))
     }
-  }, [rawOttos, i18n.resolvedLanguage, fetchCount])
+  }, [ids, i18n.resolvedLanguage, fetchCount])
   const refetch = () => setFetchCount(fetchCount + 1)
   return { loading, ottos, error, refetch }
 }
