@@ -112,8 +112,8 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
         )}
 
         {otto.adventureStatus === AdventureOttoStatus.Ongoing &&
-          otto.latestAdventurePass?.canFinishedAt !== undefined && (
-            <RemainingTime onClick={check} target={otto.latestAdventurePass?.canFinishedAt} />
+          otto.latestAdventurePass?.canFinishAt !== undefined && (
+            <RemainingTime onClick={check} target={otto.latestAdventurePass?.canFinishAt} />
           )}
       </StyledAction>
     </StyledContainer>

@@ -8,8 +8,8 @@ export enum TraitCollection {
 export interface RawAdventurePass {
   location_id: number
   finished_tx?: string
-  departured_at: string
-  can_finished_at: string
+  departure_at: string
+  can_finish_at: string
   finished_at?: string
 }
 
@@ -98,8 +98,8 @@ export interface AdventurePass {
   locationId: number
   finishedAt?: Date
   finishedTx?: string
-  departuredAt: Date
-  canFinishedAt: Date
+  departureAt: Date
+  canFinishAt: Date
 }
 
 export default class Otto {
@@ -259,11 +259,11 @@ export default class Otto {
       ? {
           finishedTx: this.raw.latest_adventure_pass.finished_tx,
           locationId: this.raw.latest_adventure_pass.location_id,
-          departuredAt: new Date(this.raw.latest_adventure_pass.departured_at),
+          departureAt: new Date(this.raw.latest_adventure_pass.departure_at),
           finishedAt: this.raw.latest_adventure_pass.finished_at
             ? new Date(this.raw.latest_adventure_pass.finished_at)
             : undefined,
-          canFinishedAt: new Date(this.raw.latest_adventure_pass.can_finished_at),
+          canFinishAt: new Date(this.raw.latest_adventure_pass.can_finish_at),
         }
       : undefined
   }

@@ -64,7 +64,7 @@ const StyledNoOtto = styled(Note).attrs({ as: 'div' })`
 
 function ListItem({ otto }: { otto: Otto }) {
   const { t } = useTranslation('', { keyPrefix: 'ongoingOttos' })
-  const duration = useRemainingTime(otto.latestAdventurePass?.canFinishedAt ?? new Date())
+  const duration = useRemainingTime(otto.latestAdventurePass?.canFinishAt ?? new Date())
 
   return (
     <StyledListItem>

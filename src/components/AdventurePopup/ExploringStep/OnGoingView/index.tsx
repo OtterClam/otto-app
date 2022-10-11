@@ -137,8 +137,8 @@ export default function OnGoingView({ otto, state, onFinish }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.exploringStep' })
   const location = useSelectedAdventureLocation()!
   const now = new Date()
-  const canFinishAt = otto?.latestAdventurePass?.canFinishedAt ?? now
-  const formattedDuration = formatDistance(canFinishAt, otto?.latestAdventurePass?.departuredAt ?? 0)
+  const canFinishAt = otto?.latestAdventurePass?.canFinishAt ?? now
+  const formattedDuration = formatDistance(canFinishAt, otto?.latestAdventurePass?.departureAt ?? 0)
   const remainingDuration = useRemainingTime(canFinishAt)
   const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
   const { amounts, loading } = useAdventurePotion()
