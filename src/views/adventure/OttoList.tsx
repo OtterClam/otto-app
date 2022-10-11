@@ -1,6 +1,6 @@
 import AdventureOttoCard from 'components/AdventureOttoCard'
-import { useAdventureOttos } from 'contexts/AdventureOttos'
 import { AdventureOttoStatus } from 'models/Otto'
+import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
@@ -64,8 +64,7 @@ const StyledFilterButton = styled(Caption).attrs({ as: 'button' })<{ selected?: 
 export default function OttoList() {
   const [selectedStatus, setSelectedStatus] = useState<AdventureOttoStatus | undefined>(undefined)
   const { t } = useTranslation()
-  const { ottos } = useAdventureOttos()
-
+  const { ottos } = useMyOttos()
   const filteredOttos = useMemo(() => {
     if (!selectedStatus) {
       return ottos

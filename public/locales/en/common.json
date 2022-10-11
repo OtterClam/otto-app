@@ -724,7 +724,7 @@
   },
   "adventurePopup": {
     "start": "Let's Go!",
-    "prevewOttoTitle": "Choose an Otto to go on adventure:",
+    "previewOttoTitle": "Choose an Otto to go on adventure:",
     "readyToGoStep": {
       "title": "Ready to Go!",
       "desc": "{{name}} has just departed to an adventure. Good luck!"

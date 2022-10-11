@@ -31,7 +31,6 @@ export function withOtto<P>(Component: FC<P>): FC<P> {
 
 export function OttoProvider({ children }: PropsWithChildren<object>) {
   const { ottos } = useMyOttos()
-  // const { ottos: adventureOttos } = useAdventureOttos()
   const { items } = useMyItems()
   const [otto, setOtto] = useState<Otto | undefined>()
   const [draftItems, setDraftItems] = useState<{
@@ -42,7 +41,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
     if (!otto && ottos.length > 0) {
       setOtto(ottos[0])
     }
-  }, [ottos])
+  }, [otto, ottos])
 
   useEffect(() => {
     setDraftItems({})

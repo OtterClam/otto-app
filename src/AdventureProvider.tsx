@@ -1,7 +1,6 @@
 import AdventurePopup from 'components/AdventurePopup'
 import { AdventureContractStateProvider } from 'contexts/AdventureContractState'
 import { AdventureLocationsProvider } from 'contexts/AdventureLocations'
-import { AdventureOttosProvider } from 'contexts/AdventureOttos'
 import { AdventureUIStateProvider } from 'contexts/AdventureUIState'
 import { MyItemsProvider } from 'contexts/MyItems'
 import { OttoProvider } from 'contexts/Otto'
@@ -16,10 +15,8 @@ export default function AdventureProvider({ children }: PropsWithChildren<object
           <AdventureContractStateProvider>
             <AdventureUIStateProvider>
               <AdventureLocationsProvider>
-                <AdventureOttosProvider>
-                  {children}
-                  <AdventurePopup />
-                </AdventureOttosProvider>
+                {children}
+                <AdventurePopup />
               </AdventureLocationsProvider>
             </AdventureUIStateProvider>
           </AdventureContractStateProvider>

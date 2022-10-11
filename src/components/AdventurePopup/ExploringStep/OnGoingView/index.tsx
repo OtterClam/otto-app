@@ -135,7 +135,7 @@ interface Props {
 export default function OnGoingView({ otto, state, onFinish }: Props) {
   const { ADVENTURE } = useContractAddresses()
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.exploringStep' })
-  const location = useSelectedAdventureLocation()!
+  const location = useSelectedAdventureLocation()
   const now = new Date()
   const canFinishAt = otto?.latestAdventurePass?.canFinishAt ?? now
   const formattedDuration = formatDistance(canFinishAt, otto?.latestAdventurePass?.departureAt ?? 0)
@@ -154,7 +154,7 @@ export default function OnGoingView({ otto, state, onFinish }: Props) {
   }, [usedPotionAmounts]).reduce((all, list) => all.concat(list), [] as string[])
   const potionButtonDisabled = loading || state === 'Mining'
 
-  if (!otto) {
+  if (!otto || !location) {
     return null
   }
 

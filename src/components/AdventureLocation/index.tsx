@@ -1,8 +1,8 @@
 import { useAdventureLocation } from 'contexts/AdventureLocations'
-import { useAdventureOttos } from 'contexts/AdventureOttos'
 import { AdventurePopupStep, AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
 import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
 import { AdventureOttoStatus } from 'models/Otto'
+import { useMyOttos } from 'MyOttosProvider'
 import { useCallback } from 'react'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
@@ -116,7 +116,7 @@ export interface AdventureLocationProps {
 export default function AdventureLocation({ id, className }: AdventureLocationProps) {
   const { dispatch } = useAdventureUIState()
   const location = useAdventureLocation(id)
-  const { ottos: allOttos } = useAdventureOttos()
+  const { ottos: allOttos } = useMyOttos()
   const ottos = useAdventureOttosAtLocation(id).slice(0, 5)
   const locked = !allOttos.find(
     otto => location && otto.level >= location.minLevel && otto.adventureStatus === AdventureOttoStatus.Ready

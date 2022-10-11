@@ -11,7 +11,6 @@ import OttoSelector from 'components/OttoSelector'
 import { ItemActionType } from 'constant'
 import { AdventureLocationProvider } from 'contexts/AdventureLocation'
 import { AdventureOttoProvider } from 'contexts/AdventureOtto'
-import { useAdventureOttos } from 'contexts/AdventureOttos'
 import {
   AdventurePopupStep,
   useCloseAdventurePopup,
@@ -20,6 +19,7 @@ import {
 } from 'contexts/AdventureUIState'
 import { useApiCall } from 'contexts/Api'
 import { useOtto } from 'contexts/Otto'
+import { useAdventureContract } from 'contracts/contracts'
 import { useAdventureDeparture } from 'contracts/functions'
 import { ItemAction } from 'models/Item'
 import { useMyOttos } from 'MyOttosProvider'
@@ -83,13 +83,14 @@ const StyledTitle = styled(ContentMedium)`
 
 export default function PreviewOttoStep() {
   const container = useRef<HTMLDivElement>(null)
-  const { reload: reloadMyOttos, loading: loadingOttos } = useMyOttos()
-  const { otto, itemActions: equippedItemActions } = useOtto()
+  const { updateOtto, loading: loadingOttos } = useMyOttos()
+  const { otto, itemActions: equippedItemActions, setOtto } = useOtto()
   const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
   const { t } = useTranslation()
   const location = useSelectedAdventureLocation()!
   const close = useCloseAdventurePopup()
   const goToStep = useGoToAdventurePopupStep()
+  const adventureContract = useAdventureContract()
   const [{ itemPopupWidth, itemPopupHeight, itemPopupOffset }, setItemPopupSize] = useState<{
     itemPopupWidth: number
     itemPopupHeight?: number
@@ -150,8 +151,15 @@ export default function PreviewOttoStep() {
   }, [usedPotionAmounts, otto?.id, location?.id, equippedItemActions])
 
   useEffect(() => {
-    if (departureState.state === 'Success') {
-      reloadMyOttos().then(() => goToStep(AdventurePopupStep.ReadyToGo))
+    if (departureState.state === 'Success' && departureState.passId && otto) {
+      adventureContract
+        .pass(departureState.passId)
+        .then(pass => {
+          otto.depart(pass)
+          setOtto(otto)
+          updateOtto(otto)
+        })
+        .then(() => goToStep(AdventurePopupStep.ReadyToGo))
     } else if (departureState.state === 'Fail') {
       alert(departureState.status.errorMessage)
       resetDeparture()
@@ -179,7 +187,7 @@ export default function PreviewOttoStep() {
             >
               {'<'}
             </Button>
-            <StyledTitle>{t('adventurePopup.prevewOttoTitle')}</StyledTitle>
+            <StyledTitle>{t('adventurePopup.previewOttoTitle')}</StyledTitle>
             <CloseButton color="white" onClose={close} />
           </StyledHead>
 

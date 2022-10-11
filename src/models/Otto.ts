@@ -1,3 +1,5 @@
+import { Adventure } from 'contracts/__generated__'
+import { BigNumber } from 'ethers'
 import { getCroppedImageUrl } from 'utils/image'
 
 export enum TraitCollection {
@@ -137,6 +139,10 @@ export default class Otto {
 
   public readonly diceCount?: number
 
+  public adventureStatus: AdventureOttoStatus
+
+  public latestAdventurePass?: AdventurePass | undefined
+
   constructor(raw: RawOtto) {
     this.raw = raw
     this.voice = new Audio(this.raw.animation_url)
@@ -146,6 +152,18 @@ export default class Otto {
     this.totalRarityScore = this.raw.rarityScore ? String(this.raw.rarityScore) : '?'
     this.epochRarityBoost = this.raw.epochRarityBoost
     this.diceCount = this.raw.diceCount
+    this.adventureStatus = this.raw.adventure_status
+
+    if (this.raw.latest_adventure_pass)
+      this.latestAdventurePass = {
+        finishedTx: this.raw.latest_adventure_pass.finished_tx,
+        locationId: this.raw.latest_adventure_pass.location_id,
+        departureAt: new Date(this.raw.latest_adventure_pass.departure_at),
+        finishedAt: this.raw.latest_adventure_pass.finished_at
+          ? new Date(this.raw.latest_adventure_pass.finished_at)
+          : undefined,
+        canFinishAt: new Date(this.raw.latest_adventure_pass.can_finish_at),
+      }
 
     for (let idx = 0; idx < this.raw.attributes?.length ?? 0; idx++) {
       const { trait_type, value } = this.raw.attributes[idx]
@@ -242,10 +260,6 @@ export default class Otto {
     return this.raw.image_wo_bg
   }
 
-  get adventureStatus(): AdventureOttoStatus {
-    return this.raw.adventure_status
-  }
-
   get restingUntil(): Date | undefined {
     return this.raw.resting_until ? new Date(this.raw.resting_until) : undefined
   }
@@ -254,22 +268,17 @@ export default class Otto {
     return this.raw.level
   }
 
-  get latestAdventurePass(): AdventurePass | undefined {
-    return this.raw.latest_adventure_pass
-      ? {
-          finishedTx: this.raw.latest_adventure_pass.finished_tx,
-          locationId: this.raw.latest_adventure_pass.location_id,
-          departureAt: new Date(this.raw.latest_adventure_pass.departure_at),
-          finishedAt: this.raw.latest_adventure_pass.finished_at
-            ? new Date(this.raw.latest_adventure_pass.finished_at)
-            : undefined,
-          canFinishAt: new Date(this.raw.latest_adventure_pass.can_finish_at),
-        }
-      : undefined
-  }
-
   public playVoice() {
     this.voice?.play()
+  }
+
+  public depart(pass: Adventure.PassStruct) {
+    this.adventureStatus = AdventureOttoStatus.Ongoing
+    this.latestAdventurePass = {
+      locationId: BigNumber.from(pass.locId).toNumber(),
+      departureAt: new Date(BigNumber.from(pass.departureAt).toNumber() * 1000),
+      canFinishAt: new Date(BigNumber.from(pass.canFinishAt).toNumber() * 1000),
+    }
   }
 
   toJSON() {

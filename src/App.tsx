@@ -15,7 +15,6 @@ import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
 import { WalletProvider } from 'contexts/Wallet'
 import { ApiProvider } from 'contexts/Api'
 import { OverlayProvider } from 'contexts/Overlay'
-import { AdventureOttosProvider } from 'contexts/AdventureOttos'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 
@@ -76,19 +75,17 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
               <CurrencyProvider>
                 <ThemeProvider theme={theme}>
                   <BreakpointsProvider>
-                    <AdventureOttosProvider>
-                      <MyOttosProvider>
-                        <OverlayProvider>
-                          <StyledApp>
-                            <StyledPageContainer>{children}</StyledPageContainer>
-                            <Error />
-                            <WalletSelector />
-                            <SideMenu />
-                            <AssetsLoader />
-                          </StyledApp>
-                        </OverlayProvider>
-                      </MyOttosProvider>
-                    </AdventureOttosProvider>
+                    <MyOttosProvider>
+                      <OverlayProvider>
+                        <StyledApp>
+                          <StyledPageContainer>{children}</StyledPageContainer>
+                          <Error />
+                          <WalletSelector />
+                          <SideMenu />
+                          <AssetsLoader />
+                        </StyledApp>
+                      </OverlayProvider>
+                    </MyOttosProvider>
                   </BreakpointsProvider>
                 </ThemeProvider>
               </CurrencyProvider>

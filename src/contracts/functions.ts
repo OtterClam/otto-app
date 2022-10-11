@@ -555,36 +555,45 @@ interface OttoTransactionWriteState {
   status: TransactionStatus
 }
 
+interface OttoAdventureDepartsState extends OttoTransactionWriteState {
+  passId?: string
+}
+
 export const useAdventureDeparture = () => {
-  const { OTTO, OTTO_ITEM } = useContractAddresses()
   const adventure = useAdventureContract()
+  const otto = useOttoContract()
+  const item = useItemContract()
   const { account, library } = useEthers()
   const api = useApi()
-  const { isApprovedForAll: ottoApproved } = useIsApprovedForAll(OTTO, adventure.address)
-  const { isApprovedForAll: itemApproved } = useIsApprovedForAll(OTTO_ITEM, adventure.address)
+  const [ottoApprovedResult, itemApprovedResult] = useCalls([
+    account && {
+      contract: otto,
+      method: 'isApprovedForAll',
+      args: [account, adventure.address],
+    },
+    account && {
+      contract: item,
+      method: 'isApprovedForAll',
+      args: [account, adventure.address],
+    },
+  ])
+  const ottoApproved = ottoApprovedResult?.value?.[0] ?? false
+  const itemApproved = itemApprovedResult?.value?.[0] ?? false
   const { send: sendDeparture, state, resetState } = useContractFunction(adventure, 'departure')
-  const otto = useOttoContract()
   const {
     send: approveOttoSpending,
     state: approveOttoState,
     resetState: resetOtto,
   } = useContractFunction(otto, 'setApprovalForAll')
-  const item = useItemContract()
   const {
     send: approveItemSpending,
     state: approveItemState,
     resetState: resetItem,
   } = useContractFunction(item, 'setApprovalForAll')
-  const [departureState, setDepartureState] = useState<OttoTransactionWriteState>({
+  const [departureState, setDepartureState] = useState<OttoAdventureDepartsState>({
     state: 'None',
     status: state,
   })
-  useEffect(() => {
-    setDepartureState({
-      state: txState(state.status),
-      status: state,
-    })
-  }, [state])
   useEffect(() => {
     setDepartureState({
       state: txState(approveOttoState.status),
@@ -597,6 +606,30 @@ export const useAdventureDeparture = () => {
       status: approveItemState,
     })
   }, [approveItemState])
+  useEffect(() => {
+    if (state.status === 'Success' && state.receipt) {
+      const passId = state.receipt.logs
+        .map(log => {
+          try {
+            return adventure.interface.parseLog(log)
+          } catch (err) {
+            // skip
+          }
+          return null
+        })
+        .filter(e => e?.name === 'Departure')[0]?.args[0]
+      setDepartureState({
+        state: txState(state.status),
+        status: state,
+        passId,
+      })
+    } else {
+      setDepartureState({
+        state: txState(state.status),
+        status: state,
+      })
+    }
+  }, [state])
 
   const resetDeparture = () => {
     resetItem()

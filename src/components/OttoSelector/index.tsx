@@ -1,6 +1,5 @@
 import useResizeObserver from '@react-hook/resize-observer'
 import CroppedImage from 'components/CroppedImage'
-import { useAdventureOttos } from 'contexts/AdventureOttos'
 import { useOtto } from 'contexts/Otto'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
@@ -72,8 +71,7 @@ const OttoItem = React.memo(
 
 const useReadyOttos = () => {
   const { ottos } = useMyOttos()
-  const { ottos: adventureOttos } = useAdventureOttos()
-  const map = adventureOttos
+  const map = ottos
     .filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready)
     .reduce((map, otto) => Object.assign(map, { [otto.id]: true }), {} as { [k: string]: boolean })
   return ottos.filter(otto => map[otto.id])

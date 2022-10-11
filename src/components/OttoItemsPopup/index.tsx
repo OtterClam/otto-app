@@ -104,15 +104,12 @@ export default memo(function OttoItemsPopup({ className, height, maxWidth, onReq
       >
         <StyledContainer height={height} ref={container}>
           <StyledTitle>{t('title', { type: traitType })}</StyledTitle>
-
           <StyledOttoLevels levelClassName="otto-level" />
-
           <StyledActions>
             <StyledAction>
               <StyledActionLabel>{t('sort')}</StyledActionLabel>
               <SortedBySelector />
             </StyledAction>
-
             <StyledAction>
               <StyledActionLabel>{t('filter')}</StyledActionLabel>
               <FilterSelector />
