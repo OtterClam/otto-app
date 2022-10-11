@@ -1,5 +1,5 @@
 import noop from 'lodash/noop'
-import { AdventureResultEvents } from 'models/AdventureLocation'
+import { AdventureResultEvents, AdventureResultReward } from 'models/AdventureLocation'
 import { AdventurePreview } from 'models/AdventurePreview'
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useReducer } from 'react'
 import { useAdventureLocation } from './AdventureLocations'
@@ -36,19 +36,19 @@ export type AdventureUIAction =
       data: AdventurePopupStep
     }
   | {
-    type: AdventureUIActionType.LevelUp
-    data?: {
-      ottoId: string
-      levelUp: AdventureResultEvents['level_up']
+      type: AdventureUIActionType.LevelUp
+      data?: {
+        ottoId: string
+        levelUp: AdventureResultEvents['level_up']
+        rewards: AdventureResultReward
+      }
     }
-  } 
   | {
-    type: AdventureUIActionType.DistributeAttributePoints
-    data: {
-      ottoId: string
-      points: number
+      type: AdventureUIActionType.DistributeAttributePoints
+      data: {
+        ottoId: string
+      }
     }
-  }
 
 export interface AdventureUIState {
   selectedLocationId?: number
@@ -58,10 +58,10 @@ export interface AdventureUIState {
   levelUp?: {
     ottoId: string
     levelUp: AdventureResultEvents['level_up']
+    rewards: AdventureResultReward
   }
   attributePoints?: {
     ottoId: string
-    points: number
   }
 }
 
@@ -80,6 +80,12 @@ const defaultValue: AdventureUIValue = {
     popupStep: AdventurePopupStep.LocationInfo,
     levelUp: {
       ottoId: '29',
+      rewards: {
+        items: [],
+        exp: 100,
+        tcp: 100,
+        ap: 100,
+      },
       levelUp: {
         from: {
           level: 1,
@@ -94,9 +100,9 @@ const defaultValue: AdventureUIValue = {
         got: {
           items: [],
           attrs_points: 5,
-        }
-      }
-    }
+        },
+      },
+    },
   },
   dispatch: noop,
 }

@@ -1,9 +1,9 @@
-import AdventureProgressBar from "components/AdventureProgressBar"
-import CroppedImage from "components/CroppedImage"
-import { AdventureOtto } from "models/AdventureOtto"
-import Otto from "models/Otto"
-import styled from "styled-components/macro"
-import { ContentExtraSmall, Note } from "styles/typography"
+import AdventureProgressBar from 'components/AdventureProgressBar'
+import CroppedImage from 'components/CroppedImage'
+import { AdventureOtto } from 'models/AdventureOtto'
+import Otto from 'models/Otto'
+import styled from 'styled-components/macro'
+import { ContentExtraSmall, Note } from 'styles/typography'
 
 const StyledOttoCard = styled.div``
 

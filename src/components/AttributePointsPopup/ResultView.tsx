@@ -1,7 +1,7 @@
-import styled from "styled-components/macro"
-import { Caption, ContentLarge } from "styles/typography"
+import styled from 'styled-components/macro'
+import { Caption, ContentLarge } from 'styles/typography'
 import arrowImage from './arrow.png'
-import OttoCard from "./OttoCard"
+import OttoCard from './OttoCard'
 
 const StyledContainer = styled.div``
 

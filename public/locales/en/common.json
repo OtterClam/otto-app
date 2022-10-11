@@ -865,5 +865,16 @@
     "title": "The Ottos currently exploring this place",
     "view": "View",
     "noOtto": "No Otto is here"
+  },
+  "levelUp": {
+    "popupTitle": "LEVEL UP!!!",
+    "rewardSectionTitle": "Level-up Reward",
+    "continueButton": "Continue",
+    "itemRewardLabel": {
+      "silver": "Silver Shell Chest x{{ amount }}",
+      "golden": "Golden Shell Chest x{{ amount }}",
+      "diamond": "Diamond Shell Chest x{{ amount }}"
+    },
+    "attributePointsRewardLabel": "+{{ points }} Attribute Points"
   }
 }

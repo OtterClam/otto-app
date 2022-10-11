@@ -1,19 +1,39 @@
-import AdventureFullscreen from "components/AdventureFullscreen";
-import AdventureProgressBar from "components/AdventureProgressBar";
-import AdventureRibbonText from "components/AdventureRibbonText";
-import Button from "components/Button";
-import CroppedImage from "components/CroppedImage";
-import RewardRibbonText from "components/RewardRibbonText";
-import TreasurySection from "components/TreasurySection";
-import { useAdventureOtto } from "contexts/AdventureOttos";
-import { AdventureUIActionType, useAdventureUIState } from "contexts/AdventureUIState";
-import { useMyOttos } from "MyOttosProvider";
-import { useCallback } from "react";
-import styled from "styled-components/macro";
-import { Caption, ContentExtraSmall, Display1, Headline } from "styles/typography";
+import AdventureFullscreen from 'components/AdventureFullscreen'
+import AdventureProgressBar from 'components/AdventureProgressBar'
+import AdventureRibbonText from 'components/AdventureRibbonText'
+import Button from 'components/Button'
+import CroppedImage from 'components/CroppedImage'
+import RewardRibbonText from 'components/RewardRibbonText'
+import TreasurySection from 'components/TreasurySection'
+import { AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
+import { useMyOtto } from 'MyOttosProvider'
+import { useTranslation } from 'next-i18next'
+import { useCallback } from 'react'
+import styled from 'styled-components/macro'
+import { Caption, ContentExtraSmall, Display1, Headline, Note } from 'styles/typography'
+import silverImage from 'assets/chests/silver.png'
+import goldenImage from 'assets/chests/golden.png'
+import diamondImage from 'assets/chests/diamond.png'
+import attributePointsImage from 'assets/chests/attribute_points.png'
 import arrowImage from './arrow.png'
 
+const rewardItems: { [k: string]: { key: string; image: string } } = {
+  16646144: {
+    key: 'silver',
+    image: silverImage.src,
+  },
+  16646208: {
+    key: 'golden',
+    image: goldenImage.src,
+  },
+  16646230: {
+    key: 'diamond',
+    image: diamondImage.src,
+  },
+}
+
 const StyledFullscreen = styled(AdventureFullscreen)`
+  position: relative;
   max-width: 375px !important;
   width: 80% !important;
   background: ${({ theme }) => theme.colors.otterBlack};
@@ -22,6 +42,10 @@ const StyledFullscreen = styled(AdventureFullscreen)`
   .fullscreen-inner {
     padding: 40px 20px 20px;
   }
+`
+
+const StyledPopupTitle = styled(RewardRibbonText)`
+  z-index: 1;
 `
 
 const StyledOtto = styled.div`
@@ -45,7 +69,9 @@ const StyledContainer = styled.div`
 
 const StyledLevel = styled(Display1)<{ levelUp?: boolean }>`
   font-size: 24px;
-  ${({ levelUp, theme }) => levelUp && `
+  ${({ levelUp, theme }) =>
+    levelUp &&
+    `
     color: ${theme.colors.crownYellow};
   `}
 `
@@ -85,6 +111,8 @@ const StyledExp = styled.div``
 const StyledRewardSection = styled(TreasurySection)`
   width: 100%;
   margin-top: 20px;
+  background: ${({ theme }) => theme.colors.darkGray400};
+  padding: 0 15px 15px;
 `
 
 const StyledRewardTitle = styled.div`
@@ -94,20 +122,64 @@ const StyledRewardTitle = styled.div`
   margin-top: -20px;
 `
 
+const StyledRewards = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+`
+
+const StyledReward = styled.div`
+  flex: 1 50%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const StyledRewardLabel = styled(Note)``
+
+const StyledRewardIcon = styled.div<{ image: string }>`
+  width: 60px;
+  height: 60px;
+  background: center / cover url(${({ image }) => image});
+`
+
 export default function LevelUpPopup() {
-  const { state: { levelUp }, dispatch } = useAdventureUIState()
-  const { ottos } = useMyOttos()
-  const otto = ottos.find(otto => otto.tokenId === levelUp?.ottoId)
-  const adventureOtto = useAdventureOtto(levelUp?.ottoId)
+  const { t } = useTranslation('', { keyPrefix: 'levelUp' })
+  const {
+    state: { levelUp },
+    dispatch,
+  } = useAdventureUIState()
+  const otto = useMyOtto(levelUp?.ottoId)
+
   const handleClose = useCallback(() => {
     dispatch({ type: AdventureUIActionType.LevelUp })
   }, [])
 
+  const distributeAttributePoints = useCallback(() => {
+    if (!levelUp) {
+      return
+    }
+
+    handleClose()
+
+    dispatch({
+      type: AdventureUIActionType.DistributeAttributePoints,
+      data: {
+        ottoId: levelUp.ottoId,
+      },
+    })
+  }, [levelUp])
+
   return (
-    <StyledFullscreen show={Boolean(levelUp)} onRequestClose={handleClose} bodyClassName="fullscreen-inner">
-      {otto && adventureOtto && levelUp && (
+    <StyledFullscreen
+      show={Boolean(levelUp)}
+      onRequestClose={handleClose}
+      bodyClassName="fullscreen-inner"
+      header={<StyledPopupTitle text={t('popupTitle')} />}
+    >
+      {otto && levelUp && (
         <StyledContainer>
-          <RewardRibbonText text="LEVEL UP!!!" />
           <StyledOtto>
             <CroppedImage src={otto.image} width={140} height={140} />
             <StyledLevels>
@@ -115,21 +187,43 @@ export default function LevelUpPopup() {
               <StyledArrow />
               <StyledLevel levelUp>LV.{levelUp.levelUp.to.level}</StyledLevel>
             </StyledLevels>
-            <StyledTitle>{adventureOtto.name}</StyledTitle>
+            <StyledTitle>{otto.adventurerTitle}</StyledTitle>
           </StyledOtto>
           <StyledProgress>
             <StyledExpDetails>
-              <StyledExpDiff>+50 EXP</StyledExpDiff>
-              <StyledExp>{levelUp.levelUp.from.exp}/{levelUp.levelUp.from.expToNextLevel} EXP</StyledExp>
+              <StyledExpDiff>+{levelUp.rewards.exp} EXP</StyledExpDiff>
+              <StyledExp>
+                {levelUp.levelUp.from.exp}/{levelUp.levelUp.from.expToNextLevel} EXP
+              </StyledExp>
             </StyledExpDetails>
             <AdventureProgressBar progress={1} />
           </StyledProgress>
           <StyledRewardSection showRope={false}>
             <StyledRewardTitle>
-              <AdventureRibbonText>Level-up Rewards</AdventureRibbonText>
+              <AdventureRibbonText>{t('rewardSectionTitle')}</AdventureRibbonText>
             </StyledRewardTitle>
+            <StyledRewards>
+              {levelUp.levelUp.got.items
+                .filter(item => Boolean(rewardItems[item.id]))
+                .map(item => (
+                  <StyledReward key={item.id}>
+                    <StyledRewardIcon image={rewardItems[item.id].image} />
+                    <StyledRewardLabel>
+                      {t(`itemRewardLabel.${rewardItems[item.id].key}`, { amount: item.amount })}
+                    </StyledRewardLabel>
+                  </StyledReward>
+                ))}
+              <StyledReward>
+                <StyledRewardIcon image={attributePointsImage.src} />
+                <StyledRewardLabel>
+                  {t('attributePointsRewardLabel', { points: levelUp.levelUp.got.attrs_points })}
+                </StyledRewardLabel>
+              </StyledReward>
+            </StyledRewards>
           </StyledRewardSection>
-          <Button width="100%" Typography={Headline}>Continue</Button>
+          <Button width="100%" Typography={Headline} onClick={distributeAttributePoints}>
+            {t('continueButton')}
+          </Button>
         </StyledContainer>
       )}
     </StyledFullscreen>

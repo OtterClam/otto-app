@@ -37,6 +37,7 @@ export interface RawOtto {
   adventure_status: AdventureOttoStatus
   resting_until?: string
   level: number
+  adventurer_title: string
   latest_adventure_pass?: RawAdventurePass
 }
 
@@ -266,6 +267,10 @@ export default class Otto {
           canFinishedAt: new Date(this.raw.latest_adventure_pass.can_finished_at),
         }
       : undefined
+  }
+
+  get adventurerTitle() {
+    return this.raw.adventurer_title
   }
 
   public playVoice() {
