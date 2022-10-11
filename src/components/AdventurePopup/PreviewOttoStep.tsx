@@ -125,7 +125,7 @@ export default function PreviewOttoStep() {
     [otto, location, actions]
   )
 
-  const { departure, departureState, resetDeparture } = useAdventureDeparture()
+  const { depart, departureState, resetDeparture } = useAdventureDeparture()
 
   const handleDepartureButtonClick = useCallback(() => {
     if (!otto || !location) {
@@ -147,7 +147,7 @@ export default function PreviewOttoStep() {
       })
       .reduce((all, list) => all.concat(list), [] as ItemAction[])
 
-    departure(otto.id, location.id, potionActions)
+    depart(otto.id, location.id, potionActions)
   }, [usedPotionAmounts, otto?.id, location?.id, equippedItemActions])
 
   useEffect(() => {

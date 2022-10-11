@@ -637,7 +637,7 @@ export const useAdventureDeparture = () => {
     resetState()
   }
 
-  const departure = useCallback(
+  const depart = useCallback(
     async (ottoId: string, locationId: number, itemActions: ItemAction[]) => {
       if (!account || !library) {
         return
@@ -665,7 +665,7 @@ export const useAdventureDeparture = () => {
   )
 
   return {
-    departure,
+    depart,
     departureState,
     resetDeparture,
   }
