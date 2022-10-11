@@ -7,6 +7,7 @@ import { MyItemsProvider } from 'contexts/MyItems'
 import { OttoProvider } from 'contexts/Otto'
 import { TraitProvider } from 'contexts/TraitContext'
 import { PropsWithChildren } from 'react'
+import LevelUpPopup from 'components/LevelUpPopup'
 
 export default function AdventureProvider({ children }: PropsWithChildren<object>) {
   return (
@@ -19,6 +20,7 @@ export default function AdventureProvider({ children }: PropsWithChildren<object
                 <AdventureOttosProvider>
                   {children}
                   <AdventurePopup />
+                  <LevelUpPopup />
                 </AdventureOttosProvider>
               </AdventureLocationsProvider>
             </AdventureUIStateProvider>

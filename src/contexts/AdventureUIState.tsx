@@ -1,5 +1,6 @@
 import { Step as AdventurePopupStep, Step } from 'components/AdventurePopup'
 import noop from 'lodash/noop'
+import { AdventureResultEvents } from 'models/AdventureLocation'
 import { AdventurePreview } from 'models/AdventurePreview'
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useReducer } from 'react'
 import { useAdventureLocation } from './AdventureLocations'
@@ -8,6 +9,8 @@ export enum AdventureUIActionType {
   OpenPopup,
   ClosePopup,
   SetPopupStep,
+  LevelUp,
+  DistributeAttributePoints,
 }
 
 export type AdventureUIAction =
@@ -25,12 +28,34 @@ export type AdventureUIAction =
       type: AdventureUIActionType.SetPopupStep
       data: AdventurePopupStep
     }
+  | {
+    type: AdventureUIActionType.LevelUp
+    data?: {
+      ottoId: string
+      levelUp: AdventureResultEvents['level_up']
+    }
+  } 
+  | {
+    type: AdventureUIActionType.DistributeAttributePoints
+    data: {
+      ottoId: string
+      points: number
+    }
+  }
 
 export interface AdventureUIState {
   selectedLocationId?: number
   popupOpened: boolean
   popupStep: AdventurePopupStep
   preview?: AdventurePreview
+  levelUp?: {
+    ottoId: string
+    levelUp: AdventureResultEvents['level_up']
+  }
+  attributePoints?: {
+    ottoId: string
+    points: number
+  }
 }
 
 export interface AdventureUIStateDispatcher {
@@ -46,6 +71,25 @@ const defaultValue: AdventureUIValue = {
   state: {
     popupOpened: false,
     popupStep: AdventurePopupStep.LocationInfo,
+    levelUp: {
+      ottoId: '29',
+      levelUp: {
+        from: {
+          level: 1,
+          exp: 80,
+          expToNextLevel: 100,
+        },
+        to: {
+          level: 2,
+          exp: 0,
+          expToNextLevel: 200,
+        },
+        got: {
+          items: [],
+          attrs_points: 5,
+        }
+      }
+    }
   },
   dispatch: noop,
 }
@@ -66,6 +110,10 @@ export const AdventureUIStateProvider = ({ children }: PropsWithChildren<object>
         return { ...state, popupOpened: false }
       case AdventureUIActionType.SetPopupStep:
         return { ...state, popupStep: action.data }
+      case AdventureUIActionType.LevelUp:
+        return { ...state, levelUp: action.data }
+      case AdventureUIActionType.DistributeAttributePoints:
+        return { ...state, attributePoints: action.data }
       default:
         return state
     }
