@@ -117,7 +117,7 @@ export interface AdventureLocation {
   minLevel: number
 }
 
-export type RawAdventureDepartureArgs = [
+export type RawAdventureExploreArgs = [
   BigNumberish, // otto id
   BigNumberish, // location id
   BigNumberish, // duration
@@ -133,7 +133,7 @@ export type RawAdventureDepartureArgs = [
   ]
 ]
 
-export type AdventureDepartureArgs = [
+export type AdventureExploreArgs = [
   BigNumberish, // otto id
   BigNumberish, // location id
   BigNumberish, // duration

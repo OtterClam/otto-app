@@ -20,7 +20,7 @@ import {
 import { useApiCall } from 'contexts/Api'
 import { useOtto } from 'contexts/Otto'
 import { useAdventureContract } from 'contracts/contracts'
-import { useAdventureDeparture } from 'contracts/functions'
+import { useAdventureExplore } from 'contracts/functions'
 import { ItemAction } from 'models/Item'
 import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
@@ -125,9 +125,9 @@ export default function PreviewOttoStep() {
     [otto, location, actions]
   )
 
-  const { depart, departureState, resetDeparture } = useAdventureDeparture()
+  const { explore, exploreState, resetExplore } = useAdventureExplore()
 
-  const handleDepartureButtonClick = useCallback(() => {
+  const handleExploreButtonClick = useCallback(() => {
     if (!otto || !location) {
       return
     }
@@ -147,24 +147,24 @@ export default function PreviewOttoStep() {
       })
       .reduce((all, list) => all.concat(list), [] as ItemAction[])
 
-    depart(otto.id, location.id, potionActions)
+    explore(otto.id, location.id, potionActions)
   }, [usedPotionAmounts, otto?.id, location?.id, equippedItemActions])
 
   useEffect(() => {
-    if (departureState.state === 'Success' && departureState.passId && otto) {
+    if (exploreState.state === 'Success' && exploreState.passId && otto) {
       adventureContract
-        .pass(departureState.passId)
+        .pass(exploreState.passId)
         .then(pass => {
-          otto.depart(pass)
+          otto.explore(pass)
           setOtto(otto)
           updateOtto(otto)
         })
         .then(() => goToStep(AdventurePopupStep.ReadyToGo))
-    } else if (departureState.state === 'Fail') {
-      alert(departureState.status.errorMessage)
-      resetDeparture()
+    } else if (exploreState.state === 'Fail') {
+      alert(exploreState.status.errorMessage)
+      resetExplore()
     }
-  }, [departureState])
+  }, [exploreState])
 
   useResizeObserver(container, () => {
     const rect = container?.current?.getBoundingClientRect()
@@ -214,8 +214,8 @@ export default function PreviewOttoStep() {
           <Button
             padding="3px 0 0"
             Typography={Headline}
-            loading={departureState.state === 'Processing' || loadingOttos}
-            onClick={handleDepartureButtonClick}
+            loading={exploreState.state === 'Processing' || loadingOttos}
+            onClick={handleExploreButtonClick}
           >
             {t('adventurePopup.start')}
           </Button>

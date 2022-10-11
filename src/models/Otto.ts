@@ -272,7 +272,7 @@ export default class Otto {
     this.voice?.play()
   }
 
-  public depart(pass: Adventure.PassStruct) {
+  public explore(pass: Adventure.PassStruct) {
     this.adventureStatus = AdventureOttoStatus.Ongoing
     this.latestAdventurePass = {
       locationId: BigNumber.from(pass.locId).toNumber(),

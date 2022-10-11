@@ -555,11 +555,11 @@ interface OttoTransactionWriteState {
   status: TransactionStatus
 }
 
-interface OttoAdventureDepartsState extends OttoTransactionWriteState {
+interface OttoAdventureExploreState extends OttoTransactionWriteState {
   passId?: string
 }
 
-export const useAdventureDeparture = () => {
+export const useAdventureExplore = () => {
   const adventure = useAdventureContract()
   const otto = useOttoContract()
   const item = useItemContract()
@@ -579,7 +579,7 @@ export const useAdventureDeparture = () => {
   ])
   const ottoApproved = ottoApprovedResult?.value?.[0] ?? false
   const itemApproved = itemApprovedResult?.value?.[0] ?? false
-  const { send: sendDeparture, state, resetState } = useContractFunction(adventure, 'departure')
+  const { send: sendExplore, state, resetState } = useContractFunction(adventure, 'departure')
   const {
     send: approveOttoSpending,
     state: approveOttoState,
@@ -590,18 +590,18 @@ export const useAdventureDeparture = () => {
     state: approveItemState,
     resetState: resetItem,
   } = useContractFunction(item, 'setApprovalForAll')
-  const [departureState, setDepartureState] = useState<OttoAdventureDepartsState>({
+  const [exploreState, setExploreState] = useState<OttoAdventureExploreState>({
     state: 'None',
     status: state,
   })
   useEffect(() => {
-    setDepartureState({
+    setExploreState({
       state: txState(approveOttoState.status),
       status: approveOttoState,
     })
   }, [approveOttoState])
   useEffect(() => {
-    setDepartureState({
+    setExploreState({
       state: txState(approveItemState.status),
       status: approveItemState,
     })
@@ -617,32 +617,32 @@ export const useAdventureDeparture = () => {
           }
           return null
         })
-        .filter(e => e?.name === 'Departure')[0]?.args[0]
-      setDepartureState({
+        .filter(e => e?.name === 'Explore')[0]?.args[0]
+      setExploreState({
         state: txState(state.status),
         status: state,
         passId,
       })
     } else {
-      setDepartureState({
+      setExploreState({
         state: txState(state.status),
         status: state,
       })
     }
   }, [state])
 
-  const resetDeparture = () => {
+  const resetExplore = () => {
     resetItem()
     resetOtto()
     resetState()
   }
 
-  const depart = useCallback(
+  const explore = useCallback(
     async (ottoId: string, locationId: number, itemActions: ItemAction[]) => {
       if (!account || !library) {
         return
       }
-      setDepartureState({
+      setExploreState({
         state: 'Processing',
         status: state,
       })
@@ -658,16 +658,16 @@ export const useAdventureDeparture = () => {
           return
         }
       }
-      const data = await api.departure(ottoId, locationId, account, itemActions)
-      sendDeparture(...data)
+      const data = await api.explore(ottoId, locationId, account, itemActions)
+      sendExplore(...data)
     },
     [api, account, ottoApproved, itemApproved]
   )
 
   return {
-    depart,
-    departureState,
-    resetDeparture,
+    explore,
+    exploreState,
+    resetExplore,
   }
 }
 

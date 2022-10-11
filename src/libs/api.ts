@@ -2,11 +2,11 @@ import { ChainId } from '@usedapp/core'
 import axios, { Axios } from 'axios'
 import { BigNumberish } from 'ethers'
 import {
-  RawAdventureDepartureArgs,
+  RawAdventureExploreArgs,
   AdventureLocation,
   RawAdventureLocation,
   rawAdventureLocationToAdventureLocation,
-  AdventureDepartureArgs,
+  AdventureExploreArgs,
   AdventureFinishArgs,
 } from 'models/AdventureLocation'
 import { AdventurePreview, RawAdventurePreview, rawAdventurePreviewToAdventurePreview } from 'models/AdventurePreview'
@@ -163,13 +163,13 @@ export class Api {
     return result.data.map(rawAdventureLocationToAdventureLocation)
   }
 
-  public async departure(
+  public async explore(
     ottoId: string,
     locationId: number,
     wallet: string,
     itemActions: ItemAction[]
-  ): Promise<AdventureDepartureArgs> {
-    const result = await this.otterclamClient.post<RawAdventureDepartureArgs>('/adventure/departure', {
+  ): Promise<AdventureExploreArgs> {
+    const result = await this.otterclamClient.post<RawAdventureExploreArgs>('/adventure/departure', {
       otto_id: Number(ottoId),
       loc_id: locationId,
       wallet,
