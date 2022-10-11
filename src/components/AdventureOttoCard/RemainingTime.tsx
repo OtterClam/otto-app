@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
 import { useTranslation } from 'next-i18next'
-import useFormattedDuration from 'hooks/useFormattedDuration'
+import useRemainingTime from 'hooks/useRemainingTime'
 
 const StyledContainer = styled(Note).attrs({ as: 'div' })<{ viewLabel: string }>`
   display: flex;
@@ -27,14 +27,13 @@ const StyledContainer = styled(Note).attrs({ as: 'div' })<{ viewLabel: string }>
 `
 
 export interface RemainingTimeProps {
-  start: Date
-  end: Date
+  target: Date
   onClick: () => void
 }
 
-export default function RemainingTime({ start, end, onClick }: RemainingTimeProps) {
+export default function RemainingTime({ target, onClick }: RemainingTimeProps) {
   const { t } = useTranslation('', { keyPrefix: 'adventureOttoCard' })
-  const duration = useFormattedDuration(start, end)
+  const duration = useRemainingTime(target)
 
   return (
     <StyledContainer viewLabel={t('viewLabel')} onClick={onClick}>

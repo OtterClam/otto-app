@@ -65,7 +65,7 @@ type SortableFields<T extends object> = {
 }
 
 function createSortFunction(key: keyof SortableFields<Item>) {
-  return (lhs: Item, rhs: Item) => lhs[key] - rhs[key]
+  return (lhs: Item, rhs: Item) => rhs[key] - lhs[key]
 }
 
 const sortFunctions = {

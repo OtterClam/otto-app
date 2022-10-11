@@ -7,13 +7,14 @@ import { AdventurePotion, Token } from 'constant'
 import { useSelectedAdventureLocation } from 'contexts/AdventureUIState'
 import useAdventurePotion from 'hooks/useAdventurePotion'
 import useContractAddresses from 'hooks/useContractAddresses'
-import useFormattedDuration from 'hooks/useFormattedDuration'
+import useRemainingTime from 'hooks/useRemainingTime'
 import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useMemo, useState } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentLarge, ContentMedium, Note } from 'styles/typography'
+import formatDistance from 'date-fns/formatDistance'
 import SpeedPotion from './speed-up-potion.png'
 import SpeedUpPotion from './SpeedUpPotion'
 
@@ -136,9 +137,9 @@ export default function OnGoingView({ otto, state, onFinish }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.exploringStep' })
   const location = useSelectedAdventureLocation()!
   const now = new Date()
-  const canFinishAt = otto?.latestAdventurePass?.canFinishedAt ?? now
-  const formattedDuration = useFormattedDuration(otto?.latestAdventurePass?.departuredAt ?? now, canFinishAt)
-  const remainingDuration = useFormattedDuration(now, canFinishAt)
+  const canFinishAt = otto?.latestAdventurePass?.canFinishAt ?? now
+  const formattedDuration = formatDistance(canFinishAt, otto?.latestAdventurePass?.departureAt ?? 0)
+  const remainingDuration = useRemainingTime(canFinishAt)
   const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
   const { amounts, loading } = useAdventurePotion()
   const usedPotions = useMemo(() => {
