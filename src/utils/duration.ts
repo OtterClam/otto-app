@@ -1,5 +1,5 @@
 const pad = (n: number): string => {
-  return n > 10 ? String(n) : `0${n}`
+  return n >= 10 ? String(n) : `0${n}`
 }
 
 export const formatDuration = (duration: Duration): string => {
