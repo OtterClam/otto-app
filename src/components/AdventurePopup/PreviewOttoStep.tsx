@@ -85,8 +85,7 @@ export default function PreviewOttoStep() {
   const container = useRef<HTMLDivElement>(null)
   const { reload: reloadMyOttos, loading: loadingOttos } = useMyOttos()
   const { otto, itemActions: equippedItemActions } = useOtto()
-  const { loading: loadingAdventureOttos, refetch: reloadAdventureOttos } = useAdventureOttos()
-  const [usedPitionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
+  const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
   const { t } = useTranslation()
   const location = useSelectedAdventureLocation()!
   const close = useCloseAdventurePopup()
@@ -105,8 +104,8 @@ export default function PreviewOttoStep() {
       return []
     }
     const actions = equippedItemActions.slice()
-    Object.keys(usedPitionAmounts).forEach(potion => {
-      const amount = usedPitionAmounts[potion]
+    Object.keys(usedPotionAmounts).forEach(potion => {
+      const amount = usedPotionAmounts[potion]
       for (let i = 0; i <= amount; i += 1) {
         actions.push({
           type: ItemActionType.Use,
@@ -116,7 +115,7 @@ export default function PreviewOttoStep() {
       }
     })
     return actions
-  }, [equippedItemActions, usedPitionAmounts])
+  }, [equippedItemActions, usedPotionAmounts])
 
   const { result: preview } = useApiCall(
     'getOttoAdventurePreview',
@@ -132,10 +131,10 @@ export default function PreviewOttoStep() {
       return
     }
 
-    const potionActions = Object.keys(usedPitionAmounts)
+    const potionActions = Object.keys(usedPotionAmounts)
       .map(potion => {
         const actions: ItemAction[] = []
-        const amount = usedPitionAmounts[potion]
+        const amount = usedPotionAmounts[potion]
         for (let i = 0; i < amount; i += 1) {
           actions.push({
             type: ItemActionType.Use,
@@ -148,13 +147,12 @@ export default function PreviewOttoStep() {
       .reduce((all, list) => all.concat(list), [] as ItemAction[])
 
     departure(otto.id, location.id, potionActions)
-  }, [usedPitionAmounts, otto?.id, location?.id, equippedItemActions])
+  }, [usedPotionAmounts, otto?.id, location?.id, equippedItemActions])
 
   useEffect(() => {
     if (departureState.state === 'Success') {
-      Promise.all([reloadMyOttos(), reloadAdventureOttos()]).then(() => goToStep(AdventurePopupStep.ReadyToGo))
-    }
-    if (departureState.state === 'Fail') {
+      reloadMyOttos().then(() => goToStep(AdventurePopupStep.ReadyToGo))
+    } else if (departureState.state === 'Fail') {
       alert(departureState.status.errorMessage)
       resetDeparture()
     }
@@ -208,7 +206,7 @@ export default function PreviewOttoStep() {
           <Button
             padding="3px 0 0"
             Typography={Headline}
-            loading={departureState.state === 'Processing' || loadingOttos || loadingAdventureOttos}
+            loading={departureState.state === 'Processing' || loadingOttos}
             onClick={handleDepartureButtonClick}
           >
             {t('adventurePopup.start')}

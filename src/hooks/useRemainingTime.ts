@@ -2,7 +2,7 @@ import { formatDuration } from 'utils/duration'
 import intervalToDuration from 'date-fns/intervalToDuration'
 import { useEffect, useState } from 'react'
 
-export default function useFormattedDuration(start: Date, end: Date): string {
+export default function useRemainingTime(target: Date): string {
   const [formattedDuration, setFormattedDuration] = useState('')
 
   useEffect(() => {
@@ -10,8 +10,8 @@ export default function useFormattedDuration(start: Date, end: Date): string {
 
     const updateFormattedDuration = () => {
       const duration = intervalToDuration({
-        start,
-        end,
+        start: new Date(),
+        end: target,
       })
       setFormattedDuration(formatDuration(duration))
       timer = setTimeout(updateFormattedDuration, 1000)
@@ -21,7 +21,7 @@ export default function useFormattedDuration(start: Date, end: Date): string {
     return () => {
       clearTimeout(timer)
     }
-  }, [start, end])
+  }, [target])
 
   return formattedDuration
 }
