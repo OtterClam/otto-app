@@ -21,6 +21,7 @@ import { useApiCall } from 'contexts/Api'
 import { useOtto } from 'contexts/Otto'
 import { useAdventureContract } from 'contracts/contracts'
 import { useAdventureExplore } from 'contracts/functions'
+import { BoostType } from 'models/AdventureLocation'
 import { ItemAction } from 'models/Item'
 import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
@@ -99,6 +100,11 @@ export default function PreviewOttoStep() {
     itemPopupWidth: 375,
     itemPopupOffset: 0,
   })
+
+  const levelBoost = useMemo(
+    () => location.conditionalBoosts.find(boost => boost.effective && boost.type === BoostType.Exp),
+    [location]
+  )
 
   const actions = useMemo(() => {
     if (!otto) {
@@ -199,7 +205,7 @@ export default function PreviewOttoStep() {
                 itemsPopupWidth={itemPopupWidth}
                 itemPopupHeight={itemPopupHeight}
               />
-              {otto && <OttoAdventureLevel otto={otto} boost />}
+              {otto && <OttoAdventureLevel otto={otto} boost={Boolean(levelBoost)} />}
               <OttoAttributes />
               <OttoLevels />
             </StyledPreview>

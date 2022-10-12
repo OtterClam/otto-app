@@ -189,13 +189,13 @@ export interface AdventureResult {
 }
 
 const parseDuration = (val: string): Duration => {
-  const match = /^(\d+)h(\d+)m(\d+)s$/.exec(val)
+  const match = /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/.exec(val)
   if (!match) {
     return intervalToDuration({ start: 0, end: 0 })
   }
-  const h = Number(match[1])
-  const m = Number(match[2])
-  const s = Number(match[3])
+  const h = Number(match[1] ?? 0)
+  const m = Number(match[2] ?? 0)
+  const s = Number(match[3] ?? 0)
   return intervalToDuration({ start: 0, end: h * 60 * 60 * 1000 + m * 60 * 1000 + s * 1000 })
 }
 
