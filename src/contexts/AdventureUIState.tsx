@@ -78,9 +78,6 @@ const defaultValue: AdventureUIValue = {
   state: {
     popupOpened: false,
     popupStep: AdventurePopupStep.LocationInfo,
-    attributePoints: {
-      ottoId: '29',
-    },
   },
   dispatch: noop,
 }
