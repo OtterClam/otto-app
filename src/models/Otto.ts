@@ -65,7 +65,7 @@ export enum TraitRarity {
 export enum OttoGender {
   Male = 'Male',
   Female = 'Female',
-  Both = 'both',
+  Both = 'Both',
 }
 
 export interface Trait {

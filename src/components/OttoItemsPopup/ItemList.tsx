@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 import { useItemFilters } from 'contexts/ItemFilters'
 import ItemCell from 'components/ItemCell'
-import Otto from 'models/Otto'
+import Otto, { OttoGender } from 'models/Otto'
 import { Note } from 'styles/typography'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
@@ -37,7 +37,13 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
   const { filteredItems } = useItemFilters()
   const { currentItem, restItems } = useMemo(() => {
     const trait = otto?.wearableTraits.find(trait => trait.type === traitType)
-    const restItems = filteredItems.slice()
+    const gender = {
+      Lottie: OttoGender.Female,
+      Otto: OttoGender.Male,
+    }[otto?.gender ?? '']
+    const restItems = filteredItems
+      .filter(item => !gender || item.equippable_gender === OttoGender.Both || item.equippable_gender === gender)
+      .slice()
     const currentItemIndex = filteredItems.findIndex(item => item.id === trait?.id)
     let currentItem: Item | undefined
     if (currentItemIndex !== -1) {
