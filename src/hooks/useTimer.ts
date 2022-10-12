@@ -16,5 +16,5 @@ export default (cb: () => void, ms: number, deps: unknown[] = []): void => {
     return () => {
       clearTimeout(timer)
     }
-  }, [ms, ...deps])
+  }, [cb, ms, ...deps])
 }

@@ -4,11 +4,12 @@ import CroppedImage from 'components/CroppedImage'
 import { useAdventureLocation } from 'contexts/AdventureLocations'
 import { AdventurePopupStep, useOpenAdventurePopup } from 'contexts/AdventureUIState'
 import { useOtto } from 'contexts/Otto'
+import useTimer from 'hooks/useTimer'
 import isEqual from 'lodash/isEqual'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentExtraSmall, ContentMedium } from 'styles/typography'
 import RemainingTime from './RemainingTime'
@@ -73,13 +74,21 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
   const { t } = useTranslation('', { keyPrefix: 'adventureOttoCard' })
   const { setOtto } = useOtto()
   const openPopup = useOpenAdventurePopup()
-
   const check = () => {
     if (location) {
       setOtto(otto)
       openPopup(location.id, AdventurePopupStep.Exploring)
     }
   }
+  const [, setTick] = useState(0)
+  useTimer(
+    () => {
+      // reload every 1 seconds
+      setTick(tick => tick + 1)
+    },
+    1000,
+    []
+  )
 
   return (
     <StyledContainer disabled={otto.adventureStatus === AdventureOttoStatus.Unavailable}>

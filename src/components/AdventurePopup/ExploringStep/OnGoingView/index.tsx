@@ -1,10 +1,11 @@
-import { TransactionState } from '@usedapp/core'
 import TimeIcon from 'assets/icons/icon_time.svg'
 import AdventureLocationName from 'components/AdventureLocationName'
 import Button from 'components/Button'
 import PaymentButton from 'components/PaymentButton'
 import { AdventurePotion, Token } from 'constant'
 import { useSelectedAdventureLocation } from 'contexts/AdventureUIState'
+import { OttoTxState } from 'contracts/functions'
+import formatDistance from 'date-fns/formatDistance'
 import useAdventurePotion from 'hooks/useAdventurePotion'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useRemainingTime from 'hooks/useRemainingTime'
@@ -14,7 +15,6 @@ import Image from 'next/image'
 import { useMemo, useState } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentLarge, ContentMedium, Note } from 'styles/typography'
-import formatDistance from 'date-fns/formatDistance'
 import SpeedPotion from './speed-up-potion.png'
 import SpeedUpPotion from './SpeedUpPotion'
 
@@ -128,7 +128,7 @@ const StyledName = styled(AdventureLocationName)`
 
 interface Props {
   otto: Otto
-  state: TransactionState
+  state: OttoTxState
   onFinish: (immediately: boolean, potions: string[]) => void
 }
 
@@ -152,7 +152,7 @@ export default function OnGoingView({ otto, state, onFinish }: Props) {
       return idList
     })
   }, [usedPotionAmounts]).reduce((all, list) => all.concat(list), [] as string[])
-  const potionButtonDisabled = loading || state === 'Mining'
+  const potionButtonDisabled = loading || state === 'Processing'
 
   if (!otto || !location) {
     return null
@@ -172,11 +172,7 @@ export default function OnGoingView({ otto, state, onFinish }: Props) {
         </StyledOttoPlace>
         {now >= canFinishAt && (
           <>
-            <Button
-              Typography={ContentLarge}
-              onClick={() => onFinish(false, [])}
-              loading={state === 'Mining' || state === 'PendingSignature'}
-            >
+            <Button Typography={ContentLarge} onClick={() => onFinish(false, [])} loading={state === 'Processing'}>
               {t('see_results_btn')}
             </Button>
             <StyledSeeResultHint>{t('see_results_hint')}</StyledSeeResultHint>
@@ -218,7 +214,7 @@ export default function OnGoingView({ otto, state, onFinish }: Props) {
               <PaymentButton
                 width="100%"
                 spenderAddress={ADVENTURE}
-                loading={state === 'Mining'}
+                loading={state === 'Processing'}
                 amount={4 * 1e9}
                 token={Token.Clam}
                 Typography={ContentLarge}
@@ -230,7 +226,7 @@ export default function OnGoingView({ otto, state, onFinish }: Props) {
             )}
             {usedPotions.length > 0 && (
               <Button
-                loading={state === 'Mining'}
+                loading={state === 'Processing'}
                 width="100%"
                 Typography={ContentLarge}
                 padding="6px 20px 0"

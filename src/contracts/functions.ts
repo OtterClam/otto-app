@@ -533,7 +533,7 @@ export const useSetApprovalForAll = (address: string) => {
   return useContractFunction(erc1155, 'setApprovalForAll')
 }
 
-type OttoTxState = 'None' | 'Processing' | 'Success' | 'Fail'
+export type OttoTxState = 'None' | 'Processing' | 'Success' | 'Fail'
 
 function txState(state: TransactionState): OttoTxState {
   switch (state) {
@@ -666,10 +666,10 @@ export const useAdventureFinish = () => {
   const adventure = useAdventureContract()
   const { account } = useEthers()
   const { send, state, resetState } = useContractFunction(adventure, 'finish')
-  const [finishState, setFinishState] = useState<OttoTransactionState>({ status: state, state: 'None' })
+  const [finishState, setFinishState] = useState<OttoTransactionWriteState>({ status: state, state: 'None' })
 
   useEffect(() => {
-    setFinishState({ status: state, state: state.status })
+    setFinishState({ status: state, state: txState(state.status) })
   }, [state])
 
   const finish = useCallback(
@@ -677,7 +677,7 @@ export const useAdventureFinish = () => {
       if (!account) {
         return
       }
-      setFinishState({ status: state, state: 'PendingSignature' })
+      setFinishState({ status: state, state: 'Processing' })
       api.finish({ ottoId, wallet: account, immediately, potions }).then(inputs => (send as any)(...inputs))
     },
     [api, account, send, state]

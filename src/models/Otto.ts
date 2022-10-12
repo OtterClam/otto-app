@@ -1,3 +1,4 @@
+import assert from 'assert'
 import { Adventure } from 'contracts/__generated__'
 import { BigNumber } from 'ethers'
 import { getCroppedImageUrl } from 'utils/image'
@@ -141,6 +142,8 @@ export default class Otto {
 
   public readonly diceCount?: number
 
+  public restingUntil?: Date | undefined
+
   public latestAdventurePass?: AdventurePass | undefined
 
   public readonly exp: number = 0
@@ -155,7 +158,7 @@ export default class Otto {
     this.epochRarityBoost = this.raw.epochRarityBoost
     this.diceCount = this.raw.diceCount
 
-    if (this.raw.latest_adventure_pass)
+    if (this.raw.latest_adventure_pass) {
       this.latestAdventurePass = {
         finishedTx: this.raw.latest_adventure_pass.finished_tx,
         locationId: this.raw.latest_adventure_pass.location_id,
@@ -165,6 +168,8 @@ export default class Otto {
           : undefined,
         canFinishAt: new Date(this.raw.latest_adventure_pass.can_finish_at),
       }
+    }
+    this.restingUntil = this.raw.resting_until ? new Date(this.raw.resting_until) : undefined
 
     for (let idx = 0; idx < this.raw.attributes?.length ?? 0; idx++) {
       const { trait_type, value } = this.raw.attributes[idx]
@@ -263,26 +268,22 @@ export default class Otto {
     return this.raw.image_wo_bg
   }
 
-  get restingUntil(): Date | undefined {
-    return this.raw.resting_until ? new Date(this.raw.resting_until) : undefined
-  }
-
   get level(): number {
     return this.raw.level
   }
 
   get adventureStatus(): AdventureOttoStatus {
+    const now = new Date()
     if (this.latestAdventurePass) {
-      const now = new Date()
       if (this.latestAdventurePass.canFinishAt > now) {
         return AdventureOttoStatus.Ongoing
-      }
-      if (this.restingUntil && this.restingUntil > now) {
-        return AdventureOttoStatus.Resting
       }
       if (!this.latestAdventurePass.finishedAt) {
         return AdventureOttoStatus.Finished
       }
+    }
+    if (this.restingUntil && this.restingUntil > now) {
+      return AdventureOttoStatus.Resting
     }
     return AdventureOttoStatus.Ready
   }
@@ -312,6 +313,14 @@ export default class Otto {
       departureAt: new Date(BigNumber.from(pass.departureAt).toNumber() * 1000),
       canFinishAt: new Date(BigNumber.from(pass.canFinishAt).toNumber() * 1000),
     }
+  }
+
+  public finish() {
+    assert(this.latestAdventurePass, 'No adventure pass')
+    // TODO: use data from api
+    this.latestAdventurePass.finishedAt = new Date()
+    this.latestAdventurePass.finishedTx = '0xabc'
+    this.restingUntil = new Date(Date.now() + 24 * 60 * 60 * 1000)
   }
 
   toJSON() {

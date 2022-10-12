@@ -73,7 +73,7 @@ export default function FinishedView({ tx }: Props) {
   }, [getAdventureResult, reviveState, resetRevive])
 
   useEffect(() => {
-    if (!(otto && result && result.events.level_up)) {
+    if (!(otto && result?.events && result.events.level_up)) {
       return
     }
     dispatch({
