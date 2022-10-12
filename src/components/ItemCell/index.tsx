@@ -158,6 +158,7 @@ interface Props {
   selected?: boolean
   onClick?: () => void
   className?: string
+  hideAmount?: boolean
 }
 
 export default function ItemCell({
@@ -167,6 +168,7 @@ export default function ItemCell({
   selected = false,
   onClick,
   className,
+  hideAmount = false,
 }: Props) {
   const { t } = useTranslation()
   const equippedByCurrentOtto = (!currentOtto || currentOtto?.wearableTraits.find(trait => trait.id === id)) && equipped
@@ -186,7 +188,7 @@ export default function ItemCell({
       <StyledRarity rarity={rarity}>
         <Note>{rarity}</Note>
       </StyledRarity>
-      {amount > 1 && (
+      {amount > 1 && !hideAmount && (
         <StyledAmount>
           <ContentLarge>{amount}</ContentLarge>
         </StyledAmount>

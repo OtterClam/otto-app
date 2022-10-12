@@ -57,6 +57,7 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
       {currentItem && (
         <StyledItem
           key={currentItem.id}
+          hideAmount
           item={currentItem}
           currentOtto={otto}
           onClick={() => selectItem(currentItem.id)}
@@ -66,6 +67,7 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
       {restItems.map(item => (
         <StyledItem
           key={item.id}
+          hideAmount
           unavailable={!isWearable(item.id)}
           item={item}
           currentOtto={otto}

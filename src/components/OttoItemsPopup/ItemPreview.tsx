@@ -149,7 +149,7 @@ export default memo(
             <>
               <StyledItemPreviewDetails>
                 <StyledItemImage>
-                  <ItemCell item={item} />
+                  <ItemCell hideAmount item={item} />
                 </StyledItemImage>
                 <StyledItemAttrs>
                   <ItemRarityBadge rarity={item.rarity} />
