@@ -733,7 +733,6 @@
       "title": "{{name}} is exploring...",
       "remaining": "Remaining: {{time}}",
       "finish_immediately_btn": "Finish Immediately",
-      "speedup_btn": "Speed Up",
       "speed_up_btn": "Speed Up",
       "see_results_btn": "See Results",
       "see_results_hint": "To check the Adventure Journal, you will proceed a transaction.",
@@ -758,10 +757,15 @@
       "give_up_back_btn": "Back",
       "failed_desc": "Because your Otto FAILED the adventure, you can not claim those rewards.",
       "failed_hint": "Wanna collected the rewards?\nRevive so that you can claim all of them. If you choose to give up, the rewards will be all discarded and there’s no way back."
+    },
+    "restingStep": {
+      "title": "{{name}} is resting...",
+      "title_ready": "{{name}} is ready to go!",
+      "finish_btn": "Explore again",
+      "remaining": "Rest Remaining: {{time}}",
+      "speed_up_btn": "Speed Up",
+      "buy_now": "Buy NOW>"
     }
-  },
-  "ottoPreviewer": {
-    "feedButton": "+ Food"
   },
   "adventureOttoList": {
     "title": "The Ottos currently exploring this place"

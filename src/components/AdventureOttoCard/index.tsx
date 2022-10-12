@@ -80,6 +80,10 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
       openPopup(location.id, AdventurePopupStep.Exploring)
     }
   }
+  const openRestingPopup = () => {
+    setOtto(otto)
+    openPopup(0, AdventurePopupStep.Resting)
+  }
   const [, setTick] = useState(0)
   useTimer(
     () => {
@@ -116,8 +120,8 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
           </Button>
         )}
 
-        {otto.adventureStatus === AdventureOttoStatus.Resting && otto.restingUntil !== undefined && (
-          <RemainingTime onClick={check} target={otto.restingUntil} />
+        {otto.adventureStatus === AdventureOttoStatus.Resting && otto.restingUntil && (
+          <RemainingTime onClick={openRestingPopup} target={otto.restingUntil} />
         )}
 
         {otto.adventureStatus === AdventureOttoStatus.Ongoing &&

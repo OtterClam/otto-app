@@ -2,21 +2,19 @@ import TimeIcon from 'assets/icons/icon_time.svg'
 import AdventureLocationName from 'components/AdventureLocationName'
 import Button from 'components/Button'
 import PaymentButton from 'components/PaymentButton'
-import { AdventurePotion, Token } from 'constant'
+import { Token } from 'constant'
 import { useSelectedAdventureLocation } from 'contexts/AdventureUIState'
 import { OttoTxState } from 'contracts/functions'
 import formatDistance from 'date-fns/formatDistance'
-import useAdventurePotion from 'hooks/useAdventurePotion'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useRemainingTime from 'hooks/useRemainingTime'
 import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentLarge, ContentMedium, Note } from 'styles/typography'
-import SpeedPotion from './speed-up-potion.png'
-import SpeedUpPotion from './SpeedUpPotion'
+import SpeedUpPotions from '../SpeedUpPotions'
 
 const jump = keyframes`
   0% {
@@ -140,19 +138,7 @@ export default function OnGoingView({ otto, state, onFinish }: Props) {
   const canFinishAt = otto?.latestAdventurePass?.canFinishAt ?? now
   const formattedDuration = formatDistance(canFinishAt, otto?.latestAdventurePass?.departureAt ?? 0)
   const remainingDuration = useRemainingTime(canFinishAt)
-  const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
-  const { amounts, loading } = useAdventurePotion()
-  const usedPotions = useMemo(() => {
-    return Object.keys(usedPotionAmounts).map(key => {
-      const amount = usedPotionAmounts[key]
-      const idList: number[] = []
-      for (let i = 0; i < amount; i += 1) {
-        idList.push(Number(key))
-      }
-      return idList
-    })
-  }, [usedPotionAmounts]).reduce((all, list) => all.concat(list), [] as number[])
-  const potionButtonDisabled = loading || state === 'Processing'
+  const [usedPotionAmounts, setUsedPotionAmounts] = useState<number[]>([])
 
   if (!otto || !location) {
     return null
@@ -181,36 +167,11 @@ export default function OnGoingView({ otto, state, onFinish }: Props) {
         {now < canFinishAt && (
           <>
             <StyledRemaining>{t('remaining', { time: remainingDuration })}</StyledRemaining>
-            <StyledPotionContainer>
-              <SpeedUpPotion
-                disabled={potionButtonDisabled}
-                potion={AdventurePotion.OneHourSpeedy}
-                onChanged={setUsedPotionAmounts}
-                image={SpeedPotion.src}
-                amounts={amounts}
-                usedAmounts={usedPotionAmounts}
-                reducedTime="1h"
-              />
-              <SpeedUpPotion
-                disabled={potionButtonDisabled}
-                potion={AdventurePotion.ThreeHourSpeedy}
-                onChanged={setUsedPotionAmounts}
-                image={SpeedPotion.src}
-                amounts={amounts}
-                usedAmounts={usedPotionAmounts}
-                reducedTime="3h"
-              />
-              <SpeedUpPotion
-                disabled={potionButtonDisabled}
-                potion={AdventurePotion.SixHourSpeedy}
-                onChanged={setUsedPotionAmounts}
-                image={SpeedPotion.src}
-                amounts={amounts}
-                usedAmounts={usedPotionAmounts}
-                reducedTime="6h"
-              />
-            </StyledPotionContainer>
-            {usedPotions.length <= 0 && (
+            <SpeedUpPotions
+              disabled={state === 'Processing'}
+              onUsedPotionsUpdate={amounts => setUsedPotionAmounts(amounts)}
+            />
+            {usedPotionAmounts.length === 0 && (
               <PaymentButton
                 width="100%"
                 spenderAddress={ADVENTURE}
@@ -224,15 +185,15 @@ export default function OnGoingView({ otto, state, onFinish }: Props) {
                 {t('finish_immediately_btn')}
               </PaymentButton>
             )}
-            {usedPotions.length > 0 && (
+            {usedPotionAmounts.length > 0 && (
               <Button
                 loading={state === 'Processing'}
                 width="100%"
                 Typography={ContentLarge}
                 padding="6px 20px 0"
-                onClick={() => onFinish(true, usedPotions)}
+                onClick={() => onFinish(true, usedPotionAmounts)}
               >
-                {t('speedup_btn')}
+                {t('speed_up_btn')}
               </Button>
             )}
             <StyledHint>

@@ -38,12 +38,11 @@ const StyledButtons = styled.div`
   padding-top: 20px;
 `
 
-interface Props {
-  tx: string
-}
-
-export default function FinishedView({ tx }: Props) {
+export default function ResultStep() {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.resultStep' })
+  const {
+    state: { finishedTx },
+  } = useAdventureUIState()
   const location = useSelectedAdventureLocation()!
   const api = useApi()
   const [result, setResult] = useState<AdventureResult | null>(null)
@@ -56,7 +55,11 @@ export default function FinishedView({ tx }: Props) {
     dispatch({ type: AdventureUIActionType.ClosePopup })
   }, [dispatch])
 
-  const getAdventureResult = useCallback(() => api.getAdventureResult(tx).then(data => setResult(data)), [api, tx])
+  const getAdventureResult = useCallback(() => {
+    if (finishedTx) {
+      api.getAdventureResult(finishedTx).then(data => setResult(data))
+    }
+  }, [api, finishedTx])
 
   useEffect(() => {
     getAdventureResult()

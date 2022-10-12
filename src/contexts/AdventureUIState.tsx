@@ -8,6 +8,7 @@ export enum AdventureUIActionType {
   OpenPopup,
   ClosePopup,
   SetPopupStep,
+  GoToResult,
   LevelUp,
   DistributeAttributePoints,
 }
@@ -18,6 +19,7 @@ export enum AdventurePopupStep {
   ReadyToGo,
   Exploring,
   Result,
+  Resting,
 }
 
 export type AdventureUIAction =
@@ -49,6 +51,12 @@ export type AdventureUIAction =
         ottoId: string
       }
     }
+  | {
+      type: AdventureUIActionType.GoToResult
+      data: {
+        tx: string
+      }
+    }
 
 export interface AdventureUIState {
   selectedLocationId?: number
@@ -63,6 +71,7 @@ export interface AdventureUIState {
   attributePoints?: {
     ottoId: string
   }
+  finishedTx?: string
 }
 
 export interface AdventureUIStateDispatcher {
@@ -102,6 +111,13 @@ export const AdventureUIStateProvider = ({ children }: PropsWithChildren<object>
         return { ...state, levelUp: action.data }
       case AdventureUIActionType.DistributeAttributePoints:
         return { ...state, attributePoints: action.data }
+      case AdventureUIActionType.GoToResult:
+        return {
+          ...state,
+          popupOpened: true,
+          popupStep: AdventurePopupStep.Result,
+          finishedTx: action.data.tx,
+        }
       default:
         return state
     }
@@ -132,6 +148,11 @@ export const useGoToAdventurePopupStep = () => {
     (step: AdventurePopupStep) => dispatch({ type: AdventureUIActionType.SetPopupStep, data: step }),
     []
   )
+}
+
+export const useGoToAdventureResultStep = () => {
+  const { dispatch } = useAdventureUIState()
+  return useCallback((tx: string) => dispatch({ type: AdventureUIActionType.GoToResult, data: { tx } }), [dispatch])
 }
 
 export const useOpenAdventurePopup = () => {

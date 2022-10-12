@@ -8,6 +8,8 @@ import { LocationInfoStep } from './LocationInfoStep'
 import PreviewOttoStep from './PreviewOttoStep'
 import ReadyToGoStep from './ReadyToGoStep'
 import ExploringStep from './ExploringStep'
+import ResultStep from './ResultStep'
+import RestingStep from './RestingStep'
 
 const StyledStepContainer = styled.div`
   &.left-enter {
@@ -113,6 +115,20 @@ export default function AdventurePopup() {
           <CSSTransition key={AdventurePopupStep.Exploring} timeout={200} classNames="right">
             <StyledStepContainer>
               <ExploringStep />
+            </StyledStepContainer>
+          </CSSTransition>
+        )}
+        {adventureUIState.popupStep === AdventurePopupStep.Result && otto && (
+          <CSSTransition key={AdventurePopupStep.Exploring} timeout={200} classNames="right">
+            <StyledStepContainer>
+              <ResultStep />
+            </StyledStepContainer>
+          </CSSTransition>
+        )}
+        {adventureUIState.popupStep === AdventurePopupStep.Resting && (
+          <CSSTransition key={AdventurePopupStep.Exploring} timeout={200} classNames="right">
+            <StyledStepContainer>
+              <RestingStep />
             </StyledStepContainer>
           </CSSTransition>
         )}
