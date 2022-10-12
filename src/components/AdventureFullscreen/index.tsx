@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react'
 import Fullscreen from 'components/Fullscreen'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import CloseButton from 'components/CloseButton'
 import noop from 'lodash/noop'
 
@@ -12,20 +12,16 @@ const StyledCloseButton = styled(CloseButton)`
 `
 
 const StyledFullscreen = styled(Fullscreen)`
-  z-index: 0;
-  border-radius: 10px;
-  border: 2px solid ${({ theme }) => theme.colors.crownYellow};
+  border-radius: 10px !important;
+  max-width: 800px;
+  border-width: 2px !important;
+  border-color: ${({ theme }) => theme.colors.crownYellow} !important;
+  background-color: ${({ theme }) => theme.colors.otterBlack} !important;
   box-shadow: inset 1px 0 0 ${({ theme }) => theme.colors.otterBlack},
     inset -1px 0 0 ${({ theme }) => theme.colors.otterBlack}, inset 0 1px 0 ${({ theme }) => theme.colors.otterBlack},
     inset 0 -1px 0 ${({ theme }) => theme.colors.otterBlack}, 1px 0 0 ${({ theme }) => theme.colors.otterBlack},
     -1px 0 0 ${({ theme }) => theme.colors.otterBlack}, 0 1px 0 ${({ theme }) => theme.colors.otterBlack},
     0 -1px 0 ${({ theme }) => theme.colors.otterBlack};
-  background: ${({ theme }) => theme.colors.white};
-  max-height: calc(100% - 2px);
-
-  .fullscreen-inner {
-    padding: 35px 18px 15px;
-  }
 `
 
 export type AdventureFullscreenProps = ComponentProps<typeof Fullscreen>
@@ -36,7 +32,7 @@ export default function AdventureFullscreen({
   ...restProps
 }: AdventureFullscreenProps) {
   return (
-    <StyledFullscreen {...restProps} bodyClassName="fullscreen-inner">
+    <StyledFullscreen {...restProps}>
       <StyledCloseButton onClose={onRequestClose} />
       {children}
     </StyledFullscreen>

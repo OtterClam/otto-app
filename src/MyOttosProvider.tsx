@@ -20,6 +20,11 @@ export const MyOttosContext = createContext<MyOttos>({
   updateOtto: noop,
 })
 
+export function useMyOtto(id?: string) {
+  const { ottos } = useMyOttos()
+  return useMemo(() => ottos.find(otto => otto.id === id), [ottos])
+}
+
 export function useMyOttos() {
   const { loading, ottos, reload, updateOtto } = useContext(MyOttosContext)
   return { loading, ottos, reload, updateOtto }

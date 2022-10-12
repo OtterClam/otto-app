@@ -701,3 +701,9 @@ export const useAdventureRevive = () => {
   const { send, state, resetState } = useContractFunction(adventure, 'revive')
   return { reviveState: state, revive: send, resetRevive: resetState }
 }
+
+export const useUseAttributePoints = () => {
+  const otto = useOttoContract()
+  const { send, state, resetState } = useContractFunction(otto, 'useAttributePoints')
+  return { useAttributePointsState: state, useAttributePoints: send, resetUseAttributePoints: resetState }
+}

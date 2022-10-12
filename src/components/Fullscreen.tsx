@@ -15,6 +15,7 @@ const StyledPopup = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: var(--z-index-popup);
@@ -88,6 +89,8 @@ interface Props {
   onRequestClose?: () => void
   className?: string
   bodyClassName?: string
+  header?: ReactNode
+  footer?: ReactNode
 }
 
 const Fullscreen = ({
@@ -98,6 +101,8 @@ const Fullscreen = ({
   className,
   bodyClassName,
   children,
+  header,
+  footer,
 }: Props) => {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
 
@@ -112,11 +117,13 @@ const Fullscreen = ({
   return ReactDOM.createPortal(
     <CSSTransition unmountOnExit in={show} timeout={200} classNames="fade">
       <StyledPopup onClick={onRequestClose}>
+        {header}
         <Container width={width} ref={containerRef} className={className} onClick={e => e.stopPropagation()}>
           <StyledInnerContainer className={bodyClassName} background={background}>
             <Content>{children}</Content>
           </StyledInnerContainer>
         </Container>
+        {footer}
       </StyledPopup>
     </CSSTransition>,
     document.querySelector('#modal-root') ?? document.body

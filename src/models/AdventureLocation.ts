@@ -161,11 +161,31 @@ export type AdventureResultReward = {
   ap: number
 }
 
+export type AdventureResultEvents = {
+  level_up: {
+    from: {
+      level: number
+      exp: number
+      expToNextLevel: number
+    }
+    to: {
+      level: number
+      exp: number
+      expToNextLevel: number
+    }
+    got: {
+      items: Item[]
+      attrs_points: number
+    }
+  }
+}
+
 export interface AdventureResult {
   success: boolean
   revived: boolean
   journal: AdventureJournalEntry[]
   rewards: AdventureResultReward
+  events: AdventureResultEvents
 }
 
 const parseDuration = (val: string): Duration => {

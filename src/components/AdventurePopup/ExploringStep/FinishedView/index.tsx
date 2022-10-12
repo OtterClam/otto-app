@@ -72,6 +72,20 @@ export default function FinishedView({ tx }: Props) {
     }
   }, [getAdventureResult, reviveState, resetRevive])
 
+  useEffect(() => {
+    if (!(otto && result && result.events.level_up)) {
+      return
+    }
+    dispatch({
+      type: AdventureUIActionType.LevelUp,
+      data: {
+        ottoId: otto.id,
+        levelUp: result.events.level_up,
+        rewards: result.rewards,
+      },
+    })
+  }, [result])
+
   return (
     <StyledResultStep bg={location.bgImageBlack}>
       <StyledBody>

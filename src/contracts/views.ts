@@ -247,3 +247,15 @@ export function useIsApprovedForAll(contract: string, operator: string) {
     isApprovedForAll: result?.value ? result?.value[0] : false,
   }
 }
+
+export function useAttributePoints(ottoId?: string) {
+  const otto = useOttoContract()
+  const result = useCall(
+    ottoId && {
+      contract: otto,
+      method: 'infos',
+      args: [ottoId],
+    }
+  )
+  return result?.value?.attributePoints ?? 0
+}

@@ -1,4 +1,5 @@
 import noop from 'lodash/noop'
+import { AdventureResultEvents, AdventureResultReward } from 'models/AdventureLocation'
 import { AdventurePreview } from 'models/AdventurePreview'
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useReducer } from 'react'
 import { useAdventureLocation } from './AdventureLocations'
@@ -7,6 +8,8 @@ export enum AdventureUIActionType {
   OpenPopup,
   ClosePopup,
   SetPopupStep,
+  LevelUp,
+  DistributeAttributePoints,
 }
 
 export enum AdventurePopupStep {
@@ -32,12 +35,34 @@ export type AdventureUIAction =
       type: AdventureUIActionType.SetPopupStep
       data: AdventurePopupStep
     }
+  | {
+      type: AdventureUIActionType.LevelUp
+      data?: {
+        ottoId: string
+        levelUp: AdventureResultEvents['level_up']
+        rewards: AdventureResultReward
+      }
+    }
+  | {
+      type: AdventureUIActionType.DistributeAttributePoints
+      data?: {
+        ottoId: string
+      }
+    }
 
 export interface AdventureUIState {
   selectedLocationId?: number
   popupOpened: boolean
   popupStep: AdventurePopupStep
   preview?: AdventurePreview
+  levelUp?: {
+    ottoId: string
+    levelUp: AdventureResultEvents['level_up']
+    rewards: AdventureResultReward
+  }
+  attributePoints?: {
+    ottoId: string
+  }
 }
 
 export interface AdventureUIStateDispatcher {
@@ -53,6 +78,9 @@ const defaultValue: AdventureUIValue = {
   state: {
     popupOpened: false,
     popupStep: AdventurePopupStep.LocationInfo,
+    attributePoints: {
+      ottoId: '29',
+    },
   },
   dispatch: noop,
 }
@@ -73,6 +101,10 @@ export const AdventureUIStateProvider = ({ children }: PropsWithChildren<object>
         return { ...state, popupOpened: false }
       case AdventureUIActionType.SetPopupStep:
         return { ...state, popupStep: action.data }
+      case AdventureUIActionType.LevelUp:
+        return { ...state, levelUp: action.data }
+      case AdventureUIActionType.DistributeAttributePoints:
+        return { ...state, attributePoints: action.data }
       default:
         return state
     }
