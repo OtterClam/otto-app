@@ -117,6 +117,7 @@ export default function PreviewOttoStep() {
         actions.push({
           type: ItemActionType.Use,
           item_id: Number(potion),
+          from_otto_id: 0,
         })
       }
     })
@@ -145,6 +146,7 @@ export default function PreviewOttoStep() {
           actions.push({
             type: ItemActionType.Use,
             item_id: Number(potion),
+            from_otto_id: 0,
           })
         }
         return actions

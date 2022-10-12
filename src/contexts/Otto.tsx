@@ -87,6 +87,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
             return {
               type: ItemActionType.TakeOff,
               item_id: Number(ottoItems[type]),
+              from_otto_id: 0,
             }
           }
 
@@ -101,6 +102,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
           return {
             type: ItemActionType.Equip,
             item_id: Number(itemId),
+            from_otto_id: 0,
           }
         })
 
