@@ -882,6 +882,9 @@
     "avaliablePoints": "Available: {{ points }} points",
     "confirmButton": "Confirm",
     "skipButton": "Skip for Now",
-    "desc": "You can add attribute points later in My Otto page."
+    "desc": "You can add attribute points later in My Otto page.",
+    "resultTitle": "Ta-da! Your Otto seems to have",
+    "resultDesc": "The more you explore, the stronger you become!",
+    "resultCloseButton": "Close"
   }
 }

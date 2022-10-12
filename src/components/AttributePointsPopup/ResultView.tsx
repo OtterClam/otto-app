@@ -1,14 +1,16 @@
+import Button from 'components/Button'
 import Otto from 'models/Otto'
+import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
-import { Caption, ContentLarge } from 'styles/typography'
+import { Caption, ContentLarge, Headline } from 'styles/typography'
 import arrowImage from './arrow.png'
 import OttoCard from './OttoCard'
 
-const StyledContainer = styled.div``
-
-const StyledName = styled(ContentLarge)``
-
-const StyledDesc = styled(Caption)``
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
 
 const StyledOttos = styled.div`
   display: flex;
@@ -26,18 +28,25 @@ export interface ResultViewProps {
     otto: Otto
     points: { [k: string]: number }
   }
+  onRequestClose: () => void
 }
 
-export default function ResultView({ result: { otto, points } }: ResultViewProps) {
+export default function ResultView({ result: { otto, points }, onRequestClose }: ResultViewProps) {
+  const { t } = useTranslation('', { keyPrefix: 'attributePoints' })
+  console.log(points)
+
   return (
     <StyledContainer>
-      <StyledName>Ta-da! Your Otto seems to have changed a bit.</StyledName>
-      <StyledDesc>The more you explore, the stronger you become!</StyledDesc>
+      <ContentLarge as="h3">{t('resultTitle')}</ContentLarge>
+      <Caption>{t('resultDesc')}</Caption>
       <StyledOttos>
         <OttoCard otto={otto} />
         <StyledArrow />
         <OttoCard otto={otto} points={points} />
       </StyledOttos>
+      <Button width="100%" Typography={Headline} primaryColor="white" onClick={onRequestClose}>
+        {t('resultCloseButton')}
+      </Button>
     </StyledContainer>
   )
 }

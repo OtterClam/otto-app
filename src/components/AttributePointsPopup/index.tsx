@@ -32,7 +32,7 @@ export default function AttributePoinsPopup() {
   return (
     <StyledFullscreen onRequestClose={closePopup} show={Boolean(attributePoints)} bodyClassName="fullscreen-inner">
       {!result && <PointsView onSuccess={setResult} onRequestClose={closePopup} />}
-      {result && <ResultView result={result} />}
+      {result && <ResultView result={result} onRequestClose={closePopup} />}
     </StyledFullscreen>
   )
 }
