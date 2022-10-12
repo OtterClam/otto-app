@@ -70,18 +70,5 @@ export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
     [loading, ottos, refetch, updateOtto]
   )
 
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>
-    const tick = () => {
-      refetch().then(() => {
-        timer = setTimeout(tick, 5000)
-      })
-    }
-    tick()
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [])
-
   return <MyOttosContext.Provider value={myOttos}>{children}</MyOttosContext.Provider>
 }
