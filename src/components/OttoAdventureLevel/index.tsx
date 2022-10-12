@@ -1,5 +1,6 @@
 import AdventureProgressBar from 'components/AdventureProgressBar'
 import BoostIcon from 'components/BoostIcon'
+import Otto from 'models/Otto'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, Note } from 'styles/typography'
 
@@ -64,17 +65,22 @@ const StyledLevelUpProgressBar = styled.div`
 `
 
 export interface OttoAdventureLevelProps {
+  otto: Otto
   boost?: boolean
 }
 
-export default function OttoAdventureLevel({ boost }: OttoAdventureLevelProps) {
+export default function OttoAdventureLevel({ otto, boost }: OttoAdventureLevelProps) {
   return (
     <StyledExp>
-      <StyledLevel>LV. 3</StyledLevel>
+      <StyledLevel>LV. {otto.level}</StyledLevel>
       <StyledLevelDetails>
-        <StyledExplorerTitle>Amateur Explorer {boost && <BoostIcon />}</StyledExplorerTitle>
-        <StyledLevelUpProgress>230/480 EXP</StyledLevelUpProgress>
-        <AdventureProgressBar progress={100} />
+        <StyledExplorerTitle>
+          {otto.adventurerTitle} {boost && <BoostIcon />}
+        </StyledExplorerTitle>
+        <StyledLevelUpProgress>
+          {otto.exp}/{otto.next_level_exp} EXP
+        </StyledLevelUpProgress>
+        <AdventureProgressBar progress={otto.exp / otto.next_level_exp} />
       </StyledLevelDetails>
     </StyledExp>
   )

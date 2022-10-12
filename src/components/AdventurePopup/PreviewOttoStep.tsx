@@ -199,7 +199,7 @@ export default function PreviewOttoStep() {
                 itemsPopupWidth={itemPopupWidth}
                 itemPopupHeight={itemPopupHeight}
               />
-              <OttoAdventureLevel boost />
+              {otto && <OttoAdventureLevel otto={otto} boost />}
               <OttoAttributes />
               <OttoLevels />
             </StyledPreview>
