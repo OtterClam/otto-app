@@ -37,7 +37,11 @@ export type AdventureDisplayedBoost =
       boosts: AdventureLocationConditionalBoost[]
     }
 
-export const parseBoosts = (i18n: I18n, boosts: AdventureLocationConditionalBoost[]): AdventureDisplayedBoost[] => {
+export const parseBoosts = (
+  i18n: I18n,
+  boosts: AdventureLocationConditionalBoost[],
+  details = false
+): AdventureDisplayedBoost[] => {
   const queue = boosts.slice()
   const displayedBoosts: AdventureDisplayedBoost[] = []
   let fixedLevelBoost: AdventureDisplayedBoost | undefined
@@ -45,7 +49,7 @@ export const parseBoosts = (i18n: I18n, boosts: AdventureLocationConditionalBoos
 
   while (queue.length > 0) {
     const displayedBoost =
-      parseLevelUpBoosts(i18n, queue) || parseFirstMatchGroup(i18n, queue) || parseOtherBoost(i18n, queue)
+      parseLevelUpBoosts(i18n, queue) || parseFirstMatchGroup(i18n, queue, details) || parseOtherBoost(i18n, queue)
     if (displayedBoost) {
       if (displayedBoost.boostType === BoostType.FirstMatchGroup && displayedBoost.attr === 'level') {
         fixedLevelBoost = displayedBoost
@@ -152,7 +156,8 @@ const parseLevelUpBoosts = (
 
 const parseFirstMatchGroup = (
   i18n: I18n,
-  boosts: AdventureLocationConditionalBoost[]
+  boosts: AdventureLocationConditionalBoost[],
+  details = false
 ): AdventureDisplayedBoost | undefined => {
   const group: AdventureLocationConditionalBoost[] = []
   let effectiveBoost: AdventureLocationConditionalBoost | undefined
@@ -189,13 +194,18 @@ const parseFirstMatchGroup = (
   }
 
   const condition = firstMatchedBoost.condition as AttrBoostCondition
-  const { amounts } = firstMatchedBoost
-  const i18nKey =
-    condition.attr === 'level' ? 'conditionalBoosts.fixed_level' : `conditionalBoosts.${BoostType.FirstMatchGroup}`
+
+  const stringifyBoost = (boost: AdventureLocationConditionalBoost) => {
+    const condition = boost.condition as AttrBoostCondition
+    const { amounts } = boost
+    const i18nKey =
+      condition.attr === 'level' ? 'conditionalBoosts.fixed_level' : `conditionalBoosts.${BoostType.FirstMatchGroup}`
+    return `${i18n.t(i18nKey, condition)} ${stringifyBoostAmounts(i18n, amounts)}`
+  }
 
   return {
     boostType: BoostType.FirstMatchGroup,
-    message: `${i18n.t(i18nKey, condition)} ${stringifyBoostAmounts(i18n, amounts)}`,
+    message: details ? group.map(stringifyBoost).join('<br />') : stringifyBoost(firstMatchedBoost),
     effective: Boolean(effectiveBoost),
     attr: condition.attr,
     boosts: group,

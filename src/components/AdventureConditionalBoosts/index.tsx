@@ -1,10 +1,10 @@
 import AdventureInfoSection from 'components/AdventureInfoSection'
 import { useAdventureLocation } from 'contexts/AdventureLocation'
 import { parseBoosts } from 'models/AdventureDisplayedBoost'
+import { BoostType } from 'models/AdventureLocation'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
 import styled from 'styled-components/macro'
-import { Note } from 'styles/typography'
 import Boost from './Boost'
 
 const StyledBoosts = styled.div`
@@ -27,15 +27,20 @@ const StyledBoosts = styled.div`
 
 export interface AdventureConditionalBoostsProps {
   noPreview?: boolean
+  locationBoostsOnly?: boolean
 }
 
-export default function AdventureConditionalBoosts({ noPreview }: AdventureConditionalBoostsProps) {
+export default function AdventureConditionalBoosts({ noPreview, locationBoostsOnly }: AdventureConditionalBoostsProps) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'conditionalBoosts' })
   const location = useAdventureLocation()
 
   const boosts = useMemo(() => {
     if (!location) {
       return []
+    }
+    if (locationBoostsOnly) {
+      const boosts = parseBoosts(i18n, location.conditionalBoosts, true)
+      return boosts.filter(boost => boost.boostType === BoostType.FirstMatchGroup)
     }
     return parseBoosts(i18n, location.conditionalBoosts)
   }, [location, i18n])

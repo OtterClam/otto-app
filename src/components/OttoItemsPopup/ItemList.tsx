@@ -41,7 +41,7 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
     const currentItemIndex = filteredItems.findIndex(item => item.id === trait?.id)
     let currentItem: Item | undefined
     if (currentItemIndex !== -1) {
-      currentItem = restItems[currentItemIndex]
+      ;[currentItem] = restItems.splice(currentItemIndex, 1)
     } else if (trait) {
       currentItem = traitToItem(trait)
     }

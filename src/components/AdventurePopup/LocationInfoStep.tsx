@@ -95,7 +95,7 @@ export function LocationInfoStep() {
           </StyledHead>
           <StyledDetails>
             <AdventureRewards />
-            <AdventureConditionalBoosts noPreview />
+            <AdventureConditionalBoosts noPreview locationBoostsOnly />
             <AdventureOngoingOttos />
             <Button padding="3px 0" Typography={Headline} onClick={preview}>
               {t('nextStep')}
