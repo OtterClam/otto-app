@@ -38,12 +38,6 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
   }>({})
 
   useEffect(() => {
-    if (!otto && ottos.length > 0) {
-      setOtto(ottos[0])
-    }
-  }, [otto, ottos])
-
-  useEffect(() => {
     setDraftItems({})
   }, [otto])
 

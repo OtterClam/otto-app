@@ -3,7 +3,7 @@ import CroppedImage from 'components/CroppedImage'
 import { useOtto } from 'contexts/Otto'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
-import React, { useLayoutEffect, useReducer, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react'
 import { useSwipeable } from 'react-swipeable'
 import styled from 'styled-components/macro'
 import arrowImage from './arrow.svg'
@@ -120,6 +120,12 @@ export default function OttoSelector() {
   useResizeObserver(conveyorRef, forceUpdate)
 
   useLayoutEffect(updateOffset, [forceUpdateState])
+
+  useEffect(() => {
+    if (!selectedOtto && ottos.length > 0) {
+      selectOtto(ottos[0])
+    }
+  }, [selectedOtto, ottos])
 
   return (
     <StyledContainer ref={containerRef}>
