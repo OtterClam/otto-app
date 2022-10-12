@@ -36,7 +36,7 @@ export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<
   const [result, setResult] = useState<Awaited<ReturnType<Api[M]>> | undefined>(undefined)
   const [err, setErr] = useState<Error | undefined>(undefined)
 
-  const fetch = useCallback(() => {
+  const fetch: () => Promise<void> = useCallback(() => {
     if (controller) {
       controller.abort()
     }

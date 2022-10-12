@@ -41,10 +41,12 @@ export function useIsMyOttos(ottoTokenId?: string): boolean {
 export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
   const { account } = useEthers()
   const [ottos, setOttos] = useState<Otto[]>([])
+
   const { loading, result, refetch } = useApiCall('getAdventureOttos', [account ?? ''], Boolean(account), [account])
   useEffect(() => {
     setOttos(result ?? [])
   }, [result])
+
   const updateOtto = useCallback(
     (otto: Otto) => {
       const idx = ottos.findIndex(o => o.id === otto.id)
@@ -57,6 +59,7 @@ export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
     },
     [ottos]
   )
+
   const myOttos = useMemo(
     () => ({
       loading,
@@ -66,6 +69,19 @@ export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
     }),
     [loading, ottos, refetch, updateOtto]
   )
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>
+    const tick = () => {
+      refetch().then(() => {
+        timer = setTimeout(tick, 5000)
+      })
+    }
+    tick()
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [])
 
   return <MyOttosContext.Provider value={myOttos}>{children}</MyOttosContext.Provider>
 }

@@ -120,5 +120,5 @@ export const EmptyItem: Item = {
 export interface ItemAction {
   type: ItemActionType
   item_id: number
-  from_otto_id: number
+  from_otto_id?: number
 }

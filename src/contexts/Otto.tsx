@@ -2,7 +2,7 @@ import { ItemActionType } from 'constant'
 import useMyItems from 'hooks/useMyItems'
 import noop from 'lodash/noop'
 import Item, { ItemAction } from 'models/Item'
-import Otto from 'models/Otto'
+import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import { createContext, FC, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react'
 
@@ -51,15 +51,21 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
     const equippedItems = items
       .filter(item => item.equipped)
       .reduce((map, item) => Object.assign(map, { [item.type]: item }), {} as { [k: string]: Item })
-    /*
-      const ottoIdToOtto = ottos.reduce((map, otto) => Object.assign(map, { [otto.id]: otto }), {} as { [k: string]: Otto })
-      const equippedItemToOtto = adventureOttos
-        .filter(otto => otto.status === AdventureOttoStatus.Ready)
-        .map(({ id }) => ottoIdToOtto[id])
-        .filter(Boolean)
-        .map(otto => otto.wearableTraits.reduce((map, trait) => Object.assign(map, { [trait.id]: otto }), {} as { [k: string]: Otto }))
-        .reduce((all, map) => Object.assign(all, map), {} as { [k: string]: Otto })
-      */
+    const ottoIdToOtto = ottos.reduce(
+      (map, otto) => Object.assign(map, { [otto.id]: otto }),
+      {} as { [k: string]: Otto }
+    )
+    const equippedItemToOtto = ottos
+      .filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready)
+      .map(({ id }) => ottoIdToOtto[id])
+      .filter(Boolean)
+      .map(otto =>
+        otto.wearableTraits.reduce(
+          (map, trait) => Object.assign(map, { [trait.id]: otto }),
+          {} as { [k: string]: Otto }
+        )
+      )
+      .reduce((all, map) => Object.assign(all, map), {} as { [k: string]: Otto })
 
     const ottoItems = (otto?.wearableTraits ?? []).reduce(
       (map, trait) => Object.assign(map, { [trait.type]: trait.id }),
@@ -87,7 +93,6 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
             return {
               type: ItemActionType.TakeOff,
               item_id: Number(ottoItems[type]),
-              from_otto_id: Number(otto.id),
             }
           }
 
@@ -95,14 +100,13 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
             return {
               type: ItemActionType.EquipFromOtto,
               item_id: Number(itemId),
-              from_otto_id: Number(otto.id),
+              from_otto_id: Number(equippedItemToOtto[itemId].id),
             }
           }
 
           return {
             type: ItemActionType.Equip,
             item_id: Number(itemId),
-            from_otto_id: Number(otto.id),
           }
         })
 
