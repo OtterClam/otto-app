@@ -39,6 +39,7 @@ export interface RawOtto {
   level: number
   adventurer_title: string
   latest_adventure_pass?: RawAdventurePass
+  next_level_exp: number
 }
 
 export interface Attr {
@@ -138,6 +139,8 @@ export default class Otto {
 
   public readonly diceCount?: number
 
+  public readonly exp: number = 0
+
   constructor(raw: RawOtto) {
     this.raw = raw
     this.voice = new Audio(this.raw.animation_url)
@@ -174,6 +177,8 @@ export default class Otto {
         this.ranking = Number(value)
       } else if (trait_type === 'Zodiac Sign') {
         this.zodiacSign = String(value)
+      } else if (trait_type === 'EXP') {
+        this.exp = Number(value)
       }
     }
 
@@ -253,6 +258,11 @@ export default class Otto {
 
   get level(): number {
     return this.raw.level
+  }
+
+  get next_level_exp(): number {
+    // TODO: remove the default value
+    return this.raw.next_level_exp ?? 1
   }
 
   get latestAdventurePass(): AdventurePass | undefined {

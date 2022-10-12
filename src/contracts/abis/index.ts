@@ -18,7 +18,7 @@ import ERC1155 from './ERC1155.json'
 import Adventure from './Adventure.json'
 
 export const ERC20Abi = ERC20.abi
-export const OttoAbi = Otto.abi
+export const OttoAbi = Otto
 export const OttopiaPortalCreatorAbi = OttopiaPortalCreator.abi
 export const OttoSummonerAbi = OttoSummoner.abi
 export const OttoItemAbi = OttoItem.abi

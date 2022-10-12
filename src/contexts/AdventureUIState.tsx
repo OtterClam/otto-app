@@ -45,7 +45,7 @@ export type AdventureUIAction =
     }
   | {
       type: AdventureUIActionType.DistributeAttributePoints
-      data: {
+      data?: {
         ottoId: string
       }
     }
@@ -78,30 +78,8 @@ const defaultValue: AdventureUIValue = {
   state: {
     popupOpened: false,
     popupStep: AdventurePopupStep.LocationInfo,
-    levelUp: {
+    attributePoints: {
       ottoId: '29',
-      rewards: {
-        items: [],
-        exp: 100,
-        tcp: 100,
-        ap: 100,
-      },
-      levelUp: {
-        from: {
-          level: 1,
-          exp: 80,
-          expToNextLevel: 100,
-        },
-        to: {
-          level: 2,
-          exp: 0,
-          expToNextLevel: 200,
-        },
-        got: {
-          items: [],
-          attrs_points: 5,
-        },
-      },
     },
   },
   dispatch: noop,

@@ -1,6 +1,5 @@
 import AdventureProgressBar from 'components/AdventureProgressBar'
 import CroppedImage from 'components/CroppedImage'
-import { AdventureOtto } from 'models/AdventureOtto'
 import Otto from 'models/Otto'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, Note } from 'styles/typography'
@@ -38,30 +37,36 @@ const StyledType = styled.div``
 
 const StyledValue = styled.div``
 
+const StyledDiff = styled.span``
+
 export interface OttoCardProps {
   otto: Otto
-  adventureOtto: AdventureOtto
-  points: { [k: string]: number }
+  points?: { [k: string]: number }
 }
 
-export default function OttoCard({ otto, adventureOtto, points }: OttoCardProps) {
+export default function OttoCard({ otto, points = {} }: OttoCardProps) {
   return (
     <StyledOttoCard>
       <StyledImage>
-        <CroppedImage src={adventureOtto.image} />
+        <CroppedImage src={otto.image} layout="fill" />
       </StyledImage>
       <StyledName>{otto.name}</StyledName>
       <StyledLevel>
-        LV.{adventureOtto.level}
-        <StyledExp>50/100 EXP</StyledExp>
+        LV.{otto.level}
+        <StyledExp>
+          {otto.exp}/{otto.next_level_exp} EXP
+        </StyledExp>
       </StyledLevel>
-      <StyledTitle>No Explorer Title</StyledTitle>
-      <AdventureProgressBar progress={10} />
+      <StyledTitle>{otto.adventurerTitle}</StyledTitle>
+      <AdventureProgressBar progress={otto.exp / otto.next_level_exp} />
       <StyedAttrs>
         {otto.displayAttrs.map(attr => (
           <StyledAttr key={attr.trait_type}>
             <StyledType>{attr.trait_type.toLocaleUpperCase()}</StyledType>
-            <StyledValue>{attr.value}</StyledValue>
+            <StyledValue>
+              {attr.value}
+              {(points[attr.trait_type] ?? 0) > 0 && <StyledDiff>(+{points[attr.trait_type]})</StyledDiff>}
+            </StyledValue>
           </StyledAttr>
         ))}
       </StyedAttrs>

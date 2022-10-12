@@ -876,5 +876,12 @@
       "diamond": "Diamond Shell Chest x{{ amount }}"
     },
     "attributePointsRewardLabel": "+{{ points }} Attribute Points"
+  },
+  "attributePoints": {
+    "popupTitle": "Add Attribute Points",
+    "avaliablePoints": "Available: {{ points }} points",
+    "confirmButton": "Confirm",
+    "skipButton": "Skip for Now",
+    "desc": "You can add attribute points later in My Otto page."
   }
 }

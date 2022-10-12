@@ -1,3 +1,4 @@
+import Otto from 'models/Otto'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge } from 'styles/typography'
 import arrowImage from './arrow.png'
@@ -20,15 +21,22 @@ const StyledArrow = styled.div`
   background: center / cover url(${arrowImage.src});
 `
 
-export default function ResultView() {
+export interface ResultViewProps {
+  result: {
+    otto: Otto
+    points: { [k: string]: number }
+  }
+}
+
+export default function ResultView({ result: { otto, points } }: ResultViewProps) {
   return (
     <StyledContainer>
       <StyledName>Ta-da! Your Otto seems to have changed a bit.</StyledName>
       <StyledDesc>The more you explore, the stronger you become!</StyledDesc>
       <StyledOttos>
-        <OttoCard />
+        <OttoCard otto={otto} />
         <StyledArrow />
-        <OttoCard />
+        <OttoCard otto={otto} points={points} />
       </StyledOttos>
     </StyledContainer>
   )
