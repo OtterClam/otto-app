@@ -5,7 +5,7 @@ import useContractAddresses from 'hooks/useContractAddresses'
 import Item, { ItemAction } from 'models/Item'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Api } from 'libs/api'
 import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
 import {
@@ -565,21 +565,11 @@ export const useAdventureExplore = () => {
   const item = useItemContract()
   const { account, library } = useEthers()
   const api = useApi()
-  const [ottoApprovedResult, itemApprovedResult] = useCalls([
-    account && {
-      contract: otto,
-      method: 'isApprovedForAll',
-      args: [account, adventure.address],
-    },
-    account && {
-      contract: item,
-      method: 'isApprovedForAll',
-      args: [account, adventure.address],
-    },
-  ])
-  const ottoApproved = ottoApprovedResult?.value?.[0] ?? false
-  const itemApproved = itemApprovedResult?.value?.[0] ?? false
-  const { send: sendExplore, state, resetState } = useContractFunction(adventure, 'departure')
+  const { send: sendExplore, state, resetState } = useContractFunction(adventure, 'explore')
+  const [exploreState, setExploreState] = useState<OttoAdventureExploreState>({
+    state: 'None',
+    status: state,
+  })
   const {
     send: approveOttoSpending,
     state: approveOttoState,
@@ -590,10 +580,6 @@ export const useAdventureExplore = () => {
     state: approveItemState,
     resetState: resetItem,
   } = useContractFunction(item, 'setApprovalForAll')
-  const [exploreState, setExploreState] = useState<OttoAdventureExploreState>({
-    state: 'None',
-    status: state,
-  })
   useEffect(() => {
     setExploreState({
       state: txState(approveOttoState.status),
@@ -617,9 +603,9 @@ export const useAdventureExplore = () => {
           }
           return null
         })
-        .filter(e => e?.name === 'Explore')[0]?.args[0]
+        .filter(e => e?.name === 'Departure')[0]?.args[0]
       setExploreState({
-        state: txState(state.status),
+        state: 'Success',
         status: state,
         passId,
       })
@@ -646,12 +632,16 @@ export const useAdventureExplore = () => {
         state: 'Processing',
         status: state,
       })
+
+      const ottoApproved = await otto.isApprovedForAll(account, adventure.address)
       if (!ottoApproved) {
         const tx = await approveOttoSpending(adventure.address, true)
         if (!tx) {
           return
         }
       }
+
+      const itemApproved = await item.isApprovedForAll(account, adventure.address)
       if (!itemApproved) {
         const tx = approveItemSpending(adventure.address, true)
         if (!tx) {
@@ -661,7 +651,7 @@ export const useAdventureExplore = () => {
       const data = await api.explore(ottoId, locationId, account, itemActions)
       sendExplore(...data)
     },
-    [api, account, ottoApproved, itemApproved]
+    [account, library, state, otto, item, api, sendExplore]
   )
 
   return {

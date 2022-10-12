@@ -123,8 +123,8 @@ export interface AdventureInterface extends utils.Interface {
     "STORE()": FunctionFragment;
     "accumulativeTcp(address)": FunctionFragment;
     "canFinishAt(uint256)": FunctionFragment;
-    "departure(uint256,uint256,uint256,(uint8,uint256,uint256)[],(string,bytes32,bytes))": FunctionFragment;
     "expMultiplierOf(uint256)": FunctionFragment;
+    "explore(uint256,uint256,uint256,(uint8,uint256,uint256)[],(string,bytes32,bytes))": FunctionFragment;
     "finish(uint256,uint256,uint256,(uint32,uint32,uint32,uint256[]),bool,uint256[],(string,bytes32,bytes))": FunctionFragment;
     "finishFee(uint256)": FunctionFragment;
     "finishImmediatelyProduct()": FunctionFragment;
@@ -171,8 +171,8 @@ export interface AdventureInterface extends utils.Interface {
       | "STORE"
       | "accumulativeTcp"
       | "canFinishAt"
-      | "departure"
       | "expMultiplierOf"
+      | "explore"
       | "finish"
       | "finishFee"
       | "finishImmediatelyProduct"
@@ -236,7 +236,11 @@ export interface AdventureInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "departure",
+    functionFragment: "expMultiplierOf",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "explore",
     values: [
       BigNumberish,
       BigNumberish,
@@ -244,10 +248,6 @@ export interface AdventureInterface extends utils.Interface {
       IOttoWearingFacet.ItemActionInputStruct[],
       Adventure.SignatureStruct
     ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "expMultiplierOf",
-    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "finish",
@@ -399,11 +399,11 @@ export interface AdventureInterface extends utils.Interface {
     functionFragment: "canFinishAt",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "departure", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "expMultiplierOf",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "explore", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "finish", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "finishFee", data: BytesLike): Result;
   decodeFunctionResult(
@@ -733,7 +733,12 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    departure(
+    expMultiplierOf(
+      ottoId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number]>;
+
+    explore(
       ottoId_: BigNumberish,
       locId_: BigNumberish,
       duration_: BigNumberish,
@@ -741,11 +746,6 @@ export interface Adventure extends BaseContract {
       sig_: Adventure.SignatureStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    expMultiplierOf(
-      ottoId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[number]>;
 
     finish(
       ottoId_: BigNumberish,
@@ -943,7 +943,12 @@ export interface Adventure extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  departure(
+  expMultiplierOf(
+    ottoId_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<number>;
+
+  explore(
     ottoId_: BigNumberish,
     locId_: BigNumberish,
     duration_: BigNumberish,
@@ -951,11 +956,6 @@ export interface Adventure extends BaseContract {
     sig_: Adventure.SignatureStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
-
-  expMultiplierOf(
-    ottoId_: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<number>;
 
   finish(
     ottoId_: BigNumberish,
@@ -1151,7 +1151,12 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    departure(
+    expMultiplierOf(
+      ottoId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<number>;
+
+    explore(
       ottoId_: BigNumberish,
       locId_: BigNumberish,
       duration_: BigNumberish,
@@ -1159,11 +1164,6 @@ export interface Adventure extends BaseContract {
       sig_: Adventure.SignatureStruct,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    expMultiplierOf(
-      ottoId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<number>;
 
     finish(
       ottoId_: BigNumberish,
@@ -1488,18 +1488,18 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    departure(
+    expMultiplierOf(
+      ottoId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    explore(
       ottoId_: BigNumberish,
       locId_: BigNumberish,
       duration_: BigNumberish,
       inputs_: IOttoWearingFacet.ItemActionInputStruct[],
       sig_: Adventure.SignatureStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    expMultiplierOf(
-      ottoId_: BigNumberish,
-      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     finish(
@@ -1708,18 +1708,18 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    departure(
+    expMultiplierOf(
+      ottoId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    explore(
       ottoId_: BigNumberish,
       locId_: BigNumberish,
       duration_: BigNumberish,
       inputs_: IOttoWearingFacet.ItemActionInputStruct[],
       sig_: Adventure.SignatureStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    expMultiplierOf(
-      ottoId_: BigNumberish,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     finish(

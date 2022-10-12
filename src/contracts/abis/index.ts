@@ -15,7 +15,8 @@ import OttoSummoner from './OttoSummoner.json'
 import PearlBank from './PearlBank.json'
 import Foundry from './Foundry.json'
 import ERC1155 from './ERC1155.json'
-import Adventure from './Adventure.json'
+
+export { default as AdventureAbi } from './Adventure.json'
 
 export const ERC20Abi = ERC20.abi
 export const OttoAbi = Otto
@@ -34,4 +35,3 @@ export const OtterWrappedUsdPlusAbi = OtterWrappedUsdPlus.abi
 export const AggregationRouterV4Abi = AggregationRouterV4
 export const FoundryAbi = Foundry.abi
 export const ERC1155Abi = ERC1155.abi
-export const AdventureAbi = Adventure.abi

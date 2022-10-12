@@ -2,7 +2,7 @@ import { useEthers } from '@usedapp/core'
 import { useApiCall } from 'contexts/Api'
 import noop from 'lodash/noop'
 import Otto from 'models/Otto'
-import { createContext, PropsWithChildren, useCallback, useContext, useMemo } from 'react'
+import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 interface MyOttos {
   loading: boolean
@@ -40,13 +40,17 @@ export function useIsMyOttos(ottoTokenId?: string): boolean {
 // this component must to be wrapped by AdventureOttosProvider
 export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
   const { account } = useEthers()
+  const [ottos, setOttos] = useState<Otto[]>([])
   const { loading, result, refetch } = useApiCall('getAdventureOttos', [account ?? ''], Boolean(account), [account])
-  const ottos = result ?? []
+  useEffect(() => {
+    setOttos(result ?? [])
+  }, [result])
   const updateOtto = useCallback(
     (otto: Otto) => {
       const idx = ottos.findIndex(o => o.id === otto.id)
       if (idx >= 0) {
         ottos[idx] = otto
+        setOttos([...ottos])
       } else {
         console.warn(`updateOtto: otto ${otto.id} not found`)
       }

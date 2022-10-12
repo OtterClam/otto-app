@@ -160,11 +160,12 @@ export default function PreviewOttoStep() {
           updateOtto(otto)
         })
         .then(() => goToStep(AdventurePopupStep.ReadyToGo))
+        .catch(err => console.error(err))
     } else if (exploreState.state === 'Fail') {
       alert(exploreState.status.errorMessage)
       resetExplore()
     }
-  }, [exploreState])
+  }, [exploreState, adventureContract])
 
   useResizeObserver(container, () => {
     const rect = container?.current?.getBoundingClientRect()
