@@ -129,7 +129,7 @@ const StyledName = styled(AdventureLocationName)`
 interface Props {
   otto: Otto
   state: OttoTxState
-  onFinish: (immediately: boolean, potions: string[]) => void
+  onFinish: (immediately: boolean, potions: number[]) => void
 }
 
 export default function OnGoingView({ otto, state, onFinish }: Props) {
@@ -145,13 +145,13 @@ export default function OnGoingView({ otto, state, onFinish }: Props) {
   const usedPotions = useMemo(() => {
     return Object.keys(usedPotionAmounts).map(key => {
       const amount = usedPotionAmounts[key]
-      const idList: string[] = []
+      const idList: number[] = []
       for (let i = 0; i < amount; i += 1) {
-        idList.push(key)
+        idList.push(Number(key))
       }
       return idList
     })
-  }, [usedPotionAmounts]).reduce((all, list) => all.concat(list), [] as string[])
+  }, [usedPotionAmounts]).reduce((all, list) => all.concat(list), [] as number[])
   const potionButtonDisabled = loading || state === 'Processing'
 
   if (!otto || !location) {

@@ -202,7 +202,7 @@ export class Api {
     ottoId: string
     wallet: string
     immediately: boolean
-    potions: string[]
+    potions: number[]
   }) {
     const result = await this.otterclamClient.post<AdventureFinishArgs>('/adventure/finish', {
       otto_id: ottoId,

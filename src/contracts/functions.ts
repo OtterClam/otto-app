@@ -673,7 +673,7 @@ export const useAdventureFinish = () => {
   }, [state])
 
   const finish = useCallback(
-    (ottoId: string, immediately: boolean, potions: string[]) => {
+    (ottoId: string, immediately: boolean, potions: number[]) => {
       if (!account) {
         return
       }

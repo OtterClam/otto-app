@@ -9,7 +9,7 @@ export default function ExploringStep() {
   const { updateOtto } = useMyOttos()
   const { otto, setOtto } = useOtto()
   const { finishState, finish, resetFinish } = useAdventureFinish()
-  const onFinish = (immediately: boolean, potions: string[]) => otto && finish(otto.id, immediately, potions)
+  const onFinish = (immediately: boolean, potions: number[]) => otto && finish(otto.id, immediately, potions)
 
   useEffect(() => {
     if (finishState.state === 'Success' && otto) {
