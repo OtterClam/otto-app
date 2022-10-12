@@ -14,7 +14,24 @@ export const LIST_MY_ITEMS = gql`
 export const GET_EPOCH = gql`
   query GetEpoch($epoch: Int!) {
     epoches(where: { num: $epoch }) {
+      num
       totalOttos
+      startedAt
+      endedAt
+      themeLabels
+      themeBoostBase
+      constellation
+      constellationBoost
+    }
+    latestEpoch: epoches(orderBy: num, orderDirection: desc, first: 1) {
+      num
+      totalOttos
+      startedAt
+      endedAt
+      themeLabels
+      themeBoostBase
+      constellation
+      constellationBoost
     }
   }
 `
@@ -73,6 +90,14 @@ export const GET_PORTAL = gql`
       mintAt
       candidates
       legendary
+    }
+  }
+`
+
+export const LIST_MY_OTTOS = gql`
+  query ListMyOttos($owner: Bytes!) {
+    ottos(where: { owner: $owner, portalStatus: SUMMONED }, orderBy: tokenId) {
+      tokenId
     }
   }
 `

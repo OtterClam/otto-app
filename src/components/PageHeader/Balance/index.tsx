@@ -1,13 +1,14 @@
-import useContractAddresses from 'hooks/useContractAddresses'
 import { useBreakpoints } from 'contexts/Breakpoints'
-import { useEthers } from '@usedapp/core'
-import { formatClamEthers } from 'utils/currency'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { ethers } from 'ethers'
+import { trim } from 'helpers/trim'
+import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
+import useContractAddresses from 'hooks/useContractAddresses'
 import useTokenBalance from 'hooks/useTokenBalance'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import ReactTooltip from 'react-tooltip'
 import styled, { useTheme } from 'styled-components/macro'
 import { ContentMedium } from 'styles/typography'
-import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
+import { formatClamEthers } from 'utils/currency'
 import Balance from './balance'
 import LargeClamBg from './header_clam_xl.png'
 import SmallClamBg from './header_clam_xs.png'
@@ -88,9 +89,19 @@ export const ClamBalance = ({ onClick }: Props) => {
   )
 }
 
-export const FishBalance = () => {
+export const FishBalance = ({ onClick }: Props) => {
   const { isMobile } = useBreakpoints()
+  const { FISH } = useContractAddresses()
   const bg = isMobile ? SmallFishBg : LargeFishBg
   const width = isMobile ? 103 : 155
-  return <Balance disabled showBuyButton background={bg.src} width={width} balance="--" />
+  const fishBalance = useTokenBalance(FISH)
+  return (
+    <Balance
+      showBuyButton
+      background={bg.src}
+      width={width}
+      balance={trim(ethers.utils.formatEther(fishBalance), 4)}
+      onClick={onClick}
+    />
+  )
 }

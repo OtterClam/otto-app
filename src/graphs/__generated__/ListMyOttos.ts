@@ -10,12 +10,6 @@
 export interface ListMyOttos_ottos {
   __typename: "Otto";
   tokenId: any;
-  tokenURI: string;
-  mintAt: any;
-  legendary: boolean;
-  brs: number;
-  rrs: number;
-  rarityScore: number;
 }
 
 export interface ListMyOttos {

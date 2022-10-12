@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic'
 import styled from 'styled-components/macro'
 import { useDispatch } from 'react-redux'
-import { connectWallet, showWalletPopup } from 'store/uiSlice'
+import { connectWallet, showFishWalletPopup, showWalletPopup } from 'store/uiSlice'
 import { useEthers } from '@usedapp/core'
 import Logo from './Logo'
 import Wallet from './Wallet'
@@ -9,6 +9,7 @@ import Title from './Title'
 import { PageHeaderProps } from './type'
 import { ClamBalance, FishBalance } from './Balance'
 import MenuButton from './MenuButton'
+import FishWalletPopup from './FishWalletPopup'
 
 const WalletPopup = dynamic(() => import('./WalletPopup'), { ssr: false })
 
@@ -41,7 +42,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
       <StyledRow>
         <Logo />
         <ClamBalance onClick={() => dispatch(account ? showWalletPopup() : connectWallet())} />
-        <FishBalance />
+        <FishBalance onClick={() => dispatch(account ? showFishWalletPopup() : connectWallet())} />
         <Wallet />
       </StyledRow>
       <StyledRow>
@@ -49,6 +50,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
         <MenuButton />
       </StyledRow>
       <WalletPopup />
+      <FishWalletPopup />
     </StyledContainer>
   )
 }

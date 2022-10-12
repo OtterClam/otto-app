@@ -1,16 +1,23 @@
 import CroppedImage from 'components/CroppedImage'
 import Item from 'models/Item'
+import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentLarge, Note } from 'styles/typography'
-import Otto from 'models/Otto'
-import { memo } from 'react'
-import selectedFrameCornerImage from './seelcted-frame-corner.svg'
 import chainedImage from './chained.svg'
 import nonReturnableImage from './nonreturnable.png'
+import selectedFrameCornerImage from './seelcted-frame-corner.svg'
 
-const StyledItemCell = styled.button<{ rarity: string; selected: boolean; unavailable: boolean; canClick: boolean }>`
-  width: 115px;
+const StyledItemCell = styled.button<{
+  size?: number
+  rarity: string
+  selected: boolean
+  unavailable: boolean
+  canClick: boolean
+}>`
+  --selected-bg: radial-gradient(63.75% 63.75% at 50% 50%, rgba(116, 205, 255, 0) 56.25%, #74cdff 100%);
+  width: ${({ size }) => `${size || 115}px`};
+  height: ${({ size }) => `${size || 115}px`};
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 5px;
   position: relative;
@@ -128,7 +135,7 @@ const StyledEquipped = styled.div`
   border-radius: 0 5px 5px 5px;
 `
 
-const StyledUonreturnable = styled.div`
+const StyledUnreturnable = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -155,6 +162,7 @@ interface Props {
   item: Item
   currentOtto?: Otto
   unavailable?: boolean
+  size?: number
   selected?: boolean
   onClick?: () => void
   className?: string
@@ -165,6 +173,7 @@ export default function ItemCell({
   item: { id, image, rarity, equipped, amount, unreturnable },
   currentOtto,
   unavailable = false,
+  size,
   selected = false,
   onClick,
   className,
@@ -175,6 +184,7 @@ export default function ItemCell({
 
   return (
     <StyledItemCell
+      size={size}
       rarity={rarity}
       unavailable={unavailable && !equippedByCurrentOtto}
       selected={selected}
@@ -204,7 +214,7 @@ export default function ItemCell({
           <StyledSelectedFrame right />
         </>
       )}
-      {unreturnable && <StyledUonreturnable />}
+      {unreturnable && <StyledUnreturnable />}
     </StyledItemCell>
   )
 }

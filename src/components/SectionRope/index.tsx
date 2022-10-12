@@ -33,12 +33,12 @@ const StyledContainer = styled.div<{ vertical?: boolean }>`
     flex-direction: column;
     max-width: 21px;
     min-width: 21px;
-    
+
     &::before, &::after {
       transform-origin: center;
       margin: 0;
     }
-    
+
     &::before {
       transform: rotate(-90deg) translateX(-40px);
     }

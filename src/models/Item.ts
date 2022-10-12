@@ -1,6 +1,11 @@
 import { ItemActionType } from 'constant'
 import NonItem from './non-item.jpg'
-import { Trait, Stat, TraitCollection, TraitRarity, OttoGender } from './Otto'
+import { Trait, Stat, TraitCollection, TraitRarity, OttoGender, TraitLabel } from './Otto'
+
+export interface ItemStat {
+  name: string
+  value: string
+}
 
 export default interface Item {
   id: string
@@ -33,6 +38,8 @@ export default interface Item {
   update_at: number
   collection?: TraitCollection
   collection_name?: string
+  theme_boost: number
+  labels: TraitLabel[]
 }
 
 export function traitToItem(trait: Trait): Item {
@@ -115,6 +122,8 @@ export const EmptyItem: Item = {
   con: 0,
   collection: TraitCollection.Genesis,
   collection_name: '',
+  theme_boost: 0,
+  labels: [],
 }
 
 export interface ItemAction {

@@ -8,7 +8,9 @@ import RankingIcon from 'assets/ranking.png'
 import Button from 'components/Button'
 import { DiceBanner } from 'components/DiceBanner'
 import Loading from 'components/Loading'
+import OttoThemeBoostLabels from 'components/OttoThemeBoostLabels'
 import { getOpenSeaLink, reserveOttoAmount } from 'constant'
+import { useLeaderboardEpoch } from 'contexts/LeaderboardEpoch'
 import { format } from 'date-fns'
 import useOtto from 'hooks/useOtto'
 import { useTranslation } from 'next-i18next'
@@ -19,6 +21,7 @@ import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Display3, Headline, Note } from 'styles/typography'
 import PlayIcon from './icons/play-voice.svg'
+import Theme from './icons/theme.png'
 import TheOtter from './icons/the_otter.png'
 import OttoTraitDetails from './OttoTraitDetails'
 
@@ -245,8 +248,19 @@ const StyledBoost = styled.span`
   margin-left: 10px;
 `
 
+const StyledOttoThemeBoostLabels = styled(OttoThemeBoostLabels)`
+  margin-top: 10px;
+`
+
+const StyledThemeBoostDesc = styled.div`
+  display: inline-block;
+`
+
 export default function OttoPage() {
   const { t } = useTranslation()
+  const {
+    epoch: { themes },
+  } = useLeaderboardEpoch()
   const { chainId } = useEthers()
   const router = useRouter()
   const ottoId = router.query.ottoId as string
@@ -333,6 +347,21 @@ export default function OttoPage() {
                     constellation: otto.zodiacSign,
                   })}
                   <StyledBoost>BRS+{otto.zodiacBoost}!</StyledBoost>
+                </ContentSmall>
+              </StyledBoostBox>
+            )}
+
+            {otto && otto.themeBoost > 0 && (
+              <StyledBoostBox>
+                <img src={Theme.src} alt="the Otter" />
+                <ContentSmall>
+                  <StyledThemeBoostDesc
+                    dangerouslySetInnerHTML={{
+                      __html: t('otto.theme_boost', { labels: themes.map(theme => `#${theme}`).join(', ') }),
+                    }}
+                  />
+                  <StyledBoost>BRS+{otto.themeBoost}</StyledBoost>
+                  <StyledOttoThemeBoostLabels otto={otto} />
                 </ContentSmall>
               </StyledBoostBox>
             )}

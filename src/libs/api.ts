@@ -13,6 +13,7 @@ import { AdventurePreview, RawAdventurePreview, rawAdventurePreviewToAdventurePr
 import { Dice } from 'models/Dice'
 import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
 import Item, { ItemAction, rawItemToItem } from 'models/Item'
+import { LeaderboardEpoch, RawLeaderboardEpoch, rawLeaderboardEpochToLeaderboardEpoch } from 'models/LeaderboardEpoch'
 import { Notification, RawNotification } from 'models/Notification'
 import Otto, { RawOtto } from 'models/Otto'
 import Product from 'models/store/Product'
@@ -30,7 +31,6 @@ export interface FlashSellResponse {
   popup_title: string
   popup_desc: string
   popup_image: string
-  guarantee_rarity: string
   start_time: number
   end_time: number
   products: Product[]
@@ -210,6 +210,15 @@ export class Api {
       immediately,
       potions,
     })
+
+    return result.data
+  }
+
+  public async getForgeCalldata(formulaId: number, account: string) {
+    const result = await this.otterclamClient.post('/foundry/fuse', {
+      id: formulaId,
+      wallet: account,
+    })
     return result.data
   }
 
@@ -222,6 +231,11 @@ export class Api {
         items: result.data.rewards.items.map((i: any) => rawItemToItem(i.id, i)),
       },
     }
+  }
+
+  public async getLeaderBoardEpoch(): Promise<LeaderboardEpoch> {
+    const result = await this.otterclamClient.get<RawLeaderboardEpoch>('/leaderboard/epoch')
+    return rawLeaderboardEpochToLeaderboardEpoch(result.data)
   }
 }
 

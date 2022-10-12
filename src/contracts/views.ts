@@ -1,5 +1,5 @@
 import { useCall, useCalls, useEthers } from '@usedapp/core'
-import { BigNumber, constants } from 'ethers'
+import { BigNumber, BigNumberish, constants } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useCallback, useEffect, useState } from 'react'
 import {
@@ -239,15 +239,6 @@ export function useNextRewardTime() {
   return result?.value ? result?.value[0] : constants.Zero
 }
 
-export function useIsApprovedForAll(contract: string, operator: string) {
-  const erc1155 = useERC1155(contract)
-  const { account } = useEthers()
-  const result = useCall(account && { contract: erc1155, method: 'isApprovedForAll', args: [account, operator] })
-  return {
-    isApprovedForAll: result?.value ? result?.value[0] : false,
-  }
-}
-
 export function useAttributePoints(ottoId?: string) {
   const otto = useOttoContract()
   const result = useCall(
@@ -258,4 +249,38 @@ export function useAttributePoints(ottoId?: string) {
     }
   )
   return result?.value?.attributePoints ?? 0
+}
+
+export function useIsApprovedForAll(contract: string, account: string, operator: string) {
+  const erc1155 = useERC1155(contract)
+  const [isApprovedForAll, setIsApprovedForAll] = useState(false)
+
+  const updateApprovalStatus = useCallback(() => {
+    if (account && operator) {
+      erc1155.isApprovedForAll(account, operator).then(setIsApprovedForAll)
+    }
+  }, [erc1155, operator, account])
+
+  useEffect(() => {
+    updateApprovalStatus()
+  }, [updateApprovalStatus])
+
+  return {
+    isApprovedForAll,
+    updateApprovalStatus,
+  }
+}
+
+export const useBuyFishReturn = (clamAmount: BigNumberish) => {
+  const store = useStoreContract()
+  const { library } = useEthers()
+  const [fishAmount, setFishAmount] = useState<BigNumberish>(0)
+
+  useEffect(() => {
+    if (library) {
+      store.toFish(clamAmount).then(setFishAmount)
+    }
+  }, [clamAmount.toString(), library])
+
+  return fishAmount
 }

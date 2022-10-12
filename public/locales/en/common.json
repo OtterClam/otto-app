@@ -37,18 +37,18 @@
   "dice_banner": {
     "badge": "Special Offer",
     "button": "Give It a Try",
-    "button_season_end": "S1 End",
     "description": "The Dice of Destiny gives a chance to temporarily boost your BRS for the current epoch in Rarity Competition, but there’s a possibility that your BRS score will be lowered.",
     "times": "The Dice of Destiny was rolled <strong>x{{ times }}</strong>",
     "effects_blessed": "Fate has blessed this Otto with BRS <strong>{{ brs }}</strong>",
     "effects_cursed": "Fate has cursed this Otto with BRS <strong>{{ brs }}</strong>",
     "endTime": "The dice effect will clear and reset at {{ time }}",
-    "title": "Roll a Dice of Destiny!"
+    "title": "Roll a Dice of Destiny!",
+    "button_season_end": "S1 End"
   },
   "dice_popup": {
     "intro": {
       "call_to_action": "Get ready to face your destiny?",
-      "description": "The Dice of Destiny gives players a chance to temporarily boost your BRS for the current epoch in the Raking for Rarity Competition, but there’s a possibility that your Otto will lose some BRS as well.\n\n* Each roll produces a single, randomized result out of dozens of possible results.\n* Some of the results have a positive effect on your Otto’s BRS, While some have a negative effect on your Otto’s BRS.\n* Some results require an additional selection. Your choice will determine the fate of your Otto.\n* The BRS effect from rolling the Dice of Destiny only lasts for the current epoch, and will be removed as soon as it ends.\n* Do you know your Otto’s <strong>DEF value</strong> can actually affect the result? The more DEF your Otto has, the more likely the dice will roll good results. For more information about DEF effects, click <a href=\"https://docs.ottopia.app/ottopia/gameplay/leaderboard/#dice-of-destiny-\" target=\"_blank\">here</a>.\n* The Dice results only affect the Otto you choose to roll a dice for.",
+      "description": "The Dice of Destiny gives players a chance to temporarily boost your BRS for the current epoch in the Raking for Rarity Competition, but there’s a possibility that your Otto will lose some BRS as well.\n\n* Each roll produces a single, randomized result out of dozens of possible results.\n* Some of the results have a positive effect on your Otto’s BRS, While some have a negative effect on your Otto’s BRS.\n* Some results require an additional selection. Your choice will determine the fate of your Otto.\n* The BRS effect from rolling the Dice of Destiny only lasts for the current epoch, and will be removed as soon as it ends.\n* For more information about Dice of Destiny, click <a href=\"https://docs.ottopia.app/ottopia/events/rarity-competition-s2#dice-of-destiny-\" target=\"_blank\">here</a>.\n* The Dice results only affect the Otto you choose to roll a dice for.",
       "start_button": "Roll the Dice",
       "title": "Roll the Dice of Destiny!"
     },
@@ -155,18 +155,17 @@
   "leaderboard": {
     "head": "Be the rarest Otto to win the prize!",
     "hero": {
-      "back_to_current": "Back to Current Round >>",
+      "back_to_current": "Back to Current Epoch >>",
       "coming_soon": "COMING SOON!",
       "get_updated": "Get updated on Discord",
       "reward_at": "Rewarding at: {{time}}!",
-      "round_end": "This round has ended and the rewards have been granted.",
-      "title": "Total Rewards this Round",
+      "round_end": "This epoch has ended and the rewards have been granted.",
+      "title": "Total Rewards this Season",
       "tooltip": "The ranking and estimated rewards on the leaderboard will change until the displayed time. The final ranking and prizes will be determined by the snapshot of at that time."
     },
-    "item_desc": "Increase your Otto’s rarity by equipping the epic items, or you can summon a genetically rare Otto!",
     "mint_portal_link": "Mint Portal >",
-    "next": "Next Round >",
-    "prev": "< Previous Round",
+    "next": "Next Epoch >",
+    "prev": "< Previous Epoch",
     "rank_list": {
       "brs": "BRS",
       "chosen_one": "The Chosen Otto (BRS+150)",
@@ -180,13 +179,15 @@
       "rarity_score": "Rarity Score",
       "rrs": "RRS",
       "show_less": "Show less",
-      "your_rank": "Your Ottos’ rank currently:",
-      "zodiac_boost": "{{zodiac}} (BRS+50)"
+      "your_rank": "Your Ottos’ rank:",
+      "zodiac_boost": "{{zodiac}} (BRS+50)",
+      "theme_boost": "Theme Boost (BRS+{{ boost }})"
     },
-    "reward_desc": "The higher your rank, the more prize you will win! All top 50% Ottos can win the rewards.",
-    "reward_link": "See how the rank vs prize works >",
     "shell_chest_link": "Buy Shell Chest >",
-    "title": "Leaderboard"
+    "title": "Leaderboard",
+    "right_info": "The upcoming epoch falls to <span style=\"color: #FFDC77\">{{constellation}}</span>. The god of {{constellation}} has blessed every {{constellation}} Otto, Lottie and Cleo with glory and power! <span style=\"color: #FF6854\">BRS +50</span>",
+    "left_info_link": "See how BRS boost works >",
+    "left_info": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #FFDC77\">{{ themes }}</span> will receive extra BRS boosts."
   },
   "mint": {
     "approve_button": "Approve",
@@ -290,6 +291,7 @@
     "sorted_by_options": {
       "rarity_desc": "Rarity",
       "time_received": "Time Received",
+      "theme_boost": "Theme Boost",
       "str": "Str",
       "rarity": "Rarity",
       "luck": "Luck",
@@ -320,11 +322,24 @@
       "replaced": "Replaced With...",
       "title": "Select an Otto to wear this item"
     },
+    "transfer_btn": "Transfer",
+    "transfer": {
+      "title": "Transfer",
+      "amount": "Amount",
+      "address": "Receiver Address",
+      "note": "Note: Please note that by transferring the item, the receiver's address will receive the item. This transaction will only cost you a gas fee.",
+      "transfer_btn": "Transfer",
+      "success_title": "Transfer Successful!",
+      "success_desc": "Transaction completed. Your otter mate will receive your item(s) soon.",
+      "close_btn": "Close",
+      "invalid_address": "Invalid address"
+    },
     "sort_order_options": {
       "asc": "Ascending",
       "desc": "Descending"
     },
-    "sort_order": "Order"
+    "sort_order": "Order",
+    "opensea_link": "View on Opensea"
   },
   "my_ottos": {
     "mint_portal": "Mint Portal",
@@ -401,7 +416,9 @@
     "unreturnable_hint": "This item came along with the Otto the moment it was minted, so it cannot be detached and returned to your item inventory. You can still wear another wearable item to replace and hide it. If the other wearable item is taken off, this item will be visible again on the Otter.",
     "voice": "Voice: {{voice}}",
     "wearable_traits_tab": "Wearable Traits",
-    "zodiac_sign": "Zodiac sign: {{constellation}}"
+    "zodiac_sign": "Zodiac sign: {{constellation}}",
+    "total_rarity_score": "Total Rarity Score: {{score}} (BRS {{brs}} + RRS {{rrs}})",
+    "theme_boost": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #3B4BD8\">{{ labels }}</span> will receive extra BRS boosts."
   },
   "otto_one": "{{count}} Otto",
   "otto_other": "{{count}} Ottos",
@@ -481,7 +498,8 @@
     },
     "def": {
       "must_desc": "R2 Item Guaranteed!"
-    }
+    },
+    "must_desc": "{{rarity}} Item Guaranteed!"
   },
   "question": {
     "submit_button": "Confirm"
@@ -576,12 +594,12 @@
       "burnedTooltip": "Amount of CLAM permanently burned and removed from the supply. USD value is calculated from price at the time of burning. Percentage shown is the portion of the total CLAM supply burned.",
       "distributed": "Rewards Distributed",
       "distributedTooltip": "Total USD value of rewards paid to CLAM stakers since launch. The APR is the annual percentage rate of rewards paid to CLAM stakers.",
-      "averageApr": "Average APR",
-      "averageAprStartDate": "from {{ date }}",
       "marketcap": "CLAM Market Cap",
       "marketcapTooltip": "The circulating supply of CLAM tokens multiplied by the market price.",
       "stakedChartHeader": "Staked",
-      "autocompoundChartHeader": "Auto-Compound"
+      "autocompoundChartHeader": "Auto-Compound",
+      "averageAprStartDate": "from {{ date }}",
+      "averageApr": "Average APR"
     }
   },
   "stake": {
@@ -698,6 +716,68 @@
     "ottos": "My Ottos",
     "missions": "Missions"
   },
+  "treasueyChestLevel": {
+    "title": "Treasury Chest",
+    "desc": "Collect points on adventure to open the Treasure Chest!",
+    "value": "{{ tcp }}/100 TCP"
+  },
+  "themeBoost": {
+    "boostMultiplier": "Boost Multiplier x {{ multiplier }} 🔥"
+  },
+  "ottoPreviewer": {
+    "feedButton": "+ Food"
+  },
+  "ottoItemsPopup": {
+    "title": "Change {{ type }}",
+    "sort": "Sorted by",
+    "order": "Order",
+    "filter": "Filter",
+    "wear": "Wear",
+    "wearBy": "{{ name }} is wearing this item",
+    "unavailable": "Unavailable",
+    "takeOff": "Take Off",
+    "noItems": "No Items Found"
+  },
+  "ongoingOttos": {
+    "title": "The Ottos currently exploring this place",
+    "view": "View",
+    "noOtto": "No Otto is here"
+  },
+  "levelUp": {
+    "popupTitle": "LEVEL UP!!!",
+    "rewardSectionTitle": "Level-up Reward",
+    "continueButton": "Continue",
+    "itemRewardLabel": {
+      "silver": "Silver Shell Chest x{{ amount }}",
+      "golden": "Golden Shell Chest x{{ amount }}",
+      "diamond": "Diamond Shell Chest x{{ amount }}"
+    },
+    "attributePointsRewardLabel": "+{{ points }} Attribute Points"
+  },
+  "itemFilters": {
+    "attrs": {
+      "timeReceived": "Time Received",
+      "rarity": "Rarity",
+      "str": "Str",
+      "dex": "Dex",
+      "luck": "Luck",
+      "cute": "Cute",
+      "def": "Def",
+      "int": "Int",
+      "con": "Con"
+    },
+    "order": {
+      "desc": "Descending",
+      "asc": "Ascending"
+    },
+    "filters": {
+      "equipped": "Equipped",
+      "lottie_specific": "Lottie Specific",
+      "none": "None",
+      "not_equipped": "Not Equipped",
+      "otto_specific": "Otto Specific"
+    }
+  },
   "foundry": {
     "title": "Foundry",
     "dialog": {
@@ -719,8 +799,48 @@
       "processing": "Forging..."
     }
   },
-  "ottoPreviewer": {
-    "feedButton": "+ Food"
+  "constellation": {
+    "1": "Aries",
+    "2": "Taurus",
+    "3": "Gemini",
+    "4": "Cancer",
+    "5": "Leo",
+    "6": "Virgo",
+    "7": "Libra",
+    "8": "Scorpio",
+    "9": "Sagittarius",
+    "10": "Capricorn",
+    "11": "Aquarius",
+    "12": "Pisces"
+  },
+  "conditionalBoosts": {
+    "title": "Conditional Boosts",
+    "help": "test",
+    "effectiveUntil": "<span style='color: #FFDC77'>{{ duration }}</span>",
+    "legendary": "Legendary Otto:",
+    "zodiac": "Zodiac sign:",
+    "birthday": "Birthday today:",
+    "level_up": "Level-up bonus:",
+    "first_match_group": "If {{ attr }} {{ operator }} {{ value }}, ",
+    "fixed_level": "LV{{ value }}:"
+  },
+  "attributePoints": {
+    "popupTitle": "Add Attribute Points",
+    "avaliablePoints": "Available: {{ points }} points",
+    "confirmButton": "Confirm",
+    "skipButton": "Skip for Now",
+    "desc": "You can add attribute points later in My Otto page.",
+    "resultTitle": "Ta-da! Your Otto seems to have",
+    "resultDesc": "The more you explore, the stronger you become!",
+    "resultCloseButton": "Close"
+  },
+  "adventureStatus": {
+    "all": "All",
+    "finished": "Finished",
+    "ongoing": "Ongoing",
+    "resting": "Resting",
+    "ready": "Ready",
+    "unavailable": "Unavailable"
   },
   "adventurePopup": {
     "start": "Let's Go!",
@@ -770,10 +890,13 @@
   "adventureOttoList": {
     "title": "The Ottos currently exploring this place"
   },
-  "adventureBoostTarget": {
-    "success_rate": "Total Success +{{ amount }}%",
-    "additional_item": "Found Item +{{ amount }}",
-    "additional_artwork": "Found Artwork Item +{{ amount }}"
+  "adventureOttoCard": {
+    "checkOtto": "Check >",
+    "viewLabel": "View"
+  },
+  "adventureLocationPopup": {
+    "difficulty": "Difficulty:",
+    "nextStep": "Continue"
   },
   "adventureLocation": {
     "successRate": "Success rate",
@@ -786,47 +909,13 @@
     "noPotion": "You have 0",
     "usedPotion": "Used {{ amount }}"
   },
-  "adventureLocationPopup": {
-    "difficulty": "Difficulty:",
-    "nextStep": "Continue"
-  },
   "adventureBoosts": {
     "conditionalBoosts": "Conditional Boosts"
   },
-  "ottoItemsPopup": {
-    "title": "Change {{ type }}",
-    "sort": "Sorted by",
-    "order": "Order",
-    "filter": "Filter",
-    "wear": "Wear",
-    "wearBy": "{{ name }} is wearing this item",
-    "unavailable": "Unavailable",
-    "takeOff": "Take Off",
-    "noItems": "No Items Found"
-  },
-  "itemFilters": {
-    "attrs": {
-      "timeReceived": "Time Received",
-      "rarity": "Rarity",
-      "str": "Str",
-      "dex": "Dex",
-      "luck": "Luck",
-      "cute": "Cute",
-      "def": "Def",
-      "int": "Int",
-      "con": "Con"
-    },
-    "order": {
-      "desc": "Descending",
-      "asc": "Ascending"
-    },
-    "filters": {
-      "equipped": "Equipped",
-      "lottie_specific": "Lottie Specific",
-      "none": "None",
-      "not_equipped": "Not Equipped",
-      "otto_specific": "Otto Specific"
-    }
+  "adventureBoostTarget": {
+    "success_rate": "Total Success +{{ amount }}%",
+    "additional_item": "Found Item +{{ amount }}",
+    "additional_artwork": "Found Artwork Item +{{ amount }}"
   },
   "adventure": {
     "title": "Adventure",
@@ -836,59 +925,5 @@
       "map": "Map",
       "list": "Overview"
     }
-  },
-  "treasueyChestLevel": {
-    "title": "Treasury Chest",
-    "desc": "Collect points on adventure to open the Treasure Chest!",
-    "value": "{{ tcp }}/100 TCP"
-  },
-  "adventureStatus": {
-    "all": "All",
-    "finished": "Finished",
-    "ongoing": "Ongoing",
-    "resting": "Resting",
-    "ready": "Ready",
-    "unavailable": "Unavailable"
-  },
-  "adventureOttoCard": {
-    "checkOtto": "Check >",
-    "viewLabel": "View"
-  },
-  "conditionalBoosts": {
-    "title": "Conditional Boosts",
-    "help": "test",
-    "effectiveUntil": "<span style='color: #FFDC77'>{{ duration }}</span>",
-    "legendary": "Legendary Otto:",
-    "zodiac": "Zodiac sign:",
-    "birthday": "Birthday today:",
-    "level_up": "Level-up bonus:",
-    "first_match_group": "If {{ attr }} {{ operator }} {{ value }}, ",
-    "fixed_level": "LV{{ value }}:"
-  },
-  "ongoingOttos": {
-    "title": "The Ottos currently exploring this place",
-    "view": "View",
-    "noOtto": "No Otto is here"
-  },
-  "levelUp": {
-    "popupTitle": "LEVEL UP!!!",
-    "rewardSectionTitle": "Level-up Reward",
-    "continueButton": "Continue",
-    "itemRewardLabel": {
-      "silver": "Silver Shell Chest x{{ amount }}",
-      "golden": "Golden Shell Chest x{{ amount }}",
-      "diamond": "Diamond Shell Chest x{{ amount }}"
-    },
-    "attributePointsRewardLabel": "+{{ points }} Attribute Points"
-  },
-  "attributePoints": {
-    "popupTitle": "Add Attribute Points",
-    "avaliablePoints": "Available: {{ points }} points",
-    "confirmButton": "Confirm",
-    "skipButton": "Skip for Now",
-    "desc": "You can add attribute points later in My Otto page.",
-    "resultTitle": "Ta-da! Your Otto seems to have",
-    "resultDesc": "The more you explore, the stronger you become!",
-    "resultCloseButton": "Close"
   }
 }

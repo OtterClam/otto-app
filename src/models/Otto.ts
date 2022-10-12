@@ -68,6 +68,11 @@ export enum OttoGender {
   Both = 'Both',
 }
 
+export interface TraitLabel {
+  name: string
+  match: boolean
+}
+
 export interface Trait {
   id: string
   type: string
@@ -82,8 +87,10 @@ export interface Trait {
   stats: Stat[]
   unreturnable: boolean
   equippable_gender: OttoGender
-  collection?: TraitCollection
-  collection_name?: string
+  collection: TraitCollection
+  collection_name: string
+  labels: TraitLabel[]
+  theme_boost: number
 }
 
 export interface Stat {
@@ -148,6 +155,10 @@ export default class Otto {
 
   public readonly exp: number = 0
 
+  public readonly themeBoost: number = 0
+
+  public readonly themeBoostMultiplier: number = 1
+
   constructor(raw: RawOtto) {
     this.raw = raw
     this.voice = new Audio(this.raw.animation_url)
@@ -199,6 +210,10 @@ export default class Otto {
         this.zodiacSign = String(value)
       } else if (trait_type === 'EXP') {
         this.exp = Number(value)
+      } else if (trait_type === 'Theme Boost') {
+        this.themeBoost = Number(value ?? '0')
+      } else if (trait_type === 'Theme Boost Multiplier') {
+        this.themeBoostMultiplier = Number(value ?? '1')
       }
     }
 
@@ -326,7 +341,6 @@ export default class Otto {
   toJSON() {
     return {
       raw: this.raw,
-      metadata: this.raw,
     }
   }
 
@@ -369,5 +383,5 @@ export function applyAttrsDiffToOtto(otto: Otto, diff: OttoAttrsDiff): Otto {
       value: Number(attr.value) + (diff[attr.trait_type] ?? 0),
     })),
   }
-  return new Otto(otto.raw)
+  return new Otto(metadata)
 }

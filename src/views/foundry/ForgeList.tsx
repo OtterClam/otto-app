@@ -4,6 +4,9 @@ import ForgeItem from './ForgeItem'
 import { MyItemAmounts } from './type'
 
 const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   padding: 60px 74px 74px;
 
   @media ${({ theme }) => theme.breakpoints.tablet} {

@@ -42,7 +42,7 @@
   "dice_popup": {
     "intro": {
       "call_to_action": "準備好要面對你的命運了嗎？",
-      "description": "地獄骰子每輪會骰出兩個事件，有的事件會暫時提升你的阿獺在這輪稀有度比賽的稀有度，但也有些事件會讓阿獺的稀有度變得更低。\n* 地獄骰子爾偶也會骰出命運選擇題，有的選項會讓阿獺獲得稀有度；但假如你選錯了選項，你的阿獺將會厄運纏身並掉稀有度。\n* 地獄骰子的稀有度加成僅會影響此輪稀有度比賽，此輪結束後，稀有度加成即會移除（不管是加分或扣分）。\n* 你知道你的阿獺 DEF 值會影響骰出事件的機率嗎？ <strong>DEF 值</strong>越高的阿獺，骰出好的事件機率會越高喔！想要知道 DEF 值所影響的骰子事件機率表，請前往<a href=\"https://docs.ottopia.app/ottopia/gameplay/leaderboard/#dice-of-destiny-\" target=\"_blank\">這裡</a>。\n* 地獄骰子僅會影響你選擇的這隻阿獺。",
+      "description": "地獄骰子每輪會骰出兩個事件，有的事件會暫時提升你的阿獺在這輪稀有度比賽的稀有度，但也有些事件會讓阿獺的稀有度變得更低。\n* 地獄骰子爾偶也會骰出命運選擇題，有的選項會讓阿獺獲得稀有度；但假如你選錯了選項，你的阿獺將會厄運纏身並掉稀有度。\n* 地獄骰子的稀有度加成僅會影響此輪稀有度比賽，此輪結束後，稀有度加成即會移除（不管是加分或扣分）。\n* 想要知道更多地獄骰子資訊，請前往<a href=\"https://docs.ottopia.app/ottopia/events/rarity-competition-s2#dice-of-destiny-\" target=\"_blank\">這裡</a>。\n* 地獄骰子僅會影響你選擇的這隻阿獺。",
       "start_button": "骰骰子！",
       "title": "機會！命運？交給地獄骰子吧"
     },
@@ -155,19 +155,18 @@
       "get_updated": "在 Discord 獲得最新情報",
       "reward_at": "獎金發放時間: {{time}}!",
       "round_end": "此輪比賽已結束且獎勵已發送。",
-      "title": "這一輪比賽總獎金",
+      "title": "這季比賽總獎金",
       "tooltip": "排行榜上的名次及預估獎金會持續變動直到顯示時間歸零，而最終名次及獎勵會透過結束當下的截圖畫面決定。"
     },
-    "item_desc": "裝備稀有物品讓你的阿獺擁有更高的稀有值，或者你也可以直接鑄造傳送門招喚一隻全新的阿獺！",
     "mint_portal_link": "鑄造傳送門 >",
-    "next": "下一回合 >",
-    "prev": "< 前一回合",
+    "next": "下一輪 >",
+    "prev": "< 前一輪",
     "rank_list": {
       "brs": "BRS",
       "chosen_one": "天選之獺 (BRS+150)",
       "est_reward": "預估獎金",
       "expand": "展開顯示所有 {{count}} 隻阿獺",
-      "hell_dice": "Dice X{{ diceCount }} (BRS{{ boost }})",
+      "hell_dice": "骰子 X{{ diceCount }} (BRS{{ boost }})",
       "name": "阿獺名稱",
       "next": "下一頁",
       "prev": "上一頁",
@@ -175,13 +174,15 @@
       "rarity_score": "稀有度",
       "rrs": "RRS",
       "show_less": "收合",
-      "your_rank": "你的阿獺目前稀有度排名:",
-      "zodiac_boost": "{{zodiac}} (BRS+50)"
+      "your_rank": "你的阿獺稀有度排名:",
+      "zodiac_boost": "{{zodiac}} (BRS+50)",
+      "theme_boost": "主題加成 (BRS+{{ boost }})"
     },
-    "reward_desc": "稀有度排名越高，得到的獎金就會越豐厚。排名前 50% 的阿獺都可以得到獎金呦！",
-    "reward_link": "看看排名機制及獎金制度 >",
     "shell_chest_link": "購買貝殼寶箱 >",
-    "title": "排行榜"
+    "title": "排行榜",
+    "right_info": "這一輪比賽獎勵星座落在<span style=\"color: #FFDC77\">處女座</span>，所有此星座的阿獺、蘿提及克蕾歐都會被神祝福並賜予特殊效果： <span style=\"color: #FF6854\">BRS +50</span>",
+    "left_info_link": "主題加成如何運作 >",
+    "left_info": "只要你的阿獺 NFT 穿上的物品符合此輪比賽所指定的主題標籤： <span style=\"color: #FFDC77\">{{ themes }}</span> ，就可以得到額外稀有度分數加成！"
   },
   "mint": {
     "approve_button": "允許花費",
@@ -261,10 +262,10 @@
     "filter": "過濾",
     "filters": {
       "equipped": "已裝備",
-      "lottie_can_equip": "Lottie 可用",
       "none": "無",
       "not_equipped": "未裝備",
-      "otto_can_equip": "Otto 可用"
+      "otto_can_equip": "Otto 可用",
+      "lottie_can_equip": "Lottie 可用"
     },
     "legendary_warning": "警告：如果你裝備/更換其他物品到傳奇阿獺身上，傳奇外框將會隱藏，且會扣除額外的傳奇加成：基本稀有度 (BRS) +100。",
     "no_selected_item": "請選擇物品檢視詳細資訊",
@@ -284,19 +285,15 @@
     "sorted_by": "排序",
     "sorted_by_options": {
       "time_received": "收到時間",
+      "theme_boost": "主題加成",
+      "str": "力量度",
       "rarity": "稀有度",
       "luck": "幸運值",
-      "dex": "敏捷度",
-      "cute": "可愛度",
-      "def": "防御力",
-      "str": "力量度",
       "int": "智力度",
+      "dex": "敏捷度",
+      "def": "防御力",
+      "cute": "可愛度",
       "con": "憲法度"
-    },
-    "sort_order": "排序",
-    "sort_order_options": {
-      "asc": "從低到高",
-      "desc": "從高到低"
     },
     "take_off": "脫掉",
     "take_off_item": {
@@ -318,7 +315,25 @@
       "current_equipped": "目前裝備",
       "replaced": "被取代成...",
       "title": "選擇一隻阿獺來裝備此物品"
-    }
+    },
+    "transfer_btn": "發送物品",
+    "transfer": {
+      "title": "發送物品",
+      "amount": "數量",
+      "address": "接收者地址",
+      "note": "注意：你所選擇的物品及數量將會傳送至上面所輸入之錢包地址。此交易僅會收取礦工費（gas fee）。",
+      "transfer_btn": "發送",
+      "success_title": "物品發送成功!",
+      "success_desc": "交易已完成。你的阿獺好夥伴很快就會收到物品。",
+      "close_btn": "關閉視窗",
+      "invalid_address": "無效的錢包地址"
+    },
+    "sort_order_options": {
+      "asc": "從低到高",
+      "desc": "從高到低"
+    },
+    "sort_order": "排序",
+    "opensea_link": "在 Opensea 上查看"
   },
   "my_ottos": {
     "mint_portal": "鑄造傳送門",
@@ -395,7 +410,9 @@
     "unreturnable_hint": "此為靈魂綁定物品，意即阿獺鑄造出來時就已經存在，所以無法脫下它。你仍然可以穿上其他道具來覆蓋並隱藏此物品，當覆蓋的裝備卸下時，此物品會再次出現在阿獺上。",
     "voice": "聲音： {{voice}}",
     "wearable_traits_tab": "可穿脫特徵",
-    "zodiac_sign": "星座： {{constellation}}"
+    "zodiac_sign": "星座： {{constellation}}",
+    "total_rarity_score": "稀有度總計： {{score}} (BRS {{brs}} + RRS {{rrs}})",
+    "theme_boost": "主題加成"
   },
   "otto_one": "{{count}} 隻阿獺",
   "otto_other": "{{count}} 隻阿獺",
@@ -464,10 +481,19 @@
       "must_desc": "R3 道具保證！",
       "name": "白銀寶箱"
     },
-    "luk": { "must_desc": "R1 道具保證！" },
-    "dex": { "must_desc": "R2 道具保證！" },
-    "cute": { "must_desc": "R2 道具保證！" },
-    "def": { "must_desc": "R2 道具保證！" }
+    "luk": {
+      "must_desc": "R1 道具保證！"
+    },
+    "dex": {
+      "must_desc": "R2 道具保證！"
+    },
+    "cute": {
+      "must_desc": "R2 道具保證！"
+    },
+    "def": {
+      "must_desc": "R2 道具保證！"
+    },
+    "must_desc": "{{rarity}} 道具保證！"
   },
   "question": {
     "submit_button": "確認"
@@ -673,6 +699,9 @@
     "ottos": "我的阿獺",
     "missions": "我的任務"
   },
+  "themeBoost": {
+    "boostMultiplier": "物品連擊加成 x {{ multiplier }} 🔥"
+  },
   "foundry": {
     "title": "Foundry",
     "dialog": {
@@ -693,5 +722,19 @@
     "forge": {
       "processing": "Forging..."
     }
+  },
+  "constellation": {
+    "1": "牡羊座",
+    "2": "金牛座",
+    "3": "雙子座",
+    "4": "巨蟹座",
+    "5": "獅子座",
+    "6": "處女座",
+    "7": "天秤座",
+    "8": "天蠍座",
+    "9": "射手座",
+    "10": "魔羯座",
+    "11": "水瓶座",
+    "12": "雙魚座"
   }
 }

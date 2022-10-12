@@ -1,12 +1,9 @@
 import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
-import Button from 'components/Button'
 import Bg from './foundry_bg.jpg'
-import Fg1 from './foundry_fg1.png'
-import Fg2 from './foundry_fg2.png'
-import Otto1 from './otto_smith1.png'
-import Otto2 from './otto_smith2.png'
+import Fg from './foundry_fg.png'
+import Otto from './otto_smith.png'
 import Arrow from './arrow.svg'
 
 const StyledFoundryHero = styled.div`
@@ -14,48 +11,56 @@ const StyledFoundryHero = styled.div`
   position: relative;
 `
 
+const FgAnimation = keyframes`
+  0%   { width: 0 }
+  50%  { width: 100% }
+`
+
 const StyledBg = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 520px;
   background: no-repeat center / cover url(${Bg.src});
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    content: '';
+    width: 100%;
+    padding-bottom: 60%;
+    background: no-repeat left top / auto 100% url(${Fg.src});
+    animation: ${FgAnimation} 2000ms steps(1) infinite;
+  }
+
+  &::after {
+    background-position: right top;
+    animation-delay: 1s;
+  }
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     height: 400px;
   }
 `
 
-const Animation = keyframes`
-  0%   {opacity: 0;}
-  50%  {opacity: 1;}
+const OttoAnimation = keyframes`
+  0%   { background-position: 0% top }
+  50%  { background-position: 100% top }
 `
 
-const StyledFg = styled.div<{ src: string; delay: number }>`
-  width: 100%;
-  height: 520px;
-  background: no-repeat center / cover url(${({ src }) => src});
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: ${Animation} 2000ms infinite;
-  animation-delay: ${({ delay }) => delay}ms;
-  animation-timing-function: steps(1);
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    height: 400px;
-  }
-`
-
-const StyledOtto = styled.img<{ delay: number }>`
+const StyledOtto = styled.div`
   width: 382px;
+  height: 414px;
   position: absolute;
   bottom: 0;
   right: 15%;
-  animation: ${Animation} 2000ms infinite;
-  animation-delay: ${({ delay }) => delay}ms;
-  animation-timing-function: steps(1);
+  background: no-repeat left top / auto 100% url(${Otto.src});
+  animation: ${OttoAnimation} 2000ms steps(1) infinite;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 179px;
+    height: 194px;
     right: 5%;
   }
 `
@@ -71,10 +76,6 @@ const StyledDialog = styled.div`
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   padding: 20px;
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    visibility: hidden;
-  }
-
   &:after {
     content: '';
     width: 28px;
@@ -84,6 +85,21 @@ const StyledDialog = styled.div`
     position: absolute;
     top: calc(50% - 9px);
     right: -30px;
+  }
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    width: auto;
+
+    &:after {
+      transform: rotate(90deg);
+      left: calc(50% - 9px);
+      right: unset;
+      bottom: -29px;
+      top: unset;
+    }
   }
 `
 
@@ -96,10 +112,7 @@ export default function FoundryHero() {
   return (
     <StyledFoundryHero>
       <StyledBg />
-      <StyledFg src={Fg1.src} delay={0} />
-      <StyledFg src={Fg2.src} delay={1000} />
-      <StyledOtto src={Otto1.src} delay={0} />
-      <StyledOtto src={Otto2.src} delay={1000} />
+      <StyledOtto />
       <StyledDialog>
         <StyledTitle as="h1">{t('dialog.title')}</StyledTitle>
         <StyledSubtitle as="p">{t('dialog.content')}</StyledSubtitle>

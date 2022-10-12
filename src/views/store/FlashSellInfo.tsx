@@ -91,9 +91,11 @@ export default function FlashSellInfo({
               <StyledItemCell item={item} />
               <StyledItemName>
                 {item.name}
-                <StyledItemHint>{`${type.toUpperCase()}: ${
-                  item.stats.find((s: any) => s.name === type.toUpperCase())?.value || 0
-                }`}</StyledItemHint>
+                {item.stats.find((s: any) => s.name === type.toUpperCase()) && (
+                  <StyledItemHint>{`${type.toUpperCase()}: ${
+                    item.stats.find((s: any) => s.name === type.toUpperCase())?.value || 0
+                  }`}</StyledItemHint>
+                )}
               </StyledItemName>
             </StyledItemContainer>
           ))}

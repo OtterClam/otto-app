@@ -34,11 +34,13 @@ export declare namespace Foundry {
     result: BigNumberish;
     startedAt: BigNumberish;
     endedAt: BigNumberish;
+    fishPrice: BigNumberish;
   };
 
   export type FormulaStructOutput = [
     BigNumber[],
     BigNumber[],
+    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber
@@ -48,17 +50,64 @@ export declare namespace Foundry {
     result: BigNumber;
     startedAt: BigNumber;
     endedAt: BigNumber;
+    fishPrice: BigNumber;
+  };
+
+  export type ReqirementStruct = {
+    items: BigNumberish[];
+    amounts: BigNumberish[];
+    token: string;
+    value: BigNumberish;
+  };
+
+  export type ReqirementStructOutput = [
+    BigNumber[],
+    BigNumber[],
+    string,
+    BigNumber
+  ] & {
+    items: BigNumber[];
+    amounts: BigNumber[];
+    token: string;
+    value: BigNumber;
+  };
+
+  export type ResultStruct = {
+    items: BigNumberish[];
+    probabilities: BigNumberish[];
+    amount: BigNumberish;
+  };
+
+  export type ResultStructOutput = [BigNumber[], BigNumber[], BigNumber] & {
+    items: BigNumber[];
+    probabilities: BigNumber[];
+    amount: BigNumber;
+  };
+
+  export type SignatureStruct = {
+    nonce: string;
+    digest: BytesLike;
+    signed: BytesLike;
+  };
+
+  export type SignatureStructOutput = [string, string, string] & {
+    nonce: string;
+    digest: string;
+    signed: string;
   };
 }
 
 export interface FoundryInterface extends utils.Interface {
   functions: {
     "DEFAULT_ADMIN_ROLE()": FunctionFragment;
+    "FISH()": FunctionFragment;
     "ITEM()": FunctionFragment;
     "MANAGER_ROLE()": FunctionFragment;
-    "addFormula((uint256[],uint256[],uint256,uint256,uint256))": FunctionFragment;
+    "ONE_HUNDRED_PERCENT()": FunctionFragment;
+    "addFormula((uint256[],uint256[],uint256,uint256,uint256,uint256))": FunctionFragment;
     "forge(uint256,uint256)": FunctionFragment;
     "formula(uint256)": FunctionFragment;
+    "fuse((uint256[],uint256[],address,uint256),(uint256[],uint256[],uint256),(string,bytes32,bytes))": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
@@ -66,21 +115,28 @@ export interface FoundryInterface extends utils.Interface {
     "proxiableUUID()": FunctionFragment;
     "renounceRole(bytes32,address)": FunctionFragment;
     "revokeRole(bytes32,address)": FunctionFragment;
-    "setFormula(uint256,(uint256[],uint256[],uint256,uint256,uint256))": FunctionFragment;
+    "setFish(address)": FunctionFragment;
+    "setFormula(uint256,(uint256[],uint256[],uint256,uint256,uint256,uint256))": FunctionFragment;
+    "setSigner(address)": FunctionFragment;
+    "signer()": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "totalFormulas()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
+    "usedSignatures(bytes)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "DEFAULT_ADMIN_ROLE"
+      | "FISH"
       | "ITEM"
       | "MANAGER_ROLE"
+      | "ONE_HUNDRED_PERCENT"
       | "addFormula"
       | "forge"
       | "formula"
+      | "fuse"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
@@ -88,20 +144,29 @@ export interface FoundryInterface extends utils.Interface {
       | "proxiableUUID"
       | "renounceRole"
       | "revokeRole"
+      | "setFish"
       | "setFormula"
+      | "setSigner"
+      | "signer"
       | "supportsInterface"
       | "totalFormulas"
       | "upgradeTo"
       | "upgradeToAndCall"
+      | "usedSignatures"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "DEFAULT_ADMIN_ROLE",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "FISH", values?: undefined): string;
   encodeFunctionData(functionFragment: "ITEM", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "MANAGER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "ONE_HUNDRED_PERCENT",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -115,6 +180,14 @@ export interface FoundryInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "formula",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "fuse",
+    values: [
+      Foundry.ReqirementStruct,
+      Foundry.ResultStruct,
+      Foundry.SignatureStruct
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
@@ -141,10 +214,13 @@ export interface FoundryInterface extends utils.Interface {
     functionFragment: "revokeRole",
     values: [BytesLike, string]
   ): string;
+  encodeFunctionData(functionFragment: "setFish", values: [string]): string;
   encodeFunctionData(
     functionFragment: "setFormula",
     values: [BigNumberish, Foundry.FormulaStruct]
   ): string;
+  encodeFunctionData(functionFragment: "setSigner", values: [string]): string;
+  encodeFunctionData(functionFragment: "signer", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
@@ -158,19 +234,29 @@ export interface FoundryInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     values: [string, BytesLike]
   ): string;
+  encodeFunctionData(
+    functionFragment: "usedSignatures",
+    values: [BytesLike]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "DEFAULT_ADMIN_ROLE",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "FISH", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ITEM", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "MANAGER_ROLE",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "ONE_HUNDRED_PERCENT",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "addFormula", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "forge", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "formula", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "fuse", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
     data: BytesLike
@@ -187,7 +273,10 @@ export interface FoundryInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setFish", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setFormula", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setSigner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "signer", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
@@ -201,16 +290,20 @@ export interface FoundryInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "usedSignatures",
+    data: BytesLike
+  ): Result;
 
   events: {
-    "AddFormula(uint256,uint256[],uint256[],uint256,uint256,uint256)": EventFragment;
+    "AddFormula(uint256,uint256[],uint256[],uint256,uint256,uint256,uint256)": EventFragment;
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
     "RoleGranted(bytes32,address,address)": EventFragment;
     "RoleRevoked(bytes32,address,address)": EventFragment;
-    "SetFormula(uint256,uint256[],uint256[],uint256,uint256,uint256)": EventFragment;
+    "SetFormula(uint256,uint256[],uint256[],uint256,uint256,uint256,uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
@@ -232,9 +325,18 @@ export interface AddFormulaEventObject {
   result: BigNumber;
   startedAt: BigNumber;
   endedAt: BigNumber;
+  fishPrice: BigNumber;
 }
 export type AddFormulaEvent = TypedEvent<
-  [BigNumber, BigNumber[], BigNumber[], BigNumber, BigNumber, BigNumber],
+  [
+    BigNumber,
+    BigNumber[],
+    BigNumber[],
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ],
   AddFormulaEventObject
 >;
 
@@ -312,9 +414,18 @@ export interface SetFormulaEventObject {
   result: BigNumber;
   startedAt: BigNumber;
   endedAt: BigNumber;
+  fishPrice: BigNumber;
 }
 export type SetFormulaEvent = TypedEvent<
-  [BigNumber, BigNumber[], BigNumber[], BigNumber, BigNumber, BigNumber],
+  [
+    BigNumber,
+    BigNumber[],
+    BigNumber[],
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ],
   SetFormulaEventObject
 >;
 
@@ -356,9 +467,13 @@ export interface Foundry extends BaseContract {
   functions: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
+    FISH(overrides?: CallOverrides): Promise<[string]>;
+
     ITEM(overrides?: CallOverrides): Promise<[string]>;
 
     MANAGER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
+    ONE_HUNDRED_PERCENT(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     addFormula(
       formula_: Foundry.FormulaStruct,
@@ -375,6 +490,13 @@ export interface Foundry extends BaseContract {
       id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[Foundry.FormulaStructOutput]>;
+
+    fuse(
+      req: Foundry.ReqirementStruct,
+      res: Foundry.ResultStruct,
+      sig: Foundry.SignatureStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
 
@@ -409,11 +531,23 @@ export interface Foundry extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    setFish(
+      fish_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     setFormula(
       id: BigNumberish,
       formula_: Foundry.FormulaStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    setSigner(
+      signer_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    signer(overrides?: CallOverrides): Promise<[string]>;
 
     supportsInterface(
       interfaceId: BytesLike,
@@ -432,13 +566,22 @@ export interface Foundry extends BaseContract {
       data: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    usedSignatures(
+      arg0: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
   };
 
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
+  FISH(overrides?: CallOverrides): Promise<string>;
+
   ITEM(overrides?: CallOverrides): Promise<string>;
 
   MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  ONE_HUNDRED_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
 
   addFormula(
     formula_: Foundry.FormulaStruct,
@@ -455,6 +598,13 @@ export interface Foundry extends BaseContract {
     id: BigNumberish,
     overrides?: CallOverrides
   ): Promise<Foundry.FormulaStructOutput>;
+
+  fuse(
+    req: Foundry.ReqirementStruct,
+    res: Foundry.ResultStruct,
+    sig: Foundry.SignatureStruct,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
 
@@ -489,9 +639,19 @@ export interface Foundry extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setFish(
+    fish_: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   setFormula(
     id: BigNumberish,
     formula_: Foundry.FormulaStruct,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setSigner(
+    signer_: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -513,12 +673,18 @@ export interface Foundry extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  usedSignatures(arg0: BytesLike, overrides?: CallOverrides): Promise<boolean>;
+
   callStatic: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    FISH(overrides?: CallOverrides): Promise<string>;
 
     ITEM(overrides?: CallOverrides): Promise<string>;
 
     MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    ONE_HUNDRED_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
 
     addFormula(
       formula_: Foundry.FormulaStruct,
@@ -535,6 +701,13 @@ export interface Foundry extends BaseContract {
       id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<Foundry.FormulaStructOutput>;
+
+    fuse(
+      req: Foundry.ReqirementStruct,
+      res: Foundry.ResultStruct,
+      sig: Foundry.SignatureStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
 
@@ -566,11 +739,17 @@ export interface Foundry extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setFish(fish_: string, overrides?: CallOverrides): Promise<void>;
+
     setFormula(
       id: BigNumberish,
       formula_: Foundry.FormulaStruct,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    setSigner(signer_: string, overrides?: CallOverrides): Promise<void>;
+
+    signer(overrides?: CallOverrides): Promise<string>;
 
     supportsInterface(
       interfaceId: BytesLike,
@@ -589,16 +768,22 @@ export interface Foundry extends BaseContract {
       data: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    usedSignatures(
+      arg0: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
   };
 
   filters: {
-    "AddFormula(uint256,uint256[],uint256[],uint256,uint256,uint256)"(
+    "AddFormula(uint256,uint256[],uint256[],uint256,uint256,uint256,uint256)"(
       id?: BigNumberish | null,
       materials?: null,
       values?: null,
       result?: null,
       startedAt?: null,
-      endedAt?: null
+      endedAt?: null,
+      fishPrice?: null
     ): AddFormulaEventFilter;
     AddFormula(
       id?: BigNumberish | null,
@@ -606,7 +791,8 @@ export interface Foundry extends BaseContract {
       values?: null,
       result?: null,
       startedAt?: null,
-      endedAt?: null
+      endedAt?: null,
+      fishPrice?: null
     ): AddFormulaEventFilter;
 
     "AdminChanged(address,address)"(
@@ -659,13 +845,14 @@ export interface Foundry extends BaseContract {
       sender?: string | null
     ): RoleRevokedEventFilter;
 
-    "SetFormula(uint256,uint256[],uint256[],uint256,uint256,uint256)"(
+    "SetFormula(uint256,uint256[],uint256[],uint256,uint256,uint256,uint256)"(
       id?: BigNumberish | null,
       materials?: null,
       values?: null,
       result?: null,
       startedAt?: null,
-      endedAt?: null
+      endedAt?: null,
+      fishPrice?: null
     ): SetFormulaEventFilter;
     SetFormula(
       id?: BigNumberish | null,
@@ -673,7 +860,8 @@ export interface Foundry extends BaseContract {
       values?: null,
       result?: null,
       startedAt?: null,
-      endedAt?: null
+      endedAt?: null,
+      fishPrice?: null
     ): SetFormulaEventFilter;
 
     "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
@@ -683,9 +871,13 @@ export interface Foundry extends BaseContract {
   estimateGas: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
+    FISH(overrides?: CallOverrides): Promise<BigNumber>;
+
     ITEM(overrides?: CallOverrides): Promise<BigNumber>;
 
     MANAGER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    ONE_HUNDRED_PERCENT(overrides?: CallOverrides): Promise<BigNumber>;
 
     addFormula(
       formula_: Foundry.FormulaStruct,
@@ -699,6 +891,13 @@ export interface Foundry extends BaseContract {
     ): Promise<BigNumber>;
 
     formula(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    fuse(
+      req: Foundry.ReqirementStruct,
+      res: Foundry.ResultStruct,
+      sig: Foundry.SignatureStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     getRoleAdmin(
       role: BytesLike,
@@ -736,11 +935,23 @@ export interface Foundry extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    setFish(
+      fish_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     setFormula(
       id: BigNumberish,
       formula_: Foundry.FormulaStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    setSigner(
+      signer_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    signer(overrides?: CallOverrides): Promise<BigNumber>;
 
     supportsInterface(
       interfaceId: BytesLike,
@@ -759,6 +970,11 @@ export interface Foundry extends BaseContract {
       data: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    usedSignatures(
+      arg0: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -766,9 +982,15 @@ export interface Foundry extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    FISH(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     ITEM(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     MANAGER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    ONE_HUNDRED_PERCENT(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     addFormula(
       formula_: Foundry.FormulaStruct,
@@ -784,6 +1006,13 @@ export interface Foundry extends BaseContract {
     formula(
       id: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    fuse(
+      req: Foundry.ReqirementStruct,
+      res: Foundry.ResultStruct,
+      sig: Foundry.SignatureStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     getRoleAdmin(
@@ -822,11 +1051,23 @@ export interface Foundry extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    setFish(
+      fish_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     setFormula(
       id: BigNumberish,
       formula_: Foundry.FormulaStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    setSigner(
+      signer_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    signer(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     supportsInterface(
       interfaceId: BytesLike,
@@ -844,6 +1085,11 @@ export interface Foundry extends BaseContract {
       newImplementation: string,
       data: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    usedSignatures(
+      arg0: BytesLike,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

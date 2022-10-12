@@ -1,7 +1,11 @@
+import { useQuery } from '@apollo/client'
+import { useEthers } from '@usedapp/core'
 import { useApi } from 'contexts/Api'
+import { LIST_MY_OTTOS } from 'graphs/otto'
+import { ListMyOttos, ListMyOttosVariables } from 'graphs/__generated__/ListMyOttos'
 import Otto, { RawOtto } from 'models/Otto'
 import { useTranslation } from 'next-i18next'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 type Falsy = false | 0 | '' | null | undefined
 
@@ -59,4 +63,30 @@ export function useOttos(ids: string[] | Falsy, { details, epoch }: { details: b
   }, [ids, i18n.resolvedLanguage, fetchCount])
   const refetch = () => setFetchCount(fetchCount + 1)
   return { loading, ottos, error, refetch }
+}
+
+export function useMyOttos(epoch: number) {
+  const { account } = useEthers()
+  const { data, loading, refetch } = useQuery<ListMyOttos, ListMyOttosVariables>(LIST_MY_OTTOS, {
+    variables: { owner: account || '' },
+    skip: !account,
+  })
+  const {
+    ottos,
+    loading: loadingMeta,
+    refetch: refetchMeta,
+  } = useOttos(
+    data?.ottos.map(o => o.tokenId),
+    { details: true, epoch }
+  )
+  const reload = useCallback(() => refetch().then(refetchMeta), [refetch, refetchMeta])
+  const myOttos = useMemo(
+    () => ({
+      loading: loading || loadingMeta,
+      ottos,
+      reload,
+    }),
+    [loading, loadingMeta, ottos, reload]
+  )
+  return myOttos
 }

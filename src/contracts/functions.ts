@@ -1,12 +1,12 @@
 import { TransactionState, TransactionStatus, useCalls, useContractFunction, useEthers } from '@usedapp/core'
-import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
 import { useApi } from 'contexts/Api'
+import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
+import { Api } from 'libs/api'
 import Item, { ItemAction } from 'models/Item'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Api } from 'libs/api'
+import { useCallback, useEffect, useState } from 'react'
 import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
 import {
   useAdventureContract,
@@ -22,7 +22,6 @@ import {
   usePortalCreatorContract,
   useStoreContract,
 } from './contracts'
-import { useIsApprovedForAll } from './views'
 
 export const useApprove = (tokenAddress?: string) => {
   const { CLAM } = useContractAddresses()
@@ -169,7 +168,7 @@ export const useBuyProduct = (claim: boolean) => {
         await (await clam.approve(OTTOPIA_STORE, constants.MaxUint256)).wait()
       }
       send(account || '', id, '1', {
-        gasLimit: 1000000,
+        gasLimit: 2500000,
       })
     }
   }
@@ -471,21 +470,19 @@ export const useForge = () => {
   const foundry = useFoundry()
   const { account } = useEthers()
   const api = useApi()
-  const { state, send, resetState } = useContractFunction(foundry, 'forge', {})
+  const { state, send, resetState } = useContractFunction(foundry, 'fuse', {})
   const [forgeState, setForgeState] = useState<OttoBuyTransactionState>({
     state: 'None',
     status: state,
   })
-  const forge = async (formulaId: number, amount: number) => {
-    setForgeState({
-      state: 'PendingSignature',
-      status: state,
-    })
-    send(formulaId, amount)
-  }
-  const resetForge = () => {
-    resetState()
-    setForgeState({ state: 'None', status: state })
+  const forge = async (formulaId: number) => {
+    if (account) {
+      setForgeState({
+        state: 'PendingSignature',
+        status: state,
+      })
+      api.getForgeCalldata(formulaId, account).then(calldata => (send as any)(...calldata))
+    }
   }
   useEffect(() => {
     if (state.status === 'Success') {
@@ -500,7 +497,7 @@ export const useForge = () => {
       setForgeState({ state: state.status, status: state })
     }
   }, [account, api, state])
-  return { forgeState, forge, resetForge }
+  return { forgeState, forge, resetForge: resetState }
 }
 
 function parseReceivedItems({
@@ -696,4 +693,51 @@ export const useUseAttributePoints = () => {
   const otto = useOttoContract()
   const { send, state, resetState } = useContractFunction(otto, 'useAttributePoints')
   return { useAttributePointsState: state, useAttributePoints: send, resetUseAttributePoints: resetState }
+}
+
+export const useBuyFish = () => {
+  const store = useStoreContract()
+  const { state, send, resetState } = useContractFunction(store, 'buyFish', {})
+
+  const [buyFishState, setBuyFishState] = useState<OttoTransactionState>({
+    state: 'None',
+    status: state,
+  })
+
+  const buyFish = async (clamAmount: BigNumber) => {
+    setBuyFishState({
+      state: 'PendingSignature',
+      status: state,
+    })
+    send(clamAmount)
+  }
+
+  const resetBuyFish = () => {
+    resetState()
+    setBuyFishState({ state: 'None', status: state })
+  }
+
+  useEffect(() => {
+    if (state.status === 'Success') {
+      setBuyFishState({
+        state: 'Success',
+        status: state,
+      })
+    } else {
+      setBuyFishState({ state: state.status, status: state })
+    }
+  }, [state])
+
+  return { buyFishState, buyFish, resetBuyFish }
+}
+
+export const useTransferItem = () => {
+  const { account } = useEthers()
+  const item = useItemContract()
+  const { state, send, resetState } = useContractFunction(item, 'safeTransferFrom')
+  const transfer = useCallback(
+    (itemId: string, to: string, amount: number) => send(account || '', to, itemId, amount, []),
+    [account, send]
+  )
+  return { transferState: state, transfer, resetTransfer: resetState }
 }

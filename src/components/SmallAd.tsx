@@ -9,6 +9,11 @@ const StyledContainer = styled.a`
   border: 2px ${({ theme }) => theme.colors.white} solid;
 `
 
+const newTabProps = {
+  target: '_blank',
+  rel: 'noreferrer',
+}
+
 export default function SmallAd({ className }: { className?: string }) {
   const [ad, setAd] = useState<Banner>()
 
@@ -26,7 +31,7 @@ export default function SmallAd({ className }: { className?: string }) {
 
   return (
     <Link href={ad.link} passHref>
-      <StyledContainer className={className}>
+      <StyledContainer className={className} {...(ad.openNewTab ? newTabProps : {})}>
         {ad && <Image unoptimized src={ad.image} width={200} height={100} />}
       </StyledContainer>
     </Link>

@@ -12,4 +12,5 @@ export default interface Product {
   image: string
   factory: string
   mustDesc?: string
+  guarantee_rarity?: string
 }

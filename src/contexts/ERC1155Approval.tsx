@@ -1,3 +1,4 @@
+import { useEthers } from '@usedapp/core'
 import { useERC1155 } from 'contracts/contracts'
 import { useIsApprovedForAll } from 'contracts/views'
 import { ERC1155 } from 'contracts/__generated__/ERC1155'
@@ -6,6 +7,7 @@ import { createContext, PropsWithChildren, useContext, useMemo } from 'react'
 const ERC1155ApprovalContext = createContext<{
   erc1155: ERC1155
   isApprovedForAll: boolean
+  updateApprovalStatus: () => void
   operator: string
 } | null>(null)
 
@@ -15,15 +17,17 @@ export const ERC1155ApprovalProvider = ({
   children,
 }: PropsWithChildren<{ contract: string; operator: string }>) => {
   const erc1155 = useERC1155(contract)
-  const { isApprovedForAll } = useIsApprovedForAll(contract, operator)
+  const { account } = useEthers()
+  const { isApprovedForAll, updateApprovalStatus } = useIsApprovedForAll(contract, account ?? '', operator)
 
   const value = useMemo(
     () => ({
       erc1155,
       isApprovedForAll,
+      updateApprovalStatus,
       operator,
     }),
-    [erc1155, isApprovedForAll, operator]
+    [erc1155, isApprovedForAll, updateApprovalStatus, operator]
   )
 
   return <ERC1155ApprovalContext.Provider value={value}>{children}</ERC1155ApprovalContext.Provider>

@@ -86,7 +86,10 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
 
     try {
       setState(State.Processing)
-      const tx = await connectContractToSigner(ottoHellDiceRoller, {}, library).roll(otto.id, BigNumber.from('1'))
+      const tx = await connectContractToSigner(ottoHellDiceRoller, {}, library.getSigner()).roll(
+        otto.id,
+        BigNumber.from('1')
+      )
       await tx.wait()
       setDice(await api.rollTheDice(otto.id, tx.hash))
       setState(State.FirstResult)
@@ -100,7 +103,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
         dispatch(setError(err as any))
       }
     }
-  }, [otto, account, product, library])
+  }, [api, otto, account, product, library])
 
   const answerQuestion = useCallback(
     (index: number, answer: number) => {
@@ -112,7 +115,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
         .then(setDice)
         .catch(err => dispatch(setError(err)))
     },
-    [dice, otto]
+    [api, dice, otto]
   )
 
   const nextEvent = useCallback(() => {

@@ -2,13 +2,16 @@ import { BigNumber, BigNumberish, ethers } from 'ethers'
 import { trim } from 'helpers/trim'
 
 export const formatClamEthers = (value: BigNumber, decimal = 4) => trim(ethers.utils.formatUnits(value, 9), decimal)
+
 export const formatClamString = (number: string, appendClam = false) =>
   `${Intl.NumberFormat('en-US').format(Math.round(parseFloat(number)))} ${appendClam ? ' CLAM' : ''}`
+
 export const formatClamDecimals = (number: string, decimals = 1, appendClam = false) =>
   `${Intl.NumberFormat('en-US', {
     maximumFractionDigits: decimals,
     minimumFractionDigits: decimals,
   }).format(parseFloat(number))} ${appendClam ? ' CLAM' : ''}`
+
 export const formatClamThousandsK = (number: string) =>
   `${Intl.NumberFormat('en-US').format(Math.round(parseFloat(number) / 1000))}k`
 

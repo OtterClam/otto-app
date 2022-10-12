@@ -31,16 +31,22 @@ export function getOpenSeaLink(tokenId: string) {
   return `${OPENSEA_NFT_LINK}${tokenId}`
 }
 
+export const OPENSEA_ITEM_LINK = 'https://opensea.io/assets/matic/0xBd29ee9a2cE0C794Eaf09BEdCa9387F4566377D5/'
+
+export const getOpenSeaItemLink = (itemId: string) => `${OPENSEA_ITEM_LINK}${itemId}`
+
 export const ottoClick = IS_SERVER ? { play: noop, load: noop } : new Audio('https://ottopia.app/ottoclick.mp3')
 ottoClick.load()
 
-export const TOTAL_RARITY_REWARD = 16000
+export const TOTAL_RARITY_REWARD = 10000
 export const ROUND_RARITY_REWARD_BEFORE_3 = 2500
 export const ROUND_RARITY_REWARD_AFTER_3 = 3000
+export const ROUND_RARITY_REWARD_S2 = 2500
 export const RARITY_S1_END = 1660867200000
 
 export enum Token {
   Clam = 'CLAM',
+  Fish = 'FISH',
 }
 
 export const reserveOttoAmount = (chainId?: number) => (chainId === 137 ? 250 : 0)

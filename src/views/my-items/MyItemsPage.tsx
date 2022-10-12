@@ -165,7 +165,7 @@ const Sections: Record<SectionKey, Section> = {
   },
 }
 
-const SortedByOptions = ['time_received', 'rarity', 'str', 'dex', 'luck', 'cute', 'def', 'int', 'con']
+const SortedByOptions = ['time_received', 'rarity', 'str', 'dex', 'luck', 'cute', 'def', 'int', 'con', 'theme_boost']
 
 const SortOrderOptions = ['desc', 'asc']
 
@@ -201,6 +201,10 @@ export default function MyItemsPage() {
             result = result && i.equippable_gender === OttoGender.Male
           } else if (filter.key === 'lottie_specific') {
             result = result && i.equippable_gender === OttoGender.Female
+          } else if (filter.key === 'otto_can_equip') {
+            result = result && (i.equippable_gender === 'Male' || i.equippable_gender === 'Both')
+          } else if (filter.key === 'lottie_can_equip') {
+            result = result && (i.equippable_gender === 'Female' || i.equippable_gender === 'Both')
           }
           return result
         })
@@ -232,6 +236,9 @@ export default function MyItemsPage() {
           }
           if (sortedBy.key === 'con') {
             return (b.con - a.con) * multiplier
+          }
+          if (sortedBy.key === 'theme_boost') {
+            return (b.theme_boost - a.theme_boost) * multiplier
           }
           return 0
         }),
@@ -300,7 +307,7 @@ export default function MyItemsPage() {
               <StyledItemList>
                 {displayItems.map((item, index) => (
                   <ItemCell
-                    key={item.id + index}
+                    key={`${item.id}_${index}`}
                     item={item}
                     selected={item === selectedItem}
                     onClick={() => setSelectedItem(item)}

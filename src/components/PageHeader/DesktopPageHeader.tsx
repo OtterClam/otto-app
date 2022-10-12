@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 import useIsAtTop from 'hooks/useIsAtTop'
 import { useRef, useState } from 'react'
 import { useEthers } from '@usedapp/core'
-import { connectWallet, showWalletPopup } from 'store/uiSlice'
+import { connectWallet, showFishWalletPopup, showWalletPopup } from 'store/uiSlice'
 import { useDispatch } from 'react-redux'
 import Logo from './Logo'
 import Wallet from './Wallet'
@@ -11,6 +11,7 @@ import Title from './Title'
 import { PageHeaderProps } from './type'
 import { ClamBalance, FishBalance } from './Balance'
 import MenuButton from './MenuButton'
+import FishWalletPopup from './FishWalletPopup'
 
 const WalletPopup = dynamic(() => import('./WalletPopup'), { ssr: false })
 
@@ -36,7 +37,8 @@ const StyledInnerContainer = styled.div`
 `
 
 export default function PageHeader({ title }: PageHeaderProps) {
-  const ref = useRef<HTMLDivElement>(null)
+  const clamRef = useRef<HTMLDivElement>(null)
+  const fishRef = useRef<HTMLDivElement>(null)
   const { account } = useEthers()
   const dispatch = useDispatch()
 
@@ -45,14 +47,17 @@ export default function PageHeader({ title }: PageHeaderProps) {
       <StyledInnerContainer>
         <Logo />
         <Title>{title}</Title>
-        <div ref={ref}>
+        <div ref={clamRef}>
           <ClamBalance onClick={() => dispatch(account ? showWalletPopup() : connectWallet())} />
         </div>
-        <FishBalance />
+        <div ref={fishRef}>
+          <FishBalance onClick={() => dispatch(account ? showFishWalletPopup() : connectWallet())} />
+        </div>
         <Wallet />
         <MenuButton />
       </StyledInnerContainer>
-      <WalletPopup alignRef={ref} />
+      <WalletPopup alignRef={clamRef} />
+      <FishWalletPopup alignRef={fishRef} />
     </StyledContainer>
   )
 }
