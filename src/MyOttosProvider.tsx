@@ -7,6 +7,7 @@ import { createContext, PropsWithChildren, useCallback, useContext, useEffect, u
 interface MyOttos {
   loading: boolean
   ottos: Otto[]
+  idToOtto: { [id: string]: Otto }
   reload: () => Promise<void>
   updateOtto: (otto: Otto) => void
 }
@@ -14,6 +15,7 @@ interface MyOttos {
 export const MyOttosContext = createContext<MyOttos>({
   loading: true,
   ottos: [],
+  idToOtto: {},
   reload: () => {
     return Promise.resolve()
   },
@@ -26,15 +28,12 @@ export function useMyOtto(id?: string) {
 }
 
 export function useMyOttos() {
-  const { loading, ottos, reload, updateOtto } = useContext(MyOttosContext)
-  return { loading, ottos, reload, updateOtto }
+  return useContext(MyOttosContext)
 }
 
 export function useIsMyOttos(ottoTokenId?: string): boolean {
-  const { ottos } = useMyOttos()
-  return useMemo(() => {
-    return Boolean(ottos.find(otto => otto.id === ottoTokenId))
-  }, [ottos, ottoTokenId])
+  const { idToOtto } = useMyOttos()
+  return Boolean(idToOtto[ottoTokenId ?? ''])
 }
 
 // this component must to be wrapped by AdventureOttosProvider
@@ -64,6 +63,7 @@ export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
     () => ({
       loading,
       ottos,
+      idToOtto: ottos.reduce((map, otto) => Object.assign(map, { [otto.id]: otto }), {} as { [id: string]: Otto }),
       reload: refetch,
       updateOtto,
     }),

@@ -418,7 +418,9 @@
     "wearable_traits_tab": "Wearable Traits",
     "zodiac_sign": "Zodiac sign: {{constellation}}",
     "total_rarity_score": "Total Rarity Score: {{score}} (BRS {{brs}} + RRS {{rrs}})",
-    "theme_boost": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #3B4BD8\">{{ labels }}</span> will receive extra BRS boosts."
+    "theme_boost": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #3B4BD8\">{{ labels }}</span> will receive extra BRS boosts.",
+    "attribute_points": "Available Attribute Points: {{attributePoints}}",
+    "attribute_points_button": "Add Now >"
   },
   "otto_one": "{{count}} Otto",
   "otto_other": "{{count}} Ottos",

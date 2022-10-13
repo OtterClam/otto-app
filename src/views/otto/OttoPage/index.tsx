@@ -19,11 +19,14 @@ import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components/macro'
-import { Caption, ContentLarge, ContentSmall, Display3, Headline, Note } from 'styles/typography'
+import { Caption, ContentLarge, ContentMedium, ContentSmall, Display3, Headline, Note } from 'styles/typography'
+import { AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
+import { useIsMyOttos } from 'MyOttosProvider'
 import PlayIcon from './icons/play-voice.svg'
 import Theme from './icons/theme.png'
 import TheOtter from './icons/the_otter.png'
 import OttoTraitDetails from './OttoTraitDetails'
+import attributePointsImage from './icons/attribute-points.png'
 
 const DicePopup = dynamic(() => import('components/DicePopup'), {
   ssr: false,
@@ -158,6 +161,21 @@ const StyledAttr = styled.div`
   justify-content: space-between;
 `
 
+const StyledAttributePoints = styled(ContentSmall).attrs({ as: 'div' })`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &::before {
+    content: '';
+    display: block;
+    max-width: 36px;
+    min-width: 36px;
+    height: 36px;
+    background: center / cover url(${attributePointsImage.src});
+  }
+`
+
 const StyledStatsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -261,10 +279,12 @@ export default function OttoPage() {
   const {
     epoch: { themes },
   } = useLeaderboardEpoch()
+  const { dispatch } = useAdventureUIState()
   const { chainId } = useEthers()
   const router = useRouter()
   const ottoId = router.query.ottoId as string
   const { otto } = useOtto(ottoId, true)
+  const isMyOtto = useIsMyOttos(ottoId)
   const infos = useMemo(
     () =>
       otto
@@ -293,6 +313,10 @@ export default function OttoPage() {
         : null,
     [otto, t]
   )
+
+  const openAttributePointsPopup = () => {
+    dispatch({ type: AdventureUIActionType.DistributeAttributePoints, data: { ottoId } })
+  }
 
   return (
     <>
@@ -386,6 +410,20 @@ export default function OttoPage() {
                 </StyledAttr>
               ))}
             </StyledAttrs>
+
+            {isMyOtto && (
+              <StyledAttributePoints>
+                {t('otto.attribute_points', { attributePoints: otto?.attributePoints ?? 0 })}
+                <Button
+                  onClick={openAttributePointsPopup}
+                  padding="0 12px"
+                  Typography={ContentMedium}
+                  disabled={!otto?.attributePoints}
+                >
+                  {t('otto.attribute_points_button')}
+                </Button>
+              </StyledAttributePoints>
+            )}
 
             {otto && (
               <>

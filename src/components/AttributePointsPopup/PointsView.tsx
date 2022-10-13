@@ -75,7 +75,7 @@ export default function PointsView({ onSuccess, onRequestClose }: PointsViewProp
   } = useAdventureUIState()
   const { useAttributePoints: applyAttributePoints, useAttributePointsState } = useUseAttributePoints()
   const ottoId = attributePoints?.ottoId
-  const availablePoints = 10 // useAttributePoints(ottoId)
+  const availablePoints = useAttributePoints(ottoId)
 
   const [points, setPoints] = useState<{ [k: string]: number }>({
     str: 0,

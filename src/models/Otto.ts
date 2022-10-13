@@ -159,6 +159,8 @@ export default class Otto {
 
   public readonly themeBoostMultiplier: number = 1
 
+  public readonly attributePoints: number = 0
+
   constructor(raw: RawOtto) {
     this.raw = raw
     this.voice = new Audio(this.raw.animation_url)
@@ -214,6 +216,8 @@ export default class Otto {
         this.themeBoost = Number(value ?? '0')
       } else if (trait_type === 'Theme Boost Multiplier') {
         this.themeBoostMultiplier = Number(value ?? '1')
+      } else if (trait_type === 'Attribute Points') {
+        this.attributePoints = Number(value ?? '0')
       }
     }
 
