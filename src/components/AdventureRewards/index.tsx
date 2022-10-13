@@ -6,6 +6,7 @@ import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, Note } from 'styles/typography'
 import tcpImage from 'assets/adventure/reward/tcp.png'
+import apImage from 'assets/adventure/reward/ap.png'
 import expImage from 'assets/adventure/reward/exp.png'
 import itemsImage from 'assets/adventure/reward/items.png'
 import AdventureRibbonText from 'components/AdventureRibbonText'
@@ -15,8 +16,8 @@ import useAdventurePotion from 'hooks/useAdventurePotion'
 import { AdventurePotion } from 'constant'
 import noop from 'lodash/noop'
 import { useCallback, useEffect, useState } from 'react'
-import expPotionIcon from '../../assets/potions/exp.png'
-import strPotionIcon from '../../assets/potions/str.png'
+import expPotionIcon from 'assets/potions/exp.png'
+import strPotionIcon from 'assets/potions/str.png'
 
 const potionIcons: { [k: string]: any } = {
   [AdventurePotion.Exp]: expPotionIcon,
@@ -228,7 +229,7 @@ export default function AdventureRewards({ canUsePotions, onUsePotion = noop }: 
 
             <StyledReward>
               <StyledRewardIcon icon={itemsImage.src} />
-              <StyledRewardValue>{itemReward.join('~')} items</StyledRewardValue>
+              <StyledRewardValue>{itemReward.join('~')} Items</StyledRewardValue>
               {canUsePotions && (
                 <PotionButton
                   potion={AdventurePotion.Str}
@@ -241,7 +242,12 @@ export default function AdventureRewards({ canUsePotions, onUsePotion = noop }: 
 
             <StyledReward>
               <StyledRewardIcon icon={tcpImage.src} />
-              <StyledRewardValue>+{location.successRewards.tcp?.fixed ?? 0} tcp</StyledRewardValue>
+              <StyledRewardValue>+{location.successRewards.tcp?.fixed ?? 0} TCP</StyledRewardValue>
+            </StyledReward>
+
+            <StyledReward>
+              <StyledRewardIcon icon={apImage.src} />
+              <StyledRewardValue>+{location.successRewards.ap?.fixed ?? 0} AP</StyledRewardValue>
             </StyledReward>
           </StyledSection>
         </>
