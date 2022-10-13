@@ -7,7 +7,7 @@ import { Body } from 'layouts/GameLayout'
 import { useTranslation } from 'next-i18next'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
-import AdventureMap from './AdventureMap'
+import AdventureMap from '../../components/AdventureMap'
 import OttoList from './OttoList'
 
 const StyledContainer = styled.div`

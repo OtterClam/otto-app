@@ -3,13 +3,15 @@ import Fullscreen from 'components/Fullscreen'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { useOtto } from 'contexts/Otto'
 import { AdventurePopupStep, AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import usePrevious from 'hooks/usePrevious'
 import { LocationInfoStep } from './LocationInfoStep'
 import PreviewOttoStep from './PreviewOttoStep'
 import ReadyToGoStep from './ReadyToGoStep'
 import ExploringStep from './ExploringStep'
 import ResultStep from './ResultStep'
 import RestingStep from './RestingStep'
+import MapStep from './MapStep'
 
 const StyledStepContainer = styled.div`
   &.left-enter {
@@ -57,9 +59,9 @@ const StyledStepContainer = styled.div`
   }
 `
 
-const StyledFullscreen = styled(Fullscreen)`
+const StyledFullscreen = styled(Fullscreen)<{ maxWidth: number }>`
   border-radius: 10px !important;
-  max-width: 800px;
+  max-width: ${({ maxWidth }) => maxWidth}px !important;
   border-width: 2px !important;
   border-color: ${({ theme }) => theme.colors.crownYellow} !important;
   background-color: ${({ theme }) => theme.colors.otterBlack} !important;
@@ -75,63 +77,76 @@ const StyledFullscreen = styled(Fullscreen)`
   }
 `
 
+const stepOrder = [
+  AdventurePopupStep.Map,
+  AdventurePopupStep.LocationInfo,
+  AdventurePopupStep.PreviewOtto,
+  AdventurePopupStep.ReadyToGo,
+  AdventurePopupStep.Exploring,
+  AdventurePopupStep.Resting,
+  AdventurePopupStep.Result,
+]
+
+const Components = {
+  [AdventurePopupStep.Map]: MapStep,
+  [AdventurePopupStep.LocationInfo]: LocationInfoStep,
+  [AdventurePopupStep.PreviewOtto]: PreviewOttoStep,
+  [AdventurePopupStep.ReadyToGo]: ReadyToGoStep,
+  [AdventurePopupStep.Exploring]: ExploringStep,
+  [AdventurePopupStep.Resting]: RestingStep,
+  [AdventurePopupStep.Result]: ResultStep,
+}
+
 export default function AdventurePopup() {
   const { state: adventureUIState, dispatch } = useAdventureUIState()
+  const prevStep = usePrevious(adventureUIState.popupStep)
   const { otto } = useOtto()
+  const maxWidth = adventureUIState.popupStep === AdventurePopupStep.Map ? 600 : 880
 
   const closePopup = useCallback(() => {
     dispatch({ type: AdventureUIActionType.ClosePopup })
   }, [dispatch])
 
+  const effects = useMemo(() => {
+    const step = adventureUIState.popupStep
+    const prevStepIndex = prevStep ? stepOrder.indexOf(prevStep) : -1
+    const stepIndex = stepOrder.indexOf(step)
+
+    return stepOrder.reduce((effects, step, index) => {
+      if (prevStepIndex === -1) {
+        effects[step] = 'right'
+        return effects
+      }
+      if (prevStepIndex > stepIndex) {
+        effects[step] = index <= stepIndex ? 'left' : 'right'
+        return effects
+      }
+      effects[step] = index <= stepIndex ? 'right' : 'left'
+      return effects
+    }, {} as { [k: string]: string })
+  }, [adventureUIState.popupStep])
+
   return (
     <StyledFullscreen
+      maxWidth={maxWidth}
       bodyClassName="adventurePopupBody"
       show={adventureUIState.popupOpened}
       onRequestClose={closePopup}
     >
       <TransitionGroup>
-        {adventureUIState.popupStep === AdventurePopupStep.LocationInfo && (
-          <CSSTransition key={AdventurePopupStep.LocationInfo} timeout={200} classNames="left">
-            <StyledStepContainer>
-              <LocationInfoStep />
-            </StyledStepContainer>
-          </CSSTransition>
-        )}
-        {adventureUIState.popupStep === AdventurePopupStep.PreviewOtto && (
-          <CSSTransition key={AdventurePopupStep.PreviewOtto} timeout={200} classNames="right">
-            <StyledStepContainer>
-              <PreviewOttoStep />
-            </StyledStepContainer>
-          </CSSTransition>
-        )}
-        {adventureUIState.popupStep === AdventurePopupStep.ReadyToGo && otto && (
-          <CSSTransition key={AdventurePopupStep.ReadyToGo} timeout={200} classNames="right">
-            <StyledStepContainer>
-              <ReadyToGoStep />
-            </StyledStepContainer>
-          </CSSTransition>
-        )}
-        {adventureUIState.popupStep === AdventurePopupStep.Exploring && otto && (
-          <CSSTransition key={AdventurePopupStep.Exploring} timeout={200} classNames="right">
-            <StyledStepContainer>
-              <ExploringStep />
-            </StyledStepContainer>
-          </CSSTransition>
-        )}
-        {adventureUIState.popupStep === AdventurePopupStep.Result && otto && (
-          <CSSTransition key={AdventurePopupStep.Exploring} timeout={200} classNames="right">
-            <StyledStepContainer>
-              <ResultStep />
-            </StyledStepContainer>
-          </CSSTransition>
-        )}
-        {adventureUIState.popupStep === AdventurePopupStep.Resting && (
-          <CSSTransition key={AdventurePopupStep.Exploring} timeout={200} classNames="right">
-            <StyledStepContainer>
-              <RestingStep />
-            </StyledStepContainer>
-          </CSSTransition>
-        )}
+        {stepOrder.map(step => {
+          if (step !== adventureUIState.popupStep) {
+            return
+          }
+          const Step = Components[step]
+          return (
+            <CSSTransition key={step} timeout={200} classNames={effects[step]}>
+              <StyledStepContainer>
+                <Step />
+              </StyledStepContainer>
+            </CSSTransition>
+          )
+        })}
       </TransitionGroup>
     </StyledFullscreen>
   )

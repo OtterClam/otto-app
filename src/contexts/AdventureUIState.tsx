@@ -16,6 +16,7 @@ export enum AdventureUIActionType {
 }
 
 export enum AdventurePopupStep {
+  Map,
   LocationInfo,
   PreviewOtto,
   ReadyToGo,
@@ -28,7 +29,7 @@ export type AdventureUIAction =
   | {
       type: AdventureUIActionType.OpenPopup
       data: {
-        locationId: number
+        locationId?: number
         popupStep: AdventurePopupStep
       }
     }
@@ -173,7 +174,7 @@ export const useGoToAdventureResultStep = () => {
 export const useOpenAdventurePopup = () => {
   const { dispatch } = useAdventureUIState()
   return useCallback(
-    (locationId: number, step: AdventurePopupStep) =>
+    (locationId: number | undefined, step: AdventurePopupStep) =>
       dispatch({ type: AdventureUIActionType.OpenPopup, data: { locationId, popupStep: step } }),
     [dispatch]
   )

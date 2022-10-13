@@ -54,22 +54,29 @@ const StyledImageContainer = styled.div`
   position: relative;
 `
 
-export default function AdventureMap() {
+export interface AdventureMapProps {
+  hideFooter?: boolean
+  className?: string
+}
+
+export default function AdventureMap({ hideFooter, className }: AdventureMapProps) {
   const { t } = useTranslation('', { keyPrefix: 'adventure' })
   const { locations } = useAdventureLocations()
 
   return (
-    <StyledContainer>
+    <StyledContainer className={className}>
       <StyledImageContainer>
         <CroppedImage src={mapImage} layout="responsive" />
         {locations.map(location => (
           <AdventureLocation key={location.id} id={location.id} />
         ))}
       </StyledImageContainer>
-      <StyledFooter>
-        <StyledTreasureChestLevel />
-        <StyledContinue>{t('continue')}</StyledContinue>
-      </StyledFooter>
+      {!hideFooter && (
+        <StyledFooter>
+          <StyledTreasureChestLevel />
+          <StyledContinue>{t('continue')}</StyledContinue>
+        </StyledFooter>
+      )}
     </StyledContainer>
   )
 }

@@ -74,17 +74,30 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
   const { setOtto } = useOtto()
   const openPopup = useOpenAdventurePopup()
   const goToAdventureResultStep = useGoToAdventureResultStep()
+
   const check = () => {
     if (location) {
       setOtto(otto)
       openPopup(location.id, AdventurePopupStep.Exploring)
     }
   }
+
+  const go = () => {
+    setOtto(otto)
+    if (otto.latestAdventurePass) {
+      openPopup(otto.latestAdventurePass.locationId, AdventurePopupStep.LocationInfo)
+    } else {
+      openPopup(undefined, AdventurePopupStep.Map)
+    }
+  }
+
   const openRestingPopup = () => {
     setOtto(otto)
     openPopup(0, AdventurePopupStep.Resting)
   }
+
   const [, setTick] = useState(0)
+
   useTimer(
     () => {
       // reload every 1 seconds
@@ -117,6 +130,12 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
         {otto.adventureStatus === AdventureOttoStatus.Finished && (
           <Button onClick={check} Typography={ContentMedium} primaryColor="white" padding="3px 10px">
             {t('checkOtto')}
+          </Button>
+        )}
+
+        {otto.adventureStatus === AdventureOttoStatus.Ready && (
+          <Button onClick={go} Typography={ContentMedium} primaryColor="white" padding="3px 10px">
+            {t('go')}
           </Button>
         )}
 
