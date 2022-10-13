@@ -136,9 +136,9 @@ export default class Otto {
 
   public readonly diceCount?: number
 
-  public restingUntil?: Date | undefined
+  public restingUntil?: Date
 
-  public latestAdventurePass?: AdventurePass | undefined
+  public latestAdventurePass?: AdventurePass
 
   public readonly exp: number = 0
 
@@ -148,7 +148,7 @@ export default class Otto {
 
   public readonly themeBoostMultiplier: number = 1
 
-  public readonly attributePoints: number = 0
+  public attributePoints = 0
 
   constructor(raw: RawOtto) {
     this.raw = raw
@@ -322,6 +322,16 @@ export default class Otto {
     this.restingUntil = result.restingUntil
     this.latestAdventurePass.finishedAt = result.pass.finishedAt
     this.latestAdventurePass.finishedTx = result.pass.finishedTx
+    if (result.events.level_up) {
+      const {
+        to: { level, expToNextLevel },
+        got,
+      } = result.events.level_up
+      this.restingUntil = new Date()
+      this.raw.level = level
+      this.raw.next_level_exp = expToNextLevel
+      this.attributePoints = got.attrs_points
+    }
   }
 
   toJSON() {
