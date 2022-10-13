@@ -180,7 +180,7 @@ export default function OnGoingView({ otto, loading, onFinish }: Props) {
                 width="100%"
                 Typography={ContentLarge}
                 padding="6px 20px 0"
-                onClick={() => onFinish(true, usedPotionAmounts)}
+                onClick={() => onFinish(false, usedPotionAmounts)}
               >
                 {t('speed_up_btn')}
               </Button>
