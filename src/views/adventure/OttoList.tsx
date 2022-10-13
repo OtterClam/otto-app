@@ -6,14 +6,20 @@ import { useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, Headline } from 'styles/typography'
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ maxHeight?: number }>`
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 14px 34px;
-  background: ${({ theme }) => theme.colors.otterBlack};
-  height: var(--game-body-height);
+  box-sizing: border-box;
   overflow-y: auto;
+  background: ${({ theme }) => theme.colors.otterBlack};
+
+  ${({ maxHeight }) =>
+    maxHeight &&
+    `
+    height: ${maxHeight}px;
+  `}
 `
 
 const filters = ([undefined] as (AdventureOttoStatus | undefined)[]).concat(Object.values(AdventureOttoStatus))
@@ -61,7 +67,7 @@ const StyledFilterButton = styled(Caption).attrs({ as: 'button' })<{ selected?: 
   }
 `
 
-export default function OttoList() {
+export default function OttoList({ maxHeight }: { maxHeight?: number }) {
   const [selectedStatus, setSelectedStatus] = useState<AdventureOttoStatus | undefined>(undefined)
   const { t } = useTranslation()
   const { ottos } = useMyOttos()
@@ -73,7 +79,7 @@ export default function OttoList() {
   }, [ottos, selectedStatus])
 
   return (
-    <StyledContainer>
+    <StyledContainer maxHeight={maxHeight}>
       <StyledTitle>{t('adventure.listTitle')}</StyledTitle>
 
       <StyledFilters>
@@ -85,6 +91,12 @@ export default function OttoList() {
       </StyledFilters>
 
       <StyledOttoList>
+        {filteredOttos.map(otto => (
+          <AdventureOttoCard key={otto.id} otto={otto} />
+        ))}
+        {filteredOttos.map(otto => (
+          <AdventureOttoCard key={otto.id} otto={otto} />
+        ))}
         {filteredOttos.map(otto => (
           <AdventureOttoCard key={otto.id} otto={otto} />
         ))}

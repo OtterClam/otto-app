@@ -2,10 +2,11 @@ import FlatButton, { FlatButtonColor } from 'components/FlatButton'
 import TreasurySection from 'components/TreasurySection'
 import { useAdventureLocations } from 'contexts/AdventureLocations'
 import { useBreakpoints } from 'contexts/Breakpoints'
+import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
 import usePreloadImages from 'hooks/usePreloadImage'
 import { Body } from 'layouts/GameLayout'
 import { useTranslation } from 'next-i18next'
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import AdventureMap from '../../components/AdventureMap'
 import OttoList from './OttoList'
@@ -71,11 +72,21 @@ const usePreloadLocationImages = () => {
 }
 
 export default function AdventureView() {
+  const map = useRef<HTMLDivElement>(null)
   const [view, setView] = useState(View.Map)
   const { t } = useTranslation('', { keyPrefix: 'adventure' })
   const { isTablet } = useBreakpoints()
+  const [maxHeight, setMaxHeight] = useState(0)
 
   usePreloadLocationImages()
+
+  useBrowserLayoutEffect(() => {
+    if (!map.current) {
+      return
+    }
+    const rect = map.current.getBoundingClientRect()
+    setMaxHeight(rect.height)
+  }, [map.current])
 
   if (isTablet) {
     return (
@@ -107,11 +118,11 @@ export default function AdventureView() {
     <Body>
       <StyledContainer>
         <StyledMapSection isSelectedView={view === View.Map}>
-          <AdventureMap />
+          <AdventureMap ref={map} />
         </StyledMapSection>
 
         <StyledListSection isSelectedView={view === View.List}>
-          <OttoList />
+          <OttoList maxHeight={maxHeight} />
         </StyledListSection>
       </StyledContainer>
     </Body>

@@ -5,6 +5,7 @@ import { useTranslation } from 'next-i18next'
 import TreasureChestLevel from 'components/TreasureChestLevel'
 import { useAdventureLocations } from 'contexts/AdventureLocations'
 import AdventureLocation from 'components/AdventureLocation'
+import { forwardRef } from 'react'
 import continueImage from './continue.png'
 import mapImage from './map.jpg'
 
@@ -59,12 +60,12 @@ export interface AdventureMapProps {
   className?: string
 }
 
-export default function AdventureMap({ hideFooter, className }: AdventureMapProps) {
+export default forwardRef<HTMLDivElement, AdventureMapProps>(function AdventureMap({ hideFooter, className }, ref) {
   const { t } = useTranslation('', { keyPrefix: 'adventure' })
   const { locations } = useAdventureLocations()
 
   return (
-    <StyledContainer className={className}>
+    <StyledContainer className={className} ref={ref}>
       <StyledImageContainer>
         <CroppedImage src={mapImage} layout="responsive" />
         {locations.map(location => (
@@ -79,4 +80,4 @@ export default function AdventureMap({ hideFooter, className }: AdventureMapProp
       )}
     </StyledContainer>
   )
-}
+})
