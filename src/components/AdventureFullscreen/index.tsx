@@ -24,16 +24,19 @@ const StyledFullscreen = styled(Fullscreen)`
     0 -1px 0 ${({ theme }) => theme.colors.otterBlack};
 `
 
-export type AdventureFullscreenProps = ComponentProps<typeof Fullscreen>
+export type AdventureFullscreenProps = ComponentProps<typeof Fullscreen> & {
+  hideCloseButton?: boolean
+}
 
 export default function AdventureFullscreen({
   children,
+  hideCloseButton,
   onRequestClose = noop,
   ...restProps
 }: AdventureFullscreenProps) {
   return (
     <StyledFullscreen {...restProps}>
-      <StyledCloseButton onClose={onRequestClose} />
+      {!hideCloseButton && <StyledCloseButton onClose={onRequestClose} />}
       {children}
     </StyledFullscreen>
   )

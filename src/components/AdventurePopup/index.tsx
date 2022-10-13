@@ -5,6 +5,9 @@ import { useOtto } from 'contexts/Otto'
 import { AdventurePopupStep, AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import usePrevious from 'hooks/usePrevious'
+import AdventureAlert from 'components/AdventureAlert'
+import { useTranslation } from 'next-i18next'
+import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
 import { LocationInfoStep } from './LocationInfoStep'
 import PreviewOttoStep from './PreviewOttoStep'
 import ReadyToGoStep from './ReadyToGoStep'
@@ -98,14 +101,29 @@ const Components = {
 }
 
 export default function AdventurePopup() {
+  const { t } = useTranslation('', { keyPrefix: 'adventurePopup' })
+  const [closePopupRequested, setClosePopupRequested] = useState(false)
+  const [closeWindowRequested, setCloseWindowRequested] = useState(false)
   const { state: adventureUIState, dispatch } = useAdventureUIState()
+  const { itemActions } = useOtto()
   const prevStep = usePrevious(adventureUIState.popupStep)
-  const { otto } = useOtto()
   const maxWidth = adventureUIState.popupStep === AdventurePopupStep.Map ? 600 : 880
+
+  const closeWindow = useCallback(() => {
+    window.close()
+  }, [])
 
   const closePopup = useCallback(() => {
     dispatch({ type: AdventureUIActionType.ClosePopup })
   }, [dispatch])
+
+  const requestClosePopup = useCallback(() => {
+    if (itemActions.length) {
+      setClosePopupRequested(true)
+    } else {
+      closePopup()
+    }
+  }, [itemActions])
 
   const effects = useMemo(() => {
     const step = adventureUIState.popupStep
@@ -126,12 +144,28 @@ export default function AdventurePopup() {
     }, {} as { [k: string]: string })
   }, [adventureUIState.popupStep])
 
+  useBrowserLayoutEffect(() => {
+    if (!itemActions.length) {
+      return
+    }
+
+    const handler = () => {
+      setCloseWindowRequested(true)
+    }
+
+    window.addEventListener('beforeunload', handler, false)
+
+    return () => {
+      window.removeEventListener('beforeunload', handler)
+    }
+  }, [itemActions])
+
   return (
     <StyledFullscreen
       maxWidth={maxWidth}
       bodyClassName="adventurePopupBody"
       show={adventureUIState.popupOpened}
-      onRequestClose={closePopup}
+      onRequestClose={requestClosePopup}
     >
       <TransitionGroup>
         {stepOrder.map(step => {
@@ -148,6 +182,26 @@ export default function AdventurePopup() {
           )
         })}
       </TransitionGroup>
+
+      <AdventureAlert
+        storageKey="closeAdventurePopup"
+        show={closePopupRequested}
+        content={t('closePopupAlert.content')}
+        okLabel={t('closePopupAlert.okLabel')}
+        cancelLabel={t('closePopupAlert.cancelLabel')}
+        onOk={closePopup}
+        onCancel={() => setClosePopupRequested(false)}
+      />
+
+      <AdventureAlert
+        storageKey="closeAdventureWindow"
+        show={closeWindowRequested}
+        content={t('closeWindowAlert.content')}
+        okLabel={t('closeWindowAlert.okLabel')}
+        cancelLabel={t('closeWindowAlert.cancelLabel')}
+        onOk={closeWindow}
+        onCancel={() => setCloseWindowRequested(false)}
+      />
     </StyledFullscreen>
   )
 }
