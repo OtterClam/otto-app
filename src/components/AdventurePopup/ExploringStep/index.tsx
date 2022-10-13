@@ -1,15 +1,14 @@
-import { useGoToAdventureResultStep } from 'contexts/AdventureUIState'
+import { useGoToAdventureResultStep, useSelectedAdventureLocation } from 'contexts/AdventureUIState'
 import { useOtto } from 'contexts/Otto'
 import { useAdventureFinish, useUsePotions } from 'contracts/functions'
 import Otto, { RawOtto } from 'models/Otto'
-import { useMyOttos } from 'MyOttosProvider'
 import { useEffect, useState } from 'react'
 import { calcRemainingTime } from 'utils/potion'
 import OnGoingView from './OnGoingView'
 
 export default function ExploringStep() {
-  const { updateOtto } = useMyOttos()
-  const { otto, setOtto } = useOtto()
+  const { otto } = useOtto()
+  const location = useSelectedAdventureLocation()
   const { finishState, finish, resetFinish } = useAdventureFinish()
   const [potions, setPotions] = useState<number[]>([])
   const { state: usePotionsState, send: applyPotions, resetState: resetUsePotions } = useUsePotions()
@@ -28,16 +27,13 @@ export default function ExploringStep() {
   }
 
   useEffect(() => {
-    if (finishState.state === 'Success' && otto && finishState.status.transaction?.hash) {
-      otto.finish()
-      setOtto(otto)
-      updateOtto(otto)
-      goToResult(finishState.status.transaction.hash)
+    if (finishState.state === 'Success' && otto && finishState.status.transaction?.hash && location) {
+      goToResult({ tx: finishState.status.transaction.hash, locationId: location.id })
     } else if (finishState.state === 'Fail') {
       alert(finishState.status.errorMessage)
       resetFinish()
     }
-  }, [finishState, resetFinish, otto, setOtto, updateOtto, goToResult])
+  }, [finishState, resetFinish, otto])
 
   useEffect(() => {
     if (!otto) {

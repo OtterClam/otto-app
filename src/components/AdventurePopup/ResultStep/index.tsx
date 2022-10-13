@@ -7,7 +7,8 @@ import { useOtto } from 'contexts/Otto'
 import { useAdventureRevive } from 'contracts/functions'
 import { ethers } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
-import { AdventureResult } from 'models/AdventureLocation'
+import { AdventureResult } from 'models/AdventureResult'
+import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
@@ -47,7 +48,8 @@ export default function ResultStep() {
   const api = useApi()
   const [result, setResult] = useState<AdventureResult | null>(null)
   const { revive, reviveState, resetRevive } = useAdventureRevive()
-  const { otto } = useOtto()
+  const { updateOtto } = useMyOttos()
+  const { otto, setOtto } = useOtto()
   const { ADVENTURE } = useContractAddresses()
   const { dispatch } = useAdventureUIState()
 
@@ -76,6 +78,14 @@ export default function ResultStep() {
   }, [getAdventureResult, reviveState, resetRevive])
 
   useEffect(() => {
+    if (otto && result) {
+      otto.finish(result)
+      setOtto(otto)
+      updateOtto(otto)
+    }
+  }, [dispatch, finishedTx, otto, result, setOtto, updateOtto])
+
+  useEffect(() => {
     if (!(otto && result?.events && result.events.level_up)) {
       return
     }
@@ -87,7 +97,7 @@ export default function ResultStep() {
         rewards: result.rewards,
       },
     })
-  }, [result])
+  }, [dispatch, otto, result])
 
   useEffect(() => {
     if (!(otto && result)) {
@@ -101,7 +111,7 @@ export default function ResultStep() {
       type: AdventureUIActionType.SetTreasuryChestItem,
       data: chest,
     })
-  }, [result])
+  }, [dispatch, otto, result])
 
   return (
     <StyledResultStep bg={location.bgImageBlack}>

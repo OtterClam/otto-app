@@ -1,7 +1,6 @@
 import { Adventure, IOttoWearingFacet } from 'contracts/__generated__/Adventure'
 import { intervalToDuration } from 'date-fns'
 import { BigNumberish } from 'ethers'
-import Item from './Item'
 
 export enum LocationRewardType {
   Attr = 'attr',
@@ -148,45 +147,6 @@ export type AdventureFinishArgs = [
   IOttoWearingFacet.ItemActionInputStruct[],
   Adventure.SignatureStruct
 ]
-
-export type AdventureJournalEntry = {
-  happened_at: number
-  text: string
-}
-
-export type AdventureResultReward = {
-  items: Item[]
-  exp: number
-  tcp: number
-  ap: number
-}
-
-export type AdventureResultEvents = {
-  level_up: {
-    from: {
-      level: number
-      exp: number
-      expToNextLevel: number
-    }
-    to: {
-      level: number
-      exp: number
-      expToNextLevel: number
-    }
-    got: {
-      items: Item[]
-      attrs_points: number
-    }
-  }
-}
-
-export interface AdventureResult {
-  success: boolean
-  revived: boolean
-  journal: AdventureJournalEntry[]
-  rewards: AdventureResultReward
-  events: AdventureResultEvents
-}
 
 const parseDuration = (val: string): Duration => {
   const match = /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/.exec(val)

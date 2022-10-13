@@ -1,6 +1,6 @@
 import noop from 'lodash/noop'
-import { AdventureResultEvents, AdventureResultReward } from 'models/AdventureLocation'
 import { AdventurePreview } from 'models/AdventurePreview'
+import { AdventureResultEvents, AdventureResultReward } from 'models/AdventureResult'
 import Item from 'models/Item'
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useReducer } from 'react'
 import { useAdventureLocation } from './AdventureLocations'
@@ -56,6 +56,7 @@ export type AdventureUIAction =
   | {
       type: AdventureUIActionType.GoToResult
       data: {
+        locationId: number
         tx: string
       }
     }
@@ -124,6 +125,7 @@ export const AdventureUIStateProvider = ({ children }: PropsWithChildren<object>
           popupOpened: true,
           popupStep: AdventurePopupStep.Result,
           finishedTx: action.data.tx,
+          selectedLocationId: action.data.locationId,
         }
       case AdventureUIActionType.SetTreasuryChestItem:
         return { ...state, treasuryChest: action.data }
@@ -161,7 +163,11 @@ export const useGoToAdventurePopupStep = () => {
 
 export const useGoToAdventureResultStep = () => {
   const { dispatch } = useAdventureUIState()
-  return useCallback((tx: string) => dispatch({ type: AdventureUIActionType.GoToResult, data: { tx } }), [dispatch])
+  return useCallback(
+    ({ tx, locationId }: { tx: string; locationId: number }) =>
+      dispatch({ type: AdventureUIActionType.GoToResult, data: { tx, locationId } }),
+    [dispatch]
+  )
 }
 
 export const useOpenAdventurePopup = () => {

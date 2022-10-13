@@ -1,19 +1,14 @@
 import assert from 'assert'
 import { Adventure } from 'contracts/__generated__'
 import { BigNumber } from 'ethers'
+import { RawAdventurePass } from 'libs/RawAdventureResult'
 import { getCroppedImageUrl } from 'utils/image'
+import { AdventurePass, fromRawPass } from './AdventurePass'
+import { AdventureResult } from './AdventureResult'
 
 export enum TraitCollection {
   Genesis = 'genesis',
   Second = 'second',
-}
-
-export interface RawAdventurePass {
-  location_id: number
-  finished_tx?: string
-  departure_at: string
-  can_finish_at: string
-  finished_at?: string
 }
 
 export interface RawOtto {
@@ -106,14 +101,6 @@ export enum AdventureOttoStatus {
   Unavailable = 'unavailable',
 }
 
-export interface AdventurePass {
-  locationId: number
-  finishedAt?: Date
-  finishedTx?: string
-  departureAt: Date
-  canFinishAt: Date
-}
-
 export default class Otto {
   public raw: RawOtto
 
@@ -172,15 +159,7 @@ export default class Otto {
     this.diceCount = this.raw.diceCount
 
     if (this.raw.latest_adventure_pass) {
-      this.latestAdventurePass = {
-        finishedTx: this.raw.latest_adventure_pass.finished_tx,
-        locationId: this.raw.latest_adventure_pass.location_id,
-        departureAt: new Date(this.raw.latest_adventure_pass.departure_at),
-        finishedAt: this.raw.latest_adventure_pass.finished_at
-          ? new Date(this.raw.latest_adventure_pass.finished_at)
-          : undefined,
-        canFinishAt: new Date(this.raw.latest_adventure_pass.can_finish_at),
-      }
+      this.latestAdventurePass = fromRawPass(this.raw.latest_adventure_pass)
     }
     this.restingUntil = this.raw.resting_until ? new Date(this.raw.resting_until) : undefined
 
@@ -334,12 +313,11 @@ export default class Otto {
     }
   }
 
-  public finish() {
+  public finish(result: AdventureResult) {
     assert(this.latestAdventurePass, 'No adventure pass')
-    // TODO: use data from api
-    this.latestAdventurePass.finishedAt = new Date()
-    this.latestAdventurePass.finishedTx = '0xabc'
-    this.restingUntil = new Date(Date.now() + 24 * 60 * 60 * 1000)
+    this.restingUntil = result.restingUntil
+    this.latestAdventurePass.finishedAt = result.pass.finishedAt
+    this.latestAdventurePass.finishedTx = result.pass.finishedTx
   }
 
   toJSON() {

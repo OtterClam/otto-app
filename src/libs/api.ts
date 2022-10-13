@@ -2,14 +2,15 @@ import { ChainId } from '@usedapp/core'
 import axios, { Axios } from 'axios'
 import { BigNumberish } from 'ethers'
 import {
-  RawAdventureExploreArgs,
-  AdventureLocation,
-  RawAdventureLocation,
-  rawAdventureLocationToAdventureLocation,
   AdventureExploreArgs,
   AdventureFinishArgs,
+  AdventureLocation,
+  RawAdventureExploreArgs,
+  RawAdventureLocation,
+  rawAdventureLocationToAdventureLocation,
 } from 'models/AdventureLocation'
 import { AdventurePreview, RawAdventurePreview, rawAdventurePreviewToAdventurePreview } from 'models/AdventurePreview'
+import { AdventureResult, fromRawResult } from 'models/AdventureResult'
 import { Dice } from 'models/Dice'
 import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
 import Item, { ItemAction, rawItemToItem } from 'models/Item'
@@ -17,6 +18,7 @@ import { LeaderboardEpoch, RawLeaderboardEpoch, rawLeaderboardEpochToLeaderboard
 import { Notification, RawNotification } from 'models/Notification'
 import Otto, { RawOtto } from 'models/Otto'
 import Product from 'models/store/Product'
+import { RawAdventureResult } from './RawAdventureResult'
 
 export interface OttoCandidateMeta {
   name: string
@@ -222,15 +224,9 @@ export class Api {
     return result.data
   }
 
-  public async getAdventureResult(tx: string) {
-    const result = await this.otterclamClient.get(`/adventure/results/${tx}`)
-    return {
-      ...result.data,
-      rewards: {
-        ...result.data.rewards,
-        items: result.data.rewards.items.map((i: any) => rawItemToItem(i.id, i)),
-      },
-    }
+  public async getAdventureResult(tx: string): Promise<AdventureResult> {
+    const result = await this.otterclamClient.get<RawAdventureResult>(`/adventure/results/${tx}`)
+    return fromRawResult(result.data)
   }
 
   public async getLeaderBoardEpoch(): Promise<LeaderboardEpoch> {

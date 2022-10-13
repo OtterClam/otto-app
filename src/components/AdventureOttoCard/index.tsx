@@ -2,12 +2,11 @@ import AdventureStatus from 'components/AdventureStatus'
 import Button from 'components/Button'
 import CroppedImage from 'components/CroppedImage'
 import { useAdventureLocation } from 'contexts/AdventureLocations'
-import { AdventurePopupStep, useOpenAdventurePopup } from 'contexts/AdventureUIState'
+import { AdventurePopupStep, useGoToAdventureResultStep, useOpenAdventurePopup } from 'contexts/AdventureUIState'
 import { useOtto } from 'contexts/Otto'
 import useTimer from 'hooks/useTimer'
 import isEqual from 'lodash/isEqual'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
-import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import { memo, useState } from 'react'
 import styled from 'styled-components/macro'
@@ -74,6 +73,7 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
   const { t } = useTranslation('', { keyPrefix: 'adventureOttoCard' })
   const { setOtto } = useOtto()
   const openPopup = useOpenAdventurePopup()
+  const goToAdventureResultStep = useGoToAdventureResultStep()
   const check = () => {
     if (location) {
       setOtto(otto)
@@ -121,7 +121,23 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
         )}
 
         {otto.adventureStatus === AdventureOttoStatus.Resting && otto.restingUntil && (
-          <RemainingTime onClick={openRestingPopup} target={otto.restingUntil} />
+          <>
+            <RemainingTime onClick={openRestingPopup} target={otto.restingUntil} />
+            <Button
+              Typography={ContentMedium}
+              onClick={() => {
+                setOtto(otto)
+                otto.latestAdventurePass &&
+                  otto.latestAdventurePass?.finishedTx &&
+                  goToAdventureResultStep({
+                    tx: otto.latestAdventurePass.finishedTx,
+                    locationId: otto.latestAdventurePass.locationId,
+                  })
+              }}
+            >
+              See Result
+            </Button>
+          </>
         )}
 
         {otto.adventureStatus === AdventureOttoStatus.Ongoing &&

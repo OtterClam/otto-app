@@ -178,7 +178,7 @@ export default function LevelUpPopup() {
       bodyClassName="fullscreen-inner"
       header={<StyledPopupTitle text={t('popupTitle')} />}
     >
-      {otto && levelUp && (
+      {otto && levelUp?.levelUp && (
         <StyledContainer>
           <StyledOtto>
             <CroppedImage src={otto.image} width={140} height={140} />

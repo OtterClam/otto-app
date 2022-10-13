@@ -1,6 +1,6 @@
 import TreasurySection from 'components/TreasurySection'
 import { format } from 'date-fns'
-import { AdventureJournalEntry, AdventureResult } from 'models/AdventureLocation'
+import { AdventureJournalEntry, AdventureResult } from 'models/AdventureResult'
 import { useTranslation } from 'next-i18next'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components/macro'

@@ -104,11 +104,6 @@ const StyledRemaining = styled(ContentMedium).attrs({ as: 'p' })`
   background: ${({ theme }) => theme.colors.darkGray400};
 `
 
-const StyledPotionContainer = styled.div`
-  display: flex;
-  gap: 30px;
-`
-
 const StyledHint = styled(Note).attrs({ as: 'p' })`
   a {
     color: ${({ theme }) => theme.colors.crownYellow};
@@ -145,7 +140,6 @@ export default function OnGoingView({ otto, loading, onFinish }: Props) {
   if (!otto || !location) {
     return null
   }
-
   return (
     <StyledExploringStep bg={location.bgImageBlack}>
       <StyledContent>
