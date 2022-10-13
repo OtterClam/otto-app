@@ -102,11 +102,7 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
 
   const go = () => {
     setOtto(otto)
-    if (otto.latestAdventurePass) {
-      openPopup(otto.latestAdventurePass.locationId, AdventurePopupStep.LocationInfo)
-    } else {
-      openPopup(undefined, AdventurePopupStep.Map)
-    }
+    openPopup(undefined, AdventurePopupStep.Map)
   }
 
   const openRestingPopup = () => {
