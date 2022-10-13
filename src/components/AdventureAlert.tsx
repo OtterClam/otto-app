@@ -92,33 +92,35 @@ export default function AdventureAlert({
   const key = `adventureAlert.${storageKey}`
 
   useBrowserLayoutEffect(() => {
-    setDoNotShow(localStorage.getItem(key) === 'hide')
-  }, [storageKey])
+    const savedAction = localStorage.getItem(key)
+    setDoNotShow(Boolean(savedAction))
 
-  const toggleCheckbox = useCallback(() => {
-    setChecked(state => {
-      if (!state) {
-        localStorage.setItem(key, 'hide')
-      } else {
-        localStorage.removeItem(key)
-      }
-      return !state
-    })
-  }, [])
+    if (savedAction === 'ok' && show) {
+      onOk()
+    }
+  }, [storageKey, show])
+
+  const ok = () => {
+    if (checked) {
+      localStorage.setItem(key, 'ok')
+      setDoNotShow(true)
+    }
+    onOk()
+  }
 
   return (
     <StyledFullscreen hideCloseButton show={!doNotShow && show} bodyClassName="adventure-alert-inner">
       <StyledContainer>
         {content}
-        <Button width="100%" padding="2px 0" Typography={ContentMedium}>
+        <Button width="100%" padding="2px 0" Typography={ContentMedium} onClick={ok}>
           {okLabel}
         </Button>
-        <Button width="100%" padding="2px 0" Typography={ContentMedium} primaryColor="white">
+        <Button width="100%" padding="2px 0" Typography={ContentMedium} primaryColor="white" onClick={onCancel}>
           {cancelLabel}
         </Button>
         <StyledCheckboxContainer>
           <StyledCheckbox checked={checked} />
-          <StyledHTMLCheckbox checked={checked} onChange={toggleCheckbox} />
+          <StyledHTMLCheckbox checked={checked} onChange={() => setChecked(state => !state)} />
           {t('hideDesc')}
         </StyledCheckboxContainer>
       </StyledContainer>

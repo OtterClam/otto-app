@@ -103,17 +103,13 @@ const Components = {
 export default function AdventurePopup() {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup' })
   const [closePopupRequested, setClosePopupRequested] = useState(false)
-  const [closeWindowRequested, setCloseWindowRequested] = useState(false)
   const { state: adventureUIState, dispatch } = useAdventureUIState()
   const { itemActions } = useOtto()
   const prevStep = usePrevious(adventureUIState.popupStep)
   const maxWidth = adventureUIState.popupStep === AdventurePopupStep.Map ? 600 : 880
 
-  const closeWindow = useCallback(() => {
-    window.close()
-  }, [])
-
   const closePopup = useCallback(() => {
+    setClosePopupRequested(false)
     dispatch({ type: AdventureUIActionType.ClosePopup })
   }, [dispatch])
 
@@ -149,11 +145,12 @@ export default function AdventurePopup() {
       return
     }
 
-    const handler = () => {
-      setCloseWindowRequested(true)
+    const handler = (e: Event) => {
+      e.preventDefault()
+      e.returnValue = t('closeWindowAlert.content')
     }
 
-    window.addEventListener('beforeunload', handler, false)
+    window.addEventListener('beforeunload', handler, true)
 
     return () => {
       window.removeEventListener('beforeunload', handler)
@@ -191,16 +188,6 @@ export default function AdventurePopup() {
         cancelLabel={t('closePopupAlert.cancelLabel')}
         onOk={closePopup}
         onCancel={() => setClosePopupRequested(false)}
-      />
-
-      <AdventureAlert
-        storageKey="closeAdventureWindow"
-        show={closeWindowRequested}
-        content={t('closeWindowAlert.content')}
-        okLabel={t('closeWindowAlert.okLabel')}
-        cancelLabel={t('closeWindowAlert.cancelLabel')}
-        onOk={closeWindow}
-        onCancel={() => setCloseWindowRequested(false)}
       />
     </StyledFullscreen>
   )
