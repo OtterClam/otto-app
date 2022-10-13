@@ -125,7 +125,7 @@ function PotionButton({
   const amount = potionAmounts[potion] ?? 0
   const usedAmount = usedPotionAmounts[potion] ?? 0
   return (
-    <StyledPotionButton disabled={amount - usedAmount <= 0} onClick={() => onUse(potion)}>
+    <StyledPotionButton disabled={amount - usedAmount <= 0 || usedAmount === 1} onClick={() => onUse(potion)}>
       <StyledPotionIcon potion={potion} />
       {usedAmount > 0 && t('usedPotion', { amount: usedAmount })}
       {usedAmount === 0 && amount === 0 && t('noPotion')}
