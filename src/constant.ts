@@ -67,3 +67,10 @@ export enum ItemActionType {
   TakeOff = 2,
   EquipFromOtto = 3,
 }
+
+export enum ChestId {
+  TreasuryChest = '16646388',
+  SilverChest = '16646144',
+  GoldChest = '16646208',
+  DiamondChest = '16646230',
+}

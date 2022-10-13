@@ -8,6 +8,7 @@ import { TraitProvider } from 'contexts/TraitContext'
 import { PropsWithChildren } from 'react'
 import LevelUpPopup from 'components/LevelUpPopup'
 import AttributePointsPopup from 'components/AttributePointsPopup'
+import TreasuryChestPopup from 'components/TreasuryChestPopup'
 
 export default function AdventureProvider({ children }: PropsWithChildren<object>) {
   return (
@@ -21,6 +22,7 @@ export default function AdventureProvider({ children }: PropsWithChildren<object
                 <AdventurePopup />
                 <LevelUpPopup />
                 <AttributePointsPopup />
+                <TreasuryChestPopup />
               </AdventureLocationsProvider>
             </AdventureUIStateProvider>
           </AdventureContractStateProvider>

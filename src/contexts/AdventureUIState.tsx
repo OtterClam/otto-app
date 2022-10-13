@@ -1,6 +1,7 @@
 import noop from 'lodash/noop'
 import { AdventureResultEvents, AdventureResultReward } from 'models/AdventureLocation'
 import { AdventurePreview } from 'models/AdventurePreview'
+import Item from 'models/Item'
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useReducer } from 'react'
 import { useAdventureLocation } from './AdventureLocations'
 
@@ -11,6 +12,7 @@ export enum AdventureUIActionType {
   GoToResult,
   LevelUp,
   DistributeAttributePoints,
+  SetTreasuryChestItem,
 }
 
 export enum AdventurePopupStep {
@@ -57,6 +59,10 @@ export type AdventureUIAction =
         tx: string
       }
     }
+  | {
+      type: AdventureUIActionType.SetTreasuryChestItem
+      data?: Item
+    }
 
 export interface AdventureUIState {
   selectedLocationId?: number
@@ -71,6 +77,7 @@ export interface AdventureUIState {
   attributePoints?: {
     ottoId: string
   }
+  treasuryChest?: Item
   finishedTx?: string
 }
 
@@ -118,6 +125,8 @@ export const AdventureUIStateProvider = ({ children }: PropsWithChildren<object>
           popupStep: AdventurePopupStep.Result,
           finishedTx: action.data.tx,
         }
+      case AdventureUIActionType.SetTreasuryChestItem:
+        return { ...state, treasuryChest: action.data }
       default:
         return state
     }

@@ -1,6 +1,6 @@
 import Button from 'components/Button'
 import PaymentButton from 'components/PaymentButton'
-import { Token } from 'constant'
+import { ChestId, Token } from 'constant'
 import { AdventureUIActionType, useAdventureUIState, useSelectedAdventureLocation } from 'contexts/AdventureUIState'
 import { useApi } from 'contexts/Api'
 import { useOtto } from 'contexts/Otto'
@@ -86,6 +86,20 @@ export default function ResultStep() {
         levelUp: result.events.level_up,
         rewards: result.rewards,
       },
+    })
+  }, [result])
+
+  useEffect(() => {
+    if (!(otto && result)) {
+      return
+    }
+    const chest = result.rewards.items.find(item => (item.id = ChestId.TreasuryChest))
+    if (!chest) {
+      return
+    }
+    dispatch({
+      type: AdventureUIActionType.SetTreasuryChestItem,
+      data: chest,
     })
   }, [result])
 

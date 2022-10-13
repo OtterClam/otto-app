@@ -15,7 +15,7 @@ import { OttoGender } from 'models/Otto'
 import EmptyStatus from './empty.png'
 import ItemDetails from './use-item/ItemDetails'
 
-const RedeemCouponPopup = dynamic(() => import('./RedeemCouponPopup'), { ssr: false })
+const RedeemCouponPopup = dynamic(() => import('../../components/RedeemCouponPopup'), { ssr: false })
 const UseItemPopup = dynamic(() => import('./use-item/ItemPopup'), { ssr: false })
 
 const StyledMyItemsPage = styled.div`
