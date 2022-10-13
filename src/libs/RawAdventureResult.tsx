@@ -12,9 +12,9 @@ export interface Rewards {
 
 export interface RawAdventurePass {
   location_id: number
-  departure_at: Date
-  can_finish_at: Date
-  finished_at?: Date
+  departure_at: string
+  can_finish_at: string
+  finished_at?: string
   finished_tx?: string
 }
 

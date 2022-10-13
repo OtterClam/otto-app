@@ -2,12 +2,14 @@ import { useGoToAdventureResultStep, useSelectedAdventureLocation } from 'contex
 import { useOtto } from 'contexts/Otto'
 import { useAdventureFinish, useUsePotions } from 'contracts/functions'
 import Otto, { RawOtto } from 'models/Otto'
+import { useMyOttos } from 'MyOttosProvider'
 import { useEffect, useState } from 'react'
 import { calcRemainingTime } from 'utils/potion'
 import OnGoingView from './OnGoingView'
 
 export default function ExploringStep() {
-  const { otto } = useOtto()
+  const { otto, setOtto } = useOtto()
+  const { updateOtto } = useMyOttos()
   const location = useSelectedAdventureLocation()
   const { finishState, finish, resetFinish } = useAdventureFinish()
   const [potions, setPotions] = useState<number[]>([])
