@@ -17,7 +17,6 @@ const StyledItemCell = styled.button<{
 }>`
   --selected-bg: radial-gradient(63.75% 63.75% at 50% 50%, rgba(116, 205, 255, 0) 56.25%, #74cdff 100%);
   width: ${({ size }) => `${size || 115}px`};
-  height: ${({ size }) => `${size || 115}px`};
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 5px;
   position: relative;
