@@ -3,6 +3,7 @@ import { BigNumber, BigNumberish, constants } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useCallback, useEffect, useState } from 'react'
 import {
+  useAdventureContract,
   useClamPond,
   useERC1155,
   useItemContract,
@@ -283,4 +284,10 @@ export const useBuyFishReturn = (clamAmount: BigNumberish) => {
   }, [clamAmount.toString(), library])
 
   return fishAmount
+}
+
+export const useFinishFee = (passId: BigNumberish | undefined) => {
+  const adventure = useAdventureContract()
+  const result = useCall(passId ? { contract: adventure, method: 'finishFee', args: [passId] } : undefined)
+  return result?.value?.[0].toString() || '0'
 }

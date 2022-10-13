@@ -11,6 +11,7 @@ export interface Rewards {
 }
 
 export interface RawAdventurePass {
+  id: string
   location_id: number
   departure_at: string
   can_finish_at: string

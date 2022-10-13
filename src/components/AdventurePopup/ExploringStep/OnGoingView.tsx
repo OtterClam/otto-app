@@ -4,6 +4,7 @@ import Button from 'components/Button'
 import PaymentButton from 'components/PaymentButton'
 import { Token } from 'constant'
 import { useSelectedAdventureLocation } from 'contexts/AdventureUIState'
+import { useFinishFee } from 'contracts/views'
 import formatDistance from 'date-fns/formatDistance'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useRemainingTime from 'hooks/useRemainingTime'
@@ -127,6 +128,7 @@ export default function OnGoingView({ otto, loading, onFinish }: Props) {
   const [usedPotionAmounts, setUsedPotionAmounts] = useState<number[]>([])
   const canFinishAt = otto?.latestAdventurePass?.canFinishAt ?? now
   const formattedDuration = formatDistance(canFinishAt, otto?.latestAdventurePass?.departureAt ?? 0)
+  const finishFee = useFinishFee(otto.latestAdventurePass?.id)
 
   if (!otto || !location) {
     return null
@@ -163,7 +165,7 @@ export default function OnGoingView({ otto, loading, onFinish }: Props) {
                 width="100%"
                 spenderAddress={ADVENTURE}
                 loading={loading}
-                amount={4 * 1e9}
+                amount={finishFee}
                 token={Token.Clam}
                 Typography={ContentLarge}
                 padding="6px 20px 0"

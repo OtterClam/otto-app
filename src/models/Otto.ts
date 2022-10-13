@@ -309,8 +309,9 @@ export default class Otto {
     this.voice?.play()
   }
 
-  public explore(pass: Adventure.PassStruct) {
+  public explore(passId: string, pass: Adventure.PassStruct) {
     this.latestAdventurePass = {
+      id: passId,
       locationId: BigNumber.from(pass.locId).toNumber(),
       departureAt: new Date(BigNumber.from(pass.departureAt).toNumber() * 1000),
       canFinishAt: new Date(BigNumber.from(pass.canFinishAt).toNumber() * 1000),

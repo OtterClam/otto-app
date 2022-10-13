@@ -171,7 +171,7 @@ export default function PreviewOttoStep() {
         .pass(exploreState.passId)
         .then(pass => {
           resetEquippedItems()
-          otto.explore(pass)
+          otto.explore(exploreState.passId || '', pass)
           setOtto(otto)
           updateOtto(otto)
         })

@@ -1,6 +1,7 @@
 import { RawAdventurePass } from 'libs/RawAdventureResult'
 
 export interface AdventurePass {
+  id: string
   locationId: number
   finishedAt?: Date
   finishedTx?: string
@@ -10,6 +11,7 @@ export interface AdventurePass {
 
 export function fromRawPass(raw: RawAdventurePass): AdventurePass {
   return {
+    id: raw.id,
     finishedTx: raw.finished_tx,
     locationId: raw.location_id,
     departureAt: new Date(raw.departure_at),
