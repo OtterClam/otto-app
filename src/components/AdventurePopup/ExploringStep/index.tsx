@@ -20,7 +20,7 @@ export default function ExploringStep() {
       return
     }
     const finishedAt = calcRemainingTime(otto.latestAdventurePass!.canFinishAt!, potions)
-    if (finishedAt.getTime() <= Date.now()) {
+    if (immediately || finishedAt.getTime() <= Date.now()) {
       finish(otto.id, immediately, potions)
     } else {
       setPotions(potions)
@@ -43,7 +43,7 @@ export default function ExploringStep() {
     }
     if (usePotionsState.status === 'Success') {
       const raw: RawOtto = JSON.parse(JSON.stringify(otto.raw))
-      const finishedAt = calcRemainingTime(otto.latestAdventurePass!.finishedAt!, potions)
+      const finishedAt = calcRemainingTime(otto.latestAdventurePass!.canFinishAt, potions)
       raw.latest_adventure_pass!.can_finish_at = finishedAt.toISOString()
       const newOtto = new Otto(raw)
       setOtto(newOtto)

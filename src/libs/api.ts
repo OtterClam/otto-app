@@ -171,7 +171,7 @@ export class Api {
     wallet: string,
     itemActions: ItemAction[]
   ): Promise<AdventureExploreArgs> {
-    const result = await this.otterclamClient.post<RawAdventureExploreArgs>('/adventure/departure', {
+    const result = await this.otterclamClient.post<RawAdventureExploreArgs>('/adventure/explore', {
       otto_id: Number(ottoId),
       loc_id: locationId,
       wallet,

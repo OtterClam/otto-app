@@ -4,7 +4,6 @@ import Button from 'components/Button'
 import PaymentButton from 'components/PaymentButton'
 import { Token } from 'constant'
 import { useSelectedAdventureLocation } from 'contexts/AdventureUIState'
-import { OttoTxState } from 'contracts/functions'
 import formatDistance from 'date-fns/formatDistance'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useRemainingTime from 'hooks/useRemainingTime'
@@ -98,12 +97,6 @@ const StyledDuration = styled(ContentMedium).attrs({ as: 'div' })`
   border-radius: 0 0 0 10px;
 `
 
-const StyledRemaining = styled(ContentMedium).attrs({ as: 'p' })`
-  padding: 8px 27px;
-  border-radius: 20px;
-  background: ${({ theme }) => theme.colors.darkGray400};
-`
-
 const StyledHint = styled(Note).attrs({ as: 'p' })`
   a {
     color: ${({ theme }) => theme.colors.crownYellow};
@@ -133,9 +126,7 @@ export default function OnGoingView({ otto, loading, onFinish }: Props) {
   const now = new Date()
   const [usedPotionAmounts, setUsedPotionAmounts] = useState<number[]>([])
   const canFinishAt = otto?.latestAdventurePass?.canFinishAt ?? now
-  const updatedCanFinishAt = useSeedUpPotionPreview(otto?.latestAdventurePass?.canFinishAt ?? now, usedPotionAmounts)
   const formattedDuration = formatDistance(canFinishAt, otto?.latestAdventurePass?.departureAt ?? 0)
-  const remainingDuration = useRemainingTime(canFinishAt)
 
   if (!otto || !location) {
     return null
@@ -162,10 +153,9 @@ export default function OnGoingView({ otto, loading, onFinish }: Props) {
         )}
         {now < canFinishAt && (
           <>
-            <StyledRemaining>{t('remaining', { time: remainingDuration })}</StyledRemaining>
             <SpeedUpPotions
               disabled={loading}
-              targetDate={updatedCanFinishAt}
+              targetDate={canFinishAt}
               onUsedPotionsUpdate={amounts => setUsedPotionAmounts(amounts)}
             />
             {usedPotionAmounts.length === 0 && (

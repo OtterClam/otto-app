@@ -272,8 +272,11 @@ export default class Otto {
 
   get adventureStatus(): AdventureOttoStatus {
     const now = new Date()
-    if (this.restingUntil && this.restingUntil > now) {
-      return AdventureOttoStatus.Resting
+    if (this.restingUntil && this.restingUntil.getTime() !== 0) {
+      if (this.restingUntil >= now) {
+        return AdventureOttoStatus.Resting
+      }
+      return AdventureOttoStatus.Ready
     }
     if (this.latestAdventurePass) {
       if (this.latestAdventurePass.canFinishAt > now) {
