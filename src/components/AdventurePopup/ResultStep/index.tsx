@@ -78,7 +78,7 @@ export default function ResultStep() {
   }, [getAdventureResult, reviveState, resetRevive])
 
   useEffect(() => {
-    if (otto && result) {
+    if (otto && result && otto.latestAdventurePass?.id !== result?.pass.id) {
       otto.finish(result)
       setOtto(otto)
       updateOtto(otto)

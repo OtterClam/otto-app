@@ -140,7 +140,7 @@ export default class Otto {
 
   public latestAdventurePass?: AdventurePass
 
-  public readonly exp: number = 0
+  public exp = 0
 
   public readonly ap: number = 0
 
@@ -321,14 +321,17 @@ export default class Otto {
   public finish(result: AdventureResult) {
     assert(this.latestAdventurePass, 'No adventure pass')
     this.restingUntil = result.restingUntil
+    this.latestAdventurePass.id = result.pass.id
     this.latestAdventurePass.finishedAt = result.pass.finishedAt
     this.latestAdventurePass.finishedTx = result.pass.finishedTx
+    this.exp += result.rewards.exp
     if (result.events.level_up) {
       const {
-        to: { level, expToNextLevel },
+        to: { exp, level, expToNextLevel },
         got,
       } = result.events.level_up
       this.restingUntil = new Date()
+      this.exp = exp
       this.raw.level = level
       this.raw.next_level_exp = expToNextLevel
       this.attributePoints = got.attrs_points
