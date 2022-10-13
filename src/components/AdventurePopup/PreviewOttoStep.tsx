@@ -5,8 +5,8 @@ import AdventureTooltop from 'components/AdventureTooltip'
 import Button from 'components/Button'
 import CloseButton from 'components/CloseButton'
 import OttoAdventureLevel from 'components/OttoAdventureLevel'
-import OttoAttributes from 'components/OttoAttributes'
-import OttoLevels from 'components/OttoLevels'
+import OttoStats from 'components/OttoStats'
+import OttoAttrs from 'components/OttoAttrs'
 import OttoPreviewer from 'components/OttoPreviewer'
 import OttoSelector from 'components/OttoSelector'
 import { ItemActionType } from 'constant'
@@ -218,8 +218,8 @@ export default function PreviewOttoStep() {
                 itemPopupHeight={itemPopupHeight}
               />
               {otto && <OttoAdventureLevel otto={otto} boost={Boolean(levelBoost)} />}
-              <OttoAttributes />
-              <OttoLevels />
+              <OttoStats />
+              <OttoAttrs />
             </StyledPreview>
 
             <StyledLocation>

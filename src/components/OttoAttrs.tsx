@@ -34,12 +34,12 @@ const StyledBoostIcon = styled(BoostIcon)`
   bottom: 0;
 `
 
-export interface OttoLevelsProps {
+export interface Props {
   className?: string
   levelClassName?: string
 }
 
-export default function OttoLevels({ className, levelClassName }: OttoLevelsProps) {
+export default function OttoAttrs({ className, levelClassName }: Props) {
   const location = useAdventureLocation()
   const { draftOtto: otto } = useAdventureOtto()
 

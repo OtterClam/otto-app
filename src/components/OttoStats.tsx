@@ -41,7 +41,7 @@ const StyledBoostIcon = styled(BoostIcon)`
   bottom: 0;
 `
 
-export default function OttoAttributes() {
+export default function OttoStats() {
   const location = useAdventureLocation()
   const { draftOtto: otto } = useAdventureOtto()
   const { t } = useTranslation()

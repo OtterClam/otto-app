@@ -1,6 +1,6 @@
 import AdventureFullscreen from 'components/AdventureFullscreen'
 import { FilterSelector, SortedBySelector } from 'components/ItemFilterSelect'
-import OttoLevels from 'components/OttoLevels'
+import OttoAttrs from 'components/OttoAttrs'
 import { useAdventureOtto } from 'contexts/AdventureOtto'
 import { ItemFiltersProvider } from 'contexts/ItemFilters'
 import { useMyItems } from 'contexts/MyItems'
@@ -14,7 +14,7 @@ import { ContentExtraSmall, Note } from 'styles/typography'
 import ItemList from './ItemList'
 import ItemPreview from './ItemPreview'
 
-const StyledContainer = styled.div<{ height?: number }>`
+const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: -25px;
@@ -22,10 +22,7 @@ const StyledContainer = styled.div<{ height?: number }>`
   max-height: calc(80vh - 2px);
   overflow-y: scroll;
   padding: 35px 18px 15px;
-  ${({ height }) => `
-    height: ${height}px;
-    max-height: unset;
-  `}
+  height: 100vh;
 `
 
 const StyledTitle = styled(ContentExtraSmall)`
@@ -58,7 +55,7 @@ const StyledFullscreen = styled(AdventureFullscreen)<{ maxWidth?: number }>`
   }
 `
 
-const StyledOttoLevels = styled(OttoLevels)`
+const StyledOttoAttrs = styled(OttoAttrs)`
   .otto-level {
     color: ${({ theme }) => theme.colors.white};
     background: ${({ theme }) => theme.colors.otterBlack};
@@ -72,11 +69,10 @@ const StyledOttoLevels = styled(OttoLevels)`
 export interface OttoItemsPopupProps {
   className?: string
   onRequestClose?: () => void
-  height?: number
   maxWidth?: number
 }
 
-export default memo(function OttoItemsPopup({ className, height, maxWidth, onRequestClose }: OttoItemsPopupProps) {
+export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClose }: OttoItemsPopupProps) {
   const container = useRef<HTMLDivElement>(null)
   const { draftOtto: otto } = useAdventureOtto()
   const { traitType } = useTrait()
@@ -103,9 +99,9 @@ export default memo(function OttoItemsPopup({ className, height, maxWidth, onReq
         onRequestClose={onRequestClose}
         maxWidth={maxWidth}
       >
-        <StyledContainer height={height} ref={container}>
+        <StyledContainer ref={container}>
           <StyledTitle>{t('title', { type: traitType })}</StyledTitle>
-          <StyledOttoLevels levelClassName="otto-level" />
+          <StyledOttoAttrs levelClassName="otto-level" />
           <StyledActions>
             <StyledAction>
               <StyledActionLabel>{t('sort')}</StyledActionLabel>
@@ -122,6 +118,7 @@ export default memo(function OttoItemsPopup({ className, height, maxWidth, onReq
           <ItemPreview
             item={selectedItem}
             unavailable={selectedItem && !isWearable(selectedItem.id)}
+            onItemUpdated={onRequestClose}
             onClose={() => selectItem(undefined)}
           />
         </StyledContainer>

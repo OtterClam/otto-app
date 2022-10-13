@@ -89,7 +89,7 @@ const StyledRope = styled(SectionRope)`
   height: 30px;
 `
 
-const StyledPotionButton = styled(Note).attrs({ as: 'button' })<{ disabled: boolean }>`
+const StyledPotionButton = styled(Note).attrs({ as: 'button' })`
   color: ${({ theme }) => theme.colors.white};
   background: ${({ theme }) => theme.colors.otterBlue};
   border-radius: 4px;
@@ -125,7 +125,7 @@ function PotionButton({
   const amount = potionAmounts[potion] ?? 0
   const usedAmount = usedPotionAmounts[potion] ?? 0
   return (
-    <StyledPotionButton disabled={amount - usedAmount <= 0 || usedAmount === 1} onClick={() => onUse(potion)}>
+    <StyledPotionButton onClick={() => onUse(potion)}>
       <StyledPotionIcon potion={potion} />
       {usedAmount > 0 && t('usedPotion', { amount: usedAmount })}
       {usedAmount === 0 && amount === 0 && t('noPotion')}
@@ -147,7 +147,7 @@ export default function AdventureRewards({ canUsePotions, onUsePotion = noop }: 
   const applyPotion = useCallback((potion: AdventurePotion) => {
     setUsedPotionAmounts(usedPotionAmounts => ({
       ...usedPotionAmounts,
-      [potion]: (usedPotionAmounts[potion] ?? 0) + 1,
+      [potion]: usedPotionAmounts[potion] === 0 ? 1 : 0,
     }))
   }, [])
   const effectiveBoosts = (location?.conditionalBoosts ?? []).filter(boost => boost.effective)

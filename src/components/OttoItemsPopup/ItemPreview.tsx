@@ -1,20 +1,19 @@
-import styled from 'styled-components/macro'
-import { CSSTransition } from 'react-transition-group'
-import Item from 'models/Item'
-import { memo, useMemo, useRef } from 'react'
-import useOnClickOutside from 'hooks/useOnClickOutside'
-import ItemCell from 'components/ItemCell'
-import ItemRarityBadge from 'components/ItemRarityBadge'
-import { ContentSmall, Note, Headline } from 'styles/typography'
-import ItemCollectionBadge from 'components/ItemCollectionBadge'
 import Button from 'components/Button'
-import { useTranslation } from 'next-i18next'
-import useAdventureOttosWithItem from 'hooks/useAdventureOttosWithItem'
 import CroppedImage from 'components/CroppedImage'
-import Otto from 'models/Otto'
-import { useOtto } from 'contexts/Otto'
-import { useTrait } from 'contexts/TraitContext'
+import ItemCell from 'components/ItemCell'
+import ItemCollectionBadge from 'components/ItemCollectionBadge'
+import ItemRarityBadge from 'components/ItemRarityBadge'
 import { useAdventureOtto } from 'contexts/AdventureOtto'
+import { useOtto } from 'contexts/Otto'
+import useAdventureOttosWithItem from 'hooks/useAdventureOttosWithItem'
+import useOnClickOutside from 'hooks/useOnClickOutside'
+import Item from 'models/Item'
+import Otto from 'models/Otto'
+import { useTranslation } from 'next-i18next'
+import { memo, useMemo, useRef } from 'react'
+import { CSSTransition } from 'react-transition-group'
+import styled from 'styled-components/macro'
+import { ContentSmall, Headline, Note } from 'styles/typography'
 
 const StyledItemPreview = styled.div`
   display: flex;
@@ -128,17 +127,27 @@ const useOttos = (item?: Item, selectedOtto?: Otto) => {
 export interface ItemPreviewProps {
   item?: Item
   onClose: () => void
+  onItemUpdated?: () => void
   unavailable?: boolean
 }
 
 export default memo(
-  function ItemPreview({ item, onClose, unavailable = false }: ItemPreviewProps) {
+  function ItemPreview({ item, onClose, onItemUpdated, unavailable = false }: ItemPreviewProps) {
     const { equipItem, removeItem } = useOtto()
     const { draftOtto: otto } = useAdventureOtto()
     const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
     const containerRef = useRef<HTMLDivElement | null>(null)
     const ottos = useOttos(item, otto)
     const equippedByCurrentOtto = Boolean(otto?.wearableTraits.find(trait => trait.id === item?.id))
+
+    const onEquip = (type: string, itemId: string) => {
+      equipItem(type, itemId)
+      onItemUpdated?.()
+    }
+    const onRemove = (type: string) => {
+      removeItem(type)
+      onItemUpdated?.()
+    }
 
     useOnClickOutside(containerRef, onClose)
 
@@ -182,11 +191,7 @@ export default memo(
                 </StyledOttos>
               )}
               {!equippedByCurrentOtto && (
-                <StyledButton
-                  disabled={unavailable}
-                  Typography={Headline}
-                  onClick={() => equipItem(item.type, item.id)}
-                >
+                <StyledButton disabled={unavailable} Typography={Headline} onClick={() => onEquip(item.type, item.id)}>
                   {t(unavailable ? 'unavailable' : 'wear')}
                 </StyledButton>
               )}
@@ -195,7 +200,7 @@ export default memo(
                   disabled={item.unreturnable}
                   primaryColor="white"
                   Typography={Headline}
-                  onClick={() => removeItem(item.type)}
+                  onClick={() => onRemove(item.type)}
                 >
                   {t(item.unreturnable ? 'unavailable' : 'takeOff')}
                 </StyledButton>

@@ -931,7 +931,8 @@
     "usedPotion": "Used {{ amount }}"
   },
   "adventureBoosts": {
-    "conditionalBoosts": "Conditional Boosts"
+    "conditionalBoosts": "Conditional Boosts",
+    "regional_boosts": "Regional Boosts"
   },
   "adventureBoostTarget": {
     "success_rate": "Total Success +{{ amount }}%",

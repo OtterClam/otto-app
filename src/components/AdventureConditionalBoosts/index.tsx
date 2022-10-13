@@ -49,7 +49,7 @@ export default function AdventureConditionalBoosts({ noPreview, locationBoostsOn
   const ineffectiveBoosts = boosts.filter(boost => !boost.effective)
 
   return (
-    <AdventureInfoSection title={t('title')} help={t('help')}>
+    <AdventureInfoSection title={t(locationBoostsOnly ? 'regional_boosts' : 'title')} help={t('help')}>
       {effectiveBoosts.length > 0 && (
         <StyledBoosts>
           {effectiveBoosts.map((boost, i) => (
