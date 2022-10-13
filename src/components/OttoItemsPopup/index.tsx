@@ -51,7 +51,7 @@ const StyledActionLabel = styled(Note)``
 const StyledFullscreen = styled(AdventureFullscreen)<{ maxWidth?: number }>`
   width: 100%;
   background: ${({ theme }) => theme.colors.white} !important;
-  ${({ maxWidth }) => `max-width: ${maxWidth}px;`}
+  ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth}px;`}
 
   .fullscreen-inner {
     padding: 0 !important;

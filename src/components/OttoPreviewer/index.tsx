@@ -3,12 +3,9 @@ import styled from 'styled-components/macro'
 import OttoItemsPopup from 'components/OttoItemsPopup'
 import { useCallback, useMemo } from 'react'
 import AdventureRibbonText from 'components/AdventureRibbonText'
-import { useOtto } from 'contexts/Otto'
-import { useSelectedAdventureLocation } from 'contexts/AdventureUIState'
-import { useApiCall } from 'contexts/Api'
-import { AdventureLocationProvider } from 'contexts/AdventureLocation'
 import { useAdventureOtto } from 'contexts/AdventureOtto'
 import { Trait } from 'models/Otto'
+import { useBreakpoints } from 'contexts/Breakpoints'
 import { useTrait } from '../../contexts/TraitContext'
 import TraitButton from './TraitButton'
 import FeedButton from './FeedButton'
@@ -42,8 +39,13 @@ const StyledImageContainer = styled.div`
   height: 200px;
 `
 
-const StyledOttoItemsPopup = styled(OttoItemsPopup)<{ offsetX: number }>`
+const StyledOttoItemsPopup = styled(OttoItemsPopup)<{ offsetX: number; width?: string }>`
   transform: translateX(${({ offsetX }) => offsetX}px);
+  ${({ width }) =>
+    width &&
+    `
+    width: ${width};
+  `}
 `
 
 const wearableTraitTypes = ['Holding', 'Headwear', 'Facial Accessories', 'Clothes', 'Background']
@@ -55,6 +57,7 @@ export interface OttoPreviewerProps {
 }
 
 export default function OttoPreviewer({ itemsPopupWidth, itemPopupHeight, itemPopupOffset }: OttoPreviewerProps) {
+  const { isSmallTablet, isMobile } = useBreakpoints()
   const { draftOtto: otto } = useAdventureOtto()
   const { setTraitType: selectTrait } = useTrait()
   const wearableTraits: { type: string; trait?: Trait }[] = useMemo(() => {
@@ -105,9 +108,10 @@ export default function OttoPreviewer({ itemsPopupWidth, itemPopupHeight, itemPo
       </StyledContainer>
 
       <StyledOttoItemsPopup
-        offsetX={itemPopupOffset}
+        offsetX={isSmallTablet ? 0 : itemPopupOffset}
         onRequestClose={close}
-        maxWidth={itemsPopupWidth}
+        width={isSmallTablet && !isMobile ? '80%' : undefined}
+        maxWidth={isSmallTablet ? undefined : itemsPopupWidth}
         height={itemPopupHeight}
       />
     </>
