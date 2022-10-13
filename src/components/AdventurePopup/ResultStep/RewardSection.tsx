@@ -1,19 +1,18 @@
 import AdventureRibbonText from 'components/AdventureRibbonText'
+import AdventureTooltip from 'components/AdventureTooltip'
 import ItemCell from 'components/ItemCell'
 import TreasurySection from 'components/TreasurySection'
-import useMyItems from 'hooks/useMyItems'
+import { AdventureResult } from 'models/AdventureResult'
 import { useTranslation } from 'next-i18next'
 import Image, { StaticImageData } from 'next/image'
 import styled from 'styled-components/macro'
 import { ContentSmall, Note } from 'styles/typography'
-import { AdventureResult } from 'models/AdventureResult'
-import AdventureTooltop from 'components/AdventureTooltip'
-import ProgressBar from './ProgressBar'
 import ExpIcon from './EXP.png'
+import ProgressBar from './ProgressBar'
 import TcpIcon from './TCP.png'
 
-const StyledTooltip = styled(AdventureTooltop)`
-  margin-top: -10px;
+const StyledTooltip = styled(AdventureTooltip)`
+  margin-top: 20px;
 `
 
 interface Props {
