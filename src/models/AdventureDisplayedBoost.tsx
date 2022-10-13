@@ -205,7 +205,7 @@ const parseFirstMatchGroup = (
 
   return {
     boostType: BoostType.FirstMatchGroup,
-    message: details ? group.map(stringifyBoost).join('<br />') : stringifyBoost(firstMatchedBoost),
+    message: details ? group.map(stringifyBoost).join('<br />') : stringifyBoost(effectiveBoost ?? firstMatchedBoost),
     effective: Boolean(effectiveBoost),
     attr: condition.attr,
     boosts: group,
