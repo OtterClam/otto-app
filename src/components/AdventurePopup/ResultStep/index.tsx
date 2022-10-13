@@ -117,7 +117,7 @@ export default function ResultStep() {
     <StyledResultStep bg={location.bgImageBlack}>
       <StyledBody>
         {result && <StyledJournalSection result={result} />}
-        {result && <StyledRewardSection result={result} />}
+        {result && otto && <StyledRewardSection result={result} otto={otto} />}
         {(result?.success || result?.revived) && (
           <StyledButtons>
             <Button Typography={Headline}>{t('explore_again_btn')}</Button>

@@ -142,6 +142,8 @@ export default class Otto {
 
   public readonly exp: number = 0
 
+  public readonly ap: number = 0
+
   public readonly themeBoost: number = 0
 
   public readonly themeBoostMultiplier: number = 1
@@ -191,6 +193,8 @@ export default class Otto {
         this.zodiacSign = String(value)
       } else if (trait_type === 'EXP') {
         this.exp = Number(value)
+      } else if (trait_type === 'AP') {
+        this.ap = Number(value)
       } else if (trait_type === 'Theme Boost') {
         this.themeBoost = Number(value ?? '0')
       } else if (trait_type === 'Theme Boost Multiplier') {

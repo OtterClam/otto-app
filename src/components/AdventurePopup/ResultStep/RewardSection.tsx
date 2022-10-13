@@ -2,11 +2,14 @@ import AdventureRibbonText from 'components/AdventureRibbonText'
 import AdventureTooltip from 'components/AdventureTooltip'
 import ItemCell from 'components/ItemCell'
 import TreasurySection from 'components/TreasurySection'
+import { useAdventureContractState } from 'contexts/AdventureContractState'
 import { AdventureResult } from 'models/AdventureResult'
+import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import Image, { StaticImageData } from 'next/image'
 import styled from 'styled-components/macro'
 import { ContentSmall, Note } from 'styles/typography'
+import ApImage from 'assets/adventure/reward/ap.png'
 import ExpIcon from './EXP.png'
 import ProgressBar from './ProgressBar'
 import TcpIcon from './TCP.png'
@@ -18,10 +21,14 @@ const StyledTooltip = styled(AdventureTooltip)`
 interface Props {
   className?: string
   result: AdventureResult
+  otto: Otto
 }
 
-export default function RewardSection({ className, result }: Props) {
+export default function RewardSection({ className, result, otto }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.resultStep' })
+  const {
+    state: { walletTcp },
+  } = useAdventureContractState()
   return (
     <>
       <StyledRewardSection className={className} showRope={false}>
@@ -41,13 +48,15 @@ export default function RewardSection({ className, result }: Props) {
             <StyledInfoContainer>
               <Image src={ExpIcon} width={60} height={60} />
               <StyledInfoRightContainer>
-                <ContentSmall>LV1</ContentSmall>
+                <ContentSmall>LV{otto.level}</ContentSmall>
                 <StyledInfoDetailsContainer>
                   <StyledIncrease>+{result.rewards.exp} EXP</StyledIncrease>
-                  <ContentSmall>100/100 EXP</ContentSmall>
+                  <ContentSmall>
+                    {otto.exp}/{otto.next_level_exp} EXP
+                  </ContentSmall>
                 </StyledInfoDetailsContainer>
                 <StyledProgressBar
-                  progress={40}
+                  progress={(otto.exp / otto.next_level_exp) * 100}
                   color="linear-gradient(90deg, #9CFE9F 0%, #9CE0FF 50%, #FFADA9 100%)"
                 />
               </StyledInfoRightContainer>
@@ -58,9 +67,22 @@ export default function RewardSection({ className, result }: Props) {
                 <ContentSmall>{t('treasury_chest')}</ContentSmall>
                 <StyledInfoDetailsContainer>
                   <StyledIncrease>+{result.rewards.tcp} TCP</StyledIncrease>
-                  <ContentSmall>100/100 TCP</ContentSmall>
+                  <ContentSmall>{walletTcp.toNumber() % 100}/100 TCP</ContentSmall>
                 </StyledInfoDetailsContainer>
-                <StyledProgressBar progress={40} color="#FFDC77" />
+                <StyledProgressBar progress={walletTcp.toNumber() % 100} color="#FFDC77" />
+              </StyledInfoRightContainer>
+            </StyledInfoContainer>
+            <StyledInfoContainer>
+              <Image src={ApImage} width={60} height={60} />
+              <StyledInfoRightContainer>
+                <ContentSmall>{t('adventure_point')}</ContentSmall>
+                <StyledInfoDetailsContainer>
+                  <StyledIncrease>+{result.rewards.ap} AP</StyledIncrease>
+                  <StyledTotalAP>
+                    <Image src={ApImage} width={21} height={21} />
+                    <ContentSmall>{otto.ap} AP</ContentSmall>
+                  </StyledTotalAP>
+                </StyledInfoDetailsContainer>
               </StyledInfoRightContainer>
             </StyledInfoContainer>
           </>
@@ -141,6 +163,12 @@ const StyledInfoDetailsContainer = styled.div`
 
 const StyledIncrease = styled(ContentSmall)`
   color: ${({ theme }) => theme.colors.crownYellow};
+`
+
+const StyledTotalAP = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
 `
 
 const StyledProgressBar = styled(ProgressBar)``
