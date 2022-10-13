@@ -945,12 +945,8 @@
     "desc": "Congratulations! You’ve collect enough TCP (Treasury Chest Points) to open a Treasury Chest!",
     "button": "Open the Chest"
   },
-<<<<<<< HEAD
-  "adventure_remaining": "Remaining: {{time}}"
-}
-=======
+  "adventure_remaining": "Remaining: {{time}}",
   "adventureAlert": {
     "hideDesc": "Do not show this again"
   }
 }
->>>>>>> 3d46d6b (feat: alert)
