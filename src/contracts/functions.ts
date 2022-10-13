@@ -3,6 +3,7 @@ import { useApi } from 'contexts/Api'
 import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { Api } from 'libs/api'
+import _ from 'lodash'
 import Item, { ItemAction } from 'models/Item'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
@@ -776,16 +777,18 @@ export const useDoItemBatchActions = () => {
   }, [approveItemState])
   useEffect(() => {
     if (state.status === 'Success' && state.receipt) {
-      const restingUntil = state.receipt.logs
-        .map(log => {
-          try {
-            return adventure.interface.parseLog(log)
-          } catch (err) {
-            // skip
-          }
-          return null
-        })
-        .filter(e => e?.name === 'RestingUntilUpdated')[0]?.args[1]
+      const restingUntil = _.last(
+        state.receipt.logs
+          .map(log => {
+            try {
+              return adventure.interface.parseLog(log)
+            } catch (err) {
+              // skip
+            }
+            return null
+          })
+          .filter(e => e?.name === 'RestingUntilUpdated')
+      )?.args[1]
       setDoItemBatchActionsState({
         state: 'Success',
         status: state,
