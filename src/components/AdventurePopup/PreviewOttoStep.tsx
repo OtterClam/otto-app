@@ -22,6 +22,7 @@ import { useApiCall } from 'contexts/Api'
 import { useOtto } from 'contexts/Otto'
 import { useAdventureContract } from 'contracts/contracts'
 import { useAdventureExplore } from 'contracts/functions'
+import { parseBoosts } from 'models/AdventureDisplayedBoost'
 import { BoostType } from 'models/AdventureLocation'
 import { ItemAction } from 'models/Item'
 import { useMyOttos } from 'MyOttosProvider'
@@ -94,7 +95,7 @@ export default function PreviewOttoStep() {
   const { updateOtto, loading: loadingOttos } = useMyOttos()
   const { otto, itemActions: equippedItemActions, setOtto, resetEquippedItems } = useOtto()
   const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const location = useSelectedAdventureLocation()!
   const close = useCloseAdventurePopup()
   const goToStep = useGoToAdventurePopupStep()
@@ -109,7 +110,8 @@ export default function PreviewOttoStep() {
   })
 
   const levelBoost = useMemo(
-    () => location.conditionalBoosts.find(boost => boost.effective && boost.type === BoostType.Exp),
+    () =>
+      parseBoosts(i18n, location.conditionalBoosts).find(boost => boost.effective && boost.boostType === BoostType.Exp),
     [location]
   )
 
