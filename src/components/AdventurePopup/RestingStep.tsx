@@ -1,6 +1,7 @@
 import TimeIcon from 'assets/icons/icon_time.svg'
 import Button from 'components/Button'
 import { ItemActionType } from 'constant'
+import { AdventurePopupStep, useOpenAdventurePopup } from 'contexts/AdventureUIState'
 import { useOtto } from 'contexts/Otto'
 import { useDoItemBatchActions } from 'contracts/functions'
 import formatDistance from 'date-fns/formatDistance'
@@ -101,6 +102,7 @@ const StyledHint = styled(Note).attrs({ as: 'p' })`
 
 export default function RestingStep() {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.restingStep' })
+  const openPopup = useOpenAdventurePopup()
   const { updateOtto } = useMyOttos()
   const { otto, setOtto } = useOtto()
   const now = new Date()
@@ -137,7 +139,8 @@ export default function RestingStep() {
           <Button
             Typography={ContentLarge}
             onClick={() => {
-              // TODO: go to adventure location
+              setOtto(otto)
+              openPopup(undefined, AdventurePopupStep.Map)
             }}
           >
             {t('finish_btn')}
