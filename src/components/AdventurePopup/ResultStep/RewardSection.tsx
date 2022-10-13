@@ -7,9 +7,14 @@ import Image, { StaticImageData } from 'next/image'
 import styled from 'styled-components/macro'
 import { ContentSmall, Note } from 'styles/typography'
 import { AdventureResult } from 'models/AdventureResult'
+import AdventureTooltop from 'components/AdventureTooltip'
 import ProgressBar from './ProgressBar'
 import ExpIcon from './EXP.png'
 import TcpIcon from './TCP.png'
+
+const StyledTooltip = styled(AdventureTooltop)`
+  margin-top: -10px;
+`
 
 interface Props {
   className?: string
@@ -19,55 +24,61 @@ interface Props {
 export default function RewardSection({ className, result }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.resultStep' })
   return (
-    <StyledRewardSection className={className} showRope={false}>
-      <StyledRewardTitle>{t('reward')}</StyledRewardTitle>
-      {result.rewards.items.length > 0 && (
-        <StyledFoundItemsContainer>
-          {result.success && <StyledFoundItemTitle>{t('found_items')}</StyledFoundItemTitle>}
-          <StyledFoundItemList>
-            {result.rewards.items.map(item => (
-              <StyledItemCell key={item.id} item={item} />
-            ))}
-          </StyledFoundItemList>
-        </StyledFoundItemsContainer>
-      )}
-      {result.success && (
-        <>
-          <StyledInfoContainer>
-            <Image src={ExpIcon} width={60} height={60} />
-            <StyledInfoRightContainer>
-              <ContentSmall>LV1</ContentSmall>
-              <StyledInfoDetailsContainer>
-                <StyledIncrease>+{result.rewards.exp} EXP</StyledIncrease>
-                <ContentSmall>100/100 EXP</ContentSmall>
-              </StyledInfoDetailsContainer>
-              <StyledProgressBar progress={40} color="linear-gradient(90deg, #9CFE9F 0%, #9CE0FF 50%, #FFADA9 100%)" />
-            </StyledInfoRightContainer>
-          </StyledInfoContainer>
-          <StyledInfoContainer>
-            <Image src={TcpIcon} width={60} height={60} />
-            <StyledInfoRightContainer>
-              <ContentSmall>{t('treasury_chest')}</ContentSmall>
-              <StyledInfoDetailsContainer>
-                <StyledIncrease>+{result.rewards.tcp} TCP</StyledIncrease>
-                <ContentSmall>100/100 TCP</ContentSmall>
-              </StyledInfoDetailsContainer>
-              <StyledProgressBar progress={40} color="#FFDC77" />
-            </StyledInfoRightContainer>
-          </StyledInfoContainer>
-        </>
-      )}
-      {!result.success && !result.revived && (
-        <>
-          <StyledFailedInfoContainer>
-            <FailedInfo image={ExpIcon} text={`+${result.rewards.exp} EXP`} />
-            <FailedInfo image={TcpIcon} text={`+${result.rewards.tcp} TCP`} />
-          </StyledFailedInfoContainer>
-          <StyledFailedMask />
-          <StyledFailedDesc>{t('failed_desc')}</StyledFailedDesc>
-        </>
-      )}
-    </StyledRewardSection>
+    <>
+      <StyledRewardSection className={className} showRope={false}>
+        <StyledRewardTitle>{t('reward')}</StyledRewardTitle>
+        {result.rewards.items.length > 0 && (
+          <StyledFoundItemsContainer>
+            {result.success && <StyledFoundItemTitle>{t('found_items')}</StyledFoundItemTitle>}
+            <StyledFoundItemList>
+              {result.rewards.items.map(item => (
+                <StyledItemCell key={item.id} item={item} />
+              ))}
+            </StyledFoundItemList>
+          </StyledFoundItemsContainer>
+        )}
+        {result.success && (
+          <>
+            <StyledInfoContainer>
+              <Image src={ExpIcon} width={60} height={60} />
+              <StyledInfoRightContainer>
+                <ContentSmall>LV1</ContentSmall>
+                <StyledInfoDetailsContainer>
+                  <StyledIncrease>+{result.rewards.exp} EXP</StyledIncrease>
+                  <ContentSmall>100/100 EXP</ContentSmall>
+                </StyledInfoDetailsContainer>
+                <StyledProgressBar
+                  progress={40}
+                  color="linear-gradient(90deg, #9CFE9F 0%, #9CE0FF 50%, #FFADA9 100%)"
+                />
+              </StyledInfoRightContainer>
+            </StyledInfoContainer>
+            <StyledInfoContainer>
+              <Image src={TcpIcon} width={60} height={60} />
+              <StyledInfoRightContainer>
+                <ContentSmall>{t('treasury_chest')}</ContentSmall>
+                <StyledInfoDetailsContainer>
+                  <StyledIncrease>+{result.rewards.tcp} TCP</StyledIncrease>
+                  <ContentSmall>100/100 TCP</ContentSmall>
+                </StyledInfoDetailsContainer>
+                <StyledProgressBar progress={40} color="#FFDC77" />
+              </StyledInfoRightContainer>
+            </StyledInfoContainer>
+          </>
+        )}
+        {!result.success && !result.revived && (
+          <>
+            <StyledFailedInfoContainer>
+              <FailedInfo image={ExpIcon} text={`+${result.rewards.exp} EXP`} />
+              <FailedInfo image={TcpIcon} text={`+${result.rewards.tcp} TCP`} />
+            </StyledFailedInfoContainer>
+            <StyledFailedMask />
+            <StyledFailedDesc>{t('failed_desc')}</StyledFailedDesc>
+          </>
+        )}
+      </StyledRewardSection>
+      {!result.success && !result.revived && <StyledTooltip content={t('failed_tooltip')} />}
+    </>
   )
 }
 

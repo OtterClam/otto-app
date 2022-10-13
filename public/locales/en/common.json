@@ -851,6 +851,7 @@
       "title": "Ready to Go!",
       "desc": "{{name}} has just departed to an adventure. Good luck!"
     },
+    "itemTxDesc": "You will be required to perform a transaction to update the wearable items on this Otto.",
     "exploringStep": {
       "title": "{{name}} is exploring...",
       "remaining": "Remaining: {{time}}",
@@ -878,6 +879,7 @@
       "give_up_yes_btn": "Yes. Give up",
       "give_up_back_btn": "Back",
       "failed_desc": "Because your Otto FAILED the adventure, you can not claim those rewards.",
+      "failed_tooltip": "Wanna retrieve the items you’ve found? Just need to spend 1 $CLAM and Kodama will help you retrive them! (but not EXP nor TCP) If you choose to close the adventure, the items will be all discarded and there’s no way back.",
       "failed_hint": "Wanna collected the rewards?\nRevive so that you can claim all of them. If you choose to give up, the rewards will be all discarded and there’s no way back."
     },
     "restingStep": {

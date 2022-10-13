@@ -1,6 +1,7 @@
 import useResizeObserver from '@react-hook/resize-observer'
 import AdventureConditionalBoosts from 'components/AdventureConditionalBoosts'
 import AdventureRewards from 'components/AdventureRewards'
+import AdventureTooltop from 'components/AdventureTooltip'
 import Button from 'components/Button'
 import CloseButton from 'components/CloseButton'
 import OttoAdventureLevel from 'components/OttoAdventureLevel'
@@ -80,6 +81,12 @@ const StyledTitle = styled(ContentMedium)`
   flex: 1;
   color: ${({ theme }) => theme.colors.white};
   text-align: center;
+`
+
+const StyledItemActionsTooltip = styled(AdventureTooltop)`
+  align-items: center;
+  text-align: center;
+  margin-top: -10px;
 `
 
 export default function PreviewOttoStep() {
@@ -226,6 +233,7 @@ export default function PreviewOttoStep() {
           >
             {t('adventurePopup.start')}
           </Button>
+          {equippedItemActions.length > 0 && <StyledItemActionsTooltip content={t('adventurePopup.itemTxDesc')} />}
         </StyledContainer>
       </AdventureOttoProvider>
     </AdventureLocationProvider>
