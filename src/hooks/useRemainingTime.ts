@@ -9,8 +9,10 @@ export default function useRemainingTime(target: Date): string {
     let timer: ReturnType<typeof setTimeout>
 
     const updateFormattedDuration = () => {
+      const now = new Date()
+      const start = now > target ? target : now
       const duration = intervalToDuration({
-        start: new Date(),
+        start,
         end: target,
       })
       setFormattedDuration(formatDuration(duration))

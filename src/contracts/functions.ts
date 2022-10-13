@@ -1,5 +1,4 @@
 import { TransactionState, TransactionStatus, useCalls, useContractFunction, useEthers } from '@usedapp/core'
-import { AdventurePotion, AdventureSpeedUpTime } from 'constant'
 import { useApi } from 'contexts/Api'
 import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
@@ -746,4 +745,84 @@ export const useTransferItem = () => {
 export const useUsePotions = () => {
   const adventure = useAdventureContract()
   return useContractFunction(adventure, 'usePotions')
+}
+
+interface OttoDoItemTransactionState {
+  state: OttoTxState
+  status: TransactionStatus
+  restingUntil?: Date
+}
+
+export const useDoItemBatchActions = () => {
+  const otto = useOttoContract()
+  const adventure = useAdventureContract()
+  const item = useItemContract()
+  const { account } = useEthers()
+  const { state, send, resetState } = useContractFunction(otto, 'doItemBatchActions')
+  const [doItemBatchActionsState, setDoItemBatchActionsState] = useState<OttoDoItemTransactionState>({
+    status: state,
+    state: 'None',
+  })
+  const {
+    send: approveItemSpending,
+    state: approveItemState,
+    resetState: resetItem,
+  } = useContractFunction(item, 'setApprovalForAll')
+  useEffect(() => {
+    setDoItemBatchActionsState({
+      state: txState(state.status),
+      status: state,
+    })
+  }, [approveItemState])
+  useEffect(() => {
+    if (state.status === 'Success' && state.receipt) {
+      const restingUntil = state.receipt.logs
+        .map(log => {
+          try {
+            return adventure.interface.parseLog(log)
+          } catch (err) {
+            // skip
+          }
+          return null
+        })
+        .filter(e => e?.name === 'RestingUntilUpdated')[0]?.args[1]
+      console.log('restingUntil:', restingUntil)
+      setDoItemBatchActionsState({
+        state: 'Success',
+        status: state,
+        restingUntil: restingUntil ? new Date(restingUntil.toNumber() * 1000) : undefined,
+      })
+    } else {
+      setDoItemBatchActionsState({
+        state: txState(state.status),
+        status: state,
+      })
+    }
+  }, [state])
+  const doItemBatchActions = useCallback(
+    async (ottoId: string, actions: ItemAction[]) => {
+      if (!account) {
+        return
+      }
+      const approved = await item.isApprovedForAll(account, otto.address)
+      if (!approved) {
+        const tx = await approveItemSpending(otto.address, true)
+        if (!tx) return
+      }
+      send(
+        ottoId,
+        actions.map(({ type, item_id, from_otto_id }) => ({
+          typ: type,
+          itemId: item_id,
+          fromOttoId: from_otto_id,
+        }))
+      )
+    },
+    [send, item]
+  )
+  const resetDoItemBatchActions = useCallback(() => {
+    resetState()
+    resetItem()
+  }, [resetState, resetItem])
+  return { doItemBatchActionsState, doItemBatchActions, resetDoItemBatchActions }
 }

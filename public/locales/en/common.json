@@ -886,7 +886,8 @@
       "finish_btn": "Explore again",
       "remaining": "Rest Remaining: {{time}}",
       "speed_up_btn": "Speed Up",
-      "buy_now": "Buy NOW>"
+      "buy_now": "Buy NOW>",
+      "wants_more": "Want more Speed-Up Potions?"
     }
   },
   "adventureOttoList": {
@@ -933,5 +934,6 @@
     "popupTitle": "Treasury Chest",
     "desc": "Congratulations! You’ve collect enough TCP (Treasury Chest Points) to open a Treasury Chest!",
     "button": "Open the Chest"
-  }
+  },
+  "adventure_remaining": "Remaining: {{time}}"
 }
