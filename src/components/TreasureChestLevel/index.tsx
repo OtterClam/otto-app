@@ -49,7 +49,7 @@ const StyledDesc = styled(Note)`
 `
 
 export default function TreasureChestLevel({ className }: { className?: string }) {
-  const { t } = useTranslation('', { keyPrefix: 'treasueyChestLevel' })
+  const { t } = useTranslation('', { keyPrefix: 'treasuryChestLevel' })
   const { state } = useAdventureContractState()
   const tcp = state.walletTcp.mod(100).toNumber()
 

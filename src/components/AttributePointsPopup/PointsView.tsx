@@ -19,7 +19,7 @@ const StyedContainer = styled.div`
   gap: 10px;
 `
 
-const StyeldTitle = styled(ContentLarge).attrs({ as: 'h3' })`
+const StyledTitle = styled(ContentLarge).attrs({ as: 'h3' })`
   text-align: center;
   margin-bottom: 10px;
 `
@@ -92,9 +92,7 @@ export default function PointsView({ onSuccess, onRequestClose }: PointsViewProp
   }, [points])
 
   const usedPoints = pointList.reduce((total, points) => total + points, 0)
-
   const otto = useMyOtto(ottoId)
-
   const attrValues = useMemo(() => {
     return (otto?.displayAttrs ?? []).reduce(
       (values, attr) => Object.assign(values, { [attr.trait_type.toLocaleLowerCase()]: Number(attr.value) }),
@@ -134,7 +132,7 @@ export default function PointsView({ onSuccess, onRequestClose }: PointsViewProp
     <StyedContainer>
       {otto && otto && (
         <>
-          <StyeldTitle>{t('popupTitle')}</StyeldTitle>
+          <StyledTitle>{t('popupTitle')}</StyledTitle>
           <StyledOttoCard>
             <CroppedImage src={otto.image} width={60} height={60} />
             <StyledDetails>
@@ -151,7 +149,7 @@ export default function PointsView({ onSuccess, onRequestClose }: PointsViewProp
             </StyledDetails>
           </StyledOttoCard>
           <StyledAvailablePoints>
-            {t('avaliablePoints', { points: availablePoints - usedPoints })}
+            {t('availablePoints', { points: availablePoints - usedPoints })}
           </StyledAvailablePoints>
           <StyledPoints>
             {attrs.map(attr => (

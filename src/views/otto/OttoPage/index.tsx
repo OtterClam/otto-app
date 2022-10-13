@@ -411,7 +411,7 @@ export default function OttoPage() {
               ))}
             </StyledAttrs>
 
-            {isMyOtto && (
+            {isMyOtto && (otto?.attributePoints || 0) > 0 && (
               <StyledAttributePoints>
                 {t('otto.attribute_points', { attributePoints: otto?.attributePoints ?? 0 })}
                 <Button
