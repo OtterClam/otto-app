@@ -94,12 +94,6 @@ export default function OttoList({ maxHeight }: { maxHeight?: number }) {
         {filteredOttos.map(otto => (
           <AdventureOttoCard key={otto.id} otto={otto} />
         ))}
-        {filteredOttos.map(otto => (
-          <AdventureOttoCard key={otto.id} otto={otto} />
-        ))}
-        {filteredOttos.map(otto => (
-          <AdventureOttoCard key={otto.id} otto={otto} />
-        ))}
       </StyledOttoList>
     </StyledContainer>
   )
