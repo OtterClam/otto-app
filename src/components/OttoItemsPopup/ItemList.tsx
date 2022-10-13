@@ -37,15 +37,35 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
   const { filteredItems } = useItemFilters()
   const { currentItem, restItems } = useMemo(() => {
     const trait = otto?.wearableTraits.find(trait => trait.type === traitType)
+    let restItems = filteredItems
+
+    {
+      const items: Item[] = []
+      const map: { [k: string]: number } = {}
+      restItems.forEach((item, index) => {
+        if (map[item.id] !== undefined && items[map[item.id]].equipped) {
+          items[map[item.id]] = item
+        } else {
+          map[item.id] = index
+          items.push(item)
+        }
+      })
+      restItems = items
+    }
+
     const gender = {
       Lottie: OttoGender.Female,
       Otto: OttoGender.Male,
     }[otto?.gender ?? '']
-    const restItems = filteredItems
+
+    restItems = restItems
       .filter(item => !gender || item.equippable_gender === OttoGender.Both || item.equippable_gender === gender)
       .slice()
+
     const currentItemIndex = filteredItems.findIndex(item => item.id === trait?.id)
+
     let currentItem: Item | undefined
+
     if (currentItemIndex !== -1) {
       ;[currentItem] = restItems.splice(currentItemIndex, 1)
     } else if (trait) {

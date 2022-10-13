@@ -92,7 +92,7 @@ const StyledItemActionsTooltip = styled(AdventureTooltop)`
 export default function PreviewOttoStep() {
   const container = useRef<HTMLDivElement>(null)
   const { updateOtto, loading: loadingOttos } = useMyOttos()
-  const { otto, itemActions: equippedItemActions, setOtto } = useOtto()
+  const { otto, itemActions: equippedItemActions, setOtto, resetEquippedItems } = useOtto()
   const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
   const { t } = useTranslation()
   const location = useSelectedAdventureLocation()!
@@ -168,6 +168,7 @@ export default function PreviewOttoStep() {
       adventureContract
         .pass(exploreState.passId)
         .then(pass => {
+          resetEquippedItems()
           otto.explore(pass)
           setOtto(otto)
           updateOtto(otto)
