@@ -718,7 +718,7 @@
     "ottos": "My Ottos",
     "missions": "Missions"
   },
-  "treasueyChestLevel": {
+  "treasuryChestLevel": {
     "title": "Treasury Chest",
     "desc": "Collect points on adventure to open the Treasure Chest!",
     "value": "{{ tcp }}/100 TCP"

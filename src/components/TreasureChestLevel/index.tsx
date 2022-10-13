@@ -22,6 +22,8 @@ const StyledProgressBar = styled.div<{ progress: number }>`
 
   &:before {
     content: '';
+    display: block;
+    height: 100%;
     border-radius: 3px;
     background: ${({ theme }) => theme.colors.crownYellow};
     width: ${({ progress }) => progress * 100}%;
@@ -57,7 +59,7 @@ export default function TreasureChestLevel({ className }: { className?: string }
         <StyledTitle>{t('title')}</StyledTitle>
         <StyledValue>{t('value', { tcp })}</StyledValue>
       </StyledHead>
-      <StyledProgressBar progress={Math.min(1, tcp / 100)} />
+      <StyledProgressBar progress={tcp / 100} />
       <StyledDesc>{t('desc')}</StyledDesc>
     </StyledContainer>
   )
