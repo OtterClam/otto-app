@@ -11,19 +11,20 @@ const StyledContainer = styled(Note).attrs({ as: 'div' })<{ viewLabel: string }>
   border-radius: 5px;
   padding: 2px;
   text-align: center;
-  line-height: 12px;
   gap: 2px;
   white-space: nowrap;
 
   &::after {
-    line-height: 20px;
-    max-height: 20px;
-    min-height: 20px;
+    line-height: 22px;
     content: '${({ viewLabel }) => viewLabel}';
     color: ${({ theme }) => theme.colors.otterBlack};
     background: ${({ theme }) => theme.colors.crownYellow};
     border-radius: 0 0 3px 3px;
   }
+`
+
+const StyledDuration = styled.p`
+  margin: 0 3px;
 `
 
 export interface RemainingTimeProps {
@@ -37,7 +38,7 @@ export default function RemainingTime({ target, onClick }: RemainingTimeProps) {
 
   return (
     <StyledContainer viewLabel={t('viewLabel')} onClick={onClick}>
-      {duration}
+      <StyledDuration>{duration}</StyledDuration>
     </StyledContainer>
   )
 }
