@@ -1,4 +1,5 @@
 import { TransactionState, TransactionStatus, useCalls, useContractFunction, useEthers } from '@usedapp/core'
+import { AdventurePotion, AdventureSpeedUpTime } from 'constant'
 import { useApi } from 'contexts/Api'
 import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
@@ -740,4 +741,9 @@ export const useTransferItem = () => {
     [account, send]
   )
   return { transferState: state, transfer, resetTransfer: resetState }
+}
+
+export const useUsePotions = () => {
+  const adventure = useAdventureContract()
+  return useContractFunction(adventure, 'usePotions')
 }

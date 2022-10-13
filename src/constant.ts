@@ -61,6 +61,12 @@ export enum AdventurePotion {
   Str = 16711854,
 }
 
+export const AdventureSpeedUpTime: { [k: string]: number } = {
+  [AdventurePotion.OneHourSpeedy]: 60 * 60 * 1000,
+  [AdventurePotion.ThreeHourSpeedy]: 3 * 60 * 60 * 1000,
+  [AdventurePotion.SixHourSpeedy]: 6 * 60 * 60 * 1000,
+}
+
 export enum ItemActionType {
   Equip = 0,
   Use = 1,

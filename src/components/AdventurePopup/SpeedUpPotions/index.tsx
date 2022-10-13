@@ -12,12 +12,14 @@ const StyledSpeedUpPotions = styled.div`
 
 interface Props {
   disabled: boolean
+  targetDate: Date
   onUsedPotionsUpdate: (numbers: number[]) => void
 }
 
-export default function SpeedUpPotions({ disabled, onUsedPotionsUpdate }: Props) {
+export default function SpeedUpPotions({ disabled, targetDate, onUsedPotionsUpdate }: Props) {
   const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
   const { amounts } = useAdventurePotion()
+
   useEffect(() => {
     const usedPotions = Object.keys(usedPotionAmounts)
       .map(key => {
@@ -30,12 +32,14 @@ export default function SpeedUpPotions({ disabled, onUsedPotionsUpdate }: Props)
       })
       .reduce((all, list) => all.concat(list), [] as number[])
     onUsedPotionsUpdate(usedPotions)
-  }, [usedPotionAmounts, onUsedPotionsUpdate])
+  }, [usedPotionAmounts])
+
   return (
     <StyledSpeedUpPotions>
       <SpeedUpPotion
         disabled={disabled}
         potion={AdventurePotion.OneHourSpeedy}
+        targetDate={targetDate}
         onChanged={setUsedPotionAmounts}
         image={SpeedPotion.src}
         amounts={amounts}
@@ -45,6 +49,7 @@ export default function SpeedUpPotions({ disabled, onUsedPotionsUpdate }: Props)
       <SpeedUpPotion
         disabled={disabled}
         potion={AdventurePotion.ThreeHourSpeedy}
+        targetDate={targetDate}
         onChanged={setUsedPotionAmounts}
         image={SpeedPotion.src}
         amounts={amounts}
@@ -54,6 +59,7 @@ export default function SpeedUpPotions({ disabled, onUsedPotionsUpdate }: Props)
       <SpeedUpPotion
         disabled={disabled}
         potion={AdventurePotion.SixHourSpeedy}
+        targetDate={targetDate}
         onChanged={setUsedPotionAmounts}
         image={SpeedPotion.src}
         amounts={amounts}

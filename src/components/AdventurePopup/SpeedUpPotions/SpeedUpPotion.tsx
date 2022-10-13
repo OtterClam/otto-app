@@ -66,7 +66,7 @@ const StyledIncreaseAmountButton = styled(Note).attrs({ as: 'button' })`
   background: ${({ theme }) => theme.colors.otterBlue};
 `
 
-const StyledDecreaseAmountButton = styled(Note).attrs({ as: 'button' })`
+const StyledDecreaseAmountButton = styled(Note).attrs({ as: 'button' })<{ disabled?: boolean }>`
   color: ${({ theme }) => theme.colors.white};
   width: 20px;
   height: 20px;
@@ -78,6 +78,7 @@ interface Props {
   potion: AdventurePotion
   amounts: { [k: string]: number }
   usedAmounts: { [k: string]: number }
+  targetDate: Date
   image: string
   reducedTime: string
   onChanged: (usedAmounts: { [k: string]: number }) => void
@@ -88,6 +89,7 @@ export default function SpeedUpPotion({
   amounts,
   usedAmounts,
   potion,
+  targetDate,
   disabled,
   image,
   reducedTime,
@@ -97,6 +99,7 @@ export default function SpeedUpPotion({
   const amount = amounts[potion] ?? 0
   const usedAmount = usedAmounts[potion] ?? 0
   const hasAmount = amount - usedAmount > 0
+  const duration = targetDate.getTime() - Date.now()
 
   return (
     <StyledSpeedUpPotion>
@@ -119,6 +122,7 @@ export default function SpeedUpPotion({
           </StyledIncreaseAmountButton>
           {usedAmount}
           <StyledDecreaseAmountButton
+            disabled={duration <= 0}
             onClick={() =>
               onChanged({
                 ...usedAmounts,
@@ -130,7 +134,7 @@ export default function SpeedUpPotion({
           </StyledDecreaseAmountButton>
         </StyledAmountSelector>
       )}
-      {disabled || (!hasAmount && <StyledUseButton disabled>{t('used', { amount: usedAmount })}</StyledUseButton>)}
+      {(disabled || !hasAmount) && <StyledUseButton disabled>{t('used', { amount: usedAmount })}</StyledUseButton>}
     </StyledSpeedUpPotion>
   )
 }

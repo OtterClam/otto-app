@@ -8,6 +8,7 @@ import { OttoTxState } from 'contracts/functions'
 import formatDistance from 'date-fns/formatDistance'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useRemainingTime from 'hooks/useRemainingTime'
+import useSeedUpPotionPreview from 'hooks/useSeedUpPotionPreview'
 import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -126,19 +127,20 @@ const StyledName = styled(AdventureLocationName)`
 
 interface Props {
   otto: Otto
-  state: OttoTxState
+  loading: boolean
   onFinish: (immediately: boolean, potions: number[]) => void
 }
 
-export default function OnGoingView({ otto, state, onFinish }: Props) {
+export default function OnGoingView({ otto, loading, onFinish }: Props) {
   const { ADVENTURE } = useContractAddresses()
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.exploringStep' })
   const location = useSelectedAdventureLocation()
   const now = new Date()
+  const [usedPotionAmounts, setUsedPotionAmounts] = useState<number[]>([])
   const canFinishAt = otto?.latestAdventurePass?.canFinishAt ?? now
+  const updatedCanFinishAt = useSeedUpPotionPreview(otto?.latestAdventurePass?.canFinishAt ?? now, usedPotionAmounts)
   const formattedDuration = formatDistance(canFinishAt, otto?.latestAdventurePass?.departureAt ?? 0)
   const remainingDuration = useRemainingTime(canFinishAt)
-  const [usedPotionAmounts, setUsedPotionAmounts] = useState<number[]>([])
 
   if (!otto || !location) {
     return null
@@ -158,7 +160,7 @@ export default function OnGoingView({ otto, state, onFinish }: Props) {
         </StyledOttoPlace>
         {now >= canFinishAt && (
           <>
-            <Button Typography={ContentLarge} onClick={() => onFinish(false, [])} loading={state === 'Processing'}>
+            <Button Typography={ContentLarge} onClick={() => onFinish(false, [])} loading={loading}>
               {t('see_results_btn')}
             </Button>
             <StyledSeeResultHint>{t('see_results_hint')}</StyledSeeResultHint>
@@ -168,14 +170,15 @@ export default function OnGoingView({ otto, state, onFinish }: Props) {
           <>
             <StyledRemaining>{t('remaining', { time: remainingDuration })}</StyledRemaining>
             <SpeedUpPotions
-              disabled={state === 'Processing'}
+              disabled={loading}
+              targetDate={updatedCanFinishAt}
               onUsedPotionsUpdate={amounts => setUsedPotionAmounts(amounts)}
             />
             {usedPotionAmounts.length === 0 && (
               <PaymentButton
                 width="100%"
                 spenderAddress={ADVENTURE}
-                loading={state === 'Processing'}
+                loading={loading}
                 amount={4 * 1e9}
                 token={Token.Clam}
                 Typography={ContentLarge}
@@ -187,7 +190,7 @@ export default function OnGoingView({ otto, state, onFinish }: Props) {
             )}
             {usedPotionAmounts.length > 0 && (
               <Button
-                loading={state === 'Processing'}
+                loading={loading}
                 width="100%"
                 Typography={ContentLarge}
                 padding="6px 20px 0"

@@ -103,6 +103,8 @@ const StyledHint = styled(Note).attrs({ as: 'p' })`
   }
 `
 
+const targetDate = new Date()
+
 export default function RestingStep() {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.restingStep' })
   const { otto } = useOtto()
@@ -141,7 +143,11 @@ export default function RestingStep() {
         {!restFinished && (
           <>
             <StyledRemaining>{t('remaining', { time: remainingDuration })}</StyledRemaining>
-            <SpeedUpPotions disabled={false} onUsedPotionsUpdate={amounts => setUsedPotionAmounts(amounts)} />
+            <SpeedUpPotions
+              targetDate={targetDate}
+              disabled={false}
+              onUsedPotionsUpdate={amounts => setUsedPotionAmounts(amounts)}
+            />
             {usedPotionAmounts.length === 0 && (
               <Button
                 width="100%"
