@@ -276,15 +276,12 @@ export default class Otto {
       if (this.restingUntil >= now) {
         return AdventureOttoStatus.Resting
       }
-      return AdventureOttoStatus.Ready
     }
-    if (this.latestAdventurePass) {
+    if (this.latestAdventurePass && !this.latestAdventurePass.finishedAt) {
       if (this.latestAdventurePass.canFinishAt > now) {
         return AdventureOttoStatus.Ongoing
       }
-      if (!this.latestAdventurePass.finishedAt) {
-        return AdventureOttoStatus.Finished
-      }
+      return AdventureOttoStatus.Finished
     }
     return AdventureOttoStatus.Ready
   }

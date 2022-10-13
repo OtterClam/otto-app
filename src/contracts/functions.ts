@@ -786,7 +786,6 @@ export const useDoItemBatchActions = () => {
           return null
         })
         .filter(e => e?.name === 'RestingUntilUpdated')[0]?.args[1]
-      console.log('restingUntil:', restingUntil)
       setDoItemBatchActionsState({
         state: 'Success',
         status: state,
