@@ -15,6 +15,7 @@ import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
 import { WalletProvider } from 'contexts/Wallet'
 import { ApiProvider } from 'contexts/Api'
 import { OverlayProvider } from 'contexts/Overlay'
+import { SkeletonTheme } from 'react-loading-skeleton'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 
@@ -78,11 +79,13 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                     <MyOttosProvider>
                       <OverlayProvider>
                         <StyledApp>
-                          <StyledPageContainer>{children}</StyledPageContainer>
-                          <Error />
-                          <WalletSelector />
-                          <SideMenu />
-                          <AssetsLoader />
+                          <SkeletonTheme baseColor="#1D2654">
+                            <StyledPageContainer>{children}</StyledPageContainer>
+                            <Error />
+                            <WalletSelector />
+                            <SideMenu />
+                            <AssetsLoader />
+                          </SkeletonTheme>
                         </StyledApp>
                       </OverlayProvider>
                     </MyOttosProvider>

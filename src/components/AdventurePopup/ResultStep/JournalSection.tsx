@@ -1,15 +1,18 @@
 import TreasurySection from 'components/TreasurySection'
 import { format } from 'date-fns'
+import _ from 'lodash'
 import { AdventureJournalEntry, AdventureResult } from 'models/AdventureResult'
 import { useTranslation } from 'next-i18next'
+import Skeleton from 'react-loading-skeleton'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components/macro'
 import { Caption, ContentSmall, Headline } from 'styles/typography'
 import AdventureJournalBg from './adventure_journal_bg.png'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 interface Props {
   className?: string
-  result: AdventureResult
+  result: AdventureResult | null
 }
 
 export default function AdventureJournal({ className, result }: Props) {
@@ -19,16 +22,16 @@ export default function AdventureJournal({ className, result }: Props) {
       <StyledTitle>{t('journal')}</StyledTitle>
       <StyledScrollContainer>
         <StyledJournalEntryContainer>
-          {result.journal.map((entry, i) => (
-            <DisplayJournalEntry key={i} {...entry} />
-          ))}
+          {!result && _.range(10).map(i => <JournalEntrySkeleton key={i} />)}
+          {result && result.journal.map((entry, i) => <DisplayJournalEntry key={i} {...entry} />)}
         </StyledJournalEntryContainer>
       </StyledScrollContainer>
 
       <StyledResultContainer>
         <StyledResultLabel>{t('result_label')}</StyledResultLabel>
-        <StyledResultValue succeeded={result.success}>
-          {t(result.success ? 'result_succeeded' : 'result_failed')}
+        <StyledResultValue succeeded={result?.success}>
+          {result && t(result.success ? 'result_succeeded' : 'result_failed')}
+          {!result && <Skeleton />}
         </StyledResultValue>
       </StyledResultContainer>
     </StyledJournalSection>
@@ -82,7 +85,8 @@ const StyledResultLabel = styled(ContentSmall)`
   color: ${({ theme }) => theme.colors.white};
 `
 
-const StyledResultValue = styled(ContentSmall)<{ succeeded: boolean }>`
+const StyledResultValue = styled(ContentSmall)<{ succeeded?: boolean }>`
+  min-width: 150px;
   font-family: 'PaytoneOne';
   font-style: normal;
   font-weight: 400;
@@ -97,6 +101,19 @@ const StyledResultValue = styled(ContentSmall)<{ succeeded: boolean }>`
   -webkit-background-clip: text;
 `
 
+function JournalEntrySkeleton() {
+  return (
+    <StyledJournalEntry>
+      <StyledJournalEntryTimestamp>
+        <Skeleton width={24} />
+      </StyledJournalEntryTimestamp>
+      <StyledJournalEntryText>
+        <Skeleton />
+      </StyledJournalEntryText>
+    </StyledJournalEntry>
+  )
+}
+
 function DisplayJournalEntry({ happened_at, text }: AdventureJournalEntry) {
   return (
     <StyledJournalEntry>
@@ -109,6 +126,7 @@ function DisplayJournalEntry({ happened_at, text }: AdventureJournalEntry) {
 }
 
 const StyledJournalEntry = styled(Caption).attrs({ as: 'div' })`
+  width: 100%;
   display: flex;
   align-items: flex-start;
 `
@@ -121,6 +139,7 @@ const StyledJournalEntryTimestamp = styled.div`
 `
 
 const StyledJournalEntryText = styled(Caption)`
+  width: 100%;
   color: ${({ theme }) => theme.colors.white};
   strong {
     color: ${({ theme }) => theme.colors.crownYellow};

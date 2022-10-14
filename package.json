@@ -56,10 +56,12 @@
     "next-transpile-modules": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-loading-skeleton": "^3.1.0",
     "react-markdown": "^8.0.2",
     "react-redux": "^7.2.0",
     "react-responsive": "^9.0.0-beta.10",
     "react-responsive-carousel": "^3.2.23",
+    "react-swipeable": "^7.0.0",
     "react-tooltip": "^4.2.21",
     "react-transition-group": "^4.4.5",
     "recharts": "^2.1.12",
@@ -74,8 +76,7 @@
     "workbox-core": "^6.5.3",
     "workbox-routing": "^6.5.3",
     "workbox-strategies": "^6.5.3",
-    "workbox-window": "^6.5.3",
-    "react-swipeable": "^7.0.0"
+    "workbox-window": "^6.5.3"
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "^4.9.1",

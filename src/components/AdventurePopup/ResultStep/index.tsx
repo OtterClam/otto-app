@@ -116,28 +116,23 @@ export default function ResultStep() {
   return (
     <StyledResultStep bg={location.bgImageBlack}>
       <StyledBody>
-        {result && <StyledJournalSection result={result} />}
+        <StyledJournalSection result={result} />
         {result && otto && <StyledRewardSection result={result} otto={otto} />}
-        {(result?.success || result?.revived) && (
+        {result && (
           <StyledButtons>
-            <Button Typography={Headline}>{t('explore_again_btn')}</Button>
-            <Button Typography={Headline} primaryColor="white" onClick={closePopup}>
-              {t('close_btn')}
-            </Button>
-          </StyledButtons>
-        )}
-        {!(result?.success || result?.revived) && (
-          <StyledButtons>
-            <PaymentButton
-              Typography={Headline}
-              loading={reviveState.status === 'PendingSignature' || reviveState.status === 'Mining'}
-              spenderAddress={ADVENTURE}
-              token={Token.Clam}
-              amount={ethers.utils.parseUnits('1', 9)}
-              onClick={() => otto && revive(otto.id)}
-            >
-              {t('revive_btn')}
-            </PaymentButton>
+            {result.success && <Button Typography={Headline}>{t('explore_again_btn')}</Button>}
+            {!(result.success || result.revived) && (
+              <PaymentButton
+                Typography={Headline}
+                loading={reviveState.status === 'PendingSignature' || reviveState.status === 'Mining'}
+                spenderAddress={ADVENTURE}
+                token={Token.Clam}
+                amount={ethers.utils.parseUnits('1', 9)}
+                onClick={() => otto && revive(otto.id)}
+              >
+                {t('revive_btn')}
+              </PaymentButton>
+            )}
             <Button Typography={Headline} primaryColor="white" onClick={closePopup}>
               {t('close_btn')}
             </Button>
