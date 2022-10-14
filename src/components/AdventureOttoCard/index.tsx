@@ -165,7 +165,29 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
         </StyledAction>
       </StyledContainer>
       <StyledAdventureStatus>
-        {otto.adventureStatus === AdventureOttoStatus.Ready && t('ready', { name: otto.name })}
+        {otto.adventureStatus === AdventureOttoStatus.Ready && (
+          <>
+            {t('ready', { name: otto.name })}
+            {otto.latestAdventurePass && (
+              <div>
+                <a
+                  onClick={() => {
+                    setOtto(otto)
+                    otto.latestAdventurePass &&
+                      otto.latestAdventurePass?.finishedTx &&
+                      goToAdventureResultStep({
+                        tx: otto.latestAdventurePass.finishedTx,
+                        locationId: otto.latestAdventurePass.locationId,
+                      })
+                  }}
+                >
+                  {t('resting_2')}
+                </a>
+              </div>
+            )}
+          </>
+        )}
+
         {otto.adventureStatus === AdventureOttoStatus.Ongoing &&
           t('ongoing', { name: otto.name, location: location?.name })}
         {otto.adventureStatus === AdventureOttoStatus.Resting && (
