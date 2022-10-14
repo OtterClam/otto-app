@@ -10,11 +10,17 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  text-align: center;
 `
 
 const StyledOttos = styled.div`
   display: flex;
   align-items: center;
+  text-align: left;
+`
+
+const StyledOttoCard = styled(OttoCard)`
+  flex: 1;
 `
 
 const StyledArrow = styled.div`
@@ -40,9 +46,9 @@ export default function ResultView({ result: { otto, points }, onRequestClose }:
       <ContentLarge as="h3">{t('resultTitle')}</ContentLarge>
       <Caption>{t('resultDesc')}</Caption>
       <StyledOttos>
-        <OttoCard otto={otto} />
+        <StyledOttoCard otto={otto} />
         <StyledArrow />
-        <OttoCard otto={otto} points={points} />
+        <StyledOttoCard otto={otto} points={points} />
       </StyledOttos>
       <Button width="100%" Typography={Headline} primaryColor="white" onClick={onRequestClose}>
         {t('resultCloseButton')}

@@ -106,11 +106,12 @@ const StyledAdventureProgressBar = styled(AdventureProgressBar)`
 export interface OttoCardProps {
   otto: Otto
   points?: { [k: string]: number }
+  className?: string
 }
 
-export default function OttoCard({ otto, points = {} }: OttoCardProps) {
+export default function OttoCard({ otto, className, points = {} }: OttoCardProps) {
   return (
-    <StyledOttoCard>
+    <StyledOttoCard className={className}>
       <StyledImage>
         <CroppedImage src={otto.image} layout="fill" />
       </StyledImage>
