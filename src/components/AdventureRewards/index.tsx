@@ -147,7 +147,7 @@ export default function AdventureRewards({ canUsePotions, onUsePotion = noop }: 
   const applyPotion = useCallback((potion: AdventurePotion) => {
     setUsedPotionAmounts(usedPotionAmounts => ({
       ...usedPotionAmounts,
-      [potion]: usedPotionAmounts[potion] === 0 ? 1 : 0,
+      [potion]: usedPotionAmounts[potion] === 1 ? 0 : 1,
     }))
   }, [])
   const effectiveBoosts = (location?.conditionalBoosts ?? []).filter(boost => boost.effective)
@@ -184,74 +184,74 @@ export default function AdventureRewards({ canUsePotions, onUsePotion = noop }: 
     onUsePotion(usedPotionAmounts)
   }, [usedPotionAmounts])
 
+  if (!location) {
+    return null
+  }
+
   return (
     <div>
-      {location && (
-        <>
-          <StyledLocationDetails>
-            <StyledLocationDetail>
-              <StyledLocationDetailLabel>
-                {t('successRate')} <HelpButton message={t('successRateHelp')} />
-              </StyledLocationDetailLabel>
-              <StyledLocationDetailValue>{location.successRate}%</StyledLocationDetailValue>
-            </StyledLocationDetail>
-            <StyledLocationDetail>
-              <StyledLocationDetailLabel>{t('adventureTime')}</StyledLocationDetailLabel>
-              <StyledLocationDetailValue>{formatDuration(location.adventureTime)}</StyledLocationDetailValue>
-            </StyledLocationDetail>
-            <StyledLocationDetail>
-              <StyledLocationDetailLabel>
-                {t('restingTime')} <HelpButton message={t('restingTimeHelp')} />
-              </StyledLocationDetailLabel>
-              <StyledLocationDetailValue>{formatDuration(location.restingTime)}</StyledLocationDetailValue>
-            </StyledLocationDetail>
-          </StyledLocationDetails>
+      <StyledLocationDetails>
+        <StyledLocationDetail>
+          <StyledLocationDetailLabel>
+            {t('successRate')} <HelpButton message={t('successRateHelp')} />
+          </StyledLocationDetailLabel>
+          <StyledLocationDetailValue>{location.successRate}%</StyledLocationDetailValue>
+        </StyledLocationDetail>
+        <StyledLocationDetail>
+          <StyledLocationDetailLabel>{t('adventureTime')}</StyledLocationDetailLabel>
+          <StyledLocationDetailValue>{formatDuration(location.adventureTime)}</StyledLocationDetailValue>
+        </StyledLocationDetail>
+        <StyledLocationDetail>
+          <StyledLocationDetailLabel>
+            {t('restingTime')} <HelpButton message={t('restingTimeHelp')} />
+          </StyledLocationDetailLabel>
+          <StyledLocationDetailValue>{formatDuration(location.restingTime)}</StyledLocationDetailValue>
+        </StyledLocationDetail>
+      </StyledLocationDetails>
 
-          <StyledRope />
+      <StyledRope />
 
-          <StyledTitle>
-            <AdventureRibbonText>{t('rewardSectionTitle')}</AdventureRibbonText>
-          </StyledTitle>
+      <StyledTitle>
+        <AdventureRibbonText>{t('rewardSectionTitle')}</AdventureRibbonText>
+      </StyledTitle>
 
-          <StyledSection showRope={false}>
-            <StyledReward>
-              <StyledRewardIcon icon={expImage.src} />
-              <StyledRewardValue>+{location.successRewards.exp?.fixed ?? 0} EXP</StyledRewardValue>
-              {canUsePotions && (
-                <PotionButton
-                  potion={AdventurePotion.Exp}
-                  potionAmounts={potionAmounts}
-                  usedPotionAmounts={usedPotionAmounts}
-                  onUse={applyPotion}
-                />
-              )}
-            </StyledReward>
+      <StyledSection showRope={false}>
+        <StyledReward>
+          <StyledRewardIcon icon={expImage.src} />
+          <StyledRewardValue>+{location.successRewards.exp?.fixed ?? 0} EXP</StyledRewardValue>
+          {canUsePotions && (
+            <PotionButton
+              potion={AdventurePotion.Exp}
+              potionAmounts={potionAmounts}
+              usedPotionAmounts={usedPotionAmounts}
+              onUse={applyPotion}
+            />
+          )}
+        </StyledReward>
 
-            <StyledReward>
-              <StyledRewardIcon icon={itemsImage.src} />
-              <StyledRewardValue>{itemReward.join('~')} Items</StyledRewardValue>
-              {canUsePotions && (
-                <PotionButton
-                  potion={AdventurePotion.Str}
-                  potionAmounts={potionAmounts}
-                  usedPotionAmounts={usedPotionAmounts}
-                  onUse={applyPotion}
-                />
-              )}
-            </StyledReward>
+        <StyledReward>
+          <StyledRewardIcon icon={itemsImage.src} />
+          <StyledRewardValue>{itemReward.join('~')} Items</StyledRewardValue>
+          {canUsePotions && (
+            <PotionButton
+              potion={AdventurePotion.Str}
+              potionAmounts={potionAmounts}
+              usedPotionAmounts={usedPotionAmounts}
+              onUse={applyPotion}
+            />
+          )}
+        </StyledReward>
 
-            <StyledReward>
-              <StyledRewardIcon icon={tcpImage.src} />
-              <StyledRewardValue>+{location.successRewards.tcp?.fixed ?? 0} TCP</StyledRewardValue>
-            </StyledReward>
+        <StyledReward>
+          <StyledRewardIcon icon={tcpImage.src} />
+          <StyledRewardValue>+{location.successRewards.tcp?.fixed ?? 0} TCP</StyledRewardValue>
+        </StyledReward>
 
-            <StyledReward>
-              <StyledRewardIcon icon={apImage.src} />
-              <StyledRewardValue>+{location.successRewards.ap?.fixed ?? 0} AP</StyledRewardValue>
-            </StyledReward>
-          </StyledSection>
-        </>
-      )}
+        <StyledReward>
+          <StyledRewardIcon icon={apImage.src} />
+          <StyledRewardValue>+{location.successRewards.ap?.fixed ?? 0} AP</StyledRewardValue>
+        </StyledReward>
+      </StyledSection>
     </div>
   )
 }

@@ -110,7 +110,7 @@ export default function SpeedUpPotion({
       </StyledPotionContainer>
       {!disabled && hasAmount && (
         <StyledAmountSelector>
-          <StyledIncreaseAmountButton
+          <StyledDecreaseAmountButton
             onClick={() =>
               onChanged({
                 ...usedAmounts,
@@ -119,10 +119,9 @@ export default function SpeedUpPotion({
             }
           >
             -
-          </StyledIncreaseAmountButton>
+          </StyledDecreaseAmountButton>
           {usedAmount}
-          <StyledDecreaseAmountButton
-            disabled={duration <= 0}
+          <StyledIncreaseAmountButton
             onClick={() =>
               onChanged({
                 ...usedAmounts,
@@ -131,7 +130,7 @@ export default function SpeedUpPotion({
             }
           >
             +
-          </StyledDecreaseAmountButton>
+          </StyledIncreaseAmountButton>
         </StyledAmountSelector>
       )}
       {(disabled || !hasAmount) && <StyledUseButton disabled>{t('used', { amount: usedAmount })}</StyledUseButton>}

@@ -647,7 +647,7 @@ export const useAdventureExplore = () => {
         }
       }
       const data = await api.explore(ottoId, locationId, account, itemActions)
-      sendExplore(...data, { gasLimit: 1000000 })
+      sendExplore(...data, { gasLimit: 2000000 })
     },
     [account, library, state, otto, item, api, sendExplore]
   )
@@ -678,7 +678,7 @@ export const useAdventureFinish = () => {
       setFinishState({ status: state, state: 'Processing' })
       api
         .finish({ ottoId, wallet: account, immediately, potions })
-        .then(inputs => (send as any)(...inputs, { gasLimit: 1000000 }))
+        .then(inputs => (send as any)(...inputs, { gasLimit: 2000000 }))
     },
     [api, account, send, state]
   )
@@ -820,7 +820,7 @@ export const useDoItemBatchActions = () => {
           itemId: item_id,
           fromOttoId: from_otto_id,
         })),
-        { gasLimit: 1000000 }
+        { gasLimit: 2000000 }
       )
     },
     [send, item]
