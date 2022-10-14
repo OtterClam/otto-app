@@ -1,18 +1,27 @@
+import AdventureStatus from 'components/AdventureStatus'
 import Button from 'components/Button'
 import PaymentButton from 'components/PaymentButton'
 import { ChestId, Token } from 'constant'
-import { AdventureUIActionType, useAdventureUIState, useSelectedAdventureLocation } from 'contexts/AdventureUIState'
+import {
+  AdventurePopupStep,
+  AdventureUIActionType,
+  useAdventureUIState,
+  useOpenAdventurePopup,
+  useSelectedAdventureLocation,
+} from 'contexts/AdventureUIState'
 import { useApi } from 'contexts/Api'
 import { useOtto } from 'contexts/Otto'
 import { useAdventureRevive } from 'contracts/functions'
 import { ethers } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { AdventureResult } from 'models/AdventureResult'
+import { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
+import AdventurePopup from '..'
 import JournalSection from './JournalSection'
 import RewardSection from './RewardSection'
 
@@ -44,13 +53,14 @@ export default function ResultStep() {
   const {
     state: { finishedTx },
   } = useAdventureUIState()
-  const location = useSelectedAdventureLocation()!
+  const location = useSelectedAdventureLocation()
   const api = useApi()
   const [result, setResult] = useState<AdventureResult | null>(null)
   const { revive, reviveState, resetRevive } = useAdventureRevive()
   const { updateOtto } = useMyOttos()
   const { otto, setOtto } = useOtto()
   const { ADVENTURE } = useContractAddresses()
+  const openPopup = useOpenAdventurePopup()
   const { dispatch } = useAdventureUIState()
 
   const closePopup = useCallback(() => {
@@ -112,6 +122,9 @@ export default function ResultStep() {
       data: chest,
     })
   }, [dispatch, otto, result])
+  if (!location) {
+    return null
+  }
 
   return (
     <StyledResultStep bg={location.bgImageBlack}>
@@ -120,7 +133,22 @@ export default function ResultStep() {
         {result && otto && <StyledRewardSection result={result} otto={otto} />}
         {result && (
           <StyledButtons>
-            {result.success && <Button Typography={Headline}>{t('explore_again_btn')}</Button>}
+            {result.success && (
+              <Button
+                Typography={Headline}
+                onClick={() => {
+                  closePopup()
+                  openPopup(
+                    undefined,
+                    otto?.adventureStatus === AdventureOttoStatus.Resting
+                      ? AdventurePopupStep.Resting
+                      : AdventurePopupStep.Map
+                  )
+                }}
+              >
+                {t('explore_again_btn')}
+              </Button>
+            )}
             {!(result.success || result.revived) && (
               <PaymentButton
                 Typography={Headline}

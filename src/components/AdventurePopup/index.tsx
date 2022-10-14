@@ -1,20 +1,20 @@
-import styled from 'styled-components/macro'
-import Fullscreen from 'components/Fullscreen'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import { useOtto } from 'contexts/Otto'
-import { AdventurePopupStep, AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import usePrevious from 'hooks/usePrevious'
 import AdventureAlert from 'components/AdventureAlert'
-import { useTranslation } from 'next-i18next'
+import Fullscreen from 'components/Fullscreen'
+import { AdventurePopupStep, AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
+import { useOtto } from 'contexts/Otto'
 import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
+import usePrevious from 'hooks/usePrevious'
+import { useTranslation } from 'next-i18next'
+import { useCallback, useMemo, useState } from 'react'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import styled from 'styled-components/macro'
+import ExploringStep from './ExploringStep'
 import { LocationInfoStep } from './LocationInfoStep'
+import MapStep from './MapStep'
 import PreviewOttoStep from './PreviewOttoStep'
 import ReadyToGoStep from './ReadyToGoStep'
-import ExploringStep from './ExploringStep'
-import ResultStep from './ResultStep'
 import RestingStep from './RestingStep'
-import MapStep from './MapStep'
+import ResultStep from './ResultStep'
 
 const StyledStepContainer = styled.div`
   &.left-enter {
@@ -86,8 +86,8 @@ const stepOrder = [
   AdventurePopupStep.PreviewOtto,
   AdventurePopupStep.ReadyToGo,
   AdventurePopupStep.Exploring,
-  AdventurePopupStep.Resting,
   AdventurePopupStep.Result,
+  AdventurePopupStep.Resting,
 ]
 
 const Components = {
@@ -96,8 +96,8 @@ const Components = {
   [AdventurePopupStep.PreviewOtto]: PreviewOttoStep,
   [AdventurePopupStep.ReadyToGo]: ReadyToGoStep,
   [AdventurePopupStep.Exploring]: ExploringStep,
-  [AdventurePopupStep.Resting]: RestingStep,
   [AdventurePopupStep.Result]: ResultStep,
+  [AdventurePopupStep.Resting]: RestingStep,
 }
 
 export default function AdventurePopup() {
