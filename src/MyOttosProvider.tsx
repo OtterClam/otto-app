@@ -24,7 +24,7 @@ export const MyOttosContext = createContext<MyOttos>({
 
 export function useMyOtto(id?: string) {
   const { ottos } = useMyOttos()
-  return useMemo(() => ottos.find(otto => otto.id === id), [ottos])
+  return useMemo(() => ottos.find(otto => otto.id === id), [ottos, id])
 }
 
 export function useMyOttos() {
