@@ -231,7 +231,7 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
           <StyledWearCount>{t('wear_count', { count: item.equipped_count })}</StyledWearCount>
         </>
       )}
-      {!item.isCoupon && (
+      {!(item.isCoupon || item.isMissionItem) && (
         <StyledAttrs>
           {item.stats.map(({ name, value }, i) => (
             <StyledAttr key={i}>
