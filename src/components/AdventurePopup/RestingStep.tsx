@@ -113,7 +113,7 @@ export default function RestingStep() {
   const { doItemBatchActions, doItemBatchActionsState, resetDoItemBatchActions } = useDoItemBatchActions()
   useEffect(() => {
     if (doItemBatchActionsState.state === 'Success' && otto) {
-      otto.restingUntil = doItemBatchActionsState.restingUntil
+      otto.raw.resting_until = doItemBatchActionsState.restingUntil?.toISOString()
       setOtto(otto)
       updateOtto(otto)
     } else if (doItemBatchActionsState.state === 'Fail') {

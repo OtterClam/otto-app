@@ -110,17 +110,6 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
     openPopup(0, AdventurePopupStep.Resting)
   }
 
-  const [, setTick] = useState(0)
-
-  useTimer(
-    () => {
-      // reload every 1 seconds
-      setTick(tick => tick + 1)
-    },
-    1000,
-    []
-  )
-
   return (
     <StyledAdventureOttoCard>
       <StyledContainer disabled={otto.adventureStatus === AdventureOttoStatus.Unavailable}>

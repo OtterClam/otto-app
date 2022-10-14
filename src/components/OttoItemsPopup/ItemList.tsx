@@ -42,11 +42,11 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
     {
       const items: Item[] = []
       const map: { [k: string]: number } = {}
-      restItems.forEach((item, index) => {
+      restItems.forEach(item => {
         if (map[item.id] !== undefined && items[map[item.id]].equipped) {
           items[map[item.id]] = item
         } else {
-          map[item.id] = index
+          map[item.id] = items.length
           items.push(item)
         }
       })
