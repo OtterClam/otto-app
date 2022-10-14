@@ -5,16 +5,20 @@ import { RawAdventurePass } from 'libs/RawAdventureResult'
 import { getCroppedImageUrl } from 'utils/image'
 import { AdventurePass, fromRawPass } from './AdventurePass'
 import { AdventureResult } from './AdventureResult'
+import Item from './Item'
 
 export enum TraitCollection {
   Genesis = 'genesis',
   Second = 'second',
 }
 
+type RawOttoGender = 'Otto' | 'Lottie' | 'Cleo'
+
 export interface RawOtto {
   id: string
   name: string
   image: string
+  gender: RawOttoGender
   description: string
   attributes: Attr[]
   otto_attrs: Attr[]
@@ -307,6 +311,16 @@ export default class Otto {
 
   public playVoice() {
     this.voice?.play()
+  }
+
+  public canWear(item: Item): boolean {
+    if (item.equippable_gender === OttoGender.Both || this.raw.gender === 'Cleo') {
+      return true
+    }
+    if (item.equippable_gender === OttoGender.Male) {
+      return this.raw.gender === 'Otto'
+    }
+    return this.raw.gender === 'Lottie'
   }
 
   public explore(passId: string, pass: Adventure.PassStruct) {
