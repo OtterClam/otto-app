@@ -16,6 +16,7 @@ import { WalletProvider } from 'contexts/Wallet'
 import { ApiProvider } from 'contexts/Api'
 import { OverlayProvider } from 'contexts/Overlay'
 import { SkeletonTheme } from 'react-loading-skeleton'
+import { colors } from 'styles/colors'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 
@@ -79,7 +80,7 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                     <MyOttosProvider>
                       <OverlayProvider>
                         <StyledApp>
-                          <SkeletonTheme baseColor="#1D2654">
+                          <SkeletonTheme baseColor={colors.otterBlack} highlightColor={colors.darkGray400}>
                             <StyledPageContainer>{children}</StyledPageContainer>
                             <Error />
                             <WalletSelector />

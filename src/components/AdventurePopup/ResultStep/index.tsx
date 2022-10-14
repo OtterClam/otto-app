@@ -1,4 +1,3 @@
-import AdventureStatus from 'components/AdventureStatus'
 import Button from 'components/Button'
 import PaymentButton from 'components/PaymentButton'
 import { ChestId, Token } from 'constant'
@@ -21,7 +20,6 @@ import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
-import AdventurePopup from '..'
 import JournalSection from './JournalSection'
 import RewardSection from './RewardSection'
 
