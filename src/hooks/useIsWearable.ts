@@ -28,9 +28,9 @@ export default function useIsWearable(items: Item[]): (itemId?: string, currentO
       const myReadyOttosWithItem = ottos
         .filter(otto => readyOttosMap[otto.id])
         .filter(otto => otto.wearableTraits.find(trait => trait.id === itemId))
+        .filter(Boolean)
 
-      const availableAmount = itemAmount - myReadyOttosWithItem.length
-      return availableAmount > 0
+      return itemAmount > 0 || myReadyOttosWithItem.length > 0
     },
     [readyOttosMap]
   )
