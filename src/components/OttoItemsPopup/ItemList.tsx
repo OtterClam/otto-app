@@ -35,18 +35,18 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
   const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
   const { traitType } = useTrait()
   const { filteredItems } = useItemFilters()
-  const { currentItem, restItems } = useMemo(() => {
-    const trait = otto?.wearableTraits.find(trait => trait.type === traitType)
+  const { defaultItem, restItems } = useMemo(() => {
+    const defaultTrait = otto?.wearableTraits.find(trait => trait.type === traitType && trait.unreturnable)
     let restItems = filteredItems
 
     {
       const items: Item[] = []
       const map: { [k: string]: number } = {}
-      restItems.forEach((item, index) => {
+      restItems.forEach(item => {
         if (map[item.id] !== undefined && items[map[item.id]].equipped) {
           items[map[item.id]] = item
-        } else {
-          map[item.id] = index
+        } else if (!items[map[item.id]]) {
+          map[item.id] = items.length
           items.push(item)
         }
       })
@@ -54,16 +54,10 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
     }
 
     restItems = restItems.filter(item => otto?.canWear(item)).slice()
-    const currentItemIndex = filteredItems.findIndex(item => item.id === trait?.id)
 
-    let currentItem: Item | undefined
+    const defaultItem = defaultTrait ? traitToItem(defaultTrait) : undefined
 
-    if (currentItemIndex !== -1) {
-      ;[currentItem] = restItems.splice(currentItemIndex, 1)
-    } else if (trait) {
-      currentItem = traitToItem(trait)
-    }
-    return { currentItem, restItems }
+    return { defaultItem, restItems }
   }, [filteredItems, traitType, otto])
 
   if (!filteredItems.length) {
@@ -72,14 +66,14 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
 
   return (
     <StyledItems>
-      {currentItem && (
+      {defaultItem && (
         <StyledItem
-          key={currentItem.id}
+          key={defaultItem.id}
           hideAmount
-          item={currentItem}
+          item={defaultItem}
           currentOtto={otto}
-          onClick={() => selectItem(currentItem.id)}
-          selected={selectedItemId === currentItem.id}
+          onClick={() => selectItem(defaultItem.id)}
+          selected={selectedItemId === defaultItem.id}
         />
       )}
       {restItems.map(item => (
