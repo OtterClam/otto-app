@@ -202,7 +202,7 @@ export default function ItemCell({
           <ContentLarge>{amount}</ContentLarge>
         </StyledAmount>
       )}
-      {equippedByCurrentOtto && (
+      {equipped && (
         <StyledEquipped>
           <Note>{t('my_items.equipped')}</Note>
         </StyledEquipped>
