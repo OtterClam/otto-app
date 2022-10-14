@@ -1,5 +1,6 @@
 import { useEthers } from '@usedapp/core'
 import { useApiCall } from 'contexts/Api'
+import useTimer from 'hooks/useTimer'
 import noop from 'lodash/noop'
 import Otto from 'models/Otto'
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react'
@@ -50,7 +51,7 @@ export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
     (otto: Otto) => {
       const idx = ottos.findIndex(o => o.id === otto.id)
       if (idx >= 0) {
-        ottos[idx] = otto
+        ottos[idx] = otto.clone()
         setOttos([...ottos])
       } else {
         console.warn(`updateOtto: otto ${otto.id} not found`)
@@ -69,6 +70,20 @@ export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
     }),
     [loading, ottos, refetch, updateOtto]
   )
+
+  useTimer(() => {
+    setOttos(ottos => {
+      let updated = false
+      const newOttos = ottos.map(otto => {
+        if (otto.cachedAdventureStatus !== otto.adventureStatus) {
+          updated = true
+          return otto.clone()
+        }
+        return otto
+      })
+      return updated ? newOttos : ottos
+    })
+  }, 1000)
 
   return <MyOttosContext.Provider value={myOttos}>{children}</MyOttosContext.Provider>
 }

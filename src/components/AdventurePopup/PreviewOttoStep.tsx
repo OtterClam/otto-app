@@ -30,6 +30,7 @@ import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentMedium, Headline } from 'styles/typography'
+import Otto from 'models/Otto'
 
 const StyledContainer = styled.div<{ bg: string }>`
   display: flex;
@@ -170,10 +171,10 @@ export default function PreviewOttoStep() {
       adventureContract
         .pass(exploreState.passId)
         .then(pass => {
-          resetEquippedItems()
-          otto.explore(exploreState.passId || '', pass)
-          setOtto(otto)
-          updateOtto(otto)
+          const draftOtto = new Otto({ ...otto.raw, ...preview })
+          draftOtto.explore(exploreState.passId || '', pass)
+          setOtto(draftOtto.clone())
+          updateOtto(draftOtto)
         })
         .then(() => goToStep(AdventurePopupStep.ReadyToGo))
         .catch(err => console.error(err))
@@ -181,7 +182,7 @@ export default function PreviewOttoStep() {
       alert(exploreState.status.errorMessage)
       resetExplore()
     }
-  }, [exploreState, adventureContract])
+  }, [exploreState.status, adventureContract])
 
   useResizeObserver(container, () => {
     const rect = container?.current?.getBoundingClientRect()
@@ -190,6 +191,10 @@ export default function PreviewOttoStep() {
     const itemPopupOffset = Math.max(((rect?.width ?? 0) - itemPopupWidth) / 2, 0) - 20
     setItemPopupSize({ itemPopupWidth, itemPopupHeight, itemPopupOffset })
   })
+
+  useEffect(() => {
+    resetEquippedItems()
+  }, [])
 
   return (
     <AdventureLocationProvider location={preview?.location}>

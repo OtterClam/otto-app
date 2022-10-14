@@ -1,3 +1,4 @@
+// TODO: remove otto class
 import assert from 'assert'
 import { Adventure } from 'contracts/__generated__'
 import { BigNumber } from 'ethers'
@@ -108,37 +109,37 @@ export enum AdventureOttoStatus {
 export default class Otto {
   public raw: RawOtto
 
-  private voice: HTMLAudioElement
+  private voice: HTMLAudioElement | undefined
 
-  public readonly baseRarityScore: string = ''
+  public baseRarityScore = ''
 
-  public readonly relativeRarityScore: string = ''
+  public relativeRarityScore = ''
 
-  public readonly totalRarityScore: string = ''
+  public totalRarityScore = ''
 
-  public readonly gender: string = ''
+  public gender = ''
 
-  public readonly personality: string = ''
+  public personality = ''
 
-  public readonly birthday: Date = new Date()
+  public birthday: Date = new Date()
 
-  public readonly voiceName: string = ''
+  public voiceName = ''
 
-  public readonly coatOfArms: string = ''
+  public coatOfArms = ''
 
-  public readonly armsImage: string = ''
+  public armsImage = ''
 
-  public readonly zodiacSign: string = ''
+  public zodiacSign = ''
 
-  public readonly ranking: number = 0
+  public ranking = 0
 
-  public readonly geneticTraits: Trait[] = []
+  public geneticTraits: Trait[] = []
 
-  public readonly wearableTraits: Trait[] = []
+  public wearableTraits: Trait[] = []
 
-  public readonly epochRarityBoost?: number
+  public epochRarityBoost?: number
 
-  public readonly diceCount?: number
+  public diceCount?: number
 
   public restingUntil?: Date
 
@@ -146,16 +147,22 @@ export default class Otto {
 
   public exp = 0
 
-  public readonly ap: number = 0
+  public ap = 0
 
-  public readonly themeBoost: number = 0
+  public themeBoost = 0
 
-  public readonly themeBoostMultiplier: number = 1
+  public themeBoostMultiplier = 1
+
+  public cachedAdventureStatus: AdventureOttoStatus = AdventureOttoStatus.Ready
 
   public attributePoints = 0
 
   constructor(raw: RawOtto) {
     this.raw = raw
+    this.rawUpdated()
+  }
+
+  private rawUpdated() {
     this.voice = new Audio(this.raw.animation_url)
     this.voice.load()
     this.baseRarityScore = this.raw.brs ? String(this.raw.brs) : '?'
@@ -218,6 +225,8 @@ export default class Otto {
         }
       }
     }
+
+    this.cachedAdventureStatus = this.adventureStatus
   }
 
   get name(): string {
@@ -309,8 +318,19 @@ export default class Otto {
     return this.raw.adventurer_title
   }
 
+  public clone() {
+    return new Otto(JSON.parse(JSON.stringify(this.raw)))
+  }
+
   public playVoice() {
     this.voice?.play()
+  }
+
+  private updateTrait(type: string, cb: (val: string | number) => string | number) {
+    const trait = this.raw.otto_traits.find(trait => trait.trait_type === type)
+    if (trait) {
+      trait.value = cb(trait.value)
+    }
   }
 
   public canWear(item: Item): boolean {
@@ -324,32 +344,42 @@ export default class Otto {
   }
 
   public explore(passId: string, pass: Adventure.PassStruct) {
-    this.latestAdventurePass = {
+    this.raw.latest_adventure_pass = {
       id: passId,
-      locationId: BigNumber.from(pass.locId).toNumber(),
-      departureAt: new Date(BigNumber.from(pass.departureAt).toNumber() * 1000),
-      canFinishAt: new Date(BigNumber.from(pass.canFinishAt).toNumber() * 1000),
+      location_id: BigNumber.from(pass.locId).toNumber(),
+      departure_at: new Date(BigNumber.from(pass.departureAt).toNumber() * 1000).toISOString(),
+      can_finish_at: new Date(BigNumber.from(pass.canFinishAt).toNumber() * 1000).toISOString(),
     }
+    this.rawUpdated()
   }
 
   public finish(result: AdventureResult) {
-    assert(this.latestAdventurePass, 'No adventure pass')
-    this.restingUntil = result.restingUntil
-    this.latestAdventurePass.id = result.pass.id
-    this.latestAdventurePass.finishedAt = result.pass.finishedAt
-    this.latestAdventurePass.finishedTx = result.pass.finishedTx
-    this.exp += result.rewards.exp
+    assert(this.raw.latest_adventure_pass, 'No adventure pass')
+
+    this.raw.resting_until = result.restingUntil.toISOString()
+
+    this.raw.latest_adventure_pass = {
+      ...this.raw.latest_adventure_pass,
+      id: result.pass.id,
+      finished_at: result.pass.finishedAt ? result.pass.finishedAt.toISOString() : undefined,
+      finished_tx: result.pass.finishedTx,
+    }
+
+    this.updateTrait('EXP', val => Number(val) + result.rewards.exp)
+
     if (result.events.level_up) {
       const {
         to: { exp, level, expToNextLevel },
         got,
       } = result.events.level_up
-      this.restingUntil = new Date()
-      this.exp = exp
-      this.raw.level = level
+      this.raw.resting_until = new Date().toISOString()
       this.raw.next_level_exp = expToNextLevel
-      this.attributePoints = got.attrs_points
+      this.updateTrait('EXP', () => exp)
+      this.updateTrait('LEVEL', () => level)
+      this.updateTrait('Attribute Points', () => got.attrs_points)
     }
+
+    this.rawUpdated()
   }
 
   toJSON() {

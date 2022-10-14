@@ -665,6 +665,12 @@ export const useAdventureFinish = () => {
   const { account } = useEthers()
   const { send, state, resetState } = useContractFunction(adventure, 'finish')
   const [finishState, setFinishState] = useState<OttoTransactionWriteState>({ status: state, state: 'None' })
+  const [result, setResult] = useState<
+    | {
+        restingUntil: Date
+      }
+    | undefined
+  >()
 
   useEffect(() => {
     setFinishState({ status: state, state: txState(state.status) })
@@ -683,7 +689,31 @@ export const useAdventureFinish = () => {
     [api, account, send, state]
   )
 
-  return { finishState, finish, resetFinish: resetState }
+  useEffect(() => {
+    if (state.status === 'Success') {
+      const result = { restingUntil: new Date() }
+
+      ;(state.receipt?.logs ?? []).forEach(raw => {
+        try {
+          const log = adventure.interface.parseLog(raw)
+          if (log.name === 'RestingUntilUpdated') {
+            result.restingUntil = new Date(BigNumber.from(log.args.restingUntil).toNumber() * 1000)
+          }
+        } catch (err) {
+          // skip
+        }
+      })
+
+      setResult(result)
+    }
+  }, [state.status])
+
+  const reset = useCallback(() => {
+    resetState()
+    setResult(undefined)
+  }, [])
+
+  return { finishState, finish, resetFinish: reset, finishResult: result }
 }
 
 export const useAdventureRevive = () => {
