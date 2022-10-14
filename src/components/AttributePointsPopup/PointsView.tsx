@@ -164,10 +164,15 @@ export default function PointsView({ onSuccess, onRequestClose }: PointsViewProp
               />
             ))}
           </StyledPoints>
-          <Button disabled={!usedPoints} Typography={Headline} onClick={handleConfirm}>
+          <Button
+            disabled={!usedPoints}
+            loading={useAttributePointsState.status === 'Mining'}
+            Typography={Headline}
+            onClick={handleConfirm}
+          >
             {t('confirmButton')}
           </Button>
-          <Button Typography={Headline} onClick={onRequestClose}>
+          <Button disabled={useAttributePointsState.status === 'Mining'} Typography={Headline} onClick={onRequestClose}>
             {t('skipButton')}
           </Button>
           <StyledDesc>{t('desc')}</StyledDesc>
