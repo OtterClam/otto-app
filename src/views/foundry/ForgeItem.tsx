@@ -16,6 +16,7 @@ import { ForgeFormula } from 'models/Forge'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useCallback, useEffect, useMemo } from 'react'
+import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, ContentMedium, Display3, Headline, Note } from 'styles/typography'
 import ForgePopup from './ForgePopup'
@@ -43,6 +44,9 @@ const StyledTitle = styled(Display3)`
 
 const StyledDesc = styled(ContentMedium)`
   text-align: center;
+  a {
+    color: ${({ theme }) => theme.colors.crownYellow};
+  }
 `
 
 const StyledDetails = styled.div`
@@ -233,7 +237,9 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
   return (
     <StyledContainer leftImage={formula.leftImage} rightImage={formula.rightImage}>
       <StyledTitle>{formula.title}</StyledTitle>
-      <StyledDesc>{formula.description}</StyledDesc>
+      <StyledDesc>
+        <ReactMarkdown>{formula.description}</ReactMarkdown>
+      </StyledDesc>
       <StyledDetails>
         <StyledResult bgImage={formula.bgImage}>
           <Headline>{t('result.title')}</Headline>
