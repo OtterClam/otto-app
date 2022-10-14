@@ -26,6 +26,7 @@ export default interface Item {
   equippable_gender: OttoGender
   unreturnable: boolean
   isCoupon: boolean
+  isMissionItem: boolean
   product_factory: string
   product_type: string
   luck: number
@@ -48,6 +49,7 @@ export function traitToItem(trait: Trait): Item {
     amount: 1,
     equipped: false,
     isCoupon: false,
+    isMissionItem: false,
     product_factory: '',
     product_type: '',
     update_at: 0,
@@ -72,6 +74,7 @@ export function rawItemToItem(id: string, { id: traiId, name, description, image
     amount: 1,
     unreturnable: false,
     isCoupon: details.type === 'Coupon',
+    isMissionItem: details.type === 'Mission Item',
     total_rarity_score: details.base_rarity_score + details.relative_rarity_score,
     luck: Number(details.stats.find((s: any) => s.name === 'LUK').value) || 0,
     dex: Number(details.stats.find((s: any) => s.name === 'DEX').value) || 0,
@@ -110,6 +113,7 @@ export const EmptyItem: Item = {
   equippable_gender: OttoGender.Both,
   unreturnable: true,
   isCoupon: false,
+  isMissionItem: false,
   product_factory: '',
   product_type: '',
   update_at: 0,

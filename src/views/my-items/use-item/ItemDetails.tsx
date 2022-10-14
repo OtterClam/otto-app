@@ -243,7 +243,7 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
       )}
       {/* the following typing issue has been solved in adventure branch */}
       {item.theme_boost > 0 && <TraitLabels trait={item as any} large highlightMatched />}
-      {onUse && (
+      {onUse && !item.isMissionItem && (
         <StyledButton Typography={Headline} onClick={() => onUse(item)}>
           {item.wearable ? (item.equipped ? t('take_off') : t('wear')) : item.isCoupon ? t('open') : t('use')}
         </StyledButton>
