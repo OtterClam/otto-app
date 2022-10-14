@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentLarge, ContentMedium, Note } from 'styles/typography'
 import SpeedUpPotions from './SpeedUpPotions'
+import HotSpring from './hot-spring.jpg'
 
 const jump = keyframes`
   0% {
@@ -43,10 +44,9 @@ const jump = keyframes`
   }
 `
 
-const StyledExploringStep = styled.div<{ bg: string }>`
+const StyledExploringStep = styled.div`
   padding: 40px;
   color: ${({ theme }) => theme.colors.white};
-  background: center / cover url(${({ bg }) => bg});
 `
 
 const StyledContent = styled.div`
@@ -125,10 +125,10 @@ export default function RestingStep() {
     return null
   }
   return (
-    <StyledExploringStep bg="">
+    <StyledExploringStep>
       <StyledContent>
         <StyledTitle>{t(restFinished ? 'title_ready' : 'title', { name: otto.name })}</StyledTitle>
-        <StyledOttoPlace bg="">
+        <StyledOttoPlace bg={HotSpring.src}>
           <StyledOtto src={otto.imageWoBg} />
           <StyledDuration>
             <Image src={TimeIcon} width={18} height={18} unoptimized />
