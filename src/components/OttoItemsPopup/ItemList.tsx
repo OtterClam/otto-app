@@ -53,15 +53,7 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
       restItems = items
     }
 
-    const gender = {
-      Lottie: OttoGender.Female,
-      Otto: OttoGender.Male,
-    }[otto?.gender ?? '']
-
-    restItems = restItems
-      .filter(item => !gender || item.equippable_gender === OttoGender.Both || item.equippable_gender === gender)
-      .slice()
-
+    restItems = restItems.filter(item => otto?.canWear(item)).slice()
     const currentItemIndex = filteredItems.findIndex(item => item.id === trait?.id)
 
     let currentItem: Item | undefined
