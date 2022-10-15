@@ -240,11 +240,11 @@ export default function AdventureRewards({ canUsePotions, onUsePotion = noop }: 
           <StyledPotionAmounts>
             <StyledPotionAmount>
               <StyledPotionIcon potion={AdventurePotion.Exp} />
-              {potionAmounts[AdventurePotion.Exp] - usedPotionAmounts[AdventurePotion.Exp]}
+              {(potionAmounts[AdventurePotion.Exp] ?? 0) - (usedPotionAmounts[AdventurePotion.Exp] ?? 0)}
             </StyledPotionAmount>
             <StyledPotionAmount>
               <StyledPotionIcon potion={AdventurePotion.Str} />
-              {potionAmounts[AdventurePotion.Str] - usedPotionAmounts[AdventurePotion.Str]}
+              {(potionAmounts[AdventurePotion.Str] ?? 0) - (usedPotionAmounts[AdventurePotion.Str] ?? 0)}
             </StyledPotionAmount>
           </StyledPotionAmounts>
         )}
