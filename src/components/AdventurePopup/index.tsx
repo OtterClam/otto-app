@@ -5,9 +5,12 @@ import { useOtto } from 'contexts/Otto'
 import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
 import usePrevious from 'hooks/usePrevious'
 import { useTranslation } from 'next-i18next'
-import { useCallback, useMemo, useState } from 'react'
+import { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components/macro'
+import { useAdventureLocations } from 'contexts/AdventureLocations'
+import { useMyOttos } from 'MyOttosProvider'
+import { AdventureOttoStatus } from 'models/Otto'
 import ExploringStep from './ExploringStep'
 import { LocationInfoStep } from './LocationInfoStep'
 import MapStep from './MapStep'
@@ -15,6 +18,7 @@ import PreviewOttoStep from './PreviewOttoStep'
 import ReadyToGoStep from './ReadyToGoStep'
 import RestingStep from './RestingStep'
 import ResultStep from './ResultStep'
+import arrowImage from './arrow.svg'
 
 const StyledStepContainer = styled.div`
   &.left-enter {
@@ -80,6 +84,21 @@ const StyledFullscreen = styled(Fullscreen)<{ maxWidth: number }>`
   }
 `
 
+const StyledNextLocationButton = styled.button`
+  position: relative;
+  z-index: 1;
+  min-width: 44px;
+  max-width: 44px;
+  height: 44px;
+  background: center / cover url(${arrowImage.src});
+  margin-left: -22px;
+`
+
+const StyledPrevLocationButton = styled(StyledNextLocationButton)`
+  transform: rotateZ(180deg);
+  margin-right: -22px;
+`
+
 const stepOrder = [
   AdventurePopupStep.Map,
   AdventurePopupStep.LocationInfo,
@@ -101,6 +120,8 @@ const Components = {
 }
 
 export default function AdventurePopup() {
+  const { locations } = useAdventureLocations()
+  const { ottos } = useMyOttos()
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup' })
   const [closePopupRequested, setClosePopupRequested] = useState(false)
   const { state: adventureUIState, dispatch } = useAdventureUIState()
@@ -120,6 +141,30 @@ export default function AdventurePopup() {
       closePopup()
     }
   }, [itemActions])
+
+  const nextLocation: MouseEventHandler = e => {
+    e.stopPropagation()
+    const maxLevel = Math.max(
+      0,
+      ...ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready).map(otto => otto.level)
+    )
+    const avaliableLocations = locations.filter(loc => maxLevel >= loc.minLevel)
+    const index = avaliableLocations.findIndex(loc => loc.id === adventureUIState.selectedLocationId)
+    const nextIndex = avaliableLocations.length <= index + 1 ? 0 : index + 1
+    dispatch({ type: AdventureUIActionType.SelectLocation, data: { locationId: avaliableLocations[nextIndex].id } })
+  }
+
+  const prevLocation: MouseEventHandler = e => {
+    e.stopPropagation()
+    const maxLevel = Math.max(
+      0,
+      ...ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready).map(otto => otto.level)
+    )
+    const avaliableLocations = locations.filter(loc => maxLevel >= loc.minLevel)
+    const index = avaliableLocations.findIndex(loc => loc.id === adventureUIState.selectedLocationId)
+    const nextIndex = index <= 0 ? avaliableLocations.length - 1 : index - 1
+    dispatch({ type: AdventureUIActionType.SelectLocation, data: { locationId: avaliableLocations[nextIndex].id } })
+  }
 
   const effects = useMemo(() => {
     const step = adventureUIState.popupStep
@@ -163,6 +208,16 @@ export default function AdventurePopup() {
       bodyClassName="adventurePopupBody"
       show={adventureUIState.popupOpened}
       onRequestClose={requestClosePopup}
+      header={
+        adventureUIState.popupStep === AdventurePopupStep.LocationInfo ? (
+          <StyledPrevLocationButton onClick={prevLocation} />
+        ) : undefined
+      }
+      footer={
+        adventureUIState.popupStep === AdventurePopupStep.LocationInfo ? (
+          <StyledNextLocationButton onClick={nextLocation} />
+        ) : undefined
+      }
     >
       <TransitionGroup>
         {stepOrder.map(step => {

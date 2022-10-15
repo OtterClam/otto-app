@@ -13,6 +13,7 @@ export enum AdventureUIActionType {
   LevelUp,
   DistributeAttributePoints,
   SetTreasuryChestItem,
+  SelectLocation,
 }
 
 export enum AdventurePopupStep {
@@ -64,6 +65,10 @@ export type AdventureUIAction =
   | {
       type: AdventureUIActionType.SetTreasuryChestItem
       data?: Item
+    }
+  | {
+      type: AdventureUIActionType.SelectLocation
+      data?: { locationId: number }
     }
 
 export interface AdventureUIState {
@@ -130,6 +135,8 @@ export const AdventureUIStateProvider = ({ children }: PropsWithChildren<object>
         }
       case AdventureUIActionType.SetTreasuryChestItem:
         return { ...state, treasuryChest: action.data }
+      case AdventureUIActionType.SelectLocation:
+        return { ...state, selectedLocationId: action.data?.locationId }
       default:
         return state
     }
