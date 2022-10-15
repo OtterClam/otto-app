@@ -213,7 +213,7 @@ export default function ItemCell({
           <StyledSelectedFrame right />
         </>
       )}
-      {(unreturnable || !id) && <StyledUnreturnable />}
+      {(unreturnable || id === undefined) && <StyledUnreturnable />}
     </StyledItemCell>
   )
 }

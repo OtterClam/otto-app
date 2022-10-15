@@ -156,7 +156,7 @@ export default memo(
     useOnClickOutside(containerRef, onClose)
 
     return (
-      <CSSTransition in={Boolean(selectedItemId)} unmountOnExit timeout={200} classNames="slide">
+      <CSSTransition in={selectedItemId !== undefined} unmountOnExit timeout={200} classNames="slide">
         <StyledItemPreview ref={containerRef}>
           <StyledItemPreviewDetails>
             <StyledItemImage>
