@@ -95,6 +95,12 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
     refetch()
   }, [otto?.id])
 
+  useEffect(() => {
+    if (!traitType) {
+      selectItem(undefined)
+    }
+  }, [Boolean(traitType)])
+
   return (
     <ItemFiltersProvider items={filteredItems}>
       <StyledFullscreen
