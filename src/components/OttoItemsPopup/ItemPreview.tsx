@@ -5,6 +5,7 @@ import ItemCollectionBadge from 'components/ItemCollectionBadge'
 import ItemRarityBadge from 'components/ItemRarityBadge'
 import { useAdventureOtto } from 'contexts/AdventureOtto'
 import { useOtto } from 'contexts/Otto'
+import { useTrait } from 'contexts/TraitContext'
 import useAdventureOttosWithItem from 'hooks/useAdventureOttosWithItem'
 import useOnClickOutside from 'hooks/useOnClickOutside'
 import Item from 'models/Item'
@@ -126,19 +127,22 @@ const useOttos = (item?: Item, selectedOtto?: Otto) => {
 
 export interface ItemPreviewProps {
   item?: Item
+  selectedItemId?: string
   onClose: () => void
   onItemUpdated?: () => void
   unavailable?: boolean
 }
 
 export default memo(
-  function ItemPreview({ item, onClose, onItemUpdated, unavailable = false }: ItemPreviewProps) {
+  function ItemPreview({ item, selectedItemId, onClose, onItemUpdated, unavailable = false }: ItemPreviewProps) {
+    const { traitType } = useTrait()
     const { equipItem, removeItem } = useOtto()
     const { draftOtto: otto } = useAdventureOtto()
     const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
     const containerRef = useRef<HTMLDivElement | null>(null)
     const ottos = useOttos(item, otto)
     const equippedByCurrentOtto = Boolean(otto?.wearableTraits.find(trait => trait.id === item?.id))
+    const equippedItem = otto?.wearableTraits.find(trait => trait.type === traitType)
 
     const onEquip = (type: string, itemId: string) => {
       equipItem(type, itemId)
@@ -152,64 +156,70 @@ export default memo(
     useOnClickOutside(containerRef, onClose)
 
     return (
-      <CSSTransition in={Boolean(item)} unmountOnExit timeout={200} classNames="slide">
+      <CSSTransition in={Boolean(selectedItemId)} unmountOnExit timeout={200} classNames="slide">
         <StyledItemPreview ref={containerRef}>
-          {item && (
-            <>
-              <StyledItemPreviewDetails>
-                <StyledItemImage>
-                  <ItemCell hideAmount item={item} />
-                </StyledItemImage>
-                <StyledItemAttrs>
-                  <ItemRarityBadge rarity={item.rarity} />
-                  <StyledItemName>
-                    {item.collection && item.collection_name && (
-                      <StyledItemCollectionBadge collection={item.collection} collectionName={item.collection_name} />
-                    )}
-                    {item.name}
-                  </StyledItemName>
-                  <StyledItemLevels>
-                    {item.stats.map(stat => (
-                      <StyledItemLevel key={stat.name}>
-                        <StyledItemLevelLabel>{stat.name}</StyledItemLevelLabel>
-                        <StyledItemLevelValue>{stat.value}</StyledItemLevelValue>
-                      </StyledItemLevel>
-                    ))}
-                  </StyledItemLevels>
-                </StyledItemAttrs>
-              </StyledItemPreviewDetails>
-              {ottos.length > 0 && (
-                <StyledOttos>
-                  {ottos.map(otto => (
-                    <StyledOtto key={otto.id}>
-                      <StyledOttoImage>
-                        <CroppedImage src={otto.image} layout="fill" />
-                      </StyledOttoImage>
-                      <Note>{t('wearBy', { name: otto.name })}</Note>
-                    </StyledOtto>
-                  ))}
-                </StyledOttos>
-              )}
-              {!equippedByCurrentOtto && (
-                <StyledButton disabled={unavailable} Typography={Headline} onClick={() => onEquip(item.type, item.id)}>
-                  {t(unavailable ? 'unavailable' : 'wear')}
-                </StyledButton>
-              )}
-              {equippedByCurrentOtto && (
-                <StyledButton
-                  disabled={item.unreturnable}
-                  primaryColor="white"
-                  Typography={Headline}
-                  onClick={() => onRemove(item.type)}
-                >
-                  {t(item.unreturnable ? 'unavailable' : 'takeOff')}
-                </StyledButton>
-              )}
-            </>
+          <StyledItemPreviewDetails>
+            <StyledItemImage>
+              <ItemCell hideAmount item={item} />
+            </StyledItemImage>
+            <StyledItemAttrs>
+              {item && <ItemRarityBadge rarity={item.rarity} />}
+              <StyledItemName>
+                {item?.collection && item.collection_name && (
+                  <StyledItemCollectionBadge collection={item.collection} collectionName={item.collection_name} />
+                )}
+                {item?.name}
+              </StyledItemName>
+              <StyledItemLevels>
+                {item?.stats.map(stat => (
+                  <StyledItemLevel key={stat.name}>
+                    <StyledItemLevelLabel>{stat.name}</StyledItemLevelLabel>
+                    <StyledItemLevelValue>{stat.value}</StyledItemLevelValue>
+                  </StyledItemLevel>
+                ))}
+              </StyledItemLevels>
+            </StyledItemAttrs>
+          </StyledItemPreviewDetails>
+          {ottos.length > 0 && (
+            <StyledOttos>
+              {ottos.map(otto => (
+                <StyledOtto key={otto.id}>
+                  <StyledOttoImage>
+                    <CroppedImage src={otto.image} layout="fill" />
+                  </StyledOttoImage>
+                  <Note>{t('wearBy', { name: otto.name })}</Note>
+                </StyledOtto>
+              ))}
+            </StyledOttos>
+          )}
+          {!equippedByCurrentOtto && item && (
+            <StyledButton disabled={unavailable} Typography={Headline} onClick={() => onEquip(item.type, item.id)}>
+              {t(unavailable ? 'unavailable' : 'wear')}
+            </StyledButton>
+          )}
+          {equippedByCurrentOtto && item && traitType && (
+            <StyledButton
+              disabled={item.unreturnable}
+              primaryColor="white"
+              Typography={Headline}
+              onClick={() => onRemove(traitType)}
+            >
+              {t(item?.unreturnable ? 'unavailable' : 'takeOff')}
+            </StyledButton>
+          )}
+          {selectedItemId === 'empty' && traitType && (
+            <StyledButton
+              disabled={!equippedItem}
+              primaryColor="white"
+              Typography={Headline}
+              onClick={() => onRemove(traitType)}
+            >
+              {t('takeOff')}
+            </StyledButton>
           )}
         </StyledItemPreview>
       </CSSTransition>
     )
   },
-  (a, b) => a.item?.id === b.item?.id
+  (a, b) => a.selectedItemId === b.selectedItemId
 )

@@ -25,6 +25,7 @@ export interface RawOtto {
   otto_attrs: Attr[]
   otto_traits: Attr[]
   otto_details?: Trait[]
+  otto_native_traits?: Trait[]
   animation_url: string
   tokenURI: string
   mintAt: any
@@ -316,6 +317,10 @@ export default class Otto {
 
   get adventurerTitle() {
     return this.raw.adventurer_title
+  }
+
+  get ottoNativeTraits() {
+    return this.raw.otto_native_traits ?? []
   }
 
   public clone() {

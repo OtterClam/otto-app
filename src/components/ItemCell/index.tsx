@@ -10,7 +10,7 @@ import selectedFrameCornerImage from './seelcted-frame-corner.svg'
 
 const StyledItemCell = styled.button<{
   size?: number
-  rarity: string
+  rarity?: string
   selected: boolean
   unavailable: boolean
   canClick: boolean
@@ -20,7 +20,7 @@ const StyledItemCell = styled.button<{
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 5px;
   position: relative;
-  background: ${({ theme, rarity }) => (theme.colors.rarity as any)[rarity]};
+  background: ${({ theme, rarity }) => (rarity ? (theme.colors.rarity as any)[rarity] : theme.colors.lightGray200)};
   z-index: 0;
 
   &::before {
@@ -94,13 +94,14 @@ const StyledImageContainer = styled.div`
   overflow: hidden;
 `
 
-const StyledRarity = styled.div<{ rarity: string }>`
+const StyledRarity = styled.div<{ rarity?: string }>`
   position: absolute;
   z-index: 1;
   top: 3px;
   right: 3px;
   padding-left: 3px;
-  background-color: ${({ theme, rarity }) => (theme.colors.rarity as any)[rarity]};
+  background-color: ${({ theme, rarity }) =>
+    rarity ? (theme.colors.rarity as any)[rarity] : theme.colors.lightGray200};
   border-left: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-bottom: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 1px;
@@ -158,7 +159,7 @@ const StyledUnreturnable = styled.div`
 `
 
 interface Props {
-  item: Item
+  item?: Item
   currentOtto?: Otto
   unavailable?: boolean
   size?: number
@@ -169,7 +170,7 @@ interface Props {
 }
 
 export default function ItemCell({
-  item: { id, image, rarity, equipped, amount, unreturnable },
+  item,
   currentOtto,
   unavailable = false,
   size,
@@ -179,6 +180,7 @@ export default function ItemCell({
   hideAmount = false,
 }: Props) {
   const { t } = useTranslation()
+  const { id, image, rarity, equipped, amount = 0, unreturnable } = item ?? {}
   const equippedByCurrentOtto = (!currentOtto || currentOtto?.wearableTraits.find(trait => trait.id === id)) && equipped
 
   return (
@@ -191,9 +193,7 @@ export default function ItemCell({
       className={className}
       onClick={onClick}
     >
-      <StyledImageContainer>
-        <CroppedImage src={image} layout="fill" />
-      </StyledImageContainer>
+      <StyledImageContainer>{image && <CroppedImage src={image} layout="fill" />}</StyledImageContainer>
       <StyledRarity rarity={rarity}>
         <Note>{rarity}</Note>
       </StyledRarity>
@@ -213,7 +213,7 @@ export default function ItemCell({
           <StyledSelectedFrame right />
         </>
       )}
-      {unreturnable && <StyledUnreturnable />}
+      {(unreturnable || !id) && <StyledUnreturnable />}
     </StyledItemCell>
   )
 }

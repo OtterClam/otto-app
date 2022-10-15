@@ -36,7 +36,7 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
   const { traitType } = useTrait()
   const { filteredItems } = useItemFilters()
   const { defaultItem, restItems } = useMemo(() => {
-    const defaultTrait = otto?.wearableTraits.find(trait => trait.type === traitType && trait.unreturnable)
+    const defaultTrait = otto?.ottoNativeTraits.find(trait => trait.type === traitType)
     let restItems = filteredItems
 
     {
@@ -60,22 +60,16 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
     return { defaultItem, restItems }
   }, [filteredItems, traitType, otto])
 
-  if (!filteredItems.length) {
-    return <StyledNoItems>{t('noItems')}</StyledNoItems>
-  }
-
   return (
     <StyledItems>
-      {defaultItem && (
-        <StyledItem
-          key={defaultItem.id}
-          hideAmount
-          item={defaultItem}
-          currentOtto={otto}
-          onClick={() => selectItem(defaultItem.id)}
-          selected={selectedItemId === defaultItem.id}
-        />
-      )}
+      <StyledItem
+        key={`default_${defaultItem?.id ?? 'empty'}`}
+        hideAmount
+        item={defaultItem}
+        currentOtto={otto}
+        onClick={() => selectItem(defaultItem?.id ?? 'empty')}
+        selected={(defaultItem && selectedItemId === defaultItem.id) || selectedItemId === 'empty'}
+      />
       {restItems.map(item => (
         <StyledItem
           key={item.id}

@@ -82,9 +82,13 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
   const isWearable = useIsWearable(items)
   const filteredItems = items.filter(item => item.type === traitType)
   const equippedTrait = otto?.wearableTraits.find(trait => trait.type === traitType)
+  const defaultTrait = otto?.ottoNativeTraits?.find(({ id }) => id === selectedItemId)
   let selectedItem = filteredItems.find(({ id }) => id === selectedItemId)
   if (!selectedItem && equippedTrait && selectedItemId === equippedTrait.id) {
     selectedItem = traitToItem(equippedTrait)
+  }
+  if (!selectedItem && defaultTrait && selectedItemId === defaultTrait.id) {
+    selectedItem = traitToItem(defaultTrait)
   }
 
   useEffect(() => {
@@ -117,6 +121,7 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
 
           <ItemPreview
             item={selectedItem}
+            selectedItemId={selectedItemId}
             unavailable={selectedItem && !isWearable(selectedItem.id)}
             onItemUpdated={onRequestClose}
             onClose={() => selectItem(undefined)}
