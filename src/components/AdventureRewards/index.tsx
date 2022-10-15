@@ -56,9 +56,14 @@ const StyledLocationDetailValue = styled(ContentExtraSmall)`
 
 const StyledSection = styled(TreasurySection)`
   display: flex;
+  flex-direction: column;
   background: ${({ theme }) => theme.colors.darkGray400};
   color: ${({ theme }) => theme.colors.white};
-  padding: 15px;
+`
+
+const StyledRewards = styled.div`
+  display: flex;
+  padding: 0 0 15px 0;
 `
 
 const StyledReward = styled.div`
@@ -108,6 +113,21 @@ const StyledPotionIcon = styled.div<{ potion: AdventurePotion }>`
   width: 16px;
   height: 16px;
   background: center / cover url(${({ potion }) => potionIcons[potion].src});
+`
+
+const StyledPotionAmounts = styled(Note).attrs({ as: 'div' })`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 7px 0 0 7px;
+`
+
+const StyledPotionAmount = styled.div`
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  background: ${({ theme }) => theme.colors.otterBlack};
+  padding: 0 5px;
 `
 
 function PotionButton({
@@ -216,41 +236,56 @@ export default function AdventureRewards({ canUsePotions, onUsePotion = noop }: 
       </StyledTitle>
 
       <StyledSection showRope={false}>
-        <StyledReward>
-          <StyledRewardIcon icon={expImage.src} />
-          <StyledRewardValue>+{location.successRewards.exp?.fixed ?? 0} EXP</StyledRewardValue>
-          {canUsePotions && (
-            <PotionButton
-              potion={AdventurePotion.Exp}
-              potionAmounts={potionAmounts}
-              usedPotionAmounts={usedPotionAmounts}
-              onUse={applyPotion}
-            />
-          )}
-        </StyledReward>
+        {canUsePotions && (
+          <StyledPotionAmounts>
+            <StyledPotionAmount>
+              <StyledPotionIcon potion={AdventurePotion.Exp} />
+              {potionAmounts[AdventurePotion.Exp] - usedPotionAmounts[AdventurePotion.Exp]}
+            </StyledPotionAmount>
+            <StyledPotionAmount>
+              <StyledPotionIcon potion={AdventurePotion.Str} />
+              {potionAmounts[AdventurePotion.Str] - usedPotionAmounts[AdventurePotion.Str]}
+            </StyledPotionAmount>
+          </StyledPotionAmounts>
+        )}
 
-        <StyledReward>
-          <StyledRewardIcon icon={itemsImage.src} />
-          <StyledRewardValue>{itemReward.join('~')} Items</StyledRewardValue>
-          {canUsePotions && (
-            <PotionButton
-              potion={AdventurePotion.Str}
-              potionAmounts={potionAmounts}
-              usedPotionAmounts={usedPotionAmounts}
-              onUse={applyPotion}
-            />
-          )}
-        </StyledReward>
+        <StyledRewards>
+          <StyledReward>
+            <StyledRewardIcon icon={expImage.src} />
+            <StyledRewardValue>+{location.successRewards.exp?.fixed ?? 0} EXP</StyledRewardValue>
+            {canUsePotions && (
+              <PotionButton
+                potion={AdventurePotion.Exp}
+                potionAmounts={potionAmounts}
+                usedPotionAmounts={usedPotionAmounts}
+                onUse={applyPotion}
+              />
+            )}
+          </StyledReward>
 
-        <StyledReward>
-          <StyledRewardIcon icon={tcpImage.src} />
-          <StyledRewardValue>+{location.successRewards.tcp?.fixed ?? 0} TCP</StyledRewardValue>
-        </StyledReward>
+          <StyledReward>
+            <StyledRewardIcon icon={itemsImage.src} />
+            <StyledRewardValue>{itemReward.join('~')} Items</StyledRewardValue>
+            {canUsePotions && (
+              <PotionButton
+                potion={AdventurePotion.Str}
+                potionAmounts={potionAmounts}
+                usedPotionAmounts={usedPotionAmounts}
+                onUse={applyPotion}
+              />
+            )}
+          </StyledReward>
 
-        <StyledReward>
-          <StyledRewardIcon icon={apImage.src} />
-          <StyledRewardValue>+{location.successRewards.ap?.fixed ?? 0} AP</StyledRewardValue>
-        </StyledReward>
+          <StyledReward>
+            <StyledRewardIcon icon={tcpImage.src} />
+            <StyledRewardValue>+{location.successRewards.tcp?.fixed ?? 0} TCP</StyledRewardValue>
+          </StyledReward>
+
+          <StyledReward>
+            <StyledRewardIcon icon={apImage.src} />
+            <StyledRewardValue>+{location.successRewards.ap?.fixed ?? 0} AP</StyledRewardValue>
+          </StyledReward>
+        </StyledRewards>
       </StyledSection>
     </div>
   )
