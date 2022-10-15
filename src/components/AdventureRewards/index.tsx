@@ -64,6 +64,10 @@ const StyledSection = styled(TreasurySection)`
 const StyledRewards = styled.div`
   display: flex;
   padding: 0 0 15px 0;
+
+  &:first-child {
+    padding-top: 15px;
+  }
 `
 
 const StyledReward = styled.div`
