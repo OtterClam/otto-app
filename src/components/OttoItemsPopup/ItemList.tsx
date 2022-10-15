@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 import { useItemFilters } from 'contexts/ItemFilters'
 import ItemCell from 'components/ItemCell'
-import Otto, { OttoGender } from 'models/Otto'
+import Otto, { OttoGender, Trait } from 'models/Otto'
 import { Note } from 'styles/typography'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
@@ -36,6 +36,10 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
   const { traitType } = useTrait()
   const { filteredItems } = useItemFilters()
   const { defaultItem, restItems } = useMemo(() => {
+    const currentOttoEquippedTraits = (otto?.wearableTraits ?? []).reduce(
+      (map, trait) => Object.assign(map, { [trait.id]: trait }),
+      {} as { [k: string]: Trait }
+    )
     const defaultTrait = otto?.ottoNativeTraits.find(trait => trait.type === traitType)
     let restItems = filteredItems
 
@@ -43,7 +47,7 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
       const items: Item[] = []
       const map: { [k: string]: number } = {}
       restItems.forEach(item => {
-        if (map[item.id] !== undefined && items[map[item.id]].equipped) {
+        if (map[item.id] !== undefined && items[map[item.id]].equipped && !currentOttoEquippedTraits[item.id]) {
           items[map[item.id]] = item
         } else if (!items[map[item.id]]) {
           map[item.id] = items.length
