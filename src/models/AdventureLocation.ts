@@ -142,14 +142,6 @@ export type AdventureExploreArgs = [
   Adventure.SignatureStruct
 ]
 
-export type AdventureFinishArgs = [
-  BigNumberish,
-  BigNumberish,
-  BigNumberish,
-  IOttoWearingFacet.ItemActionInputStruct[],
-  Adventure.SignatureStruct
-]
-
 const parseDuration = (val: string): Duration => {
   const match = /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/.exec(val)
   if (!match) {

@@ -3,7 +3,6 @@ import axios, { Axios } from 'axios'
 import { BigNumberish } from 'ethers'
 import {
   AdventureExploreArgs,
-  AdventureFinishArgs,
   AdventureLocation,
   RawAdventureExploreArgs,
   RawAdventureLocation,
@@ -206,13 +205,12 @@ export class Api {
     immediately: boolean
     potions: number[]
   }) {
-    const result = await this.otterclamClient.post<AdventureFinishArgs>('/adventure/finish', {
+    const result = await this.otterclamClient.post('/adventure/finish', {
       otto_id: ottoId,
       wallet,
       immediately,
       potions,
     })
-
     return result.data
   }
 
