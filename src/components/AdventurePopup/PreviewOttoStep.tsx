@@ -123,7 +123,7 @@ export default function PreviewOttoStep() {
     const actions = equippedItemActions.slice()
     Object.keys(usedPotionAmounts).forEach(potion => {
       const amount = usedPotionAmounts[potion]
-      for (let i = 0; i <= amount; i += 1) {
+      for (let i = 0; i < amount; i++) {
         actions.push({
           type: ItemActionType.Use,
           item_id: Number(potion),
@@ -132,7 +132,7 @@ export default function PreviewOttoStep() {
       }
     })
     return actions
-  }, [equippedItemActions, usedPotionAmounts])
+  }, [equippedItemActions, usedPotionAmounts, otto])
 
   const { result: preview } = useApiCall(
     'getOttoAdventurePreview',
