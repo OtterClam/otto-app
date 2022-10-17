@@ -44,7 +44,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
   const value = useMemo(() => {
     const equippedItems = items
       .filter(item => item.equipped)
-      .reduce((map, item) => Object.assign(map, { [item.type]: item }), {} as { [k: string]: Item })
+      .reduce((map, item) => Object.assign(map, { [item.id]: item }), {} as { [k: string]: Item })
     const ottoIdToOtto = ottos.reduce(
       (map, otto) => Object.assign(map, { [otto.id]: otto }),
       {} as { [k: string]: Otto }
