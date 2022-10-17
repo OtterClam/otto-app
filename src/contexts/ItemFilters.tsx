@@ -28,22 +28,36 @@ export enum ItemsOrder {
   Asc = 'asc',
 }
 
+export enum ItemType {
+  All = 'All',
+  Holding = 'Holding',
+  Headwear = 'Headwear',
+  FacialAccessories = 'Facial Accessories',
+  Clothes = 'Clothes',
+  Background = 'Background',
+  Other = 'Other',
+}
+
 export interface ItemFilters {
   order: ItemsOrder
   sortedBy?: ItemsSortBy
   filter?: ItemsFilter
+  itemType: ItemType
   setOrder: (order: ItemsOrder) => void
   setSortedBy: (sortedBy: ItemsSortBy) => void
   setFilter: (filter: ItemsFilter) => void
+  setItemType: (type: ItemType) => void
   items: Item[]
   filteredItems: Item[]
 }
 
 const ItemFiltersContext = createContext<ItemFilters>({
   order: ItemsOrder.Desc,
+  itemType: ItemType.All,
   setOrder: noop,
   setSortedBy: noop,
   setFilter: noop,
+  setItemType: noop,
   items: [],
   filteredItems: [],
 })
@@ -84,22 +98,34 @@ export const ItemFiltersProvider = ({ children, items }: PropsWithChildren<ItemF
   const [order, setOrder] = useState<ItemsOrder>(ItemsOrder.Desc)
   const [sortedBy, setSortedBy] = useState<ItemsSortBy>(ItemsSortBy.TimeReceived)
   const [filter, setFilter] = useState<ItemsFilter>(ItemsFilter.None)
+  const [itemType, setItemType] = useState<ItemType>(ItemType.All)
 
   const value = useMemo(() => {
     let filteredItems = items.filter(filterFunctions[filter])
+
+    if (itemType !== ItemType.All) {
+      filteredItems = filteredItems.filter(item => item.type === itemType)
+    }
+
     filteredItems = filteredItems.sort(sortFunctions[sortedBy])
+
+    if (order === ItemsOrder.Asc) {
+      filteredItems.reverse()
+    }
 
     return {
       order,
       sortedBy,
       filter,
+      itemType,
       setOrder,
       setSortedBy,
       setFilter,
+      setItemType,
       items,
       filteredItems,
     }
-  }, [order, sortedBy, filter, items])
+  }, [order, sortedBy, filter, itemType, items])
 
   return <ItemFiltersContext.Provider value={value}>{children}</ItemFiltersContext.Provider>
 }
