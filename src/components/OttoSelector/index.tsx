@@ -34,7 +34,7 @@ const StyledArrow = styled.img.attrs({ src: arrowImage.src })<{ index: number }>
   height: 8px;
 `
 
-const StyledItem = styled.div<{ actived: boolean }>`
+const StyledItem = styled.div<{ activated: boolean }>`
   border: 1px ${({ theme }) => theme.colors.otterBlack} solid;
   border-radius: 5px;
   padding: 4px;
@@ -43,8 +43,8 @@ const StyledItem = styled.div<{ actived: boolean }>`
   height: 60px;
   transition: background 0.2s;
 
-  ${({ actived, theme }) => `
-    background: ${actived ? theme.colors.crownYellow : theme.colors.lightGray400};
+  ${({ activated, theme }) => `
+    background: ${activated ? theme.colors.crownYellow : theme.colors.lightGray400};
   `}
 `
 
@@ -57,16 +57,16 @@ const StyledImage = styled.div`
 `
 
 const OttoItem = React.memo(
-  ({ otto, actived, onSelect }: { otto: Otto; actived: boolean; onSelect: (otto: Otto) => void }) => {
+  ({ otto, activated, onSelect }: { otto: Otto; activated: boolean; onSelect: (otto: Otto) => void }) => {
     return (
-      <StyledItem actived={actived} onClick={() => onSelect(otto)}>
+      <StyledItem activated={activated} onClick={() => onSelect(otto)}>
         <StyledImage>
           <CroppedImage src={otto.image} draggable="false" width={imageSize} height={imageSize} />
         </StyledImage>
       </StyledItem>
     )
   },
-  (propsA, propsB) => propsA.otto.id === propsB.otto.id && propsA.actived === propsB.actived
+  (propsA, propsB) => propsA.otto.id === propsB.otto.id && propsA.activated === propsB.activated
 )
 
 const useReadyOttos = () => {
@@ -132,7 +132,7 @@ export default function OttoSelector() {
       <StyledConveyor {...swipeableHandlers} ref={conveyorRef} offset={totalOffset}>
         <StyledArrow index={selectedIndex} />
         {ottos.map(otto => (
-          <OttoItem key={otto.id} otto={otto} actived={selectedOtto?.id === otto.id} onSelect={selectOtto} />
+          <OttoItem key={otto.id} otto={otto} activated={selectedOtto?.id === otto.id} onSelect={selectOtto} />
         ))}
       </StyledConveyor>
     </StyledContainer>

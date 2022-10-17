@@ -6,6 +6,7 @@ import AdventureRibbonText from 'components/AdventureRibbonText'
 import { useAdventureOtto } from 'contexts/AdventureOtto'
 import { Trait } from 'models/Otto'
 import { useBreakpoints } from 'contexts/Breakpoints'
+import OttoLoadingPlaceholder from 'assets/ui/otto-loading.jpg'
 import { useTrait } from '../../contexts/TraitContext'
 import TraitButton from './TraitButton'
 import FeedButton from './FeedButton'
@@ -92,7 +93,7 @@ export default function OttoPreviewer({ itemsPopupWidth, itemPopupHeight, itemPo
           <StyledPreviewImage>
             <AdventureRibbonText>{otto?.name}</AdventureRibbonText>
             <StyledImageContainer>
-              {otto && <CroppedImage key={otto.id} src={otto.image} layout="fill" />}
+              <CroppedImage key={otto?.id} src={otto ? otto.image : OttoLoadingPlaceholder} layout="fill" />
             </StyledImageContainer>
           </StyledPreviewImage>
 
