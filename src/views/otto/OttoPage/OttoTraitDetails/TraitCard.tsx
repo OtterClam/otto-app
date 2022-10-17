@@ -108,7 +108,11 @@ export default function TraitCard({ trait }: Props) {
         </StyledRarityBadge>
       </StyledTopContainer>
       <StyledBottomContainer>
-        {image && <ItemCell item={item} />}
+        {image && (
+          <div>
+            <ItemCell item={item} />
+          </div>
+        )}
         <StyledInfoContainer>
           <StyledRarityScore as="p">
             {t('otto.rarity_score', { score: total_rarity_score, brs: base_rarity_score, rrs: relative_rarity_score })}
