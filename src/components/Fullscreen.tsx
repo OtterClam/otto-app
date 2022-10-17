@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom'
-import { ReactNode, RefObject, useRef } from 'react'
+import { CSSProperties, ReactNode, RefObject, useRef } from 'react'
 import styled from 'styled-components/macro'
 import useDisableBodyScroll from 'hooks/useDisableBodyScroll'
 import noop from 'lodash/noop'
@@ -10,6 +10,7 @@ const StyledPopup = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+  flex-direction: column;
   box-sizing: border-box;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   width: 100%;
@@ -87,6 +88,7 @@ interface Props {
   children: ReactNode
   onRequestClose?: () => void
   className?: string
+  popupStyle?: CSSProperties
   bodyClassName?: string
   header?: ReactNode
   footer?: ReactNode
@@ -98,6 +100,7 @@ const Fullscreen = ({
   width = '80%',
   onRequestClose = noop,
   className,
+  popupStyle,
   bodyClassName,
   children,
   header,
@@ -115,7 +118,7 @@ const Fullscreen = ({
 
   return ReactDOM.createPortal(
     <CSSTransition unmountOnExit in={show} timeout={200} classNames="fade">
-      <StyledPopup onClick={onRequestClose}>
+      <StyledPopup onClick={onRequestClose} style={popupStyle}>
         {header}
         <Container width={width} ref={containerRef} className={className} onClick={e => e.stopPropagation()}>
           <StyledInnerContainer className={bodyClassName} background={background}>

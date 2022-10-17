@@ -205,6 +205,7 @@ export default function AdventurePopup() {
   return (
     <StyledFullscreen
       maxWidth={maxWidth}
+      popupStyle={{ flexDirection: 'row' }}
       bodyClassName="adventurePopupBody"
       show={adventureUIState.popupOpened}
       onRequestClose={requestClosePopup}

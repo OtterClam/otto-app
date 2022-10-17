@@ -4,11 +4,13 @@ import edgeImage from './edge.png'
 import bgImage from './background.png'
 
 const StyledContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   width: ${bgImage.width / 2}px;
   height: ${bgImage.height / 2}px;
   background: center / cover url(${bgImage.src});
-  text-align: center;
 
   &::before,
   &::after {
@@ -31,6 +33,15 @@ const StyledContainer = styled.div`
   }
 `
 
+const StyledTextContainer = styled.div`
+  margin-top: -5px;
+  position: relative;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+`
+
 const StyledText = styled(Display1)`
   position: relative;
   z-index: 0;
@@ -40,6 +51,10 @@ const StyledText = styled(Display1)`
   background-clip: text;
   -webkit-background-clip: text;
   text-fill-color: transparent;
+  font-size: 24px;
+`
+
+const StyledTextBorder = styled(Display1)`
   font-size: 24px;
 
   &::before,
@@ -94,7 +109,10 @@ export interface RewardRibbonTextProps {
 export default function RewardRibbonText({ text, className }: RewardRibbonTextProps) {
   return (
     <StyledContainer className={className}>
-      <StyledText data-text={text}>{text}</StyledText>
+      <StyledTextContainer>
+        <StyledText>{text}</StyledText>
+        <StyledTextBorder data-text={text} />
+      </StyledTextContainer>
     </StyledContainer>
   )
 }
