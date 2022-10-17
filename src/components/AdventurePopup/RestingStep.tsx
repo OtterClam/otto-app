@@ -114,7 +114,7 @@ export default function RestingStep() {
   useEffect(() => {
     if (doItemBatchActionsState.state === 'Success' && otto) {
       otto.raw.resting_until = doItemBatchActionsState.restingUntil?.toISOString()
-      setOtto(otto)
+      setOtto(otto.clone())
       updateOtto(otto)
     } else if (doItemBatchActionsState.state === 'Fail') {
       alert(doItemBatchActionsState.status.errorMessage)
