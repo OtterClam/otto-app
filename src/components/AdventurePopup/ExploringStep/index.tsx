@@ -12,7 +12,7 @@ import useContractAddresses from 'hooks/useContractAddresses'
 import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentLarge, ContentMedium, Note } from 'styles/typography'
 import { calcRemainingTime } from 'utils/potion'
@@ -123,25 +123,37 @@ export default function ExploringStep() {
   const { updateOtto } = useMyOttos()
   const location = useSelectedAdventureLocation()
   const { finishState, finish, resetFinish, finishResult } = useAdventureFinish()
-  const [potions, setPotions] = useState<number[]>([])
   const { state: usePotionsState, send: applyPotions, resetState: resetUsePotions } = useUsePotions()
   const goToResult = useGoToAdventureResultStep()
-  const [usedPotionAmounts, setUsedPotionAmounts] = useState<number[]>([])
+  const [usedPotionAmounts, setUsedPotionAmounts] = useState<Record<string, number>>({})
+  const usedPotionIds = useMemo(
+    () =>
+      Object.keys(usedPotionAmounts)
+        .map(key => {
+          const amount = usedPotionAmounts[key]
+          const idList: number[] = []
+          for (let i = 0; i < amount; i += 1) {
+            idList.push(Number(key))
+          }
+          return idList
+        })
+        .reduce((all, list) => all.concat(list), [] as number[]),
+    [usedPotionAmounts]
+  )
   const canFinishAt = otto?.latestAdventurePass?.canFinishAt ?? now
   const formattedDuration = formatDistance(canFinishAt, otto?.latestAdventurePass?.departureAt ?? 0)
   const finishFee = useFinishFee(otto?.latestAdventurePass?.id)
   const loading = finishState.state === 'Processing' || usePotionsState.status === 'Mining'
 
-  const onFinish = (immediately: boolean, potions: number[]) => {
+  const onClick = (immediately: boolean) => {
     if (!otto) {
       return
     }
-    const finishedAt = calcRemainingTime(otto.latestAdventurePass!.canFinishAt!, potions)
+    const finishedAt = calcRemainingTime(otto.latestAdventurePass!.canFinishAt!, usedPotionIds)
     if (immediately || finishedAt.getTime() <= Date.now()) {
-      finish(otto.id, immediately, potions)
+      finish(otto.id, immediately, usedPotionIds)
     } else {
-      setPotions(potions)
-      applyPotions(otto.id, potions)
+      applyPotions(otto.id, usedPotionIds)
     }
   }
 
@@ -161,11 +173,11 @@ export default function ExploringStep() {
       return
     }
     if (usePotionsState.status === 'Success' && otto.latestAdventurePass && otto.raw.latest_adventure_pass) {
-      const finishedAt = calcRemainingTime(otto.latestAdventurePass.canFinishAt, potions)
+      const finishedAt = calcRemainingTime(otto.latestAdventurePass.canFinishAt, usedPotionIds)
       otto.raw.latest_adventure_pass.can_finish_at = finishedAt.toISOString()
       setOtto(otto.clone())
       updateOtto(otto)
-      setPotions([])
+      setUsedPotionAmounts({})
       resetUsePotions()
     } else if (usePotionsState.status === 'Fail') {
       alert(finishState.status.errorMessage)
@@ -191,7 +203,7 @@ export default function ExploringStep() {
         </StyledOttoPlace>
         {now >= canFinishAt && (
           <>
-            <Button Typography={ContentLarge} onClick={() => onFinish(false, [])} loading={loading}>
+            <Button Typography={ContentLarge} loading={loading} onClick={() => onClick(false)}>
               {t('see_results_btn')}
             </Button>
             <StyledSeeResultHint>{t('see_results_hint')}</StyledSeeResultHint>
@@ -202,9 +214,10 @@ export default function ExploringStep() {
             <SpeedUpPotions
               disabled={loading}
               targetDate={canFinishAt}
+              potions={usedPotionAmounts}
               onUsedPotionsUpdate={amounts => setUsedPotionAmounts(amounts)}
             />
-            {usedPotionAmounts.length === 0 && (
+            {usedPotionIds.length === 0 && (
               <PaymentButton
                 width="100%"
                 spenderAddress={ADVENTURE}
@@ -213,18 +226,18 @@ export default function ExploringStep() {
                 token={Token.Clam}
                 Typography={ContentLarge}
                 padding="6px 20px 0"
-                onClick={() => onFinish(true, [])}
+                onClick={() => onClick(true)}
               >
                 {t('finish_immediately_btn')}
               </PaymentButton>
             )}
-            {usedPotionAmounts.length > 0 && (
+            {usedPotionIds.length > 0 && (
               <Button
                 loading={loading}
                 width="100%"
                 Typography={ContentLarge}
                 padding="6px 20px 0"
-                onClick={() => onFinish(false, usedPotionAmounts)}
+                onClick={() => onClick(false)}
               >
                 {t('speed_up_btn')}
               </Button>

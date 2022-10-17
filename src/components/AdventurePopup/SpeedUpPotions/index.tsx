@@ -1,7 +1,7 @@
 import { AdventurePotion } from 'constant'
 import useAdventurePotion from 'hooks/useAdventurePotion'
 import useRemainingTime from 'hooks/useRemainingTime'
-import useSeedUpPotionPreview from 'hooks/useSeedUpPotionPreview'
+import useSpeedUpPotionPreview from 'hooks/useSpeedUpPotionPreview'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
@@ -23,18 +23,18 @@ const StyledRemaining = styled(ContentMedium).attrs({ as: 'p' })<{ usedPotions: 
 interface Props {
   disabled: boolean
   targetDate: Date
-  onUsedPotionsUpdate: (numbers: number[]) => void
+  potions: Record<string, number>
+  onUsedPotionsUpdate: (potions: Record<string, number>) => void
 }
 
-export default function SpeedUpPotions({ disabled, targetDate, onUsedPotionsUpdate }: Props) {
+export default function SpeedUpPotions({ disabled, targetDate, potions, onUsedPotionsUpdate }: Props) {
   const { t } = useTranslation()
-  const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
   const { amounts } = useAdventurePotion()
-  const usedPotions = useMemo(
+  const usedPotionIds = useMemo(
     () =>
-      Object.keys(usedPotionAmounts)
+      Object.keys(potions)
         .map(key => {
-          const amount = usedPotionAmounts[key]
+          const amount = potions[key]
           const idList: number[] = []
           for (let i = 0; i < amount; i += 1) {
             idList.push(Number(key))
@@ -42,18 +42,14 @@ export default function SpeedUpPotions({ disabled, targetDate, onUsedPotionsUpda
           return idList
         })
         .reduce((all, list) => all.concat(list), [] as number[]),
-    [usedPotionAmounts]
+    [potions]
   )
-  const previewRemainingTime = useSeedUpPotionPreview(targetDate, usedPotions)
+  const previewRemainingTime = useSpeedUpPotionPreview(targetDate, usedPotionIds)
   const remainingDuration = useRemainingTime(previewRemainingTime)
-
-  useEffect(() => {
-    onUsedPotionsUpdate(usedPotions)
-  }, [usedPotions])
 
   return (
     <>
-      <StyledRemaining usedPotions={usedPotions.length > 0}>
+      <StyledRemaining usedPotions={usedPotionIds.length > 0}>
         {t('adventure_remaining', { time: remainingDuration })}
       </StyledRemaining>
       <StyledSpeedUpPotions>
@@ -61,30 +57,30 @@ export default function SpeedUpPotions({ disabled, targetDate, onUsedPotionsUpda
           disabled={disabled}
           potion={AdventurePotion.OneHourSpeedy}
           targetDate={previewRemainingTime}
-          onChanged={setUsedPotionAmounts}
+          onChanged={onUsedPotionsUpdate}
           image={SpeedPotion.src}
           amounts={amounts}
-          usedAmounts={usedPotionAmounts}
+          usedAmounts={potions}
           reducedTime="1h"
         />
         <SpeedUpPotion
           disabled={disabled}
           potion={AdventurePotion.ThreeHourSpeedy}
           targetDate={previewRemainingTime}
-          onChanged={setUsedPotionAmounts}
+          onChanged={onUsedPotionsUpdate}
           image={SpeedPotion.src}
           amounts={amounts}
-          usedAmounts={usedPotionAmounts}
+          usedAmounts={potions}
           reducedTime="3h"
         />
         <SpeedUpPotion
           disabled={disabled}
           potion={AdventurePotion.SixHourSpeedy}
           targetDate={previewRemainingTime}
-          onChanged={setUsedPotionAmounts}
+          onChanged={onUsedPotionsUpdate}
           image={SpeedPotion.src}
           amounts={amounts}
-          usedAmounts={usedPotionAmounts}
+          usedAmounts={potions}
           reducedTime="6h"
         />
       </StyledSpeedUpPotions>

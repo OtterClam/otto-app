@@ -8,7 +8,7 @@ import formatDistance from 'date-fns/formatDistance'
 import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentLarge, ContentMedium, Note } from 'styles/typography'
 import SpeedUpPotions from './SpeedUpPotions'
@@ -109,7 +109,21 @@ export default function RestingStep() {
   const restingUntil = otto?.restingUntil ?? now
   const restFinished = restingUntil < now
   const formattedDuration = formatDistance(restingUntil, otto?.latestAdventurePass?.finishedAt ?? now)
-  const [usedPotionIds, setUsedPotionIds] = useState<number[]>([])
+  const [usedPotionAmounts, setUsedPotionAmounts] = useState<Record<string, number>>({})
+  const usedPotionIds = useMemo(
+    () =>
+      Object.keys(usedPotionAmounts)
+        .map(key => {
+          const amount = usedPotionAmounts[key]
+          const idList: number[] = []
+          for (let i = 0; i < amount; i += 1) {
+            idList.push(Number(key))
+          }
+          return idList
+        })
+        .reduce((all, list) => all.concat(list), [] as number[]),
+    [usedPotionAmounts]
+  )
   const { doItemBatchActions, doItemBatchActionsState, resetDoItemBatchActions } = useDoItemBatchActions()
   useEffect(() => {
     if (doItemBatchActionsState.state === 'Success' && otto) {
@@ -148,11 +162,16 @@ export default function RestingStep() {
         )}
         {!restFinished && (
           <>
-            <SpeedUpPotions targetDate={restingUntil} disabled={false} onUsedPotionsUpdate={setUsedPotionIds} />
+            <SpeedUpPotions
+              targetDate={restingUntil}
+              disabled={false}
+              potions={usedPotionAmounts}
+              onUsedPotionsUpdate={setUsedPotionAmounts}
+            />
             <Button
               loading={doItemBatchActionsState.state === 'Processing'}
               width="100%"
-              disabled={setUsedPotionIds.length === 0}
+              disabled={usedPotionIds.length === 0}
               Typography={ContentLarge}
               padding="6px 20px 0"
               onClick={() =>
