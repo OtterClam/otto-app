@@ -225,7 +225,7 @@ export const useRedeemProduct = () => {
         status: state,
       })
       setFactory(new Contract(factoryAddr, IOttoItemFactoryAbi, library))
-      send(account, OTTOPIA_STORE, couponId, 1, [])
+      send(account, OTTOPIA_STORE, couponId, 1, [], { gasLimit: 1000000 })
     }
   }
   const resetRedeem = () => {
@@ -647,7 +647,7 @@ export const useAdventureExplore = () => {
         }
       }
       const data = await api.explore(ottoId, locationId, account, itemActions)
-      sendExplore(...data)
+      sendExplore(...data, { gasLimit: 2000000 })
     },
     [account, library, state, otto, item, api, sendExplore]
   )
@@ -682,7 +682,9 @@ export const useAdventureFinish = () => {
         return
       }
       setFinishState({ status: state, state: 'Processing' })
-      api.finish({ ottoId, wallet: account, immediately, potions }).then(inputs => (send as any)(...inputs))
+      api
+        .finish({ ottoId, wallet: account, immediately, potions })
+        .then(inputs => (send as any)(...inputs, { gasLimit: 2000000 }))
     },
     [api, account, send, state]
   )
@@ -847,7 +849,8 @@ export const useDoItemBatchActions = () => {
           typ: type,
           itemId: item_id,
           fromOttoId: from_otto_id,
-        }))
+        })),
+        { gasLimit: 2000000 }
       )
     },
     [send, item]
