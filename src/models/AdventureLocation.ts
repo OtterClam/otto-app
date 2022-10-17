@@ -94,6 +94,7 @@ export interface RawAdventureLocation {
   success_rewards: AdventureLocationReward[]
   conditional_boosts: RawAdventureLocationConditionalBoost[]
   min_level: number
+  open: boolean
 }
 
 export interface AdventureLocation {
@@ -114,6 +115,7 @@ export interface AdventureLocation {
   }
   conditionalBoosts: AdventureLocationConditionalBoost[]
   minLevel: number
+  open: boolean
 }
 
 export type RawAdventureExploreArgs = [
@@ -192,5 +194,6 @@ export function rawAdventureLocationToAdventureLocation(raw: RawAdventureLocatio
     successRewards,
     conditionalBoosts: raw.conditional_boosts.map(rawConditionalBoostToConditionalBoost),
     minLevel: raw.min_level,
+    open: raw.open,
   }
 }

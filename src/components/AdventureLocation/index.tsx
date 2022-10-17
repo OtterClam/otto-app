@@ -118,9 +118,11 @@ export default function AdventureLocation({ id, className }: AdventureLocationPr
   const location = useAdventureLocation(id)
   const { ottos: allOttos } = useMyOttos()
   const ottos = useAdventureOttosAtLocation(id).slice(0, 5)
-  const locked = !allOttos.find(
-    otto => location && otto.level >= location.minLevel && otto.adventureStatus === AdventureOttoStatus.Ready
-  )
+  const locked =
+    !location?.open ||
+    !allOttos.find(
+      otto => location && otto.level >= location.minLevel && otto.adventureStatus === AdventureOttoStatus.Ready
+    )
   const top = (location?.mapPositionY ?? 0) * 100
   const left = (location?.mapPositionX ?? 0) * 100
 
