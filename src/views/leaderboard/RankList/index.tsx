@@ -174,7 +174,8 @@ export default function RankList({ className }: Props) {
     },
     skip: epoch === -1,
   })
-  const { ottos, loading: loadingApi } = useOttos(data?.ottos, { details: true, epoch })
+  const ottoIds = useMemo(() => data?.ottos.map(o => o.tokenId) || [], [data])
+  const { ottos, loading: loadingApi } = useOttos(ottoIds, { details: true, epoch })
   const { ottos: myOttos } = useMyOttos(epoch)
   const sortedMyOttos = useMemo(() => myOttos.sort((a, b) => a.ranking - b.ranking), [myOttos])
   const [expand, setExpand] = useState(false)
@@ -191,7 +192,7 @@ export default function RankList({ className }: Props) {
           <StyledMyOttoSection isLatestEpoch={isLatestEpoch}>
             <StyledHint>{t('your_rank')}</StyledHint>
             {(expand ? sortedMyOttos : sortedMyOttos.slice(0, 1)).map(otto => (
-              <ListRow key={otto.tokenId} isMyOttoRow otto={otto} rank={otto.ranking} />
+              <ListRow key={otto.id} isMyOttoRow otto={otto} rank={otto.ranking} />
             ))}
             <StyledExpandColumn as="div" expand={expand} onClick={() => setExpand(expand => !expand)}>
               {expand ? t('show_less') : t('expand', { count: myOttos.length })}
@@ -211,8 +212,7 @@ export default function RankList({ className }: Props) {
             <img src={LoadingGif.src} alt="loading" />
           </StyledLoading>
         )}
-        {!loading &&
-          ottos.map((otto, index) => <ListRow key={otto.tokenId} rank={page * PAGE + index + 1} otto={otto} />)}
+        {!loading && ottos.map((otto, index) => <ListRow key={otto.id} rank={page * PAGE + index + 1} otto={otto} />)}
       </StyledTable>
       {!loading && (
         <StyledPagination>

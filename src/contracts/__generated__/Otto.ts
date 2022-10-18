@@ -27,152 +27,197 @@ import type {
   OnEvent,
 } from "./common";
 
+export declare namespace IOttoWearingFacet {
+  export type ItemActionInputStruct = {
+    typ: BigNumberish;
+    itemId: BigNumberish;
+    fromOttoId: BigNumberish;
+  };
+
+  export type ItemActionInputStructOutput = [number, BigNumber, BigNumber] & {
+    typ: number;
+    itemId: BigNumber;
+    fromOttoId: BigNumber;
+  };
+
+  export type ItemActionOutputStruct = {
+    returned: boolean;
+    returnedItemId: BigNumberish;
+  };
+
+  export type ItemActionOutputStructOutput = [boolean, BigNumber] & {
+    returned: boolean;
+    returnedItemId: BigNumber;
+  };
+}
+
 export interface OttoInterface extends utils.Interface {
   functions: {
     "DEFAULT_ADMIN_ROLE()": FunctionFragment;
+    "ITEM()": FunctionFragment;
+    "ITEM_MANAGER_ROLE()": FunctionFragment;
+    "LEVEL_UP_ATTRITUBE_POINTS()": FunctionFragment;
     "MANAGER_ROLE()": FunctionFragment;
     "MINTER_ROLE()": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "baseAttributesOf(uint256)": FunctionFragment;
-    "canOpenAt(uint256)": FunctionFragment;
     "candidates(uint256,uint256)": FunctionFragment;
-    "candidatesOf(uint256)": FunctionFragment;
     "decayTarget()": FunctionFragment;
-    "devSummon(uint256,uint256,uint256,bool)": FunctionFragment;
-    "epochBoostOf(uint256,uint32)": FunctionFragment;
     "epochBoosts(uint256,uint32,uint256)": FunctionFragment;
-    "equipable(uint256,uint256)": FunctionFragment;
-    "exists(uint256)": FunctionFragment;
-    "genderOf(uint256)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
+    "grantManager(address)": FunctionFragment;
+    "grantMinter(address)": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
     "infos(uint256)": FunctionFragment;
-    "initialize(string,string,uint256,uint256)": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
-    "legendary(uint256)": FunctionFragment;
-    "maxBatch()": FunctionFragment;
-    "mint(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "nextOwnerToExplicitlySet()": FunctionFragment;
-    "numericTraitsOf(uint256)": FunctionFragment;
-    "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": FunctionFragment;
-    "onERC1155Received(address,address,uint256,uint256,bytes)": FunctionFragment;
     "openPeriod()": FunctionFragment;
-    "openPortal(uint256,uint256[],bool)": FunctionFragment;
-    "ownedItemsOf(uint256)": FunctionFragment;
     "owner()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
-    "portalStatusOf(uint256)": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "rawTraitsOf(uint256)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "renounceRole(bytes32,address)": FunctionFragment;
+    "revokeManager(address)": FunctionFragment;
+    "revokeMinter(address)": FunctionFragment;
     "revokeRole(bytes32,address)": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "safeTransferFrom(address,address,uint256,bytes)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
-    "setBaseURI(string)": FunctionFragment;
-    "setCanOpenAt(uint256,uint256[])": FunctionFragment;
-    "setDecayTarget(uint256)": FunctionFragment;
-    "setOpenPeriod(uint256)": FunctionFragment;
-    "setTraitCode(uint256,uint8,uint16)": FunctionFragment;
-    "summon(uint256,uint256,uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "symbol()": FunctionFragment;
-    "toNumericTraits(uint16[16])": FunctionFragment;
     "tokenByIndex(uint256)": FunctionFragment;
     "tokenOfOwnerByIndex(address,uint256)": FunctionFragment;
     "tokenURI(uint256)": FunctionFragment;
-    "totalMintable()": FunctionFragment;
     "totalSupply()": FunctionFragment;
-    "traitsOf(uint256)": FunctionFragment;
-    "transferChild(uint256,address,address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "updateBaseAttributes(uint256,int16[8])": FunctionFragment;
-    "updateEpochBoost(uint256,uint32,int16[8])": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
-    "upgradeV3(address)": FunctionFragment;
+    "baseAttributesOf(uint256)": FunctionFragment;
+    "calcExp(uint32,uint32,uint32)": FunctionFragment;
+    "canOpenAt(uint256)": FunctionFragment;
+    "candidatesOf(uint256)": FunctionFragment;
+    "doItemBatchActions(uint256,(uint8,uint256,uint256)[])": FunctionFragment;
+    "equipWillReturn(uint256,uint256)": FunctionFragment;
+    "equipable(uint256,uint256)": FunctionFragment;
+    "exists(uint256)": FunctionFragment;
+    "genderOf(uint256)": FunctionFragment;
+    "increaseAp(uint256,uint32)": FunctionFragment;
+    "increaseExp(uint256,uint32)": FunctionFragment;
+    "legendary(uint256)": FunctionFragment;
+    "maxBatch()": FunctionFragment;
+    "mint(address,uint256)": FunctionFragment;
+    "nextLevelExp(uint32)": FunctionFragment;
+    "numericTraitsOf(uint256)": FunctionFragment;
+    "openPortal(uint256,uint256[],bool)": FunctionFragment;
+    "ownedItemsOf(uint256)": FunctionFragment;
+    "portalStatusOf(uint256)": FunctionFragment;
+    "setBaseURI(string)": FunctionFragment;
+    "setTraitCode(uint256,uint8,uint16)": FunctionFragment;
+    "summon(uint256,uint256,uint256)": FunctionFragment;
+    "toNumericTraits(uint16[16])": FunctionFragment;
+    "totalLevelExp(uint32)": FunctionFragment;
+    "totalMintable()": FunctionFragment;
+    "traitsOf(uint256)": FunctionFragment;
+    "transferChild(uint256,address,address,uint256)": FunctionFragment;
+    "transferChildToParent(uint256,address,uint256,address,uint256,bytes)": FunctionFragment;
+    "updateBaseAttributes(uint256,int16[8])": FunctionFragment;
+    "useAttributePoints(uint256,int16[7])": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "DEFAULT_ADMIN_ROLE"
+      | "ITEM"
+      | "ITEM_MANAGER_ROLE"
+      | "LEVEL_UP_ATTRITUBE_POINTS"
       | "MANAGER_ROLE"
       | "MINTER_ROLE"
       | "approve"
       | "balanceOf"
-      | "baseAttributesOf"
-      | "canOpenAt"
       | "candidates"
-      | "candidatesOf"
       | "decayTarget"
-      | "devSummon"
-      | "epochBoostOf"
       | "epochBoosts"
-      | "equipable"
-      | "exists"
-      | "genderOf"
       | "getApproved"
       | "getRoleAdmin"
+      | "grantManager"
+      | "grantMinter"
       | "grantRole"
       | "hasRole"
       | "infos"
-      | "initialize"
       | "isApprovedForAll"
-      | "legendary"
-      | "maxBatch"
-      | "mint"
       | "name"
       | "nextOwnerToExplicitlySet"
-      | "numericTraitsOf"
-      | "onERC1155BatchReceived"
-      | "onERC1155Received"
       | "openPeriod"
-      | "openPortal"
-      | "ownedItemsOf"
       | "owner"
       | "ownerOf"
-      | "portalStatusOf"
       | "proxiableUUID"
       | "rawTraitsOf"
       | "renounceOwnership"
       | "renounceRole"
+      | "revokeManager"
+      | "revokeMinter"
       | "revokeRole"
       | "safeTransferFrom(address,address,uint256)"
       | "safeTransferFrom(address,address,uint256,bytes)"
       | "setApprovalForAll"
-      | "setBaseURI"
-      | "setCanOpenAt"
-      | "setDecayTarget"
-      | "setOpenPeriod"
-      | "setTraitCode"
-      | "summon"
       | "supportsInterface"
       | "symbol"
-      | "toNumericTraits"
       | "tokenByIndex"
       | "tokenOfOwnerByIndex"
       | "tokenURI"
-      | "totalMintable"
       | "totalSupply"
-      | "traitsOf"
-      | "transferChild"
       | "transferFrom"
       | "transferOwnership"
-      | "updateBaseAttributes"
-      | "updateEpochBoost"
       | "upgradeTo"
       | "upgradeToAndCall"
-      | "upgradeV3"
+      | "baseAttributesOf"
+      | "calcExp"
+      | "canOpenAt"
+      | "candidatesOf"
+      | "doItemBatchActions"
+      | "equipWillReturn"
+      | "equipable"
+      | "exists"
+      | "genderOf"
+      | "increaseAp"
+      | "increaseExp"
+      | "legendary"
+      | "maxBatch"
+      | "mint"
+      | "nextLevelExp"
+      | "numericTraitsOf"
+      | "openPortal"
+      | "ownedItemsOf"
+      | "portalStatusOf"
+      | "setBaseURI"
+      | "setTraitCode"
+      | "summon"
+      | "toNumericTraits"
+      | "totalLevelExp"
+      | "totalMintable"
+      | "traitsOf"
+      | "transferChild"
+      | "transferChildToParent"
+      | "updateBaseAttributes"
+      | "useAttributePoints"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "DEFAULT_ADMIN_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "ITEM", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "ITEM_MANAGER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "LEVEL_UP_ATTRITUBE_POINTS",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -189,48 +234,16 @@ export interface OttoInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
   encodeFunctionData(
-    functionFragment: "baseAttributesOf",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "canOpenAt",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "candidates",
     values: [BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "candidatesOf",
-    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "decayTarget",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "devSummon",
-    values: [BigNumberish, BigNumberish, BigNumberish, boolean]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "epochBoostOf",
-    values: [BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "epochBoosts",
     values: [BigNumberish, BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "equipable",
-    values: [BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "exists",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "genderOf",
-    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getApproved",
@@ -241,6 +254,11 @@ export interface OttoInterface extends utils.Interface {
     values: [BytesLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "grantManager",
+    values: [string]
+  ): string;
+  encodeFunctionData(functionFragment: "grantMinter", values: [string]): string;
+  encodeFunctionData(
     functionFragment: "grantRole",
     values: [BytesLike, string]
   ): string;
@@ -250,21 +268,8 @@ export interface OttoInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "infos", values: [BigNumberish]): string;
   encodeFunctionData(
-    functionFragment: "initialize",
-    values: [string, string, BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "isApprovedForAll",
     values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "legendary",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(functionFragment: "maxBatch", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "mint",
-    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
@@ -272,36 +277,12 @@ export interface OttoInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "numericTraitsOf",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "onERC1155BatchReceived",
-    values: [string, string, BigNumberish[], BigNumberish[], BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "onERC1155Received",
-    values: [string, string, BigNumberish, BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "openPeriod",
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "openPortal",
-    values: [BigNumberish, BigNumberish[], boolean]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "ownedItemsOf",
-    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "ownerOf",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "portalStatusOf",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -319,6 +300,14 @@ export interface OttoInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "renounceRole",
     values: [BytesLike, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revokeManager",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revokeMinter",
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "revokeRole",
@@ -336,36 +325,11 @@ export interface OttoInterface extends utils.Interface {
     functionFragment: "setApprovalForAll",
     values: [string, boolean]
   ): string;
-  encodeFunctionData(functionFragment: "setBaseURI", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "setCanOpenAt",
-    values: [BigNumberish, BigNumberish[]]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setDecayTarget",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setOpenPeriod",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setTraitCode",
-    values: [BigNumberish, BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "summon",
-    values: [BigNumberish, BigNumberish, BigNumberish]
-  ): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
   ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "toNumericTraits",
-    values: [BigNumberish[]]
-  ): string;
   encodeFunctionData(
     functionFragment: "tokenByIndex",
     values: [BigNumberish]
@@ -379,11 +343,114 @@ export interface OttoInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "totalMintable",
+    functionFragment: "totalSupply",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "totalSupply",
+    functionFragment: "transferFrom",
+    values: [string, string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [string]
+  ): string;
+  encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "upgradeToAndCall",
+    values: [string, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "baseAttributesOf",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "calcExp",
+    values: [BigNumberish, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "canOpenAt",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "candidatesOf",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "doItemBatchActions",
+    values: [BigNumberish, IOttoWearingFacet.ItemActionInputStruct[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "equipWillReturn",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "equipable",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "exists",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "genderOf",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "increaseAp",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "increaseExp",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "legendary",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "maxBatch", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "mint",
+    values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "nextLevelExp",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "numericTraitsOf",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "openPortal",
+    values: [BigNumberish, BigNumberish[], boolean]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "ownedItemsOf",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "portalStatusOf",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "setBaseURI", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "setTraitCode",
+    values: [BigNumberish, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "summon",
+    values: [BigNumberish, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "toNumericTraits",
+    values: [BigNumberish[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "totalLevelExp",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "totalMintable",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -395,30 +462,36 @@ export interface OttoInterface extends utils.Interface {
     values: [BigNumberish, string, string, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferOwnership",
-    values: [string]
+    functionFragment: "transferChildToParent",
+    values: [
+      BigNumberish,
+      string,
+      BigNumberish,
+      string,
+      BigNumberish,
+      BytesLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "updateBaseAttributes",
     values: [BigNumberish, BigNumberish[]]
   ): string;
   encodeFunctionData(
-    functionFragment: "updateEpochBoost",
-    values: [BigNumberish, BigNumberish, BigNumberish[]]
+    functionFragment: "useAttributePoints",
+    values: [BigNumberish, BigNumberish[]]
   ): string;
-  encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "upgradeToAndCall",
-    values: [string, BytesLike]
-  ): string;
-  encodeFunctionData(functionFragment: "upgradeV3", values: [string]): string;
 
   decodeFunctionResult(
     functionFragment: "DEFAULT_ADMIN_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "ITEM", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "ITEM_MANAGER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "LEVEL_UP_ATTRITUBE_POINTS",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -431,32 +504,15 @@ export interface OttoInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "baseAttributesOf",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "canOpenAt", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "candidates", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "candidatesOf",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "decayTarget",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "devSummon", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "epochBoostOf",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "epochBoosts",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "equipable", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "exists", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "genderOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getApproved",
     data: BytesLike
@@ -465,46 +521,29 @@ export interface OttoInterface extends utils.Interface {
     functionFragment: "getRoleAdmin",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "grantManager",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "grantMinter",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "infos", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isApprovedForAll",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "legendary", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "maxBatch", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "nextOwnerToExplicitlySet",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "numericTraitsOf",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "onERC1155BatchReceived",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "onERC1155Received",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "openPeriod", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "openPortal", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "ownedItemsOf",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "portalStatusOf",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
     data: BytesLike
@@ -521,6 +560,14 @@ export interface OttoInterface extends utils.Interface {
     functionFragment: "renounceRole",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "revokeManager",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "revokeMinter",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "safeTransferFrom(address,address,uint256)",
@@ -534,33 +581,11 @@ export interface OttoInterface extends utils.Interface {
     functionFragment: "setApprovalForAll",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "setBaseURI", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setCanOpenAt",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setDecayTarget",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setOpenPeriod",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setTraitCode",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "summon", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "toNumericTraits",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "tokenByIndex",
     data: BytesLike
@@ -571,16 +596,7 @@ export interface OttoInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "tokenURI", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "totalMintable",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "totalSupply",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "traitsOf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "transferChild",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -591,32 +607,110 @@ export interface OttoInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "updateBaseAttributes",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "updateEpochBoost",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "upgradeV3", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "baseAttributesOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "calcExp", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "canOpenAt", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "candidatesOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "doItemBatchActions",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "equipWillReturn",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "equipable", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "exists", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "genderOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "increaseAp", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "increaseExp",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "legendary", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "maxBatch", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "nextLevelExp",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "numericTraitsOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "openPortal", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "ownedItemsOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "portalStatusOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "setBaseURI", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setTraitCode",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "summon", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "toNumericTraits",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "totalLevelExp",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "totalMintable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "traitsOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "transferChild",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferChildToParent",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateBaseAttributes",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "useAttributePoints",
+    data: BytesLike
+  ): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
+    "ApIncreased(uint256,uint32,uint32)": EventFragment;
     "Approval(address,address,uint256)": EventFragment;
     "ApprovalForAll(address,address,bool)": EventFragment;
     "BaseAttributesChanged(uint256,int16[8])": EventFragment;
+    "BaseAttributesUpdated(uint256,int16[8])": EventFragment;
     "BaseURIChanged(address,string)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "EpochBoostsChanged(uint256,uint32,int16[9])": EventFragment;
+    "EpochBoostsUpdated(uint256,uint32,int16[8])": EventFragment;
+    "ExpIncreased(uint256,uint32,uint32)": EventFragment;
+    "Initialized(uint8)": EventFragment;
     "ItemEquipped(uint256,uint256)": EventFragment;
     "ItemTookOff(uint256,uint256)": EventFragment;
     "ItemUsed(uint256,uint256)": EventFragment;
+    "LevelUp(uint256,uint32,uint32,uint32,uint32,uint32)": EventFragment;
     "OpenPortal(address,uint256,bool)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
@@ -629,15 +723,21 @@ export interface OttoInterface extends utils.Interface {
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ApIncreased"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ApprovalForAll"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BaseAttributesChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "BaseAttributesUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BaseURIChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "EpochBoostsChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "EpochBoostsUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ExpIncreased"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ItemEquipped"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ItemTookOff"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ItemUsed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "LevelUp"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OpenPortal"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleAdminChanged"): EventFragment;
@@ -659,6 +759,18 @@ export type AdminChangedEvent = TypedEvent<
 >;
 
 export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
+
+export interface ApIncreasedEventObject {
+  ottoId_: BigNumber;
+  total_: number;
+  inc_: number;
+}
+export type ApIncreasedEvent = TypedEvent<
+  [BigNumber, number, number],
+  ApIncreasedEventObject
+>;
+
+export type ApIncreasedEventFilter = TypedEventFilter<ApIncreasedEvent>;
 
 export interface ApprovalEventObject {
   owner: string;
@@ -696,6 +808,18 @@ export type BaseAttributesChangedEvent = TypedEvent<
 export type BaseAttributesChangedEventFilter =
   TypedEventFilter<BaseAttributesChangedEvent>;
 
+export interface BaseAttributesUpdatedEventObject {
+  ottoId_: BigNumber;
+  delta_: number[];
+}
+export type BaseAttributesUpdatedEvent = TypedEvent<
+  [BigNumber, number[]],
+  BaseAttributesUpdatedEventObject
+>;
+
+export type BaseAttributesUpdatedEventFilter =
+  TypedEventFilter<BaseAttributesUpdatedEvent>;
+
 export interface BaseURIChangedEventObject {
   sender_: string;
   baseURI_: string;
@@ -730,6 +854,38 @@ export type EpochBoostsChangedEvent = TypedEvent<
 export type EpochBoostsChangedEventFilter =
   TypedEventFilter<EpochBoostsChangedEvent>;
 
+export interface EpochBoostsUpdatedEventObject {
+  ottoId_: BigNumber;
+  epoch_: number;
+  delta_: number[];
+}
+export type EpochBoostsUpdatedEvent = TypedEvent<
+  [BigNumber, number, number[]],
+  EpochBoostsUpdatedEventObject
+>;
+
+export type EpochBoostsUpdatedEventFilter =
+  TypedEventFilter<EpochBoostsUpdatedEvent>;
+
+export interface ExpIncreasedEventObject {
+  ottoId_: BigNumber;
+  total_: number;
+  inc_: number;
+}
+export type ExpIncreasedEvent = TypedEvent<
+  [BigNumber, number, number],
+  ExpIncreasedEventObject
+>;
+
+export type ExpIncreasedEventFilter = TypedEventFilter<ExpIncreasedEvent>;
+
+export interface InitializedEventObject {
+  version: number;
+}
+export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
+
+export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
+
 export interface ItemEquippedEventObject {
   ottoId_: BigNumber;
   itemId_: BigNumber;
@@ -762,6 +918,21 @@ export type ItemUsedEvent = TypedEvent<
 >;
 
 export type ItemUsedEventFilter = TypedEventFilter<ItemUsedEvent>;
+
+export interface LevelUpEventObject {
+  ottoId_: BigNumber;
+  fromLv_: number;
+  toLv_: number;
+  fromExp_: number;
+  toExp_: number;
+  attributePoints_: number;
+}
+export type LevelUpEvent = TypedEvent<
+  [BigNumber, number, number, number, number, number],
+  LevelUpEventObject
+>;
+
+export type LevelUpEventFilter = TypedEventFilter<LevelUpEvent>;
 
 export interface OpenPortalEventObject {
   sender_: string;
@@ -895,6 +1066,12 @@ export interface Otto extends BaseContract {
   functions: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
+    ITEM(overrides?: CallOverrides): Promise<[string]>;
+
+    ITEM_MANAGER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
+    LEVEL_UP_ATTRITUBE_POINTS(overrides?: CallOverrides): Promise<[number]>;
+
     MANAGER_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
     MINTER_ROLE(overrides?: CallOverrides): Promise<[string]>;
@@ -907,63 +1084,18 @@ export interface Otto extends BaseContract {
 
     balanceOf(owner: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    baseAttributesOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[number[]]>;
-
-    canOpenAt(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     candidates(
       arg0: BigNumberish,
       arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    candidatesOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber[]]>;
-
     decayTarget(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    devSummon(
-      tokenId_: BigNumberish,
-      traits_: BigNumberish,
-      birthday_: BigNumberish,
-      legendary_: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    epochBoostOf(
-      ottoId_: BigNumberish,
-      epoch_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[number[]]>;
 
     epochBoosts(
       arg0: BigNumberish,
       arg1: BigNumberish,
       arg2: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[number]>;
-
-    equipable(
-      ottoId_: BigNumberish,
-      itemId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    exists(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    genderOf(
-      tokenId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[number]>;
 
@@ -973,6 +1105,16 @@ export interface Otto extends BaseContract {
     ): Promise<[string]>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
+
+    grantManager(
+      manager_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    grantMinter(
+      minter_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     grantRole(
       role: BytesLike,
@@ -997,7 +1139,12 @@ export interface Otto extends BaseContract {
         BigNumber,
         BigNumber,
         number,
-        boolean
+        boolean,
+        number,
+        number,
+        number,
+        number,
+        BigNumber
       ] & {
         mintAt: BigNumber;
         canOpenAt: BigNumber;
@@ -1006,16 +1153,13 @@ export interface Otto extends BaseContract {
         traits: BigNumber;
         portalStatus: number;
         legendary: boolean;
+        attributePoints: number;
+        ap: number;
+        exp: number;
+        level: number;
+        lastLevelUpAt: BigNumber;
       }
     >;
-
-    initialize(
-      name_: string,
-      symbol_: string,
-      maxBatchSize_: BigNumberish,
-      collectionSize_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
 
     isApprovedForAll(
       owner: string,
@@ -1023,59 +1167,11 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    legendary(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    maxBatch(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    mint(
-      to_: string,
-      quantity_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     name(overrides?: CallOverrides): Promise<[string]>;
 
     nextOwnerToExplicitlySet(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    numericTraitsOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { traits_: BigNumber }>;
-
-    onERC1155BatchReceived(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    onERC1155Received(
-      arg0: string,
-      from_: string,
-      itemId_: BigNumberish,
-      value_: BigNumberish,
-      _data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     openPeriod(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    openPortal(
-      tokenId_: BigNumberish,
-      candidates_: BigNumberish[],
-      legendary_: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    ownedItemsOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber[]]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
@@ -1083,11 +1179,6 @@ export interface Otto extends BaseContract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
-
-    portalStatusOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[number]>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
@@ -1103,6 +1194,16 @@ export interface Otto extends BaseContract {
     renounceRole(
       role: BytesLike,
       account: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    revokeManager(
+      manager_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    revokeMinter(
+      minter_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -1133,52 +1234,12 @@ export interface Otto extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    setBaseURI(
-      baseURI: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setCanOpenAt(
-      ts_: BigNumberish,
-      tokendIds_: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setDecayTarget(
-      ts_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setOpenPeriod(
-      openPeriod_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setTraitCode(
-      tokenId_: BigNumberish,
-      slot_: BigNumberish,
-      code_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    summon(
-      tokenId_: BigNumberish,
-      candidateIndex: BigNumberish,
-      birthday_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
-
-    toNumericTraits(
-      arr_: BigNumberish[],
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { traits_: BigNumber }>;
 
     tokenByIndex(
       index: BigNumberish,
@@ -1196,22 +1257,7 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    totalMintable(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    traitsOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[number[]]>;
-
-    transferChild(
-      _fromTokenId: BigNumberish,
-      _to: string,
-      _childContract: string,
-      _childTokenId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
 
     transferFrom(
       from: string,
@@ -1222,19 +1268,6 @@ export interface Otto extends BaseContract {
 
     transferOwnership(
       newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    updateBaseAttributes(
-      ottoId_: BigNumberish,
-      delta_: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    updateEpochBoost(
-      ottoId_: BigNumberish,
-      epoch_: BigNumberish,
-      delta_: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -1249,13 +1282,179 @@ export interface Otto extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    upgradeV3(
-      item_: string,
+    baseAttributesOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number[]]>;
+
+    calcExp(
+      fromLv_: BigNumberish,
+      fromExp_: BigNumberish,
+      inc_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number, number] & { lv_: number; exp_: number }>;
+
+    canOpenAt(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    candidatesOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[]]>;
+
+    doItemBatchActions(
+      ottoId_: BigNumberish,
+      inputs_: IOttoWearingFacet.ItemActionInputStruct[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    equipWillReturn(
+      ottoId_: BigNumberish,
+      itemId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber, boolean]>;
+
+    equipable(
+      ottoId_: BigNumberish,
+      itemId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    exists(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    genderOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number]>;
+
+    increaseAp(
+      ottoId_: BigNumberish,
+      inc_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    increaseExp(
+      ottoId_: BigNumberish,
+      inc_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    legendary(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    maxBatch(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    mint(
+      to_: string,
+      quantity_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    nextLevelExp(n: BigNumberish, overrides?: CallOverrides): Promise<[number]>;
+
+    numericTraitsOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    openPortal(
+      tokenId_: BigNumberish,
+      candidates_: BigNumberish[],
+      legendary_: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    ownedItemsOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[]] & { itemIds_: BigNumber[] }>;
+
+    portalStatusOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number]>;
+
+    setBaseURI(
+      baseURI: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setTraitCode(
+      tokenId_: BigNumberish,
+      slot_: BigNumberish,
+      code_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    summon(
+      tokenId_: BigNumberish,
+      candidateIndex: BigNumberish,
+      birthday_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    toNumericTraits(
+      arr_: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    totalLevelExp(
+      n: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number]>;
+
+    totalMintable(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    traitsOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number[]]>;
+
+    transferChild(
+      _fromTokenId: BigNumberish,
+      _to: string,
+      _childContract: string,
+      _childTokenId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    transferChildToParent(
+      _fromTokenId: BigNumberish,
+      _toContract: string,
+      _toTokenId: BigNumberish,
+      _childContract: string,
+      _childTokenId: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    updateBaseAttributes(
+      ottoId_: BigNumberish,
+      delta_: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    useAttributePoints(
+      ottoId_: BigNumberish,
+      values_: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  ITEM(overrides?: CallOverrides): Promise<string>;
+
+  ITEM_MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  LEVEL_UP_ATTRITUBE_POINTS(overrides?: CallOverrides): Promise<number>;
 
   MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -1269,42 +1468,13 @@ export interface Otto extends BaseContract {
 
   balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  baseAttributesOf(
-    tokenId_: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<number[]>;
-
-  canOpenAt(
-    tokenId_: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
   candidates(
     arg0: BigNumberish,
     arg1: BigNumberish,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  candidatesOf(
-    tokenId_: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber[]>;
-
   decayTarget(overrides?: CallOverrides): Promise<BigNumber>;
-
-  devSummon(
-    tokenId_: BigNumberish,
-    traits_: BigNumberish,
-    birthday_: BigNumberish,
-    legendary_: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  epochBoostOf(
-    ottoId_: BigNumberish,
-    epoch_: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<number[]>;
 
   epochBoosts(
     arg0: BigNumberish,
@@ -1313,22 +1483,22 @@ export interface Otto extends BaseContract {
     overrides?: CallOverrides
   ): Promise<number>;
 
-  equipable(
-    ottoId_: BigNumberish,
-    itemId_: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  exists(tokenId_: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
-
-  genderOf(tokenId_: BigNumberish, overrides?: CallOverrides): Promise<number>;
-
   getApproved(
     tokenId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
 
   getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
+
+  grantManager(
+    manager_: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  grantMinter(
+    minter_: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   grantRole(
     role: BytesLike,
@@ -1346,7 +1516,20 @@ export interface Otto extends BaseContract {
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
-    [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, number, boolean] & {
+    [
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      number,
+      boolean,
+      number,
+      number,
+      number,
+      number,
+      BigNumber
+    ] & {
       mintAt: BigNumber;
       canOpenAt: BigNumber;
       summonAt: BigNumber;
@@ -1354,16 +1537,13 @@ export interface Otto extends BaseContract {
       traits: BigNumber;
       portalStatus: number;
       legendary: boolean;
+      attributePoints: number;
+      ap: number;
+      exp: number;
+      level: number;
+      lastLevelUpAt: BigNumber;
     }
   >;
-
-  initialize(
-    name_: string,
-    symbol_: string,
-    maxBatchSize_: BigNumberish,
-    collectionSize_: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
 
   isApprovedForAll(
     owner: string,
@@ -1371,68 +1551,15 @@ export interface Otto extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  legendary(
-    tokenId_: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  maxBatch(overrides?: CallOverrides): Promise<BigNumber>;
-
-  mint(
-    to_: string,
-    quantity_: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   name(overrides?: CallOverrides): Promise<string>;
 
   nextOwnerToExplicitlySet(overrides?: CallOverrides): Promise<BigNumber>;
 
-  numericTraitsOf(
-    tokenId_: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  onERC1155BatchReceived(
-    arg0: string,
-    arg1: string,
-    arg2: BigNumberish[],
-    arg3: BigNumberish[],
-    arg4: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  onERC1155Received(
-    arg0: string,
-    from_: string,
-    itemId_: BigNumberish,
-    value_: BigNumberish,
-    _data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   openPeriod(overrides?: CallOverrides): Promise<BigNumber>;
-
-  openPortal(
-    tokenId_: BigNumberish,
-    candidates_: BigNumberish[],
-    legendary_: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  ownedItemsOf(
-    tokenId_: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber[]>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
   ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-  portalStatusOf(
-    tokenId_: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<number>;
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
@@ -1448,6 +1575,16 @@ export interface Otto extends BaseContract {
   renounceRole(
     role: BytesLike,
     account: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  revokeManager(
+    manager_: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  revokeMinter(
+    minter_: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1478,24 +1615,146 @@ export interface Otto extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  supportsInterface(
+    interfaceId: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  symbol(overrides?: CallOverrides): Promise<string>;
+
+  tokenByIndex(
+    index: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  tokenOfOwnerByIndex(
+    owner: string,
+    index: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  tokenURI(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+  totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+
+  transferFrom(
+    from: string,
+    to: string,
+    tokenId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  transferOwnership(
+    newOwner: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  upgradeTo(
+    newImplementation: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  upgradeToAndCall(
+    newImplementation: string,
+    data: BytesLike,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  baseAttributesOf(
+    tokenId_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<number[]>;
+
+  calcExp(
+    fromLv_: BigNumberish,
+    fromExp_: BigNumberish,
+    inc_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<[number, number] & { lv_: number; exp_: number }>;
+
+  canOpenAt(
+    tokenId_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  candidatesOf(
+    tokenId_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
+
+  doItemBatchActions(
+    ottoId_: BigNumberish,
+    inputs_: IOttoWearingFacet.ItemActionInputStruct[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  equipWillReturn(
+    ottoId_: BigNumberish,
+    itemId_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<[BigNumber, boolean]>;
+
+  equipable(
+    ottoId_: BigNumberish,
+    itemId_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  exists(tokenId_: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
+  genderOf(tokenId_: BigNumberish, overrides?: CallOverrides): Promise<number>;
+
+  increaseAp(
+    ottoId_: BigNumberish,
+    inc_: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  increaseExp(
+    ottoId_: BigNumberish,
+    inc_: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  legendary(
+    tokenId_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  maxBatch(overrides?: CallOverrides): Promise<BigNumber>;
+
+  mint(
+    to_: string,
+    quantity_: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  nextLevelExp(n: BigNumberish, overrides?: CallOverrides): Promise<number>;
+
+  numericTraitsOf(
+    tokenId_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  openPortal(
+    tokenId_: BigNumberish,
+    candidates_: BigNumberish[],
+    legendary_: boolean,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  ownedItemsOf(
+    tokenId_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
+
+  portalStatusOf(
+    tokenId_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<number>;
+
   setBaseURI(
     baseURI: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setCanOpenAt(
-    ts_: BigNumberish,
-    tokendIds_: BigNumberish[],
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setDecayTarget(
-    ts_: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setOpenPeriod(
-    openPeriod_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1513,34 +1772,14 @@ export interface Otto extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  supportsInterface(
-    interfaceId: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  symbol(overrides?: CallOverrides): Promise<string>;
-
   toNumericTraits(
     arr_: BigNumberish[],
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  tokenByIndex(
-    index: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  tokenOfOwnerByIndex(
-    owner: string,
-    index: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  tokenURI(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+  totalLevelExp(n: BigNumberish, overrides?: CallOverrides): Promise<number>;
 
   totalMintable(overrides?: CallOverrides): Promise<BigNumber>;
-
-  totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
   traitsOf(
     tokenId_: BigNumberish,
@@ -1555,15 +1794,13 @@ export interface Otto extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  transferFrom(
-    from: string,
-    to: string,
-    tokenId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  transferOwnership(
-    newOwner: string,
+  transferChildToParent(
+    _fromTokenId: BigNumberish,
+    _toContract: string,
+    _toTokenId: BigNumberish,
+    _childContract: string,
+    _childTokenId: BigNumberish,
+    _data: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1573,31 +1810,20 @@ export interface Otto extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  updateEpochBoost(
+  useAttributePoints(
     ottoId_: BigNumberish,
-    epoch_: BigNumberish,
-    delta_: BigNumberish[],
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  upgradeTo(
-    newImplementation: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  upgradeToAndCall(
-    newImplementation: string,
-    data: BytesLike,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  upgradeV3(
-    item_: string,
+    values_: BigNumberish[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    ITEM(overrides?: CallOverrides): Promise<string>;
+
+    ITEM_MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    LEVEL_UP_ATTRITUBE_POINTS(overrides?: CallOverrides): Promise<number>;
 
     MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -1611,60 +1837,18 @@ export interface Otto extends BaseContract {
 
     balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    baseAttributesOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<number[]>;
-
-    canOpenAt(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     candidates(
       arg0: BigNumberish,
       arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    candidatesOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber[]>;
-
     decayTarget(overrides?: CallOverrides): Promise<BigNumber>;
-
-    devSummon(
-      tokenId_: BigNumberish,
-      traits_: BigNumberish,
-      birthday_: BigNumberish,
-      legendary_: boolean,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    epochBoostOf(
-      ottoId_: BigNumberish,
-      epoch_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<number[]>;
 
     epochBoosts(
       arg0: BigNumberish,
       arg1: BigNumberish,
       arg2: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<number>;
-
-    equipable(
-      ottoId_: BigNumberish,
-      itemId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    exists(tokenId_: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
-
-    genderOf(
-      tokenId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<number>;
 
@@ -1674,6 +1858,10 @@ export interface Otto extends BaseContract {
     ): Promise<string>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
+
+    grantManager(manager_: string, overrides?: CallOverrides): Promise<void>;
+
+    grantMinter(minter_: string, overrides?: CallOverrides): Promise<void>;
 
     grantRole(
       role: BytesLike,
@@ -1698,7 +1886,12 @@ export interface Otto extends BaseContract {
         BigNumber,
         BigNumber,
         number,
-        boolean
+        boolean,
+        number,
+        number,
+        number,
+        number,
+        BigNumber
       ] & {
         mintAt: BigNumber;
         canOpenAt: BigNumber;
@@ -1707,16 +1900,13 @@ export interface Otto extends BaseContract {
         traits: BigNumber;
         portalStatus: number;
         legendary: boolean;
+        attributePoints: number;
+        ap: number;
+        exp: number;
+        level: number;
+        lastLevelUpAt: BigNumber;
       }
     >;
-
-    initialize(
-      name_: string,
-      symbol_: string,
-      maxBatchSize_: BigNumberish,
-      collectionSize_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     isApprovedForAll(
       owner: string,
@@ -1724,68 +1914,15 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    legendary(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    maxBatch(overrides?: CallOverrides): Promise<BigNumber>;
-
-    mint(
-      to_: string,
-      quantity_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     name(overrides?: CallOverrides): Promise<string>;
 
     nextOwnerToExplicitlySet(overrides?: CallOverrides): Promise<BigNumber>;
 
-    numericTraitsOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    onERC1155BatchReceived(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    onERC1155Received(
-      arg0: string,
-      from_: string,
-      itemId_: BigNumberish,
-      value_: BigNumberish,
-      _data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
     openPeriod(overrides?: CallOverrides): Promise<BigNumber>;
-
-    openPortal(
-      tokenId_: BigNumberish,
-      candidates_: BigNumberish[],
-      legendary_: boolean,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    ownedItemsOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber[]>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
     ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-    portalStatusOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<number>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
@@ -1801,6 +1938,10 @@ export interface Otto extends BaseContract {
       account: string,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    revokeManager(manager_: string, overrides?: CallOverrides): Promise<void>;
+
+    revokeMinter(minter_: string, overrides?: CallOverrides): Promise<void>;
 
     revokeRole(
       role: BytesLike,
@@ -1829,20 +1970,148 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    symbol(overrides?: CallOverrides): Promise<string>;
+
+    tokenByIndex(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    tokenOfOwnerByIndex(
+      owner: string,
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    tokenURI(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+
+    transferFrom(
+      from: string,
+      to: string,
+      tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    upgradeTo(
+      newImplementation: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    baseAttributesOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<number[]>;
+
+    calcExp(
+      fromLv_: BigNumberish,
+      fromExp_: BigNumberish,
+      inc_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[number, number] & { lv_: number; exp_: number }>;
+
+    canOpenAt(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    candidatesOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
+
+    doItemBatchActions(
+      ottoId_: BigNumberish,
+      inputs_: IOttoWearingFacet.ItemActionInputStruct[],
+      overrides?: CallOverrides
+    ): Promise<IOttoWearingFacet.ItemActionOutputStructOutput[]>;
+
+    equipWillReturn(
+      ottoId_: BigNumberish,
+      itemId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber, boolean]>;
+
+    equipable(
+      ottoId_: BigNumberish,
+      itemId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    exists(tokenId_: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
+    genderOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<number>;
+
+    increaseAp(
+      ottoId_: BigNumberish,
+      inc_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    increaseExp(
+      ottoId_: BigNumberish,
+      inc_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    legendary(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    maxBatch(overrides?: CallOverrides): Promise<BigNumber>;
+
+    mint(
+      to_: string,
+      quantity_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    nextLevelExp(n: BigNumberish, overrides?: CallOverrides): Promise<number>;
+
+    numericTraitsOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    openPortal(
+      tokenId_: BigNumberish,
+      candidates_: BigNumberish[],
+      legendary_: boolean,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    ownedItemsOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
+
+    portalStatusOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<number>;
+
     setBaseURI(baseURI: string, overrides?: CallOverrides): Promise<void>;
-
-    setCanOpenAt(
-      ts_: BigNumberish,
-      tokendIds_: BigNumberish[],
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setDecayTarget(ts_: BigNumberish, overrides?: CallOverrides): Promise<void>;
-
-    setOpenPeriod(
-      openPeriod_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     setTraitCode(
       tokenId_: BigNumberish,
@@ -1858,34 +2127,14 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    symbol(overrides?: CallOverrides): Promise<string>;
-
     toNumericTraits(
       arr_: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    tokenByIndex(
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    tokenOfOwnerByIndex(
-      owner: string,
-      index: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    tokenURI(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+    totalLevelExp(n: BigNumberish, overrides?: CallOverrides): Promise<number>;
 
     totalMintable(overrides?: CallOverrides): Promise<BigNumber>;
-
-    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     traitsOf(
       tokenId_: BigNumberish,
@@ -1900,15 +2149,13 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    transferFrom(
-      from: string,
-      to: string,
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    transferOwnership(
-      newOwner: string,
+    transferChildToParent(
+      _fromTokenId: BigNumberish,
+      _toContract: string,
+      _toTokenId: BigNumberish,
+      _childContract: string,
+      _childTokenId: BigNumberish,
+      _data: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1918,25 +2165,11 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    updateEpochBoost(
+    useAttributePoints(
       ottoId_: BigNumberish,
-      epoch_: BigNumberish,
-      delta_: BigNumberish[],
+      values_: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
-
-    upgradeTo(
-      newImplementation: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    upgradeV3(item_: string, overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
@@ -1948,6 +2181,17 @@ export interface Otto extends BaseContract {
       previousAdmin?: null,
       newAdmin?: null
     ): AdminChangedEventFilter;
+
+    "ApIncreased(uint256,uint32,uint32)"(
+      ottoId_?: BigNumberish | null,
+      total_?: null,
+      inc_?: null
+    ): ApIncreasedEventFilter;
+    ApIncreased(
+      ottoId_?: BigNumberish | null,
+      total_?: null,
+      inc_?: null
+    ): ApIncreasedEventFilter;
 
     "Approval(address,address,uint256)"(
       owner?: string | null,
@@ -1980,6 +2224,15 @@ export interface Otto extends BaseContract {
       attrs_?: null
     ): BaseAttributesChangedEventFilter;
 
+    "BaseAttributesUpdated(uint256,int16[8])"(
+      ottoId_?: BigNumberish | null,
+      delta_?: null
+    ): BaseAttributesUpdatedEventFilter;
+    BaseAttributesUpdated(
+      ottoId_?: BigNumberish | null,
+      delta_?: null
+    ): BaseAttributesUpdatedEventFilter;
+
     "BaseURIChanged(address,string)"(
       sender_?: string | null,
       baseURI_?: null
@@ -2004,6 +2257,31 @@ export interface Otto extends BaseContract {
       epoch_?: BigNumberish | null,
       attrs_?: null
     ): EpochBoostsChangedEventFilter;
+
+    "EpochBoostsUpdated(uint256,uint32,int16[8])"(
+      ottoId_?: BigNumberish | null,
+      epoch_?: BigNumberish | null,
+      delta_?: null
+    ): EpochBoostsUpdatedEventFilter;
+    EpochBoostsUpdated(
+      ottoId_?: BigNumberish | null,
+      epoch_?: BigNumberish | null,
+      delta_?: null
+    ): EpochBoostsUpdatedEventFilter;
+
+    "ExpIncreased(uint256,uint32,uint32)"(
+      ottoId_?: BigNumberish | null,
+      total_?: null,
+      inc_?: null
+    ): ExpIncreasedEventFilter;
+    ExpIncreased(
+      ottoId_?: BigNumberish | null,
+      total_?: null,
+      inc_?: null
+    ): ExpIncreasedEventFilter;
+
+    "Initialized(uint8)"(version?: null): InitializedEventFilter;
+    Initialized(version?: null): InitializedEventFilter;
 
     "ItemEquipped(uint256,uint256)"(
       ottoId_?: BigNumberish | null,
@@ -2031,6 +2309,23 @@ export interface Otto extends BaseContract {
       ottoId_?: BigNumberish | null,
       itemId_?: BigNumberish | null
     ): ItemUsedEventFilter;
+
+    "LevelUp(uint256,uint32,uint32,uint32,uint32,uint32)"(
+      ottoId_?: BigNumberish | null,
+      fromLv_?: null,
+      toLv_?: null,
+      fromExp_?: null,
+      toExp_?: null,
+      attributePoints_?: null
+    ): LevelUpEventFilter;
+    LevelUp(
+      ottoId_?: BigNumberish | null,
+      fromLv_?: null,
+      toLv_?: null,
+      fromExp_?: null,
+      toExp_?: null,
+      attributePoints_?: null
+    ): LevelUpEventFilter;
 
     "OpenPortal(address,uint256,bool)"(
       sender_?: string | null,
@@ -2123,6 +2418,12 @@ export interface Otto extends BaseContract {
   estimateGas: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
+    ITEM(overrides?: CallOverrides): Promise<BigNumber>;
+
+    ITEM_MANAGER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    LEVEL_UP_ATTRITUBE_POINTS(overrides?: CallOverrides): Promise<BigNumber>;
+
     MANAGER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
     MINTER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
@@ -2135,63 +2436,18 @@ export interface Otto extends BaseContract {
 
     balanceOf(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    baseAttributesOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    canOpenAt(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     candidates(
       arg0: BigNumberish,
       arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    candidatesOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     decayTarget(overrides?: CallOverrides): Promise<BigNumber>;
-
-    devSummon(
-      tokenId_: BigNumberish,
-      traits_: BigNumberish,
-      birthday_: BigNumberish,
-      legendary_: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    epochBoostOf(
-      ottoId_: BigNumberish,
-      epoch_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     epochBoosts(
       arg0: BigNumberish,
       arg1: BigNumberish,
       arg2: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    equipable(
-      ottoId_: BigNumberish,
-      itemId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    exists(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    genderOf(
-      tokenId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -2203,6 +2459,16 @@ export interface Otto extends BaseContract {
     getRoleAdmin(
       role: BytesLike,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    grantManager(
+      manager_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    grantMinter(
+      minter_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     grantRole(
@@ -2219,83 +2485,22 @@ export interface Otto extends BaseContract {
 
     infos(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-    initialize(
-      name_: string,
-      symbol_: string,
-      maxBatchSize_: BigNumberish,
-      collectionSize_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     isApprovedForAll(
       owner: string,
       operator: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    legendary(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    maxBatch(overrides?: CallOverrides): Promise<BigNumber>;
-
-    mint(
-      to_: string,
-      quantity_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     nextOwnerToExplicitlySet(overrides?: CallOverrides): Promise<BigNumber>;
 
-    numericTraitsOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    onERC1155BatchReceived(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    onERC1155Received(
-      arg0: string,
-      from_: string,
-      itemId_: BigNumberish,
-      value_: BigNumberish,
-      _data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     openPeriod(overrides?: CallOverrides): Promise<BigNumber>;
-
-    openPortal(
-      tokenId_: BigNumberish,
-      candidates_: BigNumberish[],
-      legendary_: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    ownedItemsOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     ownerOf(
       tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    portalStatusOf(
-      tokenId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -2316,6 +2521,16 @@ export interface Otto extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    revokeManager(
+      manager_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    revokeMinter(
+      minter_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     revokeRole(
       role: BytesLike,
       account: string,
@@ -2343,52 +2558,12 @@ export interface Otto extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    setBaseURI(
-      baseURI: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setCanOpenAt(
-      ts_: BigNumberish,
-      tokendIds_: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setDecayTarget(
-      ts_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setOpenPeriod(
-      openPeriod_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setTraitCode(
-      tokenId_: BigNumberish,
-      slot_: BigNumberish,
-      code_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    summon(
-      tokenId_: BigNumberish,
-      candidateIndex: BigNumberish,
-      birthday_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
-
-    toNumericTraits(
-      arr_: BigNumberish[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     tokenByIndex(
       index: BigNumberish,
@@ -2406,22 +2581,7 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    totalMintable(overrides?: CallOverrides): Promise<BigNumber>;
-
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-    traitsOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    transferChild(
-      _fromTokenId: BigNumberish,
-      _to: string,
-      _childContract: string,
-      _childTokenId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
 
     transferFrom(
       from: string,
@@ -2432,19 +2592,6 @@ export interface Otto extends BaseContract {
 
     transferOwnership(
       newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    updateBaseAttributes(
-      ottoId_: BigNumberish,
-      delta_: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    updateEpochBoost(
-      ottoId_: BigNumberish,
-      epoch_: BigNumberish,
-      delta_: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -2459,14 +2606,185 @@ export interface Otto extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    upgradeV3(
-      item_: string,
+    baseAttributesOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    calcExp(
+      fromLv_: BigNumberish,
+      fromExp_: BigNumberish,
+      inc_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    canOpenAt(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    candidatesOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    doItemBatchActions(
+      ottoId_: BigNumberish,
+      inputs_: IOttoWearingFacet.ItemActionInputStruct[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    equipWillReturn(
+      ottoId_: BigNumberish,
+      itemId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    equipable(
+      ottoId_: BigNumberish,
+      itemId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    exists(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    genderOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    increaseAp(
+      ottoId_: BigNumberish,
+      inc_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    increaseExp(
+      ottoId_: BigNumberish,
+      inc_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    legendary(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    maxBatch(overrides?: CallOverrides): Promise<BigNumber>;
+
+    mint(
+      to_: string,
+      quantity_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    nextLevelExp(
+      n: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    numericTraitsOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    openPortal(
+      tokenId_: BigNumberish,
+      candidates_: BigNumberish[],
+      legendary_: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    ownedItemsOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    portalStatusOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    setBaseURI(
+      baseURI: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setTraitCode(
+      tokenId_: BigNumberish,
+      slot_: BigNumberish,
+      code_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    summon(
+      tokenId_: BigNumberish,
+      candidateIndex: BigNumberish,
+      birthday_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    toNumericTraits(
+      arr_: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    totalLevelExp(
+      n: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    totalMintable(overrides?: CallOverrides): Promise<BigNumber>;
+
+    traitsOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    transferChild(
+      _fromTokenId: BigNumberish,
+      _to: string,
+      _childContract: string,
+      _childTokenId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    transferChildToParent(
+      _fromTokenId: BigNumberish,
+      _toContract: string,
+      _toTokenId: BigNumberish,
+      _childContract: string,
+      _childTokenId: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    updateBaseAttributes(
+      ottoId_: BigNumberish,
+      delta_: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    useAttributePoints(
+      ottoId_: BigNumberish,
+      values_: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     DEFAULT_ADMIN_ROLE(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    ITEM(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    ITEM_MANAGER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    LEVEL_UP_ATTRITUBE_POINTS(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2485,63 +2803,18 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    baseAttributesOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    canOpenAt(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     candidates(
       arg0: BigNumberish,
       arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    candidatesOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     decayTarget(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    devSummon(
-      tokenId_: BigNumberish,
-      traits_: BigNumberish,
-      birthday_: BigNumberish,
-      legendary_: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    epochBoostOf(
-      ottoId_: BigNumberish,
-      epoch_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     epochBoosts(
       arg0: BigNumberish,
       arg1: BigNumberish,
       arg2: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    equipable(
-      ottoId_: BigNumberish,
-      itemId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    exists(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    genderOf(
-      tokenId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2553,6 +2826,16 @@ export interface Otto extends BaseContract {
     getRoleAdmin(
       role: BytesLike,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    grantManager(
+      manager_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    grantMinter(
+      minter_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     grantRole(
@@ -2572,31 +2855,10 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    initialize(
-      name_: string,
-      symbol_: string,
-      maxBatchSize_: BigNumberish,
-      collectionSize_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     isApprovedForAll(
       owner: string,
       operator: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    legendary(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    maxBatch(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    mint(
-      to_: string,
-      quantity_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -2605,52 +2867,12 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    numericTraitsOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    onERC1155BatchReceived(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    onERC1155Received(
-      arg0: string,
-      from_: string,
-      itemId_: BigNumberish,
-      value_: BigNumberish,
-      _data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     openPeriod(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    openPortal(
-      tokenId_: BigNumberish,
-      candidates_: BigNumberish[],
-      legendary_: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    ownedItemsOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     ownerOf(
       tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    portalStatusOf(
-      tokenId_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2671,6 +2893,16 @@ export interface Otto extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    revokeManager(
+      manager_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    revokeMinter(
+      minter_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     revokeRole(
       role: BytesLike,
       account: string,
@@ -2698,52 +2930,12 @@ export interface Otto extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    setBaseURI(
-      baseURI: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setCanOpenAt(
-      ts_: BigNumberish,
-      tokendIds_: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setDecayTarget(
-      ts_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setOpenPeriod(
-      openPeriod_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setTraitCode(
-      tokenId_: BigNumberish,
-      slot_: BigNumberish,
-      code_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    summon(
-      tokenId_: BigNumberish,
-      candidateIndex: BigNumberish,
-      birthday_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    toNumericTraits(
-      arr_: BigNumberish[],
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     tokenByIndex(
       index: BigNumberish,
@@ -2761,22 +2953,7 @@ export interface Otto extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    totalMintable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    traitsOf(
-      tokenId_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    transferChild(
-      _fromTokenId: BigNumberish,
-      _to: string,
-      _childContract: string,
-      _childTokenId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
 
     transferFrom(
       from: string,
@@ -2787,19 +2964,6 @@ export interface Otto extends BaseContract {
 
     transferOwnership(
       newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    updateBaseAttributes(
-      ottoId_: BigNumberish,
-      delta_: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    updateEpochBoost(
-      ottoId_: BigNumberish,
-      epoch_: BigNumberish,
-      delta_: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -2814,8 +2978,171 @@ export interface Otto extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    upgradeV3(
-      item_: string,
+    baseAttributesOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    calcExp(
+      fromLv_: BigNumberish,
+      fromExp_: BigNumberish,
+      inc_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    canOpenAt(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    candidatesOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    doItemBatchActions(
+      ottoId_: BigNumberish,
+      inputs_: IOttoWearingFacet.ItemActionInputStruct[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    equipWillReturn(
+      ottoId_: BigNumberish,
+      itemId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    equipable(
+      ottoId_: BigNumberish,
+      itemId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    exists(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    genderOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    increaseAp(
+      ottoId_: BigNumberish,
+      inc_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    increaseExp(
+      ottoId_: BigNumberish,
+      inc_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    legendary(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    maxBatch(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    mint(
+      to_: string,
+      quantity_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    nextLevelExp(
+      n: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    numericTraitsOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    openPortal(
+      tokenId_: BigNumberish,
+      candidates_: BigNumberish[],
+      legendary_: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    ownedItemsOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    portalStatusOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    setBaseURI(
+      baseURI: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setTraitCode(
+      tokenId_: BigNumberish,
+      slot_: BigNumberish,
+      code_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    summon(
+      tokenId_: BigNumberish,
+      candidateIndex: BigNumberish,
+      birthday_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    toNumericTraits(
+      arr_: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    totalLevelExp(
+      n: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    totalMintable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    traitsOf(
+      tokenId_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    transferChild(
+      _fromTokenId: BigNumberish,
+      _to: string,
+      _childContract: string,
+      _childTokenId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    transferChildToParent(
+      _fromTokenId: BigNumberish,
+      _toContract: string,
+      _toTokenId: BigNumberish,
+      _childContract: string,
+      _childTokenId: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateBaseAttributes(
+      ottoId_: BigNumberish,
+      delta_: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    useAttributePoints(
+      ottoId_: BigNumberish,
+      values_: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

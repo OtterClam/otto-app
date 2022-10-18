@@ -14,6 +14,9 @@ import useServiceWorker from 'hooks/useServiceWorker'
 import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
 import { WalletProvider } from 'contexts/Wallet'
 import { ApiProvider } from 'contexts/Api'
+import { OverlayProvider } from 'contexts/Overlay'
+import { SkeletonTheme } from 'react-loading-skeleton'
+import { colors } from 'styles/colors'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 
@@ -75,13 +78,17 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                 <ThemeProvider theme={theme}>
                   <BreakpointsProvider>
                     <MyOttosProvider>
-                      <StyledApp>
-                        <StyledPageContainer>{children}</StyledPageContainer>
-                        <Error />
-                        <WalletSelector />
-                        <SideMenu />
-                        <AssetsLoader />
-                      </StyledApp>
+                      <OverlayProvider>
+                        <StyledApp>
+                          <SkeletonTheme baseColor={colors.otterBlack} highlightColor={colors.darkGray400}>
+                            <StyledPageContainer>{children}</StyledPageContainer>
+                            <Error />
+                            <WalletSelector />
+                            <SideMenu />
+                            <AssetsLoader />
+                          </SkeletonTheme>
+                        </StyledApp>
+                      </OverlayProvider>
                     </MyOttosProvider>
                   </BreakpointsProvider>
                 </ThemeProvider>

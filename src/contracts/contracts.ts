@@ -3,6 +3,7 @@ import { Contract, Signer } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useMemo } from 'react'
 import {
+  AdventureAbi,
   ClamCirculatingSupplyAbi,
   ClamPondAbi,
   ERC1155Abi,
@@ -29,6 +30,7 @@ import {
   OttoHellDiceRoller,
   PearlBank,
 } from './__generated__'
+import { Adventure } from './__generated__/Adventure'
 import { ERC1155 } from './__generated__/ERC1155'
 import { Foundry } from './__generated__/Foundry'
 import { IOttoItemFactory } from './__generated__/IOttoItemFactory'
@@ -133,4 +135,10 @@ export function useFoundry() {
 export function useERC1155(address: string) {
   const { library } = useEthers()
   return new Contract(address, ERC1155Abi, library) as ERC1155
+}
+
+export function useAdventureContract() {
+  const { ADVENTURE } = useContractAddresses()
+  const { library } = useEthers()
+  return new Contract(ADVENTURE, AdventureAbi, library) as Adventure
 }

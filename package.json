@@ -7,15 +7,15 @@
     "start": "next start",
     "build": "yarn check-trans && yarn codegen:cn && next build",
     "check-types": "tsc --noemit",
-    "check-trans": "node ./scripts/validate-translation-files.mjs",
     "download-schema:otto": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otto otto-graphql-schema.json",
     "download-schema:otter": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otterclam otter-graphql-schema.json",
     "codegen:contract": "typechain --target ethers-v5 --out-dir=src/contracts/__generated__ 'src/contracts/abis/*.json'",
     "codegen:otto-graph": "yarn download-schema:otto && apollo codegen:generate --includes=src/graphs/otto.ts --localSchemaFile=otto-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=./src/__generated__/otto/global-types.ts",
     "codegen:otter-graph": "yarn download-schema:otter && apollo codegen:generate --includes=src/graphs/otter.ts --localSchemaFile=otter-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=./src/__generated__/otter/global-types.ts && rm ./src/__generated__/otter/global-types.ts",
-    "codegen:cn": "node ./scripts/gen-cn.mjs ./public/locales/zh-tw/common.json",
     "codegen": "yarn codegen:contract && yarn codegen:otto-graph && yarn codegen:otter-graph",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "codegen:cn": "node ./scripts/gen-cn.mjs ./public/locales/zh-tw/common.json",
+    "check-trans": "node ./scripts/validate-translation-files.mjs"
   },
   "browserslist": {
     "production": [
@@ -56,10 +56,12 @@
     "next-transpile-modules": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-loading-skeleton": "^3.1.0",
     "react-markdown": "^8.0.2",
     "react-redux": "^7.2.0",
     "react-responsive": "^9.0.0-beta.10",
     "react-responsive-carousel": "^3.2.23",
+    "react-swipeable": "^7.0.0",
     "react-tooltip": "^4.2.21",
     "react-transition-group": "^4.4.5",
     "recharts": "^2.1.12",

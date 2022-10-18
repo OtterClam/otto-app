@@ -3,6 +3,7 @@ import { BigNumber, BigNumberish, constants } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useCallback, useEffect, useState } from 'react'
 import {
+  useAdventureContract,
   useClamPond,
   useERC1155,
   useItemContract,
@@ -239,6 +240,18 @@ export function useNextRewardTime() {
   return result?.value ? result?.value[0] : constants.Zero
 }
 
+export function useAttributePoints(ottoId?: string) {
+  const otto = useOttoContract()
+  const result = useCall(
+    ottoId && {
+      contract: otto,
+      method: 'infos',
+      args: [ottoId],
+    }
+  )
+  return result?.value?.attributePoints ?? 0
+}
+
 export function useIsApprovedForAll(contract: string, account: string, operator: string) {
   const erc1155 = useERC1155(contract)
   const [isApprovedForAll, setIsApprovedForAll] = useState(false)
@@ -271,4 +284,10 @@ export const useBuyFishReturn = (clamAmount: BigNumberish) => {
   }, [clamAmount.toString(), library])
 
   return fishAmount
+}
+
+export const useFinishFee = (passId: BigNumberish | undefined) => {
+  const adventure = useAdventureContract()
+  const result = useCall(passId ? { contract: adventure, method: 'finishFee', args: [passId] } : undefined)
+  return result?.value?.[0].toString() || '0'
 }

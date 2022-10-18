@@ -1,19 +1,5 @@
 import { gql } from '@apollo/client'
 
-export const LIST_MY_OTTOS = gql`
-  query ListMyOttos($owner: Bytes!) {
-    ottos(where: { owner: $owner, portalStatus: SUMMONED, epoch: -1 }, orderBy: tokenId) {
-      tokenId
-      tokenURI
-      mintAt
-      legendary
-      brs
-      rrs
-      rarityScore
-    }
-  }
-`
-
 export const LIST_MY_ITEMS = gql`
   query ListItems($owner: Bytes!) {
     ottoItems(where: { rootOwner: $owner, amount_gt: 0 }, first: 1000) {
@@ -107,19 +93,11 @@ export const GET_PORTAL = gql`
     }
   }
 `
-export const GET_OTTO = gql`
-  query GetOtto($ottoId: BigInt!) {
-    ottos(where: { tokenId: $ottoId, epoch: -1 }) {
+
+export const LIST_MY_OTTOS = gql`
+  query ListMyOttos($owner: Bytes!) {
+    ottos(where: { owner: $owner, portalStatus: SUMMONED }, orderBy: tokenId) {
       tokenId
-      tokenURI
-      mintAt
-      legendary
-      brs
-      rrs
-      rarityScore
-      epoch
-      constellationBoost
-      legendaryBoost
     }
   }
 `

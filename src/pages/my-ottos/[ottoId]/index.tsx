@@ -6,6 +6,7 @@ import { NextPageWithLayout } from 'pages/_app'
 import DefaultLayout from 'layouts/DefaultLayout'
 import { LeaderboardEpochProvider } from 'contexts/LeaderboardEpoch'
 import { RarityEpochProvider } from 'contexts/RarityEpoch'
+import AdventureProvider from 'AdventureProvider'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
@@ -27,7 +28,9 @@ OttoPage.getLayout = (page, i18n) => {
     <DefaultLayout title={i18n.t('otto.title')}>
       <RarityEpochProvider>
         <LeaderboardEpochProvider>
-          <Board>{page}</Board>
+          <AdventureProvider>
+            <Board>{page}</Board>
+          </AdventureProvider>
         </LeaderboardEpochProvider>
       </RarityEpochProvider>
     </DefaultLayout>

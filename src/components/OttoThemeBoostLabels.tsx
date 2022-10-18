@@ -32,7 +32,7 @@ export interface OttoThemeBoostLabelsProps {
 }
 
 export default function OttoThemeBoostLabels({ otto, className }: OttoThemeBoostLabelsProps) {
-  const traits = (otto.metadata.otto_details ?? []).filter(trait => trait.theme_boost > 0)
+  const traits = (otto.raw.otto_details ?? []).filter(trait => trait.theme_boost > 0)
   const { t } = useTranslation('', { keyPrefix: 'themeBoost' })
 
   return (

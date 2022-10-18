@@ -1,16 +1,16 @@
-import CloseButton from 'components/CloseButton'
+import NewWindowIcon from 'assets/icons/new-window.svg'
 import Button from 'components/Button'
-import Item from 'models/Item'
-import styled from 'styled-components/macro'
-import { Caption, ContentSmall, Headline, Note } from 'styles/typography'
+import CloseButton from 'components/CloseButton'
 import GenderSpecific from 'components/GenderSpecific'
-import { useTranslation } from 'next-i18next'
 import ItemCollectionBadge from 'components/ItemCollectionBadge'
 import TraitLabels from 'components/TraitLabels'
 import { getOpenSeaItemLink } from 'constant'
-import NewWindowIcon from 'assets/icons/new-window.svg'
+import Item from 'models/Item'
+import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useState } from 'react'
+import styled from 'styled-components/macro'
+import { Caption, ContentSmall, Headline, Note } from 'styles/typography'
 import TransferItemPopup from './TransferItemPopup'
 
 const StyledItemDetails = styled.section`
@@ -178,7 +178,7 @@ interface Props {
 
 export default function ItemDetails({ item, onClose, onUse, className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
-  const { collection, collection_name, name, image, rarity, type, description, equippable_gender, wearable } = item
+  const { id, collection, collection_name, name, image, rarity, type, description, equippable_gender, wearable } = item
   const [showTransferPopup, setShowTransferPopup] = useState(false)
 
   return (
@@ -231,7 +231,7 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
           <StyledWearCount>{t('wear_count', { count: item.equipped_count })}</StyledWearCount>
         </>
       )}
-      {!item.isCoupon && (
+      {!(item.isCoupon || item.isMissionItem) && (
         <StyledAttrs>
           {item.stats.map(({ name, value }, i) => (
             <StyledAttr key={i}>
@@ -243,7 +243,7 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
       )}
       {/* the following typing issue has been solved in adventure branch */}
       {item.theme_boost > 0 && <TraitLabels trait={item as any} large highlightMatched />}
-      {onUse && (
+      {onUse && !item.isMissionItem && (
         <StyledButton Typography={Headline} onClick={() => onUse(item)}>
           {item.wearable ? (item.equipped ? t('take_off') : t('wear')) : item.isCoupon ? t('open') : t('use')}
         </StyledButton>

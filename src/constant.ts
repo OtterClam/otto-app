@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers'
 import noop from 'lodash/noop'
 
 export const IS_SERVER = typeof window === 'undefined'
@@ -26,6 +27,8 @@ export const TELEGRAM_LINK = 'https://t.me/otterclam_official'
 
 export const OPENSEA_NFT_LINK = 'https://opensea.io/assets/matic/0x6e8a9cb6b1e73e9fce3fd3c68b5af9728f708eb7/'
 
+export const MAX_OTTOS_PER_LOCATION = 5
+
 export function getOpenSeaLink(tokenId: string) {
   return `${OPENSEA_NFT_LINK}${tokenId}`
 }
@@ -49,3 +52,33 @@ export enum Token {
 }
 
 export const reserveOttoAmount = (chainId?: number) => (chainId === 137 ? 250 : 0)
+
+export const BIG_NUM_ZERO = BigNumber.from(0)
+
+export enum AdventurePotion {
+  OneHourSpeedy = 16711718,
+  ThreeHourSpeedy = 16711782,
+  SixHourSpeedy = 16711816,
+  Exp = 16711832,
+  Str = 16711854,
+}
+
+export const AdventureSpeedUpTime: { [k: string]: number } = {
+  [AdventurePotion.OneHourSpeedy]: 60 * 60 * 1000,
+  [AdventurePotion.ThreeHourSpeedy]: 3 * 60 * 60 * 1000,
+  [AdventurePotion.SixHourSpeedy]: 6 * 60 * 60 * 1000,
+}
+
+export enum ItemActionType {
+  Equip = 0,
+  Use = 1,
+  TakeOff = 2,
+  EquipFromOtto = 3,
+}
+
+export enum ChestId {
+  TreasuryChest = '16646388',
+  SilverChest = '16646144',
+  GoldChest = '16646208',
+  DiamondChest = '16646230',
+}

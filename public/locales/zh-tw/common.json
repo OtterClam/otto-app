@@ -158,13 +158,11 @@
       "title": "這季比賽總獎金",
       "tooltip": "排行榜上的名次及預估獎金會持續變動直到顯示時間歸零，而最終名次及獎勵會透過結束當下的截圖畫面決定。"
     },
-    "right_info": "這一輪比賽獎勵星座落在<span style=\"color: #FFDC77\">處女座</span>，所有此星座的阿獺、蘿提及克蕾歐都會被神祝福並賜予特殊效果： <span style=\"color: #FF6854\">BRS +50</span>",
     "mint_portal_link": "鑄造傳送門 >",
     "next": "下一輪 >",
     "prev": "< 前一輪",
     "rank_list": {
       "brs": "BRS",
-      "theme_boost": "主題加成 (BRS+{{ boost }})",
       "chosen_one": "天選之獺 (BRS+150)",
       "est_reward": "預估獎金",
       "expand": "展開顯示所有 {{count}} 隻阿獺",
@@ -177,12 +175,14 @@
       "rrs": "RRS",
       "show_less": "收合",
       "your_rank": "你的阿獺稀有度排名:",
-      "zodiac_boost": "{{zodiac}} (BRS+50)"
+      "zodiac_boost": "{{zodiac}} (BRS+50)",
+      "theme_boost": "主題加成 (BRS+{{ boost }})"
     },
-    "left_info": "只要你的阿獺 NFT 穿上的物品符合此輪比賽所指定的主題標籤： <span style=\"color: #FFDC77\">{{ themes }}</span> ，就可以得到額外稀有度分數加成！",
-    "left_info_link": "主題加成如何運作 >",
     "shell_chest_link": "購買貝殼寶箱 >",
-    "title": "排行榜"
+    "title": "排行榜",
+    "right_info": "這一輪比賽獎勵星座落在<span style=\"color: #FFDC77\">處女座</span>，所有此星座的阿獺、蘿提及克蕾歐都會被神祝福並賜予特殊效果： <span style=\"color: #FF6854\">BRS +50</span>",
+    "left_info_link": "主題加成如何運作 >",
+    "left_info": "只要你的阿獺 NFT 穿上的物品符合此輪比賽所指定的主題標籤： <span style=\"color: #FFDC77\">{{ themes }}</span> ，就可以得到額外稀有度分數加成！"
   },
   "mint": {
     "approve_button": "允許花費",
@@ -257,15 +257,17 @@
     "para2": "阿獺王國！"
   },
   "my_items": {
+    "next_page": "下一頁 >",
+    "prev_page": "上一頁 >",
     "empty": "你沒有任何物品",
     "equipped": "已裝備",
     "filter": "過濾",
     "filters": {
       "equipped": "已裝備",
-      "lottie_can_equip": "Lottie 可用",
       "none": "無",
       "not_equipped": "未裝備",
-      "otto_can_equip": "Otto 可用"
+      "otto_can_equip": "Otto 可用",
+      "lottie_can_equip": "Lottie 可用"
     },
     "legendary_warning": "警告：如果你裝備/更換其他物品到傳奇阿獺身上，傳奇外框將會隱藏，且會扣除額外的傳奇加成：基本稀有度 (BRS) +100。",
     "no_selected_item": "請選擇物品檢視詳細資訊",
@@ -280,25 +282,20 @@
       "Facial Accessories": "臉部配件",
       "Headwear": "頭飾",
       "Holding": "手持物",
-      "Other": "Other Items"
+      "Other": "其他物品"
     },
     "sorted_by": "排序",
     "sorted_by_options": {
-      "time_received": "收到時間",
-      "rarity": "稀有度",
-      "luck": "幸運",
-      "dex": "敏捷",
-      "cute": "可愛度",
-      "def": "防御",
-      "str": "力量",
-      "int": "智力",
-      "con": "體力",
-      "theme_boost": "主題加成"
-    },
-    "sort_order": "排序",
-    "sort_order_options": {
-      "asc": "從低到高",
-      "desc": "從高到低"
+      "rarity_desc": "稀有度",
+      "time_received": "更新時間",
+      "theme_boost": "主題加成",
+      "str": "STR 力量",
+      "luck": "LUK 幸運",
+      "int": "INT 智慧",
+      "dex": "DEX 敏捷",
+      "def": "DEF 防禦",
+      "cute": "CUTE 可愛",
+      "con": "CON 體力"
     },
     "take_off": "脫掉",
     "take_off_item": {
@@ -322,7 +319,6 @@
       "title": "選擇一隻阿獺來裝備此物品"
     },
     "transfer_btn": "發送物品",
-    "opensea_link": "在 Opensea 上查看",
     "transfer": {
       "title": "發送物品",
       "amount": "數量",
@@ -333,7 +329,13 @@
       "success_desc": "交易已完成。你的阿獺好夥伴很快就會收到物品。",
       "close_btn": "關閉視窗",
       "invalid_address": "無效的錢包地址"
-    }
+    },
+    "sort_order_options": {
+      "asc": "從低到高",
+      "desc": "從高到低"
+    },
+    "sort_order": "排序",
+    "opensea_link": "在 Opensea 上查看"
   },
   "my_ottos": {
     "mint_portal": "鑄造傳送門",
@@ -360,7 +362,6 @@
   "otto": {
     "birthday": "生日： {{birthday}}",
     "chosen_one": "這隻是天選之獺！\n這一輪的稀有度大賽日期落在了 {{birthday}}，所有與此日期相同生日的阿獺、蘿提及克蕾歐都會被阿獺之神祝福並賜予特殊效果。",
-    "theme_boost": "主題加成",
     "classic": "經典",
     "classic_note": "經典阿獺是阿獺王國裡最大宗、且最人見人愛的王國居民。",
     "coatOfArms": "阿獺王國共有 5 大家族，這隻阿獺是屬於{{arms}}，快尋找同樣家徽的阿獺吧！",
@@ -378,7 +379,6 @@
     "opensea_link": "在 OpenSea 上瞧瞧",
     "personality": "個性： {{personality}}",
     "play_voice": "聽聽這隻阿獺的聲音",
-    "total_rarity_score": "稀有度總計： {{score}} (BRS {{brs}} + RRS {{rrs}})",
     "rarity": {
       "C1": "不常見",
       "C2": "常見",
@@ -412,7 +412,11 @@
     "unreturnable_hint": "此為靈魂綁定物品，意即阿獺鑄造出來時就已經存在，所以無法脫下它。你仍然可以穿上其他道具來覆蓋並隱藏此物品，當覆蓋的裝備卸下時，此物品會再次出現在阿獺上。",
     "voice": "聲音： {{voice}}",
     "wearable_traits_tab": "可穿脫特徵",
-    "zodiac_sign": "星座： {{constellation}}"
+    "zodiac_sign": "星座： {{constellation}}",
+    "total_rarity_score": "稀有度總計： {{score}} (BRS {{brs}} + RRS {{rrs}})",
+    "theme_boost": "主題加成",
+    "attribute_points": "Available Attribute Points: {{attributePoints}}",
+    "attribute_points_button": "Add Now >"
   },
   "otto_one": "{{count}} 隻阿獺",
   "otto_other": "{{count}} 隻阿獺",
@@ -466,7 +470,6 @@
     }
   },
   "product": {
-    "must_desc": "{{rarity}} 道具保證！",
     "diamond": {
       "desc": "鑽石寶箱是 3 種寶箱中最高級的寶箱，獲得 R 級稀有度的裝備機率高達 87%、且獲得 E 級稀有度的裝備機率也提升到 3%。想要你的阿獺擁有最稀有、最高端的裝備嗎？來購買最閃亮的鑽石寶箱吧！",
       "must_desc": "E3 道具保證！",
@@ -482,10 +485,19 @@
       "must_desc": "R3 道具保證！",
       "name": "白銀寶箱"
     },
-    "luk": { "must_desc": "R1 道具保證！" },
-    "dex": { "must_desc": "R2 道具保證！" },
-    "cute": { "must_desc": "R2 道具保證！" },
-    "def": { "must_desc": "R2 道具保證！" }
+    "luk": {
+      "must_desc": "R1 道具保證！"
+    },
+    "dex": {
+      "must_desc": "R2 道具保證！"
+    },
+    "cute": {
+      "must_desc": "R2 道具保證！"
+    },
+    "def": {
+      "must_desc": "R2 道具保證！"
+    },
+    "must_desc": "{{rarity}} 道具保證！"
   },
   "question": {
     "submit_button": "確認"
@@ -691,6 +703,69 @@
     "ottos": "我的阿獺",
     "missions": "我的任務"
   },
+  "treasuryChestLevel": {
+    "title": "冒險寶箱",
+    "desc": "集滿冒險寶箱點數 (TCP) 就可以開啟冒險寶箱！",
+    "value": "{{ tcp }}/100 TCP"
+  },
+  "themeBoost": {
+    "boostMultiplier": "物品連擊加成 x {{ multiplier }} 🔥"
+  },
+  "ottoPreviewer": {
+    "feedButton": "+ 料理"
+  },
+  "ottoItemsPopup": {
+    "title": "更換 {{ type }}",
+    "sort": "根據",
+    "order": "排序",
+    "filter": "篩選",
+    "wear": "穿著裝備",
+    "wearBy": "{{ name }} 正在穿著此裝備",
+    "unavailable": "無法穿著",
+    "takeOff": "脫掉",
+    "noItems": "無任何物品"
+  },
+  "ongoingOttos": {
+    "title": "正在此處冒險的阿獺",
+    "view": "查看",
+    "noOtto": "無阿獺在此冒險"
+  },
+  "levelUp": {
+    "popupTitle": "恭喜升等!!!",
+    "boostSectionTitle": "升等加成",
+    "rewardSectionTitle": "升等獎勵",
+    "continueButton": "繼續",
+    "itemRewardLabel": {
+      "silver": "白銀寶箱 x{{ amount }}",
+      "golden": "黃金寶箱 x{{ amount }}",
+      "diamond": "鑽石寶箱 x{{ amount }}"
+    },
+    "attributePointsRewardLabel": "+{{ points }} 屬性點數"
+  },
+  "itemFilters": {
+    "attrs": {
+      "timeReceived": "更新時間",
+      "rarity": "稀有度",
+      "str": "STR 力量",
+      "dex": "DEX 敏捷",
+      "luck": "LUK 幸運",
+      "cute": "CUTE 可愛",
+      "def": "DEF 防禦",
+      "int": "INT 智慧",
+      "con": "CON 體力"
+    },
+    "order": {
+      "desc": "降冪",
+      "asc": "升冪"
+    },
+    "filters": {
+      "equipped": "裝備中",
+      "lottie_specific": "僅限蘿提",
+      "none": "無",
+      "not_equipped": "未裝備",
+      "otto_specific": "僅限阿獺"
+    }
+  },
   "foundry": {
     "title": "鑄造廠",
     "dialog": {
@@ -704,16 +779,13 @@
       "title": "必要的物品："
     },
     "forgeButton": "鑄造",
-    "forgeButton_insufficient": "鑄造（無足夠材料）",
-    "forgeAvailableTime": "可鑄造期限: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
-    "comingSoon": "即將開放...",
-    "approve": "授權",
+    "forgeButton_insufficient": "鑄造 (物品不)",
+    "forgeAvailableTime": "可鑄造時間 {{ startTime }} - {{ endTime }} ({{ timeZone }})",
+    "comingSoon": "即將登場...",
+    "approve": "同意簽署",
     "forge": {
-      "processing": "鑄造..."
+      "processing": "鑄造中..."
     }
-  },
-  "themeBoost": {
-    "boostMultiplier": "物品連擊加成 x {{ multiplier }} 🔥"
   },
   "constellation": {
     "1": "牡羊座",
@@ -728,5 +800,148 @@
     "10": "魔羯座",
     "11": "水瓶座",
     "12": "雙魚座"
+  },
+  "conditionalBoosts": {
+    "title": "特殊加成條件",
+    "help": "幫助",
+    "effectiveUntil": "<span style='color: #FFDC77'>{{ duration }}</span>",
+    "legendary": "傳說級阿獺：",
+    "zodiac": "星座：",
+    "birthday": "生日：",
+    "level_up": "升等加成：",
+    "first_match_group": "{{ attr }} {{ operator }} {{ value }}, ",
+    "fixed_level": "LV{{ value }}:"
+  },
+  "attributePoints": {
+    "popupTitle": "提升屬性值",
+    "availablePoints": "可用點數：{{ points }} 點",
+    "confirmButton": "確定",
+    "skipButton": "暫時跳過",
+    "desc": "你隨時可以到「我的阿獺」頁面使用點數提升這隻阿獺的屬性值。",
+    "resultTitle": "嘿！你的阿獺看起來變得不一樣了",
+    "resultDesc": "探險得越多，你的阿獺就會變得更強！",
+    "resultCloseButton": "關閉視窗"
+  },
+  "adventureStatus": {
+    "all": "全部",
+    "finished": "已完成",
+    "ongoing": "冒險中",
+    "resting": "休息中",
+    "ready": "閒置中",
+    "unavailable": "無法冒險"
+  },
+  "adventurePopup": {
+    "start": "出發 GO!",
+    "previewOttoTitle": "選擇一隻阿獺來冒險：",
+    "readyToGoStep": {
+      "title": "出發冒險!",
+      "desc": "{{name}} 已經出發去冒險了，祝好運！"
+    },
+    "exploringStep": {
+      "title": "{{name}} 正在冒險中...",
+      "remaining": "剩餘時間： {{time}}",
+      "finish_immediately_btn": "馬上完成",
+      "speed_up_btn": "加速",
+      "see_results_btn": "查看冒險結果",
+      "see_results_hint": "你將會執行一筆交易以查看冒險結果",
+      "wants_more": "想要更多加速藥水嗎？",
+      "buy_now": "馬上購買 >",
+      "used": "使用 {{ amount }}"
+    },
+    "resultStep": {
+      "journal": "冒險日誌",
+      "reward": "冒險獎勵",
+      "skip_journal_btn": "跳過",
+      "result_label": "冒險結果：",
+      "result_succeeded": "冒險成功！",
+      "result_failed": "冒險失敗...",
+      "found_items": "找到的物品",
+      "treasury_chest": "冒險寶箱",
+      "adventure_point": "冒險點數",
+      "explore_again_btn": "再次冒險",
+      "close_btn": "關閉",
+      "revive_btn": "取回物品",
+      "give_up_btn": "放棄 (放棄所有物品)",
+      "give_up_yes_btn": "對，我要放棄！",
+      "give_up_back_btn": "讓我再想想",
+      "failed_desc": "你的阿獺冒險失敗了，因此你無法得到此次冒險的任何獎勵。",
+      "failed_hint": "想要得到冒險中找到的物品嗎？只需要花費 1 $CLAM，小森靈就會幫你取回物品喔！ (不包含 EXP 及 TCP) 如果你都未取回物品，這些物品將會在下一次出發冒險時永遠消失。",
+      "failed_tooltip": "想要得到冒險中找到的物品嗎？只需要花費 1 $CLAM，小森靈就會幫你取回物品喔！ (不包含 EXP 及 TCP) 如果你都未取回物品，這些物品將會在下一次出發冒險時永遠消失。"
+    },
+    "restingStep": {
+      "title": "{{name}} 正在休息中...",
+      "title_ready": "{{name}} 已經準備好冒險！",
+      "finish_btn": "再次冒險",
+      "remaining": "休息剩餘時間： {{time}}",
+      "speed_up_btn": "加速",
+      "buy_now": "馬上購買 >",
+      "wants_more": "想要更多加速藥水嗎？"
+    },
+    "closePopupAlert": {
+      "content": "假如你現在選擇另一隻阿獺，這隻阿獺的裝備設定將會被捨棄，你確定要這麼做？",
+      "okLabel": "對，捨棄設定並繼續",
+      "cancelLabel": "返回"
+    },
+    "closeWindowAlert": {
+      "content": "假如你現在關閉視窗，這隻阿獺的裝備設定將會被捨棄，你確定要這麼做？",
+      "okLabel": "對，關閉視窗",
+      "cancelLabel": "返回"
+    },
+    "itemTxDesc": "你將會被要求執行一筆交易來將更新此次裝備更動"
+  },
+  "adventureOttoList": {
+    "title": "正在此處冒險的阿獺"
+  },
+  "adventureOttoCard": {
+    "checkOtto": "查看 >",
+    "viewLabel": "查看",
+    "go": "出發 >",
+    "resting_2": "點此查看前一次冒險結果 >",
+    "resting_1": "{{name}} 正在休息中",
+    "ready": "{{name}} 已經準備好冒險！",
+    "ongoing": "{{name}} 正在 {{location}} 冒險中..."
+  },
+  "adventureLocationPopup": {
+    "difficulty": "困難度：",
+    "nextStep": "繼續",
+    "too_crowed": "這個區域太多阿獺了，請選擇其他區域"
+  },
+  "adventureLocation": {
+    "successRate": "成功率",
+    "adventureTime": "冒險時間",
+    "restingTime": "休息時間",
+    "successRateHelp": "幫助",
+    "restingTimeHelp": "幫助",
+    "rewardSectionTitle": "冒險成功獎勵",
+    "usePotion": "使用",
+    "noPotion": "你有 0 個",
+    "usedPotion": "已使用 {{ amount }}"
+  },
+  "adventureBoosts": {
+    "conditionalBoosts": "特殊加成條件",
+    "regional_boosts": "區域加成條件"
+  },
+  "adventureBoostTarget": {
+    "success_rate": "成功率 +{{ amount }}%",
+    "additional_item": "找到物品 +{{ amount }}",
+    "additional_artwork": "找到收藏品 +{{ amount }}"
+  },
+  "adventure": {
+    "title": "冒險",
+    "continue": "更多區域即將開放...",
+    "listTitle": "阿獺概況",
+    "viewSwitcher": {
+      "map": "冒險地圖",
+      "list": "阿獺概況"
+    }
+  },
+  "treasuryChestPopup": {
+    "popupTitle": "冒險寶箱",
+    "desc": "恭喜你！你已經集滿足夠的冒險寶箱點數 (TCP) 來開啟一個冒險寶箱！",
+    "button": "開啟寶箱"
+  },
+  "adventure_remaining": "剩餘時間： {{time}}",
+  "adventureAlert": {
+    "hideDesc": "不要再顯示"
   }
 }

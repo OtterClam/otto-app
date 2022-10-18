@@ -1,15 +1,14 @@
-import format from 'date-fns/format'
-import { formatUsd } from 'utils/currency'
-import { GetTreasuryMetrics_protocolMetrics } from 'graphs/__generated__/GetTreasuryMetrics'
-import { trim } from 'helpers/trim'
-import useSize from 'hooks/useSize'
-import { useTranslation } from 'next-i18next'
-import { i18n } from 'i18next'
-import React, { RefObject, useRef } from 'react'
-import { AreaChart, Area, Tooltip } from 'recharts'
-import styled from 'styled-components/macro'
 import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
+import format from 'date-fns/format'
+import { GetTreasuryMetrics_protocolMetrics } from 'graphs/__generated__/GetTreasuryMetrics'
+import useSize from 'hooks/useSize'
+import { i18n } from 'i18next'
+import { useTranslation } from 'next-i18next'
+import { RefObject, useRef } from 'react'
+import { Area, AreaChart, Tooltip } from 'recharts'
+import styled from 'styled-components/macro'
+import { formatUsd } from 'utils/currency'
 import ChartTooltip from './ChartTooltip'
 
 const StyledContainer = styled.div`
@@ -120,6 +119,16 @@ const marketValues = [
   {
     label: 'Hedged MATIC/USDC (UniV3)',
     dataKey: 'treasuryUniV3HedgedMaticUsdcStrategyMarketValue',
+    stopColor: ['rgba(131, 71, 229, 0.8)', 'rgba(131, 71, 229, 0.5)'],
+  },
+  {
+    label: 'stMATIC/USD+ (Penrose)',
+    dataKey: 'treasuryDystopiaPairUsdplusStMaticMarketValue',
+    stopColor: ['rgba(131, 71, 229, 0.8)', 'rgba(131, 71, 229, 0.5)'],
+  },
+  {
+    label: 'stMATIC/MAI (QiDAO)',
+    dataKey: 'treasuryMaiStMaticMarketValue',
     stopColor: ['rgba(131, 71, 229, 0.8)', 'rgba(131, 71, 229, 0.5)'],
   },
   {

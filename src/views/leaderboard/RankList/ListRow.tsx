@@ -193,12 +193,12 @@ export interface ListRowProps {
 // so we cache rendering result via `React.memo` to improve rendering performance.
 export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) {
   const { isMobile } = useBreakpoints()
-  const { tokenId, smallImage: image, name, totalRarityScore, baseRarityScore, relativeRarityScore } = otto
+  const { id, smallImage: image, name, totalRarityScore, baseRarityScore, relativeRarityScore } = otto
   const estimatedReward = useEstimatedReward(rank)
 
   if (isMobile) {
     return (
-      <Link href={`/ottos/${tokenId}`} passHref>
+      <Link href={`/ottos/${id}`} passHref>
         <a>
           <StyledMobileRow>
             <StyledTd>
@@ -220,7 +220,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
   }
 
   return (
-    <Link href={`/ottos/${tokenId}`} passHref>
+    <Link href={`/ottos/${id}`} passHref>
       <a>
         <StyledOttoRow isMyOttoRow={isMyOttoRow}>
           <StyledTd>
