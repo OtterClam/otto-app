@@ -721,7 +721,7 @@
     "missions": "Missions"
   },
   "treasuryChestLevel": {
-    "title": "Treasury Chest",
+    "title": "Treasure Chest",
     "desc": "Collect points on adventure to open the Treasure Chest!",
     "value": "{{ tcp }}/100 TCP"
   },
@@ -866,14 +866,14 @@
     },
     "resultStep": {
       "journal": "Adventure Journal",
-      "reward": "Adventure Reward",
+      "reward": "Adventure Rewards",
       "skip_journal_btn": "Skip",
       "result_label": "Adventure Result:",
       "result_succeeded": "SUCCEEDED",
       "result_failed": "FAILED",
       "found_items": "Found Items",
-      "treasury_chest": "Treasury Chest",
-      "adventure_point": "Adventure Point",
+      "treasury_chest": "Treasure Chest",
+      "adventure_point": "Adventure Points",
       "explore_again_btn": "Explore Again",
       "close_btn": "Close",
       "revive_btn": "Retrieve Items",
@@ -951,8 +951,8 @@
     }
   },
   "treasuryChestPopup": {
-    "popupTitle": "Treasury Chest",
-    "desc": "Congratulations! You’ve collect enough TCP (Treasury Chest Points) to open a Treasury Chest!",
+    "popupTitle": "Treasure Chest",
+    "desc": "Congratulations! You’ve collect enough Treasure Chest Points (TCP) to open a Treasure Chest!",
     "button": "Open the Chest"
   },
   "adventure_remaining": "Remaining: {{time}}",
