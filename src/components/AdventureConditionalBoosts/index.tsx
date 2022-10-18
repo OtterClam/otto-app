@@ -2,6 +2,7 @@ import AdventureInfoSection from 'components/AdventureInfoSection'
 import { useAdventureLocation } from 'contexts/AdventureLocation'
 import { parseBoosts } from 'models/AdventureDisplayedBoost'
 import { BoostType } from 'models/AdventureLocation'
+import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
 import styled from 'styled-components/macro'
@@ -26,11 +27,16 @@ const StyledBoosts = styled.div`
 `
 
 export interface AdventureConditionalBoostsProps {
+  otto?: Otto
   noPreview?: boolean
   locationBoostsOnly?: boolean
 }
 
-export default function AdventureConditionalBoosts({ noPreview, locationBoostsOnly }: AdventureConditionalBoostsProps) {
+export default function AdventureConditionalBoosts({
+  otto,
+  noPreview,
+  locationBoostsOnly,
+}: AdventureConditionalBoostsProps) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'conditionalBoosts' })
   const location = useAdventureLocation()
 
@@ -39,10 +45,10 @@ export default function AdventureConditionalBoosts({ noPreview, locationBoostsOn
       return []
     }
     if (locationBoostsOnly) {
-      const boosts = parseBoosts(i18n, location.conditionalBoosts, true)
+      const boosts = parseBoosts(i18n, otto, location.conditionalBoosts, true)
       return boosts.filter(boost => boost.boostType === BoostType.FirstMatchGroup)
     }
-    return parseBoosts(i18n, location.conditionalBoosts)
+    return parseBoosts(i18n, otto, location.conditionalBoosts)
   }, [location, i18n])
 
   const effectiveBoosts = boosts.filter(boost => boost.effective)

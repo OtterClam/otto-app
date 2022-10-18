@@ -732,6 +732,7 @@
   },
   "levelUp": {
     "popupTitle": "LEVEL UP!!!",
+    "boostSectionTitle": "Level-up Boost",
     "rewardSectionTitle": "Level-up Reward",
     "continueButton": "Continue",
     "itemRewardLabel": {

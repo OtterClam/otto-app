@@ -107,9 +107,10 @@ export interface OttoCardProps {
   otto: Otto
   points?: { [k: string]: number }
   className?: string
+  newLevel?: number
 }
 
-export default function OttoCard({ otto, className, points = {} }: OttoCardProps) {
+export default function OttoCard({ otto, className, newLevel, points = {} }: OttoCardProps) {
   return (
     <StyledOttoCard className={className}>
       <StyledImage>
@@ -118,7 +119,7 @@ export default function OttoCard({ otto, className, points = {} }: OttoCardProps
       <StyledName>{otto.name}</StyledName>
       <StyledExpContainer>
         <StyledLevel>
-          LV.{otto.level}
+          LV.{newLevel ?? otto.level}
           <StyledExp>
             {otto.exp}/{otto.next_level_exp} EXP
           </StyledExp>

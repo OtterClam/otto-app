@@ -162,7 +162,7 @@ export default function LevelUpPopup() {
     dispatch,
   } = useAdventureUIState()
   const otto = useMyOtto(levelUp?.ottoId)
-  const [boosts, setBoosts] = useState<AdventureDisplayedBoost[]>([])
+  const [boosts, setBoosts] = useState<string[]>([])
 
   const handleClose = useCallback(() => {
     dispatch({ type: AdventureUIActionType.LevelUp })
@@ -179,6 +179,7 @@ export default function LevelUpPopup() {
       type: AdventureUIActionType.DistributeAttributePoints,
       data: {
         ottoId: levelUp.ottoId,
+        newLevel: levelUp.levelUp?.to.level,
       },
     })
   }, [levelUp])
@@ -187,17 +188,13 @@ export default function LevelUpPopup() {
     if (otto && otto.latestAdventurePass) {
       api
         .getOttoAdventurePreview(otto.id, otto.latestAdventurePass.locationId, [])
-        .then(preview => parseBoosts(i18n, preview.location.conditionalBoosts, false))
-        .then(boosts =>
-          boosts.filter(boost => {
-            return (
-              boost.effective &&
-              (boost.boostType === BoostType.LevelUp ||
-                (boost.boostType === BoostType.FirstMatchGroup && boost.attr === 'level'))
-            )
-          })
-        )
-        .then(boosts => setBoosts(boosts))
+        .then(preview => parseBoosts(i18n, otto, preview.location.conditionalBoosts, false))
+        .then(boosts => {
+          const boost = boosts.find(({ boostType }) => boostType === BoostType.Exp)
+          if (boost && boost.boostType === BoostType.Exp) {
+            setBoosts(boost.currentLevelEffectiveBoosts)
+          }
+        })
     }
   }, [otto, api, i18n])
 
@@ -229,16 +226,18 @@ export default function LevelUpPopup() {
             <AdventureProgressBar progress={1} />
           </StyledProgress>
 
-          <StyledRewardSection showRope={false}>
-            <StyledRewardTitle>
-              <AdventureRibbonText>{t('boostSectionTitle')}</AdventureRibbonText>
-            </StyledRewardTitle>
-            <StyledBoosts>
-              {boosts.map(boost => (
-                <div>{boost.message}</div>
-              ))}
-            </StyledBoosts>
-          </StyledRewardSection>
+          {boosts.length > 0 && (
+            <StyledRewardSection showRope={false}>
+              <StyledRewardTitle>
+                <AdventureRibbonText>{t('boostSectionTitle')}</AdventureRibbonText>
+              </StyledRewardTitle>
+              <StyledBoosts>
+                {boosts.map(boost => (
+                  <div>{boost}</div>
+                ))}
+              </StyledBoosts>
+            </StyledRewardSection>
+          )}
 
           <StyledRewardSection showRope={false}>
             <StyledRewardTitle>
