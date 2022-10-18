@@ -121,9 +121,9 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
         setDraftItems(map => {
           const newMap = { ...map }
           if (newMap[traitType]) {
-            newMap[traitType] = null
-          } else {
             delete newMap[traitType]
+          } else {
+            newMap[traitType] = null
           }
           return newMap
         })

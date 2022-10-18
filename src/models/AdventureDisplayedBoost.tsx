@@ -13,6 +13,7 @@ import {
   BoostTarget,
   BoostType,
 } from './AdventureLocation'
+import Otto from './Otto'
 
 const icons = {
   [BoostType.Birthday]: birthImage.src,
@@ -24,7 +25,7 @@ const icons = {
 
 export type AdventureDisplayedBoost =
   | {
-      boostType: BoostType.Birthday | BoostType.Legendary | BoostType.LevelUp | BoostType.Zodiac | BoostType.Exp
+      boostType: BoostType.Birthday | BoostType.Legendary | BoostType.LevelUp | BoostType.Zodiac
       message: string
       effective: boolean
       icon: string
@@ -35,21 +36,32 @@ export type AdventureDisplayedBoost =
       effective: boolean
       attr: string
       boosts: AdventureLocationConditionalBoost[]
+      currentLevelEffectiveBoosts: string[]
+    }
+  | {
+      boostType: BoostType.Exp
+      message: string
+      effective: boolean
+      icon: string
+      currentLevelEffectiveBoosts: string[]
     }
 
 export const parseBoosts = (
   i18n: I18n,
+  otto: Otto | undefined,
   boosts: AdventureLocationConditionalBoost[],
   details = false
 ): AdventureDisplayedBoost[] => {
   const queue = boosts.slice()
   const displayedBoosts: AdventureDisplayedBoost[] = []
-  let fixedLevelBoost: AdventureDisplayedBoost | undefined
+  let fixedLevelBoost: (AdventureDisplayedBoost & { currentLevelEffectiveBoosts: string[] }) | undefined
   let levelUpBoost: AdventureDisplayedBoost | undefined
 
   while (queue.length > 0) {
     const displayedBoost =
-      parseLevelUpBoosts(i18n, queue) || parseFirstMatchGroup(i18n, queue, details) || parseOtherBoost(i18n, queue)
+      parseLevelUpBoosts(i18n, queue) ||
+      parseFirstMatchGroup(i18n, otto, queue, details) ||
+      parseOtherBoost(i18n, queue)
     if (displayedBoost) {
       if (displayedBoost.boostType === BoostType.FirstMatchGroup && displayedBoost.attr === 'level') {
         fixedLevelBoost = displayedBoost
@@ -67,6 +79,9 @@ export const parseBoosts = (
       message: [levelUpBoost?.message, fixedLevelBoost?.message].filter(Boolean).join('<br />'),
       effective: levelUpBoost?.effective || fixedLevelBoost?.effective || false,
       icon: icons.exp,
+      currentLevelEffectiveBoosts: [levelUpBoost?.message]
+        .concat(fixedLevelBoost?.currentLevelEffectiveBoosts ?? [])
+        .filter(Boolean) as string[],
     })
   }
 
@@ -102,7 +117,7 @@ const parseOtherBoost = (
     return undefined
   }
 
-  if (boost.type === BoostType.FirstMatchGroup) {
+  if (boost.type === BoostType.FirstMatchGroup || boost.type === BoostType.Exp) {
     return undefined
   }
 
@@ -156,6 +171,7 @@ const parseLevelUpBoosts = (
 
 const parseFirstMatchGroup = (
   i18n: I18n,
+  otto: Otto | undefined,
   boosts: AdventureLocationConditionalBoost[],
   details = false
 ): AdventureDisplayedBoost | undefined => {
@@ -209,5 +225,20 @@ const parseFirstMatchGroup = (
     effective: Boolean(effectiveBoost),
     attr: condition.attr,
     boosts: group,
+    currentLevelEffectiveBoosts:
+      condition.attr === 'level'
+        ? group
+            .filter(boost => {
+              if (!boost.effective || !otto) {
+                return false
+              }
+              const condition = boost.condition as AttrBoostCondition
+              if (condition.operator === '>') {
+                return otto.level >= condition.value
+              }
+              return false
+            })
+            .map(stringifyBoost)
+        : [],
   }
 }

@@ -732,6 +732,7 @@
   },
   "levelUp": {
     "popupTitle": "恭喜升等!!!",
+    "boostSectionTitle": "升等加成",
     "rewardSectionTitle": "升等獎勵",
     "continueButton": "繼續",
     "itemRewardLabel": {

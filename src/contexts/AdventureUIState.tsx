@@ -54,6 +54,7 @@ export type AdventureUIAction =
       type: AdventureUIActionType.DistributeAttributePoints
       data?: {
         ottoId: string
+        newLevel?: number
       }
     }
   | {
@@ -84,6 +85,7 @@ export interface AdventureUIState {
   }
   attributePoints?: {
     ottoId: string
+    newLevel?: number
   }
   treasuryChest?: Item
   finishedTx?: string

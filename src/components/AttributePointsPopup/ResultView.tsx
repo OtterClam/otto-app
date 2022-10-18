@@ -34,12 +34,12 @@ export interface ResultViewProps {
     otto: Otto
     points: { [k: string]: number }
   }
+  newLevel?: number
   onRequestClose: () => void
 }
 
-export default function ResultView({ result: { otto, points }, onRequestClose }: ResultViewProps) {
+export default function ResultView({ result: { otto, points }, onRequestClose, newLevel }: ResultViewProps) {
   const { t } = useTranslation('', { keyPrefix: 'attributePoints' })
-  console.log(points)
 
   return (
     <StyledContainer>
@@ -48,7 +48,7 @@ export default function ResultView({ result: { otto, points }, onRequestClose }:
       <StyledOttos>
         <StyledOttoCard otto={otto} />
         <StyledArrow />
-        <StyledOttoCard otto={otto} points={points} />
+        <StyledOttoCard otto={otto} newLevel={newLevel} points={points} />
       </StyledOttos>
       <Button width="100%" Typography={Headline} primaryColor="white" onClick={onRequestClose}>
         {t('resultCloseButton')}

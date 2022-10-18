@@ -112,7 +112,9 @@ export default function PreviewOttoStep() {
 
   const levelBoost = useMemo(
     () =>
-      parseBoosts(i18n, location.conditionalBoosts).find(boost => boost.effective && boost.boostType === BoostType.Exp),
+      parseBoosts(i18n, otto, location.conditionalBoosts).find(
+        boost => boost.effective && boost.boostType === BoostType.Exp
+      ),
     [location]
   )
 
