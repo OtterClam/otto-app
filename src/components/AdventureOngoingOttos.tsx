@@ -1,9 +1,10 @@
-import { useAdventureUIState } from 'contexts/AdventureUIState'
+import { AdventurePopupStep, useAdventureUIState, useOpenAdventurePopup } from 'contexts/AdventureUIState'
+import { useOtto } from 'contexts/Otto'
 import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
 import useRemainingTime from 'hooks/useRemainingTime'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useTranslation } from 'next-i18next'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
 import AdventureInfoSection from './AdventureInfoSection'
@@ -62,7 +63,7 @@ const StyledNoOtto = styled(Note).attrs({ as: 'div' })`
   padding: 10px;
 `
 
-function ListItem({ otto }: { otto: Otto }) {
+function ListItem({ otto, onClick }: { otto: Otto; onClick: (ottoId: string) => void }) {
   const { t } = useTranslation('', { keyPrefix: 'ongoingOttos' })
   const duration = useRemainingTime(otto.latestAdventurePass?.canFinishAt ?? new Date())
 
@@ -73,20 +74,36 @@ function ListItem({ otto }: { otto: Otto }) {
       </StyledImageContainer>
       <StyledName>{otto.name}</StyledName>
       <StyledDuration>{duration}</StyledDuration>
-      <StyledViewButton>{t('view')}</StyledViewButton>
+      <StyledViewButton onClick={() => onClick(otto.id)}>{t('view')}</StyledViewButton>
     </StyledListItem>
   )
 }
 
 export default function AdventureOngoingOttos() {
   const { t } = useTranslation('', { keyPrefix: 'ongoingOttos' })
+
   const {
     state: { selectedLocationId },
   } = useAdventureUIState()
+
+  const openPopup = useOpenAdventurePopup()
+
+  const { setOtto } = useOtto()
+
   const ottos = useAdventureOttosAtLocation(selectedLocationId)
+
   const ongoingOttos = useMemo(
     () => ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ongoing),
     [ottos]
+  )
+
+  const viewOtto = useCallback(
+    (ottoId: string) => {
+      const otto = ottos.find(({ id }) => id === ottoId)
+      setOtto(otto)
+      openPopup(selectedLocationId, AdventurePopupStep.Exploring)
+    },
+    [selectedLocationId, ottos]
   )
 
   return (
@@ -95,7 +112,7 @@ export default function AdventureOngoingOttos() {
       {ongoingOttos.length > 0 && (
         <StyledList>
           {ongoingOttos.map(otto => (
-            <ListItem key={otto.id} otto={otto} />
+            <ListItem key={otto.id} otto={otto} onClick={viewOtto} />
           ))}
         </StyledList>
       )}
