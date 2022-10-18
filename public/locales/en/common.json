@@ -262,6 +262,8 @@
     "para2": "OTTERVERSE!"
   },
   "my_items": {
+    "next_page": "Next >",
+    "prev_page": "< Previous",
     "empty": "You don't have any items.",
     "equipped": "Equipped",
     "filter": "Filter",

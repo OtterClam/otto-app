@@ -9,11 +9,12 @@ import Item from 'models/Item'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
-import { ContentSmall } from 'styles/typography'
+import { ContentSmall, Headline } from 'styles/typography'
 import { FilterIcon, SortedIcon } from 'assets/icons'
 import { OttoGender } from 'models/Otto'
 import { ItemFiltersProvider, ItemType, useItemFilters } from 'contexts/ItemFilters'
 import { FilterSelector, OrderSelector, SortedBySelector } from 'components/ItemFilterSelect'
+import Button from 'components/Button'
 import EmptyStatus from './empty.png'
 import ItemDetails from './use-item/ItemDetails'
 
@@ -136,6 +137,17 @@ const StyledEmptySlate = styled(ContentSmall).attrs({ as: 'div' })`
   }
 `
 
+const StyledItemListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const StyledItemsPagination = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 26px 26px 26px;
+`
+
 function ItemList({
   loading,
   selectedItem,
@@ -146,29 +158,49 @@ function ItemList({
   selectItem: (item?: Item) => void
 }) {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
-  const { filteredItems: items } = useItemFilters()
+  const { filteredItems: items, hasNextPage, hasPrevPage, nextPage, prevPage } = useItemFilters()
 
   return (
-    <StyledItemScrollContainer>
-      {loading && <LoadingView />}
-      {!loading && items.length === 0 ? (
-        <StyledEmptySlate>
-          <img src={EmptyStatus.src} alt="Empty Status" />
-          <p>{t('empty')}</p>
-        </StyledEmptySlate>
-      ) : (
-        <StyledItemList>
-          {items.map((item, index) => (
-            <ItemCell
-              key={`${item.id}_${index}`}
-              item={item}
-              selected={item === selectedItem}
-              onClick={() => selectItem(item)}
-            />
-          ))}
-        </StyledItemList>
+    <StyledItemListContainer>
+      <StyledItemScrollContainer>
+        {loading && <LoadingView />}
+        {!loading && items.length === 0 ? (
+          <StyledEmptySlate>
+            <img src={EmptyStatus.src} alt="Empty Status" />
+            <p>{t('empty')}</p>
+          </StyledEmptySlate>
+        ) : (
+          <StyledItemList>
+            {items.map((item, index) => (
+              <ItemCell
+                key={`${item.id}_${index}`}
+                item={item}
+                selected={item === selectedItem}
+                onClick={() => selectItem(item)}
+              />
+            ))}
+          </StyledItemList>
+        )}
+      </StyledItemScrollContainer>
+      {(hasPrevPage || hasNextPage) && (
+        <StyledItemsPagination>
+          {hasPrevPage ? (
+            <Button Typography={Headline} primaryColor="white" onClick={prevPage}>
+              {t('prev_page')}
+            </Button>
+          ) : (
+            <div />
+          )}
+          {hasNextPage ? (
+            <Button Typography={Headline} primaryColor="white" onClick={nextPage}>
+              {t('next_page')}
+            </Button>
+          ) : (
+            <div />
+          )}
+        </StyledItemsPagination>
       )}
-    </StyledItemScrollContainer>
+    </StyledItemListContainer>
   )
 }
 
@@ -210,7 +242,7 @@ export default function MyItemsPage() {
 
   return (
     <StyledMyItemsPage>
-      <ItemFiltersProvider items={items}>
+      <ItemFiltersProvider items={items} itemsPerPage={36}>
         <SectionTabs />
         <StyledItemSection>
           <StyledLeftContainer>
