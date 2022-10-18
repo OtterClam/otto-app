@@ -920,7 +920,8 @@
   },
   "adventureLocationPopup": {
     "difficulty": "Difficulty:",
-    "nextStep": "Continue"
+    "nextStep": "Continue",
+    "too_crowed": "This place is too crowded."
   },
   "adventureLocation": {
     "successRate": "Success rate",

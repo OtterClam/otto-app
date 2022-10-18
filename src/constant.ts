@@ -27,6 +27,8 @@ export const TELEGRAM_LINK = 'https://t.me/otterclam_official'
 
 export const OPENSEA_NFT_LINK = 'https://opensea.io/assets/matic/0x6e8a9cb6b1e73e9fce3fd3c68b5af9728f708eb7/'
 
+export const MAX_OTTOS_PER_LOCATION = 5
+
 export function getOpenSeaLink(tokenId: string) {
   return `${OPENSEA_NFT_LINK}${tokenId}`
 }

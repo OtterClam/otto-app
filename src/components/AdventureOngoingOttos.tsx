@@ -1,10 +1,9 @@
 import { AdventurePopupStep, useAdventureUIState, useOpenAdventurePopup } from 'contexts/AdventureUIState'
 import { useOtto } from 'contexts/Otto'
-import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
 import useRemainingTime from 'hooks/useRemainingTime'
-import Otto, { AdventureOttoStatus } from 'models/Otto'
+import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
 import AdventureInfoSection from './AdventureInfoSection'
@@ -79,31 +78,25 @@ function ListItem({ otto, onClick }: { otto: Otto; onClick: (ottoId: string) => 
   )
 }
 
-export default function AdventureOngoingOttos() {
+interface Props {
+  ongoingOttos: Otto[]
+}
+
+export default function AdventureOngoingOttos({ ongoingOttos }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'ongoingOttos' })
 
   const {
     state: { selectedLocationId },
   } = useAdventureUIState()
-
   const openPopup = useOpenAdventurePopup()
-
   const { setOtto } = useOtto()
-
-  const ottos = useAdventureOttosAtLocation(selectedLocationId)
-
-  const ongoingOttos = useMemo(
-    () => ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ongoing),
-    [ottos]
-  )
-
   const viewOtto = useCallback(
     (ottoId: string) => {
-      const otto = ottos.find(({ id }) => id === ottoId)
+      const otto = ongoingOttos.find(({ id }) => id === ottoId)
       setOtto(otto)
       openPopup(selectedLocationId, AdventurePopupStep.Exploring)
     },
-    [selectedLocationId, ottos]
+    [selectedLocationId, ongoingOttos]
   )
 
   return (

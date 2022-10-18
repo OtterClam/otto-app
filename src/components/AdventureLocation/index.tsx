@@ -1,3 +1,4 @@
+import { MAX_OTTOS_PER_LOCATION } from 'constant'
 import { useAdventureLocation } from 'contexts/AdventureLocations'
 import { AdventurePopupStep, AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
 import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
@@ -117,7 +118,7 @@ export default function AdventureLocation({ id, className }: AdventureLocationPr
   const { dispatch } = useAdventureUIState()
   const location = useAdventureLocation(id)
   const { ottos: allOttos } = useMyOttos()
-  const ottos = useAdventureOttosAtLocation(id).slice(0, 5)
+  const ottos = useAdventureOttosAtLocation(id)
   const locked =
     !location?.open ||
     !allOttos.find(
@@ -154,7 +155,7 @@ export default function AdventureLocation({ id, className }: AdventureLocationPr
                 </StyledOttoImageContainer>
               ))}
               {' '
-                .repeat(5 - ottos.length)
+                .repeat(MAX_OTTOS_PER_LOCATION - ottos.length)
                 .split('')
                 .map((_, i) => (
                   <StyledOttoImageContainer key={`empty-${i}`} />

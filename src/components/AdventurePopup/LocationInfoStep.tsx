@@ -4,6 +4,7 @@ import AdventureOngoingOttos from 'components/AdventureOngoingOttos'
 import AdventureRewards from 'components/AdventureRewards'
 import Button from 'components/Button'
 import CroppedImage from 'components/CroppedImage'
+import { MAX_OTTOS_PER_LOCATION } from 'constant'
 import { AdventureLocationProvider } from 'contexts/AdventureLocation'
 import {
   AdventurePopupStep,
@@ -11,7 +12,10 @@ import {
   useAdventureUIState,
   useSelectedAdventureLocation,
 } from 'contexts/AdventureUIState'
+import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
+import { AdventureOttoStatus } from 'models/Otto'
 import { useTranslation } from 'next-i18next'
+import { useMemo } from 'react'
 import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
 
@@ -78,11 +82,14 @@ export function LocationInfoStep() {
   const { t } = useTranslation('', { keyPrefix: 'adventureLocationPopup' })
   const { dispatch } = useAdventureUIState()
   const location = useSelectedAdventureLocation()
-
+  const ottos = useAdventureOttosAtLocation(location?.id)
+  const ongoingOttos = useMemo(
+    () => ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ongoing),
+    [ottos]
+  )
   const preview = () => {
     dispatch({ type: AdventureUIActionType.SetPopupStep, data: AdventurePopupStep.PreviewOtto })
   }
-
   return (
     <StyledContainer>
       {location && (
@@ -96,9 +103,14 @@ export function LocationInfoStep() {
           <StyledDetails>
             <AdventureRewards />
             <AdventureConditionalBoosts noPreview locationBoostsOnly />
-            <AdventureOngoingOttos />
-            <Button padding="3px 0" Typography={Headline} onClick={preview}>
-              {t('nextStep')}
+            <AdventureOngoingOttos ongoingOttos={ongoingOttos} />
+            <Button
+              padding="3px 0"
+              Typography={Headline}
+              onClick={preview}
+              disabled={ongoingOttos.length === MAX_OTTOS_PER_LOCATION}
+            >
+              {t(ongoingOttos.length === MAX_OTTOS_PER_LOCATION ? 'too_crowed' : 'nextStep')}
             </Button>
           </StyledDetails>
         </AdventureLocationProvider>

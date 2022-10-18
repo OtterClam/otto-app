@@ -903,7 +903,8 @@
   },
   "adventureLocationPopup": {
     "difficulty": "困難度：",
-    "nextStep": "繼續"
+    "nextStep": "繼續",
+    "too_crowed": "這個區域太多阿獺了，請選擇其他區域"
   },
   "adventureLocation": {
     "successRate": "成功率",
