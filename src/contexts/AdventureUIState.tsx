@@ -1,4 +1,5 @@
 import noop from 'lodash/noop'
+import { AdventureLocationConditionalBoost } from 'models/AdventureLocation'
 import { AdventurePreview } from 'models/AdventurePreview'
 import { AdventureResultEvents, AdventureResultReward } from 'models/AdventureResult'
 import Item from 'models/Item'

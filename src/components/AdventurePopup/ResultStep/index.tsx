@@ -13,6 +13,7 @@ import { useOtto } from 'contexts/Otto'
 import { useAdventureRevive } from 'contracts/functions'
 import { ethers } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
+import { AdventurePreview } from 'models/AdventurePreview'
 import { AdventureResult } from 'models/AdventureResult'
 import { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
@@ -120,6 +121,7 @@ export default function ResultStep() {
       data: chest,
     })
   }, [dispatch, otto, result])
+
   if (!location) {
     return null
   }

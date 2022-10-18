@@ -8,13 +8,16 @@ import TreasurySection from 'components/TreasurySection'
 import { AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
 import { useMyOtto } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentExtraSmall, Display1, Headline, Note } from 'styles/typography'
 import silverImage from 'assets/chests/silver.png'
 import goldenImage from 'assets/chests/golden.png'
 import diamondImage from 'assets/chests/diamond.png'
 import attributePointsImage from 'assets/chests/attribute_points.png'
+import { AdventureDisplayedBoost, parseBoosts } from 'models/AdventureDisplayedBoost'
+import { BoostType } from 'models/AdventureLocation'
+import { useApi } from 'contexts/Api'
 import arrowImage from './arrow.png'
 
 const rewardItems: { [k: string]: { key: string; image: string } } = {
@@ -144,13 +147,22 @@ const StyledRewardIcon = styled.div<{ image: string }>`
   background: center / cover url(${({ image }) => image});
 `
 
+const StyledBoosts = styled(Note).attrs({ as: 'div' })`
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`
+
 export default function LevelUpPopup() {
-  const { t } = useTranslation('', { keyPrefix: 'levelUp' })
+  const api = useApi()
+  const { t, i18n } = useTranslation('', { keyPrefix: 'levelUp' })
   const {
     state: { levelUp },
     dispatch,
   } = useAdventureUIState()
   const otto = useMyOtto(levelUp?.ottoId)
+  const [boosts, setBoosts] = useState<AdventureDisplayedBoost[]>([])
 
   const handleClose = useCallback(() => {
     dispatch({ type: AdventureUIActionType.LevelUp })
@@ -170,6 +182,24 @@ export default function LevelUpPopup() {
       },
     })
   }, [levelUp])
+
+  useEffect(() => {
+    if (otto && otto.latestAdventurePass) {
+      api
+        .getOttoAdventurePreview(otto.id, otto.latestAdventurePass.locationId, [])
+        .then(preview => parseBoosts(i18n, preview.location.conditionalBoosts, false))
+        .then(boosts =>
+          boosts.filter(boost => {
+            return (
+              boost.effective &&
+              (boost.boostType === BoostType.LevelUp ||
+                (boost.boostType === BoostType.FirstMatchGroup && boost.attr === 'level'))
+            )
+          })
+        )
+        .then(boosts => setBoosts(boosts))
+    }
+  }, [otto, api, i18n])
 
   return (
     <StyledFullscreen
@@ -198,6 +228,18 @@ export default function LevelUpPopup() {
             </StyledExpDetails>
             <AdventureProgressBar progress={1} />
           </StyledProgress>
+
+          <StyledRewardSection showRope={false}>
+            <StyledRewardTitle>
+              <AdventureRibbonText>{t('boostSectionTitle')}</AdventureRibbonText>
+            </StyledRewardTitle>
+            <StyledBoosts>
+              {boosts.map(boost => (
+                <div>{boost.message}</div>
+              ))}
+            </StyledBoosts>
+          </StyledRewardSection>
+
           <StyledRewardSection showRope={false}>
             <StyledRewardTitle>
               <AdventureRibbonText>{t('rewardSectionTitle')}</AdventureRibbonText>
@@ -221,6 +263,7 @@ export default function LevelUpPopup() {
               </StyledReward>
             </StyledRewards>
           </StyledRewardSection>
+
           <Button width="100%" Typography={Headline} onClick={distributeAttributePoints}>
             {t('continueButton')}
           </Button>
