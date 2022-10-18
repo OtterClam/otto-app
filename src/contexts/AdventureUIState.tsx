@@ -104,31 +104,6 @@ const defaultValue: AdventureUIValue = {
   state: {
     popupOpened: false,
     popupStep: AdventurePopupStep.LocationInfo,
-    levelUp: {
-      ottoId: '29',
-      levelUp: {
-        from: {
-          level: 1,
-          exp: 20,
-          expToNextLevel: 100,
-        },
-        to: {
-          level: 2,
-          exp: 20,
-          expToNextLevel: 200,
-        },
-        got: {
-          items: [],
-          attrs_points: 2,
-        },
-      },
-      rewards: {
-        tcp: 0,
-        ap: 0,
-        exp: 0,
-        items: [],
-      },
-    },
   },
   dispatch: noop,
 }
