@@ -257,6 +257,8 @@
     "para2": "阿獺王國！"
   },
   "my_items": {
+    "next_page": "下一頁 >",
+    "prev_page": "上一頁 >",
     "empty": "你沒有任何物品",
     "equipped": "已裝備",
     "filter": "過濾",
@@ -284,10 +286,10 @@
     },
     "sorted_by": "排序",
     "sorted_by_options": {
+      "rarity_desc": "稀有度",
       "time_received": "收到時間",
       "theme_boost": "主題加成",
       "str": "力量度",
-      "rarity": "稀有度",
       "luck": "幸運值",
       "int": "智力度",
       "dex": "敏捷度",
@@ -412,7 +414,9 @@
     "wearable_traits_tab": "可穿脫特徵",
     "zodiac_sign": "星座： {{constellation}}",
     "total_rarity_score": "稀有度總計： {{score}} (BRS {{brs}} + RRS {{rrs}})",
-    "theme_boost": "主題加成"
+    "theme_boost": "主題加成",
+    "attribute_points": "Available Attribute Points: {{attributePoints}}",
+    "attribute_points_button": "Add Now >"
   },
   "otto_one": "{{count}} 隻阿獺",
   "otto_other": "{{count}} 隻阿獺",
@@ -699,8 +703,67 @@
     "ottos": "我的阿獺",
     "missions": "我的任務"
   },
+  "treasuryChestLevel": {
+    "title": "Treasure Chest",
+    "desc": "Collect points on adventure to open the Treasure Chest!",
+    "value": "{{ tcp }}/100 TCP"
+  },
   "themeBoost": {
     "boostMultiplier": "物品連擊加成 x {{ multiplier }} 🔥"
+  },
+  "ottoPreviewer": {
+    "feedButton": "+ Food"
+  },
+  "ottoItemsPopup": {
+    "title": "Change {{ type }}",
+    "sort": "Sorted by",
+    "order": "Order",
+    "filter": "Filter",
+    "wear": "Wear",
+    "wearBy": "{{ name }} is wearing this item",
+    "unavailable": "Unavailable",
+    "takeOff": "Take Off",
+    "noItems": "No Items Found"
+  },
+  "ongoingOttos": {
+    "title": "The Ottos currently exploring this place",
+    "view": "View",
+    "noOtto": "No Otto is here"
+  },
+  "levelUp": {
+    "popupTitle": "LEVEL UP!!!",
+    "rewardSectionTitle": "Level-up Reward",
+    "continueButton": "Continue",
+    "itemRewardLabel": {
+      "silver": "Silver Shell Chest x{{ amount }}",
+      "golden": "Golden Shell Chest x{{ amount }}",
+      "diamond": "Diamond Shell Chest x{{ amount }}"
+    },
+    "attributePointsRewardLabel": "+{{ points }} Attribute Points"
+  },
+  "itemFilters": {
+    "attrs": {
+      "timeReceived": "Time Received",
+      "rarity": "Rarity",
+      "str": "Str",
+      "dex": "Dex",
+      "luck": "Luck",
+      "cute": "Cute",
+      "def": "Def",
+      "int": "Int",
+      "con": "Con"
+    },
+    "order": {
+      "desc": "Descending",
+      "asc": "Ascending"
+    },
+    "filters": {
+      "equipped": "Equipped",
+      "lottie_specific": "Lottie Specific",
+      "none": "None",
+      "not_equipped": "Not Equipped",
+      "otto_specific": "Otto Specific"
+    }
   },
   "foundry": {
     "title": "Foundry",
@@ -736,5 +799,147 @@
     "10": "魔羯座",
     "11": "水瓶座",
     "12": "雙魚座"
+  },
+  "conditionalBoosts": {
+    "title": "Conditional Boosts",
+    "help": "test",
+    "effectiveUntil": "<span style='color: #FFDC77'>{{ duration }}</span>",
+    "legendary": "Legendary Otto:",
+    "zodiac": "Zodiac sign:",
+    "birthday": "Birthday today:",
+    "level_up": "Level-up bonus:",
+    "first_match_group": "If {{ attr }} {{ operator }} {{ value }}, ",
+    "fixed_level": "LV{{ value }}:"
+  },
+  "attributePoints": {
+    "popupTitle": "Add Attribute Points",
+    "availablePoints": "Available: {{ points }} points",
+    "confirmButton": "Confirm",
+    "skipButton": "Skip for Now",
+    "desc": "You can add attribute points later in My Otto page.",
+    "resultTitle": "Ta-da! Your Otto seems to have",
+    "resultDesc": "The more you explore, the stronger you become!",
+    "resultCloseButton": "Close"
+  },
+  "adventureStatus": {
+    "all": "All",
+    "finished": "Finished",
+    "ongoing": "Ongoing",
+    "resting": "Resting",
+    "ready": "Ready",
+    "unavailable": "Unavailable"
+  },
+  "adventurePopup": {
+    "start": "Let's Go!",
+    "previewOttoTitle": "Choose an Otto to go on adventure:",
+    "readyToGoStep": {
+      "title": "Ready to Go!",
+      "desc": "{{name}} has just departed to an adventure. Good luck!"
+    },
+    "exploringStep": {
+      "title": "{{name}} is exploring...",
+      "remaining": "Remaining: {{time}}",
+      "finish_immediately_btn": "Finish Immediately",
+      "speed_up_btn": "Speed Up",
+      "see_results_btn": "See Results",
+      "see_results_hint": "To check the Adventure Journal, you will proceed a transaction.",
+      "wants_more": "Want more Speed-Up Potions?",
+      "buy_now": "Buy NOW>",
+      "used": "Use {{ amount }}"
+    },
+    "resultStep": {
+      "journal": "Adventure Journal",
+      "reward": "Adventure Rewards",
+      "skip_journal_btn": "Skip",
+      "result_label": "Adventure Result:",
+      "result_succeeded": "SUCCEEDED",
+      "result_failed": "FAILED",
+      "found_items": "Found Items",
+      "treasury_chest": "Treasure Chest",
+      "adventure_point": "Adventure Points",
+      "explore_again_btn": "Explore Again",
+      "close_btn": "Close",
+      "revive_btn": "Retrieve Items",
+      "give_up_btn": "Give Up (Discard all Rewards)",
+      "give_up_yes_btn": "Yes. Give up",
+      "give_up_back_btn": "Back",
+      "failed_desc": "Because your Otto FAILED the adventure, you can not claim those rewards.",
+      "failed_hint": "Wanna collected the rewards?\nRevive so that you can claim all of them. If you choose to give up, the rewards will be all discarded and there’s no way back.",
+      "failed_tooltip": "Wanna retrieve the items you’ve found? Just need to spend 1 $CLAM and Kodama will help you retrive them! (but not EXP nor TCP) If you choose to close the adventure, the items will be all discarded and there’s no way back."
+    },
+    "restingStep": {
+      "title": "{{name}} is resting...",
+      "title_ready": "{{name}} is ready to go!",
+      "finish_btn": "Explore again",
+      "remaining": "Rest Remaining: {{time}}",
+      "speed_up_btn": "Speed Up",
+      "buy_now": "Buy NOW>",
+      "wants_more": "Want more Speed-Up Potions?"
+    },
+    "closePopupAlert": {
+      "content": "The unsaved equipment changes on this Otto will be discarded If you select another Otto. Are you sure you want to continue? ",
+      "okLabel": "Discard changes and continue",
+      "cancelLabel": "Back"
+    },
+    "closeWindowAlert": {
+      "content": "The unsaved equipment changes on this Otto will be discarded. Do you still want to close the window?",
+      "okLabel": "Yes. Close the window",
+      "cancelLabel": "Back"
+    },
+    "itemTxDesc": "You will be required to perform a transaction to update the wearable items on this Otto."
+  },
+  "adventureOttoList": {
+    "title": "The Ottos currently exploring this place"
+  },
+  "adventureOttoCard": {
+    "checkOtto": "Check >",
+    "viewLabel": "View",
+    "go": "Go >",
+    "resting_2": "View the previous adventure journal here >",
+    "resting_1": "{{name}} is resting now. ",
+    "ready": "{{name}} is ready for an adventure!",
+    "ongoing": "{{name}} is exploring {{location}}..."
+  },
+  "adventureLocationPopup": {
+    "difficulty": "Difficulty:",
+    "nextStep": "Continue"
+  },
+  "adventureLocation": {
+    "successRate": "Success rate",
+    "adventureTime": "Adventure time",
+    "restingTime": "Resting time",
+    "successRateHelp": "message",
+    "restingTimeHelp": "message",
+    "rewardSectionTitle": "Success Rewards",
+    "usePotion": "Use",
+    "noPotion": "You have 0",
+    "usedPotion": "Used {{ amount }}"
+  },
+  "adventureBoosts": {
+    "conditionalBoosts": "Conditional Boosts",
+    "regional_boosts": "Regional Boosts"
+  },
+  "adventureBoostTarget": {
+    "success_rate": "Total Success +{{ amount }}%",
+    "additional_item": "Found Item +{{ amount }}",
+    "additional_artwork": "Found Artwork Item +{{ amount }}"
+  },
+  "adventure": {
+    "title": "Adventure",
+    "continue": "To Be Continue...",
+    "listTitle": "Overview",
+    "viewSwitcher": {
+      "map": "Map",
+      "list": "Overview"
+    }
+  },
+  "treasuryChestPopup": {
+    "popupTitle": "Treasure Chest",
+    "desc": "Congratulations! You’ve collect enough Treasure Chest Points (TCP) to open a Treasure Chest!",
+    "button": "Open the Chest"
+  },
+  "adventure_remaining": "Remaining: {{time}}",
+  "adventureAlert": {
+    "hideDesc": "Do not show this again"
   }
 }
