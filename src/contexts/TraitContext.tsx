@@ -1,5 +1,4 @@
 import noop from 'lodash/noop'
-import { Trait } from 'models/Otto'
 import { createContext, FC, PropsWithChildren, useContext, useMemo, useState } from 'react'
 
 const TraitContext = createContext<{ traitType?: string; setTraitType: (type?: string) => void }>({
