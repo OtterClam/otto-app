@@ -23,6 +23,15 @@ const icons = {
   [BoostType.LevelUp]: '',
 }
 
+const effectiveUntilMessage = (i18n: I18n, boost: AdventureLocationConditionalBoost): string => {
+  const now = new Date()
+  return boost.effective && boost.effectiveUntil
+    ? i18n.t('conditionalBoosts.effectiveUntil', {
+        duration: formatDuration(intervalToDuration({ start: now, end: boost.effectiveUntil })),
+      })
+    : ''
+}
+
 export type AdventureDisplayedBoost =
   | {
       boostType: BoostType.Birthday | BoostType.Legendary | BoostType.LevelUp | BoostType.Zodiac
@@ -121,20 +130,12 @@ const parseOtherBoost = (
     return undefined
   }
 
-  const now = new Date()
-  const formatedEffectiveUntil =
-    boost.effective && boost.effectiveUntil
-      ? i18n.t('conditionalBoosts.effectiveUntil', {
-          duration: intervalToDuration({ start: now, end: boost.effectiveUntil }),
-        })
-      : ''
-
   return {
     boostType: boost.type,
     message: [
       i18n?.t(`conditionalBoosts.${boost.type}`),
       stringifyBoostAmounts(i18n, boost.amounts),
-      formatedEffectiveUntil,
+      effectiveUntilMessage(i18n, boost),
     ]
       .filter(Boolean)
       .join(' '),
@@ -163,7 +164,13 @@ const parseLevelUpBoosts = (
 
   return {
     boostType: BoostType.LevelUp,
-    message: i18n.t(`conditionalBoosts.${BoostType.LevelUp}`) + stringifyBoostAmounts(i18n, effectiveBoost.amounts),
+    message: [
+      i18n.t(`conditionalBoosts.${BoostType.LevelUp}`),
+      stringifyBoostAmounts(i18n, effectiveBoost.amounts),
+      effectiveUntilMessage(i18n, effectiveBoost),
+    ]
+      .filter(Boolean)
+      .join(' '),
     effective: true,
     icon: '',
   }
@@ -216,7 +223,9 @@ const parseFirstMatchGroup = (
     const { amounts } = boost
     const i18nKey =
       condition.attr === 'level' ? 'conditionalBoosts.fixed_level' : `conditionalBoosts.${BoostType.FirstMatchGroup}`
-    return `${i18n.t(i18nKey, condition)} ${stringifyBoostAmounts(i18n, amounts)}`
+    return [`${i18n.t(i18nKey, condition)} ${stringifyBoostAmounts(i18n, amounts)}`, effectiveUntilMessage(i18n, boost)]
+      .filter(Boolean)
+      .join(' ')
   }
 
   return {
