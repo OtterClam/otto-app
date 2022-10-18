@@ -42,9 +42,13 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
   }, [otto])
 
   const value = useMemo(() => {
-    const equippedItems = items
-      .filter(item => item.equipped)
-      .reduce((map, item) => Object.assign(map, { [item.id]: item }), {} as { [k: string]: Item })
+    const uniqueItems = items.reduce((map, item) => {
+      // pick non-equipped items first if there multiple items
+      if (map[item.id] && !map[item.id].equipped) {
+        return map
+      }
+      return Object.assign(map, { [item.id]: item })
+    }, {} as Record<string, Item>)
     const ottoIdToOtto = ottos.reduce(
       (map, otto) => Object.assign(map, { [otto.id]: otto }),
       {} as { [k: string]: Otto }
@@ -54,10 +58,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
       .map(({ id }) => ottoIdToOtto[id])
       .filter(Boolean)
       .map(otto =>
-        otto.wearableTraits.reduce(
-          (map, trait) => Object.assign(map, { [trait.id]: otto }),
-          {} as { [k: string]: Otto }
-        )
+        otto.wearableTraits.reduce((map, trait) => Object.assign(map, { [trait.id]: otto }), {} as Record<string, Otto>)
       )
       .reduce((all, map) => Object.assign(all, map), {} as { [k: string]: Otto })
 
@@ -91,7 +92,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
             }
           }
 
-          if (equippedItems[itemId]) {
+          if (uniqueItems[itemId].equipped) {
             return {
               type: ItemActionType.EquipFromOtto,
               item_id: Number(itemId),
