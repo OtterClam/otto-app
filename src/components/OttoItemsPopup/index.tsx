@@ -83,7 +83,7 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
   const filteredItems = items.filter(item => item.type === traitType)
   const equippedTrait = otto?.wearableTraits.find(trait => trait.type === traitType)
   const defaultTrait = otto?.ottoNativeTraits?.find(({ id }) => id === selectedItemId)
-  let selectedItem = filteredItems.find(({ id }) => id === selectedItemId)
+  let selectedItem = filteredItems?.filter(({ id }) => id === selectedItemId)?.sort(a => (a.equipped ? 1 : -1))[0]
   if (!selectedItem && equippedTrait && selectedItemId === equippedTrait.id) {
     selectedItem = traitToItem(equippedTrait)
   }

@@ -122,7 +122,10 @@ const useOttos = (item?: Item, selectedOtto?: Otto) => {
   const ottosExceptSelectedOtto = useMemo(() => {
     return ottos.filter(otto => String(otto.id) !== selectedOtto?.id)
   }, [item, selectedOtto])
-  return ottosExceptSelectedOtto
+  if (item?.equipped) {
+    return ottosExceptSelectedOtto
+  }
+  return []
 }
 
 export interface ItemPreviewProps {
