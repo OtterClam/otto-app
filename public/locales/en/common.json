@@ -834,7 +834,7 @@
     "confirmButton": "Confirm",
     "skipButton": "Skip for Now",
     "desc": "You can add attribute points later in My Otto page.",
-    "resultTitle": "Ta-da! Your Otto seems to have",
+    "resultTitle": "Ta-da! Your Otto seems to have changed a bit.",
     "resultDesc": "The more you explore, the stronger you become!",
     "resultCloseButton": "Close"
   },
@@ -881,8 +881,8 @@
       "give_up_yes_btn": "Yes. Give up",
       "give_up_back_btn": "Back",
       "failed_desc": "Because your Otto FAILED the adventure, you can not claim those rewards.",
-      "failed_hint": "Wanna collected the rewards?\nRevive so that you can claim all of them. If you choose to give up, the rewards will be all discarded and there’s no way back.",
-      "failed_tooltip": "Wanna retrieve the items you’ve found? Just need to spend 1 $CLAM and Kodama will help you retrive them! (but not EXP nor TCP) If you choose to close the adventure, the items will be all discarded and there’s no way back."
+      "failed_hint": "Wanna retrieve the items you’ve found? Just need to spend 1 $CLAM and Kodama will help you retrive them! (but not EXP nor TCP) The found items will be lost forever if this Otto proceeds on another adventure.",
+      "failed_tooltip": "Wanna retrieve the items you’ve found? Just need to spend 1 $CLAM and Kodama will help you retrive them! (but not EXP nor TCP) The found items will be lost forever if this Otto proceeds on another adventure."
     },
     "restingStep": {
       "title": "{{name}} is resting...",

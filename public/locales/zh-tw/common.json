@@ -282,20 +282,20 @@
       "Facial Accessories": "臉部配件",
       "Headwear": "頭飾",
       "Holding": "手持物",
-      "Other": "Other Items"
+      "Other": "其他物品"
     },
     "sorted_by": "排序",
     "sorted_by_options": {
       "rarity_desc": "稀有度",
-      "time_received": "收到時間",
+      "time_received": "更新時間",
       "theme_boost": "主題加成",
-      "str": "力量度",
-      "luck": "幸運值",
-      "int": "智力度",
-      "dex": "敏捷度",
-      "def": "防御力",
-      "cute": "可愛度",
-      "con": "憲法度"
+      "str": "STR 力量",
+      "luck": "LUK 幸運",
+      "int": "INT 智慧",
+      "dex": "DEX 敏捷",
+      "def": "DEF 防禦",
+      "cute": "CUTE 可愛",
+      "con": "CON 體力"
     },
     "take_off": "脫掉",
     "take_off_item": {
@@ -704,86 +704,86 @@
     "missions": "我的任務"
   },
   "treasuryChestLevel": {
-    "title": "Treasure Chest",
-    "desc": "Collect points on adventure to open the Treasure Chest!",
+    "title": "冒險寶箱",
+    "desc": "集滿冒險寶箱點數 (TCP) 就可以開啟冒險寶箱！",
     "value": "{{ tcp }}/100 TCP"
   },
   "themeBoost": {
     "boostMultiplier": "物品連擊加成 x {{ multiplier }} 🔥"
   },
   "ottoPreviewer": {
-    "feedButton": "+ Food"
+    "feedButton": "+ 料理"
   },
   "ottoItemsPopup": {
-    "title": "Change {{ type }}",
-    "sort": "Sorted by",
-    "order": "Order",
-    "filter": "Filter",
-    "wear": "Wear",
-    "wearBy": "{{ name }} is wearing this item",
-    "unavailable": "Unavailable",
-    "takeOff": "Take Off",
-    "noItems": "No Items Found"
+    "title": "更換 {{ type }}",
+    "sort": "根據",
+    "order": "排序",
+    "filter": "篩選",
+    "wear": "穿著裝備",
+    "wearBy": "{{ name }} 正在穿著此裝備",
+    "unavailable": "無法穿著",
+    "takeOff": "脫掉",
+    "noItems": "無任何物品"
   },
   "ongoingOttos": {
-    "title": "The Ottos currently exploring this place",
-    "view": "View",
-    "noOtto": "No Otto is here"
+    "title": "正在此處冒險的阿獺",
+    "view": "查看",
+    "noOtto": "無阿獺在此冒險"
   },
   "levelUp": {
-    "popupTitle": "LEVEL UP!!!",
-    "rewardSectionTitle": "Level-up Reward",
-    "continueButton": "Continue",
+    "popupTitle": "恭喜升等!!!",
+    "rewardSectionTitle": "升等獎勵",
+    "continueButton": "繼續",
     "itemRewardLabel": {
-      "silver": "Silver Shell Chest x{{ amount }}",
-      "golden": "Golden Shell Chest x{{ amount }}",
-      "diamond": "Diamond Shell Chest x{{ amount }}"
+      "silver": "白銀寶箱 x{{ amount }}",
+      "golden": "黃金寶箱 x{{ amount }}",
+      "diamond": "鑽石寶箱 x{{ amount }}"
     },
-    "attributePointsRewardLabel": "+{{ points }} Attribute Points"
+    "attributePointsRewardLabel": "+{{ points }} 屬性點數"
   },
   "itemFilters": {
     "attrs": {
-      "timeReceived": "Time Received",
-      "rarity": "Rarity",
-      "str": "Str",
-      "dex": "Dex",
-      "luck": "Luck",
-      "cute": "Cute",
-      "def": "Def",
-      "int": "Int",
-      "con": "Con"
+      "timeReceived": "更新時間",
+      "rarity": "稀有度",
+      "str": "STR 力量",
+      "dex": "DEX 敏捷",
+      "luck": "LUK 幸運",
+      "cute": "CUTE 可愛",
+      "def": "DEF 防禦",
+      "int": "INT 智慧",
+      "con": "CON 體力"
     },
     "order": {
-      "desc": "Descending",
-      "asc": "Ascending"
+      "desc": "降冪",
+      "asc": "升冪"
     },
     "filters": {
-      "equipped": "Equipped",
-      "lottie_specific": "Lottie Specific",
-      "none": "None",
-      "not_equipped": "Not Equipped",
-      "otto_specific": "Otto Specific"
+      "equipped": "裝備中",
+      "lottie_specific": "僅限蘿提",
+      "none": "無",
+      "not_equipped": "未裝備",
+      "otto_specific": "僅限阿獺"
     }
   },
   "foundry": {
-    "title": "Foundry",
+    "title": "鑄造廠",
     "dialog": {
-      "title": "Welcome to the Foundry!",
-      "content": "Welcome to the Foundry, where you can re-forge several items to combine into new items, and also have the opportunity to get new items with higher rarity or attributes!"
+      "title": "歡迎來到鑄造廠！",
+      "content": "歡迎來到鑄造廠，在這裡你可以將多個物品重新鑄造成一個新物品, 並且有機會得到稀有度或數值較高的物品！"
     },
     "result": {
-      "title": "You’ll Get:"
+      "title": "你將會得到："
     },
     "materials": {
-      "title": "Required Items:"
+      "title": "必要的物品："
     },
-    "forgeButton": "Forge",
-    "forgeButton_insufficient": "Forge (Insufficient Items)",
-    "forgeAvailableTime": "Fusion available: {{ startTime }} - {{ endTime }} ({{ timeZone }})",
-    "comingSoon": "Coming soon...",
-    "approve": "Approve",
+    "forgeButton": "鑄造",
+    "forgeButton_insufficient": "鑄造 (物品不)",
+    "forgeAvailableTime": "可鑄造時間 {{ startTime }} - {{ endTime }} ({{ timeZone }})",
+    "comingSoon": "即將登場...",
+    "approve": "同意簽署",
     "forge": {
-      "processing": "Forging..."
+      "processing": "鑄造中..."
     }
   },
   "constellation": {
@@ -801,145 +801,145 @@
     "12": "雙魚座"
   },
   "conditionalBoosts": {
-    "title": "Conditional Boosts",
-    "help": "test",
+    "title": "特殊加成條件",
+    "help": "幫助",
     "effectiveUntil": "<span style='color: #FFDC77'>{{ duration }}</span>",
-    "legendary": "Legendary Otto:",
-    "zodiac": "Zodiac sign:",
-    "birthday": "Birthday today:",
-    "level_up": "Level-up bonus:",
-    "first_match_group": "If {{ attr }} {{ operator }} {{ value }}, ",
+    "legendary": "傳說級阿獺：",
+    "zodiac": "星座：",
+    "birthday": "生日：",
+    "level_up": "升等加成：",
+    "first_match_group": "{{ attr }} {{ operator }} {{ value }}, ",
     "fixed_level": "LV{{ value }}:"
   },
   "attributePoints": {
-    "popupTitle": "Add Attribute Points",
-    "availablePoints": "Available: {{ points }} points",
-    "confirmButton": "Confirm",
-    "skipButton": "Skip for Now",
-    "desc": "You can add attribute points later in My Otto page.",
-    "resultTitle": "Ta-da! Your Otto seems to have",
-    "resultDesc": "The more you explore, the stronger you become!",
-    "resultCloseButton": "Close"
+    "popupTitle": "提升屬性值",
+    "availablePoints": "可用點數：{{ points }} 點",
+    "confirmButton": "確定",
+    "skipButton": "暫時跳過",
+    "desc": "你隨時可以到「我的阿獺」頁面使用點數提升這隻阿獺的屬性值。",
+    "resultTitle": "嘿！你的阿獺看起來變得不一樣了",
+    "resultDesc": "探險得越多，你的阿獺就會變得更強！",
+    "resultCloseButton": "關閉視窗"
   },
   "adventureStatus": {
-    "all": "All",
-    "finished": "Finished",
-    "ongoing": "Ongoing",
-    "resting": "Resting",
-    "ready": "Ready",
-    "unavailable": "Unavailable"
+    "all": "全部",
+    "finished": "已完成",
+    "ongoing": "冒險中",
+    "resting": "休息中",
+    "ready": "閒置中",
+    "unavailable": "無法冒險"
   },
   "adventurePopup": {
-    "start": "Let's Go!",
-    "previewOttoTitle": "Choose an Otto to go on adventure:",
+    "start": "出發 GO!",
+    "previewOttoTitle": "選擇一隻阿獺來冒險：",
     "readyToGoStep": {
-      "title": "Ready to Go!",
-      "desc": "{{name}} has just departed to an adventure. Good luck!"
+      "title": "出發冒險!",
+      "desc": "{{name}} 已經出發去冒險了，祝好運！"
     },
     "exploringStep": {
-      "title": "{{name}} is exploring...",
-      "remaining": "Remaining: {{time}}",
-      "finish_immediately_btn": "Finish Immediately",
-      "speed_up_btn": "Speed Up",
-      "see_results_btn": "See Results",
-      "see_results_hint": "To check the Adventure Journal, you will proceed a transaction.",
-      "wants_more": "Want more Speed-Up Potions?",
-      "buy_now": "Buy NOW>",
-      "used": "Use {{ amount }}"
+      "title": "{{name}} 正在冒險中...",
+      "remaining": "剩餘時間： {{time}}",
+      "finish_immediately_btn": "馬上完成",
+      "speed_up_btn": "加速",
+      "see_results_btn": "查看冒險結果",
+      "see_results_hint": "你將會執行一筆交易以查看冒險結果",
+      "wants_more": "想要更多加速藥水嗎？",
+      "buy_now": "馬上購買 >",
+      "used": "使用 {{ amount }}"
     },
     "resultStep": {
-      "journal": "Adventure Journal",
-      "reward": "Adventure Rewards",
-      "skip_journal_btn": "Skip",
-      "result_label": "Adventure Result:",
-      "result_succeeded": "SUCCEEDED",
-      "result_failed": "FAILED",
-      "found_items": "Found Items",
-      "treasury_chest": "Treasure Chest",
-      "adventure_point": "Adventure Points",
-      "explore_again_btn": "Explore Again",
-      "close_btn": "Close",
-      "revive_btn": "Retrieve Items",
-      "give_up_btn": "Give Up (Discard all Rewards)",
-      "give_up_yes_btn": "Yes. Give up",
-      "give_up_back_btn": "Back",
-      "failed_desc": "Because your Otto FAILED the adventure, you can not claim those rewards.",
-      "failed_hint": "Wanna collected the rewards?\nRevive so that you can claim all of them. If you choose to give up, the rewards will be all discarded and there’s no way back.",
-      "failed_tooltip": "Wanna retrieve the items you’ve found? Just need to spend 1 $CLAM and Kodama will help you retrive them! (but not EXP nor TCP) If you choose to close the adventure, the items will be all discarded and there’s no way back."
+      "journal": "冒險日誌",
+      "reward": "冒險獎勵",
+      "skip_journal_btn": "跳過",
+      "result_label": "冒險結果：",
+      "result_succeeded": "冒險成功！",
+      "result_failed": "冒險失敗...",
+      "found_items": "找到的物品",
+      "treasury_chest": "冒險寶箱",
+      "adventure_point": "冒險點數",
+      "explore_again_btn": "再次冒險",
+      "close_btn": "關閉",
+      "revive_btn": "取回物品",
+      "give_up_btn": "放棄 (放棄所有物品)",
+      "give_up_yes_btn": "對，我要放棄！",
+      "give_up_back_btn": "讓我再想想",
+      "failed_desc": "你的阿獺冒險失敗了，因此你無法得到此次冒險的任何獎勵。",
+      "failed_hint": "想要得到冒險中找到的物品嗎？只需要花費 1 $CLAM，小森靈就會幫你取回物品喔！ (不包含 EXP 及 TCP) 如果你都未取回物品，這些物品將會在下一次出發冒險時永遠消失。",
+      "failed_tooltip": "想要得到冒險中找到的物品嗎？只需要花費 1 $CLAM，小森靈就會幫你取回物品喔！ (不包含 EXP 及 TCP) 如果你都未取回物品，這些物品將會在下一次出發冒險時永遠消失。"
     },
     "restingStep": {
-      "title": "{{name}} is resting...",
-      "title_ready": "{{name}} is ready to go!",
-      "finish_btn": "Explore again",
-      "remaining": "Rest Remaining: {{time}}",
-      "speed_up_btn": "Speed Up",
-      "buy_now": "Buy NOW>",
-      "wants_more": "Want more Speed-Up Potions?"
+      "title": "{{name}} 正在休息中...",
+      "title_ready": "{{name}} 已經準備好冒險！",
+      "finish_btn": "再次冒險",
+      "remaining": "休息剩餘時間： {{time}}",
+      "speed_up_btn": "加速",
+      "buy_now": "馬上購買 >",
+      "wants_more": "想要更多加速藥水嗎？"
     },
     "closePopupAlert": {
-      "content": "The unsaved equipment changes on this Otto will be discarded If you select another Otto. Are you sure you want to continue? ",
-      "okLabel": "Discard changes and continue",
-      "cancelLabel": "Back"
+      "content": "假如你現在選擇另一隻阿獺，這隻阿獺的裝備設定將會被捨棄，你確定要這麼做？",
+      "okLabel": "對，捨棄設定並繼續",
+      "cancelLabel": "返回"
     },
     "closeWindowAlert": {
-      "content": "The unsaved equipment changes on this Otto will be discarded. Do you still want to close the window?",
-      "okLabel": "Yes. Close the window",
-      "cancelLabel": "Back"
+      "content": "假如你現在關閉視窗，這隻阿獺的裝備設定將會被捨棄，你確定要這麼做？",
+      "okLabel": "對，關閉視窗",
+      "cancelLabel": "返回"
     },
-    "itemTxDesc": "You will be required to perform a transaction to update the wearable items on this Otto."
+    "itemTxDesc": "你將會被要求執行一筆交易來將更新此次裝備更動"
   },
   "adventureOttoList": {
-    "title": "The Ottos currently exploring this place"
+    "title": "正在此處冒險的阿獺"
   },
   "adventureOttoCard": {
-    "checkOtto": "Check >",
-    "viewLabel": "View",
-    "go": "Go >",
-    "resting_2": "View the previous adventure journal here >",
-    "resting_1": "{{name}} is resting now. ",
-    "ready": "{{name}} is ready for an adventure!",
-    "ongoing": "{{name}} is exploring {{location}}..."
+    "checkOtto": "查看 >",
+    "viewLabel": "查看",
+    "go": "出發 >",
+    "resting_2": "點此查看前一次冒險結果 >",
+    "resting_1": "{{name}} 正在休息中",
+    "ready": "{{name}} 已經準備好冒險！",
+    "ongoing": "{{name}} 正在 {{location}} 冒險中..."
   },
   "adventureLocationPopup": {
-    "difficulty": "Difficulty:",
-    "nextStep": "Continue"
+    "difficulty": "困難度：",
+    "nextStep": "繼續"
   },
   "adventureLocation": {
-    "successRate": "Success rate",
-    "adventureTime": "Adventure time",
-    "restingTime": "Resting time",
-    "successRateHelp": "message",
-    "restingTimeHelp": "message",
-    "rewardSectionTitle": "Success Rewards",
-    "usePotion": "Use",
-    "noPotion": "You have 0",
-    "usedPotion": "Used {{ amount }}"
+    "successRate": "成功率",
+    "adventureTime": "冒險時間",
+    "restingTime": "休息時間",
+    "successRateHelp": "幫助",
+    "restingTimeHelp": "幫助",
+    "rewardSectionTitle": "冒險成功獎勵",
+    "usePotion": "使用",
+    "noPotion": "你有 0 個",
+    "usedPotion": "已使用 {{ amount }}"
   },
   "adventureBoosts": {
-    "conditionalBoosts": "Conditional Boosts",
-    "regional_boosts": "Regional Boosts"
+    "conditionalBoosts": "特殊加成條件",
+    "regional_boosts": "區域加成條件"
   },
   "adventureBoostTarget": {
-    "success_rate": "Total Success +{{ amount }}%",
-    "additional_item": "Found Item +{{ amount }}",
-    "additional_artwork": "Found Artwork Item +{{ amount }}"
+    "success_rate": "總成功率 +{{ amount }}%",
+    "additional_item": "找到物品 +{{ amount }}",
+    "additional_artwork": "找到收藏品 +{{ amount }}"
   },
   "adventure": {
-    "title": "Adventure",
-    "continue": "To Be Continue...",
-    "listTitle": "Overview",
+    "title": "冒險",
+    "continue": "更多區域即將開放...",
+    "listTitle": "阿獺概況",
     "viewSwitcher": {
-      "map": "Map",
-      "list": "Overview"
+      "map": "冒險地圖",
+      "list": "阿獺概況"
     }
   },
   "treasuryChestPopup": {
-    "popupTitle": "Treasure Chest",
-    "desc": "Congratulations! You’ve collect enough Treasure Chest Points (TCP) to open a Treasure Chest!",
-    "button": "Open the Chest"
+    "popupTitle": "冒險寶箱",
+    "desc": "恭喜你！你已經集滿足夠的冒險寶箱點數 (TCP) 來開啟一個冒險寶箱！",
+    "button": "開啟寶箱"
   },
-  "adventure_remaining": "Remaining: {{time}}",
+  "adventure_remaining": "剩餘時間： {{time}}",
   "adventureAlert": {
-    "hideDesc": "Do not show this again"
+    "hideDesc": "不要再顯示"
   }
 }
