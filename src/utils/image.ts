@@ -9,6 +9,10 @@ export const getCroppedImageUrl = (url: string, options: CropImageOptions = {}):
     return url
   }
 
+  if (!/^https?:\/\//.test(url)) {
+    url = `${location.protocol}//${location.host}/${url.replace(/^\/+/, '')}`
+  }
+
   const croppedUrl = new URL('https://images.weserv.nl')
 
   croppedUrl.searchParams.set('url', url)
