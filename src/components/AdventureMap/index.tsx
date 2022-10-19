@@ -67,7 +67,7 @@ export default forwardRef<HTMLDivElement, AdventureMapProps>(function AdventureM
   return (
     <StyledContainer className={className} ref={ref}>
       <StyledImageContainer>
-        <CroppedImage src={mapImage} layout="responsive" />
+        <CroppedImage unoptimized src={mapImage} layout="responsive" />
         {locations.map(location => (
           <AdventureLocation key={location.id} id={location.id} />
         ))}
