@@ -92,6 +92,7 @@ export default function OttoSelector() {
   const selectedIndex = ottos.findIndex(otto => otto.id === selectedOtto?.id) ?? 0
 
   const swipeableHandlers = useSwipeable({
+    trackTouch: true,
     trackMouse: true,
     preventScrollOnSwipe: true,
     onSwiped: () => {
@@ -127,9 +128,14 @@ export default function OttoSelector() {
     }
   }, [selectedOtto, ottos])
 
+  const swipeableWorkaround = (t: any) => {
+    swipeableHandlers.ref(t)
+    containerRef.current = t
+  }
+
   return (
-    <StyledContainer ref={containerRef}>
-      <StyledConveyor {...swipeableHandlers} ref={conveyorRef} offset={totalOffset}>
+    <StyledContainer {...swipeableHandlers} ref={swipeableWorkaround}>
+      <StyledConveyor ref={conveyorRef} offset={totalOffset}>
         <StyledArrow index={selectedIndex} />
         {ottos.map(otto => (
           <OttoItem key={otto.id} otto={otto} activated={selectedOtto?.id === otto.id} onSelect={selectOtto} />
