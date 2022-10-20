@@ -17,18 +17,23 @@ export default function useMyItems() {
     variables: { owner: account || '' },
     skip: !account,
     onCompleted: data => {
-      const ids = (data?.ottoItems ?? []).map(item => String(item.tokenId))
+      const tokenIds = Array.from(new Set((data?.ottoItems ?? []).map(item => String(item.tokenId))))
       api
-        .getItems(ids)
-        .then(items =>
-          items.map((item, i) => ({
-            ...item,
-            amount: data.ottoItems[i].amount,
-            equipped: Boolean(data.ottoItems[i].parentTokenId),
-            parentTokenId: data.ottoItems[i].parentTokenId?.toString(),
-            update_at: data.ottoItems[i].updateAt,
+        .getItems(tokenIds)
+        .then(result => {
+          const tokenIdToInfo = result.reduce((map, info) => {
+            map[info.tokenId] = info
+            return map
+          }, {} as { [id: string]: Item })
+
+          return (data.ottoItems ?? []).map(({ tokenId, ...rest }) => ({
+            ...tokenIdToInfo[tokenId],
+            amount: rest.amount,
+            equipped: Boolean(rest.parentTokenId),
+            parentTokenId: rest.parentTokenId?.toString(),
+            update_at: rest.updateAt,
           }))
-        )
+        })
         .then(items => setItems(items))
         .finally(() => setLoading(false))
     },

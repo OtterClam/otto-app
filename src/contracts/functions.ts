@@ -110,7 +110,7 @@ export const useTakeOffItem = () => {
   })
   const takeOff = (item: Item, ottoId: string) => {
     setReceivedItem(item)
-    send(ottoId, account || '', OTTO_ITEM, item.id)
+    send(ottoId, account || '', OTTO_ITEM, item.tokenId)
   }
   const resetTakeOff = () => {
     resetState()

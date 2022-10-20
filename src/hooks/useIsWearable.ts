@@ -23,7 +23,7 @@ export default function useIsWearable(items: Item[]): (itemId?: string, currentO
         return true
       }
 
-      const itemAmount = items.filter(item => !item.equipped).find(item => item.id === itemId)?.amount ?? 0
+      const itemAmount = items.filter(item => !item.equipped).find(item => item.tokenId === itemId)?.amount ?? 0
 
       const myReadyOttosWithItem = ottos
         .filter(otto => readyOttosMap[otto.id])

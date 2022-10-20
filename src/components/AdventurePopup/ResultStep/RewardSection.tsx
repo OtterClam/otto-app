@@ -38,7 +38,7 @@ export default function RewardSection({ className, result, otto }: Props) {
             {result.success && <StyledFoundItemTitle>{t('found_items')}</StyledFoundItemTitle>}
             <StyledFoundItemList>
               {result.rewards.items.map(item => (
-                <StyledItemCell key={item.id} item={item} />
+                <StyledItemCell key={item.tokenId} item={item} />
               ))}
             </StyledFoundItemList>
           </StyledFoundItemsContainer>

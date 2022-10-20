@@ -14,7 +14,7 @@ interface Props {
   onClose: () => void
 }
 
-export default function RedeemCouponPopup({ coupon: { id, product_factory, product_type }, onClose }: Props) {
+export default function RedeemCouponPopup({ coupon: { tokenId: id, product_factory, product_type }, onClose }: Props) {
   const [state, setState] = useState<State>(State.Loading)
   const { resetRedeem, redeem, redeemState } = useRedeemProduct()
   useEffect(() => {

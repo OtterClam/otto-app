@@ -173,7 +173,7 @@ function ItemList({
           <StyledItemList>
             {items.map((item, index) => (
               <ItemCell
-                key={`${item.id}_${index}`}
+                key={`${item.tokenId}_${index}`}
                 item={item}
                 selected={item === selectedItem}
                 onClick={() => selectItem(item)}

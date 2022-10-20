@@ -118,7 +118,7 @@ const StyledOttoImage = styled.div`
 `
 
 const useOttos = (item?: Item, selectedOtto?: Otto) => {
-  const ottos = useAdventureOttosWithItem(item?.id ?? '')
+  const ottos = useAdventureOttosWithItem(item?.tokenId ?? '')
   const ottosExceptSelectedOtto = useMemo(() => {
     return ottos.filter(otto => String(otto.id) !== selectedOtto?.id)
   }, [item, selectedOtto])
@@ -144,7 +144,7 @@ export default memo(
     const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
     const containerRef = useRef<HTMLDivElement | null>(null)
     const ottos = useOttos(item, otto)
-    const equippedByCurrentOtto = Boolean(otto?.wearableTraits.find(trait => trait.id === item?.id))
+    const equippedByCurrentOtto = Boolean(otto?.wearableTraits.find(trait => trait.id === item?.tokenId))
     const equippedItem = otto?.wearableTraits.find(trait => trait.type === traitType)
 
     const onEquip = (type: string, itemId: string) => {
@@ -196,7 +196,7 @@ export default memo(
             </StyledOttos>
           )}
           {!equippedByCurrentOtto && item && (
-            <StyledButton disabled={unavailable} Typography={Headline} onClick={() => onEquip(item.type, item.id)}>
+            <StyledButton disabled={unavailable} Typography={Headline} onClick={() => onEquip(item.type, item.tokenId)}>
               {t(unavailable ? 'unavailable' : 'wear')}
             </StyledButton>
           )}

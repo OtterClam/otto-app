@@ -245,12 +245,12 @@ export default function LevelUpPopup() {
             </StyledRewardTitle>
             <StyledRewards>
               {levelUp.levelUp.got.items
-                .filter(item => Boolean(rewardItems[item.id]))
+                .filter(item => Boolean(rewardItems[item.tokenId]))
                 .map(item => (
-                  <StyledReward key={item.id}>
-                    <StyledRewardIcon image={rewardItems[item.id].image} />
+                  <StyledReward key={item.tokenId}>
+                    <StyledRewardIcon image={rewardItems[item.tokenId].image} />
                     <StyledRewardLabel>
-                      {t(`itemRewardLabel.${rewardItems[item.id].key}`, { amount: item.amount })}
+                      {t(`itemRewardLabel.${rewardItems[item.tokenId].key}`, { amount: item.amount })}
                     </StyledRewardLabel>
                   </StyledReward>
                 ))}

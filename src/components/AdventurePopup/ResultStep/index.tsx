@@ -112,7 +112,7 @@ export default function ResultStep() {
     if (!(otto && result)) {
       return
     }
-    const chest = result.rewards.items.find(item => item.id === ChestId.TreasuryChest)
+    const chest = result.rewards.items.find(item => item.tokenId === ChestId.TreasuryChest)
     if (!chest) {
       return
     }

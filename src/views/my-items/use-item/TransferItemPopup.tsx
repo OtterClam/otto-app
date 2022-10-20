@@ -108,7 +108,7 @@ export default function TransferItemPopup({ item, onClose }: Props) {
   const loading = transferState.status === 'PendingSignature' || transferState.status === 'Mining'
 
   const onTransfer = () => {
-    transfer(item.id, address, amount)
+    transfer(item.tokenId, address, amount)
   }
 
   useEffect(() => {

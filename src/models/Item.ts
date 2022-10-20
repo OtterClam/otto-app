@@ -8,7 +8,7 @@ export interface ItemStat {
 }
 
 export default interface Item {
-  id: string
+  tokenId: string
   name: string
   type: string
   wearable: boolean
@@ -60,13 +60,14 @@ export function traitToItem(trait: Trait): Item {
     str: Number(trait.stats.find(s => s.name === 'STR')?.value ?? 0),
     int: Number(trait.stats.find(s => s.name === 'INT')?.value ?? 0),
     con: Number(trait.stats.find(s => s.name === 'CON')?.value ?? 0),
+    tokenId: trait.id,
     ...trait,
   }
 }
 
 export function rawItemToItem(id: string, { id: traiId, name, description, image, details }: any): Item {
   return {
-    id: id || traiId,
+    tokenId: id || traiId,
     name,
     description,
     image,
@@ -88,7 +89,7 @@ export function rawItemToItem(id: string, { id: traiId, name, description, image
 }
 
 export const EmptyItem: Item = {
-  id: '',
+  tokenId: '',
   name: '',
   image: NonItem.src,
   type: '',

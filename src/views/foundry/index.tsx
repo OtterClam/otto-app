@@ -33,7 +33,7 @@ const useMyItemAmounts = () => {
     return items
       .filter(item => !item.equipped)
       .reduce((counts, item) => {
-        counts[item.id] = item.amount ?? 0
+        counts[item.tokenId] = item.amount ?? 0
         return counts
       }, {} as MyItemAmounts)
   }, [items])

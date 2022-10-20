@@ -3,6 +3,7 @@ import { gql } from '@apollo/client'
 export const LIST_MY_ITEMS = gql`
   query ListItems($owner: Bytes!) {
     ottoItems(where: { rootOwner: $owner, amount_gt: 0 }, first: 1000) {
+      id
       tokenId
       amount
       parentTokenId

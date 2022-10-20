@@ -178,7 +178,18 @@ interface Props {
 
 export default function ItemDetails({ item, onClose, onUse, className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
-  const { id, collection, collection_name, name, image, rarity, type, description, equippable_gender, wearable } = item
+  const {
+    tokenId: id,
+    collection,
+    collection_name,
+    name,
+    image,
+    rarity,
+    type,
+    description,
+    equippable_gender,
+    wearable,
+  } = item
   const [showTransferPopup, setShowTransferPopup] = useState(false)
 
   return (
@@ -189,7 +200,7 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
             <Caption>{t('transfer_btn')}</Caption>
           </StyledActionButton>
         )}
-        <a href={getOpenSeaItemLink(item.id)} target="_blank" rel="noreferrer">
+        <a href={getOpenSeaItemLink(item.tokenId)} target="_blank" rel="noreferrer">
           <StyledActionButton>
             <Caption>{t('opensea_link')}</Caption>
             <Image src={NewWindowIcon} />

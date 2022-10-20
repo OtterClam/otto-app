@@ -47,10 +47,14 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
       const items: Item[] = []
       const map: { [k: string]: number } = {}
       restItems.forEach(item => {
-        if (map[item.id] !== undefined && items[map[item.id]].equipped && !currentOttoEquippedTraits[item.id]) {
-          items[map[item.id]] = item
-        } else if (!items[map[item.id]]) {
-          map[item.id] = items.length
+        if (
+          map[item.tokenId] !== undefined &&
+          items[map[item.tokenId]].equipped &&
+          !currentOttoEquippedTraits[item.tokenId]
+        ) {
+          items[map[item.tokenId]] = item
+        } else if (!items[map[item.tokenId]]) {
+          map[item.tokenId] = items.length
           items.push(item)
         }
       })
@@ -67,22 +71,22 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
   return (
     <StyledItems>
       <StyledItem
-        key={`default_${defaultItem?.id ?? 'empty'}`}
+        key={`default_${defaultItem?.tokenId ?? 'empty'}`}
         hideAmount
         item={defaultItem}
         currentOtto={otto}
-        onClick={() => selectItem(defaultItem?.id ?? 'empty')}
-        selected={(defaultItem && selectedItemId === defaultItem.id) || selectedItemId === 'empty'}
+        onClick={() => selectItem(defaultItem?.tokenId ?? 'empty')}
+        selected={(defaultItem && selectedItemId === defaultItem.tokenId) || selectedItemId === 'empty'}
       />
       {restItems.map(item => (
         <StyledItem
-          key={item.id}
+          key={item.tokenId}
           hideAmount
-          unavailable={!isWearable(item.id)}
+          unavailable={!isWearable(item.tokenId)}
           item={item}
           currentOtto={otto}
-          onClick={() => selectItem(item.id)}
-          selected={selectedItemId === item.id}
+          onClick={() => selectItem(item.tokenId)}
+          selected={selectedItemId === item.tokenId}
         />
       ))}
     </StyledItems>

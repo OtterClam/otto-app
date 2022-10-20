@@ -44,10 +44,10 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
   const value = useMemo(() => {
     const uniqueItems = items.reduce((map, item) => {
       // pick non-equipped items first if there multiple items
-      if (map[item.id] && !map[item.id].equipped) {
+      if (map[item.tokenId] && !map[item.tokenId].equipped) {
         return map
       }
-      return Object.assign(map, { [item.id]: item })
+      return Object.assign(map, { [item.tokenId]: item })
     }, {} as Record<string, Item>)
     const ottoIdToOtto = ottos.reduce(
       (map, otto) => Object.assign(map, { [otto.id]: otto }),

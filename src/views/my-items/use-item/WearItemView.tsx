@@ -89,7 +89,7 @@ export default function WearItemView({ item, selectedOtto, onSelect, onUse }: Pr
       <StyledPickerTitle>
         <Headline>{t('my_items.wear_item.title')}</Headline>
       </StyledPickerTitle>
-      <OttoList itemId={item.id} selectedOtto={selectedOtto} onSelect={onSelect} />
+      <OttoList itemId={item.tokenId} selectedOtto={selectedOtto} onSelect={onSelect} />
       <StyledBottomContainer>
         {selectedOtto && <StyledOttoCard otto={selectedOtto} item={item} />}
         <StyledOttoPreviewContainer>

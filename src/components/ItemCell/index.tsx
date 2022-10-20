@@ -180,7 +180,7 @@ export default function ItemCell({
   hideAmount = false,
 }: Props) {
   const { t } = useTranslation()
-  const { id, image, rarity, equipped, amount = 0, unreturnable } = item ?? {}
+  const { tokenId: id, image, rarity, equipped, amount = 0, unreturnable } = item ?? {}
   const equippedByCurrentOtto = (!currentOtto || currentOtto?.wearableTraits.find(trait => trait.id === id)) && equipped
 
   return (
