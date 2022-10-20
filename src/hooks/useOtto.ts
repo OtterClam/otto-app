@@ -71,14 +71,8 @@ export function useMyOttos(epoch?: number) {
     variables: { owner: account || '' },
     skip: !account,
   })
-  const {
-    ottos,
-    loading: loadingMeta,
-    refetch: refetchMeta,
-  } = useOttos(
-    data?.ottos.map(o => o.tokenId),
-    { details: true, epoch }
-  )
+  const ottoIds = useMemo(() => (data?.ottos ? data.ottos.map(otto => otto.tokenId) : []), [data])
+  const { ottos, loading: loadingMeta, refetch: refetchMeta } = useOttos(ottoIds, { details: true, epoch })
   const reload = useCallback(() => refetch().then(refetchMeta), [refetch, refetchMeta])
   const myOttos = useMemo(
     () => ({
