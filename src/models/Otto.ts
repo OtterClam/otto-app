@@ -32,7 +32,7 @@ export interface RawOtto {
   legendary: boolean
   brs?: number
   rrs?: number
-  rarityScore?: number
+  rarity_score?: number
   constellationBoost?: number
   legendaryBoost?: number
   epochRarityBoost?: number
@@ -168,7 +168,7 @@ export default class Otto {
     this.voice.load()
     this.baseRarityScore = this.raw.brs ? String(this.raw.brs) : '?'
     this.relativeRarityScore = this.raw.rrs ? String(this.raw.rrs) : '?'
-    this.totalRarityScore = this.raw.rarityScore ? String(this.raw.rarityScore) : '?'
+    this.totalRarityScore = this.raw.rarity_score ? String(this.raw.rarity_score) : '?'
     this.epochRarityBoost = this.raw.epochRarityBoost
     this.diceCount = this.raw.diceCount
 
