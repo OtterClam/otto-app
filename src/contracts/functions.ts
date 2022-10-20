@@ -641,7 +641,7 @@ export const useAdventureExplore = () => {
 
       const itemApproved = await item.isApprovedForAll(account, adventure.address)
       if (!itemApproved) {
-        const tx = approveItemSpending(adventure.address, true)
+        const tx = await approveItemSpending(adventure.address, true)
         if (!tx) {
           return
         }
