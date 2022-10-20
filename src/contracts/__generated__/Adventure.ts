@@ -59,13 +59,21 @@ export declare namespace Adventure {
     ap: BigNumberish;
     tcp: BigNumberish;
     items: BigNumberish[];
+    bonuses: BigNumberish[];
   };
 
-  export type RewardsStructOutput = [number, number, number, BigNumber[]] & {
+  export type RewardsStructOutput = [
+    number,
+    number,
+    number,
+    BigNumber[],
+    BigNumber[]
+  ] & {
     exp: number;
     ap: number;
     tcp: number;
     items: BigNumber[];
+    bonuses: BigNumber[];
   };
 
   export type PassStruct = {
@@ -122,16 +130,18 @@ export interface AdventureInterface extends utils.Interface {
     "RAND()": FunctionFragment;
     "STORE()": FunctionFragment;
     "accumulativeTcp(address)": FunctionFragment;
+    "allowPotions(uint256[])": FunctionFragment;
+    "allowedPotions(uint256)": FunctionFragment;
     "canFinishAt(uint256)": FunctionFragment;
     "expMultiplierOf(uint256)": FunctionFragment;
     "explore(uint256,uint256,uint256,(uint8,uint256,uint256)[],(string,bytes32,bytes))": FunctionFragment;
-    "finish(uint256,uint256,uint256,(uint32,uint32,uint32,uint256[]),bool,uint256[],(string,bytes32,bytes))": FunctionFragment;
+    "finish(uint256,uint256,uint256,(uint32,uint32,uint32,uint256[],uint256[]),bool,uint256[],(string,bytes32,bytes))": FunctionFragment;
     "finishFee(uint256)": FunctionFragment;
     "finishImmediatelyProduct()": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
-    "initialize(address,address,address,address,address,address,address)": FunctionFragment;
+    "initialize(address,address,address,address,address,address,address,uint256,uint256,uint256[])": FunctionFragment;
     "itemAmountMultiplierOf(uint256)": FunctionFragment;
     "latestPassOf(uint256)": FunctionFragment;
     "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": FunctionFragment;
@@ -146,6 +156,7 @@ export interface AdventureInterface extends utils.Interface {
     "revokeRole(bytes32,address)": FunctionFragment;
     "setExpMultiplier(uint256,uint32)": FunctionFragment;
     "setItemAmountMultiplier(uint256,uint32)": FunctionFragment;
+    "setProducts(uint256,uint256)": FunctionFragment;
     "shortenCooldown(uint256,uint256)": FunctionFragment;
     "shortenDuration(uint256,uint256)": FunctionFragment;
     "signer()": FunctionFragment;
@@ -170,6 +181,8 @@ export interface AdventureInterface extends utils.Interface {
       | "RAND"
       | "STORE"
       | "accumulativeTcp"
+      | "allowPotions"
+      | "allowedPotions"
       | "canFinishAt"
       | "expMultiplierOf"
       | "explore"
@@ -194,6 +207,7 @@ export interface AdventureInterface extends utils.Interface {
       | "revokeRole"
       | "setExpMultiplier"
       | "setItemAmountMultiplier"
+      | "setProducts"
       | "shortenCooldown"
       | "shortenDuration"
       | "signer"
@@ -230,6 +244,14 @@ export interface AdventureInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "accumulativeTcp",
     values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "allowPotions",
+    values: [BigNumberish[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "allowedPotions",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "canFinishAt",
@@ -283,7 +305,18 @@ export interface AdventureInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [string, string, string, string, string, string, string]
+    values: [
+      string,
+      string,
+      string,
+      string,
+      string,
+      string,
+      string,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish[]
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "itemAmountMultiplierOf",
@@ -336,6 +369,10 @@ export interface AdventureInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "setItemAmountMultiplier",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setProducts",
     values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
@@ -393,6 +430,14 @@ export interface AdventureInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "STORE", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "accumulativeTcp",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "allowPotions",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "allowedPotions",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -462,6 +507,10 @@ export interface AdventureInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "setItemAmountMultiplier",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setProducts",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -728,6 +777,16 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    allowPotions(
+      potions_: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    allowedPotions(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     canFinishAt(
       ottoId_: BigNumberish,
       overrides?: CallOverrides
@@ -787,6 +846,9 @@ export interface Adventure extends BaseContract {
       clam_: string,
       store_: string,
       signer_: string,
+      reviveProduct_: BigNumberish,
+      finishImmediatelyProduct_: BigNumberish,
+      potions_: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -869,6 +931,12 @@ export interface Adventure extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    setProducts(
+      reviveProduct_: BigNumberish,
+      finishImmediatelyProduct_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     shortenCooldown(
       ottoId: BigNumberish,
       sec: BigNumberish,
@@ -938,6 +1006,16 @@ export interface Adventure extends BaseContract {
 
   accumulativeTcp(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+  allowPotions(
+    potions_: BigNumberish[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  allowedPotions(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   canFinishAt(
     ottoId_: BigNumberish,
     overrides?: CallOverrides
@@ -997,6 +1075,9 @@ export interface Adventure extends BaseContract {
     clam_: string,
     store_: string,
     signer_: string,
+    reviveProduct_: BigNumberish,
+    finishImmediatelyProduct_: BigNumberish,
+    potions_: BigNumberish[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1079,6 +1160,12 @@ export interface Adventure extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setProducts(
+    reviveProduct_: BigNumberish,
+    finishImmediatelyProduct_: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   shortenCooldown(
     ottoId: BigNumberish,
     sec: BigNumberish,
@@ -1146,6 +1233,16 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    allowPotions(
+      potions_: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    allowedPotions(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     canFinishAt(
       ottoId_: BigNumberish,
       overrides?: CallOverrides
@@ -1205,6 +1302,9 @@ export interface Adventure extends BaseContract {
       clam_: string,
       store_: string,
       signer_: string,
+      reviveProduct_: BigNumberish,
+      finishImmediatelyProduct_: BigNumberish,
+      potions_: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1281,6 +1381,12 @@ export interface Adventure extends BaseContract {
     setItemAmountMultiplier(
       ottoId: BigNumberish,
       multiplier: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setProducts(
+      reviveProduct_: BigNumberish,
+      finishImmediatelyProduct_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1483,6 +1589,16 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    allowPotions(
+      potions_: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    allowedPotions(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     canFinishAt(
       ottoId_: BigNumberish,
       overrides?: CallOverrides
@@ -1545,6 +1661,9 @@ export interface Adventure extends BaseContract {
       clam_: string,
       store_: string,
       signer_: string,
+      reviveProduct_: BigNumberish,
+      finishImmediatelyProduct_: BigNumberish,
+      potions_: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1621,6 +1740,12 @@ export interface Adventure extends BaseContract {
     setItemAmountMultiplier(
       ottoId: BigNumberish,
       multiplier: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setProducts(
+      reviveProduct_: BigNumberish,
+      finishImmediatelyProduct_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1703,6 +1828,16 @@ export interface Adventure extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    allowPotions(
+      potions_: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    allowedPotions(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     canFinishAt(
       ottoId_: BigNumberish,
       overrides?: CallOverrides
@@ -1767,6 +1902,9 @@ export interface Adventure extends BaseContract {
       clam_: string,
       store_: string,
       signer_: string,
+      reviveProduct_: BigNumberish,
+      finishImmediatelyProduct_: BigNumberish,
+      potions_: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1846,6 +1984,12 @@ export interface Adventure extends BaseContract {
     setItemAmountMultiplier(
       ottoId: BigNumberish,
       multiplier: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setProducts(
+      reviveProduct_: BigNumberish,
+      finishImmediatelyProduct_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

@@ -449,6 +449,38 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint256[]",
+        name: "potions_",
+        type: "uint256[]",
+      },
+    ],
+    name: "allowPotions",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "allowedPotions",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "ottoId_",
         type: "uint256",
@@ -588,6 +620,11 @@ const _abi = [
           {
             internalType: "uint256[]",
             name: "items",
+            type: "uint256[]",
+          },
+          {
+            internalType: "uint256[]",
+            name: "bonuses",
             type: "uint256[]",
           },
         ],
@@ -763,6 +800,21 @@ const _abi = [
         name: "signer_",
         type: "address",
       },
+      {
+        internalType: "uint256",
+        name: "reviveProduct_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "finishImmediatelyProduct_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256[]",
+        name: "potions_",
+        type: "uint256[]",
+      },
     ],
     name: "initialize",
     outputs: [],
@@ -860,6 +912,11 @@ const _abi = [
               {
                 internalType: "uint256[]",
                 name: "items",
+                type: "uint256[]",
+              },
+              {
+                internalType: "uint256[]",
+                name: "bonuses",
                 type: "uint256[]",
               },
             ],
@@ -1072,6 +1129,11 @@ const _abi = [
                 name: "items",
                 type: "uint256[]",
               },
+              {
+                internalType: "uint256[]",
+                name: "bonuses",
+                type: "uint256[]",
+              },
             ],
             internalType: "struct Adventure.Rewards",
             name: "rewards",
@@ -1222,6 +1284,24 @@ const _abi = [
       },
     ],
     name: "setItemAmountMultiplier",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "reviveProduct_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "finishImmediatelyProduct_",
+        type: "uint256",
+      },
+    ],
+    name: "setProducts",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
