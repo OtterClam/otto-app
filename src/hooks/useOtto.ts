@@ -65,7 +65,7 @@ export function useOttos(ids: string[] | Falsy, { details, epoch }: { details: b
   return { loading, ottos, error, refetch }
 }
 
-export function useMyOttos(epoch: number) {
+export function useMyOttos(epoch?: number) {
   const { account } = useEthers()
   const { data, loading, refetch } = useQuery<ListMyOttos, ListMyOttosVariables>(LIST_MY_OTTOS, {
     variables: { owner: account || '' },
