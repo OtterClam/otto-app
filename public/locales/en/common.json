@@ -821,7 +821,7 @@
   "conditionalBoosts": {
     "title": "Conditional Boosts",
     "help": "test",
-    "effectiveUntil": "<span style='color: #FFDC77'>({{ duration }} left)</span>",
+    "effectiveUntil": "<span style='color: #FFDC77'>(Last for {{ duration }})</span>",
     "legendary": "Legendary Otto:",
     "zodiac": "Zodiac sign:",
     "birthday": "Birthday today:",

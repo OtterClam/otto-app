@@ -29,6 +29,7 @@ export type AdventureResultEvents = {
       attrs_points: number
     }
   }
+  treasureChests?: Item[]
 }
 
 export type AdventureJournalEntry = {
@@ -75,6 +76,7 @@ export function fromRawResult(raw: RawAdventureResult): AdventureResult {
           attrs_points: raw.events.level_up.got.attrs_points,
         },
       },
+      treasureChests: raw.events?.treasure_chests && raw.events.treasure_chests.map(i => rawItemToItem(i.id, i)),
     },
     pass: fromRawPass(raw.pass),
   }

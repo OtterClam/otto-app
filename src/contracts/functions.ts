@@ -647,7 +647,7 @@ export const useAdventureExplore = () => {
         }
       }
       const data = await api.explore(ottoId, locationId, account, itemActions)
-      sendExplore(...data, { gasLimit: 2000000 })
+      sendExplore(...data)
     },
     [account, library, state, otto, item, api, sendExplore]
   )
