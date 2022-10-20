@@ -96,7 +96,7 @@ export const GET_PORTAL = gql`
 
 export const LIST_MY_OTTOS = gql`
   query ListMyOttos($owner: Bytes!) {
-    ottos(where: { owner: $owner, portalStatus: SUMMONED }, orderBy: tokenId) {
+    ottos(where: { owner: $owner, portalStatus: SUMMONED, epoch: -1 }, orderBy: tokenId) {
       tokenId
     }
   }
