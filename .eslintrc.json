@@ -103,6 +103,7 @@
     "react/prop-types": "off",
     "react/require-default-props": "off",
     "react/function-component-definition": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "react/no-unstable-nested-components": ["error", { "allowAsProps": true }]
   }
 }

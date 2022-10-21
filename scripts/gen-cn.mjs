@@ -1,5 +1,4 @@
 import fs from 'fs'
-import { execSync } from 'child_process'
 import path from 'path'
 import OpenCC from 'opencc-js'
 
@@ -13,5 +12,3 @@ const convertedFileContent = converter(fileContent)
 
 fs.mkdirSync(outputFolder, { recursive: true })
 fs.writeFileSync(outputFile, convertedFileContent)
-
-execSync(`git add ${outputFile}`)

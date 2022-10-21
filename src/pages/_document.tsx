@@ -37,6 +37,8 @@ export default class MyDocument extends Document<{ asPath: string }> {
           <link rel="preconnect" href="https://api.otterclam.finance" />
           <link rel="preconnect" href="https://api.thegraph.com" />
           <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
 
           <link
             rel="preload"
@@ -45,6 +47,7 @@ export default class MyDocument extends Document<{ asPath: string }> {
             type="font/woff2"
             crossOrigin=""
           />
+          <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
           <link rel="preload" href="/fonts/Pangolin-Regular.ttf" as="font" type="font/woff2" crossOrigin="" />
           <link rel="preload" href="/ottoclick.mp3" as="audio" type="audio/mpeg" crossOrigin="" />
 

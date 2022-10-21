@@ -9,6 +9,10 @@ import FloatingNavButtons from 'components/FloatingNavButtons'
 import Banner from './Banner'
 import Map from './Map'
 
+const StyedBody = styled(Body)`
+  margin-bottom: 0;
+`
+
 const StyledContainer = styled.div`
   --map-z-index: 0;
   --others-z-index: 1;
@@ -60,7 +64,7 @@ const StyledNotifications = styled(Notifications)`
 
 const DesktopHomePage = () => {
   return (
-    <Body>
+    <StyedBody>
       <StyledContainer>
         <StyledTopRope />
         <MouseRelativePositionProvider>
@@ -74,7 +78,7 @@ const DesktopHomePage = () => {
         </MouseRelativePositionProvider>
         <SectionRope />
       </StyledContainer>
-    </Body>
+    </StyedBody>
   )
 }
 

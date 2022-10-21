@@ -16,6 +16,9 @@ import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
 import MintPopup from 'components/MintPopup'
 import { WalletProvider } from 'contexts/Wallet'
 import { ApiProvider } from 'contexts/Api'
+import { OverlayProvider } from 'contexts/Overlay'
+import { SkeletonTheme } from 'react-loading-skeleton'
+import { colors } from 'styles/colors'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 
@@ -38,7 +41,7 @@ const config: Config = {
   readOnlyChainId: ChainId.Polygon,
   readOnlyUrls: {
     [ChainId.Polygon]: 'https://polygon-rpc.com',
-    // [ChainId.Mumbai]: process.env.NEXT_PUBLIC_RPC_ENDPOINT_MUMBAI || '',
+    [ChainId.Mumbai]: process.env.NEXT_PUBLIC_RPC_ENDPOINT_MUMBAI || '',
     // [ChainId.Hardhat]: 'http://127.0.0.1:8545',
   },
   multicallAddresses: {
@@ -76,15 +79,19 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                 <ThemeProvider theme={theme}>
                   <BreakpointsProvider>
                     <MyOttosProvider>
-                      <SnapshotProvider>
-                        <StyledApp>
-                          <StyledPageContainer>{children}</StyledPageContainer>
-                          <Error />
-                          <WalletSelector />
-                          <SideMenu />
-                          <AssetsLoader />
-                        </StyledApp>
-                      </SnapshotProvider>
+                      <OverlayProvider>
+                        <SnapshotProvider>
+                          <StyledApp>
+                            <SkeletonTheme baseColor={colors.otterBlack} highlightColor={colors.darkGray400}>
+                              <StyledPageContainer>{children}</StyledPageContainer>
+                              <Error />
+                              <WalletSelector />
+                              <SideMenu />
+                              <AssetsLoader />
+                            </SkeletonTheme>
+                          </StyledApp>
+                        </SnapshotProvider>
+                      </OverlayProvider>
                     </MyOttosProvider>
                   </BreakpointsProvider>
                 </ThemeProvider>

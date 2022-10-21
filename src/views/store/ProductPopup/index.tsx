@@ -139,7 +139,7 @@ export default function ProductPopup({
       setState(State.ChoosePackage)
       resetBuy()
     }
-  }, [buyState])
+  }, [buyState, resetBuy])
 
   if (state === State.Loading) return <LoadingView type={main.type} images={processing_images} />
   if (state === State.Success) return <OpenItemView items={buyState.receivedItems || []} onClose={onClose} />
@@ -167,7 +167,7 @@ export default function ProductPopup({
                 setState(State.Loading)
                 buy(
                   main,
-                  ottos.map(o => o.tokenId)
+                  ottos.map(o => o.id)
                 )
               }}
             />

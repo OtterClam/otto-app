@@ -2,6 +2,7 @@ import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
 import Lock from 'assets/ui/lock.svg'
+import { OttoGender } from 'models/Otto'
 
 const StyledGenderSpecific = styled(Caption)<{ gender: string }>`
   display: ${({ gender }) => (gender === 'both' ? 'none' : 'flex')};
@@ -18,15 +19,15 @@ const StyledGenderSpecific = styled(Caption)<{ gender: string }>`
 `
 
 interface Props {
-  equippableGender: string
+  equippableGender: OttoGender
 }
 
 export default function GenderSpecific({ equippableGender }: Props) {
   const { t } = useTranslation()
-  equippableGender = equippableGender.toLowerCase()
+  const gender = equippableGender.toLowerCase()
   return (
-    <StyledGenderSpecific as="p" gender={equippableGender}>
-      {t('otto.gender_specific', { context: equippableGender })}
+    <StyledGenderSpecific as="p" gender={gender}>
+      {t('otto.gender_specific', { context: gender })}
     </StyledGenderSpecific>
   )
 }

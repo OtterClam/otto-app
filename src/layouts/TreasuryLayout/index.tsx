@@ -1,7 +1,7 @@
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import { PropsWithChildren } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { Caption, Note } from 'styles/typography'
 import { useRouter } from 'next/router'
 import ClamIcon from 'assets/icons/icon_48_clam-pond.png'

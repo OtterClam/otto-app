@@ -1,29 +1,32 @@
-import dynamic from 'next/dynamic'
-import { useQuery } from '@apollo/client'
+import { useEthers } from '@usedapp/core'
+import ClassicIcon from 'assets/badge/classic.png'
+import FirstGenIcon from 'assets/badge/first-gen.png'
+import LegendaryIcon from 'assets/badge/legendary.png'
+import Constellations from 'assets/constellations'
 import OpenSeaBlue from 'assets/opensea-blue.svg'
+import RankingIcon from 'assets/ranking.png'
 import Button from 'components/Button'
+import { DiceBanner } from 'components/DiceBanner'
 import Loading from 'components/Loading'
+import OttoThemeBoostLabels from 'components/OttoThemeBoostLabels'
 import { getOpenSeaLink, reserveOttoAmount } from 'constant'
+import { useLeaderboardEpoch } from 'contexts/LeaderboardEpoch'
 import { format } from 'date-fns'
 import useOtto from 'hooks/useOtto'
-import { useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components/macro'
-import { Caption, ContentLarge, ContentSmall, Display3, Headline, Note } from 'styles/typography'
-import RankingIcon from 'assets/ranking.png'
-import ClassicIcon from 'assets/badge/classic.png'
-import LegendaryIcon from 'assets/badge/legendary.png'
-import FirstGenIcon from 'assets/badge/first-gen.png'
-import Constellations from 'assets/constellations'
-import { DiceBanner } from 'components/DiceBanner'
-import { useRouter } from 'next/router'
-import { GET_OTTO } from 'graphs/otto'
-import { GetOtto, GetOttoVariables } from 'graphs/__generated__/GetOtto'
-import { useEthers } from '@usedapp/core'
+import { Caption, ContentLarge, ContentMedium, ContentSmall, Display3, Headline, Note } from 'styles/typography'
+import { AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
+import { useIsMyOttos } from 'MyOttosProvider'
 import PlayIcon from './icons/play-voice.svg'
-import OttoTraitDetails from './OttoTraitDetails'
+import Theme from './icons/theme.png'
 import TheOtter from './icons/the_otter.png'
+import OttoTraitDetails from './OttoTraitDetails'
+import attributePointsImage from './icons/attribute-points.png'
 
 const DicePopup = dynamic(() => import('components/DicePopup'), {
   ssr: false,
@@ -158,6 +161,21 @@ const StyledAttr = styled.div`
   justify-content: space-between;
 `
 
+const StyledAttributePoints = styled(ContentSmall).attrs({ as: 'div' })`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &::before {
+    content: '';
+    display: block;
+    max-width: 36px;
+    min-width: 36px;
+    height: 36px;
+    background: center / cover url(${attributePointsImage.src});
+  }
+`
+
 const StyledStatsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -248,15 +266,25 @@ const StyledBoost = styled.span`
   margin-left: 10px;
 `
 
+const StyledOttoThemeBoostLabels = styled(OttoThemeBoostLabels)`
+  margin-top: 10px;
+`
+
+const StyledThemeBoostDesc = styled.div`
+  display: inline-block;
+`
+
 export default function OttoPage() {
   const { t } = useTranslation()
+  const {
+    epoch: { themes },
+  } = useLeaderboardEpoch()
+  const { dispatch } = useAdventureUIState()
   const { chainId } = useEthers()
   const router = useRouter()
   const ottoId = router.query.ottoId as string
-  const { data } = useQuery<GetOtto, GetOttoVariables>(GET_OTTO, {
-    variables: { ottoId },
-  })
-  const { otto } = useOtto(data?.ottos[0], true)
+  const { otto } = useOtto(ottoId, true)
+  const isMyOtto = useIsMyOttos(ottoId)
   const infos = useMemo(
     () =>
       otto
@@ -285,6 +313,10 @@ export default function OttoPage() {
         : null,
     [otto, t]
   )
+
+  const openAttributePointsPopup = () => {
+    dispatch({ type: AdventureUIActionType.DistributeAttributePoints, data: { ottoId } })
+  }
 
   return (
     <>
@@ -343,6 +375,21 @@ export default function OttoPage() {
               </StyledBoostBox>
             )}
 
+            {otto && otto.themeBoost > 0 && (
+              <StyledBoostBox>
+                <img src={Theme.src} alt="the Otter" />
+                <ContentSmall>
+                  <StyledThemeBoostDesc
+                    dangerouslySetInnerHTML={{
+                      __html: t('otto.theme_boost', { labels: themes.map(theme => `#${theme}`).join(', ') }),
+                    }}
+                  />
+                  <StyledBoost>BRS+{otto.themeBoost}</StyledBoost>
+                  <StyledOttoThemeBoostLabels otto={otto} />
+                </ContentSmall>
+              </StyledBoostBox>
+            )}
+
             {otto && <DiceBanner otto={otto} />}
 
             <StyledDescription>
@@ -364,6 +411,20 @@ export default function OttoPage() {
               ))}
             </StyledAttrs>
 
+            {isMyOtto && (otto?.attributePoints || 0) > 0 && (
+              <StyledAttributePoints>
+                {t('otto.attribute_points', { attributePoints: otto?.attributePoints ?? 0 })}
+                <Button
+                  onClick={openAttributePointsPopup}
+                  padding="0 12px"
+                  Typography={ContentMedium}
+                  disabled={!otto?.attributePoints}
+                >
+                  {t('otto.attribute_points_button')}
+                </Button>
+              </StyledAttributePoints>
+            )}
+
             {otto && (
               <>
                 <StyledStatsContainer>
@@ -371,7 +432,7 @@ export default function OttoPage() {
                     <StyledStatIcon src={otto.legendary ? LegendaryIcon.src : ClassicIcon.src} />
                     <StyledStatTitle>{t(otto.legendary ? 'otto.legendary' : 'otto.classic')}</StyledStatTitle>
                     <StyledStatDesc>{t(otto.legendary ? 'otto.legendary_note' : 'otto.classic_note')}</StyledStatDesc>
-                    {Number(otto.tokenId) >= reserveOttoAmount(chainId) && otto.legendary && (
+                    {Number(otto.id) >= reserveOttoAmount(chainId) && otto.legendary && (
                       <StyledLegendaryBoost>
                         {t('otto.legendary_boost', {
                           context: (otto.raw.legendaryBoost || 0) > 0 ? 'added' : 'removed',

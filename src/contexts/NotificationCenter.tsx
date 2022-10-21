@@ -34,7 +34,7 @@ export default function NotificationCenterProvider({ children }: PropsWithChildr
             const newNotifications = new Map<string, Notification>()
 
             result.forEach(notification => {
-              if (!notifications.has(notification.key)) {
+              if (!oldNotifications.has(notification.key)) {
                 newNotifications.set(notification.key, notification)
               }
             })

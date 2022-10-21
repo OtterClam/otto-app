@@ -94,7 +94,7 @@ export const pins: PinData[] = [
   {
     key: 'adventure',
     image: adventureImage,
-    // link: '/adventure',
+    link: '/adventure',
     position: {
       x: -9.3,
       y: -13.8,

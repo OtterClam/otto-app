@@ -63,7 +63,7 @@ export const ContentMedium = styled.span`
 export const ContentSmall = styled.span`
   white-space: pre-line;
   font-family: 'Pangolin', 'naikaifont';
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -74,7 +74,7 @@ export const ContentSmall = styled.span`
 export const RegularInput = styled.input`
   white-space: pre-line;
   font-family: 'Pangolin', 'naikaifont';
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
   @media ${({ theme }) => theme.breakpoints.mobile} {

@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "start": "next start",
-    "build": "next build",
+    "build": "yarn check-trans && yarn codegen:cn && next build",
     "check-types": "tsc --noemit",
-    "download-schema:otto": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otto_testnet otto-graphql-schema.json",
+    "download-schema:otto": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otto otto-graphql-schema.json",
     "download-schema:otter": "apollo service:download --endpoint=https://api.thegraph.com/subgraphs/name/otterclam/otterclam otter-graphql-schema.json",
     "download-schema:snapshot": "apollo service:download --endpoint=https://hub.snapshot.org/graphql? snapshot-graphql-schema.json",
     "codegen:contract": "typechain --target ethers-v5 --out-dir=src/contracts/__generated__ 'src/contracts/abis/*.json'",
@@ -15,7 +15,9 @@
     "codegen:otter-graph": "yarn download-schema:otter && apollo codegen:generate --includes=src/graphs/otter.ts --localSchemaFile=otter-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=./src/__generated__/otter/global-types.ts && rm ./src/__generated__/otter/global-types.ts",
     "codegen:snapshot-graph": "yarn download-schema:snapshot && apollo codegen:generate --includes=src/graphs/snapshot.ts --localSchemaFile=snapshot-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=./src/__generated__/snapshot/global-types.ts && rm ./src/__generated__/snapshot/global-types.ts",
     "codegen": "yarn codegen:contract && yarn codegen:otto-graph && yarn codegen:otter-graph && yarn codegen:snapshot-graph",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "codegen:cn": "node ./scripts/gen-cn.mjs ./public/locales/zh-tw/common.json",
+    "check-trans": "node ./scripts/validate-translation-files.mjs"
   },
   "browserslist": {
     "production": [
@@ -32,9 +34,6 @@
   "lint-staged": {
     "*.{png,jpeg,jpg,gif,svg}": [
       "node ./scripts/imagemin.mjs"
-    ],
-    "public/locales/**/*.json": [
-      "node ./scripts/gen-cn.mjs"
     ]
   },
   "dependencies": {
@@ -43,7 +42,7 @@
     "@react-hook/resize-observer": "^1.2.5",
     "@reduxjs/toolkit": "^1.8.1",
     "@typechain/ethers-v5": "^10.0.0",
-    "@usedapp/core": "^1.0.14",
+    "@usedapp/core": "^1.1.5",
     "@web3-react/walletconnect-connector": "^6.2.10",
     "@web3-react/walletlink-connector": "^6.2.13",
     "axios": "^0.26.1",
@@ -59,10 +58,12 @@
     "next-transpile-modules": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-loading-skeleton": "^3.1.0",
     "react-markdown": "^8.0.2",
     "react-redux": "^7.2.0",
     "react-responsive": "^9.0.0-beta.10",
     "react-responsive-carousel": "^3.2.23",
+    "react-swipeable": "^7.0.0",
     "react-tooltip": "^4.2.21",
     "react-transition-group": "^4.4.5",
     "recharts": "^2.1.12",

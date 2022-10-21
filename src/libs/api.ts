@@ -1,11 +1,23 @@
 import { ChainId } from '@usedapp/core'
 import axios, { Axios } from 'axios'
+import { BigNumberish } from 'ethers'
+import {
+  AdventureExploreArgs,
+  AdventureLocation,
+  RawAdventureExploreArgs,
+  RawAdventureLocation,
+  rawAdventureLocationToAdventureLocation,
+} from 'models/AdventureLocation'
+import { AdventurePreview, RawAdventurePreview, rawAdventurePreviewToAdventurePreview } from 'models/AdventurePreview'
+import { AdventureResult, fromRawResult } from 'models/AdventureResult'
 import { Dice } from 'models/Dice'
 import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
-import Item, { rawItemToItem } from 'models/Item'
+import Item, { ItemAction, rawItemToItem } from 'models/Item'
+import { LeaderboardEpoch, RawLeaderboardEpoch, rawLeaderboardEpochToLeaderboardEpoch } from 'models/LeaderboardEpoch'
 import { Notification, RawNotification } from 'models/Notification'
-import { OttoMeta } from 'models/Otto'
+import Otto, { RawOtto } from 'models/Otto'
 import Product from 'models/store/Product'
+import { RawAdventureResult } from './RawAdventureResult'
 
 export interface OttoCandidateMeta {
   name: string
@@ -33,12 +45,24 @@ const otterclamApiEndpoint: { [key: number]: string } = {
 }
 
 export class Api {
+  private chainId: ChainId
+
   private otterclamClient: Axios
 
-  constructor(chainId: ChainId, lang = 'en') {
+  constructor(chainId: ChainId) {
+    this.chainId = chainId
     this.otterclamClient = axios.create({
       baseURL: otterclamApiEndpoint[chainId],
     })
+  }
+
+  withAbortController(abortController: AbortController) {
+    const newClient = new Api(this.chainId)
+    newClient.otterclamClient.defaults.signal = abortController.signal
+    return newClient
+  }
+
+  setLanguage(lang: string): void {
     this.otterclamClient.defaults.headers.common['Accept-language'] = lang
   }
 
@@ -46,7 +70,7 @@ export class Api {
     return this.otterclamClient.get(`/ottos/candidates/metadata/${portalId}`).then(res => res.data)
   }
 
-  public async getOttoMeta(ottoId: string, details: boolean): Promise<OttoMeta> {
+  public async getOttoMeta(ottoId: string, details: boolean): Promise<RawOtto> {
     return this.otterclamClient.get(`/ottos/metadata/${ottoId}`, { params: { details } }).then(res => res.data)
   }
 
@@ -63,7 +87,7 @@ export class Api {
   public async getOttoMetas(
     ids: string[],
     { details, epoch }: { details: boolean; epoch?: number }
-  ): Promise<OttoMeta[]> {
+  ): Promise<RawOtto[]> {
     return this.otterclamClient
       .get(`/ottos/metadata?ids=${ids.join(',')}`, { params: { details, epoch } })
       .then(res => res.data)
@@ -113,8 +137,99 @@ export class Api {
   }
 
   public async getFoundryForges(): Promise<ForgeFormula[]> {
-    const result = await this.otterclamClient.get<RawForgeFormula[]>('/foundry/forge')
+    const result = await this.otterclamClient.get<RawForgeFormula[]>('/foundry/formulas')
     return result.data.map(rawForgeToForge)
+  }
+
+  public async getAdventureOttos(wallet: string): Promise<Otto[]> {
+    const result = await this.otterclamClient.get<RawOtto[]>(`/adventure/wallets/${wallet}`)
+    return result.data.map(raw => new Otto(raw))
+  }
+
+  public async getOttoAdventurePreview(
+    ottoId: string,
+    locationId: number,
+    actions: ItemAction[]
+  ): Promise<AdventurePreview> {
+    let url = `/ottos/${ottoId}/adventure/locations/${locationId}/preview`
+    if (actions.length) {
+      url += `?actions=${JSON.stringify(actions)}`
+    }
+    const result = await this.otterclamClient.get<RawAdventurePreview>(url)
+    return rawAdventurePreviewToAdventurePreview(result.data)
+  }
+
+  public async getAdventureLocations(): Promise<AdventureLocation[]> {
+    const result = await this.otterclamClient.get<RawAdventureLocation[]>('/adventure/locations')
+    return result.data.map(rawAdventureLocationToAdventureLocation)
+  }
+
+  public async explore(
+    ottoId: string,
+    locationId: number,
+    wallet: string,
+    itemActions: ItemAction[]
+  ): Promise<AdventureExploreArgs> {
+    const result = await this.otterclamClient.post<RawAdventureExploreArgs>('/adventure/explore', {
+      otto_id: Number(ottoId),
+      loc_id: locationId,
+      wallet,
+      actions: itemActions,
+    })
+    const raw = result.data
+    return [
+      raw[0],
+      raw[1],
+      raw[2],
+      raw[3].map(([typ, itemId, fromOttoId]: [BigNumberish, BigNumberish, BigNumberish]) => ({
+        typ,
+        itemId,
+        fromOttoId,
+      })),
+      {
+        nonce: raw[4][0],
+        digest: raw[4][1],
+        signed: raw[4][2],
+      },
+    ]
+  }
+
+  public async finish({
+    ottoId,
+    wallet,
+    immediately,
+    potions,
+  }: {
+    ottoId: string
+    wallet: string
+    immediately: boolean
+    potions: number[]
+  }) {
+    const result = await this.otterclamClient.post('/adventure/finish', {
+      otto_id: ottoId,
+      wallet,
+      immediately,
+      potions,
+    })
+    return result.data
+  }
+
+  public async getForgeCalldata(formulaId: number, account: string) {
+    const result = await this.otterclamClient.post('/foundry/fuse', {
+      id: formulaId,
+      wallet: account,
+    })
+    return result.data
+  }
+
+  public async getAdventureResult(tx: string): Promise<AdventureResult> {
+    const result = await this.otterclamClient.get<RawAdventureResult>(`/adventure/results/${tx}`)
+    return fromRawResult(result.data)
+  }
+
+  public async getLeaderBoardEpoch(): Promise<LeaderboardEpoch> {
+    const result = await this.otterclamClient.get<RawLeaderboardEpoch>('/leaderboard/epoch')
+    return rawLeaderboardEpochToLeaderboardEpoch(result.data)
   }
 }
 

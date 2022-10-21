@@ -64,15 +64,13 @@ const useUnfinishDice = (ottoId?: string) => {
 export const useDiceRoller = (otto?: Otto): DiceRoller => {
   const api = useApi()
   const dispatch = useDispatch()
-  const { loading, unfinishDice } = useUnfinishDice(otto?.tokenId)
+  const { loading, unfinishDice } = useUnfinishDice(otto?.id)
   const [state, setState] = useState(State.Intro)
   const [dice, setDice] = useState<Dice>()
   const { account } = useEthers()
   const product = useHellDiceProduct()
-  const store = useStoreContract()
   const ottoHellDiceRoller = useOttoHellDiceRoller()
   const { library } = useEthers()
-  const { i18n } = useTranslation()
 
   useEffect(() => {
     if (unfinishDice) {
@@ -88,13 +86,16 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
 
     try {
       setState(State.Processing)
-      const tx = await connectContractToSigner(ottoHellDiceRoller, {}, library).roll(otto.tokenId, BigNumber.from('1'))
+      const tx = await connectContractToSigner(ottoHellDiceRoller, {}, library.getSigner()).roll(
+        otto.id,
+        BigNumber.from('1')
+      )
       await tx.wait()
-      setDice(await api.rollTheDice(otto.tokenId, tx.hash))
+      setDice(await api.rollTheDice(otto.id, tx.hash))
       setState(State.FirstResult)
     } catch (err: any) {
       if (err.reason === 'repriced') {
-        setDice(await api.rollTheDice(otto.tokenId, err.replacement.hash))
+        setDice(await api.rollTheDice(otto.id, err.replacement.hash))
         setState(State.FirstResult)
       } else {
         window.alert(JSON.stringify(err))
@@ -102,7 +103,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
         dispatch(setError(err as any))
       }
     }
-  }, [otto, account, product, library])
+  }, [api, otto, account, product, library])
 
   const answerQuestion = useCallback(
     (index: number, answer: number) => {
@@ -110,11 +111,11 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
         return
       }
       api
-        .answerDiceQuestion(otto.tokenId, dice.tx, index, answer)
+        .answerDiceQuestion(otto.id, dice.tx, index, answer)
         .then(setDice)
         .catch(err => dispatch(setError(err)))
     },
-    [dice, otto]
+    [api, dice, otto]
   )
 
   const nextEvent = useCallback(() => {

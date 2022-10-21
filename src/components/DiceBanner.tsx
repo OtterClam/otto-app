@@ -12,7 +12,7 @@ import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import { Dice, EventEffects } from 'models/Dice'
 import { setError } from 'store/errorSlice'
-import useRarityEpoch from 'hooks/useRarityEpoch'
+import { useRarityEpoch } from 'contexts/RarityEpoch'
 import { numberWithSign } from 'helpers/number'
 import { useIsMyOttos } from 'MyOttosProvider'
 import { RARITY_S1_END } from 'constant'
@@ -119,10 +119,10 @@ export function DiceBanner({ otto }: DiceBannerProps) {
   const dispatch = useDispatch()
   const openPopup = () => dispatch(showDicePopup(otto.toJSON()))
   const { t } = useTranslation()
-  const dices = useAllDice(otto.tokenId)
+  const dices = useAllDice(otto.id)
   const { epochEndTime } = useRarityEpoch()
   const seasonEnd = Date.now() > epochEndTime
-  const isMyOtto = useIsMyOttos(otto.tokenId)
+  const isMyOtto = useIsMyOttos(otto.id)
   const effects = dices
     .map(dice => dice.events)
     .reduce(

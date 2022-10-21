@@ -68,7 +68,7 @@ export default function MyOttosPage() {
           <>
             <StyledMyOttos>
               {ottos.map((otto, index) => (
-                <Link key={index} href={`/my-ottos/${otto.tokenId}`}>
+                <Link key={index} href={`/my-ottos/${otto.id}`}>
                   <a onClick={() => ottoClick.play()}>
                     <OttoCard otto={otto} />
                   </a>

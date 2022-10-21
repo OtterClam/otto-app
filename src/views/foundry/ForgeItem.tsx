@@ -4,7 +4,7 @@ import ItemType from 'components/ItemType'
 import PaymentButton from 'components/PaymentButton'
 import SectionRope from 'components/SectionRope'
 import TreasurySection from 'components/TreasurySection'
-import { Token } from 'constant'
+import { getOpenSeaItemLink, Token } from 'constant'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import { useERC1155Approval } from 'contexts/ERC1155Approval'
 import { useForge, useSetApprovalForAll } from 'contracts/functions'
@@ -15,6 +15,7 @@ import useContractAddresses from 'hooks/useContractAddresses'
 import { ForgeFormula } from 'models/Forge'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useMemo } from 'react'
+import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, ContentMedium, Display3, Headline, Note } from 'styles/typography'
 import ForgePopup from './ForgePopup'
@@ -42,6 +43,9 @@ const StyledTitle = styled(Display3)`
 
 const StyledDesc = styled(ContentMedium)`
   text-align: center;
+  a {
+    color: ${({ theme }) => theme.colors.crownYellow};
+  }
 `
 
 const StyledDetails = styled.div`
@@ -61,6 +65,7 @@ const StyledResult = styled(TreasurySection).attrs({ showRope: false })<{ bgImag
   gap: 10px;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   justify-content: center;
   max-width: 300px;
   min-width: 300px;
@@ -90,6 +95,11 @@ const StyledResult = styled(TreasurySection).attrs({ showRope: false })<{ bgImag
 `
 
 const StyledResultItemPreview = styled(ItemCell)`
+  width: 180px;
+  height: 180px;
+`
+
+const StyledResultPreviewImg = styled.img`
   width: 180px;
   height: 180px;
 `
@@ -141,7 +151,7 @@ const StyledMaterialName = styled(Note)`
   color: ${({ theme }) => theme.colors.white};
 `
 
-const StyledMetrialSectionTitle = styled(Headline)`
+const StyledMaterialSectionTitle = styled(Headline)`
   @media ${({ theme }) => theme.breakpoints.tablet} {
     text-align: center;
   }
@@ -175,7 +185,7 @@ const useAvailableCount = (formula: ForgeFormula, itemCounts: MyItemAmounts): nu
     return Math.floor(
       Math.min(
         ...formula.materials.map((material, index) => {
-          const requiredAmount = formula.amounts[index]
+          const requiredAmount = formula.materialAmounts[index]
           return (itemCounts[material.id] ?? 0) / requiredAmount
         })
       )
@@ -207,7 +217,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
       sendSetApprovalCall(forgeContractAddress, true, {})
       return
     }
-    forge(formula.id, 1)
+    forge(formula.id)
   }, [isApprovedForAll, forgeContractAddress, forge, formula.id, sendSetApprovalCall])
 
   useEffect(() => {
@@ -226,24 +236,40 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
   return (
     <StyledContainer leftImage={formula.leftImage} rightImage={formula.rightImage}>
       <StyledTitle>{formula.title}</StyledTitle>
-      <StyledDesc>{formula.description}</StyledDesc>
+      <StyledDesc>
+        <ReactMarkdown>{formula.description}</ReactMarkdown>
+      </StyledDesc>
       <StyledDetails>
         <StyledResult bgImage={formula.bgImage}>
           <Headline>{t('result.title')}</Headline>
-          <StyledResultItemPreview item={formula.result} />
-          <ContentMedium>{formula.result.name}</ContentMedium>
-          <StyledItemType type={formula.result.type} />
+          {formula.result && (
+            <>
+              <a href={getOpenSeaItemLink(formula.result.id)} target="_blank" rel="noreferrer">
+                <StyledResultItemPreview item={formula.result} />
+              </a>
+              <ContentMedium>{formula.result.name}</ContentMedium>
+              <StyledItemType type={formula.result.type} />
+            </>
+          )}
+          {!formula.result && (
+            <>
+              <StyledResultPreviewImg src={formula.resultImage} />
+              <ContentMedium>{formula.resultText}</ContentMedium>
+            </>
+          )}
         </StyledResult>
         <StyledSectionRope vertical={!isTablet} />
         <StyledMaterials showRope={false}>
-          <StyledMetrialSectionTitle>{t('materials.title')}</StyledMetrialSectionTitle>
+          <StyledMaterialSectionTitle>{t('materials.title')}</StyledMaterialSectionTitle>
           <StyledMaterialList>
             {formula.materials.map((material, index) => (
               <StyledMaterialListItem key={index}>
-                <StyledMaterialPreview item={material} />
+                <a href={getOpenSeaItemLink(material.id)} target="_blank" rel="noreferrer">
+                  <StyledMaterialPreview item={material} />
+                </a>
                 <StyledMaterialName>{material.name}</StyledMaterialName>
                 <StyledCount>
-                  {itemCounts[material.id] ?? 0} / {formula.amounts[index]}
+                  {itemCounts[material.id] ?? 0} / {formula.materialAmounts[index]}
                 </StyledCount>
               </StyledMaterialListItem>
             ))}

@@ -12,6 +12,7 @@ const GlobalStyle = createGlobalStyle`
 
       --z-index-header: 1000;
       --z-index-popup: 2000;
+      --z-index-overlay: 1999;
       --z-index-side-menu: 2001;
       --z-index-dropdown: 2002;
 
@@ -21,6 +22,10 @@ const GlobalStyle = createGlobalStyle`
 
       @media ${({ theme }) => theme.breakpoints.tablet} {
         --game-body-height: calc(var(--real-vh) - var(--header-height) - var(--game-menu-height) - env(safe-area-inset-bottom));
+      }
+
+      @media ${({ theme }) => theme.breakpoints.smallTablet} {
+        --game-menu-height: 30px; 
       }
 
       @media ${({ theme }) => theme.breakpoints.mobile} {
