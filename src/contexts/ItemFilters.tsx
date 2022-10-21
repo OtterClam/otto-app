@@ -36,6 +36,7 @@ export enum ItemType {
   Clothes = 'Clothes',
   Background = 'Background',
   Other = 'Other',
+  MissionItem = 'Mission Item',
 }
 
 export interface ItemFilters {
