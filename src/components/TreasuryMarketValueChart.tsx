@@ -240,8 +240,6 @@ export default function TreasuryMarketValueChart({ data }: TreasuryMarketValueCh
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
-  console.log
-
   return (
     <StyledContainer ref={containerRef}>
       <AreaChart data={data} width={size?.width} height={size?.height}>
