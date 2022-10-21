@@ -5,6 +5,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { ContentMedium } from 'styles/typography'
 import GovernancePage from 'views/treasury-governance'
+import InvestmentsPage from 'views/treasury-investments'
 import Tooltip from 'components/Tooltip'
 import Link from 'next/link'
 
@@ -54,18 +55,14 @@ export default function PalacePage() {
             {t('governance_tab')}{' '}
           </StyledTab>
         </Link>
-        <Tooltip content={<div>{t('comingSoon')}</div>} place="bottom">
-          <span>
-            <StyledTab selected={tab === PalaceTab.INVESTMENTS} onClick={() => setTab(PalaceTab.INVESTMENTS)} disabled>
-              {t('investments_tab')}{' '}
-            </StyledTab>
-          </span>
-        </Tooltip>
+        <StyledTab selected={tab === PalaceTab.INVESTMENTS} onClick={() => setTab(PalaceTab.INVESTMENTS)} disabled>
+          {t('investments_tab')}{' '}
+        </StyledTab>
       </StyledTabs>
       <StyledBody>
         {tab === PalaceTab.DASHBOARD && <TreasuryDashboardPage />}
         {tab === PalaceTab.GOVERNANCE && <GovernancePage />}
-        {tab === PalaceTab.INVESTMENTS && <GovernancePage />}
+        {tab === PalaceTab.INVESTMENTS && <InvestmentsPage />}
       </StyledBody>
     </div>
   )

@@ -13,7 +13,6 @@ interface Props {
 
 export default function QiDaoTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'treasury.governance' })
-  const { proposals } = useQiDaoProposals()
   return (
     <div className={className}>
       <Headline as="h1">{t('welcome')}</Headline>

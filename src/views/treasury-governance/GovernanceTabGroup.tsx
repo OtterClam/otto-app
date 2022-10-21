@@ -108,8 +108,8 @@ export default function GopvernanceTabGroup({ className }: Props) {
       <StyledTreasurySection>
         <StyledBg unoptimized src={Garden.src} width={2000} height={500} objectFit="none" />
         <StyledDialog>
-          <h1>Gdssa</h1>
-          <p>fds</p>
+          <h1>{t('welcome_message_title')}</h1>
+          <p>{t('welcome_message_body')}</p>
         </StyledDialog>
         <StyledOtter unoptimized src={OtterVote.src} width={948} height={268} objectFit="contain" />
       </StyledTreasurySection>
