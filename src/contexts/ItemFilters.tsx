@@ -35,8 +35,8 @@ export enum ItemType {
   FacialAccessories = 'Facial Accessories',
   Clothes = 'Clothes',
   Background = 'Background',
+  Collectible = 'Collectible',
   Other = 'Other',
-  MissionItem = 'Mission Item',
 }
 
 export interface ItemFilters {
@@ -118,8 +118,16 @@ export const ItemFiltersProvider = ({ children, items, itemsPerPage }: PropsWith
   const value = useMemo(() => {
     let filteredItems = items.filter(filterFunctions[filter])
 
-    if (itemType !== ItemType.All) {
-      filteredItems = filteredItems.filter(item => item.type === itemType)
+    switch (itemType) {
+      case ItemType.All:
+        // do nothing
+        break
+      case ItemType.Other:
+        const typeValues = Object.values(ItemType)
+        filteredItems = filteredItems.filter(item => !typeValues.includes(item.type as ItemType))
+        break
+      default:
+        filteredItems = filteredItems.filter(item => item.type === itemType)
     }
 
     filteredItems = filteredItems.sort(sortFunctions[sortedBy])
