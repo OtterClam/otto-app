@@ -288,7 +288,8 @@
       "Headwear": "Headwear",
       "Holding": "Holdings",
       "Other": "Other Items",
-      "Collectible": "Collectibles"
+      "Collectible": "Collectibles",
+      "Mission Item": "Mission Item"
     },
     "sorted_by": "Sorted By",
     "sorted_by_options": {
