@@ -781,7 +781,7 @@
       "title": "必要的物品："
     },
     "forgeButton": "鑄造",
-    "forgeButton_insufficient": "鑄造 (物品不)",
+    "forgeButton_insufficient": "鑄造 (物品不足)",
     "forgeAvailableTime": "可鑄造時間 {{ startTime }} - {{ endTime }} ({{ timeZone }})",
     "comingSoon": "即將登場...",
     "approve": "同意簽署",
