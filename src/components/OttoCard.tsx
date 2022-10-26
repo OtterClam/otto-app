@@ -1,6 +1,6 @@
 import RankingIcon from 'assets/ranking.png'
 import BorderContainer from 'components/BorderContainer'
-import Item, { defaultStats, EmptyItem, NewItem, traitToItem } from 'models/Item'
+import { defaultStats, NewItem } from 'models/Item'
 import Otto from 'models/Otto'
 import { useMemo } from 'react'
 import { useTranslation } from 'next-i18next'

@@ -12,13 +12,7 @@ import { AdventurePreview, RawAdventurePreview, rawAdventurePreviewToAdventurePr
 import { AdventureResult, fromRawResult } from 'models/AdventureResult'
 import { Dice } from 'models/Dice'
 import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
-import Item, {
-  ItemAction,
-  ItemMetadata,
-  RawItemMetadata,
-  rawItemMetadataToItemMetadata,
-  rawItemToItem,
-} from 'models/Item'
+import { ItemAction, ItemMetadata, RawItemMetadata, rawItemMetadataToItemMetadata } from 'models/Item'
 import { LeaderboardEpoch, RawLeaderboardEpoch, rawLeaderboardEpochToLeaderboardEpoch } from 'models/LeaderboardEpoch'
 import { Notification, RawNotification } from 'models/Notification'
 import Otto, { RawOtto } from 'models/Otto'
@@ -99,13 +93,6 @@ export class Api {
       .then(res => res.data)
   }
 
-  public async getItem(itemId: string): Promise<Item> {
-    return this.otterclamClient
-      .get(`/items/metadata/${itemId}`)
-      .then(res => res.data)
-      .then((data: any) => rawItemToItem(itemId, data))
-  }
-
   public async getItemsMetadata(tokenIds: string[]): Promise<{ [tokenId: string]: ItemMetadata }> {
     return this.otterclamClient.get<RawItemMetadata[]>(`/items/metadata?ids=${tokenIds.join(',')}`).then(res =>
       res.data.reduce((map, metadata) => {
@@ -113,13 +100,6 @@ export class Api {
         return map
       }, {} as { [tokenId: string]: ItemMetadata })
     )
-  }
-
-  public async getItems(ids: string[]): Promise<Item[]> {
-    return this.otterclamClient
-      .get(`/items/metadata?ids=${ids.join(',')}`)
-      .then(res => res.data)
-      .then((data: any[]) => data.map((d, i) => rawItemToItem(ids[i], d)))
   }
 
   public async rollTheDice(ottoId: string, tx: string): Promise<Dice> {

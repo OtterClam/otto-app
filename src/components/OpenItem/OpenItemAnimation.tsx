@@ -1,6 +1,6 @@
 import Ribbon from 'assets/ui/ribbon.svg'
 import ItemCell from 'components/ItemCell'
-import Item, { ItemMetadata } from 'models/Item'
+import { ItemMetadata } from 'models/Item'
 import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentMedium, ContentSmall } from 'styles/typography'

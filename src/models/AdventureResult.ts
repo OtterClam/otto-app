@@ -1,6 +1,6 @@
 import { RawAdventureResult } from 'libs/RawAdventureResult'
 import { AdventurePass, fromRawPass } from './AdventurePass'
-import Item, { ItemMetadata, rawItemMetadataToItemMetadata, rawItemToItem } from './Item'
+import { ItemMetadata, NewItem, rawItemMetadataToItemMetadata } from './Item'
 
 export interface AdventureResult {
   success: boolean
@@ -25,7 +25,7 @@ export type AdventureResultEvents = {
       expToNextLevel: number
     }
     got: {
-      items: Item[]
+      items: ItemMetadata[]
       attrs_points: number
     }
   }
@@ -71,7 +71,7 @@ export function fromRawResult(raw: RawAdventureResult): AdventureResult {
           expToNextLevel: raw.events.level_up.to.expToNextLevel,
         },
         got: {
-          items: raw.events.level_up.got.items.map(i => rawItemToItem(i.id, i)),
+          items: raw.events.level_up.got.items.map(raw => rawItemMetadataToItemMetadata(raw)),
           attrs_points: raw.events.level_up.got.attrs_points,
         },
       },

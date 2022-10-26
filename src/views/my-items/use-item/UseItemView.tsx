@@ -1,6 +1,6 @@
 import Button from 'components/Button'
 import OttoCard from 'components/OttoCard'
-import Item, { NewItem } from 'models/Item'
+import { NewItem } from 'models/Item'
 import Otto from 'models/Otto'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'

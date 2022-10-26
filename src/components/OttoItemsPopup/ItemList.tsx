@@ -1,12 +1,11 @@
 import styled from 'styled-components/macro'
 import { useItemFilters } from 'contexts/ItemFilters'
 import ItemCell from 'components/ItemCell'
-import Otto, { OttoGender, Trait } from 'models/Otto'
+import Otto, { Trait } from 'models/Otto'
 import { Note } from 'styles/typography'
-import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
 import { useTrait } from 'contexts/TraitContext'
-import Item, { NewItem, traitToItem } from 'models/Item'
+import { NewItem } from 'models/Item'
 import { useMyItem } from 'contexts/MyItems'
 
 const StyledItems = styled.div`

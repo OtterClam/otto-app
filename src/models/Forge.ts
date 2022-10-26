@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers'
-import Item, { ItemMetadata, RawItemMetadata, rawItemMetadataToItemMetadata, rawItemToItem } from './Item'
+import { ItemMetadata, RawItemMetadata, rawItemMetadataToItemMetadata } from './Item'
 import { Trait } from './Otto'
 
 export interface ForgeFormula {
