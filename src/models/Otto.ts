@@ -6,7 +6,7 @@ import { RawAdventurePass } from 'libs/RawAdventureResult'
 import { getCroppedImageUrl } from 'utils/image'
 import { AdventurePass, fromRawPass } from './AdventurePass'
 import { AdventureResult } from './AdventureResult'
-import Item from './Item'
+import { ItemMetadata, NewItem, RawItemMetadata, rawItemMetadataToItemMetadata } from './Item'
 
 export enum TraitCollection {
   Genesis = 'genesis',
@@ -138,6 +138,10 @@ export default class Otto {
 
   public wearableTraits: Trait[] = []
 
+  public geneticItemsMetadata: ItemMetadata[] = []
+
+  public wearableItemsMetadata: ItemMetadata[] = []
+
   public epochRarityBoost?: number
 
   public diceCount?: number
@@ -158,7 +162,12 @@ export default class Otto {
 
   public attributePoints = 0
 
-  constructor(raw: RawOtto) {
+  constructor(
+    raw: RawOtto,
+    public equippedItems: NewItem[] = [],
+    public nativeItemsMetadata: ItemMetadata[] = [],
+    public itemsMetadata: ItemMetadata[] = []
+  ) {
     this.raw = raw
     this.rawUpdated()
   }
@@ -228,6 +237,9 @@ export default class Otto {
     }
 
     this.cachedAdventureStatus = this.adventureStatus
+
+    this.geneticItemsMetadata = this.itemsMetadata.filter(itemMetadata => !itemMetadata.wearable)
+    this.wearableItemsMetadata = this.itemsMetadata.filter(itemMetadata => itemMetadata.wearable)
   }
 
   get name(): string {
@@ -324,7 +336,7 @@ export default class Otto {
   }
 
   public clone() {
-    return new Otto(JSON.parse(JSON.stringify(this.raw)))
+    return new Otto(JSON.parse(JSON.stringify(this.raw)), this.equippedItems)
   }
 
   public playVoice() {
@@ -338,11 +350,12 @@ export default class Otto {
     }
   }
 
-  public canWear(item: Item): boolean {
-    if (item.equippable_gender === OttoGender.Both || this.raw.gender === 'Cleo') {
+  // TODO: use ItemMetadata
+  public canWear(item: NewItem): boolean {
+    if (item.metadata.equippableGender === OttoGender.Both || this.raw.gender === 'Cleo') {
       return true
     }
-    if (item.equippable_gender === OttoGender.Male) {
+    if (item.metadata.equippableGender === OttoGender.Male) {
       return this.raw.gender === 'Otto'
     }
     return this.raw.gender === 'Lottie'

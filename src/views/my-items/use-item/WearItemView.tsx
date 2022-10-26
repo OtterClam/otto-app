@@ -2,7 +2,7 @@ import LegendaryIcon from 'assets/badge/legendary.png'
 import Arrow from 'assets/ui/arrow-right-yellow.svg'
 import Button from 'components/Button'
 import OttoCard from 'components/OttoCard'
-import Item, { EmptyItem, traitToItem } from 'models/Item'
+import Item, { EmptyItem, NewItem, traitToItem } from 'models/Item'
 import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
@@ -74,7 +74,7 @@ const StyledLegendaryWarning = styled(Note).attrs({ as: 'div' })`
 `
 
 interface Props {
-  item: Item
+  item: NewItem
   selectedOtto: Otto | null
   onSelect: (otto: Otto) => void
   onUse: () => void
@@ -82,21 +82,21 @@ interface Props {
 
 export default function WearItemView({ item, selectedOtto, onSelect, onUse }: Props) {
   const { t } = useTranslation()
-  const originTrait = selectedOtto?.wearableTraits.find(p => p.type === item.type)
-  const originItem = originTrait ? traitToItem(originTrait) : EmptyItem
+  const originItemMetadata = selectedOtto?.wearableItemsMetadata.find(({ type }) => type === item.metadata.type)
+
   return (
     <StyledWearItemView>
       <StyledPickerTitle>
         <Headline>{t('my_items.wear_item.title')}</Headline>
       </StyledPickerTitle>
-      <OttoList itemId={item.tokenId} selectedOtto={selectedOtto} onSelect={onSelect} />
+      <OttoList itemId={item.metadata.tokenId} selectedOtto={selectedOtto} onSelect={onSelect} />
       <StyledBottomContainer>
-        {selectedOtto && <StyledOttoCard otto={selectedOtto} item={item} />}
+        {selectedOtto && <StyledOttoCard otto={selectedOtto} withItem={item} />}
         <StyledOttoPreviewContainer>
           <StyledItemPreview>
-            <ItemPreviewCard title={t('my_items.wear_item.current_equipped')} item={originItem} />
+            <ItemPreviewCard title={t('my_items.wear_item.current_equipped')} metadata={originItemMetadata} />
             <img width={30} src={Arrow.src} alt="arrow" />
-            <ItemPreviewCard title={t('my_items.wear_item.replaced')} item={item} />
+            <ItemPreviewCard title={t('my_items.wear_item.replaced')} metadata={item.metadata} />
           </StyledItemPreview>
           {selectedOtto?.legendary && (
             <StyledLegendaryWarning>

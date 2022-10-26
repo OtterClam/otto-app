@@ -173,7 +173,12 @@ export default function PreviewOttoStep() {
       adventureContract
         .pass(exploreState.passId)
         .then(pass => {
-          const draftOtto = new Otto({ ...otto.raw, ...preview })
+          const draftOtto = new Otto(
+            { ...otto.raw, ...preview },
+            otto.equippedItems,
+            otto.nativeItemsMetadata,
+            otto.itemsMetadata
+          )
           draftOtto.explore(exploreState.passId || '', pass)
           setOtto(draftOtto.clone())
           updateOtto(draftOtto)

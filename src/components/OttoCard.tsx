@@ -1,6 +1,6 @@
 import RankingIcon from 'assets/ranking.png'
 import BorderContainer from 'components/BorderContainer'
-import Item, { EmptyItem, traitToItem } from 'models/Item'
+import Item, { defaultStats, EmptyItem, NewItem, traitToItem } from 'models/Item'
 import Otto from 'models/Otto'
 import { useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
@@ -96,43 +96,72 @@ const StyledDiffAttr = styled.span`
   color: ${({ theme }) => theme.colors.clamPink};
 `
 
+// TODO: extract rarity score calculation logic
 interface Props {
   className?: string
   otto: Otto
   oldOtto?: Otto
-  item?: Item
+  withItem?: NewItem
   takeOff?: boolean
 }
 
-export default function OttoCard({ otto, oldOtto, item, takeOff = false, className }: Props) {
+export default function OttoCard({ otto, oldOtto, withItem: item, takeOff = false, className }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
+
   const diffAttrs = useMemo(() => {
     const diff: Record<string, string> = {}
+
     if (oldOtto) {
       otto.raw.otto_attrs.forEach(({ trait_type, value }) => {
         const oldAttr = oldOtto.raw.otto_attrs.find(({ trait_type: t }) => t === trait_type)
         const diffValue = Number(value) - Number(oldAttr?.value ?? 0)
         diff[trait_type] = String(diffValue > 0 ? `+${diffValue}` : diffValue)
       })
+      return diff
     }
-    if (item) {
-      const originTrait = otto.wearableTraits.find(p => p.type === item?.type || '')
-      let originItem = takeOff ? item : originTrait ? traitToItem(originTrait) : EmptyItem
-      if (takeOff) {
-        originItem = item
-        item = EmptyItem
+
+    if (takeOff && item) {
+      const nativeTrait = otto.ottoNativeTraits.find(({ type }) => type === item.metadata.type)
+      const originalTrait = otto.wearableTraits.find(p => p.type === item.metadata.type)
+      const defaultStatsList = Object.entries(defaultStats).map(([name, value]) => ({ name, value }))
+
+      if (!nativeTrait) {
+        ;(originalTrait?.stats ?? defaultStatsList).forEach(({ name, value }) => {
+          const newDiffValue = Number(value) - Number(item.metadata.stats[name])
+          diff[name] = String(newDiffValue > 0 ? `+${newDiffValue}` : newDiffValue)
+        })
+        const rarityScore = (originalTrait?.total_rarity_score ?? 0) - item.metadata.totalRarityScore
+        diff.rarityScore = String(rarityScore > 0 ? `+${rarityScore}` : rarityScore)
+        return diff
       }
-      item.stats.forEach(({ name, value: strValue }) => {
-        const oldValue = Number(originItem.stats.find(({ name: n }) => n === name)?.value || 0)
-        const value = Number(strValue) - oldValue
-        diff[name] = String(value < 0 ? '-' : '+') + Math.abs(value)
+
+      ;(nativeTrait?.stats ?? defaultStatsList).forEach(({ name, value }) => {
+        const newDiffValue =
+          Number(value) - Number(originalTrait?.stats?.find(stat => stat.name === name)?.value ?? '0')
+        diff[name] = String(newDiffValue > 0 ? `+${newDiffValue}` : newDiffValue)
       })
-      const rarityScore = item.total_rarity_score - originItem.total_rarity_score
-      diff.rarityScore = String((rarityScore < 0 ? '-' : '+') + Math.abs(rarityScore))
+      const rarityScore = (nativeTrait?.total_rarity_score ?? 0) - (originalTrait?.total_rarity_score ?? 0)
+      diff.rarityScore = String(rarityScore > 0 ? `+${rarityScore}` : rarityScore)
+      return diff
     }
+
+    if (item) {
+      const originalTrait = otto.wearableTraits.find(p => p.type === item.metadata.type)
+      const defaultStatsList = Object.entries(defaultStats).map(([name, value]) => ({ name, value }))
+
+      ;(originalTrait?.stats ?? defaultStatsList).forEach(({ name, value }) => {
+        const newDiffValue = Number(item.metadata.stats[name]) - Number(value)
+        diff[name] = String(newDiffValue > 0 ? `+${newDiffValue}` : newDiffValue)
+      })
+      const rarityScore = item.metadata.totalRarityScore - (originalTrait?.total_rarity_score ?? 0)
+      diff.rarityScore = String(rarityScore > 0 ? `+${rarityScore}` : rarityScore)
+      return diff
+    }
+
     return diff
   }, [otto, oldOtto, item])
+
   return (
     <StyledOttoCard borderColor={theme.colors.lightGray400} className={className}>
       <StyledOttoImage src={otto.largeImage} />

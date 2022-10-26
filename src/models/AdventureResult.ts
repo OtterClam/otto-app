@@ -1,6 +1,6 @@
 import { RawAdventureResult } from 'libs/RawAdventureResult'
 import { AdventurePass, fromRawPass } from './AdventurePass'
-import Item, { rawItemToItem } from './Item'
+import Item, { ItemMetadata, rawItemMetadataToItemMetadata, rawItemToItem } from './Item'
 
 export interface AdventureResult {
   success: boolean
@@ -37,7 +37,7 @@ export type AdventureJournalEntry = {
 }
 
 export type AdventureResultReward = {
-  items: Item[]
+  items: ItemMetadata[]
   exp: number
   tcp: number
   ap: number
@@ -53,7 +53,7 @@ export function fromRawResult(raw: RawAdventureResult): AdventureResult {
       text: e.text,
     })),
     rewards: {
-      items: raw.rewards.items.map(i => rawItemToItem(i.id, i)),
+      items: raw.rewards.items.map(raw => rawItemMetadataToItemMetadata(raw)),
       exp: raw.rewards.exp,
       tcp: raw.rewards.tcp,
       ap: raw.rewards.ap,

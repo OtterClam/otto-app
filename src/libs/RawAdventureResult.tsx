@@ -1,10 +1,12 @@
+import { RawItemMetadata } from 'models/Item'
+
 export interface Journal {
   happened_at: any
   text: string
 }
 
 export interface Rewards {
-  items: any[]
+  items: RawItemMetadata[]
   exp: number
   tcp: number
   ap: number

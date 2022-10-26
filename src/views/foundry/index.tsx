@@ -1,8 +1,8 @@
 import { useApi } from 'contexts/Api'
 import { ERC1155ApprovalProvider } from 'contexts/ERC1155Approval'
+import { useMyItems } from 'contexts/MyItems'
 import useAssetsBundles from 'hooks/useAssetsBundles'
 import useContractAddresses from 'hooks/useContractAddresses'
-import useMyItems from 'hooks/useMyItems'
 import { ForgeFormula } from 'models/Forge'
 import { useEffect, useMemo, useState } from 'react'
 import { BundleName } from 'worker/consts'
@@ -31,9 +31,9 @@ const useMyItemAmounts = () => {
 
   const amounts = useMemo(() => {
     return items
-      .filter(item => !item.equipped)
+      .filter(item => !item.equippedBy)
       .reduce((counts, item) => {
-        counts[item.tokenId] = item.amount ?? 0
+        counts[item.metadata.tokenId] = item.amount ?? 0
         return counts
       }, {} as MyItemAmounts)
   }, [items])

@@ -1,6 +1,6 @@
 import Ribbon from 'assets/ui/ribbon.svg'
 import ItemCell from 'components/ItemCell'
-import Item from 'models/Item'
+import Item, { ItemMetadata } from 'models/Item'
 import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentMedium, ContentSmall } from 'styles/typography'
@@ -86,7 +86,7 @@ const StyledName = styled(ContentMedium)``
 interface Props {
   current: number
   total: number
-  item: Item
+  item: ItemMetadata
   className?: string
 }
 
@@ -97,7 +97,7 @@ export default function OpenItemAnimation({ current, total, item, className }: P
       <StyledRibbonText>
         <ContentSmall>{t('store.popup.found_items', { current, total })}</ContentSmall>
       </StyledRibbonText>
-      <StyledItemCell item={item} />
+      <StyledItemCell metadata={item} />
       <StyledNameSection>
         <StyledCategory type={item.type}>{t(`my_items.section_title.${item.type}`)} </StyledCategory>
         <StyledName as="h2">{item.name}</StyledName>

@@ -16,7 +16,7 @@ export const AdventureOttoProvider = ({
     if (!(otto && preview)) {
       return
     }
-    return new Otto({ ...otto.raw, ...preview })
+    return new Otto({ ...otto.raw, ...preview }, otto.equippedItems, otto.nativeItemsMetadata, otto.itemsMetadata)
   }, [otto, preview])
 
   const value = useMemo(

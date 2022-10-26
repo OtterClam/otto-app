@@ -1,5 +1,5 @@
 import CroppedImage from 'components/CroppedImage'
-import Item from 'models/Item'
+import { ItemMetadata, NewItem } from 'models/Item'
 import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
@@ -159,7 +159,8 @@ const StyledUnreturnable = styled.div`
 `
 
 interface Props {
-  item?: Item
+  item?: NewItem
+  metadata?: ItemMetadata // component will use this field and ignore "item" if it's not undefined
   currentOtto?: Otto
   unavailable?: boolean
   size?: number
@@ -171,6 +172,7 @@ interface Props {
 
 export default function ItemCell({
   item,
+  metadata,
   currentOtto,
   unavailable = false,
   size,
@@ -180,8 +182,11 @@ export default function ItemCell({
   hideAmount = false,
 }: Props) {
   const { t } = useTranslation()
-  const { tokenId: id, image, rarity, equipped, amount = 0, unreturnable } = item ?? {}
-  const equippedByCurrentOtto = (!currentOtto || currentOtto?.wearableTraits.find(trait => trait.id === id)) && equipped
+  const { equippedBy, amount = 0 } = item ?? {}
+  const { tokenId, image, rarity, unreturnable } = metadata || (item?.metadata ?? {})
+  const equipped = Boolean(equippedBy)
+  const equippedByCurrentOtto =
+    (!currentOtto || currentOtto?.wearableTraits.find(trait => trait.id === tokenId)) && equipped
 
   return (
     <StyledItemCell
@@ -213,7 +218,7 @@ export default function ItemCell({
           <StyledSelectedFrame right />
         </>
       )}
-      {(unreturnable || id === undefined) && <StyledUnreturnable />}
+      {(unreturnable || tokenId === undefined) && <StyledUnreturnable />}
     </StyledItemCell>
   )
 }

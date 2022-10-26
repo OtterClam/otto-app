@@ -1,9 +1,10 @@
 import { useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
 import { useApi } from 'contexts/Api'
+import { useRepositories } from 'contexts/Repositories'
 import { LIST_MY_OTTOS } from 'graphs/otto'
 import { ListMyOttos, ListMyOttosVariables } from 'graphs/__generated__/ListMyOttos'
-import Otto, { RawOtto } from 'models/Otto'
+import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -15,19 +16,17 @@ export default function useOtto(id: string | Falsy, details: boolean) {
   const [error, setError] = useState<any | null>(null)
   const [loading, setLoading] = useState(true)
   const [fetchCount, setFetchCount] = useState(0)
-  const [raw, setRaw] = useState<RawOtto | null>(null)
-  const otto = useMemo(() => (raw ? new Otto(raw) : null), [raw])
+  const { ottos: ottosRepo } = useRepositories()
+  const [otto, setOtto] = useState<Otto | null>(null)
+
   useEffect(() => {
     if (id) {
       setLoading(true)
-      setRaw(null)
+      setOtto(null)
       setError(null)
-      api
-        .getOttoMeta(id, details)
-        .then(data => {
-          setError(null)
-          setRaw(data)
-        })
+      ottosRepo
+        .getOtto(id)
+        .then(setOtto)
         .catch(err => {
           setError(err)
           console.error('fetch otto meta failed', err)
@@ -35,7 +34,9 @@ export default function useOtto(id: string | Falsy, details: boolean) {
         .finally(() => setLoading(false))
     }
   }, [id, i18n.resolvedLanguage, fetchCount, api, details])
+
   const refetch = () => setFetchCount(fetchCount + 1)
+
   return { loading, otto, error, refetch }
 }
 

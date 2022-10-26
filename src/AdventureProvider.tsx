@@ -12,22 +12,20 @@ import TreasuryChestPopup from 'components/TreasuryChestPopup'
 
 export default function AdventureProvider({ children }: PropsWithChildren<object>) {
   return (
-    <MyItemsProvider>
-      <OttoProvider>
-        <TraitProvider>
-          <AdventureContractStateProvider>
-            <AdventureUIStateProvider>
-              <AdventureLocationsProvider>
-                {children}
-                <AdventurePopup />
-                <LevelUpPopup />
-                <AttributePointsPopup />
-                <TreasuryChestPopup />
-              </AdventureLocationsProvider>
-            </AdventureUIStateProvider>
-          </AdventureContractStateProvider>
-        </TraitProvider>
-      </OttoProvider>
-    </MyItemsProvider>
+    <OttoProvider>
+      <TraitProvider>
+        <AdventureContractStateProvider>
+          <AdventureUIStateProvider>
+            <AdventureLocationsProvider>
+              {children}
+              <AdventurePopup />
+              <LevelUpPopup />
+              <AttributePointsPopup />
+              <TreasuryChestPopup />
+            </AdventureLocationsProvider>
+          </AdventureUIStateProvider>
+        </AdventureContractStateProvider>
+      </TraitProvider>
+    </OttoProvider>
   )
 }

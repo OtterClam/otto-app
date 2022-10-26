@@ -245,7 +245,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
           {formula.result && (
             <>
               <a href={getOpenSeaItemLink(formula.result.tokenId)} target="_blank" rel="noreferrer">
-                <StyledResultItemPreview item={formula.result} />
+                <StyledResultItemPreview metadata={formula.result} />
               </a>
               <ContentMedium>{formula.result.name}</ContentMedium>
               <StyledItemType type={formula.result.type} />
@@ -265,7 +265,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
             {formula.materials.map((material, index) => (
               <StyledMaterialListItem key={index}>
                 <a href={getOpenSeaItemLink(material.tokenId)} target="_blank" rel="noreferrer">
-                  <StyledMaterialPreview item={material} />
+                  <StyledMaterialPreview metadata={material} />
                 </a>
                 <StyledMaterialName>{material.name}</StyledMaterialName>
                 <StyledCount>

@@ -4,17 +4,17 @@ import Fullscreen from 'components/Fullscreen'
 import ItemCell from 'components/ItemCell'
 import { LoadingView } from 'components/LoadingView'
 import { useBreakpoints } from 'contexts/Breakpoints'
-import useMyItems from 'hooks/useMyItems'
-import Item from 'models/Item'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
 import { FilterIcon, SortedIcon } from 'assets/icons'
-import { OttoGender } from 'models/Otto'
+// FIX:
+import { ItemType as NewItemType } from 'models/Item'
 import { ItemFiltersProvider, ItemType, useItemFilters } from 'contexts/ItemFilters'
 import { FilterSelector, OrderSelector, SortedBySelector } from 'components/ItemFilterSelect'
 import Button from 'components/Button'
+import { useMyItem, useMyItems } from 'contexts/MyItems'
 import EmptyStatus from './empty.png'
 import ItemDetails from './use-item/ItemDetails'
 
@@ -150,12 +150,12 @@ const StyledItemsPagination = styled.div`
 
 function ItemList({
   loading,
-  selectedItem,
-  selectItem,
+  selectedItemId,
+  selectItemId,
 }: {
   loading?: boolean
-  selectedItem?: Item
-  selectItem: (item?: Item) => void
+  selectedItemId?: string
+  selectItemId: (itemId?: string) => void
 }) {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
   const { filteredItems: items, hasNextPage, hasPrevPage, nextPage, prevPage } = useItemFilters()
@@ -171,12 +171,12 @@ function ItemList({
           </StyledEmptySlate>
         ) : (
           <StyledItemList>
-            {items.map((item, index) => (
+            {items.map(item => (
               <ItemCell
-                key={`${item.tokenId}_${index}`}
+                key={item.id}
                 item={item}
-                selected={item === selectedItem}
-                onClick={() => selectItem(item)}
+                selected={item.id === selectedItemId}
+                onClick={() => selectItemId(item.id)}
               />
             ))}
           </StyledItemList>
@@ -224,20 +224,23 @@ function SectionTabs() {
 export default function MyItemsPage() {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
   const { isMobile } = useBreakpoints()
-  const [selectedItem, setSelectedItem] = useState<Item>()
-  const [usingItem, setUsingItem] = useState<Item | null>(null)
-  const [redeemingCoupon, setRedeemingCoupon] = useState<Item | null>(null)
+  const [selectedItemId, setSelectedItemId] = useState<string>()
+  const [usingItemId, setUsingItemId] = useState<string>()
+  const [redeemingCouponId, setRedeemingCouponId] = useState<string>()
   const { items, loading, refetch } = useMyItems()
+  const selectedItem = useMyItem(selectedItemId)
+  const usingItem = useMyItem(usingItemId)
+  const redeemingCoupon = useMyItem(redeemingCouponId)
 
   const onUse = useCallback(() => {
     if (selectedItem) {
-      if (selectedItem.isCoupon) {
-        setRedeemingCoupon(selectedItem)
+      if (selectedItem.metadata.type === NewItemType.Coupon) {
+        setRedeemingCouponId(selectedItemId)
       } else {
-        setUsingItem(selectedItem)
+        setUsingItemId(selectedItemId)
       }
     }
-    setSelectedItem(undefined)
+    setSelectedItemId(undefined)
   }, [selectedItem])
 
   return (
@@ -258,20 +261,20 @@ export default function MyItemsPage() {
                 <FilterSelector />
               </StyledMenuItem>
             </StyledMenuBar>
-            <ItemList loading={loading} selectItem={setSelectedItem} selectedItem={selectedItem} />
+            <ItemList loading={loading} selectItemId={setSelectedItemId} selectedItemId={selectedItemId} />
           </StyledLeftContainer>
           {isMobile ? (
             selectedItem && (
               <Fullscreen show background="white">
                 <StyledMobileItemDetailsContainer>
-                  <ItemDetails item={selectedItem} onClose={() => setSelectedItem(undefined)} onUse={onUse} />
+                  <ItemDetails item={selectedItem} onClose={() => setSelectedItemId(undefined)} onUse={onUse} />
                 </StyledMobileItemDetailsContainer>
               </Fullscreen>
             )
           ) : (
             <StyledItemDetails>
               {selectedItem ? (
-                <ItemDetails item={selectedItem} onClose={() => setSelectedItem(undefined)} onUse={onUse} />
+                <ItemDetails item={selectedItem} onClose={() => setSelectedItemId(undefined)} onUse={onUse} />
               ) : (
                 <StyledNoSelectedItem>
                   <ContentSmall>{t('no_selected_item')}</ContentSmall>
@@ -285,16 +288,16 @@ export default function MyItemsPage() {
             item={usingItem}
             onClose={() => {
               refetch()
-              setUsingItem(null)
+              setUsingItemId(undefined)
             }}
           />
         )}
         {redeemingCoupon && (
           <RedeemCouponPopup
-            coupon={redeemingCoupon}
+            coupon={redeemingCoupon.metadata}
             onClose={() => {
               refetch()
-              setRedeemingCoupon(null)
+              setRedeemingCouponId(undefined)
             }}
           />
         )}

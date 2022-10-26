@@ -8,7 +8,7 @@ import { useOtto } from 'contexts/Otto'
 import { useTrait } from 'contexts/TraitContext'
 import useAdventureOttosWithItem from 'hooks/useAdventureOttosWithItem'
 import useOnClickOutside from 'hooks/useOnClickOutside'
-import Item from 'models/Item'
+import { ItemMetadata, NewItem } from 'models/Item'
 import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import { memo, useMemo, useRef } from 'react'
@@ -117,19 +117,15 @@ const StyledOttoImage = styled.div`
   height: 18px;
 `
 
-const useOttos = (item?: Item, selectedOtto?: Otto) => {
-  const ottos = useAdventureOttosWithItem(item?.tokenId ?? '')
-  const ottosExceptSelectedOtto = useMemo(() => {
-    return ottos.filter(otto => String(otto.id) !== selectedOtto?.id)
-  }, [item, selectedOtto])
-  if (item?.equipped) {
-    return ottosExceptSelectedOtto
-  }
-  return []
+const useOttos = (metadata?: ItemMetadata, selectedOtto?: Otto) => {
+  const ottos = useAdventureOttosWithItem(metadata?.tokenId ?? '')
+  return useMemo(() => {
+    return ottos.filter(otto => otto.id !== selectedOtto?.id)
+  }, [metadata, selectedOtto])
 }
 
 export interface ItemPreviewProps {
-  item?: Item
+  metadata?: ItemMetadata
   selectedItemId?: string
   onClose: () => void
   onItemUpdated?: () => void
@@ -137,14 +133,14 @@ export interface ItemPreviewProps {
 }
 
 export default memo(
-  function ItemPreview({ item, selectedItemId, onClose, onItemUpdated, unavailable = false }: ItemPreviewProps) {
+  function ItemPreview({ metadata, selectedItemId, onClose, onItemUpdated, unavailable = false }: ItemPreviewProps) {
     const { traitType } = useTrait()
     const { equipItem, removeItem } = useOtto()
     const { draftOtto: otto } = useAdventureOtto()
     const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
     const containerRef = useRef<HTMLDivElement | null>(null)
-    const ottos = useOttos(item, otto)
-    const equippedByCurrentOtto = Boolean(otto?.wearableTraits.find(trait => trait.id === item?.tokenId))
+    const ottos = useOttos(metadata, otto)
+    const equippedByCurrentOtto = Boolean(otto?.wearableTraits.find(trait => trait.id === metadata?.tokenId))
     const equippedItem = otto?.wearableTraits.find(trait => trait.type === traitType)
 
     const onEquip = (type: string, itemId: string) => {
@@ -163,21 +159,24 @@ export default memo(
         <StyledItemPreview ref={containerRef}>
           <StyledItemPreviewDetails>
             <StyledItemImage>
-              <ItemCell hideAmount item={item} />
+              <ItemCell hideAmount metadata={metadata} />
             </StyledItemImage>
             <StyledItemAttrs>
-              {item && <ItemRarityBadge rarity={item.rarity} />}
+              {metadata && <ItemRarityBadge rarity={metadata.rarity} />}
               <StyledItemName>
-                {item?.collection && item.collection_name && (
-                  <StyledItemCollectionBadge collection={item.collection} collectionName={item.collection_name} />
+                {metadata?.collection && metadata?.collectionName && (
+                  <StyledItemCollectionBadge
+                    collection={metadata.collection}
+                    collectionName={metadata.collectionName}
+                  />
                 )}
-                {item?.name}
+                {metadata?.name}
               </StyledItemName>
               <StyledItemLevels>
-                {item?.stats.map(stat => (
-                  <StyledItemLevel key={stat.name}>
-                    <StyledItemLevelLabel>{stat.name}</StyledItemLevelLabel>
-                    <StyledItemLevelValue>{stat.value}</StyledItemLevelValue>
+                {Object.entries(metadata?.stats ?? {}).map(([name, value]) => (
+                  <StyledItemLevel key={name}>
+                    <StyledItemLevelLabel>{name}</StyledItemLevelLabel>
+                    <StyledItemLevelValue>{value}</StyledItemLevelValue>
                   </StyledItemLevel>
                 ))}
               </StyledItemLevels>
@@ -195,19 +194,23 @@ export default memo(
               ))}
             </StyledOttos>
           )}
-          {!equippedByCurrentOtto && item && (
-            <StyledButton disabled={unavailable} Typography={Headline} onClick={() => onEquip(item.type, item.tokenId)}>
+          {!equippedByCurrentOtto && metadata && (
+            <StyledButton
+              disabled={unavailable}
+              Typography={Headline}
+              onClick={() => onEquip(metadata.type, metadata.tokenId)}
+            >
               {t(unavailable ? 'unavailable' : 'wear')}
             </StyledButton>
           )}
-          {equippedByCurrentOtto && item && traitType && (
+          {equippedByCurrentOtto && metadata && traitType && (
             <StyledButton
-              disabled={item.unreturnable}
+              disabled={metadata.unreturnable || selectedItemId === 'native'}
               primaryColor="white"
               Typography={Headline}
               onClick={() => onRemove(traitType)}
             >
-              {t(item?.unreturnable ? 'unavailable' : 'takeOff')}
+              {t(metadata?.unreturnable ? 'unavailable' : 'takeOff')}
             </StyledButton>
           )}
           {selectedItemId === 'empty' && traitType && (

@@ -6,7 +6,7 @@ import { ItemFiltersProvider } from 'contexts/ItemFilters'
 import { useMyItems } from 'contexts/MyItems'
 import { useTrait } from 'contexts/TraitContext'
 import useIsWearable from 'hooks/useIsWearable'
-import { traitToItem } from 'models/Item'
+import { ItemMetadata, traitToItem } from 'models/Item'
 import { useTranslation } from 'next-i18next'
 import { memo, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
@@ -80,17 +80,17 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
   const { items, refetch } = useMyItems()
   const [selectedItemId, selectItem] = useState<string>()
   const isWearable = useIsWearable(items)
-  const filteredItems = items.filter(item => item.type === traitType)
-  const equippedTrait = otto?.wearableTraits.find(trait => trait.type === traitType)
-  const defaultTrait = otto?.ottoNativeTraits?.find(({ id }) => id === selectedItemId)
-  let selectedItem = filteredItems
-    ?.filter(({ tokenId: id }) => id === selectedItemId)
-    ?.sort(a => (a.equipped ? 1 : -1))[0]
-  if (!selectedItem && equippedTrait && selectedItemId === equippedTrait.id) {
-    selectedItem = traitToItem(equippedTrait)
+  const filteredItems = items.filter(item => item.metadata.type === traitType)
+  let selectedItemMetadata = filteredItems?.find(({ id }) => id === selectedItemId)?.metadata
+  const equippedItemMetadata = otto?.equippedItems.find(({ id }) => id === selectedItemId)?.metadata
+  const nativeItemMetadata = otto?.nativeItemsMetadata.find(({ type }) => type === traitType)
+
+  if (!selectedItemMetadata && equippedItemMetadata) {
+    selectedItemMetadata = equippedItemMetadata
   }
-  if (!selectedItem && defaultTrait && selectedItemId === defaultTrait.id) {
-    selectedItem = traitToItem(defaultTrait)
+
+  if (selectedItemId === 'native') {
+    selectedItemMetadata = nativeItemMetadata
   }
 
   useEffect(() => {
@@ -128,9 +128,9 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
           <ItemList otto={otto} isWearable={isWearable} selectedItemId={selectedItemId} selectItem={selectItem} />
 
           <ItemPreview
-            item={selectedItem}
+            metadata={selectedItemMetadata}
             selectedItemId={selectedItemId}
-            unavailable={selectedItem && !isWearable(selectedItem.tokenId)}
+            unavailable={selectedItemMetadata && !isWearable(selectedItemMetadata.tokenId)}
             onItemUpdated={onRequestClose}
             onClose={() => selectItem(undefined)}
           />

@@ -1,7 +1,7 @@
 import CloseButton from 'components/CloseButton'
 import Fullscreen from 'components/Fullscreen'
 import { useTakeOffItem, useItem } from 'contracts/functions'
-import Item from 'models/Item'
+import { NewItem } from 'models/Item'
 import Otto from 'models/Otto'
 import { MyOttosContext } from 'MyOttosProvider'
 import { useContext, useEffect, useState } from 'react'
@@ -60,7 +60,7 @@ enum State {
 }
 
 interface Props {
-  item: Item
+  item: NewItem
   onClose: () => void
 }
 
@@ -71,14 +71,14 @@ export default function ItemPopup({ item, onClose }: Props) {
   const [state, setState] = useState(State.Idle)
   const { ottos, reload } = useContext(MyOttosContext)
   const [selectedOtto, setSelectedOtto] = useState<Otto | null>(null)
-  const takeOffOtto = ottos.find(p => p.id === item.parentTokenId) || null
+  const takeOffOtto = ottos.find(p => p.id === item.equippedBy) || null
 
   const onUse = () => {
-    use(item.tokenId, selectedOtto?.id || '')
+    use(item.metadata.tokenId, selectedOtto?.id || '')
     setState(State.Using)
   }
   const onTakeOff = () => {
-    takeOff(item, item.parentTokenId || '')
+    takeOff(item, item.equippedBy || '')
     setState(State.Using)
   }
   useEffect(() => {
@@ -127,8 +127,8 @@ export default function ItemPopup({ item, onClose }: Props) {
       default:
         return (
           <StyledItemPopup>
-            {item.wearable ? (
-              item.equipped ? (
+            {item.metadata.wearable ? (
+              item.equippedBy ? (
                 <TakeOffItemView item={item} otto={takeOffOtto} onUse={onTakeOff} />
               ) : (
                 <WearItemView item={item} selectedOtto={selectedOtto} onSelect={setSelectedOtto} onUse={onUse} />

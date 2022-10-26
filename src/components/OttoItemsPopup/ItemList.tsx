@@ -6,7 +6,8 @@ import { Note } from 'styles/typography'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
 import { useTrait } from 'contexts/TraitContext'
-import Item, { traitToItem } from 'models/Item'
+import Item, { NewItem, traitToItem } from 'models/Item'
+import { useMyItem } from 'contexts/MyItems'
 
 const StyledItems = styled.div`
   display: grid;
@@ -32,29 +33,29 @@ export interface ItemListProps {
 }
 
 export default function ItemList({ otto, isWearable, selectItem, selectedItemId }: ItemListProps) {
-  const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
   const { traitType } = useTrait()
   const { filteredItems } = useItemFilters()
-  const { defaultItem, restItems } = useMemo(() => {
+  const selectedItem = useMyItem(selectedItemId)
+  const { defaultItemMetadata, restItems } = useMemo(() => {
     const currentOttoEquippedTraits = (otto?.wearableTraits ?? []).reduce(
       (map, trait) => Object.assign(map, { [trait.id]: trait }),
       {} as { [k: string]: Trait }
     )
-    const defaultTrait = otto?.ottoNativeTraits.find(trait => trait.type === traitType)
+    const defaultItemMetadata = otto?.nativeItemsMetadata.find(trait => trait.type === traitType)
     let restItems = filteredItems
 
     {
-      const items: Item[] = []
+      const items: NewItem[] = []
       const map: { [k: string]: number } = {}
       restItems.forEach(item => {
         if (
-          map[item.tokenId] !== undefined &&
-          items[map[item.tokenId]].equipped &&
-          !currentOttoEquippedTraits[item.tokenId]
+          map[item.metadata.tokenId] !== undefined &&
+          items[map[item.metadata.tokenId]].equippedBy &&
+          !currentOttoEquippedTraits[item.metadata.tokenId]
         ) {
-          items[map[item.tokenId]] = item
-        } else if (!items[map[item.tokenId]]) {
-          map[item.tokenId] = items.length
+          items[map[item.metadata.tokenId]] = item
+        } else if (!items[map[item.metadata.tokenId]]) {
+          map[item.metadata.tokenId] = items.length
           items.push(item)
         }
       })
@@ -63,30 +64,28 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
 
     restItems = restItems.filter(item => otto?.canWear(item)).slice()
 
-    const defaultItem = defaultTrait ? traitToItem(defaultTrait) : undefined
-
-    return { defaultItem, restItems }
+    return { defaultItemMetadata, restItems }
   }, [filteredItems, traitType, otto])
 
   return (
     <StyledItems>
       <StyledItem
-        key={`default_${defaultItem?.tokenId ?? 'empty'}`}
+        key={`default_${defaultItemMetadata?.tokenId ?? 'empty'}`}
         hideAmount
-        item={defaultItem}
+        metadata={defaultItemMetadata}
         currentOtto={otto}
-        onClick={() => selectItem(defaultItem?.tokenId ?? 'empty')}
-        selected={(defaultItem && selectedItemId === defaultItem.tokenId) || selectedItemId === 'empty'}
+        onClick={() => selectItem(defaultItemMetadata?.tokenId ? 'native' : 'empty')}
+        selected={selectedItemId === 'native' || selectedItemId === 'empty'}
       />
       {restItems.map(item => (
         <StyledItem
-          key={item.tokenId}
+          key={item.id}
           hideAmount
-          unavailable={!isWearable(item.tokenId)}
+          unavailable={!isWearable(item.metadata.tokenId)}
           item={item}
           currentOtto={otto}
-          onClick={() => selectItem(item.tokenId)}
-          selected={selectedItemId === item.tokenId}
+          onClick={() => selectItem(item.id)}
+          selected={selectedItemId === item.id}
         />
       ))}
     </StyledItems>

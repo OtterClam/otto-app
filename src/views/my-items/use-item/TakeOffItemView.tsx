@@ -1,8 +1,8 @@
 import Arrow from 'assets/ui/arrow-right-yellow.svg'
 import Button from 'components/Button'
 import OttoCard from 'components/OttoCard'
-import Item from 'models/Item'
-import Otto from 'models/Otto'
+import { NewItem } from 'models/Item'
+import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
@@ -53,27 +53,33 @@ const StyledUseButton = styled(Button)`
 const StyledPickerTitle = styled.section``
 
 interface Props {
-  item: Item
+  item: NewItem
   otto: Otto | null
   onUse: () => void
 }
 
 export default function TakeOffItemView({ item, otto, onUse }: Props) {
   const { t } = useTranslation()
+  const nativeItemMetadata = otto?.nativeItemsMetadata.find(({ type }) => type === item.metadata.type)
+
   return (
     <StyledWearItemView>
       <StyledPickerTitle>
         <Headline>{t('my_items.take_off_item.title')}</Headline>
       </StyledPickerTitle>
       <StyledBottomContainer>
-        {otto && <StyledOttoCard otto={otto} item={item} takeOff />}
+        {otto && <StyledOttoCard otto={otto} withItem={item} takeOff />}
         <StyledOttoPreviewContainer>
           <StyledItemPreview>
-            <ItemPreviewCard title={t('my_items.wear_item.current_equipped')} item={item} />
+            <ItemPreviewCard title={t('my_items.wear_item.current_equipped')} metadata={item.metadata} />
             <img width={30} src={Arrow.src} alt="arrow" />
-            <ItemPreviewCard title={t('my_items.wear_item.replaced')} />
+            <ItemPreviewCard title={t('my_items.wear_item.replaced')} metadata={nativeItemMetadata} />
           </StyledItemPreview>
-          <StyledUseButton Typography={Headline} onClick={onUse}>
+          <StyledUseButton
+            disabled={otto?.adventureStatus !== AdventureOttoStatus.Ready}
+            Typography={Headline}
+            onClick={onUse}
+          >
             {t('my_items.take_off')}
           </StyledUseButton>
         </StyledOttoPreviewContainer>

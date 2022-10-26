@@ -1,13 +1,15 @@
 import { TransactionState, TransactionStatus, useCalls, useContractFunction, useEthers } from '@usedapp/core'
 import { useApi } from 'contexts/Api'
+import { useRepositories } from 'contexts/Repositories'
 import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { Api } from 'libs/api'
 import _ from 'lodash'
-import Item, { ItemAction } from 'models/Item'
+import Item, { ItemAction, ItemMetadata, NewItem } from 'models/Item'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useState } from 'react'
+import { ItemsRepository } from 'repositories/items'
 import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
 import {
   useAdventureContract,
@@ -53,14 +55,14 @@ export const useSummonOtto = () => {
 interface OttoTransactionState {
   state: TransactionState
   status: TransactionStatus
-  receivedItem?: Item
+  receivedItem?: ItemMetadata
 }
 
 export const useItem = () => {
   const { OTTO } = useContractAddresses()
   const { account } = useEthers()
   const { i18n } = useTranslation()
-  const api = useApi()
+  const { items: itemsRepo } = useRepositories()
   const item = useItemContract()
   const { state, send, resetState } = useContractFunction(item, 'transferToParent')
   const [useItemState, setUseItemState] = useState<OttoTransactionState>({
@@ -74,7 +76,7 @@ export const useItem = () => {
   }
   useEffect(() => {
     if (state.status === 'Success') {
-      const receivedItemId = state.receipt?.logs
+      const receivedItemTokenId = state.receipt?.logs
         .map(log => {
           try {
             return item.interface.parseLog(log)
@@ -84,10 +86,10 @@ export const useItem = () => {
           return null
         })
         .find(e => e?.name === 'TransferSingle' && e.args[2] === account)?.args[3]
-      if (receivedItemId) {
-        api
-          .getItem(receivedItemId)
-          .then(receivedItem => setUseItemState({ state: 'Success', status: state, receivedItem }))
+      if (receivedItemTokenId) {
+        itemsRepo
+          .getMetadataList(receivedItemTokenId)
+          .then(metadata => setUseItemState({ state: 'Success', status: state, receivedItem: metadata[0] }))
       } else {
         setUseItemState({ state: 'Success', status: state })
       }
@@ -103,14 +105,14 @@ export const useTakeOffItem = () => {
   const { account } = useEthers()
   const otto = useOttoContract()
   const { state, send, resetState } = useContractFunction(otto, 'transferChild')
-  const [receivedItem, setReceivedItem] = useState<Item | undefined>()
+  const [receivedItem, setReceivedItem] = useState<NewItem | undefined>()
   const [takeOffState, setTakeOffState] = useState<OttoTransactionState>({
     state: 'None',
     status: state,
   })
-  const takeOff = (item: Item, ottoId: string) => {
+  const takeOff = (item: NewItem, ottoId: string) => {
     setReceivedItem(item)
-    send(ottoId, account || '', OTTO_ITEM, item.tokenId)
+    send(ottoId, account || '', OTTO_ITEM, item.metadata.tokenId)
   }
   const resetTakeOff = () => {
     resetState()
@@ -122,7 +124,7 @@ export const useTakeOffItem = () => {
   }
   useEffect(() => {
     if (state.status === 'Success') {
-      setTakeOffState({ state: 'Success', status: state, receivedItem })
+      setTakeOffState({ state: 'Success', status: state, receivedItem: receivedItem?.metadata })
     } else {
       setTakeOffState({ state: state.status, status: state })
     }
@@ -136,10 +138,11 @@ interface OttoTransactionState {
 }
 
 export interface OttoBuyTransactionState extends OttoTransactionState {
-  receivedItems?: Item[]
+  receivedItems?: ItemMetadata[]
 }
 
 export const useBuyProduct = (claim: boolean) => {
+  const { items: itemsRepo } = useRepositories()
   const { CLAM, OTTOPIA_STORE } = useContractAddresses()
   const { account, library } = useEthers()
   const { i18n } = useTranslation()
@@ -180,19 +183,19 @@ export const useBuyProduct = (claim: boolean) => {
   useEffect(() => {
     if (state.status === 'Success') {
       const IItem = new utils.Interface(OttoItemAbi)
-      Promise.all(
-        (state.receipt?.logs || [])
-          .map(log => {
-            try {
-              return IItem.parseLog(log)
-            } catch (err) {
-              // skip
-            }
-            return null
-          })
-          .filter(e => e?.name === 'TransferSingle' && e.args[2] === account)
-          .map(e => api.getItem(e?.args[3]))
-      ).then(receivedItems =>
+      const tokenIds = (state.receipt?.logs || [])
+        .map(log => {
+          try {
+            return IItem.parseLog(log)
+          } catch (err) {
+            // skip
+          }
+          return null
+        })
+        .filter(e => e?.name === 'TransferSingle' && e.args[2] === account)
+        .map(e => e?.args[3])
+
+      itemsRepo.getMetadataList(tokenIds).then(receivedItems =>
         setBuyState({
           state: 'Success',
           status: state,
@@ -207,6 +210,7 @@ export const useBuyProduct = (claim: boolean) => {
 }
 
 export const useRedeemProduct = () => {
+  const { items: itemsRepo } = useRepositories()
   const { OTTOPIA_STORE } = useContractAddresses()
   const { account, library } = useEthers()
   const { i18n } = useTranslation()
@@ -235,19 +239,18 @@ export const useRedeemProduct = () => {
   useEffect(() => {
     if (state.status === 'Success') {
       const IItem = new utils.Interface(OttoItemAbi)
-      Promise.all(
-        (state.receipt?.logs || [])
-          .map(log => {
-            try {
-              return IItem.parseLog(log)
-            } catch (err) {
-              // skip
-            }
-            return null
-          })
-          .filter(e => e?.name === 'TransferSingle' && e.args[2] === account)
-          .map(e => api.getItem(e?.args[3]))
-      ).then(receivedItems =>
+      const tokenIds = (state.receipt?.logs || [])
+        .map(log => {
+          try {
+            return IItem.parseLog(log)
+          } catch (err) {
+            // skip
+          }
+          return null
+        })
+        .filter(e => e?.name === 'TransferSingle' && e.args[2] === account)
+        .map(e => e?.args[3])
+      itemsRepo.getMetadataList(tokenIds).then(receivedItems =>
         setRedeemState({
           state: 'Success',
           status: state,
@@ -468,6 +471,7 @@ export const useClamPondWithdraw = (token: ClamPondToken) => {
 }
 
 export const useForge = () => {
+  const { items: itemsRepo } = useRepositories()
   const foundry = useFoundry()
   const { account } = useEthers()
   const api = useApi()
@@ -487,7 +491,7 @@ export const useForge = () => {
   }
   useEffect(() => {
     if (state.status === 'Success') {
-      parseReceivedItems({ receipt: state.receipt, api, account }).then(receivedItems =>
+      parseReceivedItems({ itemsRepository: itemsRepo, receipt: state.receipt, api, account }).then(receivedItems =>
         setForgeState({
           state: 'Success',
           status: state,
@@ -502,28 +506,29 @@ export const useForge = () => {
 }
 
 function parseReceivedItems({
+  itemsRepository,
   receipt,
   api,
   account,
 }: {
+  itemsRepository: ItemsRepository
   receipt?: ethers.providers.TransactionReceipt
   api: Api
   account?: string
 }) {
   const IItem = new utils.Interface(OttoItemAbi)
-  return Promise.all(
-    (receipt?.logs || [])
-      .map(log => {
-        try {
-          return IItem.parseLog(log)
-        } catch (err) {
-          // skip
-        }
-        return null
-      })
-      .filter(e => e?.name === 'TransferSingle' && e.args[2] === account)
-      .map(e => api.getItem(e?.args[3]))
-  )
+  const tokenIds = (receipt?.logs || [])
+    .map(log => {
+      try {
+        return IItem.parseLog(log)
+      } catch (err) {
+        // skip
+      }
+      return null
+    })
+    .filter(e => e?.name === 'TransferSingle' && e.args[2] === account)
+    .map(e => e?.args[3])
+  return itemsRepository.getMetadataList(tokenIds)
 }
 
 export const useSetApprovalForAll = (address: string) => {

@@ -6,7 +6,7 @@ import styled from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
 import Arrow from 'assets/ui/arrow-right-yellow.svg'
 import Button from 'components/Button'
-import Item from 'models/Item'
+import Item, { ItemMetadata } from 'models/Item'
 import useOtto from 'hooks/useOtto'
 import { useEffect, useState } from 'react'
 import Ribbon from 'assets/ui/ribbon.svg'
@@ -80,7 +80,7 @@ const CloseButtonLarge = styled(Button)``
 
 interface Props {
   otto: Otto | null
-  receivedItem?: Item
+  receivedItem?: ItemMetadata
   onClose: () => void
 }
 
@@ -114,7 +114,7 @@ export default function UseItemCompleteView({ otto, receivedItem, onClose }: Pro
           </StyledReceivedItemText>
           <StyledReceivedItemContainer>
             <StyledItemCellBg src={Star.src} />
-            <StyledReceivedItemCell item={receivedItem} />
+            <StyledReceivedItemCell metadata={receivedItem} />
           </StyledReceivedItemContainer>
         </StyledReceivedItem>
       )}
