@@ -948,7 +948,7 @@
   },
   "adventure": {
     "title": "Adventure",
-    "continue": "To Be Continue...",
+    "continue": "To Be Continued...",
     "listTitle": "Overview",
     "viewSwitcher": {
       "map": "Map",
