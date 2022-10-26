@@ -1,6 +1,6 @@
 import { RawAdventureResult } from 'libs/RawAdventureResult'
 import { AdventurePass, fromRawPass } from './AdventurePass'
-import { ItemMetadata, NewItem, rawItemMetadataToItemMetadata } from './Item'
+import { ItemMetadata, Item, rawItemMetadataToItemMetadata } from './Item'
 
 export interface AdventureResult {
   success: boolean

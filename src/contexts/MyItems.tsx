@@ -1,12 +1,12 @@
 import { useEthers } from '@usedapp/core'
 import noop from 'lodash/noop'
-import { NewItem } from 'models/Item'
+import { Item } from 'models/Item'
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useRepositories } from './Repositories'
 
 const MyItemsContext = createContext<{
-  items: NewItem[]
-  idToItem: { [k: string]: NewItem }
+  items: Item[]
+  idToItem: { [k: string]: Item }
   loading: boolean
   refetch: () => void
 }>({
@@ -18,7 +18,7 @@ const MyItemsContext = createContext<{
 
 export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
   const [loading, setLoading] = useState(false)
-  const [items, setItems] = useState<NewItem[]>([])
+  const [items, setItems] = useState<Item[]>([])
   const { account } = useEthers()
   const { items: itemsRepo } = useRepositories()
 
@@ -49,7 +49,7 @@ export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
       idToItem: items.reduce((map, item) => {
         map[item.id] = item
         return map
-      }, {} as { [id: string]: NewItem }),
+      }, {} as { [id: string]: Item }),
       loading,
       refetch,
     }
@@ -60,7 +60,7 @@ export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
 
 export const useMyItems = () => useContext(MyItemsContext)
 
-export const useMyItem = (id?: string): NewItem | undefined => {
+export const useMyItem = (id?: string): Item | undefined => {
   const { idToItem } = useMyItems()
   return idToItem[id ?? '']
 }

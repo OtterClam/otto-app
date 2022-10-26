@@ -1,7 +1,7 @@
 import CloseButton from 'components/CloseButton'
 import Fullscreen from 'components/Fullscreen'
 import { useTakeOffItem, useItem } from 'contracts/functions'
-import { NewItem } from 'models/Item'
+import { Item } from 'models/Item'
 import Otto from 'models/Otto'
 import { MyOttosContext } from 'MyOttosProvider'
 import { useContext, useEffect, useState } from 'react'
@@ -60,7 +60,7 @@ enum State {
 }
 
 interface Props {
-  item: NewItem
+  item: Item
   onClose: () => void
 }
 

@@ -3,7 +3,7 @@ import { LIST_ITEMS_BY_OTTO_TOKEN_ID, LIST_MY_ITEMS } from 'graphs/otto'
 import { ListItems, ListItemsVariables } from 'graphs/__generated__/ListItems'
 import { ListOttoItems, ListOttoItemsVariables } from 'graphs/__generated__/ListOttoItems'
 import { Api } from 'libs/api'
-import { ItemMetadata, NewItem } from 'models/Item'
+import { ItemMetadata, Item } from 'models/Item'
 import type { Repositories } from 'repositories'
 
 export class ItemsRepository {
@@ -29,7 +29,7 @@ export class ItemsRepository {
     return tokenIds.map(tokenId => tokenIdToMetadata[tokenId])
   }
 
-  async getItemsByOttoTokenId(ottoTokenId: string): Promise<NewItem[]> {
+  async getItemsByOttoTokenId(ottoTokenId: string): Promise<Item[]> {
     const result = await this.ottoSubgraph.query<ListOttoItems, ListOttoItemsVariables>({
       query: LIST_ITEMS_BY_OTTO_TOKEN_ID,
       variables: {
@@ -51,8 +51,8 @@ export class ItemsRepository {
     }))
   }
 
-  async getAllItemsByAccount(account: string): Promise<NewItem[]> {
-    let items: NewItem[] = []
+  async getAllItemsByAccount(account: string): Promise<Item[]> {
+    let items: Item[] = []
     let page = 0
 
     while (1) {
@@ -67,7 +67,7 @@ export class ItemsRepository {
     return items
   }
 
-  async getItemsByAccount(account: string, page = 0): Promise<NewItem[]> {
+  async getItemsByAccount(account: string, page = 0): Promise<Item[]> {
     const itemsPerPage = 1000
     const skip = itemsPerPage * page
     const result = await this.ottoSubgraph.query<ListItems, ListItemsVariables>({

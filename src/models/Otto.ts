@@ -6,7 +6,7 @@ import { RawAdventurePass } from 'libs/RawAdventureResult'
 import { getCroppedImageUrl } from 'utils/image'
 import { AdventurePass, fromRawPass } from './AdventurePass'
 import { AdventureResult } from './AdventureResult'
-import { ItemMetadata, NewItem, RawItemMetadata, rawItemMetadataToItemMetadata } from './Item'
+import { ItemMetadata, Item, RawItemMetadata, rawItemMetadataToItemMetadata } from './Item'
 
 export enum TraitCollection {
   Genesis = 'genesis',
@@ -164,7 +164,7 @@ export default class Otto {
 
   constructor(
     raw: RawOtto,
-    public equippedItems: NewItem[] = [],
+    public equippedItems: Item[] = [],
     public nativeItemsMetadata: ItemMetadata[] = [],
     public itemsMetadata: ItemMetadata[] = []
   ) {
@@ -351,7 +351,7 @@ export default class Otto {
   }
 
   // TODO: use ItemMetadata
-  public canWear(item: NewItem): boolean {
+  public canWear(item: Item): boolean {
     if (item.metadata.equippableGender === OttoGender.Both || this.raw.gender === 'Cleo') {
       return true
     }

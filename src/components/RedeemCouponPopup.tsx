@@ -1,7 +1,7 @@
 import LoadingView from 'components/OpenItem/OpenItemLoadingView'
 import OpenItemView from 'components/OpenItem/OpenItemView'
 import { useRedeemProduct } from 'contracts/functions'
-import { ItemMetadata, NewItem } from 'models/Item'
+import { ItemMetadata, Item } from 'models/Item'
 import { useEffect, useState } from 'react'
 
 enum State {

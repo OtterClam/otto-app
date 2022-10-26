@@ -2,7 +2,7 @@ import styled from 'styled-components/macro'
 import { useTranslation } from 'next-i18next'
 import { Caption, ContentLarge, ContentSmall, Note } from 'styles/typography'
 import ItemCell from 'components/ItemCell'
-import { ItemMetadata, NewItem } from 'models/Item'
+import { ItemMetadata, Item } from 'models/Item'
 import GenderSpecific from 'components/GenderSpecific'
 import UnreturnableHint from 'components/UnreturnableHint'
 import TraitLabels from 'components/TraitLabels'
@@ -74,7 +74,7 @@ const StyledWearCount = styled(Caption).attrs({ as: 'p' })`
 `
 
 export interface Props {
-  item?: NewItem
+  item?: Item
   metadata?: ItemMetadata
 }
 

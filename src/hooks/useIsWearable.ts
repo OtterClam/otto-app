@@ -1,9 +1,9 @@
-import { NewItem } from 'models/Item'
+import { Item } from 'models/Item'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import { useCallback, useMemo } from 'react'
 
-export default function useIsWearable(items: NewItem[]): (itemId?: string, currentOttoId?: string) => boolean {
+export default function useIsWearable(items: Item[]): (itemId?: string, currentOttoId?: string) => boolean {
   const { ottos } = useMyOttos()
   const readyOttosMap = useMemo(() => {
     return ottos

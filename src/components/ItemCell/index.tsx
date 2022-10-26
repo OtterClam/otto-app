@@ -1,5 +1,5 @@
 import CroppedImage from 'components/CroppedImage'
-import { ItemMetadata, NewItem } from 'models/Item'
+import { ItemMetadata, Item } from 'models/Item'
 import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
@@ -159,7 +159,7 @@ const StyledUnreturnable = styled.div`
 `
 
 interface Props {
-  item?: NewItem
+  item?: Item
   metadata?: ItemMetadata // component will use this field and ignore "item" if it's not undefined
   currentOtto?: Otto
   unavailable?: boolean

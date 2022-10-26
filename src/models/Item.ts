@@ -123,7 +123,7 @@ export const rawItemMetadataToItemMetadata = (raw: RawItemMetadata): ItemMetadat
   }
 }
 
-export interface NewItem {
+export interface Item {
   // from subgraph
   id: string // unique
   amount: number

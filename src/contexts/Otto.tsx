@@ -1,6 +1,6 @@
 import { ItemActionType } from 'constant'
 import noop from 'lodash/noop'
-import { ItemAction, NewItem } from 'models/Item'
+import { ItemAction, Item } from 'models/Item'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import { createContext, FC, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react'
@@ -48,7 +48,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
         return map
       }
       return Object.assign(map, { [item.metadata.tokenId]: item })
-    }, {} as Record<string, NewItem>)
+    }, {} as Record<string, Item>)
     const ottoIdToOtto = ottos.reduce(
       (map, otto) => Object.assign(map, { [otto.id]: otto }),
       {} as { [k: string]: Otto }

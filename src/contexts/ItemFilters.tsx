@@ -1,5 +1,5 @@
 import noop from 'lodash/noop'
-import { NewItem } from 'models/Item'
+import { Item } from 'models/Item'
 import { OttoGender } from 'models/Otto'
 import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react'
 
@@ -53,8 +53,8 @@ export interface ItemFilters {
   setPage: (page: number) => void
   nextPage: () => void
   prevPage: () => void
-  items: NewItem[]
-  filteredItems: NewItem[]
+  items: Item[]
+  filteredItems: Item[]
 }
 
 const ItemFiltersContext = createContext<ItemFilters>({
@@ -75,28 +75,28 @@ const ItemFiltersContext = createContext<ItemFilters>({
 })
 
 export interface ItemFiltersProviderProps {
-  items: NewItem[]
+  items: Item[]
   itemsPerPage?: number
 }
 
 const filterFunctions = {
   [ItemsFilter.None]: () => true,
-  [ItemsFilter.Equipped]: (item: NewItem) => Boolean(item.equippedBy),
-  [ItemsFilter.NotEquipped]: (item: NewItem) => !item.equippedBy,
-  [ItemsFilter.LottieSpecific]: (item: NewItem) => item.metadata.equippableGender === OttoGender.Female,
-  [ItemsFilter.OttoSpecific]: (item: NewItem) => item.metadata.equippableGender === OttoGender.Male,
+  [ItemsFilter.Equipped]: (item: Item) => Boolean(item.equippedBy),
+  [ItemsFilter.NotEquipped]: (item: Item) => !item.equippedBy,
+  [ItemsFilter.LottieSpecific]: (item: Item) => item.metadata.equippableGender === OttoGender.Female,
+  [ItemsFilter.OttoSpecific]: (item: Item) => item.metadata.equippableGender === OttoGender.Male,
 }
 
 type SortableFields<T extends object> = {
   [P in keyof T as T[P] extends number | Date ? P : never]: T[P]
 }
 
-function createSortFunction(key: keyof SortableFields<NewItem['metadata']>) {
-  return (lhs: NewItem, rhs: NewItem) => rhs.metadata[key] - lhs.metadata[key]
+function createSortFunction(key: keyof SortableFields<Item['metadata']>) {
+  return (lhs: Item, rhs: Item) => rhs.metadata[key] - lhs.metadata[key]
 }
 
 const sortFunctions = {
-  [ItemsSortBy.TimeReceived]: (lhs: NewItem, rhs: NewItem) => rhs.updatedAt.getTime() - lhs.updatedAt.getTime(),
+  [ItemsSortBy.TimeReceived]: (lhs: Item, rhs: Item) => rhs.updatedAt.getTime() - lhs.updatedAt.getTime(),
   [ItemsSortBy.Rarity]: createSortFunction('totalRarityScore'),
   [ItemsSortBy.Dex]: createSortFunction('dex'),
   [ItemsSortBy.Luck]: createSortFunction('luck'),

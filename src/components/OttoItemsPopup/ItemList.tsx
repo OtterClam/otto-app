@@ -5,7 +5,7 @@ import Otto, { Trait } from 'models/Otto'
 import { Note } from 'styles/typography'
 import { useMemo } from 'react'
 import { useTrait } from 'contexts/TraitContext'
-import { NewItem } from 'models/Item'
+import { Item } from 'models/Item'
 import { useMyItem } from 'contexts/MyItems'
 
 const StyledItems = styled.div`
@@ -44,7 +44,7 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
     let restItems = filteredItems
 
     {
-      const items: NewItem[] = []
+      const items: Item[] = []
       const map: { [k: string]: number } = {}
       restItems.forEach(item => {
         if (

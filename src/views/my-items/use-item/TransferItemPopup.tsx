@@ -4,7 +4,7 @@ import Fullscreen from 'components/Fullscreen'
 import ItemCell from 'components/ItemCell'
 import { useTransferItem } from 'contracts/functions'
 import { ethers } from 'ethers'
-import { NewItem } from 'models/Item'
+import { Item } from 'models/Item'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
@@ -95,7 +95,7 @@ const StyledTransferItemCell = styled(ItemCell)`
 `
 
 interface Props {
-  item: NewItem
+  item: Item
   onClose: () => void
 }
 

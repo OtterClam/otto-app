@@ -5,7 +5,7 @@ import GenderSpecific from 'components/GenderSpecific'
 import ItemCollectionBadge from 'components/ItemCollectionBadge'
 import TraitLabels from 'components/TraitLabels'
 import { getOpenSeaItemLink } from 'constant'
-import { ItemType, NewItem } from 'models/Item'
+import { ItemType, Item } from 'models/Item'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -170,7 +170,7 @@ const StyledName = styled(Headline)`
 `
 
 interface Props {
-  item: NewItem
+  item: Item
   onClose?: () => void
   onUse?: (itemId: string) => void
   className?: string

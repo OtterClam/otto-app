@@ -5,7 +5,7 @@ import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { Api } from 'libs/api'
 import _ from 'lodash'
-import { ItemAction, ItemMetadata, NewItem } from 'models/Item'
+import { ItemAction, ItemMetadata, Item } from 'models/Item'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useState } from 'react'
@@ -105,12 +105,12 @@ export const useTakeOffItem = () => {
   const { account } = useEthers()
   const otto = useOttoContract()
   const { state, send, resetState } = useContractFunction(otto, 'transferChild')
-  const [receivedItem, setReceivedItem] = useState<NewItem | undefined>()
+  const [receivedItem, setReceivedItem] = useState<Item | undefined>()
   const [takeOffState, setTakeOffState] = useState<OttoTransactionState>({
     state: 'None',
     status: state,
   })
-  const takeOff = (item: NewItem, ottoId: string) => {
+  const takeOff = (item: Item, ottoId: string) => {
     setReceivedItem(item)
     send(ottoId, account || '', OTTO_ITEM, item.metadata.tokenId)
   }

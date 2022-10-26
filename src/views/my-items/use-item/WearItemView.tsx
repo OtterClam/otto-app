@@ -2,7 +2,7 @@ import LegendaryIcon from 'assets/badge/legendary.png'
 import Arrow from 'assets/ui/arrow-right-yellow.svg'
 import Button from 'components/Button'
 import OttoCard from 'components/OttoCard'
-import { NewItem } from 'models/Item'
+import { Item } from 'models/Item'
 import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
@@ -74,7 +74,7 @@ const StyledLegendaryWarning = styled(Note).attrs({ as: 'div' })`
 `
 
 interface Props {
-  item: NewItem
+  item: Item
   selectedOtto: Otto | null
   onSelect: (otto: Otto) => void
   onUse: () => void

@@ -1,4 +1,4 @@
-import { ItemMetadata, NewItem } from 'models/Item'
+import { ItemMetadata, Item } from 'models/Item'
 import { Trait } from 'models/Otto'
 import styled from 'styled-components'
 import { Note } from 'styles/typography'
