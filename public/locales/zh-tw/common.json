@@ -805,6 +805,7 @@
   },
   "conditionalBoosts": {
     "title": "特殊加成條件",
+    "regional_boosts": "區域加成條件",
     "help": "幫助",
     "effectiveUntil": "<span style='color: #FFDC77'>{{ duration }}</span>",
     "legendary": "傳說級阿獺：",
