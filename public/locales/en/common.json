@@ -822,6 +822,7 @@
   },
   "conditionalBoosts": {
     "title": "Conditional Boosts",
+    "regional_boosts": "Regional Boosts",
     "help": "test",
     "effectiveUntil": "<span style='color: #FFDC77'>(Last for {{ duration }})</span>",
     "legendary": "Legendary Otto:",
