@@ -6,6 +6,9 @@ import styled, { keyframes } from 'styled-components/macro'
 import mapImage from './city_center.jpg'
 import cloudLeftImage from './cloud_left.png'
 import cloudRightImage from './cloud_right.png'
+import mapImageDay from './city_center2.jpg'
+import cloudLeftImageDay from './cloud_left2.png'
+import cloudRightImageDay from './cloud_right2.png'
 import { pins, Pin } from './pins'
 import flagImage from './flag.png'
 
@@ -49,14 +52,14 @@ const StyledFlag = styled.span<{ scale: number }>`
   animation: ${({ scale }) => flagAnimation(scale)} 0.4s steps(3) infinite;
 `
 
-const StyledBackgroundLayer = styled.div<{ scale: number; offset: Position }>`
+const StyledBackgroundLayer = styled.div<{ scale: number; offset: Position; day?: boolean }>`
   position: absolute;
   z-index: 0;
   left: calc(50% - ${({ scale }) => (MAP_WIDTH / 2) * scale}px);
   top: calc(50% - ${({ scale }) => (MAP_HEIGHT / 2) * scale}px);
   width: ${({ scale }) => MAP_WIDTH * scale}px;
   height: ${({ scale }) => MAP_HEIGHT * scale}px;
-  background: center / cover url(${mapImage.src});
+  background: center / cover url(${({ day }) => (day ? mapImageDay.src : mapImage.src)});
   transform: translate(${({ offset }) => `${offset.x}px, ${offset.y}px`});
 `
 
@@ -75,6 +78,7 @@ const StyledCloudsLayer = styled.div<{
   scale: number
   containerSize: { width: number; height: number }
   offset: Position
+  day?: boolean
 }>`
   position: absolute;
   left: calc(50% - ${({ scale, containerSize }) => (containerSize.width / 2) * scale}px);
@@ -92,7 +96,8 @@ const StyledCloudsLayer = styled.div<{
     bottom: 0;
     width: 100%;
     height: 100%;
-    background: left center / auto 100% url(${cloudLeftImage.src}) no-repeat;
+    background: left center / auto 100% url(${({ day }) => (day ? cloudLeftImageDay.src : cloudLeftImage.src)})
+      no-repeat;
   }
 
   &::after {
@@ -102,7 +107,8 @@ const StyledCloudsLayer = styled.div<{
     bottom: 0;
     width: 100%;
     height: 100%;
-    background: right center / auto 100% url(${cloudRightImage.src}) no-repeat;
+    background: right center / auto 100% url(${({ day }) => (day ? cloudRightImageDay.src : cloudRightImage.src)})
+      no-repeat;
   }
 `
 
@@ -165,6 +171,7 @@ export interface MapProps {
 }
 
 export function FixedMap({ className, hideCloud }: MapProps) {
+  const day = ((new Date().getHours() + 6) % 24) - 12 > 0
   const containerRef = useRef() as RefObject<HTMLDivElement>
   const size = useSize(containerRef)
   const containerSize = size || { width: MAP_WIDTH, height: MAP_HEIGHT }
@@ -178,19 +185,22 @@ export function FixedMap({ className, hideCloud }: MapProps) {
 
   return (
     <StyledContainer className={className} ref={containerRef} padding={0}>
-      <StyledBackgroundLayer scale={imageScale} offset={mapOffset} />
+      <StyledBackgroundLayer day={day} scale={imageScale} offset={mapOffset} />
       <StyledPinsLayer scale={imageScale} offset={mapOffset}>
         <StyledFlag scale={imageScale} />
         {pins.map(pin => (
           <StyledPin width={pinWidth} key={pin.key} pin={pin} />
         ))}
       </StyledPinsLayer>
-      {!hideCloud && <StyledCloudsLayer containerSize={containerSize} scale={cloudContainerScale} offset={noOffset} />}
+      {!hideCloud && (
+        <StyledCloudsLayer day={day} containerSize={containerSize} scale={cloudContainerScale} offset={noOffset} />
+      )}
     </StyledContainer>
   )
 }
 
 export default function Map({ className, hideCloud }: MapProps) {
+  const day = ((new Date().getHours() + 6) % 24) - 12 > 0
   const { isMobile } = useBreakpoints()
   const containerRef = useRef() as RefObject<HTMLDivElement>
   const size = useSize(containerRef)
@@ -207,7 +217,7 @@ export default function Map({ className, hideCloud }: MapProps) {
 
   return (
     <StyledContainer className={className} ref={containerRef} padding={2}>
-      <StyledBackgroundLayer scale={imageScale} offset={noOffset} />
+      <StyledBackgroundLayer day={day} scale={imageScale} offset={noOffset} />
       <StyledPinsLayer scale={imageScale} offset={noOffset}>
         <StyledFlag scale={imageScale} />
         {pins.map(pin => (
@@ -215,7 +225,7 @@ export default function Map({ className, hideCloud }: MapProps) {
         ))}
       </StyledPinsLayer>
       {!hideCloud && (
-        <StyledCloudsLayer containerSize={containerSize} scale={cloudContainerScale} offset={cloudOffset} />
+        <StyledCloudsLayer day={day} containerSize={containerSize} scale={cloudContainerScale} offset={cloudOffset} />
       )}
     </StyledContainer>
   )
