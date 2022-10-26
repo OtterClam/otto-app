@@ -1,4 +1,4 @@
-import { TransactionState, TransactionStatus, useCalls, useContractFunction, useEthers } from '@usedapp/core'
+import { TransactionState, TransactionStatus, useCall, useCalls, useContractFunction, useEthers } from '@usedapp/core'
 import { useApi } from 'contexts/Api'
 import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
@@ -23,6 +23,7 @@ import {
   usePortalCreatorContract,
   useStoreContract,
 } from './contracts'
+import { Adventure } from './__generated__'
 
 export const useApprove = (tokenAddress?: string) => {
   const { CLAM } = useContractAddresses()
@@ -555,6 +556,7 @@ interface OttoTransactionWriteState {
 
 interface OttoAdventureExploreState extends OttoTransactionWriteState {
   passId?: string
+  pass?: Adventure.PassStruct
 }
 
 export const useAdventureExplore = () => {
@@ -562,8 +564,16 @@ export const useAdventureExplore = () => {
   const otto = useOttoContract()
   const item = useItemContract()
   const { account, library } = useEthers()
+  const [passId, setPassId] = useState<string | null>(null)
   const api = useApi()
   const { send: sendExplore, state, resetState } = useContractFunction(adventure, 'explore')
+  const rawPassResult = useCall(
+    passId && {
+      contract: adventure,
+      method: 'pass',
+      args: [passId],
+    }
+  )
   const [exploreState, setExploreState] = useState<OttoAdventureExploreState>({
     state: 'None',
     status: state,
@@ -602,11 +612,7 @@ export const useAdventureExplore = () => {
           return null
         })
         .filter(e => e?.name === 'Departure')[0]?.args[0]
-      setExploreState({
-        state: 'Success',
-        status: state,
-        passId,
-      })
+      setPassId(passId)
     } else {
       setExploreState({
         state: txState(state.status),
@@ -614,6 +620,17 @@ export const useAdventureExplore = () => {
       })
     }
   }, [state])
+  useEffect(() => {
+    if (passId && rawPassResult?.value?.[0].canFinishAt.gt(0)) {
+      setExploreState({
+        state: 'Success',
+        status: state,
+        passId,
+        pass: rawPassResult?.value?.[0],
+      })
+      setPassId(null)
+    }
+  }, [passId, rawPassResult])
 
   const resetExplore = () => {
     resetItem()
