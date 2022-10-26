@@ -27,16 +27,16 @@ export interface RawOtto {
   otto_details?: Trait[]
   otto_native_traits?: Trait[]
   animation_url: string
-  tokenURI: string
+  token_uri: string
   mintAt: any
   legendary: boolean
   brs?: number
   rrs?: number
-  rarityScore?: number
-  constellationBoost?: number
-  legendaryBoost?: number
-  epochRarityBoost?: number
-  diceCount?: number
+  rarity_score?: number
+  constellation_boost?: number
+  legendary_boost?: number
+  epoch_rarity_boost?: number
+  dice_count?: number
   image_wo_bg: string
   adventure_status: AdventureOttoStatus
   resting_until?: string
@@ -177,9 +177,9 @@ export default class Otto {
     this.voice.load()
     this.baseRarityScore = this.raw.brs ? String(this.raw.brs) : '?'
     this.relativeRarityScore = this.raw.rrs ? String(this.raw.rrs) : '?'
-    this.totalRarityScore = this.raw.rarityScore ? String(this.raw.rarityScore) : '?'
-    this.epochRarityBoost = this.raw.epochRarityBoost
-    this.diceCount = this.raw.diceCount
+    this.totalRarityScore = this.raw.rarity_score ? String(this.raw.rarity_score) : '?'
+    this.epochRarityBoost = this.raw.epoch_rarity_boost
+    this.diceCount = this.raw.dice_count
 
     if (this.raw.latest_adventure_pass) {
       this.latestAdventurePass = fromRawPass(this.raw.latest_adventure_pass)
@@ -271,7 +271,7 @@ export default class Otto {
   }
 
   get tokenURI(): string {
-    return this.raw.tokenURI
+    return this.raw.token_uri
   }
 
   get legendary(): boolean {
@@ -285,11 +285,11 @@ export default class Otto {
   }
 
   get isChosenOne(): boolean {
-    return this.raw.constellationBoost === 150
+    return this.raw.constellation_boost === 150
   }
 
   get zodiacBoost(): number {
-    return this.raw.constellationBoost || 0
+    return this.raw.constellation_boost || 0
   }
 
   get imageWoBg(): string {

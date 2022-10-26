@@ -18,6 +18,7 @@ import attributePointsImage from 'assets/chests/attribute_points.png'
 import { AdventureDisplayedBoost, parseBoosts } from 'models/AdventureDisplayedBoost'
 import { BoostType } from 'models/AdventureLocation'
 import { useApi } from 'contexts/Api'
+import MarkdownWithHtml from 'components/MarkdownWithHtml'
 import arrowImage from './arrow.png'
 
 const rewardItems: { [k: string]: { key: string; image: string } } = {
@@ -241,8 +242,8 @@ export default function LevelUpPopup() {
                 <AdventureRibbonText>{t('boostSectionTitle')}</AdventureRibbonText>
               </StyledRewardTitle>
               <StyledBoosts>
-                {boosts.map(boost => (
-                  <div>{boost}</div>
+                {boosts.map((boost, i) => (
+                  <div dangerouslySetInnerHTML={{ __html: boost }} key={i} />
                 ))}
               </StyledBoosts>
             </StyledRewardSection>

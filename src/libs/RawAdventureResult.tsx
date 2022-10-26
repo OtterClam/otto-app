@@ -46,6 +46,7 @@ export interface LevelUp {
 
 export interface Events {
   level_up?: LevelUp
+  treasure_chests?: any[] // raw items
 }
 
 export interface RawAdventureResult {

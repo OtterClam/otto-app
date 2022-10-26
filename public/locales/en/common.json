@@ -287,7 +287,9 @@
       "Facial Accessories": "Facial Accessories ",
       "Headwear": "Headwear",
       "Holding": "Holdings",
-      "Other": "Other Items"
+      "Other": "Other Items",
+      "Collectible": "Collectibles",
+      "Mission Item": "Mission Item"
     },
     "sorted_by": "Sorted By",
     "sorted_by_options": {
@@ -820,8 +822,9 @@
   },
   "conditionalBoosts": {
     "title": "Conditional Boosts",
+    "regional_boosts": "Regional Boosts",
     "help": "test",
-    "effectiveUntil": "<span style='color: #FFDC77'>({{ duration }} left)</span>",
+    "effectiveUntil": "<span style='color: #FFDC77'>(Last for {{ duration }})</span>",
     "legendary": "Legendary Otto:",
     "zodiac": "Zodiac sign:",
     "birthday": "Birthday today:",
@@ -945,7 +948,7 @@
   },
   "adventure": {
     "title": "Adventure",
-    "continue": "To Be Continue...",
+    "continue": "To Be Continued...",
     "listTitle": "Overview",
     "viewSwitcher": {
       "map": "Map",

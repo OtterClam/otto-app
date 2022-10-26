@@ -1,6 +1,6 @@
 import { RawAdventureResult } from 'libs/RawAdventureResult'
 import { AdventurePass, fromRawPass } from './AdventurePass'
-import { ItemMetadata, Item, rawItemMetadataToItemMetadata } from './Item'
+import { ItemMetadata, rawItemMetadataToItemMetadata } from './Item'
 
 export interface AdventureResult {
   success: boolean
@@ -29,6 +29,7 @@ export type AdventureResultEvents = {
       attrs_points: number
     }
   }
+  treasureChests?: ItemMetadata[]
 }
 
 export type AdventureJournalEntry = {
@@ -75,6 +76,8 @@ export function fromRawResult(raw: RawAdventureResult): AdventureResult {
           attrs_points: raw.events.level_up.got.attrs_points,
         },
       },
+      treasureChests:
+        raw.events?.treasure_chests && raw.events.treasure_chests.map(raw => rawItemMetadataToItemMetadata(raw)),
     },
     pass: fromRawPass(raw.pass),
   }

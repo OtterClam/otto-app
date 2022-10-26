@@ -282,7 +282,9 @@
       "Facial Accessories": "臉部配件",
       "Headwear": "頭飾",
       "Holding": "手持物",
-      "Other": "其他物品"
+      "Other": "其他物品",
+      "Collectible": "收藏品",
+      "Mission Item": "任務道具"
     },
     "sorted_by": "排序",
     "sorted_by_options": {
@@ -779,7 +781,7 @@
       "title": "必要的物品："
     },
     "forgeButton": "鑄造",
-    "forgeButton_insufficient": "鑄造 (物品不)",
+    "forgeButton_insufficient": "鑄造 (物品不足)",
     "forgeAvailableTime": "可鑄造時間 {{ startTime }} - {{ endTime }} ({{ timeZone }})",
     "comingSoon": "即將登場...",
     "approve": "同意簽署",
@@ -803,6 +805,7 @@
   },
   "conditionalBoosts": {
     "title": "特殊加成條件",
+    "regional_boosts": "區域加成條件",
     "help": "幫助",
     "effectiveUntil": "<span style='color: #FFDC77'>{{ duration }}</span>",
     "legendary": "傳說級阿獺：",

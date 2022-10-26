@@ -646,13 +646,13 @@ export const useAdventureExplore = () => {
 
       const itemApproved = await item.isApprovedForAll(account, adventure.address)
       if (!itemApproved) {
-        const tx = approveItemSpending(adventure.address, true)
+        const tx = await approveItemSpending(adventure.address, true)
         if (!tx) {
           return
         }
       }
       const data = await api.explore(ottoId, locationId, account, itemActions)
-      sendExplore(...data, { gasLimit: 2000000 })
+      sendExplore(...data)
     },
     [account, library, state, otto, item, api, sendExplore]
   )

@@ -174,9 +174,10 @@ export default function RankList({ className }: Props) {
     },
     skip: epoch === -1,
   })
+  const epochInQuery = isLatestEpoch ? undefined : epoch
   const ottoIds = useMemo(() => data?.ottos.map(o => o.tokenId) || [], [data])
-  const { ottos, loading: loadingApi } = useOttos(ottoIds, { details: true, epoch })
-  const { ottos: myOttos } = useMyOttos(epoch)
+  const { ottos, loading: loadingApi } = useOttos(ottoIds, { details: true, epoch: epochInQuery })
+  const { ottos: myOttos } = useMyOttos(epochInQuery)
   const sortedMyOttos = useMemo(() => myOttos.sort((a, b) => a.ranking - b.ranking), [myOttos])
   const [expand, setExpand] = useState(false)
   const loading = loadingGraph || loadingApi

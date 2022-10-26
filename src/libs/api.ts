@@ -132,7 +132,7 @@ export class Api {
   }
 
   public async getFoundryForges(): Promise<ForgeFormula[]> {
-    const result = await this.otterclamClient.get<RawForgeFormula[]>('/foundry/forge')
+    const result = await this.otterclamClient.get<RawForgeFormula[]>('/foundry/formulas')
     return result.data.map(rawForgeToForge)
   }
 

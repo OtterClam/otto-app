@@ -112,13 +112,13 @@ export default function ResultStep() {
     if (!(otto && result)) {
       return
     }
-    const chest = result.rewards.items.find(item => item.tokenId === ChestId.TreasuryChest)
-    if (!chest) {
+    const chests = result.events.treasureChests
+    if (!chests) {
       return
     }
     dispatch({
       type: AdventureUIActionType.SetTreasuryChestItem,
-      data: chest,
+      data: chests[0],
     })
   }, [dispatch, otto, result])
 

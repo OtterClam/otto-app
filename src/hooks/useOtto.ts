@@ -66,20 +66,14 @@ export function useOttos(ids: string[] | Falsy, { details, epoch }: { details: b
   return { loading, ottos, error, refetch }
 }
 
-export function useMyOttos(epoch: number) {
+export function useMyOttos(epoch?: number) {
   const { account } = useEthers()
   const { data, loading, refetch } = useQuery<ListMyOttos, ListMyOttosVariables>(LIST_MY_OTTOS, {
     variables: { owner: account || '' },
     skip: !account,
   })
-  const {
-    ottos,
-    loading: loadingMeta,
-    refetch: refetchMeta,
-  } = useOttos(
-    data?.ottos.map(o => o.tokenId),
-    { details: true, epoch }
-  )
+  const ottoIds = useMemo(() => (data?.ottos ? data.ottos.map(otto => otto.tokenId) : []), [data])
+  const { ottos, loading: loadingMeta, refetch: refetchMeta } = useOttos(ottoIds, { details: true, epoch })
   const reload = useCallback(() => refetch().then(refetchMeta), [refetch, refetchMeta])
   const myOttos = useMemo(
     () => ({

@@ -435,7 +435,7 @@ export default function OttoPage() {
                     {Number(otto.id) >= reserveOttoAmount(chainId) && otto.legendary && (
                       <StyledLegendaryBoost>
                         {t('otto.legendary_boost', {
-                          context: (otto.raw.legendaryBoost || 0) > 0 ? 'added' : 'removed',
+                          context: (otto.raw.legendary_boost || 0) > 0 ? 'added' : 'removed',
                         })}
                       </StyledLegendaryBoost>
                     )}
