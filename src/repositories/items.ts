@@ -82,13 +82,21 @@ export class ItemsRepository {
     const tokenIds = Array.from(new Set(itemsInfo.map(item => String(item.tokenId))))
     const tokenIdToMetadata = await this.getMetadata(tokenIds)
 
-    return itemsInfo.map(info => ({
-      id: info.id,
-      amount: info.amount,
-      equippedBy: info.parentTokenId,
-      updatedAt: new Date(info.updateAt),
-      metadata: tokenIdToMetadata[info.tokenId],
-      unreturnable: false,
-    }))
+    return itemsInfo
+      .filter(info => {
+        if (!Object.prototype.hasOwnProperty.call(tokenIdToMetadata, info.tokenId)) {
+          console.warn(`can't find metadata for item #${info.tokenId}`)
+          return false
+        }
+        return true
+      })
+      .map(info => ({
+        id: info.id,
+        amount: info.amount,
+        equippedBy: info.parentTokenId,
+        updatedAt: new Date(info.updateAt),
+        metadata: tokenIdToMetadata[info.tokenId],
+        unreturnable: false,
+      }))
   }
 }
