@@ -8,7 +8,7 @@ import { useOtto } from 'contexts/Otto'
 import { useTrait } from 'contexts/TraitContext'
 import useAdventureOttosWithItem from 'hooks/useAdventureOttosWithItem'
 import useOnClickOutside from 'hooks/useOnClickOutside'
-import { ItemMetadata, Item } from 'models/Item'
+import { ItemMetadata } from 'models/Item'
 import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import { memo, useMemo, useRef } from 'react'
@@ -100,7 +100,11 @@ const StyledButton = styled(Button)`
   width: 100%;
 `
 
-const StyledOttos = styled.div``
+const StyledOttos = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`
 
 const StyledOtto = styled.div`
   display: flex;
@@ -115,6 +119,7 @@ const StyledOttoImage = styled.div`
   max-width: 18px;
   max-width: 18px;
   height: 18px;
+  overflow: hidden;
 `
 
 const useOttos = (metadata?: ItemMetadata, selectedOtto?: Otto) => {

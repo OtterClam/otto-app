@@ -55,6 +55,7 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
     }
 
     restItems = restItems.filter(item => otto?.canWear(item)).slice()
+    console.log(restItems)
 
     return { defaultItemMetadata, restItems }
   }, [filteredItems, traitType, otto])
