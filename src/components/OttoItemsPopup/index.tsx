@@ -129,7 +129,6 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
           <ItemPreview
             metadata={selectedItemMetadata}
             selectedItemId={selectedItemId}
-            unavailable={selectedItemMetadata && !isWearable(selectedItemMetadata.tokenId)}
             onItemUpdated={onRequestClose}
             onClose={() => selectItem(undefined)}
           />

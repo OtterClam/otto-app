@@ -1,17 +1,19 @@
+import AdventureStatus from 'components/AdventureStatus'
 import Button from 'components/Button'
 import CroppedImage from 'components/CroppedImage'
 import ItemCell from 'components/ItemCell'
 import ItemCollectionBadge from 'components/ItemCollectionBadge'
 import ItemRarityBadge from 'components/ItemRarityBadge'
 import { useAdventureOtto } from 'contexts/AdventureOtto'
+import { useMyItem } from 'contexts/MyItems'
 import { useOtto } from 'contexts/Otto'
 import { useTrait } from 'contexts/TraitContext'
-import useAdventureOttosWithItem from 'hooks/useAdventureOttosWithItem'
 import useOnClickOutside from 'hooks/useOnClickOutside'
 import { ItemMetadata } from 'models/Item'
-import Otto from 'models/Otto'
+import { AdventureOttoStatus } from 'models/Otto'
+import { useMyOtto } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
-import { memo, useMemo, useRef } from 'react'
+import { memo, useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import styled from 'styled-components/macro'
 import { ContentSmall, Headline, Note } from 'styles/typography'
@@ -100,53 +102,27 @@ const StyledButton = styled(Button)`
   width: 100%;
 `
 
-const StyledOttos = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`
-
-const StyledOtto = styled.div`
-  display: flex;
-  gap: 5px;
-  align-items: center;
-`
-
-const StyledOttoImage = styled.div`
-  flex: 0 18px;
-  position: relative;
-  border-radius: 9px;
-  max-width: 18px;
-  max-width: 18px;
-  height: 18px;
-  overflow: hidden;
-`
-
-const useOttos = (metadata?: ItemMetadata, selectedOtto?: Otto) => {
-  const ottos = useAdventureOttosWithItem(metadata?.tokenId ?? '')
-  return useMemo(() => {
-    return ottos.filter(otto => otto.id !== selectedOtto?.id)
-  }, [metadata, selectedOtto])
-}
-
 export interface ItemPreviewProps {
   metadata?: ItemMetadata
   selectedItemId?: string
   onClose: () => void
   onItemUpdated?: () => void
-  unavailable?: boolean
 }
 
 export default memo(
-  function ItemPreview({ metadata, selectedItemId, onClose, onItemUpdated, unavailable = false }: ItemPreviewProps) {
+  function ItemPreview({ metadata, selectedItemId, onClose, onItemUpdated }: ItemPreviewProps) {
     const { traitType } = useTrait()
     const { equipItem, removeItem } = useOtto()
     const { draftOtto: otto } = useAdventureOtto()
     const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
     const containerRef = useRef<HTMLDivElement | null>(null)
-    const ottos = useOttos(metadata, otto)
-    const equippedByCurrentOtto = Boolean(otto?.wearableTraits.find(trait => trait.id === metadata?.tokenId))
-    const equippedItem = otto?.wearableTraits.find(trait => trait.type === traitType)
+    const equippedItem = otto?.equippedItems.find(item => item.metadata.type === traitType)
+    const selectedItem = useMyItem(selectedItemId)
+    const equippedOtto = useMyOtto(selectedItem?.equippedBy)
+    const equippedByCurrentOtto = equippedOtto?.id === otto?.id
+    const equippedSameToken =
+      equippedItem && selectedItem && equippedItem.metadata.tokenId === selectedItem.metadata.tokenId
+    const unavailable = selectedItem && equippedOtto && equippedOtto.adventureStatus !== AdventureOttoStatus.Ready
 
     const onEquip = (type: string, itemId: string) => {
       equipItem(type, itemId)
@@ -187,21 +163,9 @@ export default memo(
               </StyledItemLevels>
             </StyledItemAttrs>
           </StyledItemPreviewDetails>
-          {ottos.length > 0 && (
-            <StyledOttos>
-              {ottos.map(otto => (
-                <StyledOtto key={otto.id}>
-                  <StyledOttoImage>
-                    <CroppedImage src={otto.image} layout="fill" />
-                  </StyledOttoImage>
-                  <Note>{t('wearBy', { name: otto.name })}</Note>
-                </StyledOtto>
-              ))}
-            </StyledOttos>
-          )}
           {!equippedByCurrentOtto && metadata && (
             <StyledButton
-              disabled={unavailable}
+              disabled={unavailable || equippedSameToken}
               Typography={Headline}
               onClick={() => onEquip(metadata.type, metadata.tokenId)}
             >

@@ -9,22 +9,15 @@ const AdventureOttoContext = createContext<{
 
 export const AdventureOttoProvider = ({
   otto,
-  preview,
+  draftOtto,
   children,
-}: PropsWithChildren<{ otto?: Otto; preview?: AdventurePreview }>) => {
-  const draftOtto = useMemo(() => {
-    if (!(otto && preview)) {
-      return
-    }
-    return new Otto({ ...otto.raw, ...preview }, otto.equippedItems, otto.nativeItemsMetadata, otto.itemsMetadata)
-  }, [otto, preview])
-
+}: PropsWithChildren<{ otto?: Otto; draftOtto?: Otto }>) => {
   const value = useMemo(
     () => ({
       otto,
       draftOtto,
     }),
-    [otto, preview]
+    [otto, draftOtto]
   )
 
   return <AdventureOttoContext.Provider value={value}>{children}</AdventureOttoContext.Provider>

@@ -1,6 +1,7 @@
 import CroppedImage from 'components/CroppedImage'
 import { ItemMetadata, Item } from 'models/Item'
-import Otto from 'models/Otto'
+import Otto, { AdventureOttoStatus } from 'models/Otto'
+import { useMyOtto } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentLarge, Note } from 'styles/typography'
@@ -126,13 +127,13 @@ const StyledAmount = styled.div`
 const StyledEquipped = styled.div`
   position: absolute;
   z-index: 1;
-  left: -2px;
-  bottom: -2px;
-  padding: 2px 6px;
-  color: ${({ theme }) => theme.colors.white};
-  background-color: ${({ theme }) => theme.colors.darkGray300};
-  border: 2px solid ${({ theme }) => theme.colors.otterBlack};
-  border-radius: 0 5px 5px 5px;
+  left: 6px;
+  bottom: 6px;
+  width: 25px;
+  height: 25px;
+  border: 2px ${({ theme }) => theme.colors.white} solid;
+  border-radius: 13px;
+  overflow: hidden;
 `
 
 const StyledUnreturnable = styled.div`
@@ -173,7 +174,7 @@ interface Props {
 export default function ItemCell({
   item,
   metadata,
-  currentOtto,
+  currentOtto, // for previewer
   unavailable = false,
   size,
   selected = false,
@@ -181,18 +182,21 @@ export default function ItemCell({
   className,
   hideAmount = false,
 }: Props) {
-  const { t } = useTranslation()
-  const { equippedBy, amount = 0 } = item ?? {}
+  const { id, equippedBy, amount = 0 } = item ?? {}
+  const equippedByOtto = useMyOtto(equippedBy)
   const { tokenId, image, rarity, unreturnable } = metadata || (item?.metadata ?? {})
-  const equipped = Boolean(equippedBy)
-  const equippedByCurrentOtto =
-    (!currentOtto || currentOtto?.wearableTraits.find(trait => trait.id === tokenId)) && equipped
+  const equippedByCurrentOtto = Boolean(currentOtto?.equippedItems.find(item => item.id === id))
+
+  unavailable = Boolean(
+    (unavailable && !equippedByCurrentOtto) ||
+      (equippedByOtto && equippedByOtto.adventureStatus !== AdventureOttoStatus.Ready)
+  )
 
   return (
     <StyledItemCell
       size={size}
       rarity={rarity}
-      unavailable={unavailable && !equippedByCurrentOtto}
+      unavailable={unavailable}
       selected={selected}
       canClick={Boolean(onClick)}
       className={className}
@@ -207,9 +211,14 @@ export default function ItemCell({
           <ContentLarge>{amount}</ContentLarge>
         </StyledAmount>
       )}
-      {equipped && (
+      {equippedByOtto && (
         <StyledEquipped>
-          <Note>{t('my_items.equipped')}</Note>
+          <CroppedImage src={equippedByOtto.image} layout="fill" />
+        </StyledEquipped>
+      )}
+      {equippedByCurrentOtto && (
+        <StyledEquipped>
+          <CroppedImage src={currentOtto!.image} layout="fill" />
         </StyledEquipped>
       )}
       {selected && (

@@ -5,6 +5,7 @@ import { useCallback, useMemo } from 'react'
 
 export default function useIsWearable(items: Item[]): (itemId?: string, currentOttoId?: string) => boolean {
   const { ottos } = useMyOttos()
+
   const readyOttosMap = useMemo(() => {
     return ottos
       .filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready)
@@ -28,9 +29,10 @@ export default function useIsWearable(items: Item[]): (itemId?: string, currentO
 
       const myReadyOttosWithItem = ottos
         .filter(otto => readyOttosMap[otto.id])
-        .filter(otto => otto.wearableTraits.find(trait => trait.id === itemId))
+        .filter(otto => otto.equippedItems.find(item => item.metadata.tokenId === itemId))
         .filter(Boolean)
 
+      console.log(itemAmount, myReadyOttosWithItem)
       return itemAmount > 0 || myReadyOttosWithItem.length > 0
     },
     [readyOttosMap]

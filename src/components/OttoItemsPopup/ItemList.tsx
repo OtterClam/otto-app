@@ -31,34 +31,8 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
     const currentOttoEquippedItem = otto?.equippedItems?.find(
       item => item.equippedBy === otto.id && item.metadata.type === traitType
     )
-    const currentOttoEquippedTraits = (otto?.wearableTraits ?? []).reduce(
-      (map, trait) => Object.assign(map, { [trait.id]: trait }),
-      {} as { [k: string]: Trait }
-    )
     const defaultItemMetadata = otto?.nativeItemsMetadata.find(trait => trait.type === traitType)
-    let restItems = filteredItems
-
-    {
-      const items: Item[] = []
-      const map: { [k: string]: number } = {}
-      restItems.forEach(item => {
-        if (
-          map[item.metadata.tokenId] !== undefined &&
-          items[map[item.metadata.tokenId]].equippedBy &&
-          !currentOttoEquippedTraits[item.metadata.tokenId]
-        ) {
-          items[map[item.metadata.tokenId]] = item
-        } else if (!items[map[item.metadata.tokenId]]) {
-          map[item.metadata.tokenId] = items.length
-          items.push(item)
-        }
-      })
-      restItems = items
-    }
-
-    restItems = restItems
-      .filter(item => otto?.canWear(item) && currentOttoEquippedItem?.metadata?.tokenId !== item.metadata.tokenId)
-      .slice()
+    const restItems = filteredItems.filter(item => otto?.canWear(item) && currentOttoEquippedItem?.id !== item.id)
 
     return { currentOttoEquippedItem, defaultItemMetadata, restItems }
   }, [filteredItems, traitType, otto])
@@ -70,14 +44,14 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
         hideAmount
         metadata={defaultItemMetadata}
         currentOtto={otto}
-        onClick={() => selectItem(defaultItemMetadata?.tokenId ? 'native' : 'empty')}
+        onClick={() => selectItem(defaultItemMetadata ? 'native' : 'empty')}
         selected={selectedItemId === 'native' || selectedItemId === 'empty'}
       />
       {currentOttoEquippedItem && (
         <StyledItem
-          key={currentOttoEquippedItem.metadata.tokenId}
+          key={currentOttoEquippedItem.id}
           hideAmount
-          metadata={currentOttoEquippedItem.metadata}
+          item={currentOttoEquippedItem}
           currentOtto={otto}
           onClick={() => selectItem(currentOttoEquippedItem.id)}
           selected={selectedItemId === currentOttoEquippedItem.id}
@@ -85,9 +59,9 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
       )}
       {restItems.map(item => (
         <StyledItem
-          key={item.metadata.tokenId}
+          key={item.id}
           hideAmount
-          unavailable={!isWearable(item.metadata.tokenId)}
+          unavailable={!otto?.canWear(item)}
           item={item}
           currentOtto={otto}
           onClick={() => selectItem(item.id)}
