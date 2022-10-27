@@ -1,5 +1,6 @@
 import AdventureStatus from 'components/AdventureStatus'
 import Button from 'components/Button'
+import CloseButton from 'components/CloseButton'
 import CroppedImage from 'components/CroppedImage'
 import ItemCell from 'components/ItemCell'
 import ItemCollectionBadge from 'components/ItemCollectionBadge'
@@ -102,6 +103,12 @@ const StyledButton = styled(Button)`
   width: 100%;
 `
 
+const StyledCloseButton = styled(CloseButton)`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+`
+
 export interface ItemPreviewProps {
   metadata?: ItemMetadata
   selectedItemId?: string
@@ -138,6 +145,7 @@ export default memo(
     return (
       <CSSTransition in={selectedItemId !== undefined} unmountOnExit timeout={200} classNames="slide">
         <StyledItemPreview ref={containerRef}>
+          <StyledCloseButton onClose={onClose} />
           <StyledItemPreviewDetails>
             <StyledItemImage>
               <ItemCell hideAmount metadata={metadata} />
