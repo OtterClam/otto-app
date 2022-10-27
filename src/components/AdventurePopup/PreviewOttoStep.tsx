@@ -169,27 +169,21 @@ export default function PreviewOttoStep() {
   }, [otto, location, usedPotionAmounts, explore, equippedItemActions])
 
   useEffect(() => {
-    if (exploreState.state === 'Success' && exploreState.passId && otto) {
-      adventureContract
-        .pass(exploreState.passId)
-        .then(pass => {
-          const draftOtto = new Otto(
-            { ...otto.raw, ...preview },
-            otto.equippedItems,
-            otto.nativeItemsMetadata,
-            otto.itemsMetadata
-          )
-          draftOtto.explore(exploreState.passId || '', pass)
-          setOtto(draftOtto.clone())
-          updateOtto(draftOtto)
-        })
-        .then(() => goToStep(AdventurePopupStep.ReadyToGo))
-        .catch(err => console.error(err))
+    if (exploreState.state === 'Success' && exploreState.passId && exploreState.pass && otto) {
+      const draftOtto = new Otto(
+        { ...otto.raw, ...preview },
+        otto.equippedItems,
+        otto.nativeItemsMetadata,
+        otto.itemsMetadata
+      )
+      draftOtto.explore(exploreState.passId || '', exploreState.pass)
+      setOtto(draftOtto.clone())
+      updateOtto(draftOtto)
     } else if (exploreState.state === 'Fail') {
       alert(exploreState.status.errorMessage)
       resetExplore()
     }
-  }, [exploreState.status, adventureContract])
+  }, [exploreState.state])
 
   useResizeObserver(container, () => {
     const rect = container?.current?.getBoundingClientRect()
