@@ -10,6 +10,7 @@
 export interface ListMyOttos_ottos {
   __typename: "Otto";
   tokenId: any;
+  rarityScore: number;
 }
 
 export interface ListMyOttos {

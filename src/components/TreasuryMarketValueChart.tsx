@@ -196,6 +196,11 @@ const marketValues = [
     dataKey: 'treasuryDystopiaPairFraxUsdcMarketValue',
     stopColor: ['rgba(182, 233, 152, 1)', 'rgba(182, 233, 152, 0.5)'],
   },
+  {
+    label: 'SAND',
+    dataKey: 'treasurySandMarketValue',
+    stopColor: ['rgba(0, 174, 239, 1)', 'rgba(0, 174, 239, 0.5)'],
+  },
 ]
 
 const keySettingMap = marketValues.reduce(
