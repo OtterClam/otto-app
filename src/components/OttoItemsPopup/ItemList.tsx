@@ -2,7 +2,6 @@ import styled from 'styled-components/macro'
 import { useItemFilters } from 'contexts/ItemFilters'
 import ItemCell from 'components/ItemCell'
 import Otto, { Trait } from 'models/Otto'
-import { Note } from 'styles/typography'
 import { useMemo } from 'react'
 import { useTrait } from 'contexts/TraitContext'
 import { Item } from 'models/Item'
@@ -16,12 +15,6 @@ const StyledItems = styled.div`
 
 const StyledItem = styled(ItemCell)`
   width: 100%;
-`
-
-const StyledNoItems = styled(Note)`
-  display: flex;
-  flex-items: center;
-  justify-content: center;
 `
 
 export interface ItemListProps {

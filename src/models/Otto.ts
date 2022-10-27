@@ -175,6 +175,10 @@ export default class Otto {
   private rawUpdated() {
     this.voice = new Audio(this.raw.animation_url)
     this.voice.load()
+    this.nativeItemsMetadata = this.nativeItemsMetadata.map(metadata => ({
+      ...metadata,
+      unreturnable: true,
+    }))
     this.baseRarityScore = this.raw.brs ? String(this.raw.brs) : '?'
     this.relativeRarityScore = this.raw.rrs ? String(this.raw.rrs) : '?'
     this.totalRarityScore = this.raw.rarity_score ? String(this.raw.rarity_score) : '?'
