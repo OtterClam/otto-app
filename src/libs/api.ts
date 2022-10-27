@@ -12,7 +12,14 @@ import { AdventurePreview, RawAdventurePreview, rawAdventurePreviewToAdventurePr
 import { AdventureResult, fromRawResult } from 'models/AdventureResult'
 import { Dice } from 'models/Dice'
 import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
-import { ItemAction, ItemMetadata, RawItemMetadata, rawItemMetadataToItemMetadata } from 'models/Item'
+import {
+  ItemAction,
+  ItemMetadata,
+  ItemStatName,
+  parseItemStatName,
+  RawItemMetadata,
+  rawItemMetadataToItemMetadata,
+} from 'models/Item'
 import { LeaderboardEpoch, RawLeaderboardEpoch, rawLeaderboardEpochToLeaderboardEpoch } from 'models/LeaderboardEpoch'
 import { Notification, RawNotification } from 'models/Notification'
 import Otto, { RawOtto } from 'models/Otto'
@@ -26,7 +33,7 @@ export interface OttoCandidateMeta {
 }
 
 export interface FlashSellResponse {
-  type: string
+  type: ItemStatName
   name: string
   desc: string
   popup_title: string
@@ -125,6 +132,7 @@ export class Api {
   public async getFlashSell(): Promise<FlashSellResponse> {
     return this.otterclamClient.get('/products/flashsale').then(res => ({
       ...res.data,
+      type: parseItemStatName(res.data.type),
       start_time: new Date(res.data.start_time).valueOf(),
       end_time: new Date(res.data.end_time).valueOf(),
       special_items: res.data.special_items.map((raw: RawItemMetadata) => rawItemMetadataToItemMetadata(raw)),

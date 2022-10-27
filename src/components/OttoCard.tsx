@@ -1,6 +1,7 @@
+// TODO: stop using trait data in components
 import RankingIcon from 'assets/ranking.png'
 import BorderContainer from 'components/BorderContainer'
-import { defaultStats, Item } from 'models/Item'
+import { defaultStats, Item, ItemStatName } from 'models/Item'
 import Otto from 'models/Otto'
 import { useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
@@ -128,7 +129,7 @@ export default function OttoCard({ otto, oldOtto, withItem: item, takeOff = fals
 
       if (!nativeTrait) {
         ;(originalTrait?.stats ?? defaultStatsList).forEach(({ name, value }) => {
-          const newDiffValue = Number(value) - Number(item.metadata.stats[name])
+          const newDiffValue = Number(value) - Number(item.metadata.stats[name as ItemStatName])
           diff[name] = String(newDiffValue > 0 ? `+${newDiffValue}` : newDiffValue)
         })
         const rarityScore = (originalTrait?.total_rarity_score ?? 0) - item.metadata.totalRarityScore
@@ -151,7 +152,7 @@ export default function OttoCard({ otto, oldOtto, withItem: item, takeOff = fals
       const defaultStatsList = Object.entries(defaultStats).map(([name, value]) => ({ name, value }))
 
       ;(originalTrait?.stats ?? defaultStatsList).forEach(({ name, value }) => {
-        const newDiffValue = Number(item.metadata.stats[name]) - Number(value)
+        const newDiffValue = Number(item.metadata.stats[name as ItemStatName]) - Number(value)
         diff[name] = String(newDiffValue > 0 ? `+${newDiffValue}` : newDiffValue)
       })
       const rarityScore = item.metadata.totalRarityScore - (originalTrait?.total_rarity_score ?? 0)

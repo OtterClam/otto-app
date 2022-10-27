@@ -12,14 +12,33 @@ export enum ItemType {
   Other = 'Other',
 }
 
+export type ItemStats = Record<ItemStatName, string>
+
+export enum ItemStatName {
+  STR = 'STR',
+  DEF = 'DEF',
+  DEX = 'DEX',
+  INT = 'INT',
+  LUK = 'LUK',
+  CON = 'CON',
+  CUTE = 'CUTE',
+}
+
+export const parseItemStatName = (name: string): ItemStatName => {
+  if (!Object.values(ItemStatName).includes(name as ItemStatName)) {
+    throw new Error(`Unrecognized stat: ${name}`)
+  }
+  return name as ItemStatName
+}
+
 export const defaultStats = {
-  STR: '0',
-  DEF: '0',
-  DEX: '0',
-  INT: '0',
-  LUK: '0',
-  CON: '0',
-  CUTE: '0',
+  [ItemStatName.STR]: '0',
+  [ItemStatName.DEF]: '0',
+  [ItemStatName.DEX]: '0',
+  [ItemStatName.INT]: '0',
+  [ItemStatName.LUK]: '0',
+  [ItemStatName.CON]: '0',
+  [ItemStatName.CUTE]: '0',
 }
 
 export interface RawItemMetadata {
@@ -56,9 +75,7 @@ export interface ItemMetadata {
   image: string
   rarity: TraitRarity
   description: string
-  stats: {
-    [k: string]: string
-  }
+  stats: ItemStats
   baseRarityScore: number
   relativeRarityScore: number
   totalRarityScore: number
@@ -87,10 +104,13 @@ const parseNumericalStat = (val?: string): number => {
 }
 
 export const rawItemMetadataToItemMetadata = (raw: RawItemMetadata): ItemMetadata => {
-  const stats = raw.details.stats.reduce((map, stat) => {
-    map[stat.name] = stat.value
-    return map
-  }, {} as { [k: string]: string })
+  const stats = raw.details.stats.reduce(
+    (map, stat) => {
+      map[parseItemStatName(stat.name)] = stat.value
+      return map
+    },
+    { ...defaultStats }
+  )
 
   return {
     tokenId: raw.id,
@@ -107,7 +127,7 @@ export const rawItemMetadataToItemMetadata = (raw: RawItemMetadata): ItemMetadat
     equippableGender: raw.details.equippable_gender,
     productFactory: raw.details.product_factory,
     productType: raw.details.product_type,
-    luck: parseNumericalStat(stats.LUCK),
+    luck: parseNumericalStat(stats.LUK),
     dex: parseNumericalStat(stats.DEX),
     cute: parseNumericalStat(stats.CUTE),
     def: parseNumericalStat(stats.DEF),

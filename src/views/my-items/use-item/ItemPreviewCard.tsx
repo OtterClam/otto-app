@@ -1,4 +1,4 @@
-import { ItemMetadata } from 'models/Item'
+import { defaultStats, ItemMetadata } from 'models/Item'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components'
 import { Caption } from 'styles/typography'
@@ -47,7 +47,7 @@ export default function ItemPreviewCard({ title, metadata }: Props) {
         <Caption>{t('my_items.rarity_score', { score: metadata?.totalRarityScore ?? 0 })}</Caption>
       </StyledRarityScore>
       <StyledAttrs>
-        {Object.entries(metadata?.stats ?? {}).map(([key, val]) => (
+        {Object.entries(metadata?.stats ?? defaultStats).map(([key, val]) => (
           <StyledAttr key={key}>
             <Caption>{key}</Caption>
             <Caption>{val}</Caption>

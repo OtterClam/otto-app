@@ -92,10 +92,8 @@ export default function FlashSellInfo({
               <StyledItemCell metadata={item} />
               <StyledItemName>
                 {item.name}
-                {item.stats[type.toLocaleUpperCase()] && (
-                  <StyledItemHint>
-                    {`${type.toLocaleUpperCase()}: ${item.stats[type.toLocaleUpperCase()] ?? 0}`}
-                  </StyledItemHint>
+                {item.stats[type] && (
+                  <StyledItemHint>{`${type.toLocaleUpperCase()}: ${item.stats[type] ?? 0}`}</StyledItemHint>
                 )}
               </StyledItemName>
             </StyledItemContainer>
