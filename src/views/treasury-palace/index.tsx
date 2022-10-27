@@ -45,19 +45,21 @@ export default function PalacePage() {
   return (
     <div>
       <StyledTabs>
-        <Link href="#dash" replace>
+        <Link href="#dashboard" replace>
           <StyledTab selected={tab === PalaceTab.DASHBOARD} onClick={() => setTab(PalaceTab.DASHBOARD)}>
             {t('dashboard_tab')}{' '}
           </StyledTab>
         </Link>
-        <Link href="#gov" replace>
+        <Link href="#governance" replace>
           <StyledTab selected={tab === PalaceTab.GOVERNANCE} onClick={() => setTab(PalaceTab.GOVERNANCE)}>
             {t('governance_tab')}{' '}
           </StyledTab>
         </Link>
-        <StyledTab selected={tab === PalaceTab.INVESTMENTS} onClick={() => setTab(PalaceTab.INVESTMENTS)} disabled>
-          {t('investments_tab')}{' '}
-        </StyledTab>
+        <Link href="#investments" replace>
+          <StyledTab selected={tab === PalaceTab.INVESTMENTS} onClick={() => setTab(PalaceTab.INVESTMENTS)}>
+            {t('investments_tab')}{' '}
+          </StyledTab>
+        </Link>
       </StyledTabs>
       <StyledBody>
         {tab === PalaceTab.DASHBOARD && <TreasuryDashboardPage />}
