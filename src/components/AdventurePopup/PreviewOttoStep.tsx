@@ -20,7 +20,6 @@ import {
 } from 'contexts/AdventureUIState'
 import { useApiCall } from 'contexts/Api'
 import { useOtto } from 'contexts/Otto'
-import { useAdventureContract } from 'contracts/contracts'
 import { useAdventureExplore } from 'contracts/functions'
 import { parseBoosts } from 'models/AdventureDisplayedBoost'
 import { BoostType } from 'models/AdventureLocation'
@@ -100,7 +99,6 @@ export default function PreviewOttoStep() {
   const location = useSelectedAdventureLocation()!
   const close = useCloseAdventurePopup()
   const goToStep = useGoToAdventurePopupStep()
-  const adventureContract = useAdventureContract()
   const [{ itemPopupWidth, itemPopupHeight, itemPopupOffset }, setItemPopupSize] = useState<{
     itemPopupWidth: number
     itemPopupHeight?: number
@@ -179,6 +177,7 @@ export default function PreviewOttoStep() {
       draftOtto.explore(exploreState.passId || '', exploreState.pass)
       setOtto(draftOtto.clone())
       updateOtto(draftOtto)
+      goToStep(AdventurePopupStep.ReadyToGo)
     } else if (exploreState.state === 'Fail') {
       alert(exploreState.status.errorMessage)
       resetExplore()
