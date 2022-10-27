@@ -27,8 +27,10 @@ export interface ItemListProps {
 export default function ItemList({ otto, isWearable, selectItem, selectedItemId }: ItemListProps) {
   const { traitType } = useTrait()
   const { filteredItems } = useItemFilters()
-  const selectedItem = useMyItem(selectedItemId)
-  const { defaultItemMetadata, restItems } = useMemo(() => {
+  const { currentOttoEquippedItem, defaultItemMetadata, restItems } = useMemo(() => {
+    const currentOttoEquippedItem = otto?.equippedItems?.find(
+      item => item.equippedBy === otto.id && item.metadata.type === traitType
+    )
     const currentOttoEquippedTraits = (otto?.wearableTraits ?? []).reduce(
       (map, trait) => Object.assign(map, { [trait.id]: trait }),
       {} as { [k: string]: Trait }
@@ -54,10 +56,11 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
       restItems = items
     }
 
-    restItems = restItems.filter(item => otto?.canWear(item)).slice()
-    console.log(restItems)
+    restItems = restItems
+      .filter(item => otto?.canWear(item) && currentOttoEquippedItem?.metadata?.tokenId !== item.metadata.tokenId)
+      .slice()
 
-    return { defaultItemMetadata, restItems }
+    return { currentOttoEquippedItem, defaultItemMetadata, restItems }
   }, [filteredItems, traitType, otto])
 
   return (
@@ -70,9 +73,19 @@ export default function ItemList({ otto, isWearable, selectItem, selectedItemId 
         onClick={() => selectItem(defaultItemMetadata?.tokenId ? 'native' : 'empty')}
         selected={selectedItemId === 'native' || selectedItemId === 'empty'}
       />
+      {currentOttoEquippedItem && (
+        <StyledItem
+          key={currentOttoEquippedItem.metadata.tokenId}
+          hideAmount
+          metadata={currentOttoEquippedItem.metadata}
+          currentOtto={otto}
+          onClick={() => selectItem(currentOttoEquippedItem.id)}
+          selected={selectedItemId === currentOttoEquippedItem.id}
+        />
+      )}
       {restItems.map(item => (
         <StyledItem
-          key={item.id}
+          key={item.metadata.tokenId}
           hideAmount
           unavailable={!isWearable(item.metadata.tokenId)}
           item={item}
