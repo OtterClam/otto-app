@@ -200,8 +200,10 @@ export default function PreviewOttoStep() {
   })
 
   useEffect(() => {
-    setOtto()
-    resetEquippedItems()
+    return () => {
+      setOtto()
+      resetEquippedItems()
+    }
   }, [])
 
   return (
