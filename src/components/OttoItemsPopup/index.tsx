@@ -5,9 +5,9 @@ import { useAdventureOtto } from 'contexts/AdventureOtto'
 import { ItemFiltersProvider } from 'contexts/ItemFilters'
 import { useMyItems } from 'contexts/MyItems'
 import { useTrait } from 'contexts/TraitContext'
-import useIsWearable from 'hooks/useIsWearable'
+import useAdventurePreviewItems from 'hooks/useAdventurePreviewItems'
 import { useTranslation } from 'next-i18next'
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, Note } from 'styles/typography'
 import ItemList from './ItemList'
@@ -76,10 +76,12 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
   const { draftOtto: otto } = useAdventureOtto()
   const { traitType } = useTrait()
   const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
-  const { items, refetch } = useMyItems()
+  // eslint-disable-next-line prefer-const
+  let { items, refetch } = useMyItems()
+  items = useAdventurePreviewItems(items, otto)
   const [selectedItemId, selectItem] = useState<string>()
-  const isWearable = useIsWearable(items)
   const filteredItems = items.filter(item => item.metadata.type === traitType)
+  const selectedItem = useMemo(() => items.find(({ id }) => id === selectedItemId), [items, selectedItemId])
   let selectedItemMetadata = filteredItems?.find(({ id }) => id === selectedItemId)?.metadata
   const equippedItemMetadata = otto?.equippedItems.find(({ id }) => id === selectedItemId)?.metadata
   const nativeItemMetadata = otto?.nativeItemsMetadata.find(({ type }) => type === traitType)
@@ -124,10 +126,11 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
             </StyledAction>
           </StyledActions>
 
-          <ItemList otto={otto} isWearable={isWearable} selectedItemId={selectedItemId} selectItem={selectItem} />
+          <ItemList otto={otto} selectedItemId={selectedItemId} selectItem={selectItem} />
 
           <ItemPreview
             metadata={selectedItemMetadata}
+            selectedItem={selectedItem}
             selectedItemId={selectedItemId}
             onItemUpdated={onRequestClose}
             onClose={() => selectItem(undefined)}

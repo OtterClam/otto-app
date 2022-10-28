@@ -1,7 +1,5 @@
-import AdventureStatus from 'components/AdventureStatus'
 import Button from 'components/Button'
 import CloseButton from 'components/CloseButton'
-import CroppedImage from 'components/CroppedImage'
 import ItemCell from 'components/ItemCell'
 import ItemCollectionBadge from 'components/ItemCollectionBadge'
 import ItemRarityBadge from 'components/ItemRarityBadge'
@@ -10,7 +8,7 @@ import { useMyItem } from 'contexts/MyItems'
 import { useOtto } from 'contexts/Otto'
 import { useTrait } from 'contexts/TraitContext'
 import useOnClickOutside from 'hooks/useOnClickOutside'
-import { ItemMetadata } from 'models/Item'
+import { Item, ItemMetadata } from 'models/Item'
 import { AdventureOttoStatus } from 'models/Otto'
 import { useMyOtto } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
@@ -111,98 +109,108 @@ const StyledCloseButton = styled(CloseButton)`
 
 export interface ItemPreviewProps {
   metadata?: ItemMetadata
+  selectedItem?: Item
   selectedItemId?: string
   onClose: () => void
   onItemUpdated?: () => void
 }
 
-export default memo(
-  function ItemPreview({ metadata, selectedItemId, onClose, onItemUpdated }: ItemPreviewProps) {
-    const { traitType } = useTrait()
-    const { equipItem, removeItem } = useOtto()
-    const { draftOtto: otto } = useAdventureOtto()
-    const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
-    const containerRef = useRef<HTMLDivElement | null>(null)
-    const equippedItem = otto?.equippedItems.find(item => item.metadata.type === traitType)
-    const selectedItem = useMyItem(selectedItemId)
-    const equippedOtto = useMyOtto(selectedItem?.equippedBy)
-    const equippedByCurrentOtto = equippedOtto?.id === otto?.id
-    const equippedSameToken =
-      equippedItem && selectedItem && equippedItem.metadata.tokenId === selectedItem.metadata.tokenId
-    const unavailable = selectedItem && equippedOtto && equippedOtto.adventureStatus !== AdventureOttoStatus.Ready
+export default memo(function ItemPreview({
+  metadata,
+  selectedItemId,
+  selectedItem,
+  onClose,
+  onItemUpdated,
+}: ItemPreviewProps) {
+  const { traitType } = useTrait()
+  const { equipItem, removeItem } = useOtto()
+  const { draftOtto: otto } = useAdventureOtto()
+  const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const equippedItem = otto?.equippedItems.find(item => item.metadata.type === traitType)
+  const equippedOtto = useMyOtto(selectedItem?.equippedBy)
+  const equippedByCurrentOtto = equippedOtto?.id === otto?.id || selectedItemId?.startsWith('draft_')
+  const equippedSameToken =
+    equippedItem && selectedItem && equippedItem.metadata.tokenId === selectedItem.metadata.tokenId
+  const unavailable = selectedItem && equippedOtto && equippedOtto.adventureStatus !== AdventureOttoStatus.Ready
 
-    const onEquip = (type: string, itemId: string) => {
-      equipItem(type, itemId)
-      onItemUpdated?.()
-    }
-    const onRemove = (type: string) => {
-      removeItem(type)
-      onItemUpdated?.()
-    }
+  const onEquip = (type: string, itemId: string) => {
+    equipItem(type, itemId)
+    onItemUpdated?.()
+  }
+  const onRemove = (type: string) => {
+    removeItem(type)
+    onItemUpdated?.()
+  }
 
-    useOnClickOutside(containerRef, onClose)
+  useOnClickOutside(containerRef, onClose)
 
-    return (
-      <CSSTransition in={selectedItemId !== undefined} unmountOnExit timeout={200} classNames="slide">
-        <StyledItemPreview ref={containerRef}>
-          <StyledCloseButton onClose={onClose} />
-          <StyledItemPreviewDetails>
-            <StyledItemImage>
-              <ItemCell hideAmount metadata={metadata} />
-            </StyledItemImage>
-            <StyledItemAttrs>
-              {metadata && <ItemRarityBadge rarity={metadata.rarity} />}
-              <StyledItemName>
-                {metadata?.collection && metadata?.collectionName && (
-                  <StyledItemCollectionBadge
-                    collection={metadata.collection}
-                    collectionName={metadata.collectionName}
-                  />
-                )}
-                {metadata?.name}
-              </StyledItemName>
-              <StyledItemLevels>
-                {Object.entries(metadata?.stats ?? {}).map(([name, value]) => (
-                  <StyledItemLevel key={name}>
-                    <StyledItemLevelLabel>{name}</StyledItemLevelLabel>
-                    <StyledItemLevelValue>{value}</StyledItemLevelValue>
-                  </StyledItemLevel>
-                ))}
-              </StyledItemLevels>
-            </StyledItemAttrs>
-          </StyledItemPreviewDetails>
-          {!equippedByCurrentOtto && metadata && (
-            <StyledButton
-              disabled={unavailable || equippedSameToken}
-              Typography={Headline}
-              onClick={() => onEquip(metadata.type, metadata.tokenId)}
-            >
-              {t(unavailable ? 'unavailable' : 'wear')}
-            </StyledButton>
-          )}
-          {equippedByCurrentOtto && metadata && traitType && (
-            <StyledButton
-              disabled={metadata.unreturnable || selectedItemId === 'native'}
-              primaryColor="white"
-              Typography={Headline}
-              onClick={() => onRemove(traitType)}
-            >
-              {t(metadata?.unreturnable ? 'unavailable' : 'takeOff')}
-            </StyledButton>
-          )}
-          {selectedItemId === 'empty' && traitType && (
-            <StyledButton
-              disabled={!equippedItem}
-              primaryColor="white"
-              Typography={Headline}
-              onClick={() => onRemove(traitType)}
-            >
-              {t('takeOff')}
-            </StyledButton>
-          )}
-        </StyledItemPreview>
-      </CSSTransition>
-    )
-  },
-  (a, b) => a.selectedItemId === b.selectedItemId
-)
+  return (
+    <CSSTransition in={selectedItemId !== undefined} unmountOnExit timeout={200} classNames="slide">
+      <StyledItemPreview ref={containerRef}>
+        <StyledCloseButton onClose={onClose} />
+        <StyledItemPreviewDetails>
+          <StyledItemImage>
+            <ItemCell hideAmount metadata={metadata} />
+          </StyledItemImage>
+          <StyledItemAttrs>
+            {metadata && <ItemRarityBadge rarity={metadata.rarity} />}
+            <StyledItemName>
+              {metadata?.collection && metadata?.collectionName && (
+                <StyledItemCollectionBadge collection={metadata.collection} collectionName={metadata.collectionName} />
+              )}
+              {metadata?.name}
+            </StyledItemName>
+            <StyledItemLevels>
+              {Object.entries(metadata?.stats ?? {}).map(([name, value]) => (
+                <StyledItemLevel key={name}>
+                  <StyledItemLevelLabel>{name}</StyledItemLevelLabel>
+                  <StyledItemLevelValue>{value}</StyledItemLevelValue>
+                </StyledItemLevel>
+              ))}
+            </StyledItemLevels>
+          </StyledItemAttrs>
+        </StyledItemPreviewDetails>
+        {!equippedByCurrentOtto && metadata && selectedItemId !== 'native' && (
+          <StyledButton
+            disabled={unavailable || equippedSameToken}
+            Typography={Headline}
+            onClick={() => onEquip(metadata.type, metadata.tokenId)}
+          >
+            {t(unavailable ? 'unavailable' : 'wear')}
+          </StyledButton>
+        )}
+        {!equippedByCurrentOtto && metadata && traitType && selectedItemId === 'native' && (
+          <StyledButton
+            disabled={!equippedItem}
+            primaryColor="white"
+            Typography={Headline}
+            onClick={() => onRemove(traitType)}
+          >
+            {t('takeOff')}
+          </StyledButton>
+        )}
+        {equippedByCurrentOtto && metadata && traitType && (
+          <StyledButton
+            disabled={metadata.unreturnable}
+            primaryColor="white"
+            Typography={Headline}
+            onClick={() => onRemove(traitType)}
+          >
+            {t(metadata?.unreturnable ? 'unavailable' : 'takeOff')}
+          </StyledButton>
+        )}
+        {selectedItemId === 'empty' && traitType && (
+          <StyledButton
+            disabled={!equippedItem}
+            primaryColor="white"
+            Typography={Headline}
+            onClick={() => onRemove(traitType)}
+          >
+            {t('takeOff')}
+          </StyledButton>
+        )}
+      </StyledItemPreview>
+    </CSSTransition>
+  )
+})
