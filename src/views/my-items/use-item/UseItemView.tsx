@@ -1,6 +1,6 @@
 import Button from 'components/Button'
 import OttoCard from 'components/OttoCard'
-import Item from 'models/Item'
+import { Item } from 'models/Item'
 import Otto from 'models/Otto'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components/macro'
@@ -66,7 +66,7 @@ export default function UseItemView({ item, selectedOtto, onSelect, onUse }: Pro
         <StyledPickerTitle>
           <Headline>{t('my_items.use_item.title')}</Headline>
         </StyledPickerTitle>
-        <OttoList itemId={item.id} selectedOtto={selectedOtto} onSelect={onSelect} />
+        <OttoList itemId={item.metadata.tokenId} selectedOtto={selectedOtto} onSelect={onSelect} />
         {selectedOtto && <StyledOttoCard otto={selectedOtto} />}
         <StyledUseButton Typography={Headline} onClick={onUse}>
           {t('my_items.use')}

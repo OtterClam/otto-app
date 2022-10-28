@@ -1,7 +1,7 @@
 import LoadingView from 'components/OpenItem/OpenItemLoadingView'
 import OpenItemView from 'components/OpenItem/OpenItemView'
 import { useRedeemProduct } from 'contracts/functions'
-import Item from 'models/Item'
+import { ItemMetadata, Item } from 'models/Item'
 import { useEffect, useState } from 'react'
 
 enum State {
@@ -10,15 +10,15 @@ enum State {
 }
 
 interface Props {
-  coupon: Item
+  coupon: ItemMetadata
   onClose: () => void
 }
 
-export default function RedeemCouponPopup({ coupon: { id, product_factory, product_type }, onClose }: Props) {
+export default function RedeemCouponPopup({ coupon: { tokenId: id, productFactory, productType }, onClose }: Props) {
   const [state, setState] = useState<State>(State.Loading)
   const { resetRedeem, redeem, redeemState } = useRedeemProduct()
   useEffect(() => {
-    redeem(id, product_factory)
+    redeem(id, productFactory)
   }, [])
   useEffect(() => {
     if (redeemState.state === 'Success') {
@@ -30,6 +30,6 @@ export default function RedeemCouponPopup({ coupon: { id, product_factory, produ
     }
   }, [redeemState])
 
-  if (state === State.Loading) return <LoadingView type={product_type} />
+  if (state === State.Loading) return <LoadingView type={productType} />
   return <OpenItemView items={redeemState.receivedItems || []} onClose={onClose} />
 }

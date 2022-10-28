@@ -75,6 +75,7 @@ export default function FlashSellInfo({
   const start = format(new Date(start_time), DATE_TIME_FORMAT)
   const end = format(new Date(end_time), DATE_TIME_FORMAT)
   const started = Date.now() >= start_time
+
   return (
     <StyledContainer>
       <ProductCard
@@ -88,13 +89,11 @@ export default function FlashSellInfo({
         <StyledItemList>
           {special_items.map((item, index) => (
             <StyledItemContainer key={index}>
-              <StyledItemCell item={item} />
+              <StyledItemCell metadata={item} />
               <StyledItemName>
                 {item.name}
-                {item.stats.find((s: any) => s.name === type.toUpperCase()) && (
-                  <StyledItemHint>{`${type.toUpperCase()}: ${
-                    item.stats.find((s: any) => s.name === type.toUpperCase())?.value || 0
-                  }`}</StyledItemHint>
+                {item.stats[type] && (
+                  <StyledItemHint>{`${type.toLocaleUpperCase()}: ${item.stats[type] ?? 0}`}</StyledItemHint>
                 )}
               </StyledItemName>
             </StyledItemContainer>

@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ListItems
+// GraphQL query operation: GetItemsInfoByOttoTokenIds
 // ====================================================
 
-export interface ListItems_ottoItems {
+export interface GetItemsInfoByOttoTokenIds_ottoItems {
   __typename: "OttoItem";
   id: string;
   tokenId: any;
@@ -16,11 +16,10 @@ export interface ListItems_ottoItems {
   updateAt: any;
 }
 
-export interface ListItems {
-  ottoItems: ListItems_ottoItems[];
+export interface GetItemsInfoByOttoTokenIds {
+  ottoItems: GetItemsInfoByOttoTokenIds_ottoItems[];
 }
 
-export interface ListItemsVariables {
-  owner: any;
-  skip: number;
+export interface GetItemsInfoByOttoTokenIdsVariables {
+  tokenIds: any[];
 }

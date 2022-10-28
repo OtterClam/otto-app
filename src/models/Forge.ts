@@ -1,11 +1,11 @@
 import { BigNumber } from 'ethers'
-import Item, { rawItemToItem } from './Item'
+import { ItemMetadata, RawItemMetadata, rawItemMetadataToItemMetadata } from './Item'
 import { Trait } from './Otto'
 
 export interface ForgeFormula {
   id: number
-  result?: Item
-  materials: Item[]
+  result?: ItemMetadata
+  materials: ItemMetadata[]
   materialAmounts: number[]
   title: string
   description: string
@@ -21,8 +21,8 @@ export interface ForgeFormula {
 
 export interface RawForgeFormula {
   id: number
-  result?: Trait
-  materials: Trait[]
+  result?: RawItemMetadata
+  materials: RawItemMetadata[]
   amounts: number[]
   title: string
   description: string
@@ -39,8 +39,8 @@ export interface RawForgeFormula {
 export const rawForgeToForge = (raw: RawForgeFormula): ForgeFormula => {
   return {
     id: raw.id,
-    result: raw.result && rawItemToItem('', raw.result),
-    materials: raw.materials.map(rawItem => rawItemToItem('', rawItem)),
+    result: raw.result && rawItemMetadataToItemMetadata(raw.result),
+    materials: raw.materials.map(rawItem => rawItemMetadataToItemMetadata(rawItem)),
     materialAmounts: raw.amounts,
     title: raw.title,
     description: raw.description,

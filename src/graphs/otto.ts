@@ -1,8 +1,21 @@
 import { gql } from '@apollo/client'
 
+export const LIST_ITEMS_BY_OTTO_TOKEN_ID = gql`
+  query ListOttoItems($ottoTokenId: BigInt!) {
+    ottoItems(where: { parentTokenId: $ottoTokenId, amount_gt: 0 }, first: 1000) {
+      id
+      tokenId
+      amount
+      parentTokenId
+      updateAt
+    }
+  }
+`
+
 export const LIST_MY_ITEMS = gql`
-  query ListItems($owner: Bytes!) {
-    ottoItems(where: { rootOwner: $owner, amount_gt: 0 }, first: 1000) {
+  query ListItems($owner: Bytes!, $skip: Int!) {
+    ottoItems(where: { rootOwner: $owner, amount_gt: 0 }, skip: $skip, first: 1000) {
+      id
       tokenId
       amount
       parentTokenId

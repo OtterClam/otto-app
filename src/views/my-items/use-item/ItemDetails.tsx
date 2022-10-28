@@ -5,7 +5,7 @@ import GenderSpecific from 'components/GenderSpecific'
 import ItemCollectionBadge from 'components/ItemCollectionBadge'
 import TraitLabels from 'components/TraitLabels'
 import { getOpenSeaItemLink } from 'constant'
-import Item from 'models/Item'
+import { ItemType, Item, ItemStatName } from 'models/Item'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -172,24 +172,43 @@ const StyledName = styled(Headline)`
 interface Props {
   item: Item
   onClose?: () => void
-  onUse?: (item: Item) => void
+  onUse?: (itemId: string) => void
   className?: string
 }
 
 export default function ItemDetails({ item, onClose, onUse, className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
-  const { id, collection, collection_name, name, image, rarity, type, description, equippable_gender, wearable } = item
+  const { id, equippedBy } = item
+  const {
+    stats,
+    type,
+    tokenId,
+    collection,
+    collectionName,
+    name,
+    image,
+    rarity,
+    description,
+    equippableGender,
+    wearable,
+    totalRarityScore,
+    baseRarityScore,
+    relativeRarityScore,
+    equippedCount,
+    themeBoost,
+  } = item.metadata
+  const equipped = Boolean(equippedBy)
   const [showTransferPopup, setShowTransferPopup] = useState(false)
 
   return (
     <StyledItemDetails className={className}>
       <StyledActionBar>
-        {!item.equipped && (
+        {!equipped && (
           <StyledActionButton onClick={() => setShowTransferPopup(true)}>
             <Caption>{t('transfer_btn')}</Caption>
           </StyledActionButton>
         )}
-        <a href={getOpenSeaItemLink(item.id)} target="_blank" rel="noreferrer">
+        <a href={getOpenSeaItemLink(tokenId)} target="_blank" rel="noreferrer">
           <StyledActionButton>
             <Caption>{t('opensea_link')}</Caption>
             <Image src={NewWindowIcon} />
@@ -208,8 +227,8 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
       </StyledTag>
       <StyledTitleContainer>
         <StyledName>
-          {collection && collection_name && (
-            <ItemCollectionBadge collection={collection} collectionName={collection_name} />
+          {collection && collectionName && (
+            <ItemCollectionBadge collection={collection} collectionName={collectionName} />
           )}
           {name}
         </StyledName>
@@ -217,35 +236,34 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
           <ContentSmall>{rarity}</ContentSmall>
         </StyledRarityLabel>
       </StyledTitleContainer>
-      <GenderSpecific equippableGender={equippable_gender} />
+      <GenderSpecific equippableGender={equippableGender} />
       <StyledDesc>{description}</StyledDesc>
       {wearable && (
         <>
           <StyledRarityScore>
             {t('total_rarity_score', {
-              total: item.base_rarity_score + item.relative_rarity_score,
-              brs: item.base_rarity_score,
-              rrs: item.relative_rarity_score,
+              total: totalRarityScore,
+              brs: baseRarityScore,
+              rrs: relativeRarityScore,
             })}
           </StyledRarityScore>
-          <StyledWearCount>{t('wear_count', { count: item.equipped_count })}</StyledWearCount>
+          <StyledWearCount>{t('wear_count', { count: equippedCount })}</StyledWearCount>
         </>
       )}
-      {!(item.isCoupon || item.isMissionItem) && (
+      {!(type === ItemType.Coupon || type === ItemType.MissionItem) && (
         <StyledAttrs>
-          {item.stats.map(({ name, value }, i) => (
-            <StyledAttr key={i}>
-              <ContentSmall>{name}</ContentSmall>
-              <ContentSmall>{value}</ContentSmall>
+          {Object.entries(stats).map(([key, val]) => (
+            <StyledAttr key={key}>
+              <ContentSmall>{key}</ContentSmall>
+              <ContentSmall>{val}</ContentSmall>
             </StyledAttr>
           ))}
         </StyledAttrs>
       )}
-      {/* the following typing issue has been solved in adventure branch */}
-      {item.theme_boost > 0 && <TraitLabels trait={item as any} large highlightMatched />}
-      {onUse && !item.isMissionItem && (
-        <StyledButton Typography={Headline} onClick={() => onUse(item)}>
-          {item.wearable ? (item.equipped ? t('take_off') : t('wear')) : item.isCoupon ? t('open') : t('use')}
+      {themeBoost > 0 && <TraitLabels metadata={item.metadata} large highlightMatched />}
+      {onUse && type !== ItemType.MissionItem && (
+        <StyledButton Typography={Headline} onClick={() => onUse(id)}>
+          {wearable ? (equipped ? t('take_off') : t('wear')) : type === ItemType.Coupon ? t('open') : t('use')}
         </StyledButton>
       )}
       {showTransferPopup && (

@@ -1,8 +1,7 @@
 import noop from 'lodash/noop'
-import { AdventureLocationConditionalBoost } from 'models/AdventureLocation'
 import { AdventurePreview } from 'models/AdventurePreview'
 import { AdventureResultEvents, AdventureResultReward } from 'models/AdventureResult'
-import Item from 'models/Item'
+import { ItemMetadata } from 'models/Item'
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useReducer } from 'react'
 import { useAdventureLocation } from './AdventureLocations'
 
@@ -66,7 +65,7 @@ export type AdventureUIAction =
     }
   | {
       type: AdventureUIActionType.SetTreasuryChestItem
-      data?: Item
+      data?: ItemMetadata
     }
   | {
       type: AdventureUIActionType.SelectLocation
@@ -87,7 +86,7 @@ export interface AdventureUIState {
     ottoId: string
     newLevel?: number
   }
-  treasuryChest?: Item
+  treasuryChest?: ItemMetadata
   finishedTx?: string
 }
 

@@ -12,7 +12,14 @@ import { AdventurePreview, RawAdventurePreview, rawAdventurePreviewToAdventurePr
 import { AdventureResult, fromRawResult } from 'models/AdventureResult'
 import { Dice } from 'models/Dice'
 import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
-import Item, { ItemAction, rawItemToItem } from 'models/Item'
+import {
+  ItemAction,
+  ItemMetadata,
+  ItemStatName,
+  parseItemStatName,
+  RawItemMetadata,
+  rawItemMetadataToItemMetadata,
+} from 'models/Item'
 import { LeaderboardEpoch, RawLeaderboardEpoch, rawLeaderboardEpochToLeaderboardEpoch } from 'models/LeaderboardEpoch'
 import { Notification, RawNotification } from 'models/Notification'
 import Otto, { RawOtto } from 'models/Otto'
@@ -26,7 +33,7 @@ export interface OttoCandidateMeta {
 }
 
 export interface FlashSellResponse {
-  type: string
+  type: ItemStatName
   name: string
   desc: string
   popup_title: string
@@ -35,7 +42,7 @@ export interface FlashSellResponse {
   start_time: number
   end_time: number
   products: Product[]
-  special_items: Item[]
+  special_items: ItemMetadata[]
   processing_images: string[]
 }
 
@@ -93,18 +100,13 @@ export class Api {
       .then(res => res.data)
   }
 
-  public async getItem(itemId: string): Promise<Item> {
-    return this.otterclamClient
-      .get(`/items/metadata/${itemId}`)
-      .then(res => res.data)
-      .then((data: any) => rawItemToItem(itemId, data))
-  }
-
-  public async getItems(ids: string[]): Promise<Item[]> {
-    return this.otterclamClient
-      .get(`/items/metadata?ids=${ids.join(',')}`)
-      .then(res => res.data)
-      .then((data: any[]) => data.map((d, i) => rawItemToItem(ids[i], d)))
+  public async getItemsMetadata(tokenIds: string[]): Promise<{ [tokenId: string]: ItemMetadata }> {
+    return this.otterclamClient.get<RawItemMetadata[]>(`/items/metadata?ids=${tokenIds.join(',')}`).then(res =>
+      res.data.reduce((map, metadata) => {
+        map[metadata.id] = rawItemMetadataToItemMetadata(metadata)
+        return map
+      }, {} as { [tokenId: string]: ItemMetadata })
+    )
   }
 
   public async rollTheDice(ottoId: string, tx: string): Promise<Dice> {
@@ -130,9 +132,10 @@ export class Api {
   public async getFlashSell(): Promise<FlashSellResponse> {
     return this.otterclamClient.get('/products/flashsale').then(res => ({
       ...res.data,
+      type: parseItemStatName(res.data.type),
       start_time: new Date(res.data.start_time).valueOf(),
       end_time: new Date(res.data.end_time).valueOf(),
-      special_items: res.data.special_items.map((i: any) => rawItemToItem('', i)),
+      special_items: res.data.special_items.map((raw: RawItemMetadata) => rawItemMetadataToItemMetadata(raw)),
     }))
   }
 
@@ -141,9 +144,9 @@ export class Api {
     return result.data.map(rawForgeToForge)
   }
 
-  public async getAdventureOttos(wallet: string): Promise<Otto[]> {
+  public async getAdventureOttos(wallet: string): Promise<RawOtto[]> {
     const result = await this.otterclamClient.get<RawOtto[]>(`/adventure/wallets/${wallet}`)
-    return result.data.map(raw => new Otto(raw))
+    return result.data
   }
 
   public async getOttoAdventurePreview(

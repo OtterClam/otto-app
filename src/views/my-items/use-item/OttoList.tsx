@@ -1,13 +1,15 @@
+import AdventureStatus from 'components/AdventureStatus'
 import { useItemApplicable } from 'contracts/views'
-import Otto from 'models/Otto'
-import { MyOttosContext } from 'MyOttosProvider'
-import { useContext } from 'react'
+import Otto, { AdventureOttoStatus } from 'models/Otto'
+import { MyOttosContext, useMyOttos } from 'MyOttosProvider'
+import { useContext, useMemo } from 'react'
 import styled from 'styled-components/macro'
 
 const StyledOttoList = styled.div`
   display: flex;
   gap: 8px;
   width: 100%;
+  min-height: 54px;
   overflow-x: scroll;
 `
 
@@ -63,14 +65,18 @@ interface Props {
 }
 
 export default function OttoList({ itemId, selectedOtto, onSelect }: Props) {
-  const { ottos } = useContext(MyOttosContext)
+  const { ottos } = useMyOttos()
+  const avaliableOttos = useMemo(
+    () => ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready),
+    [ottos]
+  )
   const applicable = useItemApplicable(
     itemId,
     ottos.map(otto => otto.id)
   )
   return (
     <StyledOttoList>
-      {ottos.map((otto, index) => (
+      {avaliableOttos.map((otto, index) => (
         <StyledOttoCell
           key={index}
           selected={selectedOtto === otto}

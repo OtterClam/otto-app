@@ -6,7 +6,7 @@ import { RawAdventurePass } from 'libs/RawAdventureResult'
 import { getCroppedImageUrl } from 'utils/image'
 import { AdventurePass, fromRawPass } from './AdventurePass'
 import { AdventureResult } from './AdventureResult'
-import Item from './Item'
+import { ItemMetadata, Item, RawItemMetadata, rawItemMetadataToItemMetadata } from './Item'
 
 export enum TraitCollection {
   Genesis = 'genesis',
@@ -138,6 +138,10 @@ export default class Otto {
 
   public wearableTraits: Trait[] = []
 
+  public geneticItemsMetadata: ItemMetadata[] = []
+
+  public wearableItemsMetadata: ItemMetadata[] = []
+
   public epochRarityBoost?: number
 
   public diceCount?: number
@@ -158,7 +162,12 @@ export default class Otto {
 
   public attributePoints = 0
 
-  constructor(raw: RawOtto) {
+  constructor(
+    raw: RawOtto,
+    public equippedItems: Item[] = [],
+    public nativeItemsMetadata: ItemMetadata[] = [],
+    public itemsMetadata: ItemMetadata[] = []
+  ) {
     this.raw = raw
     this.rawUpdated()
   }
@@ -166,6 +175,10 @@ export default class Otto {
   private rawUpdated() {
     this.voice = new Audio(this.raw.animation_url)
     this.voice.load()
+    this.nativeItemsMetadata = this.nativeItemsMetadata.map(metadata => ({
+      ...metadata,
+      unreturnable: true,
+    }))
     this.baseRarityScore = this.raw.brs ? String(this.raw.brs) : '?'
     this.relativeRarityScore = this.raw.rrs ? String(this.raw.rrs) : '?'
     this.totalRarityScore = this.raw.rarity_score ? String(this.raw.rarity_score) : '?'
@@ -228,6 +241,9 @@ export default class Otto {
     }
 
     this.cachedAdventureStatus = this.adventureStatus
+
+    this.geneticItemsMetadata = this.itemsMetadata.filter(itemMetadata => !itemMetadata.wearable)
+    this.wearableItemsMetadata = this.itemsMetadata.filter(itemMetadata => itemMetadata.wearable)
   }
 
   get name(): string {
@@ -324,7 +340,7 @@ export default class Otto {
   }
 
   public clone() {
-    return new Otto(JSON.parse(JSON.stringify(this.raw)))
+    return new Otto(JSON.parse(JSON.stringify(this.raw)), this.equippedItems)
   }
 
   public playVoice() {
@@ -338,11 +354,12 @@ export default class Otto {
     }
   }
 
+  // TODO: use ItemMetadata
   public canWear(item: Item): boolean {
-    if (item.equippable_gender === OttoGender.Both || this.raw.gender === 'Cleo') {
+    if (item.metadata.equippableGender === OttoGender.Both || this.raw.gender === 'Cleo') {
       return true
     }
-    if (item.equippable_gender === OttoGender.Male) {
+    if (item.metadata.equippableGender === OttoGender.Male) {
       return this.raw.gender === 'Otto'
     }
     return this.raw.gender === 'Lottie'

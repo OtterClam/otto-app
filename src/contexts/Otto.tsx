@@ -1,10 +1,10 @@
 import { ItemActionType } from 'constant'
-import useMyItems from 'hooks/useMyItems'
 import noop from 'lodash/noop'
-import Item, { ItemAction } from 'models/Item'
+import { ItemAction, Item } from 'models/Item'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import { createContext, FC, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react'
+import { useMyItems } from './MyItems'
 
 const OttoContext = createContext<{
   otto?: Otto
@@ -44,10 +44,10 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
   const value = useMemo(() => {
     const uniqueItems = items.reduce((map, item) => {
       // pick non-equipped items first if there multiple items
-      if (map[item.id] && !map[item.id].equipped) {
+      if (map[item.metadata.tokenId] && !map[item.metadata.tokenId].equippedBy) {
         return map
       }
-      return Object.assign(map, { [item.id]: item })
+      return Object.assign(map, { [item.metadata.tokenId]: item })
     }, {} as Record<string, Item>)
     const ottoIdToOtto = ottos.reduce(
       (map, otto) => Object.assign(map, { [otto.id]: otto }),
@@ -92,7 +92,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
             }
           }
 
-          if (uniqueItems[itemId].equipped) {
+          if (uniqueItems[itemId].equippedBy) {
             return {
               type: ItemActionType.EquipFromOtto,
               item_id: Number(itemId),

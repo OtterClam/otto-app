@@ -165,6 +165,15 @@ export default function LevelUpPopup() {
   const otto = useMyOtto(levelUp?.ottoId)
   const [boosts, setBoosts] = useState<string[]>([])
 
+  const amounts = useMemo(() => {
+    return (levelUp?.levelUp?.got.items ?? [])
+      .filter(item => Boolean(rewardItems[item.tokenId]))
+      .reduce((amounts, item) => {
+        amounts[item.tokenId] = (amounts[item.tokenId] ?? 0) + 1
+        return amounts
+      }, {} as Record<string, number>)
+  }, [levelUp?.levelUp?.got.items])
+
   const handleClose = useCallback(() => {
     dispatch({ type: AdventureUIActionType.LevelUp })
   }, [])
@@ -245,16 +254,14 @@ export default function LevelUpPopup() {
               <AdventureRibbonText>{t('rewardSectionTitle')}</AdventureRibbonText>
             </StyledRewardTitle>
             <StyledRewards>
-              {levelUp.levelUp.got.items
-                .filter(item => Boolean(rewardItems[item.id]))
-                .map(item => (
-                  <StyledReward key={item.id}>
-                    <StyledRewardIcon image={rewardItems[item.id].image} />
-                    <StyledRewardLabel>
-                      {t(`itemRewardLabel.${rewardItems[item.id].key}`, { amount: item.amount })}
-                    </StyledRewardLabel>
-                  </StyledReward>
-                ))}
+              {Object.entries(amounts).map(([tokenId]) => (
+                <StyledReward key={tokenId}>
+                  <StyledRewardIcon image={rewardItems[tokenId].image} />
+                  <StyledRewardLabel>
+                    {t(`itemRewardLabel.${rewardItems[tokenId].key}`, { amount: amounts[tokenId] })}
+                  </StyledRewardLabel>
+                </StyledReward>
+              ))}
               <StyledReward>
                 <StyledRewardIcon image={attributePointsImage.src} />
                 <StyledRewardLabel>

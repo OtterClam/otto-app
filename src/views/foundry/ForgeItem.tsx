@@ -186,7 +186,7 @@ const useAvailableCount = (formula: ForgeFormula, itemCounts: MyItemAmounts): nu
       Math.min(
         ...formula.materials.map((material, index) => {
           const requiredAmount = formula.materialAmounts[index]
-          return (itemCounts[material.id] ?? 0) / requiredAmount
+          return (itemCounts[material.tokenId] ?? 0) / requiredAmount
         })
       )
     )
@@ -244,8 +244,8 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
           <Headline>{t('result.title')}</Headline>
           {formula.result && (
             <>
-              <a href={getOpenSeaItemLink(formula.result.id)} target="_blank" rel="noreferrer">
-                <StyledResultItemPreview item={formula.result} />
+              <a href={getOpenSeaItemLink(formula.result.tokenId)} target="_blank" rel="noreferrer">
+                <StyledResultItemPreview metadata={formula.result} />
               </a>
               <ContentMedium>{formula.result.name}</ContentMedium>
               <StyledItemType type={formula.result.type} />
@@ -264,12 +264,12 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
           <StyledMaterialList>
             {formula.materials.map((material, index) => (
               <StyledMaterialListItem key={index}>
-                <a href={getOpenSeaItemLink(material.id)} target="_blank" rel="noreferrer">
-                  <StyledMaterialPreview item={material} />
+                <a href={getOpenSeaItemLink(material.tokenId)} target="_blank" rel="noreferrer">
+                  <StyledMaterialPreview metadata={material} />
                 </a>
                 <StyledMaterialName>{material.name}</StyledMaterialName>
                 <StyledCount>
-                  {itemCounts[material.id] ?? 0} / {formula.materialAmounts[index]}
+                  {itemCounts[material.tokenId] ?? 0} / {formula.materialAmounts[index]}
                 </StyledCount>
               </StyledMaterialListItem>
             ))}
