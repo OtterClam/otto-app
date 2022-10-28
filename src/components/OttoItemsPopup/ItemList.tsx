@@ -1,11 +1,9 @@
 import styled from 'styled-components/macro'
 import { useItemFilters } from 'contexts/ItemFilters'
 import ItemCell from 'components/ItemCell'
-import Otto, { Trait } from 'models/Otto'
+import Otto from 'models/Otto'
 import { useMemo } from 'react'
 import { useTrait } from 'contexts/TraitContext'
-import { Item } from 'models/Item'
-import { useMyItem } from 'contexts/MyItems'
 
 const StyledItems = styled.div`
   display: grid;
@@ -19,12 +17,11 @@ const StyledItem = styled(ItemCell)`
 
 export interface ItemListProps {
   otto?: Otto
-  isWearable: (itemId: string) => boolean
   selectedItemId?: string
   selectItem: (itemId?: string) => void
 }
 
-export default function ItemList({ otto, isWearable, selectItem, selectedItemId }: ItemListProps) {
+export default function ItemList({ otto, selectItem, selectedItemId }: ItemListProps) {
   const { traitType } = useTrait()
   const { filteredItems } = useItemFilters()
   const { currentOttoEquippedItem, defaultItemMetadata, restItems } = useMemo(() => {

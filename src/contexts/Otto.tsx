@@ -112,6 +112,15 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
       setOtto,
       equipItem: (traitType: string, traitId: string) => {
         setDraftItems(map => {
+          const equippedItemIndex = otto?.equippedItems.findIndex(item => item.metadata.tokenId === traitId) ?? -1
+          const nativeItemIndex = otto?.nativeItemsMetadata.findIndex(metadata => metadata.tokenId === traitId) ?? -1
+
+          if (equippedItemIndex !== -1 || nativeItemIndex !== -1) {
+            const newMap = { ...map }
+            delete newMap[traitType]
+            return newMap
+          }
+
           return {
             ...map,
             [traitType]: traitId,

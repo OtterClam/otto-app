@@ -89,7 +89,7 @@ export const useItem = () => {
         .find(e => e?.name === 'TransferSingle' && e.args[2] === account)?.args[3]
       if (receivedItemTokenId) {
         itemsRepo
-          .getMetadataList(receivedItemTokenId)
+          .getMetadataList([receivedItemTokenId])
           .then(metadata => setUseItemState({ state: 'Success', status: state, receivedItem: metadata[0] }))
       } else {
         setUseItemState({ state: 'Success', status: state })

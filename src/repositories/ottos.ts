@@ -1,4 +1,3 @@
-import { ApolloClient } from '@apollo/client'
 import { Api } from 'libs/api'
 import flatten from 'lodash/flatten'
 import { AdventureLocation } from 'models/AdventureLocation'
@@ -17,15 +16,50 @@ export class OttosRepository {
     this.items = items
   }
 
-  private async fromOttoMetadata(ottoMetadata: RawOtto): Promise<Otto> {
+  private async fromOttoMetadata(ottoMetadata: RawOtto, preview?: boolean): Promise<Otto> {
     const nativeTokenIds = (ottoMetadata.otto_native_traits ?? []).map(({ id }) => id)
     const itemTokenIds = (ottoMetadata.otto_details ?? []).map(({ id }) => id)
-    const [allItemsMetadata, equippedItems] = await Promise.all([
+    // eslint-disable-next-line prefer-const
+    let [allItemsMetadata, equippedItems, previewItemsMetadata] = await Promise.all([
       this.items.getMetadata(itemTokenIds.concat(nativeTokenIds)),
       this.items.getItemsByOttoTokenId(ottoMetadata.id),
+      preview
+        ? this.items.getMetadata(
+            ottoMetadata.otto_details?.filter(({ wearable }) => wearable).map(({ id }) => id) ?? []
+          )
+        : undefined,
     ])
     const itemsMetadata = itemTokenIds.map(itemTokenId => allItemsMetadata[itemTokenId])
     const nativeItemsMetadata = nativeTokenIds.map(itemTokenId => allItemsMetadata[itemTokenId])
+
+    if (previewItemsMetadata) {
+      // delete removed items
+      equippedItems = equippedItems.filter(item => {
+        if (!previewItemsMetadata) {
+          return false
+        }
+        const exist = Object.prototype.hasOwnProperty.call(previewItemsMetadata, item.metadata.tokenId)
+        if (exist) {
+          delete previewItemsMetadata[item.metadata.tokenId]
+        }
+        return exist
+      })
+
+      // equipped itmes
+      equippedItems = equippedItems.concat(
+        Object.values(previewItemsMetadata)
+          .filter(metadata => !nativeTokenIds.includes(metadata.tokenId))
+          .map(metadata => ({
+            id: `draft_${metadata.tokenId}`,
+            amount: 1,
+            equippedBy: ottoMetadata.id,
+            unreturnable: false,
+            updatedAt: new Date(),
+            metadata,
+          }))
+      )
+    }
+
     return new Otto(ottoMetadata, equippedItems, nativeItemsMetadata, itemsMetadata)
   }
 
@@ -55,7 +89,7 @@ export class OttosRepository {
     actions: ItemAction[] = []
   ): Promise<{ otto: Otto; location: AdventureLocation }> {
     const preview = await this.api.getOttoAdventurePreview(ottoTokenId, locationId, actions)
-    const otto = await this.fromOttoMetadata(preview)
+    const otto = await this.fromOttoMetadata(preview, true)
     return {
       otto,
       location: preview.location,
