@@ -132,7 +132,7 @@ export class Api {
   public async getFlashSell(): Promise<FlashSellResponse> {
     return this.otterclamClient.get('/products/flashsale').then(res => ({
       ...res.data,
-      type: parseItemStatName(res.data.type),
+      type: res.data.type,
       start_time: new Date(res.data.start_time).valueOf(),
       end_time: new Date(res.data.end_time).valueOf(),
       special_items: res.data.special_items.map((raw: RawItemMetadata) => rawItemMetadataToItemMetadata(raw)),
