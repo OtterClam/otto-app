@@ -72,7 +72,7 @@ export default function OttoList({ itemId, selectedOtto, onSelect }: Props) {
   )
   const applicable = useItemApplicable(
     itemId,
-    ottos.map(otto => otto.id)
+    avaliableOttos.map(otto => otto.id)
   )
   return (
     <StyledOttoList>
