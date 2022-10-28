@@ -120,10 +120,15 @@ const StyledPotionIcon = styled.div<{ potion: AdventurePotion }>`
 `
 
 const StyledPotionAmounts = styled(Note).attrs({ as: 'div' })`
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 3px;
-  padding: 7px 0 0 7px;
+`
+
+const StyledHeader = styled.div`
+  display: flex;
+  padding: 7px 7px 0 7px;
 `
 
 const StyledPotionAmount = styled.div`
@@ -132,6 +137,12 @@ const StyledPotionAmount = styled.div`
   border-radius: 4px;
   background: ${({ theme }) => theme.colors.otterBlack};
   padding: 0 5px;
+`
+
+const StyledRewardsHelp = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
 `
 
 function PotionButton({
@@ -240,18 +251,24 @@ export default function AdventureRewards({ canUsePotions, onUsePotion = noop }: 
       </StyledTitle>
 
       <StyledSection showRope={false}>
-        {canUsePotions && (
-          <StyledPotionAmounts>
-            <StyledPotionAmount>
-              <StyledPotionIcon potion={AdventurePotion.Exp} />
-              {(potionAmounts[AdventurePotion.Exp] ?? 0) - (usedPotionAmounts[AdventurePotion.Exp] ?? 0)}
-            </StyledPotionAmount>
-            <StyledPotionAmount>
-              <StyledPotionIcon potion={AdventurePotion.Str} />
-              {(potionAmounts[AdventurePotion.Str] ?? 0) - (usedPotionAmounts[AdventurePotion.Str] ?? 0)}
-            </StyledPotionAmount>
-          </StyledPotionAmounts>
-        )}
+        <StyledHeader>
+          {canUsePotions && (
+            <StyledPotionAmounts>
+              <StyledPotionAmount>
+                <StyledPotionIcon potion={AdventurePotion.Exp} />
+                {(potionAmounts[AdventurePotion.Exp] ?? 0) - (usedPotionAmounts[AdventurePotion.Exp] ?? 0)}
+              </StyledPotionAmount>
+              <StyledPotionAmount>
+                <StyledPotionIcon potion={AdventurePotion.Str} />
+                {(potionAmounts[AdventurePotion.Str] ?? 0) - (usedPotionAmounts[AdventurePotion.Str] ?? 0)}
+              </StyledPotionAmount>
+            </StyledPotionAmounts>
+          )}
+
+          <StyledRewardsHelp>
+            <HelpButton message={t('rewardsHelp')} />
+          </StyledRewardsHelp>
+        </StyledHeader>
 
         <StyledRewards>
           <StyledReward>
