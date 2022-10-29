@@ -74,17 +74,23 @@ const StyledWearCount = styled(Caption).attrs({ as: 'p' })`
 `
 
 export interface Props {
-  item?: Item
   metadata?: ItemMetadata
 }
 
-export default function ItemCard({ item, metadata = item?.metadata }: Props) {
+export default function ItemCard({ metadata }: Props) {
   if (!metadata) {
     throw new Error('missing required prop')
   }
 
   const { t } = useTranslation()
 
+  const item: Item = {
+    id: '',
+    amount: 1,
+    unreturnable: false,
+    metadata,
+    updatedAt: new Date(),
+  }
   const {
     type,
     name,
