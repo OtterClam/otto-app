@@ -1,6 +1,5 @@
 import BorderContainer from 'components/BorderContainer'
 import Product from 'models/store/Product'
-import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import ProductCard from './ProductCard'
 import useProductBorderColor from './useProductBorderColor'
@@ -16,7 +15,6 @@ interface Props {
 }
 
 export default function BorderedProductCard({ product, onClick }: Props) {
-  const { t } = useTranslation()
   const borderColor = useProductBorderColor(product.type)
   return (
     <StyledContainer borderColor={borderColor}>

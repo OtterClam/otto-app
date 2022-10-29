@@ -31,11 +31,13 @@ const StyledFlashSellItemsText = styled(ContentSmall)``
 
 const StyledItemList = styled.div`
   display: flex;
+  justify-content: space-between;
   gap: 10px;
 `
 
 const StyledItemContainer = styled.div`
   display: flex;
+  width: 30%;
   flex-direction: column;
   align-items: center;
   gap: 10px;
