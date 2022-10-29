@@ -10,20 +10,19 @@ import OttoHellDiceRoller from './OttoHellDiceRoller.json'
 import OttoItem from './OttoItem.json'
 import OttoItemGiveaway from './OttoItemGiveaway.json'
 import OttopiaPortalCreator from './OttopiaPortalCreator.json'
-import OttopiaStore from './OttopiaStore.json'
 import OttoSummoner from './OttoSummoner.json'
 import PearlBank from './PearlBank.json'
 import ERC1155 from './ERC1155.json'
 
 export { default as AdventureAbi } from './Adventure.json'
 export { default as FoundryAbi } from './Foundry.json'
+export { default as OttopiaStoreAbi } from './OttopiaStore.json'
 
 export const ERC20Abi = ERC20.abi
 export const OttoAbi = Otto
 export const OttopiaPortalCreatorAbi = OttopiaPortalCreator.abi
 export const OttoSummonerAbi = OttoSummoner.abi
 export const OttoItemAbi = OttoItem.abi
-export const OttopiaStoreAbi = OttopiaStore.abi
 export const IOttoItemFactoryAbi = IOttoItemFactory.abi
 export const OttoItemGiveawayAbi = OttoItemGiveaway.abi
 export const ClamCirculatingSupplyAbi = ClamCirculatingSupply.abi

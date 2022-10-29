@@ -548,7 +548,8 @@
     },
     "product_card": {
       "airdrop": "You have {{amount}} for free. Claim now!",
-      "select": "Select"
+      "select": "Select",
+      "buy_btn": "Buy"
     },
     "shell_chest": "Shell Chest",
     "subtitle_1": "These Shell Chests contain more than 600+ pieces of special, wearable equipment, and they're on sale! The more you buy, the more you save! Each Chest holds 1 item!",

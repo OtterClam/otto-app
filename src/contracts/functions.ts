@@ -1,14 +1,14 @@
 import { TransactionState, TransactionStatus, useCall, useCalls, useContractFunction, useEthers } from '@usedapp/core'
 import { useApi } from 'contexts/Api'
 import { useRepositories } from 'contexts/Repositories'
-import { BigNumber, constants, Contract, ethers, utils } from 'ethers'
+import { BigNumber, BigNumberish, constants, Contract, ethers, utils } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { Api } from 'libs/api'
 import _ from 'lodash'
 import { ItemAction, ItemMetadata, Item } from 'models/Item'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ItemsRepository } from 'repositories/items'
 import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
 import {
@@ -554,7 +554,7 @@ function txState(state: TransactionState): OttoTxState {
   }
 }
 
-interface OttoTransactionWriteState {
+export interface OttoTransactionWriteState {
   state: OttoTxState
   status: TransactionStatus
 }
@@ -882,4 +882,75 @@ export const useDoItemBatchActions = () => {
     resetItem()
   }, [resetState, resetItem])
   return { doItemBatchActionsState, doItemBatchActions, resetDoItemBatchActions }
+}
+
+export const useBuyFishItem = () => {
+  const { FISH, OTTOPIA_STORE } = useContractAddresses()
+  const store = useStoreContract()
+  const { account, library } = useEthers()
+  const api = useApi()
+  const fish = useERC20(FISH)
+  const { approve, approveState, resetApprove } = useApprove(FISH)
+  const { send: sendBuy, state, resetState } = useContractFunction(store, 'buySigned')
+  const [buyState, setBuyState] = useState<OttoTransactionWriteState>({
+    state: 'None',
+    status: state,
+  })
+  useEffect(() => {
+    if (approveState.status !== 'Success') {
+      setBuyState({
+        state: txState(approveState.status),
+        status: approveState,
+      })
+    }
+  }, [approveState])
+  useEffect(() => {
+    setBuyState({
+      state: txState(state.status),
+      status: state,
+    })
+  }, [state])
+  const resetBuy = () => {
+    resetApprove()
+    resetState()
+  }
+
+  const buy = useCallback(
+    async (productId: number, price: BigNumberish) => {
+      if (!account || !library) {
+        return
+      }
+      setBuyState({
+        state: 'Processing',
+        status: state,
+      })
+
+      const allowance = await fish.allowance(account, OTTOPIA_STORE)
+      if (allowance.lt(price)) {
+        const tx = await approve(OTTOPIA_STORE, constants.MaxUint256)
+        if (!tx) {
+          return
+        }
+      }
+      try {
+        const data = await api.signFishStoreProduct({ from: account, to: account, productId })
+        ;(sendBuy as any)(...data)
+      } catch (err: any) {
+        setBuyState({
+          state: 'Fail',
+          status: {
+            ...state,
+            errorMessage: err.message,
+          },
+        })
+      }
+    },
+    [account, library, state, OTTOPIA_STORE, api, sendBuy, approve]
+  )
+
+  return {
+    buy,
+    buyState,
+    resetBuy,
+  }
 }

@@ -1,6 +1,6 @@
 import { ChainId } from '@usedapp/core'
 import axios, { Axios } from 'axios'
-import { BigNumberish } from 'ethers'
+import { BigNumberish, ethers } from 'ethers'
 import {
   AdventureExploreArgs,
   AdventureLocation,
@@ -13,10 +13,10 @@ import { AdventureResult, fromRawResult } from 'models/AdventureResult'
 import { Dice } from 'models/Dice'
 import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
 import {
+  Item,
   ItemAction,
   ItemMetadata,
   ItemStatName,
-  parseItemStatName,
   RawItemMetadata,
   rawItemMetadataToItemMetadata,
 } from 'models/Item'
@@ -44,6 +44,22 @@ export interface FlashSellResponse {
   products: Product[]
   special_items: ItemMetadata[]
   processing_images: string[]
+}
+
+export interface FishStoreProduct extends Product {
+  start_time: number
+  end_time: number
+  item: Item
+}
+
+export interface FishStoreResponse {
+  id: number
+  title: string
+  desc: string
+  products: FishStoreProduct[]
+  bg_img: string
+  left_img: string
+  right_img: string
 }
 
 const otterclamApiEndpoint: { [key: number]: string } = {
@@ -137,6 +153,36 @@ export class Api {
       end_time: new Date(res.data.end_time).valueOf(),
       special_items: res.data.special_items.map((raw: RawItemMetadata) => rawItemMetadataToItemMetadata(raw)),
     }))
+  }
+
+  public async getFishStoreProducts(): Promise<FishStoreResponse[]> {
+    return this.otterclamClient.get('/store').then(res => {
+      return res.data.map((data: any) => ({
+        ...data,
+        products: data.products.map((raw: any): FishStoreProduct => {
+          const itemMeta = rawItemMetadataToItemMetadata(raw.item)
+          return {
+            ...raw,
+            displayPrice: ethers.utils.formatEther(raw.price),
+            discountPrice: raw.discount_price,
+            displayDiscountPrice: ethers.utils.formatEther(raw.discount_price),
+            start_time: new Date(raw.start_time).valueOf(),
+            end_time: new Date(raw.end_time).valueOf(),
+            item: {
+              id: String(raw.item_id),
+              amount: 1,
+              updatedAt: new Date(),
+              metadata: itemMeta,
+              unreturnable: false,
+            },
+          }
+        }),
+      }))
+    })
+  }
+
+  public async signFishStoreProduct({ from, to, productId }: { from: string; to: string; productId: number }) {
+    return this.otterclamClient.post('/store/buy', { from, to, product_id: productId }).then(res => res.data)
   }
 
   public async getFoundryForges(): Promise<ForgeFormula[]> {

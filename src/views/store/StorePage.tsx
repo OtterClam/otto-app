@@ -1,7 +1,7 @@
 import MarkdownWithHtml from 'components/MarkdownWithHtml'
 import { WHITE_PAPER_LINK } from 'constant'
 import { FlashSellResponse } from 'libs/api'
-import { useApi } from 'contexts/Api'
+import { useApi, useApiCall } from 'contexts/Api'
 import useProducts from 'models/store/useProducts'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -16,6 +16,7 @@ import ProductPopup, { GroupedProduct } from './ProductPopup'
 import StarLeft from './star-left.png'
 import StarRight from './star-right.png'
 import StoreHero from './StoreHero'
+import FishProductCard from './FishProductCard'
 
 const StyledStorePage = styled.div`
   color: ${({ theme }) => theme.colors.white};
@@ -118,11 +119,12 @@ const StyledProductList = styled.div`
 const REGULAR_PRODUCT_TYPES = ['silver', 'golden', 'diamond']
 
 export default function StorePage() {
-  const { t, i18n } = useTranslation('', { keyPrefix: 'store' })
+  const { t } = useTranslation('', { keyPrefix: 'store' })
   const api = useApi()
   const bodyRef = useRef<HTMLDivElement>(null)
   const [flashSell, setFlashSell] = useState<FlashSellResponse | null>(null)
   const [selectedProduct, setSelectedProduct] = useState<GroupedProduct | null>(null)
+  const { result: fishStore } = useApiCall('getFishStoreProducts', [], true, [])
   const { products } = useProducts()
   const groupedProducts = useMemo(() => {
     const grouped = products.reduce<Record<string, GroupedProduct>>((acc, product) => {
@@ -141,7 +143,7 @@ export default function StorePage() {
       }
       return acc
     }, {})
-    return Object.values(grouped).sort((a, b) => a.main.id.localeCompare(b.main.id))
+    return Object.values(grouped).sort((a, b) => (a.main.id > b.main.id ? 1 : -1))
   }, [products])
   const displayProducts = useMemo(
     () => groupedProducts.filter(p => REGULAR_PRODUCT_TYPES.indexOf(p.main.type) !== -1),
@@ -158,7 +160,7 @@ export default function StorePage() {
               .filter(p => p.type === sell.type)
               .map(p => ({
                 ...p,
-                ...sell.products.find(sp => String(sp.id) === p.id),
+                ...sell.products.find(sp => sp.id === p.id),
               })),
           })
         })
@@ -197,6 +199,25 @@ export default function StorePage() {
             />
           </StyledFlashSellBody>
         )}
+        {fishStore &&
+          fishStore.length > 0 &&
+          fishStore.map((store, i) => (
+            <StyledProductBody key={i}>
+              <StyledShellChestTitle>
+                <img src={GemLeft.src} alt="Gem Left" />
+                <Display3>{store.title}</Display3>
+                <img src={GemRight.src} alt="Gem Left" />
+              </StyledShellChestTitle>
+              <StyledChestDesc>
+                <MarkdownWithHtml>{store.desc}</MarkdownWithHtml>
+              </StyledChestDesc>
+              <StyledProductList>
+                {store.products.map((p, index) => (
+                  <FishProductCard key={index} product={p} />
+                ))}
+              </StyledProductList>
+            </StyledProductBody>
+          ))}
         <StyledProductBody ref={flashSell ? null : bodyRef}>
           <StyledShellChestTitle>
             <img src={GemLeft.src} alt="Gem Left" />

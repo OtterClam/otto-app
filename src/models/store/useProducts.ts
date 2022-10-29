@@ -57,7 +57,7 @@ export default function useProducts() {
     () =>
       data?.ottoProducts.map((p, idx) => ({
         ...p,
-        id: p.productId,
+        id: Number(p.productId),
         name: t(`product.${p.type}.name`),
         desc: t(`product.${p.type}.desc`),
         mustDesc: p.amount === 10 ? t(`product.${p.type}.must_desc`) : undefined,
