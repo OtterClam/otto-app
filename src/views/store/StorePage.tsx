@@ -204,9 +204,9 @@ export default function StorePage() {
           fishStore.map((store, i) => (
             <StyledProductBody key={i}>
               <StyledShellChestTitle>
-                <img src={GemLeft.src} alt="Gem Left" />
+                <img src={store.left_img} alt="Left" />
                 <Display3>{store.title}</Display3>
-                <img src={GemRight.src} alt="Gem Left" />
+                <img src={store.right_img} alt="Right" />
               </StyledShellChestTitle>
               <StyledChestDesc>
                 <MarkdownWithHtml>{store.desc}</MarkdownWithHtml>
