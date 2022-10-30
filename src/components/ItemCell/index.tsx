@@ -189,7 +189,9 @@ export default function ItemCell({
 
   unavailable = Boolean(
     (unavailable && !equippedByCurrentOtto) ||
-      (equippedByOtto && equippedByOtto.adventureStatus !== AdventureOttoStatus.Ready)
+      (equippedByOtto &&
+        (equippedByOtto.adventureStatus === AdventureOttoStatus.Ongoing ||
+          equippedByOtto.adventureStatus === AdventureOttoStatus.Finished))
   )
 
   return (
