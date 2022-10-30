@@ -75,14 +75,7 @@ export default function TakeOffItemView({ item, otto, onUse }: Props) {
             <img width={30} src={Arrow.src} alt="arrow" />
             <ItemPreviewCard title={t('my_items.wear_item.replaced')} metadata={nativeItemMetadata} />
           </StyledItemPreview>
-          <StyledUseButton
-            disabled={
-              otto?.adventureStatus === AdventureOttoStatus.Ongoing ||
-              otto?.adventureStatus === AdventureOttoStatus.Finished
-            }
-            Typography={Headline}
-            onClick={onUse}
-          >
+          <StyledUseButton disabled={!otto?.availableForItem} Typography={Headline} onClick={onUse}>
             {t('my_items.take_off')}
           </StyledUseButton>
         </StyledOttoPreviewContainer>

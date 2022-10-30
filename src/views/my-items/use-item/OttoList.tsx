@@ -66,17 +66,14 @@ interface Props {
 
 export default function OttoList({ itemId, selectedOtto, onSelect }: Props) {
   const { ottos } = useMyOttos()
-  const avaliableOttos = useMemo(
-    () => ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready),
-    [ottos]
-  )
+  const availableOttos = useMemo(() => ottos.filter(otto => otto.availableForItem), [ottos])
   const applicable = useItemApplicable(
     itemId,
-    avaliableOttos.map(otto => otto.id)
+    availableOttos.map(otto => otto.id)
   )
   return (
     <StyledOttoList>
-      {avaliableOttos.map((otto, index) => (
+      {availableOttos.map((otto, index) => (
         <StyledOttoCell
           key={index}
           selected={selectedOtto === otto}

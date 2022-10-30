@@ -326,6 +326,10 @@ export default class Otto {
     }
   }
 
+  get availableForItem(): boolean {
+    return this.adventureStatus !== AdventureOttoStatus.Ongoing && this.adventureStatus !== AdventureOttoStatus.Finished
+  }
+
   get next_level_exp(): number {
     // TODO: remove the default value
     return this.raw.next_level_exp ?? 1

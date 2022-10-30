@@ -187,12 +187,7 @@ export default function ItemCell({
   const { tokenId, image, rarity, unreturnable } = metadata || (item?.metadata ?? {})
   const equippedByCurrentOtto = Boolean(currentOtto?.equippedItems.find(item => item.id === id))
 
-  unavailable = Boolean(
-    (unavailable && !equippedByCurrentOtto) ||
-      (equippedByOtto &&
-        (equippedByOtto.adventureStatus === AdventureOttoStatus.Ongoing ||
-          equippedByOtto.adventureStatus === AdventureOttoStatus.Finished))
-  )
+  unavailable = Boolean((unavailable && !equippedByCurrentOtto) || (equippedByOtto && !equippedByOtto.availableForItem))
 
   return (
     <StyledItemCell
