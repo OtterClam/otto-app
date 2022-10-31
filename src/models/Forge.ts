@@ -1,6 +1,5 @@
 import { BigNumber } from 'ethers'
 import { ItemMetadata, RawItemMetadata, rawItemMetadataToItemMetadata } from './Item'
-import { Trait } from './Otto'
 
 export interface ForgeFormula {
   id: number

@@ -1,8 +1,7 @@
-import AdventureStatus from 'components/AdventureStatus'
 import { useItemApplicable } from 'contracts/views'
-import Otto, { AdventureOttoStatus } from 'models/Otto'
-import { MyOttosContext, useMyOttos } from 'MyOttosProvider'
-import { useContext, useMemo } from 'react'
+import Otto from 'models/Otto'
+import { useMyOttos } from 'MyOttosProvider'
+import { useMemo } from 'react'
 import styled from 'styled-components/macro'
 
 const StyledOttoList = styled.div`
@@ -80,7 +79,7 @@ export default function OttoList({ itemId, selectedOtto, onSelect }: Props) {
           disabled={!applicable[index]}
           onClick={() => onSelect(otto)}
         >
-          <StyledOttoImage src={otto.mediumImage} />
+          <StyledOttoImage src={otto.image} />
           {!applicable[index] && <StyledDisableMask />}
         </StyledOttoCell>
       ))}

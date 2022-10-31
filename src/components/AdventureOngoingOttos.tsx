@@ -3,11 +3,11 @@ import { useOtto } from 'contexts/Otto'
 import useRemainingTime from 'hooks/useRemainingTime'
 import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import { useCallback } from 'react'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
 import AdventureInfoSection from './AdventureInfoSection'
-import CroppedImage from './CroppedImage'
 
 const StyledListItem = styled.div`
   display: flex;
@@ -26,8 +26,6 @@ const StyledImageContainer = styled.div`
   position: relative;
   overflow: hidden;
 `
-
-const StyledImage = styled(CroppedImage).attrs({ layout: 'fill' })``
 
 const StyledName = styled(Note)`
   flex: 1;
@@ -69,7 +67,7 @@ function ListItem({ otto, onClick }: { otto: Otto; onClick: (ottoId: string) => 
   return (
     <StyledListItem>
       <StyledImageContainer>
-        <StyledImage src={otto.image} />
+        <Image layout="fill" width={25} height={25} src={otto.image} />
       </StyledImageContainer>
       <StyledName>{otto.name}</StyledName>
       <StyledDuration>{duration}</StyledDuration>

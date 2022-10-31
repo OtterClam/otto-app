@@ -1,13 +1,12 @@
 import AdventureProgressBar from 'components/AdventureProgressBar'
 import Button from 'components/Button'
-import CroppedImage from 'components/CroppedImage'
 import { useAdventureUIState } from 'contexts/AdventureUIState'
-import { useOtto } from 'contexts/Otto'
 import { useUseAttributePoints } from 'contracts/functions'
 import { useAttributePoints } from 'contracts/views'
 import Otto from 'models/Otto'
 import { useMyOtto } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentExtraSmall, ContentLarge, Headline, Note } from 'styles/typography'
@@ -134,7 +133,7 @@ export default function PointsView({ onSuccess, onRequestClose }: PointsViewProp
         <>
           <StyledTitle>{t('popupTitle')}</StyledTitle>
           <StyledOttoCard>
-            <CroppedImage src={otto.image} width={60} height={60} />
+            <Image src={otto.image} width={60} height={60} />
             <StyledDetails>
               <StyledName>{otto.name}</StyledName>
               <StyledExp>

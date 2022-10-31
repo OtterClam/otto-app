@@ -165,7 +165,7 @@ export default function OttoCard({ otto, oldOtto, withItem: item, takeOff = fals
 
   return (
     <StyledOttoCard borderColor={theme.colors.lightGray400} className={className}>
-      <StyledOttoImage src={otto.largeImage} />
+      <StyledOttoImage src={otto.image} />
       <StyledOttoName>
         <ContentMedium>{otto.name}</ContentMedium>
       </StyledOttoName>

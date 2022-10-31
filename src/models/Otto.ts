@@ -3,10 +3,9 @@ import assert from 'assert'
 import { Adventure } from 'contracts/__generated__'
 import { BigNumber } from 'ethers'
 import { RawAdventurePass } from 'libs/RawAdventureResult'
-import { getCroppedImageUrl } from 'utils/image'
 import { AdventurePass, fromRawPass } from './AdventurePass'
 import { AdventureResult } from './AdventureResult'
-import { ItemMetadata, Item, RawItemMetadata, rawItemMetadataToItemMetadata } from './Item'
+import { ItemMetadata, Item } from './Item'
 
 export enum TraitCollection {
   Genesis = 'genesis',
@@ -252,18 +251,6 @@ export default class Otto {
 
   get image(): string {
     return this.raw.image
-  }
-
-  get largeImage(): string {
-    return getCroppedImageUrl(this.image, { w: 900, h: 900 })
-  }
-
-  get mediumImage(): string {
-    return getCroppedImageUrl(this.image, { w: 400, h: 400 })
-  }
-
-  get smallImage(): string {
-    return getCroppedImageUrl(this.image, { w: 200, h: 200 })
   }
 
   get description(): string {

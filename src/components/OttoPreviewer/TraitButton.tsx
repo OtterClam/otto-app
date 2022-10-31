@@ -1,7 +1,7 @@
-import CroppedImage from 'components/CroppedImage'
 import { Trait } from 'models/Otto'
 import styled from 'styled-components/macro'
 import React from 'react'
+import Image from 'next/image'
 import lockImage from './lock.svg'
 
 const StyledButton = styled.button<{ traitType: string; trait?: Trait; locked?: boolean }>`
@@ -66,7 +66,7 @@ export default React.memo(
         locked={locked}
         onClick={() => onSelect(type, trait)}
       >
-        <StyledImage>{trait && <CroppedImage src={trait.image} width={34} height={34} />}</StyledImage>
+        <StyledImage>{trait && <Image src={trait.image} width={34} height={34} />}</StyledImage>
       </StyledButton>
     )
   },

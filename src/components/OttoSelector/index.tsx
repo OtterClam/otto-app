@@ -1,8 +1,8 @@
 import useResizeObserver from '@react-hook/resize-observer'
-import CroppedImage from 'components/CroppedImage'
 import { useOtto } from 'contexts/Otto'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
+import Image from 'next/image'
 import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react'
 import { useSwipeable } from 'react-swipeable'
 import styled from 'styled-components/macro'
@@ -61,7 +61,7 @@ const OttoItem = React.memo(
     return (
       <StyledItem activated={activated} onClick={() => onSelect(otto)}>
         <StyledImage>
-          <CroppedImage src={otto.image} draggable="false" width={imageSize} height={imageSize} />
+          <Image src={otto.image} draggable="false" width={imageSize} height={imageSize} />
         </StyledImage>
       </StyledItem>
     )

@@ -1,5 +1,4 @@
 import CLAM from 'assets/clam.png'
-import OttOLoading from 'assets/ui/otto-loading.jpg'
 import styled from 'styled-components/macro'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import Otto from 'models/Otto'
@@ -9,7 +8,6 @@ import { ContentLarge } from 'styles/typography'
 import Image from 'next/image'
 import OttoBoostLabels from 'components/OttoBoostLabels'
 import useEstimatedReward from 'hooks/useEstimatedReward'
-import { getCroppedImageUrl } from 'utils/image'
 import FirstRank from './Icon/Rank/1st.png'
 import SecondRank from './Icon/Rank/2nd.png'
 import ThirdRank from './Icon/Rank/3rd.png'
@@ -193,7 +191,7 @@ export interface ListRowProps {
 // so we cache rendering result via `React.memo` to improve rendering performance.
 export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) {
   const { isMobile } = useBreakpoints()
-  const { id, smallImage: image, name, totalRarityScore, baseRarityScore, relativeRarityScore } = otto
+  const { id, image, name, totalRarityScore, baseRarityScore, relativeRarityScore } = otto
   const estimatedReward = useEstimatedReward(rank)
 
   if (isMobile) {
@@ -205,7 +203,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
               <StyledRank rank={rank}>{rank}</StyledRank>
             </StyledTd>
             <StyledOttoAvatarContainer>
-              <Image src={getCroppedImageUrl(image, { w: 200 })} layout="fill" unoptimized />
+              <Image src={image} layout="fill" width={200} height={200} />
             </StyledOttoAvatarContainer>
             <StyledMobileContent>
               <StyledAvatarName>{name}</StyledAvatarName>
@@ -229,7 +227,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
           <StyledTd>
             <StyledAvatarName>
               <StyledOttoAvatarContainer isMyOttoRow={isMyOttoRow}>
-                <Image src={getCroppedImageUrl(image, { w: 200 })} layout="fill" unoptimized />
+                <Image src={image} layout="fill" width={200} height={200} />
               </StyledOttoAvatarContainer>
               <StyledNameColumn>
                 {name}
