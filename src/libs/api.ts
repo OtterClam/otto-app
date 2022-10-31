@@ -72,20 +72,21 @@ export class Api {
 
   private otterclamClient: Axios
 
-  constructor(chainId: ChainId) {
+  constructor(chainId: ChainId, public readonly locale: string) {
     this.chainId = chainId
     this.otterclamClient = axios.create({
       baseURL: otterclamApiEndpoint[chainId],
     })
+    this.setLanguage(locale)
   }
 
   withAbortController(abortController: AbortController) {
-    const newClient = new Api(this.chainId)
+    const newClient = new Api(this.chainId, this.locale)
     newClient.otterclamClient.defaults.signal = abortController.signal
     return newClient
   }
 
-  setLanguage(lang: string): void {
+  private setLanguage(lang: string): void {
     this.otterclamClient.defaults.headers.common['Accept-language'] = lang
   }
 
@@ -282,4 +283,4 @@ export class Api {
   }
 }
 
-export const defaultApi = new Api(ChainId.Polygon)
+export const defaultApi = new Api(ChainId.Polygon, 'en')

@@ -13,12 +13,8 @@ export function ApiProvider({ children }: PropsWithChildren<object>) {
     if (!chainId) {
       return defaultApi
     }
-    return new Api(chainId)
-  }, [chainId])
-
-  useEffect(() => {
-    api.setLanguage(i18n.resolvedLanguage)
-  }, [i18n.resolvedLanguage, api])
+    return new Api(chainId, i18n.resolvedLanguage)
+  }, [chainId, i18n.resolvedLanguage])
 
   return <ApiContext.Provider value={api}>{children}</ApiContext.Provider>
 }
