@@ -2,7 +2,6 @@ import AdventureFullscreen from 'components/AdventureFullscreen'
 import AdventureProgressBar from 'components/AdventureProgressBar'
 import AdventureRibbonText from 'components/AdventureRibbonText'
 import Button from 'components/Button'
-import CroppedImage from 'components/CroppedImage'
 import RewardRibbonText from 'components/RewardRibbonText'
 import TreasurySection from 'components/TreasurySection'
 import { AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
@@ -15,10 +14,10 @@ import silverImage from 'assets/chests/silver.png'
 import goldenImage from 'assets/chests/golden.png'
 import diamondImage from 'assets/chests/diamond.png'
 import attributePointsImage from 'assets/chests/attribute_points.png'
-import { AdventureDisplayedBoost, parseBoosts } from 'models/AdventureDisplayedBoost'
+import { parseBoosts } from 'models/AdventureDisplayedBoost'
 import { BoostType } from 'models/AdventureLocation'
 import { useApi } from 'contexts/Api'
-import MarkdownWithHtml from 'components/MarkdownWithHtml'
+import Image from 'next/image'
 import arrowImage from './arrow.png'
 
 const rewardItems: { [k: string]: { key: string; image: string } } = {
@@ -218,7 +217,7 @@ export default function LevelUpPopup() {
       {otto && levelUp?.levelUp && (
         <StyledContainer>
           <StyledOtto>
-            <CroppedImage src={otto.image} width={140} height={140} />
+            <Image src={otto.image} width={140} height={140} />
             <StyledLevels>
               <StyledLevel>LV.{levelUp.levelUp.from.level}</StyledLevel>
               <StyledArrow />

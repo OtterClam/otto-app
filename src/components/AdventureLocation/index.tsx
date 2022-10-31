@@ -4,11 +4,11 @@ import { AdventurePopupStep, AdventureUIActionType, useAdventureUIState } from '
 import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
 import { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
+import Image from 'next/image'
 import { useCallback } from 'react'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
 import AdventureRibbonText from '../AdventureRibbonText'
-import CroppedImage from '../CroppedImage'
 import lockImage from './lock.svg'
 
 const WIDTH = 134
@@ -48,7 +48,7 @@ const StyledDetails = styled.div`
   padding-top: 90px;
 `
 
-const StyledPinImage = styled(CroppedImage).attrs({ layout: 'fill' })``
+const StyledPinImage = styled(Image).attrs({ layout: 'fill', width: 120, height: 120 })``
 
 const StyledOttoImageContainer = styled.div`
   border: 1px ${({ theme }) => theme.colors.otterBlack} solid;
@@ -60,7 +60,7 @@ const StyledOttoImageContainer = styled.div`
   overflow: hidden;
 `
 
-const StyledOttoImage = styled(CroppedImage).attrs({ width: 22, height: 22 })``
+const StyledOttoImage = styled(Image).attrs({ width: 22, height: 22 })``
 
 const StyledOttoImages = styled.div`
   display: flex;

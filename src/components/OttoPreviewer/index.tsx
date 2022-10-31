@@ -1,4 +1,3 @@
-import CroppedImage from 'components/CroppedImage'
 import styled from 'styled-components/macro'
 import OttoItemsPopup from 'components/OttoItemsPopup'
 import { useCallback, useMemo } from 'react'
@@ -7,6 +6,7 @@ import { useAdventureOtto } from 'contexts/AdventureOtto'
 import { Trait } from 'models/Otto'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import OttoLoadingPlaceholder from 'assets/ui/otto-loading.jpg'
+import Image from 'next/image'
 import { useTrait } from '../../contexts/TraitContext'
 import TraitButton from './TraitButton'
 import FeedButton from './FeedButton'
@@ -93,7 +93,13 @@ export default function OttoPreviewer({ itemsPopupWidth, itemPopupHeight, itemPo
           <StyledPreviewImage>
             <AdventureRibbonText>{otto?.name}</AdventureRibbonText>
             <StyledImageContainer>
-              <CroppedImage key={otto?.id} src={otto ? otto.image : OttoLoadingPlaceholder} layout="fill" />
+              <Image
+                key={otto?.id}
+                src={otto ? otto.image : OttoLoadingPlaceholder}
+                layout="fill"
+                width={200}
+                height={200}
+              />
             </StyledImageContainer>
           </StyledPreviewImage>
 

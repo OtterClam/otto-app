@@ -29,5 +29,9 @@ module.exports = withPWA(
       swSrc: './src/worker/index.ts',
       disable: process.env.NODE_ENV === 'development',
     },
+    images: {
+      domains: ['api.otterclam.finance', 'api-testnet.otterclam.finance'],
+      formats: ['image/avif', 'image/webp'],
+    },
   })
 )

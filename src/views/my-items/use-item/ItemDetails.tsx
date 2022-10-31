@@ -8,7 +8,7 @@ import { getOpenSeaItemLink } from 'constant'
 import { ItemType, Item, ItemStatName } from 'models/Item'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentSmall, Headline, Note } from 'styles/typography'
 import TransferItemPopup from './TransferItemPopup'
@@ -176,7 +176,7 @@ interface Props {
   className?: string
 }
 
-export default function ItemDetails({ item, onClose, onUse, className }: Props) {
+export default memo(function ItemDetails({ item, onClose, onUse, className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
   const { id, equippedBy } = item
   const {
@@ -276,4 +276,4 @@ export default function ItemDetails({ item, onClose, onUse, className }: Props) 
       )}
     </StyledItemDetails>
   )
-}
+})

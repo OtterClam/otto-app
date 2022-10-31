@@ -3,13 +3,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import AdventureStatus from 'components/AdventureStatus'
 import Button from 'components/Button'
-import CroppedImage from 'components/CroppedImage'
 import { useAdventureLocation } from 'contexts/AdventureLocations'
 import { AdventurePopupStep, useGoToAdventureResultStep, useOpenAdventurePopup } from 'contexts/AdventureUIState'
 import { useOtto } from 'contexts/Otto'
 import isEqual from 'lodash/isEqual'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import { memo } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentExtraSmall, ContentMedium } from 'styles/typography'
@@ -59,8 +59,6 @@ const StyledLocation = styled(Caption)`
   gap: 4px;
 `
 
-const StyledLocationImage = styled(CroppedImage)``
-
 const StyledAvatarContainer = styled.div<{ size: number }>`
   position: relative;
   flex: 0 ${({ size }) => size}px;
@@ -71,8 +69,6 @@ const StyledAvatarContainer = styled.div<{ size: number }>`
   overflow: hidden;
   border: 1px ${({ theme }) => theme.colors.otterBlack} solid;
 `
-
-const StyledAvatar = styled(CroppedImage)``
 
 const StyledAdventureStatus = styled(Caption).attrs({ as: 'div' })`
   padding: 5px 10px;
@@ -138,7 +134,7 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
     <StyledAdventureOttoCard>
       <StyledContainer onClick={onClick} disabled={otto.adventureStatus === AdventureOttoStatus.Unavailable}>
         <StyledAvatarContainer size={50}>
-          <StyledAvatar layout="fill" src={otto.image} />
+          <Image width={50} height={50} layout="fill" src={otto.image} />
         </StyledAvatarContainer>
 
         <StyledDetails>
@@ -147,7 +143,7 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
             <AdventureStatus status={otto.adventureStatus} />
             {location && (
               <StyledLocation>
-                <StyledLocationImage width={21} height={21} src={location.image} />
+                <Image width={21} height={21} src={location.image} />
                 {location.name}
               </StyledLocation>
             )}

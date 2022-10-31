@@ -3,7 +3,6 @@ import AdventureLocationName from 'components/AdventureLocationName'
 import AdventureOngoingOttos from 'components/AdventureOngoingOttos'
 import AdventureRewards from 'components/AdventureRewards'
 import Button from 'components/Button'
-import CroppedImage from 'components/CroppedImage'
 import { MAX_OTTOS_PER_LOCATION } from 'constant'
 import { AdventureLocationProvider } from 'contexts/AdventureLocation'
 import {
@@ -15,6 +14,7 @@ import {
 import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
 import { AdventureOttoStatus } from 'models/Otto'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import { useMemo } from 'react'
 import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
@@ -76,8 +76,6 @@ const StyledImageWrapper = styled.div`
   }
 `
 
-const StyledImage = styled(CroppedImage)``
-
 export function LocationInfoStep() {
   const { t } = useTranslation('', { keyPrefix: 'adventureLocationPopup' })
   const { dispatch } = useAdventureUIState()
@@ -97,7 +95,7 @@ export function LocationInfoStep() {
           <StyledHead bg={location.bgImage}>
             <StyledName location={location} />
             <StyledImageWrapper>
-              <StyledImage layout="fill" src={location.image} />
+              <Image layout="fill" src={location.image} width={192} height={192} />
             </StyledImageWrapper>
           </StyledHead>
           <StyledDetails>

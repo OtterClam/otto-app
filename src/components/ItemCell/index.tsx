@@ -1,8 +1,8 @@
-import CroppedImage from 'components/CroppedImage'
 import { ItemMetadata, Item } from 'models/Item'
-import Otto, { AdventureOttoStatus } from 'models/Otto'
+import Otto from 'models/Otto'
 import { useMyOtto } from 'MyOttosProvider'
-import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
+import { memo } from 'react'
 import styled from 'styled-components/macro'
 import { ContentLarge, Note } from 'styles/typography'
 import chainedImage from './chained.svg'
@@ -10,14 +10,14 @@ import nonReturnableImage from './nonreturnable.png'
 import selectedFrameCornerImage from './seelcted-frame-corner.svg'
 
 const StyledItemCell = styled.button<{
-  size?: number
+  size: number
   rarity?: string
   selected: boolean
   unavailable: boolean
   canClick: boolean
 }>`
   --selected-bg: radial-gradient(63.75% 63.75% at 50% 50%, rgba(116, 205, 255, 0) 56.25%, #74cdff 100%);
-  width: ${({ size }) => `${size || 115}px`};
+  width: ${({ size }) => `${size}px`};
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 5px;
   position: relative;
@@ -171,12 +171,12 @@ interface Props {
   hideAmount?: boolean
 }
 
-export default function ItemCell({
+export default memo(function ItemCell({
   item,
   metadata,
   currentOtto, // for previewer
   unavailable = false,
-  size,
+  size = 115,
   selected = false,
   onClick,
   className,
@@ -199,7 +199,9 @@ export default function ItemCell({
       className={className}
       onClick={onClick}
     >
-      <StyledImageContainer>{image && <CroppedImage src={image} layout="fill" />}</StyledImageContainer>
+      <StyledImageContainer>
+        {image && <Image loading="lazy" src={image} width={115} height={115} />}
+      </StyledImageContainer>
       <StyledRarity rarity={rarity}>
         <Note>{rarity}</Note>
       </StyledRarity>
@@ -210,12 +212,12 @@ export default function ItemCell({
       )}
       {equippedByOtto && (
         <StyledEquipped>
-          <CroppedImage src={equippedByOtto.image} layout="fill" />
+          <Image src={equippedByOtto.image} layout="fill" width={50} height={50} />
         </StyledEquipped>
       )}
       {equippedByCurrentOtto && (
         <StyledEquipped>
-          <CroppedImage src={currentOtto!.image} layout="fill" />
+          <Image src={currentOtto!.image} layout="fill" width={50} height={50} />
         </StyledEquipped>
       )}
       {selected && (
@@ -227,4 +229,4 @@ export default function ItemCell({
       {(unreturnable || tokenId === undefined) && <StyledUnreturnable />}
     </StyledItemCell>
   )
-}
+})

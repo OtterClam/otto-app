@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { Carousel } from 'react-responsive-carousel'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
-import { getCroppedImageUrl } from 'utils/image'
 
 const StyledContainer = styled.div`
   width: 450px;
@@ -63,12 +62,7 @@ export default function Notifications({ className }: { className?: string }) {
             <Link key={notification.key} href={notification.url} passHref>
               <StyledLink>
                 <StyledNotice>[Notice]</StyledNotice>
-                <StyledImage
-                  unoptimized
-                  src={getCroppedImageUrl(notification.imageUrl, { w: 36, h: 36 })}
-                  width={18}
-                  height={18}
-                />
+                <StyledImage unoptimized src={notification.imageUrl} width={18} height={18} />
                 <StyledText>{notification.text}</StyledText>
               </StyledLink>
             </Link>

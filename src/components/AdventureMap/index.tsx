@@ -1,4 +1,3 @@
-import CroppedImage from 'components/CroppedImage'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall } from 'styles/typography'
 import { useTranslation } from 'next-i18next'
@@ -6,6 +5,7 @@ import TreasureChestLevel from 'components/TreasureChestLevel'
 import { useAdventureLocations } from 'contexts/AdventureLocations'
 import AdventureLocation from 'components/AdventureLocation'
 import { forwardRef } from 'react'
+import Image from 'next/image'
 import continueImage from './continue.png'
 import mapImage from './map.jpg'
 
@@ -67,7 +67,7 @@ export default forwardRef<HTMLDivElement, AdventureMapProps>(function AdventureM
   return (
     <StyledContainer className={className} ref={ref}>
       <StyledImageContainer>
-        <CroppedImage unoptimized src={mapImage} layout="responsive" />
+        <Image unoptimized src={mapImage} layout="responsive" />
         {locations.map(location => (
           <AdventureLocation key={location.id} id={location.id} />
         ))}
