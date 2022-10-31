@@ -593,18 +593,21 @@ export const useAdventureExplore = () => {
     state: approveItemState,
     resetState: resetItem,
   } = useContractFunction(item, 'setApprovalForAll')
+
   useEffect(() => {
     setExploreState({
       state: txState(approveOttoState.status),
       status: approveOttoState,
     })
   }, [approveOttoState])
+
   useEffect(() => {
     setExploreState({
       state: txState(approveItemState.status),
       status: approveItemState,
     })
   }, [approveItemState])
+
   useEffect(() => {
     if (state.status === 'Success' && state.receipt) {
       const passId = state.receipt.logs
@@ -625,6 +628,7 @@ export const useAdventureExplore = () => {
       })
     }
   }, [state])
+
   useEffect(() => {
     if (passId && rawPassResult?.value?.[0].canFinishAt.gt(0)) {
       setExploreState({
