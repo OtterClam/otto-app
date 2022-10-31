@@ -3,6 +3,7 @@ import { ItemMetadata, Item } from 'models/Item'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOtto } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
+import { memo } from 'react'
 import styled from 'styled-components/macro'
 import { ContentLarge, Note } from 'styles/typography'
 import chainedImage from './chained.svg'
@@ -171,7 +172,7 @@ interface Props {
   hideAmount?: boolean
 }
 
-export default function ItemCell({
+export default memo(function ItemCell({
   item,
   metadata,
   currentOtto, // for previewer
@@ -227,4 +228,4 @@ export default function ItemCell({
       {(unreturnable || tokenId === undefined) && <StyledUnreturnable />}
     </StyledItemCell>
   )
-}
+})
