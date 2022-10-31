@@ -5,7 +5,7 @@ import { useOtto } from 'contexts/Otto'
 import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
 import usePrevious from 'hooks/usePrevious'
 import { useTranslation } from 'next-i18next'
-import { MouseEventHandler, useCallback, useMemo, useState } from 'react'
+import { MouseEventHandler, useCallback, useEffect, useMemo, useState } from 'react'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components/macro'
 import { useAdventureLocations } from 'contexts/AdventureLocations'
@@ -121,6 +121,7 @@ const Components = {
 
 export default function AdventurePopup() {
   const { locations } = useAdventureLocations()
+  const { setOtto } = useOtto()
   const { ottos } = useMyOttos()
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup' })
   const [closePopupRequested, setClosePopupRequested] = useState(false)
@@ -201,6 +202,12 @@ export default function AdventurePopup() {
       window.removeEventListener('beforeunload', handler)
     }
   }, [itemActions])
+
+  useEffect(() => {
+    return () => {
+      setOtto()
+    }
+  }, [])
 
   return (
     <StyledFullscreen

@@ -143,7 +143,8 @@ export default function PreviewOttoStep() {
         .previewAdventureOtto(otto.id, location.id, actions)
         .then(setPreview)
         .catch(err => {
-          alert(err.message)
+          // TODO: handle error
+          console.error(err.message)
         })
     }
   }, [ottosRepo, otto, location, actions])
@@ -201,7 +202,6 @@ export default function PreviewOttoStep() {
 
   useEffect(() => {
     return () => {
-      setOtto()
       resetEquippedItems()
     }
   }, [])
