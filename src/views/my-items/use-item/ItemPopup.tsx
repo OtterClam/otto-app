@@ -4,7 +4,7 @@ import { useTakeOffItem, useItem } from 'contracts/functions'
 import { Item } from 'models/Item'
 import Otto from 'models/Otto'
 import { MyOttosContext } from 'MyOttosProvider'
-import { useContext, useEffect, useState } from 'react'
+import { memo, useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentLarge, Note } from 'styles/typography'
@@ -64,7 +64,7 @@ interface Props {
   onClose: () => void
 }
 
-export default function ItemPopup({ item, onClose }: Props) {
+export default memo(function ItemPopup({ item, onClose }: Props) {
   const { t } = useTranslation()
   const { useItemState, use, resetUse } = useItem()
   const { takeOffState, takeOff, resetTakeOff } = useTakeOffItem()
@@ -147,4 +147,4 @@ export default function ItemPopup({ item, onClose }: Props) {
     }
   }
   return <Fullscreen show>{render()}</Fullscreen>
-}
+})

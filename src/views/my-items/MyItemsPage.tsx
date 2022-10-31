@@ -1,16 +1,15 @@
 import dynamic from 'next/dynamic'
-import Dropdown from 'components/Dropdown'
 import Fullscreen from 'components/Fullscreen'
 import ItemCell from 'components/ItemCell'
 import { LoadingView } from 'components/LoadingView'
 import { useBreakpoints } from 'contexts/Breakpoints'
-import { useCallback, useMemo, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
 import { FilterIcon, SortedIcon } from 'assets/icons'
 // FIX:
-import { ItemType as NewItemType } from 'models/Item'
+import { Item, ItemType as NewItemType } from 'models/Item'
 import { ItemFiltersProvider, ItemType, useItemFilters } from 'contexts/ItemFilters'
 import { FilterSelector, OrderSelector, SortedBySelector } from 'components/ItemFilterSelect'
 import Button from 'components/Button'
@@ -204,7 +203,7 @@ function ItemList({
   )
 }
 
-function SectionTabs() {
+const SectionTabs = memo(() => {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
   const { itemType, setItemType } = useItemFilters()
 
@@ -219,11 +218,69 @@ function SectionTabs() {
       </StyledSectionTabs>
     </StyledSectionTabContainer>
   )
-}
+})
 
-export default function MyItemsPage() {
+const ItemFilters = memo(() => {
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
   const { isMobile } = useBreakpoints()
+
+  return (
+    <StyledMenuBar>
+      <StyledMenuItem>
+        {isMobile ? <SortedIcon /> : <p>{t('sorted_by')}</p>}
+        <SortedBySelector />
+        {isMobile ? '' : <p>{t('sort_order')}</p>}
+        <OrderSelector />
+      </StyledMenuItem>
+      <StyledMenuItem>
+        {isMobile ? <FilterIcon /> : <p>{t('filter')}</p>}
+        <FilterSelector />
+      </StyledMenuItem>
+    </StyledMenuBar>
+  )
+})
+
+const ItemDetailSection = memo(
+  ({
+    selectedItem,
+    setSelectedItemId,
+    onUse,
+  }: {
+    selectedItem?: Item
+    setSelectedItemId: (id?: string) => void
+    onUse: (id: string) => void
+  }) => {
+    const { t } = useTranslation('', { keyPrefix: 'my_items' })
+    const { isMobile } = useBreakpoints()
+    const close = useCallback(() => {
+      setSelectedItemId()
+    }, [setSelectedItemId])
+
+    return isMobile ? (
+      selectedItem ? (
+        <Fullscreen show background="white">
+          <StyledMobileItemDetailsContainer>
+            <ItemDetails item={selectedItem} onClose={close} onUse={onUse} />
+          </StyledMobileItemDetailsContainer>
+        </Fullscreen>
+      ) : (
+        <div />
+      )
+    ) : (
+      <StyledItemDetails>
+        {selectedItem ? (
+          <ItemDetails item={selectedItem} onClose={close} onUse={onUse} />
+        ) : (
+          <StyledNoSelectedItem>
+            <ContentSmall>{t('no_selected_item')}</ContentSmall>
+          </StyledNoSelectedItem>
+        )}
+      </StyledItemDetails>
+    )
+  }
+)
+
+export default function MyItemsPage() {
   const [selectedItemId, setSelectedItemId] = useState<string>()
   const [usingItemId, setUsingItemId] = useState<string>()
   const [redeemingCouponId, setRedeemingCouponId] = useState<string>()
@@ -249,39 +306,10 @@ export default function MyItemsPage() {
         <SectionTabs />
         <StyledItemSection>
           <StyledLeftContainer>
-            <StyledMenuBar>
-              <StyledMenuItem>
-                {isMobile ? <SortedIcon /> : <p>{t('sorted_by')}</p>}
-                <SortedBySelector />
-                {isMobile ? '' : <p>{t('sort_order')}</p>}
-                <OrderSelector />
-              </StyledMenuItem>
-              <StyledMenuItem>
-                {isMobile ? <FilterIcon /> : <p>{t('filter')}</p>}
-                <FilterSelector />
-              </StyledMenuItem>
-            </StyledMenuBar>
+            <ItemFilters />
             <ItemList loading={loading} selectItemId={setSelectedItemId} selectedItemId={selectedItemId} />
           </StyledLeftContainer>
-          {isMobile ? (
-            selectedItem && (
-              <Fullscreen show background="white">
-                <StyledMobileItemDetailsContainer>
-                  <ItemDetails item={selectedItem} onClose={() => setSelectedItemId(undefined)} onUse={onUse} />
-                </StyledMobileItemDetailsContainer>
-              </Fullscreen>
-            )
-          ) : (
-            <StyledItemDetails>
-              {selectedItem ? (
-                <ItemDetails item={selectedItem} onClose={() => setSelectedItemId(undefined)} onUse={onUse} />
-              ) : (
-                <StyledNoSelectedItem>
-                  <ContentSmall>{t('no_selected_item')}</ContentSmall>
-                </StyledNoSelectedItem>
-              )}
-            </StyledItemDetails>
-          )}
+          <ItemDetailSection selectedItem={selectedItem} setSelectedItemId={setSelectedItemId} onUse={onUse} />
         </StyledItemSection>
         {usingItem && (
           <UseItemPopup
