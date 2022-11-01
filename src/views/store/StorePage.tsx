@@ -73,26 +73,22 @@ const StyledShellChestTitle = styled.h2`
   align-items: center;
 
   > * {
-    &:first-child {
-      width: 230px;
+    &:first-child,
+    &:last-child {
+      max-width: 230px;
+      min-width: 230px;
       height: 120px;
 
       @media ${({ theme }) => theme.breakpoints.mobile} {
-        width: 30%;
+        max-width: 30%;
+        min-width: 30%;
         height: auto;
       }
     }
+
     &:nth-child(2) {
       flex: 1;
       text-align: center;
-    }
-    &:last-child {
-      width: 194px;
-      height: 106px;
-      @media ${({ theme }) => theme.breakpoints.mobile} {
-        width: 30%;
-        height: auto;
-      }
     }
   }
 `
