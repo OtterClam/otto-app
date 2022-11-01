@@ -703,7 +703,8 @@
     "items": "我的物品",
     "treasury": "國庫",
     "ottos": "我的阿獺",
-    "missions": "我的任務"
+    "missions": "我的任務",
+    "adventure": "冒險"
   },
   "treasuryChestLevel": {
     "title": "冒險寶箱",

@@ -721,7 +721,8 @@
     "items": "My Items",
     "treasury": "Treasury",
     "ottos": "My Ottos",
-    "missions": "Missions"
+    "missions": "Missions",
+    "adventure": "Adventure"
   },
   "treasuryChestLevel": {
     "title": "Treasure Chest",
