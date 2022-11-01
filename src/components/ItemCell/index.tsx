@@ -200,7 +200,7 @@ export default memo(function ItemCell({
       onClick={onClick}
     >
       <StyledImageContainer>
-        {image && <Image loading="lazy" src={image} width={115} height={115} />}
+        {image && <Image loading="lazy" src={image} width={size} height={size} />}
       </StyledImageContainer>
       <StyledRarity rarity={rarity}>
         <Note>{rarity}</Note>
