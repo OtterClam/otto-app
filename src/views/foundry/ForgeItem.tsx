@@ -94,7 +94,7 @@ const StyledResult = styled(TreasurySection).attrs({ showRope: false })<{ bgImag
   }
 `
 
-const StyledResultItemPreview = styled(ItemCell)`
+const StyledResultItemPreview = styled(ItemCell).attrs({ size: 180 })`
   width: 180px;
   height: 180px;
 `
@@ -126,7 +126,7 @@ const StyledMaterials = styled(TreasurySection)`
   }
 `
 
-const StyledMaterialPreview = styled(ItemCell)`
+const StyledMaterialPreview = styled(ItemCell).attrs({ size: 100 })`
   width: 100px;
   height: 100px;
 `
