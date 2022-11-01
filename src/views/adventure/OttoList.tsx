@@ -20,6 +20,10 @@ const StyledContainer = styled.div<{ maxHeight?: number }>`
     `
     height: ${maxHeight}px;
   `}
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    padding-bottom: 100px;
+  }
 `
 
 const filters = ([undefined] as (AdventureOttoStatus | undefined)[]).concat(Object.values(AdventureOttoStatus))
