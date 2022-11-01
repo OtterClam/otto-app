@@ -45,7 +45,7 @@ export class ItemsRepository {
       id: info.id,
       amount: info.amount,
       equippedBy: info.parentTokenId,
-      updatedAt: new Date(info.updateAt),
+      updatedAt: new Date(Number(info.updateAt) * 1000),
       metadata: tokenIdToMetadata[info.tokenId],
       unreturnable: false,
     }))
@@ -94,7 +94,7 @@ export class ItemsRepository {
         id: info.id,
         amount: info.amount,
         equippedBy: info.parentTokenId,
-        updatedAt: new Date(info.updateAt),
+        updatedAt: new Date(Number(info.updateAt) * 1000),
         metadata: tokenIdToMetadata[info.tokenId],
         unreturnable: false,
       }))
