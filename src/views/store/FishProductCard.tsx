@@ -9,7 +9,7 @@ import { FishStoreProduct } from 'libs/api'
 import { useTranslation } from 'next-i18next'
 import { useEffect } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
-import { ContentLarge, Headline } from 'styles/typography'
+import { ContentLarge, Headline, Caption } from 'styles/typography'
 import BuyFishItemPopup from './BuyFishItemPopup'
 import FishProductCountdown from './FishProductCountdown'
 
@@ -67,6 +67,12 @@ const StyledItemContainer = styled.div`
   }
 `
 
+const StyledOriginPrice = styled(ContentLarge)`
+  text-decoration: line-through;
+  margin-right: 10px;
+  font-size: 14px;
+`
+
 const StyledPrice = styled.div`
   display: flex;
   align-items: center;
@@ -83,17 +89,24 @@ const StyledPrice = styled.div`
   }
 `
 
+const StyledDiscount = styled(Caption)`
+  color: ${({ theme }) => theme.colors.clamPink};
+`
+
 interface Props {
   product: FishStoreProduct
   button?: string
 }
 
 export default function FishProductCard({
-  product: { id, item, displayPrice, discountPrice, end_time },
+  product: { id, item, price, displayPrice, discountPrice, displayDiscountPrice, end_time },
   button,
 }: Props) {
   const { t } = useTranslation()
   const { buy, buyState, resetBuy } = useBuyFishItem()
+  const hasDiscount = price !== discountPrice
+  const discount = (((Number(price) - Number(discountPrice)) / Number(price)) * 100).toFixed(0)
+
   useEffect(() => {
     if (buyState.state === 'Fail') {
       alert(buyState.status.errorMessage)
@@ -109,8 +122,10 @@ export default function FishProductCard({
             <ItemCell item={item} />
           </StyledItemContainer>
           <StyledPrice>
-            <ContentLarge>{trim(displayPrice, 2)}</ContentLarge>
+            {hasDiscount && <StyledOriginPrice>{displayPrice}</StyledOriginPrice>}
+            <ContentLarge>{displayDiscountPrice}</ContentLarge>
           </StyledPrice>
+          {hasDiscount && <StyledDiscount>{t('store.popup.discount', { discount })}</StyledDiscount>}
           <Button
             Typography={Headline}
             width="100%"

@@ -5,6 +5,11 @@ const { i18n } = require('./next-i18next.config')
 const { AssetsManifestPlugin } = require('./webpack/assets-manifest')
 const withTM = require('next-transpile-modules')(['@usedapp/core'])
 
+const imageDomains = ['api.otterclam.finance', 'api-testnet.otterclam.finance']
+if (process.env.NODE_ENV === 'development') {
+  imageDomains.push('localhost')
+}
+
 module.exports = withPWA(
   withTM({
     productionBrowserSourceMaps: false,
@@ -30,7 +35,7 @@ module.exports = withPWA(
       disable: process.env.NODE_ENV === 'development',
     },
     images: {
-      domains: ['api.otterclam.finance', 'api-testnet.otterclam.finance'],
+      domains: imageDomains,
       formats: ['image/avif', 'image/webp'],
     },
   })
