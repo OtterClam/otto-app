@@ -14,8 +14,8 @@ const StyledContainer = styled.div`
   background: ${({ theme }) => theme.colors.sandBrown};
   min-height: var(--game-body-height);
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    padding-bottom: 48px;
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    padding-bottom: 148px;
   }
 `
 
@@ -28,6 +28,10 @@ const StyledFooter = styled.div`
   left: 24px;
   right: 24px;
   z-index: 0;
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    bottom: 100px;
+  }
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     flex-direction: column-reverse;
