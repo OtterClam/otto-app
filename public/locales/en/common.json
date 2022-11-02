@@ -368,6 +368,7 @@
     "title": "My Portals"
   },
   "otto": {
+    "times": "{{ times }} times",
     "birthday": "Birthday: {{birthday}}",
     "chosen_one": "This Otto is the chosen one!\nThe upcoming epoch falls to {{birthday}}. All Otto, Lotties and Cleo that the Birthday is same to the date are blessed with special boosts!",
     "classic": "Classic",
