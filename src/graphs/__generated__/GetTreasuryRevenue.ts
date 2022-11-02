@@ -35,6 +35,10 @@ export interface GetTreasuryRevenue_treasuryRevenues {
   usdcMarketValue: any;
   maticClamAmount: any;
   maticMarketValue: any;
+  quickClamAmount: any;
+  quickMarketValue: any;
+  usdtClamAmount: any;
+  usdtMarketValue: any;
   totalRevenueClamAmount: any;
   totalRevenueMarketValue: any;
 }
