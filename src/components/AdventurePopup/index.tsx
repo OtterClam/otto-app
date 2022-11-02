@@ -236,7 +236,7 @@ export default function AdventurePopup() {
           return (
             <CSSTransition key={step} timeout={200} classNames={effects[step]}>
               <StyledStepContainer>
-                <Step />
+                <Step onRequestClose={requestClosePopup} />
               </StyledStepContainer>
             </CSSTransition>
           )
