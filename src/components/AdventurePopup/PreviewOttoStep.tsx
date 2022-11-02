@@ -208,7 +208,7 @@ export default function PreviewOttoStep() {
 
   return (
     <AdventureLocationProvider location={preview?.location}>
-      <AdventureOttoProvider otto={otto} draftOtto={preview?.otto}>
+      <AdventureOttoProvider otto={otto} draftOtto={preview?.otto} actions={actions}>
         <StyledContainer bg={location.bgImageBlack} ref={container}>
           <StyledHead>
             <Button
