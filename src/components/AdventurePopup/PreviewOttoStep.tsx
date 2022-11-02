@@ -249,14 +249,14 @@ export default function PreviewOttoStep() {
                 itemsPopupWidth={itemPopupWidth}
                 itemPopupHeight={itemPopupHeight}
               />
-              {otto && <OttoAdventureLevel otto={otto} boost={Boolean(levelBoost)} />}
-              <OttoStats />
-              <OttoAttrs />
+              <OttoAdventureLevel loading={loading} otto={otto} boost={Boolean(levelBoost)} />
+              <OttoStats loading={loading} />
+              <OttoAttrs loading={loading} />
             </StyledPreview>
 
             <StyledLocation>
-              <AdventureConditionalBoosts />
-              <AdventureRewards canUsePotions onUsePotion={setUsedPotionAmounts} />
+              <AdventureConditionalBoosts loading={loading} />
+              <AdventureRewards loading={loading} canUsePotions onUsePotion={setUsedPotionAmounts} />
             </StyledLocation>
           </StyledMain>
 

@@ -3,7 +3,8 @@ import { useAdventureLocation } from 'contexts/AdventureLocation'
 import { useAdventureOtto } from 'contexts/AdventureOtto'
 import { AttrBoostCondition, BoostType } from 'models/AdventureLocation'
 import { useMemo } from 'react'
-import styled from 'styled-components/macro'
+import Skeleton from 'react-loading-skeleton'
+import styled, { css } from 'styled-components/macro'
 import { Note } from 'styles/typography'
 
 const StyledContainer = styled.div`
@@ -12,7 +13,7 @@ const StyledContainer = styled.div`
   gap: 1px;
 `
 
-const StyledLevel = styled(Note)<{ traitType: string }>`
+const StyledLevel = styled(Note)<{ traitType?: string }>`
   position: relative;
   flex: 1;
   display: flex;
@@ -21,11 +22,16 @@ const StyledLevel = styled(Note)<{ traitType: string }>`
   border-radius: 4px;
   background: ${({ theme }) => theme.colors.white};
   overflow: hidden;
+  min-height: 36px;
 
-  &::before {
-    content: attr(data-label);
-    background: ${({ theme, traitType }) => theme.colors.attr[traitType]};
-  }
+  ${({ traitType }) =>
+    traitType &&
+    css<{ traitType?: string }>`
+      &::before {
+        content: attr(data-label);
+        background: ${({ theme, traitType }) => theme.colors.attr[traitType!]};
+      }
+    `}
 `
 
 const StyledBoostIcon = styled(BoostIcon)`
@@ -34,12 +40,21 @@ const StyledBoostIcon = styled(BoostIcon)`
   bottom: 0;
 `
 
+const StyledSkeleton = styled(Skeleton).attrs({ borderRadius: 0 })`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+`
+
 export interface Props {
+  loading?: boolean
   className?: string
   levelClassName?: string
 }
 
-export default function OttoAttrs({ className, levelClassName }: Props) {
+export default function OttoAttrs({ loading, className, levelClassName }: Props) {
   const location = useAdventureLocation()
   const { draftOtto: otto } = useAdventureOtto()
 
@@ -51,6 +66,34 @@ export default function OttoAttrs({ className, levelClassName }: Props) {
         return Object.assign(map, { [condition.attr]: true })
       }, {} as { [k: string]: boolean })
   }, [location?.conditionalBoosts])
+
+  if (loading) {
+    return (
+      <StyledContainer className={className}>
+        <StyledLevel className={levelClassName}>
+          <StyledSkeleton />
+        </StyledLevel>
+        <StyledLevel className={levelClassName}>
+          <StyledSkeleton />
+        </StyledLevel>
+        <StyledLevel className={levelClassName}>
+          <StyledSkeleton />
+        </StyledLevel>
+        <StyledLevel className={levelClassName}>
+          <StyledSkeleton />
+        </StyledLevel>
+        <StyledLevel className={levelClassName}>
+          <StyledSkeleton />
+        </StyledLevel>
+        <StyledLevel className={levelClassName}>
+          <StyledSkeleton />
+        </StyledLevel>
+        <StyledLevel className={levelClassName}>
+          <StyledSkeleton />
+        </StyledLevel>
+      </StyledContainer>
+    )
+  }
 
   return (
     <StyledContainer className={className}>
