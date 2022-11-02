@@ -18,7 +18,6 @@ import {
   useGoToAdventurePopupStep,
   useSelectedAdventureLocation,
 } from 'contexts/AdventureUIState'
-import { useApiCall } from 'contexts/Api'
 import { useOtto } from 'contexts/Otto'
 import { useAdventureExplore } from 'contracts/functions'
 import { parseBoosts } from 'models/AdventureDisplayedBoost'
@@ -92,6 +91,7 @@ const StyledItemActionsTooltip = styled(AdventureTooltip)`
 `
 
 export default function PreviewOttoStep() {
+  const [loadingPreviewData, setLoadingPreviewData] = useState(false)
   const { ottos: ottosRepo } = useRepositories()
   const container = useRef<HTMLDivElement>(null)
   const { updateOtto, loading: loadingOttos } = useMyOttos()
@@ -110,6 +110,9 @@ export default function PreviewOttoStep() {
     itemPopupWidth: 375,
     itemPopupOffset: 0,
   })
+  const { explore, exploreState, resetExplore } = useAdventureExplore()
+  const waitingTx = exploreState.state === 'Processing'
+  const loading = !otto || !location || waitingTx || loadingPreviewData
 
   const levelBoost = useMemo(
     () =>
@@ -139,17 +142,30 @@ export default function PreviewOttoStep() {
 
   useEffect(() => {
     if (otto && location) {
-      ottosRepo
-        .previewAdventureOtto(otto.id, location.id, actions)
-        .then(setPreview)
-        .catch(err => {
-          // TODO: handle error
-          console.error(err.message)
-        })
+      setLoadingPreviewData(true)
+
+      const abortController = new AbortController()
+      const timer = setTimeout(() => {
+        ottosRepo
+          .withAbortSignal(abortController.signal)
+          .previewAdventureOtto(otto.id, location.id, actions)
+          .then(setPreview)
+          .then(() => setLoadingPreviewData(false))
+          .catch(err => {
+            if (err.message !== 'canceled') {
+              // TODO: handle error
+              console.error(err)
+              setLoadingPreviewData(false)
+            }
+          })
+      }, 500)
+
+      return () => {
+        clearTimeout(timer)
+        abortController.abort()
+      }
     }
   }, [ottosRepo, otto, location, actions])
-
-  const { explore, exploreState, resetExplore } = useAdventureExplore()
 
   const handleExploreButtonClick = useCallback(() => {
     if (!otto || !location) {
@@ -228,6 +244,7 @@ export default function PreviewOttoStep() {
           <StyledMain>
             <StyledPreview>
               <OttoPreviewer
+                loading={loading}
                 itemPopupOffset={itemPopupOffset}
                 itemsPopupWidth={itemPopupWidth}
                 itemPopupHeight={itemPopupHeight}

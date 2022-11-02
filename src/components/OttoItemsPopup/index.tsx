@@ -85,6 +85,7 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
   let selectedItemMetadata = filteredItems?.find(({ id }) => id === selectedItemId)?.metadata
   const equippedItemMetadata = otto?.equippedItems.find(({ id }) => id === selectedItemId)?.metadata
   const nativeItemMetadata = otto?.nativeItemsMetadata.find(({ type }) => type === traitType)
+  const show = Boolean(traitType)
 
   if (!selectedItemMetadata && equippedItemMetadata) {
     selectedItemMetadata = equippedItemMetadata
@@ -95,8 +96,10 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
   }
 
   useEffect(() => {
-    refetch()
-  }, [otto?.id])
+    if (show) {
+      refetch()
+    }
+  }, [otto?.id, show])
 
   useEffect(() => {
     if (!traitType) {
@@ -106,12 +109,7 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
 
   return (
     <ItemFiltersProvider items={filteredItems}>
-      <StyledFullscreen
-        className={className}
-        show={Boolean(traitType)}
-        onRequestClose={onRequestClose}
-        maxWidth={maxWidth}
-      >
+      <StyledFullscreen className={className} show={show} onRequestClose={onRequestClose} maxWidth={maxWidth}>
         <StyledContainer ref={container}>
           <StyledTitle>{t('title', { type: traitType })}</StyledTitle>
           <StyledOttoAttrs levelClassName="otto-level" />
