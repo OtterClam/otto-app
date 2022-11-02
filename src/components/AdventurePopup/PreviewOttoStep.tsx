@@ -18,7 +18,6 @@ import {
   useGoToAdventurePopupStep,
   useSelectedAdventureLocation,
 } from 'contexts/AdventureUIState'
-import { useApiCall } from 'contexts/Api'
 import { useOtto } from 'contexts/Otto'
 import { useAdventureExplore } from 'contracts/functions'
 import { parseBoosts } from 'models/AdventureDisplayedBoost'
@@ -31,6 +30,7 @@ import styled from 'styled-components/macro'
 import { ContentMedium, Headline } from 'styles/typography'
 import Otto from 'models/Otto'
 import { useRepositories } from 'contexts/Repositories'
+import AdventureAlert from 'components/AdventureAlert'
 
 const StyledContainer = styled.div<{ bg: string }>`
   display: flex;
@@ -91,15 +91,15 @@ const StyledItemActionsTooltip = styled(AdventureTooltip)`
   margin-top: -10px;
 `
 
-export default function PreviewOttoStep() {
+export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: () => void }) {
   const { ottos: ottosRepo } = useRepositories()
   const container = useRef<HTMLDivElement>(null)
   const { updateOtto, loading: loadingOttos } = useMyOttos()
-  const { otto, itemActions: equippedItemActions, setOtto, resetEquippedItems } = useOtto()
+  const { confirmedOtto: otto, confirmed, confirm } = useConfirmedOtto()
+  const { itemActions: equippedItemActions, setOtto } = useOtto()
   const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
   const { t, i18n } = useTranslation()
   const location = useSelectedAdventureLocation()!
-  const close = useCloseAdventurePopup()
   const goToStep = useGoToAdventurePopupStep()
   const [preview, setPreview] = useState<{ otto: Otto; location: AdventureLocation }>()
   const [{ itemPopupWidth, itemPopupHeight, itemPopupOffset }, setItemPopupSize] = useState<{
@@ -200,12 +200,6 @@ export default function PreviewOttoStep() {
     setItemPopupSize({ itemPopupWidth, itemPopupHeight, itemPopupOffset })
   })
 
-  useEffect(() => {
-    return () => {
-      resetEquippedItems()
-    }
-  }, [])
-
   return (
     <AdventureLocationProvider location={preview?.location}>
       <AdventureOttoProvider otto={otto} draftOtto={preview?.otto} actions={actions}>
@@ -220,7 +214,7 @@ export default function PreviewOttoStep() {
               {'<'}
             </Button>
             <StyledTitle>{t('adventurePopup.previewOttoTitle')}</StyledTitle>
-            <CloseButton color="white" onClose={close} />
+            <CloseButton color="white" onClose={onRequestClose} />
           </StyledHead>
 
           <OttoSelector />
@@ -254,6 +248,76 @@ export default function PreviewOttoStep() {
           {equippedItemActions.length > 0 && <StyledItemActionsTooltip content={t('adventurePopup.itemTxDesc')} />}
         </StyledContainer>
       </AdventureOttoProvider>
+
+      <SwitchOttoAlert confirmed={confirmed} confirm={confirm} />
     </AdventureLocationProvider>
   )
+}
+
+function SwitchOttoAlert({ confirmed, confirm }: { confirmed: boolean; confirm: (confirmed: boolean) => void }) {
+  const { t } = useTranslation('', { keyPrefix: 'adventurePopup' })
+
+  return (
+    <AdventureAlert
+      storageKey="switchAdventureOtto"
+      show={!confirmed}
+      content={t('closePopupAlert.content')}
+      okLabel={t('closePopupAlert.okLabel')}
+      cancelLabel={t('closePopupAlert.cancelLabel')}
+      onOk={() => confirm(true)}
+      onCancel={() => confirm(false)}
+    />
+  )
+}
+
+const useConfirmedOtto = () => {
+  const { otto, itemActions, resetEquippedItems, setOtto: selectOtto } = useOtto()
+  const [confirmed, setConfirmed] = useState(true)
+  const [confirmedOtto, setConfirmedOtto] = useState(otto)
+  const [prevOtto, setPrevOtto] = useState<Otto>()
+
+  const confirm = useCallback(
+    (confirmed: boolean) => {
+      if (confirmed) {
+        setConfirmed(true)
+        resetEquippedItems()
+        setConfirmedOtto(otto)
+      } else {
+        selectOtto(prevOtto)
+        setConfirmedOtto(prevOtto)
+      }
+    },
+    [prevOtto?.id, otto?.id]
+  )
+
+  useEffect(() => {
+    resetEquippedItems()
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      setPrevOtto(otto)
+    }
+  }, [otto?.id])
+
+  useEffect(() => {
+    if (prevOtto?.id && confirmed && itemActions.length > 0) {
+      setConfirmed(false)
+    } else {
+      setConfirmedOtto(otto)
+      setConfirmed(true)
+    }
+  }, [otto?.id])
+
+  useEffect(() => {
+    if (confirmed) {
+      setConfirmedOtto(otto)
+    }
+  }, [confirmed])
+
+  return {
+    confirmedOtto,
+    confirmed,
+    confirm,
+  }
 }

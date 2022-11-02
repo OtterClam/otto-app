@@ -1,6 +1,6 @@
 import Button from 'components/Button'
 import PaymentButton from 'components/PaymentButton'
-import { ChestId, Token } from 'constant'
+import { Token } from 'constant'
 import {
   AdventurePopupStep,
   AdventureUIActionType,

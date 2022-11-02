@@ -37,10 +37,6 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
     [traitType: string]: string | null
   }>({})
 
-  useEffect(() => {
-    setDraftItems({})
-  }, [otto])
-
   const value = useMemo(() => {
     const uniqueItems = items.reduce((map, item) => {
       // pick non-equipped items first if there multiple items
