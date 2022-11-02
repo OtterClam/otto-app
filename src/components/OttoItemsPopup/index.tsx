@@ -1,15 +1,22 @@
 import AdventureFullscreen from 'components/AdventureFullscreen'
 import { FilterSelector, SortedBySelector } from 'components/ItemFilterSelect'
+import { AdventureLocationProvider, useAdventureLocation } from 'contexts/AdventureLocation'
 import OttoAttrs from 'components/OttoAttrs'
-import { useAdventureOtto } from 'contexts/AdventureOtto'
+import { ItemActionType } from 'constant'
+import { AdventureOttoProvider, useAdventureOtto } from 'contexts/AdventureOtto'
 import { ItemFiltersProvider } from 'contexts/ItemFilters'
 import { useMyItems } from 'contexts/MyItems'
+import { useRepositories } from 'contexts/Repositories'
 import { useTrait } from 'contexts/TraitContext'
 import useAdventurePreviewItems from 'hooks/useAdventurePreviewItems'
+import { AdventurePreview } from 'models/AdventurePreview'
+import { ItemAction } from 'models/Item'
+import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, Note } from 'styles/typography'
+import { AdventureLocation } from 'models/AdventureLocation'
 import ItemList from './ItemList'
 import ItemPreview from './ItemPreview'
 
@@ -65,6 +72,36 @@ const StyledOttoAttrs = styled(OttoAttrs)`
   }
 `
 
+function PreviewAttrs({ otto, actions }: { otto?: Otto; actions: ItemAction[] }) {
+  const location = useAdventureLocation()
+  const { ottos: ottosRepo } = useRepositories()
+  const [preview, setPreview] = useState<{
+    otto: Otto
+    location: AdventureLocation
+  }>()
+
+  useEffect(() => {
+    if (!otto || !location) {
+      return
+    }
+    ottosRepo
+      .previewAdventureOtto(otto.id, location.id, actions)
+      .then(setPreview)
+      .catch(err => {
+        // handle error
+        alert(err.message)
+      })
+  }, [otto?.id, location, actions, ottosRepo])
+
+  return (
+    <AdventureOttoProvider otto={otto} draftOtto={preview?.otto}>
+      <AdventureLocationProvider location={preview?.location}>
+        <StyledOttoAttrs levelClassName="otto-level" />
+      </AdventureLocationProvider>
+    </AdventureOttoProvider>
+  )
+}
+
 export interface OttoItemsPopupProps {
   className?: string
   onRequestClose?: () => void
@@ -73,18 +110,18 @@ export interface OttoItemsPopupProps {
 
 export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClose }: OttoItemsPopupProps) {
   const container = useRef<HTMLDivElement>(null)
-  const { draftOtto: otto } = useAdventureOtto()
+  const { draftOtto, otto, actions: otherActions } = useAdventureOtto()
   const { traitType } = useTrait()
   const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
   // eslint-disable-next-line prefer-const
   let { items, refetch } = useMyItems()
-  items = useAdventurePreviewItems(items, otto)
+  items = useAdventurePreviewItems(items, draftOtto)
   const [selectedItemId, selectItem] = useState<string>()
   const filteredItems = items.filter(item => item.metadata.type === traitType)
   const selectedItem = useMemo(() => items.find(({ id }) => id === selectedItemId), [items, selectedItemId])
   let selectedItemMetadata = filteredItems?.find(({ id }) => id === selectedItemId)?.metadata
-  const equippedItemMetadata = otto?.equippedItems.find(({ id }) => id === selectedItemId)?.metadata
-  const nativeItemMetadata = otto?.nativeItemsMetadata.find(({ type }) => type === traitType)
+  const equippedItemMetadata = draftOtto?.equippedItems.find(({ id }) => id === selectedItemId)?.metadata
+  const nativeItemMetadata = draftOtto?.nativeItemsMetadata.find(({ type }) => type === traitType)
   const show = Boolean(traitType)
 
   if (!selectedItemMetadata && equippedItemMetadata) {
@@ -95,11 +132,22 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
     selectedItemMetadata = nativeItemMetadata
   }
 
+  const actions = useMemo(() => {
+    if (!selectedItemMetadata) {
+      return otherActions
+    }
+    return otherActions.concat({
+      type: ItemActionType.Equip,
+      item_id: Number(selectedItemMetadata.tokenId),
+      from_otto_id: 0,
+    })
+  }, [otherActions, selectedItemMetadata?.tokenId])
+
   useEffect(() => {
     if (show) {
       refetch()
     }
-  }, [otto?.id, show])
+  }, [draftOtto?.id, show])
 
   useEffect(() => {
     if (!traitType) {
@@ -112,7 +160,7 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
       <StyledFullscreen className={className} show={show} onRequestClose={onRequestClose} maxWidth={maxWidth}>
         <StyledContainer ref={container}>
           <StyledTitle>{t('title', { type: traitType })}</StyledTitle>
-          <StyledOttoAttrs levelClassName="otto-level" />
+          <PreviewAttrs otto={otto} actions={actions} />
           <StyledActions>
             <StyledAction>
               <StyledActionLabel>{t('sort')}</StyledActionLabel>
@@ -124,7 +172,7 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
             </StyledAction>
           </StyledActions>
 
-          <ItemList otto={otto} selectedItemId={selectedItemId} selectItem={selectItem} />
+          <ItemList otto={draftOtto} selectedItemId={selectedItemId} selectItem={selectItem} />
 
           <ItemPreview
             metadata={selectedItemMetadata}

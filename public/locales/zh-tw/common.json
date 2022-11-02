@@ -362,6 +362,7 @@
     "title": "我的傳送門"
   },
   "otto": {
+    "times": "{{ times }} 次",
     "birthday": "生日： {{birthday}}",
     "chosen_one": "這隻是天選之獺！\n這一輪的稀有度大賽日期落在了 {{birthday}}，所有與此日期相同生日的阿獺、蘿提及克蕾歐都會被阿獺之神祝福並賜予特殊效果。",
     "classic": "經典",

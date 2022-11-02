@@ -42,6 +42,7 @@ export interface RawOtto {
   level: number
   adventurer_title: string
   latest_adventure_pass?: RawAdventurePass
+  adventure_passes_count: number
   next_level_exp: number
 }
 
@@ -161,6 +162,8 @@ export default class Otto {
 
   public attributePoints = 0
 
+  public adventurePassesCount = 0
+
   constructor(
     raw: RawOtto,
     public equippedItems: Item[] = [],
@@ -183,6 +186,7 @@ export default class Otto {
     this.totalRarityScore = this.raw.rarity_score ? String(this.raw.rarity_score) : '?'
     this.epochRarityBoost = this.raw.epoch_rarity_boost
     this.diceCount = this.raw.dice_count
+    this.adventurePassesCount = this.raw.adventure_passes_count
 
     if (this.raw.latest_adventure_pass) {
       this.latestAdventurePass = fromRawPass(this.raw.latest_adventure_pass)

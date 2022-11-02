@@ -12,18 +12,18 @@ import Taurus from './Taurus.png'
 import Virgo from './Virgo.png'
 
 const ConstellationIcons: Record<string, string> = {
-  Aquarius,
-  Aries,
-  Cancer,
-  Capricorn,
-  Gemini,
-  Leo,
-  Libra,
-  Pisces,
-  Sagittarius,
-  Scorpio,
-  Taurus,
-  Virgo,
+  Aquarius: Aquarius.src,
+  Aries: Aries.src,
+  Cancer: Cancer.src,
+  Capricorn: Capricorn.src,
+  Gemini: Gemini.src,
+  Leo: Leo.src,
+  Libra: Libra.src,
+  Pisces: Pisces.src,
+  Sagittarius: Sagittarius.src,
+  Scorpio: Scorpio.src,
+  Taurus: Taurus.src,
+  Virgo: Virgo.src,
 }
 
 export default ConstellationIcons

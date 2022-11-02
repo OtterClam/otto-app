@@ -71,7 +71,11 @@ export default function OttoStats({ loading }: { loading?: boolean }) {
       icon: otto?.legendary ? LegendaryIcon.src : ClassicIcon.src,
       value: t(otto?.legendary ? 'otto.legendary' : 'otto.classic'),
     },
-    { key: 'items', icon: '/trait-icons/Items.png', value: otto?.wearableTraits.length ?? 0 },
+    {
+      key: 'passesCount',
+      icon: '/trait-icons/Items.png',
+      value: t('otto.times', { times: otto?.adventurePassesCount ?? 0 }),
+    },
     { key: 'voice', icon: '/trait-icons/Voice.png', value: otto?.voiceName },
   ]
 
