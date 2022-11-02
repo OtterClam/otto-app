@@ -1,7 +1,7 @@
 import { PalaceTab } from 'models/Tabs'
 import { useTranslation } from 'next-i18next'
 import TreasuryDashboardPage from 'views/treasury-dashboard'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { ContentMedium } from 'styles/typography'
 import GovernancePage from 'views/treasury-governance'
@@ -38,8 +38,6 @@ const StyledBody = styled.div``
 export default function PalacePage() {
   const { t } = useTranslation('', { keyPrefix: 'treasury' })
   const [tab, setTab] = useState<PalaceTab>(PalaceTab.DASHBOARD)
-
-  const [href, setHref] = useState<string>('')
 
   // WIP: directly link to tabs with the Link href
   return (
