@@ -77,6 +77,11 @@ const marketValues = [
     stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
   },
   {
+    label: 'MAI/USDT (QuickV3)',
+    dataKey: 'treasuryQuickswapV3MaiUsdtStrategyMarketValue',
+    stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
+  },
+  {
     label: 'USD+',
     dataKey: 'treasuryUsdPlusMarketValue',
     stopColor: ['rgba(72, 229, 8, 1)', 'rgba(72, 229, 8, 0.5)'],

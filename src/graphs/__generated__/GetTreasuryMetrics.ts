@@ -50,6 +50,7 @@ export interface GetTreasuryMetrics_protocolMetrics {
   treasuryKyberswapMaticStMaticHedgedMarketValue: any;
   treasuryUniV3HedgedMaticUsdcStrategyMarketValue: any;
   treasuryUniV3UsdcMaiStrategyMarketValue: any;
+  treasuryQuickswapV3MaiUsdtStrategyMarketValue: any;
 }
 
 export interface GetTreasuryMetrics {
