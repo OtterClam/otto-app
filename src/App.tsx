@@ -19,8 +19,13 @@ import { OverlayProvider } from 'contexts/Overlay'
 import { RepositoriesProvider } from 'contexts/Repositories'
 import { MyItemsProvider } from 'contexts/MyItems'
 import SkeletonThemeProvider from 'components/SkeletonThemeProvider'
-import Error from './components/Error'
+import ottoLoadingImage from 'assets/ui/otto-loading.jpg'
+import usePreloadImages from 'hooks/usePreloadImage'
+import adventureMapImage from 'components/AdventureMap/map.jpg'
 import WalletSelector from './components/WalletSelector'
+import Error from './components/Error'
+
+const preloadImages = [ottoLoadingImage.src, adventureMapImage.src]
 
 const AssetsLoader = dynamic(() => import('components/AssetsLoader'), { ssr: false })
 
@@ -64,6 +69,7 @@ function useRealWindowSize() {
 }
 
 const ApolloApp = ({ children }: PropsWithChildren<object>) => {
+  usePreloadImages(preloadImages)
   useServiceWorker()
   useContractAddresses()
   const apollo = useApollo()

@@ -7,6 +7,8 @@ import { useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled, { useTheme } from 'styled-components/macro'
 import { Caption, ContentMedium, ContentSmall } from 'styles/typography'
+import { useIsMyOttos } from 'MyOttosProvider'
+import OttoImage from './OttoImage'
 
 const StyledOttoCard = styled(BorderContainer)`
   height: 100%;
@@ -30,12 +32,8 @@ const StyledOttoCard = styled(BorderContainer)`
   }
 `
 
-const StyledOttoImage = styled.img`
-  width: 225px;
-  height: 225px;
+const StyledOttoImage = styled(OttoImage).attrs({ size: 225 })`
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
-  background: url(/otto-loading.jpg);
-  background-size: 100% 100%;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 90%;
@@ -109,6 +107,7 @@ interface Props {
 export default function OttoCard({ otto, oldOtto, withItem: item, takeOff = false, className }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
+  const isMyOtto = useIsMyOttos(otto.id)
 
   const diffAttrs = useMemo(() => {
     const diff: Record<string, string> = {}
@@ -165,7 +164,7 @@ export default function OttoCard({ otto, oldOtto, withItem: item, takeOff = fals
 
   return (
     <StyledOttoCard borderColor={theme.colors.lightGray400} className={className}>
-      <StyledOttoImage src={otto.image} />
+      <StyledOttoImage unoptimized={isMyOtto} src={otto.image} />
       <StyledOttoName>
         <ContentMedium>{otto.name}</ContentMedium>
       </StyledOttoName>

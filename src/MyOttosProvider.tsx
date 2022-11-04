@@ -1,7 +1,8 @@
 import { useEthers } from '@usedapp/core'
-import { useApiCall } from 'contexts/Api'
 import { useRepositories } from 'contexts/Repositories'
+import usePreloadImages from 'hooks/usePreloadImage'
 import useTimer from 'hooks/useTimer'
+import flatten from 'lodash/flatten'
 import noop from 'lodash/noop'
 import Otto from 'models/Otto'
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react'
@@ -44,6 +45,9 @@ export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
   const { ottos: ottosRepo } = useRepositories()
   const [loading, setLoading] = useState(false)
   const [ottos, setOttos] = useState<Otto[]>([])
+  const images = useMemo(() => flatten(ottos.map(({ image, imageWoBg }) => [image, imageWoBg])), [])
+
+  usePreloadImages(images)
 
   const refetch = useCallback(() => {
     if (!account) {
