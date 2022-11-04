@@ -1,7 +1,8 @@
 import { Api } from 'libs/api'
+import uniq from 'lodash/uniq'
 import flatten from 'lodash/flatten'
 import { AdventureLocation } from 'models/AdventureLocation'
-import { ItemAction } from 'models/Item'
+import { ItemAction, ItemMetadata } from 'models/Item'
 import Otto, { RawOtto } from 'models/Otto'
 import type { Repositories } from 'repositories'
 import { ItemsRepository } from './items'
@@ -66,6 +67,12 @@ export class OttosRepository {
   async getOtto(tokenId: string): Promise<Otto | null> {
     const ottoMetadata = await this.api.getOttoMeta(tokenId, true)
     return this.fromOttoMetadata(ottoMetadata)
+  }
+
+  // the response won't contains items formation
+  async getOttosByTokenIds(tokenIds: string[], epoch = -1): Promise<Otto[]> {
+    const ottos = await this.api.getOttoMetas(tokenIds, { details: true, epoch })
+    return ottos.map(raw => new Otto(raw))
   }
 
   async getOttosByAccount(account: string): Promise<Otto[]> {

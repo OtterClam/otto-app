@@ -19,6 +19,8 @@ import { SkeletonTheme } from 'react-loading-skeleton'
 import { colors } from 'styles/colors'
 import { RepositoriesProvider } from 'contexts/Repositories'
 import { MyItemsProvider } from 'contexts/MyItems'
+import { combine } from 'utils/provider'
+import { BannersProvider } from 'contexts/Banners'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 
@@ -70,40 +72,33 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
 
   useRealWindowSize()
 
+  const CombinedProvider = combine(
+    [ApolloProvider, { client: apollo }],
+    [OtterSubgraphProvider, {}],
+    [WalletProvider, {}],
+    [ApiProvider, {}],
+    [RepositoriesProvider, {}],
+    [AssetsLoaderProvider, {}],
+    [CurrencyProvider, {}],
+    [ThemeProvider, { theme }],
+    [BreakpointsProvider, {}],
+    [MyOttosProvider, {}],
+    [MyItemsProvider, {}],
+    [OverlayProvider, {}],
+    [BannersProvider, {}],
+    [SkeletonTheme, { baseColor: colors.otterBlack, highlightColor: colors.darkGray400 }]
+  )
+
   return (
-    <ApolloProvider client={apollo}>
-      <OtterSubgraphProvider>
-        <WalletProvider>
-          <ApiProvider>
-            <RepositoriesProvider>
-              <AssetsLoaderProvider>
-                <CurrencyProvider>
-                  <ThemeProvider theme={theme}>
-                    <BreakpointsProvider>
-                      <MyOttosProvider>
-                        <MyItemsProvider>
-                          <OverlayProvider>
-                            <StyledApp>
-                              <SkeletonTheme baseColor={colors.otterBlack} highlightColor={colors.darkGray400}>
-                                <StyledPageContainer>{children}</StyledPageContainer>
-                                <Error />
-                                <WalletSelector />
-                                <SideMenu />
-                                <AssetsLoader />
-                              </SkeletonTheme>
-                            </StyledApp>
-                          </OverlayProvider>
-                        </MyItemsProvider>
-                      </MyOttosProvider>
-                    </BreakpointsProvider>
-                  </ThemeProvider>
-                </CurrencyProvider>
-              </AssetsLoaderProvider>
-            </RepositoriesProvider>
-          </ApiProvider>
-        </WalletProvider>
-      </OtterSubgraphProvider>
-    </ApolloProvider>
+    <CombinedProvider>
+      <StyledApp>
+        <StyledPageContainer>{children}</StyledPageContainer>
+        <Error />
+        <WalletSelector />
+        <SideMenu />
+        <AssetsLoader />
+      </StyledApp>
+    </CombinedProvider>
   )
 }
 

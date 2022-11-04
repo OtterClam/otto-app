@@ -12,6 +12,8 @@ import { createSearchParams } from 'utils/url'
 import { useRouter } from 'next/router'
 import { LIST_RANKED_OTTOS } from 'graphs/otto'
 import { ListRankedOttos, ListRankedOttosVariables } from 'graphs/__generated__/ListRankedOttos'
+import { useRepositories } from 'contexts/Repositories'
+import { Leaderboard, LeaderboardType } from 'models/Leaderboard'
 import LoadingGif from './loading.gif'
 import ListRow from './ListRow'
 
@@ -160,31 +162,29 @@ const PAGE = 20
 export default function RankList({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.rank_list' })
   const router = useRouter()
+  const { leaderboards: leaderboardsRepo } = useRepositories()
   const page = Number(router.query.page || 0)
+  const adventure = Boolean(router.query.adventure)
   const { epoch, isLatestEpoch } = useRarityEpoch()
-  const {
-    data,
-    loading: loadingGraph,
-    refetch,
-  } = useQuery<ListRankedOttos, ListRankedOttosVariables>(LIST_RANKED_OTTOS, {
-    variables: {
-      skip: page * PAGE,
-      first: PAGE,
-      epoch,
-    },
-    skip: epoch === -1,
-  })
+  const [leaderboard, setLeaderboard] = useState<Leaderboard>()
+  const [loadingApi, setLoadingApi] = useState(false)
   const epochInQuery = isLatestEpoch ? undefined : epoch
-  const ottoIds = useMemo(() => data?.ottos.map(o => o.tokenId) || [], [data])
-  const { ottos, loading: loadingApi } = useOttos(ottoIds, { details: true, epoch: epochInQuery })
   const { ottos: myOttos } = useMyOttos(epochInQuery)
   const sortedMyOttos = useMemo(() => myOttos.sort((a, b) => a.ranking - b.ranking), [myOttos])
   const [expand, setExpand] = useState(false)
-  const loading = loadingGraph || loadingApi
+  const loading = !leaderboard || loadingApi
 
   useEffect(() => {
-    refetch({ skip: page * PAGE, first: PAGE })
-  }, [page])
+    setLoadingApi(true)
+    leaderboardsRepo
+      .get({
+        type: adventure ? LeaderboardType.AdventurePoint : LeaderboardType.RarityScore,
+        page,
+        epoch,
+      })
+      .then(setLeaderboard)
+      .finally(() => setLoadingApi(false))
+  }, [page, epoch, adventure])
 
   return (
     <StyledRankList className={className}>
@@ -213,7 +213,10 @@ export default function RankList({ className }: Props) {
             <img src={LoadingGif.src} alt="loading" />
           </StyledLoading>
         )}
-        {!loading && ottos.map((otto, index) => <ListRow key={otto.id} rank={page * PAGE + index + 1} otto={otto} />)}
+        {!loading &&
+          leaderboard.page.data.map((otto, index) => (
+            <ListRow key={otto.id} rank={page * PAGE + index + 1} otto={otto} />
+          ))}
       </StyledTable>
       {!loading && (
         <StyledPagination>
