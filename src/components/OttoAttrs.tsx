@@ -67,7 +67,7 @@ export default function OttoAttrs({ loading, className, levelClassName }: Props)
       }, {} as { [k: string]: boolean })
   }, [location?.conditionalBoosts])
 
-  if (loading) {
+  if (loading || !otto) {
     return (
       <StyledContainer className={className}>
         <StyledLevel className={levelClassName}>

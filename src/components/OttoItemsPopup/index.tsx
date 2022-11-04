@@ -9,7 +9,6 @@ import { useMyItems } from 'contexts/MyItems'
 import { useRepositories } from 'contexts/Repositories'
 import { useTrait } from 'contexts/TraitContext'
 import useAdventurePreviewItems from 'hooks/useAdventurePreviewItems'
-import { AdventurePreview } from 'models/AdventurePreview'
 import { ItemAction } from 'models/Item'
 import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
@@ -75,6 +74,7 @@ const StyledOttoAttrs = styled(OttoAttrs)`
 function PreviewAttrs({ otto, actions }: { otto?: Otto; actions: ItemAction[] }) {
   const location = useAdventureLocation()
   const { ottos: ottosRepo } = useRepositories()
+  const [loading, setLoading] = useState(false)
   const [preview, setPreview] = useState<{
     otto: Otto
     location: AdventureLocation
@@ -84,19 +84,35 @@ function PreviewAttrs({ otto, actions }: { otto?: Otto; actions: ItemAction[] })
     if (!otto || !location) {
       return
     }
-    ottosRepo
-      .previewAdventureOtto(otto.id, location.id, actions)
-      .then(setPreview)
-      .catch(err => {
-        // handle error
-        alert(err.message)
-      })
+
+    setLoading(true)
+
+    const controller = new AbortController()
+
+    const timer = setTimeout(() => {
+      ottosRepo
+        .withAbortSignal(controller.signal)
+        .previewAdventureOtto(otto.id, location.id, actions)
+        .then(setPreview)
+        .catch(err => {
+          if (err.message !== 'canceled') {
+            // handle error
+            alert(err.message)
+          }
+        })
+        .finally(() => setLoading(false))
+    }, 500)
+
+    return () => {
+      clearTimeout(timer)
+      controller.abort()
+    }
   }, [otto?.id, location, actions, ottosRepo])
 
   return (
     <AdventureOttoProvider otto={otto} draftOtto={preview?.otto}>
       <AdventureLocationProvider location={preview?.location}>
-        <StyledOttoAttrs levelClassName="otto-level" />
+        <StyledOttoAttrs loading={loading} levelClassName="otto-level" />
       </AdventureLocationProvider>
     </AdventureOttoProvider>
   )

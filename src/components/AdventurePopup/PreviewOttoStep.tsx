@@ -31,6 +31,7 @@ import { ContentMedium, Headline } from 'styles/typography'
 import Otto from 'models/Otto'
 import { useRepositories } from 'contexts/Repositories'
 import AdventureAlert from 'components/AdventureAlert'
+import SkeletonThemeProvider, { SkeletonColor } from 'components/SkeletonThemeProvider'
 
 const StyledContainer = styled.div<{ bg: string }>`
   display: flex;
@@ -139,7 +140,7 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
       }
     })
     return actions
-  }, [equippedItemActions, usedPotionAmounts, otto])
+  }, [equippedItemActions, usedPotionAmounts, otto?.id])
 
   useEffect(() => {
     if (otto && location) {
@@ -166,7 +167,7 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
         abortController.abort()
       }
     }
-  }, [ottosRepo, otto, location, actions])
+  }, [ottosRepo, otto?.id, location?.id, actions])
 
   const handleExploreButtonClick = useCallback(() => {
     if (!otto || !location) {
@@ -246,7 +247,9 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
               />
               <OttoAdventureLevel loading={loading} otto={otto} boost={Boolean(levelBoost)} />
               <OttoStats loading={loading} />
-              <OttoAttrs loading={loading} />
+              <SkeletonThemeProvider color={SkeletonColor.Light}>
+                <OttoAttrs loading={loading} />
+              </SkeletonThemeProvider>
             </StyledPreview>
 
             <StyledLocation>

@@ -16,10 +16,9 @@ import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
 import { WalletProvider } from 'contexts/Wallet'
 import { ApiProvider } from 'contexts/Api'
 import { OverlayProvider } from 'contexts/Overlay'
-import { SkeletonTheme } from 'react-loading-skeleton'
-import { colors } from 'styles/colors'
 import { RepositoriesProvider } from 'contexts/Repositories'
 import { MyItemsProvider } from 'contexts/MyItems'
+import SkeletonThemeProvider from 'components/SkeletonThemeProvider'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 
@@ -85,13 +84,13 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                         <MyItemsProvider>
                           <OverlayProvider>
                             <StyledApp>
-                              <SkeletonTheme baseColor={colors.otterBlack} highlightColor={colors.darkGray400}>
+                              <SkeletonThemeProvider>
                                 <StyledPageContainer>{children}</StyledPageContainer>
                                 <Error />
                                 <WalletSelector />
                                 <SideMenu />
                                 <AssetsLoader />
-                              </SkeletonTheme>
+                              </SkeletonThemeProvider>
                             </StyledApp>
                           </OverlayProvider>
                         </MyItemsProvider>

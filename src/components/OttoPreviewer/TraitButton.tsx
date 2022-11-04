@@ -4,6 +4,7 @@ import React from 'react'
 import Image from 'next/image'
 import Skeleton from 'react-loading-skeleton'
 import noop from 'lodash/noop'
+import SkeletonThemeProvider, { SkeletonColor } from 'components/SkeletonThemeProvider'
 import lockImage from './lock.svg'
 
 const StyledButton = styled.button<{ traitType?: string; trait?: Trait; locked?: boolean }>`
@@ -74,9 +75,11 @@ export default React.memo(
   function TraitButton({ type, trait, locked, onSelect = noop }: TraitButtonProps) {
     if (!type) {
       return (
-        <StyledButton as="div">
-          <StyledSkeleton borderRadius={0} />
-        </StyledButton>
+        <SkeletonThemeProvider color={SkeletonColor.Light}>
+          <StyledButton as="div">
+            <StyledSkeleton borderRadius={2} />
+          </StyledButton>
+        </SkeletonThemeProvider>
       )
     }
     return (

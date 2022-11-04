@@ -10,6 +10,7 @@ import { useAdventureLocation } from 'contexts/AdventureLocation'
 import { useMemo } from 'react'
 import BoostIcon from 'components/BoostIcon'
 import Skeleton from 'react-loading-skeleton'
+import SkeletonThemeProvider, { SkeletonColor } from './SkeletonThemeProvider'
 
 const StyledContainer = styled.div`
   display: grid;
@@ -93,13 +94,15 @@ export default function OttoStats({ loading }: { loading?: boolean }) {
 
   if (loading) {
     return (
-      <StyledContainer>
-        {attributes.map(attr => (
-          <StyledAttr key={attr.key} icon={attr.icon}>
-            <StyledSkeleton />
-          </StyledAttr>
-        ))}
-      </StyledContainer>
+      <SkeletonThemeProvider color={SkeletonColor.Light}>
+        <StyledContainer>
+          {attributes.map(attr => (
+            <StyledAttr key={attr.key} icon={attr.icon}>
+              <StyledSkeleton />
+            </StyledAttr>
+          ))}
+        </StyledContainer>
+      </SkeletonThemeProvider>
     )
   }
 
