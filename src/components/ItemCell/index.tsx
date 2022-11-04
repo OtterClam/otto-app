@@ -1,3 +1,4 @@
+import Help from 'components/Help'
 import { ItemMetadata, Item } from 'models/Item'
 import Otto from 'models/Otto'
 import { useMyOtto } from 'MyOttosProvider'
@@ -54,6 +55,7 @@ const StyledSelectedFrame = styled.div<{ right?: boolean }>`
   top: 0;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 
   &::before,
   &::after {
@@ -212,7 +214,9 @@ export default memo(function ItemCell({
       )}
       {equippedByOtto && (
         <StyledEquipped>
-          <Image src={equippedByOtto.image} layout="fill" width={50} height={50} />
+          <Help noicon message={equippedByOtto.name}>
+            <Image src={equippedByOtto.image} layout="fill" width={50} height={50} />
+          </Help>
         </StyledEquipped>
       )}
       {equippedByCurrentOtto && (
