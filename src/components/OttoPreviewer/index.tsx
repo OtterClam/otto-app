@@ -93,25 +93,24 @@ export default function OttoPreviewer({
     <>
       {loading && <OtterPreviewerSkeleton />}
 
-      {!loading && (
+      {!loading && otto && (
         <StyledContainer>
           <StyledPreview>
             <StyledTraitGroup>
-              {otto &&
-                wearableTraits.map(({ type, trait }) => (
-                  <TraitButton type={type} trait={trait} key={otto.id + type} onSelect={selectTrait} />
-                ))}
+              {wearableTraits.map(({ type, trait }) => (
+                <TraitButton type={type} trait={trait} key={otto.id + type} onSelect={selectTrait} />
+              ))}
             </StyledTraitGroup>
 
             <StyledPreviewImage>
-              <AdventureRibbonText>{otto!.name}</AdventureRibbonText>
+              <AdventureRibbonText>{otto.name}</AdventureRibbonText>
               <StyledImageContainer>
-                <Image key={otto!.id} src={otto!.image} layout="fill" width={200} height={200} />
+                <Image key={otto.id} src={otto.image} layout="fill" width={200} height={200} />
               </StyledImageContainer>
             </StyledPreviewImage>
 
             <StyledTraitGroup>
-              {otto!.geneticTraits
+              {otto.geneticTraits
                 ?.filter(trait => trait.image)
                 ?.map(trait => (
                   <TraitButton
