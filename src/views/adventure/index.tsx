@@ -3,7 +3,6 @@ import TreasurySection from 'components/TreasurySection'
 import { useAdventureLocations } from 'contexts/AdventureLocations'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
-import usePreloadImages from 'hooks/usePreloadImage'
 import { Body } from 'layouts/GameLayout'
 import { useTranslation } from 'next-i18next'
 import { useMemo, useRef, useState } from 'react'
@@ -55,30 +54,12 @@ enum View {
   List = 'list',
 }
 
-const usePreloadLocationImages = () => {
-  const { locations } = useAdventureLocations()
-
-  const images = useMemo(() => {
-    const images: string[] = []
-    locations.forEach(location => {
-      images.push(location.image)
-      images.push(location.bgImage)
-      images.push(location.bgImageBlack)
-    })
-    return images
-  }, [locations])
-
-  usePreloadImages(images)
-}
-
 export default function AdventureView() {
   const map = useRef<HTMLDivElement>(null)
   const [view, setView] = useState(View.Map)
   const { t } = useTranslation('', { keyPrefix: 'adventure' })
   const { isTablet } = useBreakpoints()
   const [maxHeight, setMaxHeight] = useState(0)
-
-  usePreloadLocationImages()
 
   useBrowserLayoutEffect(() => {
     if (!map.current) {
