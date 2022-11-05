@@ -4,11 +4,11 @@ import { useState } from 'react'
 import Switcher from 'components/Switcher'
 import { Note } from 'styles/typography'
 import { Mission } from 'models/Mission'
-import { rawItemMetadataToItemMetadata } from 'models/Item'
+import { RawItemMetadata, rawItemMetadataToItemMetadata } from 'models/Item'
 import MissionCard from './MissionCard'
 import NewMissionPopup from './NewMissionPopup'
 
-const item = {
+const item: RawItemMetadata = {
   name: 'Antlers',
   description:
     "These antlers come from the generation of Otters' grandparents, during the era in which the Otters and the Reindeers were sworn enemies. In the end, the Otters overthrew the Reindeers and established the Ottopia. The antlers are the spoils of war from that time. There might be some curses so beware of making them into medicinal wine (or anything).",
