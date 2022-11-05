@@ -9,6 +9,8 @@ import { useAdventureOtto } from 'contexts/AdventureOtto'
 import { useAdventureLocation } from 'contexts/AdventureLocation'
 import { useMemo } from 'react'
 import BoostIcon from 'components/BoostIcon'
+import Skeleton from 'react-loading-skeleton'
+import SkeletonThemeProvider, { SkeletonColor } from './SkeletonThemeProvider'
 
 const StyledContainer = styled.div`
   display: grid;
@@ -24,6 +26,7 @@ const StyledAttr = styled(Note)<{ icon: string }>`
   gap: 5px;
   background: ${({ theme }) => theme.colors.white};
   border-radius: 4px;
+  overflow: hidden;
 
   &::before {
     content: '';
@@ -40,7 +43,15 @@ const StyledBoostIcon = styled(BoostIcon)`
   bottom: 0;
 `
 
-export default function OttoStats() {
+const StyledSkeleton = styled(Skeleton).attrs({ borderRadius: 0 })`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+`
+
+export default function OttoStats({ loading }: { loading?: boolean }) {
   const location = useAdventureLocation()
   const { draftOtto: otto } = useAdventureOtto()
   const { t } = useTranslation()
@@ -80,6 +91,20 @@ export default function OttoStats() {
         {} as { [k: string]: boolean }
       )
   }, [location?.conditionalBoosts])
+
+  if (loading) {
+    return (
+      <SkeletonThemeProvider color={SkeletonColor.Light}>
+        <StyledContainer>
+          {attributes.map(attr => (
+            <StyledAttr key={attr.key} icon={attr.icon}>
+              <StyledSkeleton />
+            </StyledAttr>
+          ))}
+        </StyledContainer>
+      </SkeletonThemeProvider>
+    )
+  }
 
   return (
     <StyledContainer>

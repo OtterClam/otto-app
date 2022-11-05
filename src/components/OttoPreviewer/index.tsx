@@ -1,12 +1,13 @@
 import styled from 'styled-components/macro'
+import Skeleton from 'react-loading-skeleton'
 import OttoItemsPopup from 'components/OttoItemsPopup'
 import { useCallback, useMemo } from 'react'
 import AdventureRibbonText from 'components/AdventureRibbonText'
 import { useAdventureOtto } from 'contexts/AdventureOtto'
 import { Trait } from 'models/Otto'
 import { useBreakpoints } from 'contexts/Breakpoints'
-import OttoLoadingPlaceholder from 'assets/ui/otto-loading.jpg'
 import Image from 'next/image'
+import OttoLoadingPlaceholderImage from 'assets/ui/otto-loading.jpg'
 import { useTrait } from '../../contexts/TraitContext'
 import TraitButton from './TraitButton'
 import FeedButton from './FeedButton'
@@ -35,9 +36,12 @@ const StyledTraitGroup = styled.div`
 
 const StyledImageContainer = styled.div`
   position: relative;
+  z-index: 0;
+  position: relative;
   min-width: 200px;
   max-width: 200px;
   height: 200px;
+  background: center / cover url(${OttoLoadingPlaceholderImage.src});
 `
 
 const StyledOttoItemsPopup = styled(OttoItemsPopup)<{ offsetX: number; width?: string }>`
@@ -55,9 +59,15 @@ export interface OttoPreviewerProps {
   itemsPopupWidth: number
   itemPopupHeight?: number
   itemPopupOffset: number
+  loading?: boolean
 }
 
-export default function OttoPreviewer({ itemsPopupWidth, itemPopupHeight, itemPopupOffset }: OttoPreviewerProps) {
+export default function OttoPreviewer({
+  loading,
+  itemsPopupWidth,
+  itemPopupHeight,
+  itemPopupOffset,
+}: OttoPreviewerProps) {
   const { isSmallTablet, isMobile } = useBreakpoints()
   const { draftOtto: otto } = useAdventureOtto()
   const { setTraitType: selectTrait } = useTrait()
@@ -81,38 +91,41 @@ export default function OttoPreviewer({ itemsPopupWidth, itemPopupHeight, itemPo
 
   return (
     <>
-      <StyledContainer>
-        <StyledPreview>
-          <StyledTraitGroup>
-            {otto &&
-              wearableTraits.map(({ type, trait }) => (
+      {loading && <OtterPreviewerSkeleton />}
+
+      {!loading && otto && (
+        <StyledContainer>
+          <StyledPreview>
+            <StyledTraitGroup>
+              {wearableTraits.map(({ type, trait }) => (
                 <TraitButton type={type} trait={trait} key={otto.id + type} onSelect={selectTrait} />
               ))}
-          </StyledTraitGroup>
+            </StyledTraitGroup>
 
-          <StyledPreviewImage>
-            <AdventureRibbonText>{otto?.name}</AdventureRibbonText>
-            <StyledImageContainer>
-              <Image
-                key={otto?.id}
-                src={otto ? otto.image : OttoLoadingPlaceholder}
-                layout="fill"
-                width={200}
-                height={200}
-              />
-            </StyledImageContainer>
-          </StyledPreviewImage>
+            <StyledPreviewImage>
+              <AdventureRibbonText>{otto.name}</AdventureRibbonText>
+              <StyledImageContainer>
+                <Image key={otto.id} src={otto.image} layout="fill" width={200} height={200} />
+              </StyledImageContainer>
+            </StyledPreviewImage>
 
-          <StyledTraitGroup>
-            {otto?.geneticTraits
-              ?.filter(trait => trait.image)
-              ?.map(trait => (
-                <TraitButton locked type={trait.type} trait={trait} key={otto.id + trait.type} onSelect={selectTrait} />
-              ))}
-            <FeedButton />
-          </StyledTraitGroup>
-        </StyledPreview>
-      </StyledContainer>
+            <StyledTraitGroup>
+              {otto.geneticTraits
+                ?.filter(trait => trait.image)
+                ?.map(trait => (
+                  <TraitButton
+                    locked
+                    type={trait.type}
+                    trait={trait}
+                    key={otto!.id + trait.type}
+                    onSelect={selectTrait}
+                  />
+                ))}
+              <FeedButton />
+            </StyledTraitGroup>
+          </StyledPreview>
+        </StyledContainer>
+      )}
 
       <StyledOttoItemsPopup
         offsetX={isSmallTablet ? 0 : itemPopupOffset}
@@ -121,5 +134,36 @@ export default function OttoPreviewer({ itemsPopupWidth, itemPopupHeight, itemPo
         maxWidth={isSmallTablet ? undefined : itemsPopupWidth}
       />
     </>
+  )
+}
+
+function OtterPreviewerSkeleton() {
+  return (
+    <StyledContainer>
+      <StyledPreview>
+        <StyledTraitGroup>
+          <TraitButton />
+          <TraitButton />
+          <TraitButton />
+          <TraitButton />
+          <TraitButton />
+        </StyledTraitGroup>
+
+        <StyledPreviewImage>
+          <AdventureRibbonText>
+            <Skeleton width={60} />
+          </AdventureRibbonText>
+          <StyledImageContainer />
+        </StyledPreviewImage>
+
+        <StyledTraitGroup>
+          <TraitButton />
+          <TraitButton />
+          <TraitButton />
+          <TraitButton />
+          <TraitButton />
+        </StyledTraitGroup>
+      </StyledPreview>
+    </StyledContainer>
   )
 }

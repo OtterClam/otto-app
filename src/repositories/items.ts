@@ -11,16 +11,31 @@ export class ItemsRepository {
 
   private ottoSubgraph: ApolloClient<object>
 
-  constructor({ api, ottoSubgraph }: Repositories) {
-    this.api = api
-    this.ottoSubgraph = ottoSubgraph
+  constructor(private readonly root: Repositories, private readonly abortSignal?: AbortSignal) {
+    this.api = root.api
+    this.ottoSubgraph = root.ottoSubgraph
+  }
+
+  withAbortSignal(abortSignal?: AbortSignal) {
+    return new ItemsRepository(this.root, abortSignal)
+  }
+
+  private get graphContext() {
+    if (!this.abortSignal) {
+      return
+    }
+    return {
+      fetchOptions: {
+        signal: this.abortSignal,
+      },
+    }
   }
 
   async getMetadata(tokenIds: string[]): Promise<{ [tokenId: string]: ItemMetadata }> {
     if (!tokenIds.length) {
       return {}
     }
-    return this.api.getItemsMetadata(tokenIds)
+    return this.api.getItemsMetadata(tokenIds, this.abortSignal)
   }
 
   // this method will not remove duplicated items
@@ -35,6 +50,7 @@ export class ItemsRepository {
       variables: {
         ottoTokenId,
       },
+      context: this.graphContext,
     })
 
     const itemsInfo = result.data?.ottoItems ?? []

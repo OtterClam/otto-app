@@ -18,6 +18,7 @@ import noop from 'lodash/noop'
 import { useCallback, useEffect, useState } from 'react'
 import expPotionIcon from 'assets/potions/exp.png'
 import strPotionIcon from 'assets/potions/str.png'
+import Skeleton from 'react-loading-skeleton'
 
 const potionIcons: { [k: string]: any } = {
   [AdventurePotion.Exp]: expPotionIcon,
@@ -170,11 +171,12 @@ function PotionButton({
 }
 
 export interface AdventureRewardsProps {
+  loading?: boolean
   canUsePotions?: boolean
   onUsePotion?: (usedPotionAmounts: { [k: string]: number }) => void
 }
 
-export default function AdventureRewards({ canUsePotions, onUsePotion = noop }: AdventureRewardsProps) {
+export default function AdventureRewards({ loading, canUsePotions, onUsePotion = noop }: AdventureRewardsProps) {
   const { t } = useTranslation('', { keyPrefix: 'adventureLocation' })
   const location = useAdventureLocation()
   const { amounts: potionAmounts } = useAdventurePotion()
@@ -219,8 +221,79 @@ export default function AdventureRewards({ canUsePotions, onUsePotion = noop }: 
     onUsePotion(usedPotionAmounts)
   }, [usedPotionAmounts])
 
-  if (!location) {
-    return null
+  if (!location || loading) {
+    return (
+      <div>
+        <StyledLocationDetails>
+          <StyledLocationDetail>
+            <StyledLocationDetailLabel>
+              {t('successRate')} <HelpButton message={t('successRateHelp')} />
+            </StyledLocationDetailLabel>
+            <StyledLocationDetailValue>
+              <Skeleton width="50px" />
+            </StyledLocationDetailValue>
+          </StyledLocationDetail>
+          <StyledLocationDetail>
+            <StyledLocationDetailLabel>{t('adventureTime')}</StyledLocationDetailLabel>
+            <StyledLocationDetailValue>
+              <Skeleton width="50px" />
+            </StyledLocationDetailValue>
+          </StyledLocationDetail>
+          <StyledLocationDetail>
+            <StyledLocationDetailLabel>
+              {t('restingTime')} <HelpButton message={t('restingTimeHelp')} />
+            </StyledLocationDetailLabel>
+            <StyledLocationDetailValue>
+              <Skeleton width="50px" />
+            </StyledLocationDetailValue>
+          </StyledLocationDetail>
+        </StyledLocationDetails>
+
+        <StyledRope />
+
+        <StyledTitle>
+          <AdventureRibbonText>{t('rewardSectionTitle')}</AdventureRibbonText>
+        </StyledTitle>
+
+        <StyledSection showRope={false}>
+          <StyledHeader>
+            <StyledRewardsHelp>
+              <HelpButton message={t('rewardsHelp')} />
+            </StyledRewardsHelp>
+          </StyledHeader>
+
+          <StyledRewards>
+            <StyledReward>
+              <StyledRewardIcon icon={expImage.src} />
+              <StyledRewardValue>
+                <Skeleton width="50px" />
+              </StyledRewardValue>
+            </StyledReward>
+
+            <StyledReward>
+              <StyledRewardIcon icon={itemsImage.src} />
+              <StyledRewardValue>
+                <Skeleton width="50px" />
+              </StyledRewardValue>
+            </StyledReward>
+
+            <StyledReward>
+              <StyledRewardIcon icon={tcpImage.src} />
+              <StyledRewardValue>
+                <Skeleton width="50px" />
+              </StyledRewardValue>
+            </StyledReward>
+
+            <StyledReward>
+              <StyledRewardIcon icon={apImage.src} />
+              <StyledRewardValue>
+                <Skeleton width="50px" />
+              </StyledRewardValue>
+            </StyledReward>
+          </StyledRewards>
+        </StyledSection>
+      </div>
+    )
   }
 
   return (
