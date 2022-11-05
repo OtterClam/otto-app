@@ -19,6 +19,7 @@ import { OverlayProvider } from 'contexts/Overlay'
 import { RepositoriesProvider } from 'contexts/Repositories'
 import { MyItemsProvider } from 'contexts/MyItems'
 import SkeletonThemeProvider from 'components/SkeletonThemeProvider'
+import MissionPopup from 'views/mission/MissionPopup'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 
@@ -89,6 +90,7 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                                 <Error />
                                 <WalletSelector />
                                 <SideMenu />
+                                <MissionPopup />
                                 <AssetsLoader />
                               </SkeletonThemeProvider>
                             </StyledApp>

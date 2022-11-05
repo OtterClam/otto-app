@@ -37,6 +37,7 @@ const StyledButton = styled(Note).attrs({ as: 'label' })`
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
+  color: ${({ theme }) => theme.colors.darkGray300};
 
   input {
     display: none;

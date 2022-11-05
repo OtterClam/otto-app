@@ -6,7 +6,14 @@ import Link from 'next/link'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
 import { textStroke } from 'utils/styles'
-import { items } from './items'
+import { useMemo } from 'react'
+import { useDispatch } from 'react-redux'
+import { showMissionPopup } from 'store/uiSlice'
+import itemsImage from './items.png'
+import missionsImage from './missions.png'
+import ottosImage from './ottos.png'
+import portalsImage from './portals.png'
+import adventureImage from './adventure.png'
 
 const StyledContainer = styled.div`
   position: relative;
@@ -70,28 +77,59 @@ const StyledLabel = styled(Caption)`
 
 const itemStates = ['default', ':hover']
 
+export interface Item {
+  key: string
+  image: {
+    src: string
+    width: number
+    height: number
+  }
+  link?: string
+  action?: () => void
+}
+
 export default function GameMenu({ className }: { className?: string }) {
   const { isMobile } = useBreakpoints()
   const width = isMobile ? 65 : 72
+  const dispatch = useDispatch()
   const { t } = useTranslation('', { keyPrefix: 'gameMenu' })
+  const items: Item[] = useMemo(
+    () => [
+      {
+        key: 'portals',
+        image: portalsImage,
+        link: '/my-portals',
+      },
+      {
+        key: 'items',
+        image: itemsImage,
+        link: '/my-items',
+      },
+      {
+        key: 'ottos',
+        image: ottosImage,
+        link: '/my-ottos',
+      },
+      {
+        key: 'adventure',
+        image: adventureImage,
+        link: '/adventure',
+      },
+      {
+        key: 'missions',
+        image: missionsImage,
+        action: () => dispatch(showMissionPopup()),
+      },
+    ],
+    [dispatch]
+  )
 
   return (
     <StyledContainer className={className}>
       <StyledItems>
-        {items.map((item, i) =>
-          item.key === 'missions' ? (
-            <StyledItem key={i}>
-              <ImageButton
-                disabled
-                states={itemStates}
-                image={item.image}
-                scale={width / (item.image.width / itemStates.length)}
-              >
-                <StyledLabel>{t(item.key)}</StyledLabel>
-              </ImageButton>
-            </StyledItem>
-          ) : (
-            <StyledItem key={i}>
+        {items.map((item, i) => (
+          <StyledItem key={i}>
+            {item.link && (
               <Link href={item.link} key={item.key} passHref>
                 <ImageButton
                   as="a"
@@ -102,9 +140,19 @@ export default function GameMenu({ className }: { className?: string }) {
                   <StyledLabel>{t(item.key)}</StyledLabel>
                 </ImageButton>
               </Link>
-            </StyledItem>
-          )
-        )}
+            )}
+            {item.action && (
+              <ImageButton
+                onClick={item.action}
+                states={itemStates}
+                image={item.image}
+                scale={width / (item.image.width / itemStates.length)}
+              >
+                <StyledLabel>{t(item.key)}</StyledLabel>
+              </ImageButton>
+            )}
+          </StyledItem>
+        ))}
       </StyledItems>
     </StyledContainer>
   )

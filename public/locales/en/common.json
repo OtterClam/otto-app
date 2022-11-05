@@ -968,5 +968,23 @@
   "adventure_remaining": "Remaining: {{time}}",
   "adventureAlert": {
     "hideDesc": "Do not show this again"
+  },
+  "mission": {
+    "title": "Missions",
+    "ongoingCap": "Ongoing Mission Cap({{current}}/{{max}})",
+    "next_mission": "Next mission coming in: {{time}}",
+    "new_mission_btn": "Get 1 New Mission",
+    "new_mission_btn_free": "Get 1 New Mission (FREE)",
+    "require_desc": "Collect all required items",
+    "ongoing": "Ongoing",
+    "finished": "Finished",
+    "awards": "Awards: ",
+    "required_items": "Required Items",
+    "reward": "Mission Reward",
+    "refresh_desc": "Wanna take another random mission?",
+    "refresh_btn": "Refresh",
+    "complete_btn": "Complete",
+    "new_mission_title": "You got a new mission!",
+    "ok_btn": "OK"
   }
 }

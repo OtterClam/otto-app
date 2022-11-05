@@ -48,7 +48,7 @@ const StyledPopup = styled.div`
 const Container = styled.div<{ width: string }>`
   position: relative;
   width: ${props => props.width};
-  max-width: 880px;
+  max-width: ${props => props.width || '880px'};
   max-height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
