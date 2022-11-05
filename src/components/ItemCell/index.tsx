@@ -1,7 +1,9 @@
+import Help from 'components/Help'
 import { ItemMetadata, Item } from 'models/Item'
 import Otto from 'models/Otto'
 import { useMyOtto } from 'MyOttosProvider'
 import Image from 'next/image'
+import Link from 'next/link'
 import { memo } from 'react'
 import styled from 'styled-components/macro'
 import { ContentLarge, Note } from 'styles/typography'
@@ -54,6 +56,7 @@ const StyledSelectedFrame = styled.div<{ right?: boolean }>`
   top: 0;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 
   &::before,
   &::after {
@@ -159,6 +162,9 @@ const StyledUnreturnable = styled.div`
   }
 `
 
+// workaround for eslint
+const StyledOttoLink = styled.a``
+
 interface Props {
   item?: Item
   metadata?: ItemMetadata // component will use this field and ignore "item" if it's not undefined
@@ -212,7 +218,13 @@ export default memo(function ItemCell({
       )}
       {equippedByOtto && (
         <StyledEquipped>
-          <Image src={equippedByOtto.image} layout="fill" width={50} height={50} />
+          <Help noicon message={equippedByOtto.name}>
+            <Link href={`/my-ottos/${equippedByOtto.id}`} passHref>
+              <StyledOttoLink onClick={e => e.stopPropagation()}>
+                <Image src={equippedByOtto.image} layout="fill" width={50} height={50} />
+              </StyledOttoLink>
+            </Link>
+          </Help>
         </StyledEquipped>
       )}
       {equippedByCurrentOtto && (
