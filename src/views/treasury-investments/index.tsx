@@ -7,6 +7,8 @@ import { ContentMedium, Headline } from 'styles/typography'
 import TreasurySection from 'components/TreasurySection'
 import useInvestments from 'hooks/useInvestments'
 import { Investments_investments } from 'graphs/__generated__/Investments'
+import InvestmentsChart from 'components/InvestmentsChart'
+import * as _ from 'lodash'
 
 const StyledContainer = styled.div``
 
@@ -24,14 +26,18 @@ export default function InvestmentsPage({ className }: Props) {
 
   console.log(investments)
 
+  //TODO: Split investments by [protocol, strategy], sort by Timestamp
+  // pass each split to a chart
+  const sortedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
+  console.log(sortedInvestments)
+
+  //PenroseCLAM/USD+ : [10,12,11,10, ..., 10]
+
   return (
     <StyledContainer className={className}>
       <TreasurySection>
-        {investments.map(investment => (
-          <div>
-            <p>{investment.strategy}</p>
-            <p>{investment.protocol}</p>
-          </div>
+        {sortedInvestments.map(investments => (
+          <InvestmentsChart data={investments} />
         ))}
       </TreasurySection>
     </StyledContainer>
