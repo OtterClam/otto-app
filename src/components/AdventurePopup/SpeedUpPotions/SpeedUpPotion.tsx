@@ -58,7 +58,7 @@ const StyledAmountSelector = styled(Note)`
   user-select: none;
 `
 
-const StyledIncreaseAmountButton = styled(Note).attrs({ as: 'button' })`
+const StyledIncreaseAmountButton = styled(Note).attrs({ as: 'button' })<{ disabled?: boolean }>`
   color: ${({ theme }) => theme.colors.white};
   width: 20px;
   height: 20px;
@@ -122,6 +122,7 @@ export default function SpeedUpPotion({
           </StyledDecreaseAmountButton>
           {usedAmount}
           <StyledIncreaseAmountButton
+            disabled={duration <= 0}
             onClick={() =>
               onChanged({
                 ...usedAmounts,
