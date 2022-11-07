@@ -151,7 +151,7 @@ export default function OpenItemView({ items, onClose }: Props) {
             </StyledRibbonText>
             <StyledItemList count={items.length}>
               {items.map((item, index) => (
-                <ItemCell key={index} metadata={item} />
+                <ItemCell showDetailsPopup key={index} metadata={item} />
               ))}
             </StyledItemList>
             <Link href="/my-items">

@@ -42,7 +42,7 @@ export default function ItemPreviewCard({ title, metadata }: Props) {
   return (
     <StyledItemPreviewCard>
       <Caption>{title}</Caption>
-      <StyledItemCell metadata={metadata} />
+      <StyledItemCell showDetailsPopup metadata={metadata} />
       <StyledRarityScore>
         <Caption>{t('my_items.rarity_score', { score: metadata?.totalRarityScore ?? 0 })}</Caption>
       </StyledRarityScore>

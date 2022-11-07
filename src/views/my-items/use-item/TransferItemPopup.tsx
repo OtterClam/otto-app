@@ -125,7 +125,7 @@ export default function TransferItemPopup({ item, onClose }: Props) {
         {transferState.status !== 'Success' && (
           <StyledTransferContainer>
             <Headline>{t('title')}</Headline>
-            <ItemCell item={item} size={240} />
+            <ItemCell showDetailsPopup item={item} size={240} />
             <StyledInputContainer>
               <ContentSmall>{t('amount')}</ContentSmall>
               <StyledInput
