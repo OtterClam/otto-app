@@ -84,10 +84,11 @@ const StyledButtonContent = styled.div`
 const StyledArrowDown = styled.img.attrs({ src: ArrowDownWhite.src })``
 
 interface Props {
+  className?: string
   onClickScroll: () => void
 }
 
-export default function StoreHero({ onClickScroll }: Props) {
+export default function StoreHero({ className, onClickScroll }: Props) {
   const { t } = useTranslation()
   const [state, setState] = useState(1)
   useEffect(() => {
@@ -95,7 +96,7 @@ export default function StoreHero({ onClickScroll }: Props) {
     return () => clearInterval(interval)
   }, [])
   return (
-    <StyledStoreHero>
+    <StyledStoreHero className={className}>
       <StyledBg src={Bg.src} />
       <StyledOtto src={Otto1.src} delay={0} />
       <StyledOtto src={Otto2.src} delay={500} />
