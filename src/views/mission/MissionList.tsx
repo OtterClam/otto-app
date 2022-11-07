@@ -370,7 +370,7 @@ export default function MissionList() {
       {missions.map(mission => (
         <MissionCard key={mission.id} mission={mission} onClick={() => setMission(mission)} />
       ))}
-      {mission && <NewMissionPopup mission={mission} />}
+      {/* {mission && <NewMissionPopup mission={mission} />} */}
     </StyledMissionList>
   )
 }

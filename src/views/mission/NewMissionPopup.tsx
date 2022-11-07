@@ -103,7 +103,7 @@ export default function NewMissionPopup({ mission }: Props) {
             <StyledSubtitle>{t('required_items')}</StyledSubtitle>
             {mission.requirements.map((req, i) => (
               <StyledItemRewardCell key={i}>
-                <ItemCell item={req.item} size={48} />
+                <ItemCell item={req.item} size={58} />
                 <ContentSmall>{req.item.metadata.name}</ContentSmall>
                 <ContentSmall>x{req.amount}</ContentSmall>
               </StyledItemRewardCell>
@@ -113,13 +113,13 @@ export default function NewMissionPopup({ mission }: Props) {
               <StyledItemRewardCell key={i}>
                 {reward.type === 'fish' && (
                   <>
-                    <Image src={FishIcon} width={48} height={48} />
+                    <Image src={FishIcon} width={58} height={58} />
                     <ContentSmall>{Number(ethers.utils.formatUnits(reward.amount, reward.decimal))} FISH</ContentSmall>
                   </>
                 )}
                 {reward.type === 'item' && (
                   <>
-                    <ItemCell item={reward.item} size={48} />
+                    <ItemCell item={reward.item} size={58} />
                     <ContentSmall>{reward.item.metadata.name}</ContentSmall>
                     <ContentSmall>x{reward.amount}</ContentSmall>
                   </>
