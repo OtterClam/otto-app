@@ -33,11 +33,25 @@ const StyledCurtain = styled(Curtain)`
 `
 
 const StyledHeroSection = styled.section`
+  position: relative;
   width: 100%;
   color: ${({ theme }) => theme.colors.white};
   background: ${({ theme }) => theme.colors.otterBlack};
   margin-top: -20px;
   margin-bottom: 20px;
+
+  &::before {
+    content: '';
+    display: block;
+    padding-bottom: 60.7722008%;
+  }
+`
+
+const StyledStoreHero = styled(StoreHero)`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
 `
 
 const StyledFlashSellBody = styled.section`
@@ -169,7 +183,7 @@ export default function StorePage() {
       <StyledStorePage>
         <StyledCurtain />
         <StyledHeroSection>
-          <StoreHero onClickScroll={() => bodyRef?.current?.scrollIntoView({ behavior: 'smooth' })} />
+          <StyledStoreHero onClickScroll={() => bodyRef?.current?.scrollIntoView({ behavior: 'smooth' })} />
         </StyledHeroSection>
         {flashSell && Date.now() < new Date(flashSell.end_time).valueOf() && (
           <StyledFlashSellBody ref={bodyRef}>
