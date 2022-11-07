@@ -21,6 +21,7 @@ import {
   rawItemMetadataToItemMetadata,
 } from 'models/Item'
 import { LeaderboardEpoch, RawLeaderboardEpoch, rawLeaderboardEpochToLeaderboardEpoch } from 'models/LeaderboardEpoch'
+import { Mission } from 'models/Mission'
 import { Notification, RawNotification } from 'models/Notification'
 import Otto, { RawOtto } from 'models/Otto'
 import Product from 'models/store/Product'
@@ -61,6 +62,8 @@ export interface FishStoreResponse {
   left_img: string
   right_img: string
 }
+
+export type MissionFilter = 'ongoing' | 'finished'
 
 const otterclamApiEndpoint: { [key: number]: string } = {
   [ChainId.Polygon]: process.env.NEXT_PUBLIC_API_ENDPOINT_MAINNET!,
@@ -288,6 +291,46 @@ export class Api {
   public async getLeaderBoardEpoch(): Promise<LeaderboardEpoch> {
     const result = await this.otterclamClient.get<RawLeaderboardEpoch>('/leaderboard/epoch')
     return rawLeaderboardEpochToLeaderboardEpoch(result.data)
+  }
+
+  public async listMissions({
+    account,
+    filter,
+    offset,
+    limit,
+  }: {
+    account: string
+    filter: MissionFilter
+    offset?: number
+    limit?: number
+  }): Promise<Mission[]> {
+    return this.otterclamClient.get(`/missions/${account}/${filter}`, { params: { offset, limit } }).then(res =>
+      res.data.map((p: any) => ({
+        ...p,
+        requirements: p.requirements.map((r: any) => ({
+          ...r,
+          item: {
+            id: r.item.id,
+            amount: 1,
+            updatedAt: new Date(),
+            metadata: rawItemMetadataToItemMetadata(r.item),
+          },
+        })),
+        rewards: p.rewards.map((r: any) =>
+          r.type === 'item'
+            ? {
+                ...r,
+                item: {
+                  id: r.item.id,
+                  amount: 1,
+                  updatedAt: new Date(),
+                  metadata: rawItemMetadataToItemMetadata(r.item),
+                },
+              }
+            : r
+        ),
+      }))
+    )
   }
 }
 

@@ -96,7 +96,9 @@ const StyledExpandedArea = styled.div`
   gap: 10px;
 `
 
-const StyledMissionDesc = styled(Caption).attrs({ as: 'p' })``
+const StyledMissionDesc = styled(Caption).attrs({ as: 'p' })`
+  text-align: left;
+`
 
 const StyledSubtitle = styled(Note)`
   color: ${({ theme }) => theme.colors.darkGray200};
@@ -201,6 +203,7 @@ export default function MissionCard({ mission, onClick }: Props) {
                 <>
                   <Image src={FishIcon} width={58} height={58} />
                   <ContentSmall>FISH</ContentSmall>
+                  <ContentSmall>x{ethers.utils.formatUnits(reward.amount, reward.decimal)}</ContentSmall>
                 </>
               )}
               {reward.type === 'item' && (
