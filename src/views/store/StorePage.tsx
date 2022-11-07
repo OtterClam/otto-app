@@ -104,11 +104,12 @@ const StyledChestDesc = styled(ContentMedium).attrs({ as: 'p' })`
 const StyledProductList = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     flex-direction: column;
-    gap: 10px;
   }
 `
 
