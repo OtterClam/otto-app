@@ -57,6 +57,13 @@ const StyledTreasureChestLevel = styled(TreasureChestLevel)`
 
 const StyledImageContainer = styled.div`
   position: relative;
+  width: 100%;
+
+  &::before {
+    content: '';
+    display: block;
+    padding-bottom: 153.333689%;
+  }
 `
 
 export interface AdventureMapProps {
@@ -64,14 +71,14 @@ export interface AdventureMapProps {
   className?: string
 }
 
-export default forwardRef<HTMLDivElement, AdventureMapProps>(function AdventureMap({ hideFooter, className }, ref) {
+export default function AdventureMap({ hideFooter, className }: AdventureMapProps) {
   const { t } = useTranslation('', { keyPrefix: 'adventure' })
   const { locations } = useAdventureLocations()
 
   return (
-    <StyledContainer className={className} ref={ref}>
+    <StyledContainer className={className}>
       <StyledImageContainer>
-        <Image unoptimized src={mapImage} layout="responsive" />
+        <Image unoptimized src={mapImage} layout="fill" />
         {locations.map(location => (
           <AdventureLocation key={location.id} id={location.id} />
         ))}
@@ -84,4 +91,4 @@ export default forwardRef<HTMLDivElement, AdventureMapProps>(function AdventureM
       )}
     </StyledContainer>
   )
-})
+}
