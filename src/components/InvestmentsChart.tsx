@@ -25,14 +25,6 @@ export interface InvestmentsChartProps {
   data: Investments_investments[]
 }
 
-function tryFloat(x: string) {
-  try {
-    return parseFloat(x)
-  } finally {
-    return x
-  }
-}
-
 const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
   i18n =>
   ({ payload, active }) => {
@@ -46,7 +38,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       value: formatUsd(payload[0]?.payload?.netAssetValue),
       color: '#EE4B4E',
     }
-    const aprValue = parseFloat(payload[1]?.payload?.grossApr).toFixed(2) + '%'
+
     const apr = {
       key: 'grossApr',
       label: 'Gross APR',

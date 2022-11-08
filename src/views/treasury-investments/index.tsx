@@ -11,17 +11,19 @@ import InvestmentsChart from 'components/InvestmentsChart'
 import * as _ from 'lodash'
 
 import TreasuryCard from 'components/TreasuryCard'
+import { formatUsd } from 'utils/currency'
 const StyledContainer = styled.div``
 
 interface Props {
   className?: string
 }
 
-const StyledSize = styled.div`
-  height: 260px;
+const StyledTable = styled.table`
   width: 100%;
-  overflow: hidden;
+  text-align: center;
+  table-layout: fixed;
 `
+
 interface InvestmentProps {
   investments?: Investments_investments[]
 }
@@ -35,12 +37,17 @@ function InvestmentPosition({ investments }: InvestmentProps) {
 
   return (
     <div>
-      <p>{investments[0].protocol}</p>
-      <p>{investments[0].strategy}</p>
-      <p>{avgGrossApr.toFixed(2)}%</p>
-      <StyledSize>
+      <StyledTable>
+        <tr>
+          <td>{investments[0].protocol}</td>
+          <td>{investments[0].strategy}</td>
+          <td>{avgGrossApr.toFixed(2)}%</td>
+          <td>{formatUsd(investments.at(-1)?.grossRevenue)}</td>
+        </tr>
+      </StyledTable>
+      <div>
         <InvestmentsChart data={investments} />
-      </StyledSize>
+      </div>
     </div>
   )
 }
@@ -63,6 +70,14 @@ export default function InvestmentsPage({ className }: Props) {
   return (
     <StyledContainer className={className}>
       <TreasurySection>
+        <StyledTable>
+          <tr>
+            <td>Protocol</td>
+            <td>Strategy</td>
+            <td>Average Gross APR</td>
+            <td>Latest Revenue</td>
+          </tr>
+        </StyledTable>
         {sortedInvestments.map(inv => (
           <TreasuryCard>
             <InvestmentPosition investments={inv} />
