@@ -1,5 +1,4 @@
 import SnapshotProposalGroup from 'components/SnapshotProposalGroup'
-import useOtterClamProposalsWithVotes from 'hooks/useOtterClamProposalsWithVotes'
 import { GovernanceTab } from 'models/Tabs'
 
 interface Props {

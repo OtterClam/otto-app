@@ -222,18 +222,6 @@ const StyledTopBar = styled.div`
   display: inline-flex;
   justify-content: space-between;
 `
-
-const formatFinancialNumber = (num: BigNumberish, decimal = 9, digits = 2) =>
-  `$${formatBigNumber(num, decimal, digits)}`
-
-const formatBigNumber = (num: BigNumberish, decimal = 9, digits = 2) => {
-  try {
-    return trim(ethers.utils.formatUnits(num, decimal), digits)
-  } catch {
-    return ''
-  }
-}
-
 export enum PearlBankAvgAprRange {
   Week = 7,
   Month = 30,
