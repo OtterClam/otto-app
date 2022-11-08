@@ -16,6 +16,27 @@ interface Props {
   className?: string
 }
 
+interface InvestmentProps {
+  investments?: Investments_investments[]
+}
+
+function InvestmentPosition({ investments }: InvestmentProps) {
+  if (!investments) return <div></div>
+  const avgGrossApr = useMemo(
+    () => investments.reduce((prev, curr) => prev + Number.parseFloat(curr.grossApr), 0) / investments.length,
+    [investments]
+  )
+
+  return (
+    <div>
+      <p>{investments[0].protocol}</p>
+      <p>{investments[0].strategy}</p>
+      <p>{avgGrossApr.toFixed(2)}%</p>
+      <InvestmentsChart data={investments} />
+    </div>
+  )
+}
+
 export default function InvestmentsPage({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'investments' })
 
@@ -24,20 +45,18 @@ export default function InvestmentsPage({ className }: Props) {
 
   const { loading, investments } = useInvestments(fromDate, toDate)
 
-  console.log(investments)
-
   //TODO: Split investments by [protocol, strategy], sort by Timestamp
   // pass each split to a chart
   const sortedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
-  console.log(sortedInvestments)
+  // console.log(sortedInvestments)
 
   //PenroseCLAM/USD+ : [10,12,11,10, ..., 10]
 
   return (
     <StyledContainer className={className}>
       <TreasurySection>
-        {sortedInvestments.map(investments => (
-          <InvestmentsChart data={investments} />
+        {sortedInvestments.map(inv => (
+          <InvestmentPosition investments={inv ?? []}></InvestmentPosition>
         ))}
       </TreasurySection>
     </StyledContainer>

@@ -7,7 +7,7 @@ import useSize from 'hooks/useSize'
 import { i18n } from 'i18next'
 import { useTranslation } from 'next-i18next'
 import { RefObject, useRef } from 'react'
-import { Area, AreaChart, Tooltip } from 'recharts'
+import { Area, ComposedChart, Tooltip } from 'recharts'
 import styled from 'styled-components/macro'
 import { formatUsd } from 'utils/currency'
 import ChartTooltip from './ChartTooltip'
@@ -29,7 +29,7 @@ const formatCurrency = (c: number) => {
   }).format(c)
 }
 
-const ytickFormatter = (number: string) => `${formatCurrency(parseFloat(number) / 1000000)}M`
+const ytickFormatter = (number: string) => `${formatCurrency(parseFloat(number) / 1000)}K`
 
 const investmentDataKeys = [
   {
@@ -83,7 +83,7 @@ export default function InvestmentsChart({ data }: InvestmentsChartProps) {
   const size = useSize(containerRef)
   return (
     <StyledContainer ref={containerRef}>
-      <AreaChart data={data} width={size?.width} height={size?.height}>
+      <ComposedChart data={data} width={size?.width} height={size?.height}>
         <defs>
           {investmentDataKeys.map(({ dataKey: key, stopColor }) => (
             <linearGradient key={key} id={`color-${key}`} x1="0" y1="0" x2="0" y2="1">
@@ -99,12 +99,11 @@ export default function InvestmentsChart({ data }: InvestmentsChartProps) {
           tick={xAxisTickProps}
           tickLine={false}
           tickFormatter={(val: number) => format(new Date(val * 1000), 'MMM dd')}
-          reversed
           connectNulls
           padding={{ right: 20 }}
         />
         <ChartYAxis
-          tickCount={2}
+          tickCount={5}
           interval="preserveStartEnd"
           axisLine={false}
           tickLine={false}
@@ -113,6 +112,20 @@ export default function InvestmentsChart({ data }: InvestmentsChartProps) {
           tickFormatter={(num: string) => ytickFormatter(num)}
           connectNulls
           allowDataOverflow={false}
+          yAxisId="left"
+        />
+        <ChartYAxis
+          tickCount={5}
+          interval="preserveStartEnd"
+          axisLine={false}
+          tickLine={false}
+          width={33}
+          tick={yAxisTickProps}
+          tickFormatter={(num: string) => ytickFormatter(num)}
+          connectNulls
+          allowDataOverflow={false}
+          yAxisId="right"
+          orientation="right"
         />
         <Tooltip wrapperStyle={{ zIndex: 1 }} content={renderTooltip(i18n) as any} />
         {investmentDataKeys
@@ -126,9 +139,10 @@ export default function InvestmentsChart({ data }: InvestmentsChartProps) {
               fill={`url(#color-${dataKey})`}
               fillOpacity="1"
               stackId="1"
+              yAxisId="left"
             />
           ))}
-      </AreaChart>
+      </ComposedChart>
     </StyledContainer>
   )
 }
