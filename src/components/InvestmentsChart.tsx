@@ -16,6 +16,7 @@ import ChartTooltip from './ChartTooltip'
 const StyledContainer = styled.div`
   height: 260px;
   width: 100%;
+  color: black;
 `
 
 const xAxisTickProps = { fontSize: '12px' }
@@ -72,7 +73,7 @@ export default function InvestmentsChart({ data }: InvestmentsChartProps) {
         </defs>
         <ChartXAxis
           dataKey="timestamp"
-          interval={30}
+          interval={1}
           axisLine={false}
           tick={xAxisTickProps}
           tickLine={false}
@@ -85,7 +86,7 @@ export default function InvestmentsChart({ data }: InvestmentsChartProps) {
           interval="preserveStartEnd"
           axisLine={false}
           tickLine={false}
-          width={33}
+          width={50}
           tick={yAxisTickProps}
           tickFormatter={(num: string) => formatUsdThousandsK(num)}
           connectNulls

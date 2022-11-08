@@ -23,7 +23,7 @@ const StyledTabs = styled.div`
   display: flex;
   gap: 10px;
   justify-content: space-around;
-  padding: 0 20px;
+  padding: 0 25px;
   position: relative;
 `
 
@@ -43,7 +43,7 @@ const StyledTab = styled(ContentMedium).attrs({ as: 'button' })<{ selected?: boo
 `
 
 const StyledBody = styled.div`
-  padding: 20px;
+  padding: 0 15px 0 15px;
 `
 
 const StyledDialog = styled.div`
