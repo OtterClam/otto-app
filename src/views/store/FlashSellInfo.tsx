@@ -91,7 +91,7 @@ export default function FlashSellInfo({
         <StyledItemList>
           {special_items.map((item, index) => (
             <StyledItemContainer key={index}>
-              <StyledItemCell metadata={item} />
+              <StyledItemCell showDetailsPopup metadata={item} />
               <StyledItemName>
                 {item.name}
                 {item.stats[type] && (

@@ -119,7 +119,7 @@ export default function FishProductCard({
         <StyledProductCard>
           <StyledTitle>{item.metadata.name}</StyledTitle>
           <StyledItemContainer>
-            <ItemCell item={item} />
+            <ItemCell showDetailsPopup item={item} />
           </StyledItemContainer>
           <StyledPrice>
             {hasDiscount && <StyledOriginPrice>{displayPrice}</StyledOriginPrice>}

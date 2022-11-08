@@ -1,3 +1,4 @@
+import 'abortcontroller-polyfill/dist/polyfill-patch-fetch'
 import dynamic from 'next/dynamic'
 import { ApolloProvider } from '@apollo/client'
 import { ChainId, Config, DAppProvider } from '@usedapp/core'
@@ -15,18 +16,24 @@ import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
 import { WalletProvider } from 'contexts/Wallet'
 import { ApiProvider } from 'contexts/Api'
 import { OverlayProvider } from 'contexts/Overlay'
-import { SkeletonTheme } from 'react-loading-skeleton'
-import { colors } from 'styles/colors'
 import { RepositoriesProvider } from 'contexts/Repositories'
 import { MyItemsProvider } from 'contexts/MyItems'
 import { combine } from 'utils/provider'
 import { BannersProvider } from 'contexts/Banners'
+import SkeletonThemeProvider from 'components/SkeletonThemeProvider'
+import ottoLoadingImage from 'assets/ui/otto-loading.jpg'
+import usePreloadImages from 'hooks/usePreloadImage'
+import adventureMapImage from 'components/AdventureMap/map.jpg'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
+
+const preloadImages = [ottoLoadingImage.src, adventureMapImage.src]
 
 const AssetsLoader = dynamic(() => import('components/AssetsLoader'), { ssr: false })
 
 const SideMenu = dynamic(() => import('components/SideMenu'), { ssr: false })
+
+const ItemDetailsPopup = dynamic(() => import('components/ItemDetailsPopup'), { ssr: false })
 
 const StyledApp = styled.div`
   display: flex;
@@ -66,6 +73,7 @@ function useRealWindowSize() {
 }
 
 const ApolloApp = ({ children }: PropsWithChildren<object>) => {
+  usePreloadImages(preloadImages)
   useServiceWorker()
   useContractAddresses()
   const apollo = useApollo()
@@ -86,7 +94,7 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
     [MyItemsProvider, {}],
     [OverlayProvider, {}],
     [BannersProvider, {}],
-    [SkeletonTheme, { baseColor: colors.otterBlack, highlightColor: colors.darkGray400 }]
+    [SkeletonThemeProvider, {}]
   )
 
   return (
@@ -97,6 +105,7 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
         <WalletSelector />
         <SideMenu />
         <AssetsLoader />
+        <ItemDetailsPopup />
       </StyledApp>
     </CombinedProvider>
   )

@@ -1,6 +1,7 @@
 import AdventureProgressBar from 'components/AdventureProgressBar'
 import BoostIcon from 'components/BoostIcon'
 import Otto from 'models/Otto'
+import Skeleton from 'react-loading-skeleton'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, Note } from 'styles/typography'
 
@@ -49,27 +50,31 @@ const StyledLevelUpProgress = styled(Note)`
   align-items: center;
 `
 
-const StyledLevelUpProgressBar = styled.div`
-  grid-area: bar;
-  height: 4px;
-  border-radius: 2px;
-  background: ${({ theme }) => theme.colors.darkGray400};
-
-  &::before {
-    display: block;
-    border-radius: 2px;
-    height: 4px;
-    content: '';
-    background: linear-gradient(270deg, #9cfe9f 0%, #9ce0ff 50%, #ffada9 100%);
-  }
-`
-
 export interface OttoAdventureLevelProps {
-  otto: Otto
+  otto?: Otto
   boost?: boolean
+  loading?: boolean
 }
 
-export default function OttoAdventureLevel({ otto, boost }: OttoAdventureLevelProps) {
+export default function OttoAdventureLevel({ loading, otto, boost }: OttoAdventureLevelProps) {
+  if (!otto || loading) {
+    return (
+      <StyledExp>
+        <StyledLevel>
+          <Skeleton width="30px" />
+        </StyledLevel>
+        <StyledLevelDetails>
+          <StyledExplorerTitle>
+            <Skeleton width="100px" />
+          </StyledExplorerTitle>
+          <StyledLevelUpProgress>
+            <Skeleton width="60px" />
+          </StyledLevelUpProgress>
+          <AdventureProgressBar progress={0} />
+        </StyledLevelDetails>
+      </StyledExp>
+    )
+  }
   return (
     <StyledExp>
       <StyledLevel>LV. {otto.level}</StyledLevel>

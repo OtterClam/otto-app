@@ -36,8 +36,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
   const [draftItems, setDraftItems] = useState<{
     [traitType: string]: string | null
   }>({})
-
-  const value = useMemo(() => {
+  const actions = useMemo(() => {
     const uniqueItems = items.reduce((map, item) => {
       // pick non-equipped items first if there multiple items
       if (map[item.metadata.tokenId] && !map[item.metadata.tokenId].equippedBy) {
@@ -75,7 +74,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
       { ...draftItems }
     )
 
-    const actions = !otto
+    return !otto
       ? []
       : Object.keys(cleanedDraftItems).map(type => {
           const itemId = cleanedDraftItems[type]
@@ -102,7 +101,9 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
             from_otto_id: 0,
           }
         })
+  }, [draftItems, items.map(({ metadata }) => metadata.tokenId).join(',')])
 
+  const value = useMemo(() => {
     return {
       otto,
       setOtto,
@@ -139,7 +140,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
       },
       itemActions: actions,
     }
-  }, [otto, draftItems, items])
+  }, [otto, actions])
 
   return <OttoContext.Provider value={value}>{children}</OttoContext.Provider>
 }

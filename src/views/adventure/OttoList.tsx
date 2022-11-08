@@ -6,7 +6,7 @@ import { useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, Headline } from 'styles/typography'
 
-const StyledContainer = styled.div<{ maxHeight?: number }>`
+const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -14,12 +14,6 @@ const StyledContainer = styled.div<{ maxHeight?: number }>`
   box-sizing: border-box;
   overflow-y: auto;
   background: ${({ theme }) => theme.colors.otterBlack};
-
-  ${({ maxHeight }) =>
-    maxHeight &&
-    `
-    height: ${maxHeight}px;
-  `}
 
   @media ${({ theme }) => theme.breakpoints.tablet} {
     padding-bottom: 100px;
@@ -71,7 +65,7 @@ const StyledFilterButton = styled(Caption).attrs({ as: 'button' })<{ selected?: 
   }
 `
 
-export default function OttoList({ maxHeight }: { maxHeight?: number }) {
+export default function OttoList({ className }: { className?: string }) {
   const [selectedStatus, setSelectedStatus] = useState<AdventureOttoStatus | undefined>(undefined)
   const { t } = useTranslation()
   const { ottos } = useMyOttos()
@@ -83,7 +77,7 @@ export default function OttoList({ maxHeight }: { maxHeight?: number }) {
   }, [ottos, selectedStatus])
 
   return (
-    <StyledContainer maxHeight={maxHeight}>
+    <StyledContainer className={className}>
       <StyledTitle>{t('adventure.listTitle')}</StyledTitle>
 
       <StyledFilters>

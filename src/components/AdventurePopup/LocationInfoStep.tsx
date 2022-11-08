@@ -95,7 +95,7 @@ export function LocationInfoStep() {
           <StyledHead bg={location.bgImage}>
             <StyledName location={location} />
             <StyledImageWrapper>
-              <Image layout="fill" src={location.image} width={192} height={192} />
+              <Image layout="fill" src={location.image} unoptimized />
             </StyledImageWrapper>
           </StyledHead>
           <StyledDetails>

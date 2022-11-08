@@ -70,6 +70,7 @@ export const GET_TREASURY_METRICS = gql`
       treasuryKyberswapMaticStMaticHedgedMarketValue
       treasuryUniV3HedgedMaticUsdcStrategyMarketValue
       treasuryUniV3UsdcMaiStrategyMarketValue
+      treasuryQuickswapV3MaiUsdtStrategyMarketValue
     }
   }
 `
@@ -103,6 +104,10 @@ export const GET_TREASURY_REVENUE = gql`
       usdcMarketValue
       maticClamAmount
       maticMarketValue
+      quickClamAmount
+      quickMarketValue
+      usdtClamAmount
+      usdtMarketValue
       totalRevenueClamAmount
       totalRevenueMarketValue
     }

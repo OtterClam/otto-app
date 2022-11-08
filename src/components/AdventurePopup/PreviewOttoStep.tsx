@@ -31,6 +31,7 @@ import { ContentMedium, Headline } from 'styles/typography'
 import Otto from 'models/Otto'
 import { useRepositories } from 'contexts/Repositories'
 import AdventureAlert from 'components/AdventureAlert'
+import SkeletonThemeProvider, { SkeletonColor } from 'components/SkeletonThemeProvider'
 
 const StyledContainer = styled.div<{ bg: string }>`
   display: flex;
@@ -92,6 +93,7 @@ const StyledItemActionsTooltip = styled(AdventureTooltip)`
 `
 
 export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: () => void }) {
+  const [loadingPreviewData, setLoadingPreviewData] = useState(false)
   const { ottos: ottosRepo } = useRepositories()
   const container = useRef<HTMLDivElement>(null)
   const { updateOtto, loading: loadingOttos } = useMyOttos()
@@ -110,6 +112,9 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
     itemPopupWidth: 375,
     itemPopupOffset: 0,
   })
+  const { explore, exploreState, resetExplore } = useAdventureExplore()
+  const waitingTx = exploreState.state === 'Processing'
+  const loading = !otto || !location || waitingTx || loadingPreviewData
 
   const levelBoost = useMemo(
     () =>
@@ -135,21 +140,34 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
       }
     })
     return actions
-  }, [equippedItemActions, usedPotionAmounts, otto])
+  }, [equippedItemActions, usedPotionAmounts, otto?.id])
 
   useEffect(() => {
     if (otto && location) {
-      ottosRepo
-        .previewAdventureOtto(otto.id, location.id, actions)
-        .then(setPreview)
-        .catch(err => {
-          // TODO: handle error
-          console.error(err.message)
-        })
-    }
-  }, [ottosRepo, otto, location, actions])
+      setLoadingPreviewData(true)
 
-  const { explore, exploreState, resetExplore } = useAdventureExplore()
+      const abortController = new AbortController()
+      const timer = setTimeout(() => {
+        ottosRepo
+          .withAbortSignal(abortController.signal)
+          .previewAdventureOtto(otto.id, location.id, actions)
+          .then(setPreview)
+          .then(() => setLoadingPreviewData(false))
+          .catch(err => {
+            if (err.message !== 'canceled') {
+              // TODO: handle error
+              console.error(err)
+              setLoadingPreviewData(false)
+            }
+          })
+      }, 500)
+
+      return () => {
+        clearTimeout(timer)
+        abortController.abort()
+      }
+    }
+  }, [ottosRepo, otto?.id, location?.id, actions])
 
   const handleExploreButtonClick = useCallback(() => {
     if (!otto || !location) {
@@ -222,18 +240,21 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
           <StyledMain>
             <StyledPreview>
               <OttoPreviewer
+                loading={loading}
                 itemPopupOffset={itemPopupOffset}
                 itemsPopupWidth={itemPopupWidth}
                 itemPopupHeight={itemPopupHeight}
               />
-              {otto && <OttoAdventureLevel otto={otto} boost={Boolean(levelBoost)} />}
-              <OttoStats />
-              <OttoAttrs />
+              <OttoAdventureLevel loading={loading} otto={otto} boost={Boolean(levelBoost)} />
+              <OttoStats loading={loading} />
+              <SkeletonThemeProvider color={SkeletonColor.Light}>
+                <OttoAttrs loading={loading} />
+              </SkeletonThemeProvider>
             </StyledPreview>
 
             <StyledLocation>
-              <AdventureConditionalBoosts />
-              <AdventureRewards canUsePotions onUsePotion={setUsedPotionAmounts} />
+              <AdventureConditionalBoosts loading={loading} />
+              <AdventureRewards loading={loading} canUsePotions onUsePotion={setUsedPotionAmounts} />
             </StyledLocation>
           </StyledMain>
 

@@ -1,7 +1,8 @@
 import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
 import noop from 'lodash/noop'
 import { useTranslation } from 'next-i18next'
-import { ReactNode, useCallback, useState } from 'react'
+import { ReactNode, useState } from 'react'
+import localforage from 'localforage'
 import styled from 'styled-components/macro'
 import { ContentMedium, ContentSmall } from 'styles/typography'
 import AdventureFullscreen from 'components/AdventureFullscreen'
@@ -92,20 +93,28 @@ export default function AdventureAlert({
   const key = `adventureAlert.${storageKey}`
 
   useBrowserLayoutEffect(() => {
-    const savedAction = localStorage.getItem(key)
-    setDoNotShow(Boolean(savedAction))
-
-    if (savedAction === 'ok' && show) {
-      onOk()
-    }
+    localforage
+      .getItem(key)
+      .catch(err => {
+        console.warn('failed to get data from storage', err)
+      })
+      .then(savedAction => {
+        setDoNotShow(Boolean(savedAction))
+        if (savedAction === 'ok' && show) {
+          onOk()
+        }
+      })
   }, [storageKey, show])
 
   const ok = () => {
     if (checked) {
-      localStorage.setItem(key, 'ok')
-      setDoNotShow(true)
+      localforage.setItem(key, 'ok').then(() => {
+        setDoNotShow(true)
+        onOk()
+      })
+    } else {
+      onOk()
     }
-    onOk()
   }
 
   return (

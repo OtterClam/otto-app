@@ -94,8 +94,10 @@ export class Api {
     return this.otterclamClient.get(`/ottos/candidates/metadata/${portalId}`).then(res => res.data)
   }
 
-  public async getOttoMeta(ottoId: string, details: boolean): Promise<RawOtto> {
-    return this.otterclamClient.get(`/ottos/metadata/${ottoId}`, { params: { details } }).then(res => res.data)
+  public async getOttoMeta(ottoId: string, details: boolean, abortSignal?: AbortSignal): Promise<RawOtto> {
+    return this.otterclamClient
+      .get(`/ottos/metadata/${ottoId}`, { params: { details }, signal: abortSignal })
+      .then(res => res.data)
   }
 
   public async getNotifications(): Promise<Notification[]> {
@@ -117,13 +119,18 @@ export class Api {
       .then(res => res.data)
   }
 
-  public async getItemsMetadata(tokenIds: string[]): Promise<{ [tokenId: string]: ItemMetadata }> {
-    return this.otterclamClient.get<RawItemMetadata[]>(`/items/metadata?ids=${tokenIds.join(',')}`).then(res =>
-      res.data.reduce((map, metadata) => {
-        map[metadata.id] = rawItemMetadataToItemMetadata(metadata)
-        return map
-      }, {} as { [tokenId: string]: ItemMetadata })
-    )
+  public async getItemsMetadata(
+    tokenIds: string[],
+    abortSignal?: AbortSignal
+  ): Promise<{ [tokenId: string]: ItemMetadata }> {
+    return this.otterclamClient
+      .get<RawItemMetadata[]>(`/items/metadata?ids=${tokenIds.join(',')}`, { signal: abortSignal })
+      .then(res =>
+        res.data.reduce((map, metadata) => {
+          map[metadata.id] = rawItemMetadataToItemMetadata(metadata)
+          return map
+        }, {} as { [tokenId: string]: ItemMetadata })
+      )
   }
 
   public async rollTheDice(ottoId: string, tx: string): Promise<Dice> {
@@ -191,21 +198,22 @@ export class Api {
     return result.data.map(rawForgeToForge)
   }
 
-  public async getAdventureOttos(wallet: string): Promise<RawOtto[]> {
-    const result = await this.otterclamClient.get<RawOtto[]>(`/adventure/wallets/${wallet}`)
+  public async getAdventureOttos(wallet: string, abortSignal?: AbortSignal): Promise<RawOtto[]> {
+    const result = await this.otterclamClient.get<RawOtto[]>(`/adventure/wallets/${wallet}`, { signal: abortSignal })
     return result.data
   }
 
   public async getOttoAdventurePreview(
     ottoId: string,
     locationId: number,
-    actions: ItemAction[]
+    actions: ItemAction[],
+    abortSignal?: AbortSignal
   ): Promise<AdventurePreview> {
     let url = `/ottos/${ottoId}/adventure/locations/${locationId}/preview`
     if (actions.length) {
       url += `?actions=${JSON.stringify(actions)}`
     }
-    const result = await this.otterclamClient.get<RawAdventurePreview>(url)
+    const result = await this.otterclamClient.get<RawAdventurePreview>(url, { signal: abortSignal })
     return rawAdventurePreviewToAdventurePreview(result.data)
   }
 

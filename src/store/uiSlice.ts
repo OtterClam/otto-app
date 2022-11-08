@@ -12,6 +12,7 @@ interface UiState {
   showWalletPopup: boolean
   showFishWalletPopup: boolean
   ottoInTheHell?: ReturnType<Otto['toJSON']>
+  itemDetailsPopup?: string // item token id
 }
 
 const initialState: UiState = {
@@ -22,6 +23,7 @@ const initialState: UiState = {
   showWalletPopup: false,
   showFishWalletPopup: false,
   ottoInTheHell: undefined,
+  itemDetailsPopup: undefined,
 }
 
 export const uiSlice = createSlice({
@@ -71,6 +73,12 @@ export const uiSlice = createSlice({
     hideFishWalletPopup: state => {
       state.showFishWalletPopup = false
     },
+    showItemDetailsPopup: (state, action) => {
+      state.itemDetailsPopup = action.payload
+    },
+    hideItemDetailsPopup: state => {
+      state.itemDetailsPopup = undefined
+    },
   },
 })
 
@@ -89,6 +97,8 @@ export const {
   hideWalletPopup,
   showFishWalletPopup,
   hideFishWalletPopup,
+  showItemDetailsPopup,
+  hideItemDetailsPopup,
 } = uiSlice.actions
 
 export const selectConnectingWallet = (state: RootState) => state.ui.connectingWallet
@@ -102,6 +112,8 @@ export const selectShowSideMenu = (state: RootState) => state.ui.showSideMenu
 export const selectShowWalletPopup = (state: RootState) => state.ui.showWalletPopup
 
 export const selectShowFishWalletPopup = (state: RootState) => state.ui.showFishWalletPopup
+
+export const selectItemDetailsPopup = (state: RootState) => state.ui.itemDetailsPopup
 
 export const selectOttoInTheHell = (state: RootState) => {
   if (!state.ui.ottoInTheHell) {

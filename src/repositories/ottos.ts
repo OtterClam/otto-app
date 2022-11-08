@@ -12,9 +12,24 @@ export class OttosRepository {
 
   private readonly items: ItemsRepository
 
-  constructor({ api, items }: Repositories) {
-    this.api = api
-    this.items = items
+  constructor(private readonly root: Repositories, private readonly abortSignal?: AbortSignal) {
+    this.api = root.api
+    this.items = root.items.withAbortSignal(abortSignal)
+  }
+
+  private get graphContext() {
+    if (!this.abortSignal) {
+      return
+    }
+    return {
+      fetchOptions: {
+        signal: this.abortSignal,
+      },
+    }
+  }
+
+  withAbortSignal(abortSignal?: AbortSignal) {
+    return new OttosRepository(this.root, abortSignal)
   }
 
   private async fromOttoMetadata(ottoMetadata: RawOtto, preview?: boolean): Promise<Otto> {
@@ -65,7 +80,7 @@ export class OttosRepository {
   }
 
   async getOtto(tokenId: string): Promise<Otto | null> {
-    const ottoMetadata = await this.api.getOttoMeta(tokenId, true)
+    const ottoMetadata = await this.api.getOttoMeta(tokenId, true, this.abortSignal)
     return this.fromOttoMetadata(ottoMetadata)
   }
 
@@ -76,7 +91,7 @@ export class OttosRepository {
   }
 
   async getOttosByAccount(account: string): Promise<Otto[]> {
-    const ottos = await this.api.getAdventureOttos(account)
+    const ottos = await this.api.getAdventureOttos(account, this.abortSignal)
     const items = await this.items.getAllItemsByAccount(account)
     const itemsMetadata = await this.items.getMetadata(
       flatten(ottos.map(otto => (otto.otto_native_traits ?? []).concat(otto.otto_details ?? []).map(({ id }) => id)))
@@ -95,7 +110,7 @@ export class OttosRepository {
     locationId: number,
     actions: ItemAction[] = []
   ): Promise<{ otto: Otto; location: AdventureLocation }> {
-    const preview = await this.api.getOttoAdventurePreview(ottoTokenId, locationId, actions)
+    const preview = await this.api.getOttoAdventurePreview(ottoTokenId, locationId, actions, this.abortSignal)
     const otto = await this.fromOttoMetadata(preview, true)
     return {
       otto,

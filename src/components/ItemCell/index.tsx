@@ -1,8 +1,13 @@
+import Help from 'components/Help'
+import noop from 'lodash/noop'
 import { ItemMetadata, Item } from 'models/Item'
 import Otto from 'models/Otto'
 import { useMyOtto } from 'MyOttosProvider'
 import Image from 'next/image'
-import { memo } from 'react'
+import Link from 'next/link'
+import { memo, useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { showItemDetailsPopup } from 'store/uiSlice'
 import styled from 'styled-components/macro'
 import { ContentLarge, Note } from 'styles/typography'
 import chainedImage from './chained.svg'
@@ -54,6 +59,7 @@ const StyledSelectedFrame = styled.div<{ right?: boolean }>`
   top: 0;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 
   &::before,
   &::after {
@@ -159,6 +165,9 @@ const StyledUnreturnable = styled.div`
   }
 `
 
+// workaround for eslint
+const StyledOttoLink = styled.a``
+
 interface Props {
   item?: Item
   metadata?: ItemMetadata // component will use this field and ignore "item" if it's not undefined
@@ -169,6 +178,7 @@ interface Props {
   onClick?: () => void
   className?: string
   hideAmount?: boolean
+  showDetailsPopup?: boolean
 }
 
 export default memo(function ItemCell({
@@ -178,16 +188,25 @@ export default memo(function ItemCell({
   unavailable = false,
   size = 115,
   selected = false,
-  onClick,
+  onClick = noop,
   className,
   hideAmount = false,
+  showDetailsPopup = false,
 }: Props) {
   const { id, equippedBy, amount = 0 } = item ?? {}
   const equippedByOtto = useMyOtto(equippedBy)
   const { tokenId, image, rarity, unreturnable } = metadata || (item?.metadata ?? {})
   const equippedByCurrentOtto = Boolean(currentOtto?.equippedItems.find(item => item.id === id))
+  const dispatch = useDispatch()
 
   unavailable = Boolean((unavailable && !equippedByCurrentOtto) || (equippedByOtto && !equippedByOtto.availableForItem))
+
+  const handleClickEvent = useCallback(() => {
+    onClick()
+    if (showDetailsPopup) {
+      dispatch(showItemDetailsPopup(tokenId))
+    }
+  }, [onClick, showDetailsPopup, tokenId])
 
   return (
     <StyledItemCell
@@ -197,7 +216,7 @@ export default memo(function ItemCell({
       selected={selected}
       canClick={Boolean(onClick)}
       className={className}
-      onClick={onClick}
+      onClick={handleClickEvent}
     >
       <StyledImageContainer>
         {image && <Image loading="lazy" src={image} width={size} height={size} />}
@@ -212,7 +231,13 @@ export default memo(function ItemCell({
       )}
       {equippedByOtto && (
         <StyledEquipped>
-          <Image src={equippedByOtto.image} layout="fill" width={50} height={50} />
+          <Help noicon message={equippedByOtto.name}>
+            <Link href={`/my-ottos/${equippedByOtto.id}`} passHref>
+              <StyledOttoLink onClick={e => e.stopPropagation()}>
+                <Image src={equippedByOtto.image} layout="fill" width={50} height={50} />
+              </StyledOttoLink>
+            </Link>
+          </Help>
         </StyledEquipped>
       )}
       {equippedByCurrentOtto && (
