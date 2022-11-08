@@ -97,7 +97,7 @@ export default function OpenItemAnimation({ current, total, item, className }: P
       <StyledRibbonText>
         <ContentSmall>{t('store.popup.found_items', { current, total })}</ContentSmall>
       </StyledRibbonText>
-      <StyledItemCell metadata={item} />
+      <StyledItemCell showDetailsPopup metadata={item} />
       <StyledNameSection>
         <StyledCategory type={item.type}>{t(`my_items.section_title.${item.type}`)} </StyledCategory>
         <StyledName as="h2">{item.name}</StyledName>

@@ -121,7 +121,7 @@ export default function ItemCard({ metadata }: Props) {
       <StyledBottomContainer>
         {image && (
           <div>
-            <ItemCell item={item} />
+            <ItemCell showDetailsPopup={item.metadata.wearable} item={item} />
           </div>
         )}
         <StyledInfoContainer>

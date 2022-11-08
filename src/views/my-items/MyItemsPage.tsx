@@ -172,6 +172,7 @@ function ItemList({
           <StyledItemList>
             {items.map(item => (
               <ItemCell
+                showDetailsPopup
                 key={item.id}
                 item={item}
                 selected={item.id === selectedItemId}
