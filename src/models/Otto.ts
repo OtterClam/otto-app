@@ -200,9 +200,6 @@ export default class Otto {
       }
     }
 
-    if (!this.raw.otto_traits) {
-      console.log(this.raw)
-    }
     for (let idx = 0; idx < this.raw.otto_traits?.length ?? 0; idx++) {
       const { trait_type, value } = this.raw.otto_traits[idx]
       if (trait_type === 'Gender') {
