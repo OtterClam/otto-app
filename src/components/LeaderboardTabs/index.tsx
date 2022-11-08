@@ -8,6 +8,7 @@ const StyledContainer = styled.div`
   width: 100%;
   overflow-y: auto;
   padding-bottom: 20px;
+  min-height: 145px;
 `
 
 const StyledTabs = styled.div`

@@ -31,10 +31,10 @@ const StyledImage = styled.img`
 `
 
 export default function LeaderboardTab({ banner }: { banner: Banner }) {
-  const { pathname } = useRouter()
+  const { asPath } = useRouter()
   return (
     <Link href={banner.link} passHref>
-      <StyledButton data-active={pathname === banner.link ? 'true' : 'false'}>
+      <StyledButton data-active={asPath === banner.link ? 'true' : 'false'}>
         <StyledImage src={banner.image} />
       </StyledButton>
     </Link>
