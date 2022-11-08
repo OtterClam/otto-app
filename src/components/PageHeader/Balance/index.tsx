@@ -4,6 +4,7 @@ import { trim } from 'helpers/trim'
 import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useTokenBalance from 'hooks/useTokenBalance'
+import localforage from 'localforage'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import ReactTooltip from 'react-tooltip'
 import styled, { useTheme } from 'styled-components/macro'
@@ -32,14 +33,17 @@ const useNewWalletTooltipShowed = () => {
   const [newWalletTooltipShowed, setNewWalletTooltipShowed] = useState(false)
 
   useBrowserLayoutEffect(() => {
-    setNewWalletTooltipShowed(Boolean(localStorage.getItem(NEW_WALLET_TOOLTIP_SHOWED)))
+    localforage
+      .getItem(NEW_WALLET_TOOLTIP_SHOWED)
+      .catch(err => console.warn('failed to get data from storage', err))
+      .then(data => setNewWalletTooltipShowed(Boolean(data)))
   }, [])
 
   return {
     newWalletTooltipShowed,
     setNewWalletTooltipShowed: (newVal: boolean) => {
       setNewWalletTooltipShowed(true)
-      localStorage.setItem(NEW_WALLET_TOOLTIP_SHOWED, 'true')
+      localforage.setItem(NEW_WALLET_TOOLTIP_SHOWED, true)
     },
   }
 }
