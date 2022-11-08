@@ -4,6 +4,7 @@
     "zh-tw": "繁体中文",
     "zh-cn": "简体中文"
   },
+  "titleSuffix": " | The first official citizen of the Otter Kingdom",
   "new_version": "A newer version of this web app is available, reload to update?",
   "assets_loader": {
     "name": {
@@ -150,7 +151,9 @@
       "store": "Store",
       "bank": "Pearl Bank"
     },
-    "title": "Ottopia"
+    "title": "Ottopia",
+    "docDesc": "",
+    "docTitle": "$t(home.title)$t(titleSuffix)"
   },
   "leaderboard": {
     "head": "Be the rarest Otto to win the prize!",
@@ -185,6 +188,8 @@
     },
     "shell_chest_link": "Buy Shell Chest >",
     "title": "Leaderboard",
+    "docDesc": "",
+    "docTitle": "$t(leaderboard.title)$t(titleSuffix)",
     "right_info": "The upcoming epoch falls to <span style=\"color: #FFDC77\">{{constellation}}</span>. The god of {{constellation}} has blessed every {{constellation}} Otto, Lottie and Cleo with glory and power! <span style=\"color: #FF6854\">BRS +50</span>",
     "left_info_link": "See how BRS boost works >",
     "left_info": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #FFDC77\">{{ themes }}</span> will receive extra BRS boosts."
@@ -254,6 +259,8 @@
     },
     "portal_amount": "Otto Portals:",
     "title": "Mint Portals",
+    "docDesc": "",
+    "docTitle": "$t(mint.title)$t(titleSuffix)",
     "total_payment": "Total Payment:"
   },
   "mint_banner": {
@@ -555,7 +562,9 @@
     "shell_chest": "Shell Chest",
     "subtitle_1": "These Shell Chests contain more than 600+ pieces of special, wearable equipment, and they're on sale! The more you buy, the more you save! Each Chest holds 1 item!",
     "subtitle_2": "Good things come to Otters who wait, unless they're on sale! These Shell Chests are a deal worth running for!",
-    "title": "Ottopia Store"
+    "title": "Ottopia Store",
+    "docDesc": "",
+    "docTitle": "$t(store.title)$t(titleSuffix)"
   },
   "unsupported_network": {
     "action": "Switch to Polygon",
@@ -584,6 +593,8 @@
     },
     "dashboard": {
       "title": "Treasury Dashboard",
+      "docDesc": "",
+      "docTitle": "$t(treasury.dashboard.title)$t(titleSuffix)",
       "clamPrice": "CLAM Price",
       "backing": "Backing per CLAM",
       "backingTooltip": "Market Value of Treasury Assets divided by the circulating supply of CLAM. The value of CLAM tokens in liquidity pools is NOT included in the backing price.",
@@ -790,6 +801,8 @@
   },
   "foundry": {
     "title": "Foundry",
+    "docDesc": "",
+    "docTitle": "$t(foundry.title)$t(titleSuffix)",
     "dialog": {
       "title": "Welcome to the Foundry!",
       "content": "Welcome to the Foundry, where you can melt several items to create a new item with the possibility of getting a higher rarity score or better attributes!"
@@ -953,6 +966,8 @@
   },
   "adventure": {
     "title": "Adventure",
+    "docDesc": "",
+    "docTitle": "$t(adventure.title)$t(titleSuffix)",
     "continue": "To Be Continued...",
     "listTitle": "Overview",
     "viewSwitcher": {

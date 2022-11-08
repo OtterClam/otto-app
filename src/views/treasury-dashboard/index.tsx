@@ -22,6 +22,7 @@ import useCurrencyFormatter from 'hooks/useCurrencyFormatter'
 import { Currency, useCurrency } from 'contexts/Currency'
 import Switcher from 'components/Switcher'
 import { formatClamString, formatUsd } from 'utils/currency'
+import Head from 'next/head'
 import Leaves from './leaves.png'
 import Shell from './shell.png'
 import Bird from './bird.png'
@@ -282,6 +283,13 @@ export default function TreasuryDashboardPage() {
 
   return (
     <div>
+      <Head>
+        <title>{t('docTitle')}</title>
+        <meta property="og:title" content={t('docTitle')} />
+        <meta name="description" content={t('docDesc')} />
+        <meta property="og:description" content={t('docDesc')} />
+        <meta property="og:image" content="/og.jpg" />
+      </Head>
       <TreasurySection>
         <AdBanner />
       </TreasurySection>
