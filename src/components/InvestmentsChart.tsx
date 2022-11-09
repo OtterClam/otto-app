@@ -67,8 +67,8 @@ export default function InvestmentsChart({ data }: InvestmentsChartProps) {
             <stop offset="90%" stopColor={'rgba(219, 55, 55, 0.5)'} stopOpacity={1} />
           </linearGradient>
           <linearGradient key={'line'} id={`color-line`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={'rgba(0, 55, 55, 1)'} stopOpacity={1} />
-            <stop offset="90%" stopColor={'rgba(0, 55, 55, 1)'} stopOpacity={1} />
+            <stop offset="0%" stopColor={'rgba(255, 255, 255, 1)'} stopOpacity={1} />
+            <stop offset="90%" stopColor={'rgba(255, 255, 255, 0.5)'} stopOpacity={1} />
           </linearGradient>
         </defs>
         <ChartXAxis

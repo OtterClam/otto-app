@@ -9,6 +9,7 @@ import useInvestments from 'hooks/useInvestments'
 import { Investments_investments } from 'graphs/__generated__/Investments'
 import InvestmentsChart from 'components/InvestmentsChart'
 import * as _ from 'lodash'
+import LinkIcon from './link_icon.svg'
 
 import TreasuryCard from 'components/TreasuryCard'
 import { formatUsd } from 'utils/currency'
@@ -51,6 +52,20 @@ const StyledCard = styled.div`
   background: ${({ theme }) => theme.colors.darkGray400};
 `
 
+const StyledChartCard = styled.div`
+  padding: 15px;
+  margin: 16px 0;
+  border-radius: 10px;
+  box-sizing: border-box;
+
+  background: ${({ theme }) => theme.colors.otterBlack};
+`
+const StyledImage = styled(Image)`
+  height: 100px;
+  width: 100px;
+  fill: white;
+`
+
 interface InvestmentProps {
   investments?: Investments_investments[]
   portfolioPct?: number
@@ -69,14 +84,20 @@ function InvestmentPosition({ investments, portfolioPct }: InvestmentProps) {
     <StyledRow onClick={() => setIsOpen(!isOpen)}>
       <StyledTable>
         <tr>
-          <td>{investments[0].protocol}</td>
           <td>{investments[0].strategy}</td>
+          <td>
+            {investments[0].protocol} <StyledImage height={100} src={LinkIcon} />
+          </td>
           <td>{portfolioPct?.toFixed(2)}%</td>
           <td>{avgGrossApr.toFixed(2)}%</td>
           <td>{formatUsd(investments.at(-1)?.grossRevenue)}</td>
         </tr>
       </StyledTable>
-      {isOpen && <InvestmentsChart data={investments} />}
+      {isOpen && (
+        <StyledChartCard>
+          <InvestmentsChart data={investments} />
+        </StyledChartCard>
+      )}
     </StyledRow>
   )
 }
@@ -112,8 +133,8 @@ export default function InvestmentsPage({ className }: Props) {
         <StyledInnerContainer>
           <StyledTable>
             <StyledTableHeader>
+              <td>Investment</td>
               <td>Protocol</td>
-              <td>Strategy</td>
               <td>Portfolio Percentage</td>
               <td>Average Gross APR</td>
               <td>Latest Revenue</td>
