@@ -13,6 +13,12 @@ import Skeleton from 'react-loading-skeleton'
 import SkeletonThemeProvider, { SkeletonColor } from './SkeletonThemeProvider'
 
 const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`
+
+const StyledAttrs = styled.div`
   display: grid;
   gap: 1px;
   grid-template-columns: repeat(3, 1fr);
@@ -37,6 +43,10 @@ const StyledAttr = styled(Note)<{ icon: string }>`
   }
 `
 
+const StyledScore = styled(StyledAttr)`
+  grid-column: span 2;
+`
+
 const StyledBoostIcon = styled(BoostIcon)`
   position: absolute;
   right: 0;
@@ -51,7 +61,7 @@ const StyledSkeleton = styled(Skeleton).attrs({ borderRadius: 0 })`
   height: 100%;
 `
 
-export default function OttoStats({ loading }: { loading?: boolean }) {
+export default function OttoStats({ loading, showScore }: { loading?: boolean; showScore?: boolean }) {
   const location = useAdventureLocation()
   const { draftOtto: otto } = useAdventureOtto()
   const { t } = useTranslation()
@@ -95,25 +105,49 @@ export default function OttoStats({ loading }: { loading?: boolean }) {
   if (loading) {
     return (
       <SkeletonThemeProvider color={SkeletonColor.Light}>
-        <StyledContainer>
+        <StyledAttrs>
           {attributes.map(attr => (
             <StyledAttr key={attr.key} icon={attr.icon}>
               <StyledSkeleton />
             </StyledAttr>
           ))}
-        </StyledContainer>
+        </StyledAttrs>
+        {showScore && (
+          <StyledAttrs>
+            <StyledScore icon="/trait-icons/Items.png">
+              <StyledSkeleton />
+            </StyledScore>
+            <StyledAttr icon="/trait-icons/Rank.png">
+              <StyledSkeleton />
+            </StyledAttr>
+          </StyledAttrs>
+        )}
       </SkeletonThemeProvider>
     )
   }
 
   return (
     <StyledContainer>
-      {attributes.map(attr => (
-        <StyledAttr key={attr.key} icon={attr.icon}>
-          {attr.value}
-          {hasBoost[attr.key] && <StyledBoostIcon />}
-        </StyledAttr>
-      ))}
+      <StyledAttrs>
+        {attributes.map(attr => (
+          <StyledAttr key={attr.key} icon={attr.icon}>
+            {attr.value}
+            {hasBoost[attr.key] && <StyledBoostIcon />}
+          </StyledAttr>
+        ))}
+      </StyledAttrs>
+      {showScore && (
+        <StyledAttrs>
+          <StyledScore icon="/trait-icons/Items.png">
+            {t('ottoStats.rarityScore', {
+              total: otto?.totalRarityScore ?? 0,
+              brs: otto?.baseRarityScore ?? 0,
+              rrs: otto?.relativeRarityScore ?? 0,
+            })}
+          </StyledScore>
+          <StyledAttr icon="/trait-icons/Rank.png">#{otto?.ranking ?? 0}</StyledAttr>
+        </StyledAttrs>
+      )}
     </StyledContainer>
   )
 }

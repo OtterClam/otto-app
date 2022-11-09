@@ -160,7 +160,7 @@ export default function OttoPopupBody() {
 
           <OttoAttrs loading={loading} />
 
-          <OttoStats loading={loading} />
+          <OttoStats showScore loading={loading} />
 
           <StyledSubmitButton
             disabled={!otto || itemActions.length === 0 || loading}
