@@ -50,10 +50,11 @@ const StyledAction = styled.div`
 
 const StyledActionLabel = styled(Note)``
 
-const StyledFullscreen = styled(AdventureFullscreen)<{ maxWidth?: number }>`
+const StyledFullscreen = styled(AdventureFullscreen)<{ maxWidth?: number; height?: number }>`
   width: 100%;
   background: ${({ theme }) => theme.colors.white} !important;
   ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth}px;`}
+  ${({ height }) => height && `height: ${height}px;`}
 
   .fullscreen-inner {
     padding: 0 !important;
@@ -77,11 +78,11 @@ function PreviewAttrs({ otto, actions }: { otto?: Otto; actions: ItemAction[] })
   const [loading, setLoading] = useState(false)
   const [preview, setPreview] = useState<{
     otto: Otto
-    location: AdventureLocation
+    location?: AdventureLocation
   }>()
 
   useEffect(() => {
-    if (!otto || !location) {
+    if (!otto) {
       return
     }
 
@@ -92,7 +93,7 @@ function PreviewAttrs({ otto, actions }: { otto?: Otto; actions: ItemAction[] })
     const timer = setTimeout(() => {
       ottosRepo
         .withAbortSignal(controller.signal)
-        .previewAdventureOtto(otto.id, location.id, actions)
+        .previewAdventureOtto(otto.id, location?.id, actions)
         .then(setPreview)
         .catch(err => {
           if (err.message !== 'canceled') {
@@ -107,7 +108,7 @@ function PreviewAttrs({ otto, actions }: { otto?: Otto; actions: ItemAction[] })
       clearTimeout(timer)
       controller.abort()
     }
-  }, [otto?.id, location, actions, ottosRepo])
+  }, [otto?.id, location?.id, actions, ottosRepo])
 
   return (
     <AdventureOttoProvider otto={otto} draftOtto={preview?.otto}>
@@ -122,9 +123,10 @@ export interface OttoItemsPopupProps {
   className?: string
   onRequestClose?: () => void
   maxWidth?: number
+  height?: number
 }
 
-export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClose }: OttoItemsPopupProps) {
+export default memo(function OttoItemsPopup({ className, maxWidth, height, onRequestClose }: OttoItemsPopupProps) {
   const container = useRef<HTMLDivElement>(null)
   const { draftOtto, otto, actions: otherActions } = useAdventureOtto()
   const { traitType } = useTrait()
@@ -173,7 +175,13 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
 
   return (
     <ItemFiltersProvider items={filteredItems}>
-      <StyledFullscreen className={className} show={show} onRequestClose={onRequestClose} maxWidth={maxWidth}>
+      <StyledFullscreen
+        className={className}
+        show={show}
+        onRequestClose={onRequestClose}
+        maxWidth={maxWidth}
+        height={height}
+      >
         <StyledContainer ref={container}>
           <StyledTitle>{t('title', { type: traitType })}</StyledTitle>
           <PreviewAttrs otto={otto} actions={actions} />

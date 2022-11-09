@@ -205,11 +205,11 @@ export class Api {
 
   public async getOttoAdventurePreview(
     ottoId: string,
-    locationId: number,
+    locationId: number | undefined,
     actions: ItemAction[],
     abortSignal?: AbortSignal
   ): Promise<AdventurePreview> {
-    let url = `/ottos/${ottoId}/adventure/locations/${locationId}/preview`
+    let url = locationId ? `/ottos/${ottoId}/adventure/locations/${locationId}/preview` : `/ottos/${ottoId}/preview`
     if (actions.length) {
       url += `?actions=${JSON.stringify(actions)}`
     }

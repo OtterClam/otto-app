@@ -22,6 +22,8 @@ import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentMedium, ContentSmall, Display3, Headline, Note } from 'styles/typography'
 import { AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
 import { useIsMyOttos } from 'MyOttosProvider'
+import { useDispatch } from 'react-redux'
+import { showOttoPopup } from 'store/uiSlice'
 import PlayIcon from './icons/play-voice.svg'
 import Theme from './icons/theme.png'
 import TheOtter from './icons/the_otter.png'
@@ -280,6 +282,7 @@ export default function OttoPage() {
     epoch: { themes },
   } = useLeaderboardEpoch()
   const { dispatch } = useAdventureUIState()
+  const dispatchReduxAction = useDispatch()
   const { chainId } = useEthers()
   const router = useRouter()
   const ottoId = router.query.ottoId as string
@@ -318,6 +321,10 @@ export default function OttoPage() {
     dispatch({ type: AdventureUIActionType.DistributeAttributePoints, data: { ottoId } })
   }
 
+  const openOttoPopup = () => {
+    dispatchReduxAction(showOttoPopup(ottoId))
+  }
+
   return (
     <>
       <StyledOttoPage>
@@ -332,6 +339,11 @@ export default function OttoPage() {
             >
               {t('otto.play_voice')}
             </StyledPlayButton>
+            {isMyOtto && (
+              <Button onClick={openOttoPopup} Typography={StyledPlayButtonText}>
+                test
+              </Button>
+            )}
           </StyledLeftContainer>
           <StyledContentContainer>
             <StyledOpenSeaLink href={getOpenSeaLink(ottoId)} target="_blank">

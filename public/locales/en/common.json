@@ -968,5 +968,12 @@
   "adventure_remaining": "Remaining: {{time}}",
   "adventureAlert": {
     "hideDesc": "Do not show this again"
+  },
+  "ottoPopup": {
+    "title": "Change Otto’s Equipment",
+    "unequipAllButton": "Unequip All",
+    "submitButton": "Save this Setup",
+    "submitButtonHelp": "You will be required to perform a transaction to update the new setup of the equipment on this Otto.",
+    "placeholder": "Click the left equipment thumbnail<br />to chage the equipment "
   }
 }

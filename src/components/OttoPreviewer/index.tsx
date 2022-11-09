@@ -126,6 +126,7 @@ export default function OttoPreviewer({
         onRequestClose={close}
         width={isSmallTablet && !isMobile ? '80%' : undefined}
         maxWidth={isSmallTablet ? undefined : itemsPopupWidth}
+        height={isSmallTablet ? undefined : itemPopupHeight}
       />
     </>
   )

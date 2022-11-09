@@ -33,6 +33,8 @@ const SideMenu = dynamic(() => import('components/SideMenu'), { ssr: false })
 
 const ItemDetailsPopup = dynamic(() => import('components/ItemDetailsPopup'), { ssr: false })
 
+const OttoPopup = dynamic(() => import('components/OttoPopup'), { ssr: false })
+
 const StyledApp = styled.div`
   display: flex;
   flex-direction: column;
@@ -99,6 +101,7 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                                 <SideMenu />
                                 <AssetsLoader />
                                 <ItemDetailsPopup />
+                                <OttoPopup />
                               </SkeletonThemeProvider>
                             </StyledApp>
                           </OverlayProvider>

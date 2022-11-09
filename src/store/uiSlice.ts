@@ -13,6 +13,7 @@ interface UiState {
   showFishWalletPopup: boolean
   ottoInTheHell?: ReturnType<Otto['toJSON']>
   itemDetailsPopup?: string // item token id
+  ottoPopup?: string // otto token id
 }
 
 const initialState: UiState = {
@@ -24,6 +25,7 @@ const initialState: UiState = {
   showFishWalletPopup: false,
   ottoInTheHell: undefined,
   itemDetailsPopup: undefined,
+  ottoPopup: undefined,
 }
 
 export const uiSlice = createSlice({
@@ -79,6 +81,12 @@ export const uiSlice = createSlice({
     hideItemDetailsPopup: state => {
       state.itemDetailsPopup = undefined
     },
+    showOttoPopup: (state, action) => {
+      state.ottoPopup = action.payload
+    },
+    hideOttoPopup: state => {
+      state.ottoPopup = undefined
+    },
   },
 })
 
@@ -99,6 +107,8 @@ export const {
   hideFishWalletPopup,
   showItemDetailsPopup,
   hideItemDetailsPopup,
+  showOttoPopup,
+  hideOttoPopup,
 } = uiSlice.actions
 
 export const selectConnectingWallet = (state: RootState) => state.ui.connectingWallet
@@ -121,5 +131,7 @@ export const selectOttoInTheHell = (state: RootState) => {
   }
   return Otto.fromJSON(state.ui.ottoInTheHell)
 }
+
+export const selectOttoPopup = (state: RootState) => state.ui.ottoPopup
 
 export default uiSlice.reducer
