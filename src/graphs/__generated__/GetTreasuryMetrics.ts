@@ -51,6 +51,7 @@ export interface GetTreasuryMetrics_protocolMetrics {
   treasuryUniV3HedgedMaticUsdcStrategyMarketValue: any;
   treasuryUniV3UsdcMaiStrategyMarketValue: any;
   treasuryQuickswapV3MaiUsdtStrategyMarketValue: any;
+  treasuryDystopiaPairUsdcClamMarketValue: any;
 }
 
 export interface GetTreasuryMetrics {
