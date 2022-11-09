@@ -19,15 +19,15 @@ import { AdventureLocation } from 'models/AdventureLocation'
 import ItemList from './ItemList'
 import ItemPreview from './ItemPreview'
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ height?: number }>`
   display: flex;
   flex-direction: column;
   margin-top: -25px;
   gap: 20px;
-  max-height: calc(80vh - 2px);
   overflow-y: scroll;
   padding: 35px 18px 15px;
-  height: 100vh;
+  height: ${({ height }) => (height ? `${height}px` : '100vh')};
+  max-height: ${({ height }) => (height ? `${height}px` : 'calc(80vh - 2px)')};
 `
 
 const StyledTitle = styled(ContentExtraSmall)`
@@ -182,7 +182,7 @@ export default memo(function OttoItemsPopup({ className, maxWidth, height, onReq
         maxWidth={maxWidth}
         height={height}
       >
-        <StyledContainer ref={container}>
+        <StyledContainer ref={container} height={height}>
           <StyledTitle>{t('title', { type: traitType })}</StyledTitle>
           <PreviewAttrs otto={otto} actions={actions} />
           <StyledActions>

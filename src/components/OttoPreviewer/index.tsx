@@ -56,6 +56,7 @@ export interface OttoPreviewerProps {
   itemPopupHeight?: number
   itemPopupOffset: number
   loading?: boolean
+  hideFeedButton?: boolean
 }
 
 export default function OttoPreviewer({
@@ -63,6 +64,7 @@ export default function OttoPreviewer({
   itemsPopupWidth,
   itemPopupHeight,
   itemPopupOffset,
+  hideFeedButton,
 }: OttoPreviewerProps) {
   const { isSmallTablet, isMobile } = useBreakpoints()
   const { draftOtto: otto } = useAdventureOtto()
@@ -115,7 +117,7 @@ export default function OttoPreviewer({
                     onSelect={selectTrait}
                   />
                 ))}
-              <FeedButton />
+              <FeedButton hide={hideFeedButton} />
             </StyledTraitGroup>
           </StyledPreview>
         </StyledContainer>

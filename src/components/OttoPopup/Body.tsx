@@ -12,6 +12,8 @@ import OttoStats from 'components/OttoStats'
 import { useOtto } from 'contexts/Otto'
 import Otto from 'models/Otto'
 import { AdventureOttoProvider } from 'contexts/AdventureOtto'
+import { useDoItemBatchActions } from 'contracts/functions'
+import { useMyOttos } from 'MyOttosProvider'
 
 const StyledContainer = styled.div`
   display: grid;
@@ -79,9 +81,11 @@ export default function OttoPopupBody() {
   const container = useRef<HTMLDivElement>(null)
   const { t } = useTranslation('', { keyPrefix: 'ottoPopup' })
   const [preview, setPreview] = useState<{ otto: Otto }>()
-  const { otto, itemActions, unequipAllItems } = useOtto()
+  const { updateOtto } = useMyOttos()
+  const { otto, itemActions, unequipAllItems, setOtto } = useOtto()
   const { ottos: ottosRepo } = useRepositories()
   const [loadingPreviewData, setLoadingPreviewData] = useState(false)
+  const { doItemBatchActions, doItemBatchActionsState, resetDoItemBatchActions } = useDoItemBatchActions()
   const [{ itemPopupWidth, itemPopupHeight, itemPopupOffset }, setItemPopupSize] = useState<{
     itemPopupWidth: number
     itemPopupHeight?: number
@@ -91,6 +95,7 @@ export default function OttoPopupBody() {
     itemPopupOffset: 0,
   })
   const loading = loadingPreviewData || !otto
+  const txPending = doItemBatchActionsState.state === 'Processing'
 
   useResizeObserver(container, () => {
     const rect = container?.current?.getBoundingClientRect()
@@ -99,6 +104,17 @@ export default function OttoPopupBody() {
     const itemPopupOffset = Math.max(((rect?.width ?? 0) - itemPopupWidth) / 2, 0) - 20
     setItemPopupSize({ itemPopupWidth, itemPopupHeight, itemPopupOffset })
   })
+
+  useEffect(() => {
+    if (doItemBatchActionsState.state === 'Success' && otto) {
+      otto.raw.resting_until = doItemBatchActionsState.restingUntil?.toISOString()
+      setOtto(otto.clone())
+      updateOtto(otto)
+    } else if (doItemBatchActionsState.state === 'Fail') {
+      alert(doItemBatchActionsState.status.errorMessage)
+      resetDoItemBatchActions()
+    }
+  }, [doItemBatchActionsState])
 
   useEffect(() => {
     if (!otto) {
@@ -133,6 +149,7 @@ export default function OttoPopupBody() {
 
         <StyledOttoInfo>
           <OttoPreviewer
+            hideFeedButton
             loading={loading}
             itemsPopupWidth={itemPopupWidth}
             itemPopupHeight={itemPopupHeight}
@@ -145,7 +162,14 @@ export default function OttoPopupBody() {
 
           <OttoStats loading={loading} />
 
-          <StyledSubmitButton Typography={Headline}>{t('submitButton')}</StyledSubmitButton>
+          <StyledSubmitButton
+            disabled={!otto || itemActions.length === 0 || loading}
+            loading={txPending}
+            Typography={Headline}
+            onClick={() => doItemBatchActions(otto!.id, itemActions)}
+          >
+            {t('submitButton')}
+          </StyledSubmitButton>
 
           <StyledSubmitButtonHelp as="p">{t('submitButtonHelp')}</StyledSubmitButtonHelp>
         </StyledOttoInfo>
