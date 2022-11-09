@@ -42,6 +42,11 @@ const marketValues = [
     stopColor: ['#EE4B4E', 'rgba(219, 55, 55, 0.5)'],
   },
   {
+    label: 'CLAM/USDC (Penrose)',
+    dataKey: 'treasuryDystopiaPairUsdcClamMarketValue',
+    stopColor: ['#EE4B4E', 'rgba(219, 55, 55, 0.5)'],
+  },
+  {
     label: 'CLAM/MAI (Quick)',
     dataKey: 'treasuryClamMaiMarketValue',
     stopColor: ['#EE4B4E', 'rgba(219, 55, 55, 0.5)'],
