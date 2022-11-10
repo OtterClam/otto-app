@@ -82,6 +82,7 @@ const StyledOttoImage = styled.img`
 `
 
 const StyledPlayButton = styled(Button)`
+  width: 80%;
   position: sticky;
   top: 490px;
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -278,7 +279,16 @@ const StyledThemeBoostDesc = styled.div`
 `
 
 const StyledChangeEquipmentButton = styled(Button)`
+  width: 80%;
+`
+
+const StyledChangeEquipmentButtonText = styled(Headline)`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
   &::before {
+    display: block;
     content: '';
     min-width: 20px;
     max-width: 20px;
@@ -351,7 +361,7 @@ export default function OttoPage() {
               {t('otto.play_voice')}
             </StyledPlayButton>
             {isMyOtto && (
-              <StyledChangeEquipmentButton onClick={openOttoPopup} Typography={StyledPlayButtonText}>
+              <StyledChangeEquipmentButton onClick={openOttoPopup} Typography={StyledChangeEquipmentButtonText}>
                 {t('otto.change_equipment')}
               </StyledChangeEquipmentButton>
             )}
