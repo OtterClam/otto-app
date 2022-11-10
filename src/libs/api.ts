@@ -21,7 +21,7 @@ import {
   rawItemMetadataToItemMetadata,
 } from 'models/Item'
 import { LeaderboardEpoch, RawLeaderboardEpoch, rawLeaderboardEpochToLeaderboardEpoch } from 'models/LeaderboardEpoch'
-import { Mission, NewMissionInfo } from 'models/Mission'
+import { Mission, NewMissionInfo, rawMissionToMission } from 'models/Mission'
 import { Notification, RawNotification } from 'models/Notification'
 import { RawOtto } from 'models/Otto'
 import Product from 'models/store/Product'
@@ -304,33 +304,9 @@ export class Api {
     offset?: number
     limit?: number
   }): Promise<Mission[]> {
-    return this.otterclamClient.get(`/missions/${account}/${filter}`, { params: { offset, limit } }).then(res =>
-      res.data.map((p: any) => ({
-        ...p,
-        requirements: p.requirements.map((r: any) => ({
-          ...r,
-          item: {
-            id: r.item.id,
-            amount: 1,
-            updatedAt: new Date(),
-            metadata: rawItemMetadataToItemMetadata(r.item),
-          },
-        })),
-        rewards: p.rewards.map((r: any) =>
-          r.type === 'item'
-            ? {
-                ...r,
-                item: {
-                  id: r.item.id,
-                  amount: 1,
-                  updatedAt: new Date(),
-                  metadata: rawItemMetadataToItemMetadata(r.item),
-                },
-              }
-            : r
-        ),
-      }))
-    )
+    return this.otterclamClient
+      .get(`/missions/${account}/${filter}`, { params: { offset, limit } })
+      .then(res => res.data.map(rawMissionToMission))
   }
 
   public async getNewMissionInfo({ account }: { account: string }): Promise<NewMissionInfo> {
@@ -339,6 +315,21 @@ export class Api {
       ...result.data,
       nextFreeMissionAt: new Date(result.data.next_free_mission_at),
     }
+  }
+
+  public async requestNewMission({ account, tx }: { account: string; tx?: string }): Promise<Mission> {
+    const result = await this.otterclamClient.post(`/missions/${account}`, {
+      tx,
+    })
+    return rawMissionToMission(result.data)
+  }
+
+  public async completeMission({ account, missionId }: { account: string; missionId: number }): Promise<any> {
+    return this.otterclamClient
+      .put(`/missions/${account}/complete`, {
+        mission_id: missionId,
+      })
+      .then(res => res.data)
   }
 }
 

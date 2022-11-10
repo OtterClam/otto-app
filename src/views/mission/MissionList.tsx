@@ -1,15 +1,15 @@
-import styled from 'styled-components/macro'
-import { useTranslation } from 'next-i18next'
-import { useState } from 'react'
-import Switcher from 'components/Switcher'
-import { Note } from 'styles/typography'
-import { Mission } from 'models/Mission'
-import { RawItemMetadata, rawItemMetadataToItemMetadata } from 'models/Item'
-import { useApi, useApiCall } from 'contexts/Api'
-import { MissionFilter } from 'libs/api'
 import { useEthers } from '@usedapp/core'
+import Switcher from 'components/Switcher'
+import { useApiCall } from 'contexts/Api'
+import { useMyItems } from 'contexts/MyItems'
+import { MissionFilter } from 'libs/api'
+import { Item } from 'models/Item'
+import { useMyOttos } from 'MyOttosProvider'
+import { useTranslation } from 'next-i18next'
+import { useMemo, useState } from 'react'
+import styled from 'styled-components/macro'
+import { Note } from 'styles/typography'
 import MissionCard from './MissionCard'
-import NewMissionPopup from './NewMissionPopup'
 
 const StyledMissionList = styled.div`
   width: 100%;
@@ -37,22 +37,35 @@ const StyledSwitcher = styled(Switcher)``
 export default function MissionList() {
   const { t } = useTranslation('', { keyPrefix: 'mission' })
   const { account } = useEthers()
+  const { ottos: myOttos } = useMyOttos()
+  const { items: myItems } = useMyItems()
   const [filter, setFilter] = useState<MissionFilter>('ongoing')
-  const { result: missions = [] } = useApiCall('listMissions', [{ account: account ?? '', filter }], Boolean(account), [
-    account,
-    filter,
-  ])
-  const [mission, setMission] = useState<Mission | null>(null)
+  const { result: missions = [], refetch } = useApiCall(
+    'listMissions',
+    [{ account: account ?? '', filter }],
+    Boolean(account),
+    [account, filter]
+  )
+  const myItemMap: Record<string, Item> = useMemo(
+    () =>
+      myItems.reduce(
+        (acc, item) => ({
+          ...acc,
+          [item.metadata.tokenId]: item,
+        }),
+        {}
+      ),
+    [myItems]
+  )
   return (
     <StyledMissionList>
       <StyledHeader>
         <StyledSwitcher name="filter" value={filter} options={filters} onChange={value => setFilter(value as any)} />
-        <Note>{t('ongoingCap', { current: 4, max: 6 })}</Note>
+        <Note>{t('ongoingCap', { current: missions.length, max: myOttos.length })}</Note>
       </StyledHeader>
       {missions.map(mission => (
-        <MissionCard key={mission.id} mission={mission} onClick={() => setMission(mission)} />
+        <MissionCard key={mission.id} mission={mission} myItems={myItemMap} onComplete={() => refetch()} />
       ))}
-      {/* {mission && <NewMissionPopup mission={mission} />} */}
     </StyledMissionList>
   )
 }

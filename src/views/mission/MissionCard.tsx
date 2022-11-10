@@ -1,17 +1,21 @@
+import ClamIcon from 'assets/clam.png'
+import FishIcon from 'assets/fish.png'
+import ArrowDown from 'assets/ui/arrow_down.svg'
+import RefreshIcon from 'assets/ui/refresh_icon.svg'
+import Button from 'components/Button'
+import ItemCell from 'components/ItemCell'
+import { useCompleteMission } from 'contracts/functions'
+import { ethers } from 'ethers'
+import { Item } from 'models/Item'
 import { Mission, MissionReward } from 'models/Mission'
+import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentSmall, Note } from 'styles/typography'
-import Image from 'next/image'
-import { useTranslation } from 'next-i18next'
-import FishIcon from 'assets/fish.png'
-import { ethers } from 'ethers'
-import ArrowDown from 'assets/ui/arrow_down.svg'
-import { useState } from 'react'
-import ItemCell from 'components/ItemCell'
-import RefreshIcon from 'assets/ui/refresh_icon.svg'
-import ClamIcon from 'assets/clam.png'
+import CompleteMissionPopup from './CompleteMissionPopup'
+import FinishedStamp from './FinishedStamp'
 import LevelIcon from './LevelIcon'
-import FinishedStamp from './stamp_finished.svg'
 
 const StyledMissionCard = styled.div`
   background: ${({ theme }) => theme.colors.white};
@@ -37,30 +41,17 @@ const StyledTitleContainer = styled.div`
   align-items: flex-start;
 `
 
-const StyledRequired = styled(Note)`
-  color: ${({ theme }) => theme.colors.clamPink};
+const StyledRequired = styled(Note)<{ fulfilled: boolean }>`
+  color: ${({ theme, fulfilled }) => (fulfilled ? theme.colors.otterBlue : theme.colors.otterBlack)};
+  span {
+    color: ${({ theme, fulfilled }) => (fulfilled ? theme.colors.otterBlue : theme.colors.clamPink)};
+  }
 `
 
 const StyledStatus = styled(ContentSmall).attrs({ as: 'p' })`
   background: ${({ theme }) => theme.colors.lightGray200};
   border-radius: 10px;
   padding: 5px 10px;
-`
-
-const StyledFinished = styled.div`
-  display: flex;
-  align-items: center;
-  padding-left: 30px;
-  color: ${({ theme }) => theme.colors.darkGray100};
-  width: 97px;
-  height: 32px;
-  background: no-repeat center/contain url(${FinishedStamp.src});
-  transform: rotate(-10deg);
-
-  span {
-    width: 100%;
-    text-align: center;
-  }
 `
 
 const StyledCompactRewards = styled.div`
@@ -150,29 +141,51 @@ const StyledAward = styled(Note)<{ reward: MissionReward }>`
 
 interface Props {
   mission: Mission
-  onClick: () => void
+  myItems: Record<string, Item>
+  onComplete: (mission: Mission) => void
 }
 
-export default function MissionCard({ mission, onClick }: Props) {
+export default function MissionCard({ mission, myItems, onComplete }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'mission' })
   const [expanded, setExpanded] = useState(false)
+  const totalRequiredAmount = mission.requirements.reduce((acc, cur) => acc + cur.amount, 0)
+  const hasAmount = mission.requirements.reduce(
+    (acc, cur) => acc + Math.min(myItems[cur.item.id]?.amount || 0, cur.amount),
+    0
+  )
+  const fulfilled = hasAmount === totalRequiredAmount
+  const { complete, completeMissionState, resetCompleteMission } = useCompleteMission()
+  useEffect(() => {
+    if (completeMissionState.state === 'Fail') {
+      alert(completeMissionState.status.errorMessage)
+      resetCompleteMission()
+    }
+  }, [completeMissionState, resetCompleteMission])
   return (
-    <StyledMissionCard onClick={onClick}>
+    <StyledMissionCard onClick={() => setExpanded(expanded => !expanded)}>
       <StyledHeader>
         <LevelIcon level={mission.level} />
         <StyledTitleContainer>
           <ContentSmall>{mission.name}</ContentSmall>
-          <Note>
+          <StyledRequired fulfilled={fulfilled}>
             {t('require_desc')}
-            <StyledRequired>(3/4)</StyledRequired>
-          </Note>
+            <span>
+              ({hasAmount}/{totalRequiredAmount})
+            </span>
+          </StyledRequired>
         </StyledTitleContainer>
-        {mission.status === 'ongoing' && <StyledStatus>{t('ongoing')}</StyledStatus>}
-        {mission.status === 'finished' && (
-          <StyledFinished>
-            <Note>{t('finished')}</Note>
-          </StyledFinished>
+        {mission.status === 'ongoing' && !fulfilled && <StyledStatus>{t('ongoing')}</StyledStatus>}
+        {mission.status === 'ongoing' && fulfilled && (
+          <Button
+            Typography={ContentSmall}
+            padding="6px 6px"
+            loading={completeMissionState.state === 'Processing'}
+            onClick={() => complete(mission.id)}
+          >
+            {t('complete_btn')}
+          </Button>
         )}
+        {mission.status === 'finished' && <FinishedStamp />}
       </StyledHeader>
       <StyledCompactRewards>
         <Note>{t('awards')}</Note>
@@ -193,7 +206,9 @@ export default function MissionCard({ mission, onClick }: Props) {
             <StyledItemRewardCell key={i}>
               <ItemCell item={req.item} size={58} />
               <ContentSmall>{req.item.metadata.name}</ContentSmall>
-              <StyledRequiredNumber fulfill={false}>{`(${1}/${req.amount})`}</StyledRequiredNumber>
+              <StyledRequiredNumber fulfill={(myItems[req.item.id]?.amount || 0) >= req.amount}>{`(${
+                myItems[req.item.id]?.amount || 0
+              }/${req.amount})`}</StyledRequiredNumber>
             </StyledItemRewardCell>
           ))}
           <StyledSubtitle>{t('reward')}</StyledSubtitle>
@@ -203,7 +218,7 @@ export default function MissionCard({ mission, onClick }: Props) {
                 <>
                   <Image src={FishIcon} width={58} height={58} />
                   <ContentSmall>FISH</ContentSmall>
-                  <ContentSmall>x{ethers.utils.formatUnits(reward.amount, reward.decimal)}</ContentSmall>
+                  <ContentSmall>x{Number(ethers.utils.formatUnits(reward.amount, reward.decimal))}</ContentSmall>
                 </>
               )}
               {reward.type === 'item' && (
@@ -226,6 +241,15 @@ export default function MissionCard({ mission, onClick }: Props) {
             </StyledRefreshButton>
           </StyledRefreshContainer>
         </StyledExpandedArea>
+      )}
+      {completeMissionState.state === 'Success' && (
+        <CompleteMissionPopup
+          mission={mission}
+          onClose={() => {
+            resetCompleteMission()
+            onComplete(mission)
+          }}
+        />
       )}
     </StyledMissionCard>
   )

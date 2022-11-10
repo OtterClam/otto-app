@@ -1,4 +1,4 @@
-import { Item, RawItemMetadata } from './Item'
+import { Item, RawItemMetadata, rawItemMetadataToItemMetadata } from './Item'
 
 export type MissionLevel = 'S' | 'A' | 'B' | 'C' | 'D'
 
@@ -37,4 +37,32 @@ export interface Mission {
 export interface NewMissionInfo {
   nextFreeMissionAt: Date
   price: string
+}
+
+export function rawMissionToMission(raw: any): Mission {
+  return {
+    ...raw,
+    requirements: raw.requirements.map((r: any) => ({
+      ...r,
+      item: {
+        id: r.item.id,
+        amount: 1,
+        updatedAt: new Date(),
+        metadata: rawItemMetadataToItemMetadata(r.item),
+      },
+    })),
+    rewards: raw.rewards.map((r: any) =>
+      r.type === 'item'
+        ? {
+            ...r,
+            item: {
+              id: r.item.id,
+              amount: 1,
+              updatedAt: new Date(),
+              metadata: rawItemMetadataToItemMetadata(r.item),
+            },
+          }
+        : r
+    ),
+  }
 }

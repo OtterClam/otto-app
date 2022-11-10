@@ -66,7 +66,9 @@ const StyledExpandedArea = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.lightGray400};
 `
 
-const StyledMissionDesc = styled(Caption).attrs({ as: 'p' })``
+const StyledMissionDesc = styled(Caption).attrs({ as: 'p' })`
+  text-align: left;
+`
 
 const StyledSubtitle = styled(Note)`
   color: ${({ theme }) => theme.colors.darkGray200};
@@ -80,9 +82,10 @@ const StyledItemRewardCell = styled.div`
 
 interface Props {
   mission: Mission
+  onClose: () => void
 }
 
-export default function NewMissionPopup({ mission }: Props) {
+export default function NewMissionPopup({ mission, onClose }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'mission' })
   return (
     <Fullscreen width="428px" show={Boolean(mission)}>
@@ -128,7 +131,7 @@ export default function NewMissionPopup({ mission }: Props) {
             ))}
           </StyledExpandedArea>
         </StyledMissionCard>
-        <Button Typography={ContentLarge} width="100%">
+        <Button Typography={ContentLarge} width="100%" onClick={onClose}>
           {t('ok_btn')}
         </Button>
       </StyledNewMissionPopup>

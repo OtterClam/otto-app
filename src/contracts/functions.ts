@@ -6,6 +6,7 @@ import useContractAddresses from 'hooks/useContractAddresses'
 import { Api } from 'libs/api'
 import _ from 'lodash'
 import { ItemAction, ItemMetadata, Item } from 'models/Item'
+import { Mission } from 'models/Mission'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -19,6 +20,7 @@ import {
   useFoundry,
   useItemContract,
   useItemGiveaway,
+  useMissionContract,
   useOttoContract,
   useOttoSummonerContract,
   usePearlBank,
@@ -957,4 +959,65 @@ export const useBuyFishItem = () => {
     buyState,
     resetBuy,
   }
+}
+
+export const useCompleteMission = () => {
+  const mission = useMissionContract()
+  const item = useItemContract()
+  const { account } = useEthers()
+  const api = useApi()
+  const { state, send, resetState } = useContractFunction(mission, 'complete', {})
+  const {
+    state: approveState,
+    send: approve,
+    resetState: resetApprove,
+  } = useContractFunction(item, 'setApprovalForAll', {})
+  const [completeMissionState, setCompleteMissionState] = useState<OttoTransactionWriteState>({
+    state: 'None',
+    status: state,
+  })
+  const complete = useCallback(
+    async (missionId: number) => {
+      if (account) {
+        setCompleteMissionState({
+          state: 'Processing',
+          status: state,
+        })
+        try {
+          const approved = await item.isApprovedForAll(account, mission.address)
+          if (!approved) {
+            await approve(mission.address, true)
+          }
+          await api.completeMission({ account, missionId }).then(calldata => (send as any)(...calldata))
+        } catch (err: any) {
+          setCompleteMissionState({
+            state: 'Fail',
+            status: {
+              ...state,
+              errorMessage: err.message,
+            },
+          })
+        }
+      }
+    },
+    [account, api, approve, item, mission.address, send, state]
+  )
+  const resetCompleteMission = useCallback(() => {
+    resetApprove()
+    resetState()
+  }, [resetApprove, resetState])
+  useEffect(() => {
+    if (approveState.status === 'Exception' || approveState.status === 'Fail') {
+      setCompleteMissionState({
+        state: 'Fail',
+        status: approveState,
+      })
+    } else {
+      setCompleteMissionState({
+        state: txState(state.status),
+        status: state,
+      })
+    }
+  }, [account, api, state, approveState])
+  return { completeMissionState, complete, resetCompleteMission }
 }

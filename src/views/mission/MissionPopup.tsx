@@ -4,8 +4,10 @@ import CloseButton from 'components/CloseButton'
 import Fullscreen from 'components/Fullscreen'
 import PaymentButton from 'components/PaymentButton'
 import { Token } from 'constant'
-import { useApiCall } from 'contexts/Api'
+import { useApi, useApiCall } from 'contexts/Api'
 import { intervalToDuration } from 'date-fns'
+import useContractAddresses from 'hooks/useContractAddresses'
+import { Mission } from 'models/Mission'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
@@ -17,6 +19,7 @@ import { formatDuration } from 'utils/duration'
 import HeadLeft from './head-left.png'
 import HeadRight from './head-right.png'
 import MissionList from './MissionList'
+import NewMissionPopup from './NewMissionPopup'
 
 const StyledMissionPopup = styled.div`
   min-height: 90vh;
@@ -92,10 +95,25 @@ function Countdown({ target }: { target: Date }) {
 
 export default function MissionPopup() {
   const { t } = useTranslation('', { keyPrefix: 'mission' })
+  const { OTTOPIA_STORE } = useContractAddresses()
   const showPopup = useSelector(selectShowMissionPopup)
   const dispatch = useDispatch()
   const { account } = useEthers()
-  const { result: info } = useApiCall('getNewMissionInfo', [{ account: account ?? '' }], Boolean(account), [account])
+  const api = useApi()
+  const [newMission, setNewMission] = useState<Mission | null>(null)
+  const [newMissionRequesting, setNewMissionRequesting] = useState(false)
+  const { result: info, refetch } = useApiCall('getNewMissionInfo', [{ account: account ?? '' }], Boolean(account), [
+    account,
+  ])
+  const requestNewMissionFree = async () => {
+    setNewMissionRequesting(true)
+    const newMission = await api.requestNewMission({
+      account: account ?? '',
+    })
+    setNewMission(newMission)
+    refetch()
+    setNewMissionRequesting(false)
+  }
   return (
     <Fullscreen width="428px" show={showPopup}>
       <StyledMissionPopup>
@@ -118,19 +136,25 @@ export default function MissionPopup() {
                   width="100%"
                   amount={info.price}
                   token={Token.Clam}
-                  spenderAddress=""
+                  spenderAddress={OTTOPIA_STORE}
                 >
                   {t('new_mission_btn')}
                 </PaymentButton>
               </>
             )}
             {info.price === '0' && (
-              <Button Typography={ContentLarge} width="100%">
+              <Button
+                Typography={ContentLarge}
+                width="100%"
+                loading={newMissionRequesting}
+                onClick={requestNewMissionFree}
+              >
                 {t('new_mission_btn_free')}
               </Button>
             )}
           </StyledNewMissionSection>
         )}
+        {newMission && <NewMissionPopup mission={newMission} onClose={() => setNewMission(null)} />}
       </StyledMissionPopup>
     </Fullscreen>
   )
