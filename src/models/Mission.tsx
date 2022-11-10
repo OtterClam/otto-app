@@ -34,10 +34,12 @@ export interface Mission {
   rewards: MissionReward[]
 }
 
-export interface NewMissionInfo {
+export interface MissionInfo {
   nextFreeMissionAt: Date
-  price: string
-  productId: string
+  newPrice: string
+  newProductId: string
+  refreshPrice: string
+  refreshProductId: string
 }
 
 export function rawMissionToMission(raw: any): Mission {

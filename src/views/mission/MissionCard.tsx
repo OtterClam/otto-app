@@ -4,7 +4,7 @@ import ArrowDown from 'assets/ui/arrow_down.svg'
 import RefreshIcon from 'assets/ui/refresh_icon.svg'
 import Button from 'components/Button'
 import ItemCell from 'components/ItemCell'
-import { useCompleteMission } from 'contracts/functions'
+import { useCompleteMission, useRefreshMission } from 'contracts/functions'
 import { ethers } from 'ethers'
 import { Item } from 'models/Item'
 import { Mission, MissionReward } from 'models/Mission'
@@ -16,6 +16,7 @@ import { Caption, ContentSmall, Note } from 'styles/typography'
 import CompleteMissionPopup from './CompleteMissionPopup'
 import FinishedStamp from './FinishedStamp'
 import LevelIcon from './LevelIcon'
+import { useMyMissions } from './MyMissionsProvider'
 
 const StyledMissionCard = styled.div`
   background: ${({ theme }) => theme.colors.white};
@@ -142,11 +143,11 @@ const StyledAward = styled(Note)<{ reward: MissionReward }>`
 interface Props {
   mission: Mission
   myItems: Record<string, Item>
-  onComplete: (mission: Mission) => void
 }
 
-export default function MissionCard({ mission, myItems, onComplete }: Props) {
+export default function MissionCard({ mission, myItems }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'mission' })
+  const { info, reload, setNewMission } = useMyMissions()
   const [expanded, setExpanded] = useState(false)
   const totalRequiredAmount = mission.requirements.reduce((acc, cur) => acc + cur.amount, 0)
   const hasAmount = mission.requirements.reduce(
@@ -155,12 +156,22 @@ export default function MissionCard({ mission, myItems, onComplete }: Props) {
   )
   const fulfilled = hasAmount === totalRequiredAmount
   const { complete, completeMissionState, resetCompleteMission } = useCompleteMission()
+  const { refresh, refreshState, resetRefresh } = useRefreshMission(mission.id)
   useEffect(() => {
     if (completeMissionState.state === 'Fail') {
       alert(completeMissionState.status.errorMessage)
       resetCompleteMission()
     }
   }, [completeMissionState, resetCompleteMission])
+  useEffect(() => {
+    if (refreshState.state === 'Fail') {
+      alert(refreshState.status.errorMessage)
+      resetRefresh()
+    } else if (refreshState.state === 'Success' && refreshState.mission) {
+      setNewMission(refreshState.mission)
+      resetRefresh()
+    }
+  }, [refreshState, resetRefresh, setNewMission])
   return (
     <StyledMissionCard onClick={() => setExpanded(expanded => !expanded)}>
       <StyledHeader>
@@ -239,7 +250,14 @@ export default function MissionCard({ mission, myItems, onComplete }: Props) {
 
           <StyledRefreshContainer>
             <StyledSubtitle>{t('refresh_desc')}</StyledSubtitle>
-            <StyledRefreshButton>
+            <StyledRefreshButton
+              onClick={e => {
+                e.stopPropagation()
+                if (info) {
+                  refresh(info.refreshProductId)
+                }
+              }}
+            >
               <Image src={RefreshIcon} width="20px" height="20px" />
               <Note>{t('refresh_btn')}</Note>
               <Image src={ClamIcon} width="20px" height="20px" />
@@ -253,7 +271,7 @@ export default function MissionCard({ mission, myItems, onComplete }: Props) {
           mission={mission}
           onClose={() => {
             resetCompleteMission()
-            onComplete(mission)
+            reload()
           }}
         />
       )}

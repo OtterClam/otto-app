@@ -11,6 +11,7 @@ import { useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
 import MissionCard from './MissionCard'
+import { useMyMissions } from './MyMissionsProvider'
 
 const StyledMissionList = styled.div`
   width: 100%;
@@ -35,15 +36,9 @@ const StyledHeader = styled.div`
 
 const StyledSwitcher = styled(Switcher)``
 
-interface Props {
-  missions: Mission[]
-  filter: MissionFilter
-  refetch: () => void
-  onFilterChanged: (filter: MissionFilter) => void
-}
-
-export default function MissionList({ missions, filter, onFilterChanged, refetch }: Props) {
+export default function MissionList() {
   const { t } = useTranslation('', { keyPrefix: 'mission' })
+  const { missions, filter, setFilter } = useMyMissions()
   const { ottos: myOttos } = useMyOttos()
   const { items: myItems } = useMyItems()
   const myItemMap: Record<string, Item> = useMemo(
@@ -60,16 +55,11 @@ export default function MissionList({ missions, filter, onFilterChanged, refetch
   return (
     <StyledMissionList>
       <StyledHeader>
-        <StyledSwitcher
-          name="filter"
-          value={filter}
-          options={filters}
-          onChange={value => onFilterChanged(value as any)}
-        />
+        <StyledSwitcher name="filter" value={filter} options={filters} onChange={value => setFilter(value as any)} />
         <Note>{t('ongoingCap', { current: missions.length, max: myOttos.length })}</Note>
       </StyledHeader>
       {missions.map(mission => (
-        <MissionCard key={mission.id} mission={mission} myItems={myItemMap} onComplete={() => refetch} />
+        <MissionCard key={mission.id} mission={mission} myItems={myItemMap} />
       ))}
     </StyledMissionList>
   )

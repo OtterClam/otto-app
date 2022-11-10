@@ -21,7 +21,7 @@ import {
   rawItemMetadataToItemMetadata,
 } from 'models/Item'
 import { LeaderboardEpoch, RawLeaderboardEpoch, rawLeaderboardEpochToLeaderboardEpoch } from 'models/LeaderboardEpoch'
-import { Mission, NewMissionInfo, rawMissionToMission } from 'models/Mission'
+import { Mission, MissionInfo, rawMissionToMission } from 'models/Mission'
 import { Notification, RawNotification } from 'models/Notification'
 import { RawOtto } from 'models/Otto'
 import Product from 'models/store/Product'
@@ -309,12 +309,14 @@ export class Api {
       .then(res => res.data.map(rawMissionToMission))
   }
 
-  public async getNewMissionInfo({ account }: { account: string }): Promise<NewMissionInfo> {
-    const result = await this.otterclamClient.get(`/missions/${account}/new`)
+  public async getMissionInfo({ account }: { account: string }): Promise<MissionInfo> {
+    const result = await this.otterclamClient.get(`/missions/${account}/info`)
     return {
-      ...result.data,
       nextFreeMissionAt: new Date(result.data.next_free_mission_at),
-      productId: String(result.data.product_id),
+      newPrice: result.data.new_price,
+      newProductId: String(result.data.new_product_id),
+      refreshPrice: result.data.refresh_price,
+      refreshProductId: String(result.data.refresh_product_id),
     }
   }
 
@@ -325,10 +327,36 @@ export class Api {
     return rawMissionToMission(result.data)
   }
 
+  public async refreshMission({
+    account,
+    missionId,
+    tx,
+  }: {
+    account: string
+    missionId: number
+    tx: string
+  }): Promise<Mission> {
+    return this.otterclamClient
+      .put(`/missions/${account}/refresh`, {
+        mission_id: missionId,
+        tx_hash: tx,
+      })
+      .then(res => rawMissionToMission(res.data))
+  }
+
   public async completeMission({ account, missionId }: { account: string; missionId: number }): Promise<any> {
     return this.otterclamClient
       .put(`/missions/${account}/complete`, {
         mission_id: missionId,
+      })
+      .then(res => res.data)
+  }
+
+  public async confirm({ account, missionId, tx }: { account: string; missionId: number; tx: string }): Promise<any> {
+    return this.otterclamClient
+      .put(`/missions/${account}/confirm`, {
+        mission_id: missionId,
+        tx_hash: tx,
       })
       .then(res => res.data)
   }

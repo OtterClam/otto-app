@@ -22,6 +22,7 @@ import { formatDuration } from 'utils/duration'
 import HeadLeft from './head-left.png'
 import HeadRight from './head-right.png'
 import MissionList from './MissionList'
+import { useMyMissions } from './MyMissionsProvider'
 import NewMissionPopup from './NewMissionPopup'
 
 const StyledMissionPopup = styled.div`
@@ -107,34 +108,22 @@ export default function MissionPopup() {
   const dispatch = useDispatch()
   const { account } = useEthers()
   const api = useApi()
-  const [newMission, setNewMission] = useState<Mission | null>(null)
   const [newMissionRequesting, setNewMissionRequesting] = useState(false)
-  const [filter, setFilter] = useState<MissionFilter>('ongoing')
   const { ottos: myOttos } = useMyOttos()
-  const { result: missions = [], refetch } = useApiCall(
-    'listMissions',
-    [{ account: account ?? '', filter }],
-    Boolean(account),
-    [account, filter]
-  )
+  const { info, missions, filter, newMission, setNewMission } = useMyMissions()
   const reachedLimit = missions.length === myOttos.length
-  const { result: info } = useApiCall('getNewMissionInfo', [{ account: account ?? '' }], Boolean(account), [account])
   const requestNewMissionFree = async () => {
     setNewMissionRequesting(true)
     const newMission = await api.requestNewMission({
       account: account ?? '',
     })
     setNewMissionRequesting(false)
-    onNewMission(newMission)
-  }
-  const onNewMission = (mission: Mission) => {
-    setNewMission(mission)
-    refetch()
+    setNewMission(newMission)
   }
   const { buyState, buy, resetBuy } = useRequestNewMission()
   const onRequestNewMission = async () => {
     if (info) {
-      buy(info.productId)
+      buy(info.newProductId)
     }
   }
   useEffect(() => {
@@ -142,7 +131,7 @@ export default function MissionPopup() {
       alert(buyState.status.errorMessage)
       resetBuy()
     } else if (buyState.state === 'Success' && buyState.mission) {
-      onNewMission(buyState.mission)
+      setNewMission(buyState.mission)
       resetBuy()
     }
   }, [buyState])
@@ -156,18 +145,18 @@ export default function MissionPopup() {
           <Image src={HeadRight} width={32} height={32} />
         </StyledTitle>
         <StyledListContainer>
-          <MissionList missions={missions} filter={filter} refetch={refetch} onFilterChanged={setFilter} />
+          <MissionList />
         </StyledListContainer>
         {filter !== 'finished' && info && (
           <StyledNewMissionSection>
-            {info.price !== '0' && (
+            {info.newPrice !== '0' && (
               <>
                 <Countdown target={info.nextFreeMissionAt} />
                 <PaymentButton
                   Typography={ContentLarge}
                   disabled={reachedLimit}
                   width="100%"
-                  amount={info.price}
+                  amount={info.newPrice}
                   token={Token.Clam}
                   spenderAddress={OTTOPIA_STORE}
                   loading={buyState.state === 'Processing'}
@@ -177,7 +166,7 @@ export default function MissionPopup() {
                 </PaymentButton>
               </>
             )}
-            {info.price === '0' && (
+            {info.newPrice === '0' && (
               <Button
                 Typography={ContentLarge}
                 disabled={reachedLimit}
