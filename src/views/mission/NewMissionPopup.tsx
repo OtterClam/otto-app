@@ -81,7 +81,7 @@ const StyledItemRewardCell = styled.div`
 `
 
 interface Props {
-  mission: Mission
+  mission: Mission | null
   onClose: () => void
 }
 
@@ -89,52 +89,56 @@ export default function NewMissionPopup({ mission, onClose }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'mission' })
   return (
     <Fullscreen width="428px" show={Boolean(mission)}>
-      <StyledNewMissionPopup>
-        <StyledTitle>{t('new_mission_title')}</StyledTitle>
-        <NewMissionTitleImage>
-          <Image src={NewMissionTitle} width="65px" height="42px" />
-        </NewMissionTitleImage>
-        <StyledMissionCard>
-          <StyledHeader>
-            <LevelIcon level={mission.level} />
-            <StyledTitleContainer>
-              <ContentSmall>{mission.name}</ContentSmall>
-            </StyledTitleContainer>
-          </StyledHeader>
-          <StyledExpandedArea>
-            <StyledMissionDesc>{mission.description}</StyledMissionDesc>
-            <StyledSubtitle>{t('required_items')}</StyledSubtitle>
-            {mission.requirements.map((req, i) => (
-              <StyledItemRewardCell key={i}>
-                <ItemCell item={req.item} size={58} />
-                <ContentSmall>{req.item.metadata.name}</ContentSmall>
-                <ContentSmall>x{req.amount}</ContentSmall>
-              </StyledItemRewardCell>
-            ))}
-            <StyledSubtitle>{t('reward')}</StyledSubtitle>
-            {mission.rewards.map((reward, i) => (
-              <StyledItemRewardCell key={i}>
-                {reward.type === 'fish' && (
-                  <>
-                    <Image src={FishIcon} width={58} height={58} />
-                    <ContentSmall>{Number(ethers.utils.formatUnits(reward.amount, reward.decimal))} FISH</ContentSmall>
-                  </>
-                )}
-                {reward.type === 'item' && (
-                  <>
-                    <ItemCell item={reward.item} size={58} />
-                    <ContentSmall>{reward.item.metadata.name}</ContentSmall>
-                    <ContentSmall>x{reward.amount}</ContentSmall>
-                  </>
-                )}
-              </StyledItemRewardCell>
-            ))}
-          </StyledExpandedArea>
-        </StyledMissionCard>
-        <Button Typography={ContentLarge} width="100%" onClick={onClose}>
-          {t('ok_btn')}
-        </Button>
-      </StyledNewMissionPopup>
+      {mission && (
+        <StyledNewMissionPopup>
+          <StyledTitle>{t('new_mission_title')}</StyledTitle>
+          <NewMissionTitleImage>
+            <Image src={NewMissionTitle} width="65px" height="42px" />
+          </NewMissionTitleImage>
+          <StyledMissionCard>
+            <StyledHeader>
+              <LevelIcon level={mission.level} />
+              <StyledTitleContainer>
+                <ContentSmall>{mission.name}</ContentSmall>
+              </StyledTitleContainer>
+            </StyledHeader>
+            <StyledExpandedArea>
+              <StyledMissionDesc>{mission.description}</StyledMissionDesc>
+              <StyledSubtitle>{t('required_items')}</StyledSubtitle>
+              {mission.requirements.map((req, i) => (
+                <StyledItemRewardCell key={i}>
+                  <ItemCell item={req.item} size={58} />
+                  <ContentSmall>{req.item.metadata.name}</ContentSmall>
+                  <ContentSmall>x{req.amount}</ContentSmall>
+                </StyledItemRewardCell>
+              ))}
+              <StyledSubtitle>{t('reward')}</StyledSubtitle>
+              {mission.rewards.map((reward, i) => (
+                <StyledItemRewardCell key={i}>
+                  {reward.type === 'fish' && (
+                    <>
+                      <Image src={FishIcon} width={58} height={58} />
+                      <ContentSmall>
+                        {Number(ethers.utils.formatUnits(reward.amount, reward.decimal))} FISH
+                      </ContentSmall>
+                    </>
+                  )}
+                  {reward.type === 'item' && (
+                    <>
+                      <ItemCell item={reward.item} size={58} />
+                      <ContentSmall>{reward.item.metadata.name}</ContentSmall>
+                      <ContentSmall>x{reward.amount}</ContentSmall>
+                    </>
+                  )}
+                </StyledItemRewardCell>
+              ))}
+            </StyledExpandedArea>
+          </StyledMissionCard>
+          <Button Typography={ContentLarge} width="100%" onClick={onClose}>
+            {t('ok_btn')}
+          </Button>
+        </StyledNewMissionPopup>
+      )}
     </Fullscreen>
   )
 }

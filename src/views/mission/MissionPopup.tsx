@@ -180,7 +180,7 @@ export default function MissionPopup() {
             {reachedLimit && <StyledReachLimit>{t('reached_limit')}</StyledReachLimit>}
           </StyledNewMissionSection>
         )}
-        {newMission && <NewMissionPopup mission={newMission} onClose={() => setNewMission(null)} />}
+        <NewMissionPopup mission={newMission} onClose={() => setNewMission(null)} />
       </StyledMissionPopup>
     </Fullscreen>
   )
