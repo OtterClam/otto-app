@@ -14,6 +14,7 @@ import LinkIcon from './link_icon.svg'
 import TreasuryCard from 'components/TreasuryCard'
 import { formatUsd } from 'utils/currency'
 import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
+import DatePicker from 'components/DatePicker'
 
 const StyledContainer = styled.div`
   font-family: 'Pangolin', 'naikaifont' !important;
@@ -79,6 +80,26 @@ function InvestmentPosition({ investments, portfolioPct }: InvestmentProps) {
     [investments]
   )
 
+  const revenueSum = useMemo(
+    () => investments?.reduce((prev, curr) => prev + Number.parseFloat(curr.grossRevenue), 0),
+    [investments]
+  )
+
+  //Increase = New Number - Original Number
+  //% increase = Increase ÷ Original Number × 100.
+  //% Decrease = Decrease ÷ Original Number × 100
+
+  const original = parseFloat(investments[0]?.netAssetValue)
+  const newVal = parseFloat(investments.at(-1)?.netAssetValue)
+  const gain = original < newVal
+  const valueChange = gain ? newVal - original : original - newVal
+  const negStr = !gain ? '-' : ''
+
+  const valueChangePct = (valueChange / parseFloat(investments[0]?.netAssetValue)) * 100
+
+  const pnl = valueChange + revenueSum
+  const pnlPct = (pnl / parseFloat(investments.at(-1)?.netAssetValue)) * 100
+
   const [isOpen, setIsOpen] = useState<boolean>(false)
   return (
     <StyledRow onClick={() => setIsOpen(!isOpen)}>
@@ -86,16 +107,19 @@ function InvestmentPosition({ investments, portfolioPct }: InvestmentProps) {
         <tr>
           <td>{investments[0].strategy}</td>
           <td>
-            {investments[0].protocol} <StyledImage height={100} src={LinkIcon} />
+            {investments[0].protocol}{' '}
+            {/* <StyledImage height={100} style={{ display: 'unset !important' }} src={LinkIcon} /> */}
           </td>
           <td>{portfolioPct?.toFixed(2)}%</td>
           <td>{avgGrossApr.toFixed(2)}%</td>
-          <td>{formatUsd(investments.at(-1)?.grossRevenue)}</td>
+          {/* <td>{formatUsd(investments.at(-1)?.grossRevenue)}</td> */}
+          <td>{`${negStr}${valueChangePct.toFixed(2)}%`}</td>
+          <td>{pnlPct.toFixed(2)}%</td>
         </tr>
       </StyledTable>
       {isOpen && (
         <StyledChartCard>
-          <InvestmentsChart data={investments} />
+          <InvestmentsChart data={investments} avgApr={avgGrossApr} />
         </StyledChartCard>
       )}
     </StyledRow>
@@ -105,39 +129,90 @@ function InvestmentPosition({ investments, portfolioPct }: InvestmentProps) {
 export default function InvestmentsPage({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'investments' })
 
-  const toDate = Date.now() / 1000
-  const fromDate = toDate - 60 * 60 * 24 * 7
+  const daySecs = 60 * 60 * 24
+  const nowDate = new Date(Date.now()).setHours(0, 0, 0, 0)
+  const now = nowDate / 1000
+  const [fromDate, setFromDate] = useState<number>(now - daySecs * 7)
+  const [toDate, setToDate] = useState<number>(now)
+  const [fromDateOpen, setFromDateOpen] = useState(false)
+  const [toDateOpen, setToDateOpen] = useState(false)
 
   const { loading, investments } = useInvestments(fromDate, toDate)
-  const { latestMetrics } = useTreasuryMetrics()
 
-  const groupedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
-  const currentInvestments = groupedInvestments.flatMap(x => x.at(-1))
-  const portfolioPcts = currentInvestments.flatMap(
-    x => (parseFloat(x?.netAssetValue) / latestMetrics?.treasuryMarketValue) * 100
-  )
   //order of the pcts AFTER sorting
   //sort
 
-  const joinedInvestments = groupedInvestments
-    .map((x, i) => {
-      return { inv: x, pct: portfolioPcts[i] }
-    })
-    .sort((a, b) => b.pct - a.pct)
+  const joinedInvestments = useMemo(() => {
+    const groupedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
+    const currentInvestments = groupedInvestments.flatMap(x => x.at(-1))
+    const tmv = currentInvestments?.reduce((prev, curr) => prev + Number.parseFloat(curr?.netAssetValue), 0)
+    const portfolioPcts = currentInvestments.flatMap(x => (parseFloat(x?.netAssetValue) / tmv) * 100)
+    return groupedInvestments
+      .map((x, i) => {
+        return { inv: x, pct: portfolioPcts[i] }
+      })
+      .sort((a, b) => b.pct - a.pct)
+  }, [investments])
 
-  const sortedInvestments = joinedInvestments.map(x => x.inv)
+  const sortedInvestments = useMemo(() => joinedInvestments.map(x => x.inv), [joinedInvestments])
 
   return (
     <StyledContainer className={className}>
       <TreasurySection>
         <StyledInnerContainer>
+          <div>
+            <button
+              onClick={() => {
+                setFromDateOpen(true)
+              }}
+              style={{ color: 'white' }}
+            >
+              {new Date(fromDate * 1000).toDateString()}
+            </button>
+            <DatePicker
+              isOpen={fromDateOpen}
+              onChange={(date: Date | null) => {
+                setFromDateOpen(false)
+                if (date === null) return
+                setFromDate(date?.getTime() / 1000)
+              }}
+              onClose={() => setFromDateOpen(false)}
+              defaultValue={new Date(fromDate * 1000)}
+              minDate={new Date((now - daySecs * 90) * 1000)}
+              maxDate={new Date((toDate - daySecs) * 1000)}
+              headerFormat="m/dd"
+            />
+
+            <button
+              onClick={() => {
+                setToDateOpen(true)
+              }}
+              style={{ color: 'white' }}
+            >
+              {new Date(toDate * 1000).toDateString()}
+            </button>
+            <DatePicker
+              isOpen={toDateOpen}
+              onChange={(date: Date | null) => {
+                setToDateOpen(false)
+                if (date === null) return
+                setToDate(date?.getTime() / 1000)
+              }}
+              onClose={() => setToDateOpen(false)}
+              defaultValue={new Date(now * 1000)}
+              minDate={new Date(fromDate * 1000)}
+              maxDate={new Date(now * 1000)}
+              headerFormat="m/dd"
+            />
+          </div>
           <StyledTable>
             <StyledTableHeader>
               <td>Investment</td>
               <td>Protocol</td>
               <td>Portfolio Percentage</td>
-              <td>Average Gross APR</td>
-              <td>Latest Revenue</td>
+              <td>Average APR</td>
+              <td>Position Chage</td>
+              <td>Net Profit/Loss</td>
             </StyledTableHeader>
           </StyledTable>
           {sortedInvestments.map((inv, i) => (

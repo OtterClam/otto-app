@@ -8,7 +8,7 @@ import { i18n } from 'i18next'
 import * as _ from 'lodash'
 import { useTranslation } from 'next-i18next'
 import { RefObject, useRef } from 'react'
-import { Area, ComposedChart, Line, Tooltip } from 'recharts'
+import { Area, ComposedChart, Line, ReferenceLine, Tooltip } from 'recharts'
 import styled from 'styled-components/macro'
 import { formatUsd, formatUsdThousandsK } from 'utils/currency'
 import ChartTooltip from './ChartTooltip'
@@ -24,6 +24,7 @@ const yAxisTickProps = { fontSize: '12px' }
 
 export interface InvestmentsChartProps {
   data: Investments_investments[]
+  avgApr?: number
 }
 
 const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
@@ -52,7 +53,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     return <ChartTooltip headerLabel={headerLabel} headerValue={''} items={[nav, apr]} footer={footer} />
   }
 
-export default function InvestmentsChart({ data }: InvestmentsChartProps) {
+export default function InvestmentsChart({ data, avgApr }: InvestmentsChartProps) {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
@@ -125,6 +126,7 @@ export default function InvestmentsChart({ data }: InvestmentsChartProps) {
           fill={`url(#color-line)`}
           yAxisId="right"
         />
+        <ReferenceLine yAxisId="right" y={avgApr} stroke="white" strokeDasharray="3 3" />
       </ComposedChart>
     </StyledContainer>
   )

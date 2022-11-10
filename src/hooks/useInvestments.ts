@@ -22,23 +22,3 @@ export default function useInvestments(
     investments,
   }
 }
-
-// todo: prep for cache?
-function aggregateInvestments(investments: Investments_investments[]) {
-  let aggInvestments: { [id: string]: Investments_investments[] } = {}
-  for (let inv of investments) {
-    //unique by protocol+strategy key pair
-    let id = `${inv.protocol + inv.strategy}`
-    if (!(id in aggInvestments)) {
-      aggInvestments[id] = [inv]
-    } else {
-      aggInvestments[id].push(inv)
-      ///aaaaaah what do with timestamps
-      //change whole thing to arrays and push?
-      // yeah that's kinda nice because "avg last 7 days" would break when investment changes
-    }
-  }
-
-  for (let id of aggInvestments.keys()) {
-  }
-}

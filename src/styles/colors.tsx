@@ -51,6 +51,14 @@ export const colors = {
     [AdventureOttoStatus.Ongoing]: '#B3A4FF',
     [AdventureOttoStatus.Unavailable]: '#99B6FF',
   },
+  treasury: {
+    clamLpRed: ['rgba(238,75,78,1)', 'rgba(219, 55, 55, 0.5)'],
+    stablecoinGreen: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
+    maticPurple: ['rgba(131, 71, 229, 0.8)', 'rgba(131, 71, 229, 0.5)'],
+    qiYellow: ['#F4D258', 'rgba(244, 210, 88, 0.5)'],
+    penDyst: ['rgba(108, 111, 227, 1)', 'rgba(8, 95, 142, 0.5)'],
+    gainsDai: ['rgba(254, 129, 22,0.8)', 'rgba(254, 129, 22,0.5)'],
+  },
 }
 
 export type Colors = typeof colors
