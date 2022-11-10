@@ -988,7 +988,14 @@ export const useCompleteMission = () => {
           if (!approved) {
             await approve(mission.address, true)
           }
-          await api.completeMission({ account, missionId }).then(calldata => (send as any)(...calldata))
+          const tx = await api.completeMission({ account, missionId }).then(calldata => (send as any)(...calldata))
+          if (tx) {
+            await api.confirm({ missionId, tx: tx.transactionHash })
+            setCompleteMissionState({
+              state: 'Success',
+              status: state,
+            })
+          }
         } catch (err: any) {
           setCompleteMissionState({
             state: 'Fail',
@@ -1012,7 +1019,7 @@ export const useCompleteMission = () => {
         state: 'Fail',
         status: approveState,
       })
-    } else {
+    } else if (state.status !== 'Success') {
       setCompleteMissionState({
         state: txState(state.status),
         status: state,

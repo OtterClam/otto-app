@@ -247,23 +247,24 @@ export default function MissionCard({ mission, myItems }: Props) {
               )}
             </StyledItemRewardCell>
           ))}
-
-          <StyledRefreshContainer>
-            <StyledSubtitle>{t('refresh_desc')}</StyledSubtitle>
-            <StyledRefreshButton
-              onClick={e => {
-                e.stopPropagation()
-                if (info) {
-                  refresh(info.refreshProductId)
-                }
-              }}
-            >
-              <Image src={RefreshIcon} width="20px" height="20px" />
-              <Note>{t('refresh_btn')}</Note>
-              <Image src={ClamIcon} width="20px" height="20px" />
-              <Note>1</Note>
-            </StyledRefreshButton>
-          </StyledRefreshContainer>
+          {mission.status === 'ongoing' && (
+            <StyledRefreshContainer>
+              <StyledSubtitle>{t('refresh_desc')}</StyledSubtitle>
+              <StyledRefreshButton
+                onClick={e => {
+                  e.stopPropagation()
+                  if (info) {
+                    refresh(info.refreshProductId)
+                  }
+                }}
+              >
+                <Image src={RefreshIcon} width="20px" height="20px" />
+                <Note>{t('refresh_btn')}</Note>
+                <Image src={ClamIcon} width="20px" height="20px" />
+                <Note>1</Note>
+              </StyledRefreshButton>
+            </StyledRefreshContainer>
+          )}
         </StyledExpandedArea>
       )}
       {completeMissionState.state === 'Success' && (

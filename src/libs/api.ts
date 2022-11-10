@@ -305,12 +305,12 @@ export class Api {
     limit?: number
   }): Promise<Mission[]> {
     return this.otterclamClient
-      .get(`/missions/${account}/${filter}`, { params: { offset, limit } })
+      .get(`/wallets/${account}/missions/${filter}`, { params: { offset, limit } })
       .then(res => res.data.map(rawMissionToMission))
   }
 
   public async getMissionInfo({ account }: { account: string }): Promise<MissionInfo> {
-    const result = await this.otterclamClient.get(`/missions/${account}/info`)
+    const result = await this.otterclamClient.get(`/wallets/${account}/missions-info`)
     return {
       nextFreeMissionAt: new Date(result.data.next_free_mission_at),
       newPrice: result.data.new_price,
@@ -321,7 +321,8 @@ export class Api {
   }
 
   public async requestNewMission({ account, tx }: { account: string; tx?: string }): Promise<Mission> {
-    const result = await this.otterclamClient.post(`/missions/${account}`, {
+    const result = await this.otterclamClient.post(`/missions`, {
+      wallet: account,
       tx_hash: tx,
     })
     return rawMissionToMission(result.data)
@@ -337,7 +338,7 @@ export class Api {
     tx: string
   }): Promise<Mission> {
     return this.otterclamClient
-      .put(`/missions/${account}/refresh`, {
+      .put(`/missions/${missionId}/refresh`, {
         mission_id: missionId,
         tx_hash: tx,
       })
@@ -345,16 +346,12 @@ export class Api {
   }
 
   public async completeMission({ account, missionId }: { account: string; missionId: number }): Promise<any> {
-    return this.otterclamClient
-      .put(`/missions/${account}/complete`, {
-        mission_id: missionId,
-      })
-      .then(res => res.data)
+    return this.otterclamClient.put(`/missions/${missionId}/complete`).then(res => res.data)
   }
 
-  public async confirm({ account, missionId, tx }: { account: string; missionId: number; tx: string }): Promise<any> {
+  public async confirm({ missionId, tx }: { missionId: number; tx: string }): Promise<any> {
     return this.otterclamClient
-      .put(`/missions/${account}/confirm`, {
+      .put(`/missions/${missionId}/confirm`, {
         mission_id: missionId,
         tx_hash: tx,
       })
