@@ -21,9 +21,9 @@ import {
   rawItemMetadataToItemMetadata,
 } from 'models/Item'
 import { LeaderboardEpoch, RawLeaderboardEpoch, rawLeaderboardEpochToLeaderboardEpoch } from 'models/LeaderboardEpoch'
-import { Mission } from 'models/Mission'
+import { Mission, NewMissionInfo } from 'models/Mission'
 import { Notification, RawNotification } from 'models/Notification'
-import Otto, { RawOtto } from 'models/Otto'
+import { RawOtto } from 'models/Otto'
 import Product from 'models/store/Product'
 import { RawAdventureResult } from './RawAdventureResult'
 
@@ -331,6 +331,14 @@ export class Api {
         ),
       }))
     )
+  }
+
+  public async getNewMissionInfo({ account }: { account: string }): Promise<NewMissionInfo> {
+    const result = await this.otterclamClient.get(`/missions/${account}/new`)
+    return {
+      ...result.data,
+      nextFreeMissionAt: new Date(result.data.next_free_mission_at),
+    }
   }
 }
 

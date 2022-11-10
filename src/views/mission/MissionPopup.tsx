@@ -1,19 +1,22 @@
+import { useEthers } from '@usedapp/core'
 import Button from 'components/Button'
 import CloseButton from 'components/CloseButton'
 import Fullscreen from 'components/Fullscreen'
-import Help from 'components/Help'
-import HelpButton from 'components/HelpButton'
 import PaymentButton from 'components/PaymentButton'
+import { Token } from 'constant'
+import { useApiCall } from 'contexts/Api'
+import { intervalToDuration } from 'date-fns'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { hideMissionPopup, selectShowMissionPopup } from 'store/uiSlice'
 import styled from 'styled-components/macro'
 import { ContentLarge, Headline, Note } from 'styles/typography'
+import { formatDuration } from 'utils/duration'
 import HeadLeft from './head-left.png'
 import HeadRight from './head-right.png'
 import MissionList from './MissionList'
-import NewMissionPopup from './NewMissionPopup'
 
 const StyledMissionPopup = styled.div`
   min-height: 90vh;
@@ -69,10 +72,30 @@ const StyledNote = styled(Note)`
   display: flex;
 `
 
+function Countdown({ target }: { target: Date }) {
+  const { t } = useTranslation('', { keyPrefix: 'mission' })
+  const [now, setNow] = useState(new Date())
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(new Date())
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [target])
+  const time = formatDuration(
+    intervalToDuration({
+      start: now,
+      end: target,
+    })
+  )
+  return <StyledNote>{t('next_mission', { time })}</StyledNote>
+}
+
 export default function MissionPopup() {
   const { t } = useTranslation('', { keyPrefix: 'mission' })
   const showPopup = useSelector(selectShowMissionPopup)
   const dispatch = useDispatch()
+  const { account } = useEthers()
+  const { result: info } = useApiCall('getNewMissionInfo', [{ account: account ?? '' }], Boolean(account), [account])
   return (
     <Fullscreen width="428px" show={showPopup}>
       <StyledMissionPopup>
@@ -85,12 +108,29 @@ export default function MissionPopup() {
         <StyledListContainer>
           <MissionList />
         </StyledListContainer>
-        <StyledNewMissionSection>
-          <StyledNote>{t('next_mission', { time: '03:20:20' })}</StyledNote>
-          <Button Typography={ContentLarge} width="100%">
-            {t('new_mission_btn_free')}
-          </Button>
-        </StyledNewMissionSection>
+        {info && (
+          <StyledNewMissionSection>
+            {info.price !== '0' && (
+              <>
+                <Countdown target={info.nextFreeMissionAt} />
+                <PaymentButton
+                  Typography={ContentLarge}
+                  width="100%"
+                  amount={info.price}
+                  token={Token.Clam}
+                  spenderAddress=""
+                >
+                  {t('new_mission_btn')}
+                </PaymentButton>
+              </>
+            )}
+            {info.price === '0' && (
+              <Button Typography={ContentLarge} width="100%">
+                {t('new_mission_btn_free')}
+              </Button>
+            )}
+          </StyledNewMissionSection>
+        )}
       </StyledMissionPopup>
     </Fullscreen>
   )

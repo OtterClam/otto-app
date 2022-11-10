@@ -33,3 +33,8 @@ export interface Mission {
   requirements: MissionRequirement[]
   rewards: MissionReward[]
 }
+
+export interface NewMissionInfo {
+  nextFreeMissionAt: Date
+  price: string
+}
