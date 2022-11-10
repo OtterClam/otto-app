@@ -29,6 +29,7 @@ import Theme from './icons/theme.png'
 import TheOtter from './icons/the_otter.png'
 import OttoTraitDetails from './OttoTraitDetails'
 import attributePointsImage from './icons/attribute-points.png'
+import changeEquipmentIconImage from './icons/change-equipment.png'
 
 const DicePopup = dynamic(() => import('components/DicePopup'), {
   ssr: false,
@@ -276,6 +277,16 @@ const StyledThemeBoostDesc = styled.div`
   display: inline-block;
 `
 
+const StyledChangeEquipmentButton = styled(Button)`
+  &::before {
+    content: '';
+    min-width: 20px;
+    max-width: 20px;
+    height: 20px;
+    background: center / cover url(${changeEquipmentIconImage.src});
+  }
+`
+
 export default function OttoPage() {
   const { t } = useTranslation()
   const {
@@ -340,9 +351,9 @@ export default function OttoPage() {
               {t('otto.play_voice')}
             </StyledPlayButton>
             {isMyOtto && (
-              <Button onClick={openOttoPopup} Typography={StyledPlayButtonText}>
-                test
-              </Button>
+              <StyledChangeEquipmentButton onClick={openOttoPopup} Typography={StyledPlayButtonText}>
+                {t('otto.change_equipment')}
+              </StyledChangeEquipmentButton>
             )}
           </StyledLeftContainer>
           <StyledContentContainer>

@@ -388,6 +388,7 @@
     "opensea_link": "View on OpenSea",
     "personality": "Personality: {{personality}}",
     "play_voice": "Hear this Otto's voice",
+    "change_equipment": "Dress up",
     "rarity": {
       "C1": "Uncommon",
       "C2": "Common",
