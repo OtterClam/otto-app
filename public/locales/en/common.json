@@ -181,7 +181,9 @@
       "show_less": "Show less",
       "your_rank": "Your Ottos’ rank:",
       "zodiac_boost": "{{zodiac}} (BRS+50)",
-      "theme_boost": "Theme Boost (BRS+{{ boost }})"
+      "theme_boost": "Theme Boost (BRS+{{ boost }})",
+      "ap": "AP",
+      "success_rate": "Success/Total (%)"
     },
     "shell_chest_link": "Buy Shell Chest >",
     "title": "Leaderboard",

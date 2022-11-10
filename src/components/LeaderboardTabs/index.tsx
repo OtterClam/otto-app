@@ -9,6 +9,11 @@ const StyledContainer = styled.div`
   overflow-y: auto;
   padding-bottom: 20px;
   min-height: 145px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    padding-bottom: 0;
+    min-height: 62px;
+  }
 `
 
 const StyledTabs = styled.div`
@@ -18,7 +23,7 @@ const StyledTabs = styled.div`
 `
 
 export default memo(function LeaderboardTabs({ className }: { className?: string }) {
-  const banners = useBanners([BannerType.LeaderboardSub])
+  const banners = useBanners([BannerType.Leaderboard])
   return (
     <StyledContainer className={className}>
       <StyledTabs>

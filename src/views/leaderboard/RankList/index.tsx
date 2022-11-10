@@ -1,7 +1,7 @@
-import { useQuery } from '@apollo/client'
+// TODO: refactor the table
 import ArrowDown from 'assets/ui/arrow_down.svg'
 import Button from 'components/Button'
-import { useMyOttos, useOttos } from 'hooks/useOtto'
+import { useMyOttos } from 'hooks/useOtto'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
@@ -10,8 +10,6 @@ import { ContentMedium, Headline } from 'styles/typography'
 import { useRarityEpoch } from 'contexts/RarityEpoch'
 import { createSearchParams } from 'utils/url'
 import { useRouter } from 'next/router'
-import { LIST_RANKED_OTTOS } from 'graphs/otto'
-import { ListRankedOttos, ListRankedOttosVariables } from 'graphs/__generated__/ListRankedOttos'
 import { useRepositories } from 'contexts/Repositories'
 import { Leaderboard, LeaderboardType } from 'models/Leaderboard'
 import LoadingGif from './loading.gif'
@@ -28,7 +26,7 @@ const StyledTable = styled.section`
   width: 100%;
 `
 
-const StyledRow = styled.div`
+const StyledRow = styled.div<{ adventure: boolean }>`
   display: flex;
   align-items: center;
 
@@ -46,17 +44,35 @@ const StyledRow = styled.div`
       width: 154px;
       text-align: center;
     }
-    &:nth-child(4) {
-      // rarity score
-      width: 122px;
-      text-align: center;
-    }
-    &:nth-child(5),
-    &:nth-child(6) {
-      // brs + rrs
-      width: 64px;
-      text-align: center;
-    }
+    ${({ adventure }) =>
+      !adventure &&
+      `
+      &:nth-child(4) {
+        // rarity score
+        width: 122px;
+        text-align: center;
+      }
+      &:nth-child(5),
+      &:nth-child(6) {
+        // brs + rrs
+        width: 64px;
+        text-align: center;
+      }
+    `}
+    ${({ adventure }) =>
+      adventure &&
+      `
+      &:nth-child(4) {
+        // ap
+        width: 64px;
+        text-align: center;
+      }
+      &:nth-child(5) {
+        // Success/Total (%)
+        width: 192px;
+        text-align: center;
+      }
+    `}
   }
 `
 
@@ -128,7 +144,9 @@ const StyledLoading = styled.div`
   }
 `
 
-const StyledTh = styled(ContentMedium).attrs({ as: 'div' })``
+const StyledTh = styled(ContentMedium).attrs({ as: 'div' })`
+  white-space: nowrap;
+`
 
 const StyledPagination = styled.div`
   display: flex;
@@ -162,6 +180,7 @@ const PAGE = 20
 export default function RankList({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.rank_list' })
   const router = useRouter()
+  const isAdventure = Boolean(router.query.adventure)
   const { leaderboards: leaderboardsRepo } = useRepositories()
   const page = Number(router.query.page || 0)
   const adventure = Boolean(router.query.adventure)
@@ -200,13 +219,23 @@ export default function RankList({ className }: Props) {
             </StyledExpandColumn>
           </StyledMyOttoSection>
         )}
-        <StyledTableHead>
+        <StyledTableHead adventure={adventure}>
           <StyledTh>{t('rank')}</StyledTh>
           <StyledTh>{t('name')}</StyledTh>
           <StyledTh>{t('est_reward')}</StyledTh>
-          <StyledTh>{t('rarity_score')}</StyledTh>
-          <StyledTh>{t('brs')}</StyledTh>
-          <StyledTh>{t('rrs')}</StyledTh>
+          {!isAdventure && (
+            <>
+              <StyledTh>{t('rarity_score')}</StyledTh>
+              <StyledTh>{t('brs')}</StyledTh>
+              <StyledTh>{t('rrs')}</StyledTh>
+            </>
+          )}
+          {isAdventure && (
+            <>
+              <StyledTh>{t('ap')}</StyledTh>
+              <StyledTh>{t('success_rate')}</StyledTh>
+            </>
+          )}
         </StyledTableHead>
         {loading && (
           <StyledLoading>

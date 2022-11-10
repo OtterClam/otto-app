@@ -25,6 +25,19 @@ const StyledContainer = styled.div`
     max-width: ${IconImage.width / 2}px;
     height: ${IconImage.height / 2}px;
     background: center / cover url(${IconImage.src});
+
+    @media ${({ theme }) => theme.breakpoints.mobile} {
+      width: 155px;
+      min-width: unset;
+      max-width: unset;
+      min-height: 120px;
+      max-height: 120px;
+    }
+  }
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    flex-direction: column;
+    text-align: center;
   }
 `
 
@@ -39,6 +52,10 @@ const StyledTime = styled.div`
   align-items: end;
   flex-direction: column;
   gap: 10px;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    align-items: center;
+  }
 `
 
 const StyledRewardAt = styled(Caption)`
@@ -72,7 +89,7 @@ export default function EpochInfo() {
       <StyledReward>
         <ContentMedium>{t('title')}</ContentMedium>
         <Headline>
-          <Price token={Token.Clam} amount={TOTAL_RARITY_REWARD * 1e9} />
+          <Price token={Token.Clam} amount={TOTAL_RARITY_REWARD * 1e9} showSymbol />
         </Headline>
       </StyledReward>
       <StyledTime>

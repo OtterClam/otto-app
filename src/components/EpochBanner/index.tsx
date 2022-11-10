@@ -1,8 +1,10 @@
+import { useRouter } from 'next/router'
 import { useBanners } from 'contexts/Banners'
 import { BannerType } from 'models/Banner'
 import Link from 'next/link'
 import Skeleton from 'react-loading-skeleton'
 import styled from 'styled-components/macro'
+import Image from 'next/image'
 import EpochInfo from './EpochInfo'
 
 const StyledContainer = styled.div`
@@ -12,15 +14,10 @@ const StyledContainer = styled.div`
   overflow: hidden;
 `
 
-const BannerImage = styled.a<{ bg?: string }>`
+const BannerLink = styled.a`
+  display: block;
   width: 100%;
   position: relative;
-
-  ${({ bg }) =>
-    bg &&
-    `
-    background: center / cover url(${bg});
-  `}
 
   &::before {
     content: '';
@@ -38,14 +35,15 @@ const BannerImageSkeleton = styled(Skeleton)`
 `
 
 export default function EpochBanner() {
-  const banner = useBanners([BannerType.LeaderboardMain])[0]
+  const { asPath } = useRouter()
+  const banner = useBanners([BannerType.Leaderboard]).find(banner => banner.link === asPath)
 
   if (!banner) {
     return (
       <StyledContainer>
-        <BannerImage as="div">
+        <BannerLink as="div">
           <BannerImageSkeleton />
-        </BannerImage>
+        </BannerLink>
         <EpochInfo />
       </StyledContainer>
     )
@@ -54,7 +52,9 @@ export default function EpochBanner() {
   return (
     <StyledContainer>
       <Link href={banner.link} passHref>
-        <BannerImage bg={banner.image} />
+        <BannerLink>
+          <Image layout="fill" src={banner.image} />
+        </BannerLink>
       </Link>
       <EpochInfo />
     </StyledContainer>

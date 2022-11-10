@@ -44,6 +44,8 @@ export interface RawOtto {
   latest_adventure_pass?: RawAdventurePass
   adventure_passes_count: number
   next_level_exp: number
+  finished_adventure_passes_count: number
+  succeeded_adventure_passes_count: number
 }
 
 export interface Attr {
@@ -164,6 +166,10 @@ export default class Otto {
 
   public adventurePassesCount = 0
 
+  public finishedAdventurePassesCount = 0
+
+  public succeededAdventurePassesCount = 0
+
   constructor(
     raw: RawOtto,
     public equippedItems: Item[] = [],
@@ -187,6 +193,8 @@ export default class Otto {
     this.epochRarityBoost = this.raw.epoch_rarity_boost
     this.diceCount = this.raw.dice_count
     this.adventurePassesCount = this.raw.adventure_passes_count
+    this.finishedAdventurePassesCount = this.raw.finished_adventure_passes_count ?? 0
+    this.succeededAdventurePassesCount = this.raw.succeeded_adventure_passes_count ?? 0
 
     if (this.raw.latest_adventure_pass) {
       this.latestAdventurePass = fromRawPass(this.raw.latest_adventure_pass)
@@ -329,6 +337,13 @@ export default class Otto {
 
   get ottoNativeTraits() {
     return this.raw.otto_native_traits ?? []
+  }
+
+  get adventureSuccessRate(): number {
+    if (!this.finishedAdventurePassesCount) {
+      return 0
+    }
+    return this.succeededAdventurePassesCount / this.finishedAdventurePassesCount
   }
 
   public clone() {

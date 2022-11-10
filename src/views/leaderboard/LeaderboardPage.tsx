@@ -29,20 +29,13 @@ const StyledLeaderboardPage = styled.div`
   gap: 40px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    padding: 40px 5px;
+    padding: 15px 5px 5px;
   }
 `
 
 const StyledHead = styled(Display3).attrs({ as: 'h1' })`
   width: 100%;
-  display: flex;
-  align-items: center;
   text-align: center;
-  justify-content: space-between;
-
-  > * {
-    flex: 1;
-  }
 `
 
 const StyledInfos = styled.div`
@@ -62,6 +55,18 @@ const StyledBoard = styled(Board)`
   width: 100%;
 `
 
+const StyledEpochNav = styled.div`
+  margin-bottom: -1.5em;
+  display: flex;
+  justify-content: space-between;
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    margin-bottom: 15px;
+  }
+`
+
+const StyledTitlie = styled.div``
+
 export default function LeaderboardPage() {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard' })
   const { constellation, epoch, hasPrevEpoch, hasNextEpoch } = useRarityEpoch()
@@ -75,39 +80,29 @@ export default function LeaderboardPage() {
       <StyledBoard background={Background.Dark}>
         <StyledLeaderboardPage>
           <StyledHead>
-            {hasPrevEpoch ? (
-              <Link
-                href={{
-                  pathname: '/leaderboard',
-                  search: `?epoch=${epoch - 1}`,
-                }}
-              >
-                <a>
-                  <Button padding="0 6px" Typography={Headline}>
-                    {t('prev')}
-                  </Button>
-                </a>
-              </Link>
-            ) : (
-              <div />
-            )}
-            {t('head')}
-            {hasNextEpoch ? (
-              <Link
-                href={{
-                  pathname: '/leaderboard',
-                  search: `?epoch=${epoch + 1}`,
-                }}
-              >
-                <a>
-                  <Button padding="0 6px" Typography={Headline}>
-                    {t('next')}
-                  </Button>
-                </a>
-              </Link>
-            ) : (
-              <div />
-            )}
+            <StyledEpochNav>
+              {!hasPrevEpoch && <div />}
+              {hasPrevEpoch && (
+                <Link href={`/leaderboard?epoch=${epoch - 1}`}>
+                  <a>
+                    <Button padding="0 6px" Typography={Headline}>
+                      {t('prev')}
+                    </Button>
+                  </a>
+                </Link>
+              )}
+              {!hasNextEpoch && <div />}
+              {hasNextEpoch && (
+                <Link href={`/leaderboard?epoch=${epoch + 1}`}>
+                  <a>
+                    <Button padding="0 6px" Typography={Headline}>
+                      {t('next')}
+                    </Button>
+                  </a>
+                </Link>
+              )}
+            </StyledEpochNav>
+            <StyledTitlie>{t('head')}</StyledTitlie>
           </StyledHead>
           <EpochBanner />
           <StyledInfos>
