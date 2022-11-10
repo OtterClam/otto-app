@@ -4,6 +4,7 @@ import { useApiCall } from 'contexts/Api'
 import { useMyItems } from 'contexts/MyItems'
 import { MissionFilter } from 'libs/api'
 import { Item } from 'models/Item'
+import { Mission } from 'models/Mission'
 import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import { useMemo, useState } from 'react'
@@ -34,18 +35,17 @@ const StyledHeader = styled.div`
 
 const StyledSwitcher = styled(Switcher)``
 
-export default function MissionList() {
+interface Props {
+  missions: Mission[]
+  filter: MissionFilter
+  refetch: () => void
+  onFilterChanged: (filter: MissionFilter) => void
+}
+
+export default function MissionList({ missions, filter, onFilterChanged, refetch }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'mission' })
-  const { account } = useEthers()
   const { ottos: myOttos } = useMyOttos()
   const { items: myItems } = useMyItems()
-  const [filter, setFilter] = useState<MissionFilter>('ongoing')
-  const { result: missions = [], refetch } = useApiCall(
-    'listMissions',
-    [{ account: account ?? '', filter }],
-    Boolean(account),
-    [account, filter]
-  )
   const myItemMap: Record<string, Item> = useMemo(
     () =>
       myItems.reduce(
@@ -60,11 +60,16 @@ export default function MissionList() {
   return (
     <StyledMissionList>
       <StyledHeader>
-        <StyledSwitcher name="filter" value={filter} options={filters} onChange={value => setFilter(value as any)} />
+        <StyledSwitcher
+          name="filter"
+          value={filter}
+          options={filters}
+          onChange={value => onFilterChanged(value as any)}
+        />
         <Note>{t('ongoingCap', { current: missions.length, max: myOttos.length })}</Note>
       </StyledHeader>
       {missions.map(mission => (
-        <MissionCard key={mission.id} mission={mission} myItems={myItemMap} onComplete={() => refetch()} />
+        <MissionCard key={mission.id} mission={mission} myItems={myItemMap} onComplete={() => refetch} />
       ))}
     </StyledMissionList>
   )

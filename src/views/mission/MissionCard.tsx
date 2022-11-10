@@ -194,7 +194,13 @@ export default function MissionCard({ mission, myItems, onComplete }: Props) {
             x{reward.type === 'fish' ? Number(ethers.utils.formatUnits(reward.amount, reward.decimal)) : reward.amount}
           </StyledAward>
         ))}
-        <StyledExpandedButton expanded={expanded} onClick={() => setExpanded(expanded => !expanded)}>
+        <StyledExpandedButton
+          expanded={expanded}
+          onClick={e => {
+            e.stopPropagation()
+            setExpanded(expanded => !expanded)
+          }}
+        >
           <Image src={ArrowDown} width="16px" height="16px" />
         </StyledExpandedButton>
       </StyledCompactRewards>

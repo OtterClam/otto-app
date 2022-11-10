@@ -975,6 +975,7 @@
     "next_mission": "Next mission coming in: {{time}}",
     "new_mission_btn": "Get 1 New Mission",
     "new_mission_btn_free": "Get 1 New Mission (FREE)",
+    "reached_limit": "You’ve reached the ongoing mission capacity limit",
     "require_desc": "Collect all required items",
     "ongoing": "Ongoing",
     "finished": "Finished",

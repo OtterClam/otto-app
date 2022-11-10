@@ -5,11 +5,11 @@ import { BigNumber, BigNumberish, constants, Contract, ethers, utils } from 'eth
 import useContractAddresses from 'hooks/useContractAddresses'
 import { Api } from 'libs/api'
 import _ from 'lodash'
-import { ItemAction, ItemMetadata, Item } from 'models/Item'
+import { Item, ItemAction, ItemMetadata } from 'models/Item'
 import { Mission } from 'models/Mission'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ItemsRepository } from 'repositories/items'
 import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
 import {
@@ -1020,4 +1020,55 @@ export const useCompleteMission = () => {
     }
   }, [account, api, state, approveState])
   return { completeMissionState, complete, resetCompleteMission }
+}
+
+export interface OttoNewMissionState extends OttoTransactionWriteState {
+  mission?: Mission
+}
+
+export const useRequestNewMission = () => {
+  const { account, library } = useEthers()
+  const { i18n } = useTranslation()
+  const api = useApi()
+  const store = useStoreContract()
+  const { state, send, resetState } = useContractFunction(store, 'buyNoChainlink', {})
+  const [buyState, setBuyState] = useState<OttoNewMissionState>({
+    state: 'None',
+    status: state,
+  })
+  const buy = useCallback(
+    async (productId: string) => {
+      setBuyState({
+        state: 'Processing',
+        status: state,
+      })
+      send(account || '', productId, 1)
+    },
+    [account, send, state]
+  )
+  useEffect(() => {
+    if (state.status === 'Success') {
+      api
+        .requestNewMission({ account: account || '', tx: state.transaction?.hash || '' })
+        .then(mission =>
+          setBuyState({
+            state: 'Success',
+            status: state,
+            mission,
+          })
+        )
+        .catch((err: any) =>
+          setBuyState({
+            state: 'Fail',
+            status: {
+              ...state,
+              errorMessage: err.message,
+            },
+          })
+        )
+    } else {
+      setBuyState({ state: txState(state.status), status: state })
+    }
+  }, [state, i18n, api, account])
+  return { buyState, buy, resetBuy: resetState }
 }

@@ -5,9 +5,12 @@ import Fullscreen from 'components/Fullscreen'
 import PaymentButton from 'components/PaymentButton'
 import { Token } from 'constant'
 import { useApi, useApiCall } from 'contexts/Api'
+import { useRequestNewMission } from 'contracts/functions'
 import { intervalToDuration } from 'date-fns'
 import useContractAddresses from 'hooks/useContractAddresses'
+import { MissionFilter } from 'libs/api'
 import { Mission } from 'models/Mission'
+import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
@@ -75,6 +78,10 @@ const StyledNote = styled(Note)`
   display: flex;
 `
 
+const StyledReachLimit = styled(Note).attrs({ as: 'p' })`
+  color: ${({ theme }) => theme.colors.darkGray200};
+`
+
 function Countdown({ target }: { target: Date }) {
   const { t } = useTranslation('', { keyPrefix: 'mission' })
   const [now, setNow] = useState(new Date())
@@ -102,18 +109,43 @@ export default function MissionPopup() {
   const api = useApi()
   const [newMission, setNewMission] = useState<Mission | null>(null)
   const [newMissionRequesting, setNewMissionRequesting] = useState(false)
-  const { result: info, refetch } = useApiCall('getNewMissionInfo', [{ account: account ?? '' }], Boolean(account), [
-    account,
-  ])
+  const [filter, setFilter] = useState<MissionFilter>('ongoing')
+  const { ottos: myOttos } = useMyOttos()
+  const { result: missions = [], refetch } = useApiCall(
+    'listMissions',
+    [{ account: account ?? '', filter }],
+    Boolean(account),
+    [account, filter]
+  )
+  const reachedLimit = missions.length === myOttos.length
+  const { result: info } = useApiCall('getNewMissionInfo', [{ account: account ?? '' }], Boolean(account), [account])
   const requestNewMissionFree = async () => {
     setNewMissionRequesting(true)
     const newMission = await api.requestNewMission({
       account: account ?? '',
     })
-    setNewMission(newMission)
-    refetch()
     setNewMissionRequesting(false)
+    onNewMission(newMission)
   }
+  const onNewMission = (mission: Mission) => {
+    setNewMission(mission)
+    refetch()
+  }
+  const { buyState, buy, resetBuy } = useRequestNewMission()
+  const onRequestNewMission = async () => {
+    if (info) {
+      buy(info.productId)
+    }
+  }
+  useEffect(() => {
+    if (buyState.state === 'Fail') {
+      alert(buyState.status.errorMessage)
+      resetBuy()
+    } else if (buyState.state === 'Success' && buyState.mission) {
+      onNewMission(buyState.mission)
+      resetBuy()
+    }
+  }, [buyState])
   return (
     <Fullscreen width="428px" show={showPopup}>
       <StyledMissionPopup>
@@ -124,19 +156,22 @@ export default function MissionPopup() {
           <Image src={HeadRight} width={32} height={32} />
         </StyledTitle>
         <StyledListContainer>
-          <MissionList />
+          <MissionList missions={missions} filter={filter} refetch={refetch} onFilterChanged={setFilter} />
         </StyledListContainer>
-        {info && (
+        {filter !== 'finished' && info && (
           <StyledNewMissionSection>
             {info.price !== '0' && (
               <>
                 <Countdown target={info.nextFreeMissionAt} />
                 <PaymentButton
                   Typography={ContentLarge}
+                  disabled={reachedLimit}
                   width="100%"
                   amount={info.price}
                   token={Token.Clam}
                   spenderAddress={OTTOPIA_STORE}
+                  loading={buyState.state === 'Processing'}
+                  onClick={onRequestNewMission}
                 >
                   {t('new_mission_btn')}
                 </PaymentButton>
@@ -145,6 +180,7 @@ export default function MissionPopup() {
             {info.price === '0' && (
               <Button
                 Typography={ContentLarge}
+                disabled={reachedLimit}
                 width="100%"
                 loading={newMissionRequesting}
                 onClick={requestNewMissionFree}
@@ -152,6 +188,7 @@ export default function MissionPopup() {
                 {t('new_mission_btn_free')}
               </Button>
             )}
+            {reachedLimit && <StyledReachLimit>{t('reached_limit')}</StyledReachLimit>}
           </StyledNewMissionSection>
         )}
         {newMission && <NewMissionPopup mission={newMission} onClose={() => setNewMission(null)} />}

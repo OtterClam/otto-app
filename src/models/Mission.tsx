@@ -37,6 +37,7 @@ export interface Mission {
 export interface NewMissionInfo {
   nextFreeMissionAt: Date
   price: string
+  productId: string
 }
 
 export function rawMissionToMission(raw: any): Mission {

@@ -314,12 +314,13 @@ export class Api {
     return {
       ...result.data,
       nextFreeMissionAt: new Date(result.data.next_free_mission_at),
+      productId: String(result.data.product_id),
     }
   }
 
   public async requestNewMission({ account, tx }: { account: string; tx?: string }): Promise<Mission> {
     const result = await this.otterclamClient.post(`/missions/${account}`, {
-      tx,
+      tx_hash: tx,
     })
     return rawMissionToMission(result.data)
   }
