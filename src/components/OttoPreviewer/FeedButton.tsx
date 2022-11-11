@@ -2,11 +2,11 @@ import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
 
-const StyledButton = styled(Note).attrs({ as: 'button' })`
+const StyledButton = styled(Note).attrs({ as: 'button' })<{ disabled: boolean; hide: boolean }>`
   display: flex;
   padding: 2px;
   border: 1px ${({ theme }) => theme.colors.otterBlack} solid;
-  background: ${({ theme }) => theme.colors.rarity.C1};
+  background: ${({ theme, hide }) => (hide ? theme.colors.darkGray100 : theme.colors.rarity.C1)};
   border-radius: 2px;
   width: 40px;
   height: 40px;
@@ -24,8 +24,8 @@ const StyledButton = styled(Note).attrs({ as: 'button' })`
   }
 `
 
-export default function FeedButton() {
+export default function FeedButton({ hide = false }: { hide?: boolean }) {
   const { t } = useTranslation('', { keyPrefix: 'ottoPreviewer' })
 
-  return <StyledButton data-label={t('feedButton')} />
+  return <StyledButton disabled={hide} data-label={hide ? '' : t('feedButton')} hide={hide} />
 }

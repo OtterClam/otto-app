@@ -1,7 +1,7 @@
 import { ItemActionType } from 'constant'
 import noop from 'lodash/noop'
 import { ItemAction, Item } from 'models/Item'
-import Otto, { AdventureOttoStatus } from 'models/Otto'
+import Otto, { AdventureOttoStatus, OttoGender } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import { createContext, FC, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react'
 import { useMyItems } from './MyItems'
@@ -10,11 +10,13 @@ const OttoContext = createContext<{
   otto?: Otto
   setOtto: (otto?: Otto) => void
   resetEquippedItems: () => void
+  unequipAllItems: () => void
   equipItem: (traitType: string, traitId: string) => void
   removeItem: (traitType: string) => void
   itemActions: ItemAction[]
 }>({
   setOtto: noop,
+  unequipAllItems: noop,
   resetEquippedItems: noop,
   equipItem: noop,
   removeItem: noop,
@@ -33,9 +35,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
   const { ottos } = useMyOttos()
   const { items } = useMyItems()
   const [otto, setOtto] = useState<Otto | undefined>()
-  const [draftItems, setDraftItems] = useState<{
-    [traitType: string]: string | null
-  }>({})
+  const [draftItems, setDraftItems] = useState<Record<string, string | null>>({})
   const actions = useMemo(() => {
     const uniqueItems = items.reduce((map, item) => {
       // pick non-equipped items first if there multiple items
@@ -137,6 +137,15 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
       },
       resetEquippedItems: () => {
         setDraftItems({})
+      },
+      unequipAllItems: () => {
+        const draftItems: Record<string, string | null> = {}
+        otto?.wearableTraits.forEach(({ type, unreturnable }) => {
+          if (!unreturnable) {
+            draftItems[type] = null
+          }
+        })
+        setDraftItems(draftItems)
       },
       itemActions: actions,
     }

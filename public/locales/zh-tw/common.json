@@ -382,6 +382,7 @@
     "opensea_link": "在 OpenSea 上瞧瞧",
     "personality": "個性： {{personality}}",
     "play_voice": "聽聽這隻阿獺的聲音",
+    "change_equipment": "Dress up",
     "rarity": {
       "C1": "不常見",
       "C2": "常見",
@@ -950,5 +951,15 @@
   "adventure_remaining": "剩餘時間： {{time}}",
   "adventureAlert": {
     "hideDesc": "不要再顯示"
+  },
+  "ottoPopup": {
+    "title": "Change Otto’s Equipment",
+    "unequipAllButton": "Unequip All",
+    "submitButton": "Save this Setup",
+    "submitButtonHelp": "You will be required to perform a transaction to update the new setup of the equipment on this Otto.",
+    "placeholder": "Click the left equipment thumbnail<br />to chage the equipment "
+  },
+  "ottoStats": {
+    "rarityScore": "Rarity Score: {{total}} (BRS {{brs}} + RRS {{rrs}})"
   }
 }
