@@ -51,23 +51,9 @@ export interface Attr {
   value: string | number
 }
 
-export enum TraitRarity {
-  C3 = 'C3',
-  C2 = 'C2',
-  C1 = 'C1',
-  R3 = 'R3',
-  R2 = 'R2',
-  R1 = 'R1',
-  E3 = 'E3',
-  E2 = 'E2',
-  E1 = 'E1',
-}
+export type TraitRarity = 'C3' | 'C2' | 'C1' | 'R3' | 'R2' | 'R1' | 'E3' | 'E2' | 'E1'
 
-export enum OttoGender {
-  Male = 'Male',
-  Female = 'Female',
-  Both = 'Both',
-}
+export type OttoGender = 'Male' | 'Female' | 'Both'
 
 export interface TraitLabel {
   name: string
@@ -351,10 +337,10 @@ export default class Otto {
 
   // TODO: use ItemMetadata
   public canWear(item: Item): boolean {
-    if (item.metadata.equippableGender === OttoGender.Both || this.raw.gender === 'Cleo') {
+    if (item.metadata.equippableGender === 'Both' || this.raw.gender === 'Cleo') {
       return true
     }
-    if (item.metadata.equippableGender === OttoGender.Male) {
+    if (item.metadata.equippableGender === 'Male') {
       return this.raw.gender === 'Otto'
     }
     return this.raw.gender === 'Lottie'

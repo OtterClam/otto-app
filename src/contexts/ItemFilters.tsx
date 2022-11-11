@@ -84,8 +84,8 @@ const filterFunctions = {
   [ItemsFilter.None]: () => true,
   [ItemsFilter.Equipped]: (item: Item) => Boolean(item.equippedBy),
   [ItemsFilter.NotEquipped]: (item: Item) => !item.equippedBy,
-  [ItemsFilter.LottieSpecific]: (item: Item) => item.metadata.equippableGender === OttoGender.Female,
-  [ItemsFilter.OttoSpecific]: (item: Item) => item.metadata.equippableGender === OttoGender.Male,
+  [ItemsFilter.LottieSpecific]: (item: Item) => item.metadata.equippableGender === 'Female',
+  [ItemsFilter.OttoSpecific]: (item: Item) => item.metadata.equippableGender === 'Male',
 }
 
 type SortableFields<T extends object> = {

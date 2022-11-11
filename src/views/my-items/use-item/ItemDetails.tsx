@@ -250,7 +250,7 @@ export default memo(function ItemDetails({ item, onClose, onUse, className }: Pr
           <StyledWearCount>{t('wear_count', { count: equippedCount })}</StyledWearCount>
         </>
       )}
-      {!(type === ItemType.Coupon || type === ItemType.MissionItem) && (
+      {!(type === 'Coupon' || type === 'Mission Item') && (
         <StyledAttrs>
           {Object.entries(stats).map(([key, val]) => (
             <StyledAttr key={key}>
@@ -261,9 +261,9 @@ export default memo(function ItemDetails({ item, onClose, onUse, className }: Pr
         </StyledAttrs>
       )}
       {themeBoost > 0 && <TraitLabels metadata={item.metadata} large highlightMatched />}
-      {onUse && type !== ItemType.MissionItem && (
+      {onUse && type !== 'Mission Item' && (
         <StyledButton Typography={Headline} onClick={() => onUse(id)}>
-          {wearable ? (equipped ? t('take_off') : t('wear')) : type === ItemType.Coupon ? t('open') : t('use')}
+          {wearable ? (equipped ? t('take_off') : t('wear')) : type === 'Coupon' ? t('open') : t('use')}
         </StyledButton>
       )}
       {showTransferPopup && (

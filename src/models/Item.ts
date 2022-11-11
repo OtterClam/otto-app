@@ -1,16 +1,16 @@
 import { ItemActionType } from 'constant'
 import { TraitCollection, TraitRarity, OttoGender, TraitLabel, Attr, Stat } from './Otto'
 
-export enum ItemType {
-  Holding = 'Holding',
-  Headwear = 'Headwear',
-  FacialAccessories = 'Facial Accessories',
-  Clothes = 'Clothes',
-  Background = 'Background',
-  Coupon = 'Coupon',
-  MissionItem = 'Mission Item',
-  Other = 'Other',
-}
+export type ItemType =
+  | 'Holding'
+  | 'Headwear'
+  | 'Facial Accessories'
+  | 'Clothes'
+  | 'Background'
+  | 'Coupon'
+  | 'Mission Item'
+  | 'Collectible'
+  | 'Other'
 
 export type ItemStats = Record<ItemStatName, string>
 
@@ -62,8 +62,8 @@ export interface RawItemMetadata {
     theme_boost: number
     type: ItemType
     wearable?: boolean
-    product_factory: string
-    product_type: string
+    product_factory?: string
+    product_type?: string
     unreturnable?: boolean
   }
 }
@@ -125,8 +125,8 @@ export const rawItemMetadataToItemMetadata = (raw: RawItemMetadata): ItemMetadat
     totalRarityScore: raw.details.base_rarity_score + raw.details.relative_rarity_score,
     equippedCount: raw.details.equipped_count,
     equippableGender: raw.details.equippable_gender,
-    productFactory: raw.details.product_factory,
-    productType: raw.details.product_type,
+    productFactory: raw.details.product_factory || '',
+    productType: raw.details.product_type || '',
     luck: parseNumericalStat(stats.LUK),
     dex: parseNumericalStat(stats.DEX),
     cute: parseNumericalStat(stats.CUTE),

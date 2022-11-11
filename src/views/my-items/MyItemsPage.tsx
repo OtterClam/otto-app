@@ -291,7 +291,7 @@ export default function MyItemsPage() {
 
   const onUse = useCallback(() => {
     if (selectedItem) {
-      if (selectedItem.metadata.type === NewItemType.Coupon) {
+      if (selectedItem.metadata.type === 'Coupon') {
         setRedeemingCouponId(selectedItemId)
       } else {
         setUsingItemId(selectedItemId)

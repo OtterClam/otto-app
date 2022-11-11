@@ -20,11 +20,13 @@ import {
   OttoSummonerAbi,
   PearlBankAbi,
   RewardManagerAbi,
+  MissionAbi,
 } from './abis'
 import {
   ClamCirculatingSupply,
   ClamPond,
   Erc20,
+  Mission,
   OtterRewardManager,
   OtterWrappedUsdPlusToken,
   OttoHellDiceRoller,
@@ -141,4 +143,10 @@ export function useAdventureContract() {
   const { ADVENTURE } = useContractAddresses()
   const { library } = useEthers()
   return new Contract(ADVENTURE, AdventureAbi, library) as Adventure
+}
+
+export function useMissionContract() {
+  const { MISSION } = useContractAddresses()
+  const { library } = useEthers()
+  return new Contract(MISSION, MissionAbi, library) as Mission
 }

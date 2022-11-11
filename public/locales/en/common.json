@@ -388,7 +388,6 @@
     "opensea_link": "View on OpenSea",
     "personality": "Personality: {{personality}}",
     "play_voice": "Hear this Otto's voice",
-    "change_equipment": "Dress up",
     "rarity": {
       "C1": "Uncommon",
       "C2": "Common",
@@ -426,7 +425,8 @@
     "total_rarity_score": "Total Rarity Score: {{score}} (BRS {{brs}} + RRS {{rrs}})",
     "theme_boost": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #3B4BD8\">{{ labels }}</span> will receive extra BRS boosts.",
     "attribute_points": "Available Attribute Points: {{attributePoints}}",
-    "attribute_points_button": "Add Now >"
+    "attribute_points_button": "Add Now >",
+    "change_equipment": "Dress up"
   },
   "otto_one": "{{count}} Otto",
   "otto_other": "{{count}} Ottos",
@@ -970,6 +970,9 @@
   "adventureAlert": {
     "hideDesc": "Do not show this again"
   },
+  "ottoStats": {
+    "rarityScore": "Rarity Score: {{total}} (BRS {{brs}} + RRS {{rrs}})"
+  },
   "ottoPopup": {
     "title": "Change Otto’s Equipment",
     "unequipAllButton": "Unequip All",
@@ -977,7 +980,25 @@
     "submitButtonHelp": "You will be required to perform a transaction to update the new setup of the equipment on this Otto.",
     "placeholder": "Click the left equipment thumbnail<br />to change the equipment "
   },
-  "ottoStats": {
-    "rarityScore": "Rarity Score: {{total}} (BRS {{brs}} + RRS {{rrs}})"
+  "mission": {
+    "title": "Missions",
+    "ongoingCap": "Ongoing Mission Cap({{current}}/{{max}})",
+    "next_mission": "Next mission coming in: {{time}}",
+    "new_mission_btn": "Get 1 New Mission",
+    "new_mission_btn_free": "Get 1 New Mission (FREE)",
+    "reached_limit": "You’ve reached the ongoing mission capacity limit",
+    "require_desc": "Collect all required items",
+    "ongoing": "Ongoing",
+    "finished": "Finished",
+    "awards": "Awards: ",
+    "required_items": "Required Items",
+    "reward": "Mission Reward",
+    "refresh_desc": "Wanna take another random mission?",
+    "refresh_btn": "Refresh",
+    "complete_btn": "Complete",
+    "new_mission_title": "You got a new mission!",
+    "ok_btn": "OK",
+    "complete_reward": "Here’s your awards!",
+    "close_btn": "Close"
   }
 }
