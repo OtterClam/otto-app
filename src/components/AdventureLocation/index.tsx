@@ -1,3 +1,4 @@
+import OttoImage from 'components/OttoImage'
 import { MAX_OTTOS_PER_LOCATION } from 'constant'
 import { useAdventureLocation } from 'contexts/AdventureLocations'
 import { AdventurePopupStep, AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
@@ -59,8 +60,6 @@ const StyledOttoImageContainer = styled.div`
   height: 24px;
   overflow: hidden;
 `
-
-const StyledOttoImage = styled(Image).attrs({ width: 22, height: 22 })``
 
 const StyledOttoImages = styled.div`
   display: flex;
@@ -142,7 +141,7 @@ export default function AdventureLocation({ id, className }: AdventureLocationPr
       {location && (
         <>
           <StyledPinImageContainer>
-            <StyledPinImage src={location.image} />
+            <StyledPinImage unoptimized src={location.image} />
           </StyledPinImageContainer>
 
           <StyledRequiredLevel locked={locked}>LV {location.minLevel}</StyledRequiredLevel>
@@ -151,7 +150,7 @@ export default function AdventureLocation({ id, className }: AdventureLocationPr
             <StyledOttoImages>
               {ottos.map(otto => (
                 <StyledOttoImageContainer key={otto.id}>
-                  <StyledOttoImage src={otto.image} />
+                  <OttoImage unoptimized src={otto.image} size={22} />
                 </StyledOttoImageContainer>
               ))}
               {' '

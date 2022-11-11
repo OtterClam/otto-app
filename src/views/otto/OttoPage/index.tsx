@@ -22,11 +22,14 @@ import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentMedium, ContentSmall, Display3, Headline, Note } from 'styles/typography'
 import { AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
 import { useIsMyOttos } from 'MyOttosProvider'
+import { useDispatch } from 'react-redux'
+import { showOttoPopup } from 'store/uiSlice'
 import PlayIcon from './icons/play-voice.svg'
 import Theme from './icons/theme.png'
 import TheOtter from './icons/the_otter.png'
 import OttoTraitDetails from './OttoTraitDetails'
 import attributePointsImage from './icons/attribute-points.png'
+import changeEquipmentIconImage from './icons/change-equipment.png'
 
 const DicePopup = dynamic(() => import('components/DicePopup'), {
   ssr: false,
@@ -79,6 +82,7 @@ const StyledOttoImage = styled.img`
 `
 
 const StyledPlayButton = styled(Button)`
+  width: 80%;
   position: sticky;
   top: 490px;
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -274,12 +278,32 @@ const StyledThemeBoostDesc = styled.div`
   display: inline-block;
 `
 
+const StyledChangeEquipmentButton = styled(Button)`
+  width: 80%;
+`
+
+const StyledChangeEquipmentButtonText = styled(Headline)`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &::before {
+    display: block;
+    content: '';
+    min-width: 20px;
+    max-width: 20px;
+    height: 20px;
+    background: center / cover url(${changeEquipmentIconImage.src});
+  }
+`
+
 export default function OttoPage() {
   const { t } = useTranslation()
   const {
     epoch: { themes },
   } = useLeaderboardEpoch()
   const { dispatch } = useAdventureUIState()
+  const dispatchReduxAction = useDispatch()
   const { chainId } = useEthers()
   const router = useRouter()
   const ottoId = router.query.ottoId as string
@@ -318,6 +342,10 @@ export default function OttoPage() {
     dispatch({ type: AdventureUIActionType.DistributeAttributePoints, data: { ottoId } })
   }
 
+  const openOttoPopup = () => {
+    dispatchReduxAction(showOttoPopup(ottoId))
+  }
+
   return (
     <>
       <StyledOttoPage>
@@ -332,6 +360,11 @@ export default function OttoPage() {
             >
               {t('otto.play_voice')}
             </StyledPlayButton>
+            {isMyOtto && (
+              <StyledChangeEquipmentButton onClick={openOttoPopup} Typography={StyledChangeEquipmentButtonText}>
+                {t('otto.change_equipment')}
+              </StyledChangeEquipmentButton>
+            )}
           </StyledLeftContainer>
           <StyledContentContainer>
             <StyledOpenSeaLink href={getOpenSeaLink(ottoId)} target="_blank">

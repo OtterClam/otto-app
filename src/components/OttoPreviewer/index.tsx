@@ -6,8 +6,7 @@ import AdventureRibbonText from 'components/AdventureRibbonText'
 import { useAdventureOtto } from 'contexts/AdventureOtto'
 import { Trait } from 'models/Otto'
 import { useBreakpoints } from 'contexts/Breakpoints'
-import Image from 'next/image'
-import OttoLoadingPlaceholderImage from 'assets/ui/otto-loading.jpg'
+import OttoImage from 'components/OttoImage'
 import { useTrait } from '../../contexts/TraitContext'
 import TraitButton from './TraitButton'
 import FeedButton from './FeedButton'
@@ -34,14 +33,11 @@ const StyledTraitGroup = styled.div`
   gap: 5px;
 `
 
-const StyledImageContainer = styled.div`
-  position: relative;
+const StyledOttoImage = styled(OttoImage)`
   z-index: 0;
-  position: relative;
   min-width: 200px;
   max-width: 200px;
   height: 200px;
-  background: center / cover url(${OttoLoadingPlaceholderImage.src});
 `
 
 const StyledOttoItemsPopup = styled(OttoItemsPopup)<{ offsetX: number; width?: string }>`
@@ -60,6 +56,7 @@ export interface OttoPreviewerProps {
   itemPopupHeight?: number
   itemPopupOffset: number
   loading?: boolean
+  hideFeedButton?: boolean
 }
 
 export default function OttoPreviewer({
@@ -67,6 +64,7 @@ export default function OttoPreviewer({
   itemsPopupWidth,
   itemPopupHeight,
   itemPopupOffset,
+  hideFeedButton,
 }: OttoPreviewerProps) {
   const { isSmallTablet, isMobile } = useBreakpoints()
   const { draftOtto: otto } = useAdventureOtto()
@@ -104,9 +102,7 @@ export default function OttoPreviewer({
 
             <StyledPreviewImage>
               <AdventureRibbonText>{otto.name}</AdventureRibbonText>
-              <StyledImageContainer>
-                <Image key={otto.id} src={otto.image} layout="fill" width={200} height={200} />
-              </StyledImageContainer>
+              <StyledOttoImage src={otto.image} size={200} />
             </StyledPreviewImage>
 
             <StyledTraitGroup>
@@ -121,7 +117,7 @@ export default function OttoPreviewer({
                     onSelect={selectTrait}
                   />
                 ))}
-              <FeedButton />
+              <FeedButton hide={hideFeedButton} />
             </StyledTraitGroup>
           </StyledPreview>
         </StyledContainer>
@@ -132,6 +128,7 @@ export default function OttoPreviewer({
         onRequestClose={close}
         width={isSmallTablet && !isMobile ? '80%' : undefined}
         maxWidth={isSmallTablet ? undefined : itemsPopupWidth}
+        height={isSmallTablet ? undefined : itemPopupHeight}
       />
     </>
   )
@@ -153,7 +150,7 @@ function OtterPreviewerSkeleton() {
           <AdventureRibbonText>
             <Skeleton width={60} />
           </AdventureRibbonText>
-          <StyledImageContainer />
+          <StyledOttoImage />
         </StyledPreviewImage>
 
         <StyledTraitGroup>

@@ -100,9 +100,9 @@ export class OttosRepository {
 
   async previewAdventureOtto(
     ottoTokenId: string,
-    locationId: number,
+    locationId: number | undefined,
     actions: ItemAction[] = []
-  ): Promise<{ otto: Otto; location: AdventureLocation }> {
+  ): Promise<{ otto: Otto; location?: AdventureLocation }> {
     const preview = await this.api.getOttoAdventurePreview(ottoTokenId, locationId, actions, this.abortSignal)
     const otto = await this.fromOttoMetadata(preview, true)
     return {

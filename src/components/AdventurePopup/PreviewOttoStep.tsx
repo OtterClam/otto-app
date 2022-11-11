@@ -103,7 +103,7 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
   const { t, i18n } = useTranslation()
   const location = useSelectedAdventureLocation()!
   const goToStep = useGoToAdventurePopupStep()
-  const [preview, setPreview] = useState<{ otto: Otto; location: AdventureLocation }>()
+  const [preview, setPreview] = useState<{ otto: Otto; location?: AdventureLocation }>()
   const [{ itemPopupWidth, itemPopupHeight, itemPopupOffset }, setItemPopupSize] = useState<{
     itemPopupWidth: number
     itemPopupHeight?: number

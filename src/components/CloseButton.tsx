@@ -12,13 +12,13 @@ const StyledCloseIcon = styled.img`
   width: 24px;
 `
 
-interface Props {
+export interface CloseButtonProps {
   className?: string
   color?: 'white' | 'dark'
   onClose: () => void
 }
 
-export default function CloseButton({ className, color = 'dark', onClose }: Props) {
+export default function CloseButton({ className, color = 'dark', onClose }: CloseButtonProps) {
   return (
     <StyledCloseButton
       className={className}

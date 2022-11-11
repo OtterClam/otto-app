@@ -3,16 +3,16 @@ import { RawAdventureLocation, rawAdventureLocationToAdventureLocation, Adventur
 import { RawOtto } from './Otto'
 
 export interface RawAdventurePreview extends RawOtto {
-  location: RawAdventureLocation
+  location?: RawAdventureLocation
 }
 
 export interface AdventurePreview extends RawOtto {
-  location: AdventureLocation
+  location?: AdventureLocation
 }
 
 export function rawAdventurePreviewToAdventurePreview(raw: RawAdventurePreview): AdventurePreview {
   return {
     ...omit(raw, 'location'),
-    location: rawAdventureLocationToAdventureLocation(raw.location),
+    location: raw.location ? rawAdventureLocationToAdventureLocation(raw.location) : undefined,
   }
 }

@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import AdventureStatus from 'components/AdventureStatus'
 import Button from 'components/Button'
+import OttoImage from 'components/OttoImage'
 import { useAdventureLocation } from 'contexts/AdventureLocations'
 import { AdventurePopupStep, useGoToAdventureResultStep, useOpenAdventurePopup } from 'contexts/AdventureUIState'
 import { useOtto } from 'contexts/Otto'
@@ -134,7 +135,7 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
     <StyledAdventureOttoCard>
       <StyledContainer onClick={onClick} disabled={otto.adventureStatus === AdventureOttoStatus.Unavailable}>
         <StyledAvatarContainer size={50}>
-          <Image width={50} height={50} layout="fill" src={otto.image} />
+          <OttoImage unoptimized size={50} src={otto.image} />
         </StyledAvatarContainer>
 
         <StyledDetails>
@@ -143,7 +144,7 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
             <AdventureStatus status={otto.adventureStatus} />
             {location && (
               <StyledLocation>
-                <Image width={21} height={21} src={location.image} />
+                <Image unoptimized width={21} height={21} src={location.image} />
                 {location.name}
               </StyledLocation>
             )}

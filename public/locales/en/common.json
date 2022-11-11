@@ -425,7 +425,8 @@
     "total_rarity_score": "Total Rarity Score: {{score}} (BRS {{brs}} + RRS {{rrs}})",
     "theme_boost": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #3B4BD8\">{{ labels }}</span> will receive extra BRS boosts.",
     "attribute_points": "Available Attribute Points: {{attributePoints}}",
-    "attribute_points_button": "Add Now >"
+    "attribute_points_button": "Add Now >",
+    "change_equipment": "Dress up"
   },
   "otto_one": "{{count}} Otto",
   "otto_other": "{{count}} Ottos",
@@ -968,6 +969,16 @@
   "adventure_remaining": "Remaining: {{time}}",
   "adventureAlert": {
     "hideDesc": "Do not show this again"
+  },
+  "ottoStats": {
+    "rarityScore": "Rarity Score: {{total}} (BRS {{brs}} + RRS {{rrs}})"
+  },
+  "ottoPopup": {
+    "title": "Change Otto’s Equipment",
+    "unequipAllButton": "Unequip All",
+    "submitButton": "Save this Setup",
+    "submitButtonHelp": "You will be required to perform a transaction to update the new setup of the equipment on this Otto.",
+    "placeholder": "Click the left equipment thumbnail<br />to change the equipment "
   },
   "mission": {
     "title": "Missions",
