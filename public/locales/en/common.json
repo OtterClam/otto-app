@@ -975,7 +975,7 @@
     "unequipAllButton": "Unequip All",
     "submitButton": "Save this Setup",
     "submitButtonHelp": "You will be required to perform a transaction to update the new setup of the equipment on this Otto.",
-    "placeholder": "Click the left equipment thumbnail<br />to chage the equipment "
+    "placeholder": "Click the left equipment thumbnail<br />to change the equipment "
   },
   "ottoStats": {
     "rarityScore": "Rarity Score: {{total}} (BRS {{brs}} + RRS {{rrs}})"
