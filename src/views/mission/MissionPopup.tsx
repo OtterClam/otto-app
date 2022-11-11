@@ -27,7 +27,6 @@ import NewMissionPopup from './NewMissionPopup'
 
 const StyledMissionPopup = styled.div`
   min-height: 90vh;
-  max-width: 428px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -136,7 +135,7 @@ export default function MissionPopup() {
     }
   }, [buyState])
   return (
-    <Fullscreen width="428px" show={showPopup}>
+    <Fullscreen width="660px" show={showPopup}>
       <StyledMissionPopup>
         <StyledCloseButton color="white" onClose={() => dispatch(hideMissionPopup())} />
         <StyledTitle>
