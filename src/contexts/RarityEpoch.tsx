@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client'
+import { RARITY_S2_END } from 'constant'
 import { GET_EPOCH } from 'graphs/otto'
 import { GetEpoch, GetEpochVariables } from 'graphs/__generated__/GetEpoch'
 import { useTranslation } from 'next-i18next'
@@ -19,20 +20,26 @@ const RarityEpochContext = createContext({
 export const RarityEpochProvider = ({ children }: PropsWithChildren<object>) => {
   const { t } = useTranslation()
   const router = useRouter()
-  const epochNum = Number(router.query.epoch || -1)
+  let epochNum = Number(router.query.epoch || -1)
+  if (Date.now() > RARITY_S2_END) {
+    epochNum = 9
+  }
   const { data } = useQuery<GetEpoch, GetEpochVariables>(GET_EPOCH, {
     variables: { epoch: epochNum },
   })
   const latestEpoch = data?.latestEpoch[0]
   const epoch = data?.epoches[0] || data?.latestEpoch[0]
-  const isLatestEpoch = data?.epoches?.length === 0 || epoch?.num === latestEpoch?.num
+  let isLatestEpoch = data?.epoches?.length === 0 || epoch?.num === latestEpoch?.num
+  if (Date.now() > RARITY_S2_END) {
+    isLatestEpoch = true
+  }
   const epochEndTime = (epoch?.endedAt || 0) * 1000
   const hasPrevEpoch = (epochNum === -1 || epochNum > 0) && (latestEpoch?.num || 0) > 0
   const hasNextEpoch = !isLatestEpoch
   const totalOttoSupply = (epoch?.totalOttos ?? 0) - 250
   const value = useMemo(
     () => ({
-      epoch: epoch?.num || -1,
+      epoch: epochNum,
       epochEndTime,
       isLatestEpoch,
       hasPrevEpoch,
