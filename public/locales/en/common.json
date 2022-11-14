@@ -614,6 +614,18 @@
       "voters": "Voters",
       "ocvoted": "OtterClam Voted:",
       "youVoted": "You Voted:"
+    },
+    "investments": {
+      "fromDate": "From Date:",
+      "toDate": "To Date:",
+      "tableHeader": {
+        "investment": "Investment",
+        "protocol": "Protocol",
+        "portfolioPct": "Portfolio %",
+        "averageApr": "Average APR",
+        "positionChange": "Position Change",
+        "pnl": "Net Profit/Loss"
+      }
     }
   },
   "stake": {

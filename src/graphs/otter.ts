@@ -149,7 +149,12 @@ export const GET_LAST_PAYOUT_TO_ADDRESS = gql`
 
 export const GET_INVESTMENTS = gql`
   query Investments($from: BigInt, $to: BigInt) {
-    investments(where: { timestamp_gte: $from, timestamp_lte: $to }, orderBy: timestamp, orderDirection: asc) {
+    investments(
+      where: { timestamp_gte: $from, timestamp_lte: $to }
+      orderBy: timestamp
+      orderDirection: asc
+      first: 1000
+    ) {
       id
       protocol
       strategy

@@ -19,16 +19,6 @@ const StyledContainer = styled.div`
   justify-content: space-evenly;
   font-family: 'Pangolin', 'naikaifont' !important;
 `
-// `
-//   padding: 15px;
-//   margin-bottom: 4px;
-//   border-radius: 10px;
-//   box-sizing: border-box;
-//   border: 1px solid ${({ theme }) => theme.colors.darkBrown};
-//   box-shadow: 0px 4px 0px ${({ theme }) => theme.colors.superDarkBrown},
-//     inset 0px 0px 0px 4px ${({ theme }) => theme.colors.skin};
-//   background: ${({ theme }) => theme.colors.white};
-// `
 
 const StyledCard = styled.div<{ maxH: string }>`
   margin: 4px;

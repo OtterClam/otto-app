@@ -119,16 +119,16 @@ export default function GopvernancePage({ className }: Props) {
           <StyledTab selected={tab === GovernanceTab.OTTERCLAM} onClick={() => setTab(GovernanceTab.OTTERCLAM)}>
             {t('otterclam_tab')}{' '}
           </StyledTab>
-          <StyledTab selected={tab === GovernanceTab.DYST_PEN} onClick={() => setTab(GovernanceTab.DYST_PEN)}>
+          {/* <StyledTab selected={tab === GovernanceTab.DYST_PEN} onClick={() => setTab(GovernanceTab.DYST_PEN)}>
             {t('dyst_pen_tab')}{' '}
-          </StyledTab>
+          </StyledTab> */}
           <StyledTab selected={tab === GovernanceTab.QIDAO} onClick={() => setTab(GovernanceTab.QIDAO)}>
             {t('qidao_tab')}{' '}
           </StyledTab>
         </StyledTabs>
         <StyledBody>
           {tab === GovernanceTab.OTTERCLAM && <OtterClamTab />}
-          {tab === GovernanceTab.DYST_PEN && <DystopiaPenroseTab />}
+          {/* {tab === GovernanceTab.DYST_PEN && <DystopiaPenroseTab />} */}
           {tab === GovernanceTab.QIDAO && <QiDaoTab />}
         </StyledBody>
       </TreasurySection>

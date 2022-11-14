@@ -74,7 +74,7 @@ export default function InvestmentsChart({ data, avgApr }: InvestmentsChartProps
         </defs>
         <ChartXAxis
           dataKey="timestamp"
-          interval={1}
+          interval={'preserveStartEnd'}
           axisLine={false}
           tick={xAxisTickProps}
           tickLine={false}

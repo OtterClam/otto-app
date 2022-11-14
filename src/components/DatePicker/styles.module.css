@@ -10,6 +10,7 @@
   justify-content: center;
   animation: fadeIn 0.5s;
   z-index: 500;
+  margin-top: 2px;
 }
 
 .lightbox {
@@ -20,6 +21,7 @@
   border-radius: 0.5rem;
   overflow: hidden;
   animation: zoomIn 300ms;
+  margin-top: 8px;
 }
 
 .header {

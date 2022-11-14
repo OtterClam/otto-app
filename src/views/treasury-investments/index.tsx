@@ -26,6 +26,7 @@ interface Props {
 
 const StyledTableHeader = styled.tr`
   color: ${({ theme }) => theme.colors.lightGray400};
+  padding-top: 20px;
 `
 
 const StyledTable = styled.table`
@@ -49,7 +50,6 @@ const StyledCard = styled.div`
   margin-bottom: 8px;
   border-radius: 10px;
   box-sizing: border-box;
-
   background: ${({ theme }) => theme.colors.darkGray400};
 `
 
@@ -58,7 +58,6 @@ const StyledChartCard = styled.div`
   margin: 16px 0;
   border-radius: 10px;
   box-sizing: border-box;
-
   background: ${({ theme }) => theme.colors.otterBlack};
 `
 const StyledImage = styled(Image)`
@@ -67,6 +66,26 @@ const StyledImage = styled(Image)`
   fill: white;
 `
 
+const StyledDateContainer = styled.div`
+  display: flex;
+  justify-content: right;
+  font-family: 'Pangolin', 'naikaifont' !important;
+`
+
+const StyledDateButton = styled.button`
+  font-family: 'Pangolin', 'naikaifont' !important;
+  color: white;
+`
+
+const StyledDate = styled.div`
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  padding: 4px;
+  background: ${({ theme }) => theme.colors.darkGray300};
+  border: 4px solid ${({ theme }) => theme.colors.darkGray400};
+  border-radius: 10px;
+`
 interface InvestmentProps {
   investments?: Investments_investments[]
   portfolioPct?: number
@@ -85,10 +104,6 @@ function InvestmentPosition({ investments, portfolioPct }: InvestmentProps) {
     [investments]
   )
 
-  //Increase = New Number - Original Number
-  //% increase = Increase ÷ Original Number × 100.
-  //% Decrease = Decrease ÷ Original Number × 100
-
   const original = parseFloat(investments[0]?.netAssetValue)
   const newVal = parseFloat(investments.at(-1)?.netAssetValue)
   const gain = original < newVal
@@ -97,29 +112,31 @@ function InvestmentPosition({ investments, portfolioPct }: InvestmentProps) {
 
   const valueChangePct = (valueChange / parseFloat(investments[0]?.netAssetValue)) * 100
 
-  const pnl = valueChange + revenueSum
-  const pnlPct = (pnl / parseFloat(investments.at(-1)?.netAssetValue)) * 100
+  const pnl = gain ? revenueSum + valueChange : revenueSum - valueChange
+  const pnlPct = (pnl / parseFloat(investments[0]?.netAssetValue)) * 100
 
   const [isOpen, setIsOpen] = useState<boolean>(false)
   return (
     <StyledRow onClick={() => setIsOpen(!isOpen)}>
       <StyledTable>
-        <tr>
-          <td>{investments[0].strategy}</td>
-          <td>
-            {investments[0].protocol}{' '}
-            {/* <StyledImage height={100} style={{ display: 'unset !important' }} src={LinkIcon} /> */}
-          </td>
-          <td>{portfolioPct?.toFixed(2)}%</td>
-          <td>{avgGrossApr.toFixed(2)}%</td>
-          {/* <td>{formatUsd(investments.at(-1)?.grossRevenue)}</td> */}
-          <td>{`${negStr}${valueChangePct.toFixed(2)}%`}</td>
-          <td>{pnlPct.toFixed(2)}%</td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>{investments[0].strategy}</td>
+            <td>
+              {investments[0].protocol}{' '}
+              {/* <StyledImage height={100} style={{ display: 'unset !important' }} src={LinkIcon} /> */}
+            </td>
+            <td>{portfolioPct?.toFixed(2)}%</td>
+            <td>{avgGrossApr.toFixed(2)}%</td>
+            {/* <td>{formatUsd(investments.at(-1)?.grossRevenue)}</td> */}
+            <td>{`${negStr}${valueChangePct.toFixed(2)}%`}</td>
+            <td>{pnlPct.toFixed(2)}%</td>
+          </tr>
+        </tbody>
       </StyledTable>
       {isOpen && (
         <StyledChartCard>
-          <InvestmentsChart data={investments} avgApr={avgGrossApr} />
+          <InvestmentsChart data={investments} avgApr={avgGrossApr} key={Math.random()} />
         </StyledChartCard>
       )}
     </StyledRow>
@@ -127,7 +144,7 @@ function InvestmentPosition({ investments, portfolioPct }: InvestmentProps) {
 }
 
 export default function InvestmentsPage({ className }: Props) {
-  const { t } = useTranslation('', { keyPrefix: 'investments' })
+  const { t } = useTranslation('', { keyPrefix: 'treasury.investments' })
 
   const daySecs = 60 * 60 * 24
   const nowDate = new Date(Date.now()).setHours(0, 0, 0, 0)
@@ -137,10 +154,8 @@ export default function InvestmentsPage({ className }: Props) {
   const [fromDateOpen, setFromDateOpen] = useState(false)
   const [toDateOpen, setToDateOpen] = useState(false)
 
-  const { loading, investments } = useInvestments(fromDate, toDate)
-
-  //order of the pcts AFTER sorting
-  //sort
+  const { investments } = useInvestments(fromDate, toDate)
+  const { loading, metrics } = useTreasuryMetrics()
 
   const joinedInvestments = useMemo(() => {
     const groupedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
@@ -155,20 +170,27 @@ export default function InvestmentsPage({ className }: Props) {
   }, [investments])
 
   const sortedInvestments = useMemo(() => joinedInvestments.map(x => x.inv), [joinedInvestments])
+  const toDateMetrics = useMemo(
+    () =>
+      metrics.reduce(function (prev, curr) {
+        return Math.abs(parseInt(curr.id) - toDate) < Math.abs(parseInt(prev.id) - toDate) ? curr : prev
+      }),
+    [metrics, toDate]
+  )
 
   return (
     <StyledContainer className={className}>
       <TreasurySection>
         <StyledInnerContainer>
-          <div>
-            <button
+          <StyledDateContainer>
+            <StyledDateButton
               onClick={() => {
                 setFromDateOpen(true)
               }}
-              style={{ color: 'white' }}
             >
-              {new Date(fromDate * 1000).toDateString()}
-            </button>
+              {t('fromDate')}
+              <StyledDate>{new Date(fromDate * 1000).toDateString()}</StyledDate>
+            </StyledDateButton>
             <DatePicker
               isOpen={fromDateOpen}
               onChange={(date: Date | null) => {
@@ -183,14 +205,14 @@ export default function InvestmentsPage({ className }: Props) {
               headerFormat="m/dd"
             />
 
-            <button
+            <StyledDateButton
               onClick={() => {
                 setToDateOpen(true)
               }}
-              style={{ color: 'white' }}
             >
-              {new Date(toDate * 1000).toDateString()}
-            </button>
+              {t('toDate')}
+              <StyledDate>{new Date(toDate * 1000).toDateString()}</StyledDate>
+            </StyledDateButton>
             <DatePicker
               isOpen={toDateOpen}
               onChange={(date: Date | null) => {
@@ -200,23 +222,26 @@ export default function InvestmentsPage({ className }: Props) {
               }}
               onClose={() => setToDateOpen(false)}
               defaultValue={new Date(now * 1000)}
-              minDate={new Date(fromDate * 1000)}
+              minDate={new Date((fromDate + daySecs) * 1000)}
               maxDate={new Date(now * 1000)}
               headerFormat="m/dd"
             />
-          </div>
+          </StyledDateContainer>
+
           <StyledTable>
-            <StyledTableHeader>
-              <td>Investment</td>
-              <td>Protocol</td>
-              <td>Portfolio Percentage</td>
-              <td>Average APR</td>
-              <td>Position Chage</td>
-              <td>Net Profit/Loss</td>
-            </StyledTableHeader>
+            <thead>
+              <StyledTableHeader>
+                <td>{t('tableHeader.investment')}</td>
+                <td>{t('tableHeader.protocol')}</td>
+                <td>{t('tableHeader.portfolioPct')}</td>
+                <td>{t('tableHeader.averageApr')}</td>
+                <td>{t('tableHeader.positionChange')}</td>
+                <td>{t('tableHeader.pnl')}</td>
+              </StyledTableHeader>
+            </thead>
           </StyledTable>
           {sortedInvestments.map((inv, i) => (
-            <StyledCard>
+            <StyledCard key={`card_${i}`}>
               <InvestmentPosition investments={inv} portfolioPct={joinedInvestments[i].pct} />
             </StyledCard>
           ))}
