@@ -20,7 +20,6 @@ export interface GetTreasuryMetrics_protocolMetrics {
   totalBurnedClamMarketValue: any;
   treasuryMarketValue: any;
   treasuryMarketValueWithoutClam: any;
-  totalClamUsdPlusRebaseValue: any;
   treasuryWmaticMarketValue: any;
   treasuryDystMarketValue: any;
   treasuryVeDystMarketValue: any;
