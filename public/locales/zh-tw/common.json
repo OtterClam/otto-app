@@ -145,7 +145,9 @@
       "bank": "珍珠銀行"
     },
     "play": "開始玩",
-    "title": "歡迎來到阿獺王國"
+    "title": "歡迎來到阿獺王國",
+    "docDesc": "在阿獺王國，你的角色將透過傳送門化身為阿獺，在這片美麗又迷人的國度進行生活和探險，這裡還有許多集會、比賽以及道具商店，讓你跟你的阿獺能快樂遊玩！",
+    "docTitle": "$t(home.title)$t(titleSuffix)"
   },
   "leaderboard": {
     "head": "成為最稀有的阿獺來贏得獎金!",
@@ -180,6 +182,8 @@
     },
     "shell_chest_link": "購買貝殼寶箱 >",
     "title": "排行榜",
+    "docDesc": "阿獺王國會不定期舉辦各類型比賽的排行榜，準備好你的阿獺，讓他們發揮自己最大的優勢，站上排行榜之列，並贏得包含 CLAM, FISH 甚至稀有道具等獎品吧！",
+    "docTitle": "$t(leaderboard.title)$t(titleSuffix)",
     "right_info": "這一輪比賽獎勵星座落在<span style=\"color: #FFDC77\">處女座</span>，所有此星座的阿獺、蘿提及克蕾歐都會被神祝福並賜予特殊效果： <span style=\"color: #FF6854\">BRS +50</span>",
     "left_info_link": "主題加成如何運作 >",
     "left_info": "只要你的阿獺 NFT 穿上的物品符合此輪比賽所指定的主題標籤： <span style=\"color: #FFDC77\">{{ themes }}</span> ，就可以得到額外稀有度分數加成！"
@@ -249,6 +253,8 @@
     },
     "portal_amount": "傳送門:",
     "title": "鑄造傳送門",
+    "docDesc": "想要加入阿獺王國，首先你得需要傳送門將阿獺傳送到王國。馬上鑄造一個傳送門，就可以開啟你的專屬阿獺進行遊玩了！",
+    "docTitle": "$t(mint.title)$t(titleSuffix)",
     "total_payment": "總計:"
   },
   "mint_banner": {
@@ -547,7 +553,9 @@
     "shell_chest": "貝殼寶箱",
     "subtitle_1": "這些寶箱可開啟多達 600 多個特殊道具，且寶箱現正特價中，買越多省越多，嗚獺！一個寶箱可以開啟一個道具，嗚獺！",
     "subtitle_2": "走過路過千萬別錯過！這些寶箱裡的道具可以讓阿獺變得更強，趁打折期間快來增強戰力，嗚獺！",
-    "title": "阿獺王國商店"
+    "title": "阿獺王國商店",
+    "docDesc": "在阿獺王國商店，有眾多商品供你選購，除了常駐的貝殼寶箱之外，也會有不定期的主題寶箱或季節限定寶箱，也會有限時道具特賣，記得每天都要上來看看有什麼新貨到來喔。",
+    "docTitle": "$t(store.title)$t(titleSuffix)"
   },
   "unsupported_network": {
     "action": "切換到 Polygon",
@@ -576,6 +584,8 @@
     },
     "dashboard": {
       "title": "國庫概況",
+      "docDesc": "透過阿獺王國的國庫概況，可以了解到王國目前的財政狀況，在這裡，你也可以投入貝殼幣到水池，或是存入珍珠銀行，來賺取更多獎勵。",
+      "docTitle": "$t(treasury.dashboard.title)$t(titleSuffix)",
       "clamPrice": "CLAM 價格",
       "backing": "CLAM 單位價值",
       "backingTooltip": "國庫的總資產價值除以 CLAM 流通量。已排除國庫中的 CLAM 價值。",
@@ -773,6 +783,8 @@
   },
   "foundry": {
     "title": "鑄造廠",
+    "docDesc": "歡迎來到鑄造廠，在這裡你可以將多個物品重新鑄造成一個新物品, 並且有機會得到稀有度或數值較高的物品！",
+    "docTitle": "$t(foundry.title)$t(titleSuffix)",
     "dialog": {
       "title": "歡迎來到鑄造廠！",
       "content": "歡迎來到鑄造廠，在這裡你可以將多個物品重新鑄造成一個新物品, 並且有機會得到稀有度或數值較高的物品！"
@@ -936,6 +948,8 @@
   },
   "adventure": {
     "title": "冒險",
+    "docDesc": "準備好踏出阿獺王國去探險了嗎？在叢林、沙漠、溪流甚至是未知之境，藏著許多寶藏和任務道具等著你來探索，快準備好阿獺的裝備，出發冒險吧！",
+    "docTitle": "$t(adventure.title)$t(titleSuffix)",
     "continue": "更多區域即將開放...",
     "listTitle": "阿獺概況",
     "viewSwitcher": {

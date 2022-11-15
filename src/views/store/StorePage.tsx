@@ -7,6 +7,7 @@ import { useTranslation } from 'next-i18next'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentMedium, Display3 } from 'styles/typography'
+import Head from 'next/head'
 import BorderedProductCard from './BorderedProductCard'
 import Curtain from './Curtain'
 import FlashSellInfo from './FlashSellInfo'
@@ -180,6 +181,13 @@ export default function StorePage() {
   }, [api, products])
   return (
     <>
+      <Head>
+        <title>{t('docTitle')}</title>
+        <meta property="og:title" content={t('docTitle')} />
+        <meta name="description" content={t('docDesc')} />
+        <meta property="og:description" content={t('docDesc')} />
+        <meta property="og:image" content="/og.jpg" />
+      </Head>
       <StyledStorePage>
         <StyledCurtain />
         <StyledHeroSection>

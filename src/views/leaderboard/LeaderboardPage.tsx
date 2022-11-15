@@ -5,6 +5,7 @@ import Link from 'next/link'
 import styled from 'styled-components/macro'
 import { Display3, Headline } from 'styles/typography'
 import { useLeaderboardEpoch } from 'contexts/LeaderboardEpoch'
+import Head from 'next/head'
 import Hero from './Hero'
 import Info from './Info'
 import RightInfo from './right-info.png'
@@ -60,6 +61,13 @@ export default function LeaderboardPage() {
 
   return (
     <StyledLeaderboardPage>
+      <Head>
+        <title>{t('docTitle')}</title>
+        <meta property="og:title" content={t('docTitle')} />
+        <meta name="description" content={t('docDesc')} />
+        <meta property="og:description" content={t('docDesc')} />
+        <meta property="og:image" content="/og.jpg" />
+      </Head>
       <StyledHead>
         {hasPrevEpoch ? (
           <Link
