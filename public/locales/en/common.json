@@ -1,7 +1,7 @@
 {
   "languages": {
     "en": "English",
-    "zh-tw": "繁体中文",
+    "zh-tw": "繁體中文",
     "zh-cn": "简体中文"
   },
   "titleSuffix": " | The first official citizen of the Otter Kingdom",
@@ -152,7 +152,7 @@
       "bank": "Pearl Bank"
     },
     "title": "Ottopia",
-    "docDesc": "",
+    "docDesc": "Otto is the first official citizen of the Otter Kingdom. Each Otto is an ERC721 NFT with unique traits and attributes. These NFTs are not only irresistibly cute, but they also happen to be the main characters of OtterClam’s first adventure game – Ottopia.",
     "docTitle": "$t(home.title)$t(titleSuffix)"
   },
   "leaderboard": {
@@ -188,7 +188,7 @@
     },
     "shell_chest_link": "Buy Shell Chest >",
     "title": "Leaderboard",
-    "docDesc": "",
+    "docDesc": "Attend the Ottopia leaderboard competitions to earn CLAM, FISH and previous prizes! It strives to reward the users who are the most thoughtfully and enthusiastically engaged with the ecosystem. As its name suggests, this is a process where you attempt to raise the rarest and bravest Otto, Lottie or Cleo, and get rewarded for doing so.",
     "docTitle": "$t(leaderboard.title)$t(titleSuffix)",
     "right_info": "The upcoming epoch falls to <span style=\"color: #FFDC77\">{{constellation}}</span>. The god of {{constellation}} has blessed every {{constellation}} Otto, Lottie and Cleo with glory and power! <span style=\"color: #FF6854\">BRS +50</span>",
     "left_info_link": "See how BRS boost works >",
@@ -259,7 +259,7 @@
     },
     "portal_amount": "Otto Portals:",
     "title": "Mint Portals",
-    "docDesc": "",
+    "docDesc": "To enter the Otterverse and find the floating island, you must generate a portal. Portals can be thought of as intergalactic wormholes that transform humans into otters while sending them to the Otterverse.",
     "docTitle": "$t(mint.title)$t(titleSuffix)",
     "total_payment": "Total Payment:"
   },
@@ -563,7 +563,7 @@
     "subtitle_1": "These Shell Chests contain more than 600+ pieces of special, wearable equipment, and they're on sale! The more you buy, the more you save! Each Chest holds 1 item!",
     "subtitle_2": "Good things come to Otters who wait, unless they're on sale! These Shell Chests are a deal worth running for!",
     "title": "Ottopia Store",
-    "docDesc": "",
+    "docDesc": "These Shell Chests contain more than 600+ pieces of special, wearable equipment, and they're on sale! The more you buy, the more you save! Each Chest holds 1 item!",
     "docTitle": "$t(store.title)$t(titleSuffix)"
   },
   "unsupported_network": {
@@ -593,7 +593,7 @@
     },
     "dashboard": {
       "title": "Treasury Dashboard",
-      "docDesc": "",
+      "docDesc": "Checkout the treasury page where you can stake your Clam in the Clam pond or Pearl bank to earn APY on your Clam to earn more CLAM or USD+ stablecoin.",
       "docTitle": "$t(treasury.dashboard.title)$t(titleSuffix)",
       "clamPrice": "CLAM Price",
       "backing": "Backing per CLAM",
@@ -801,7 +801,7 @@
   },
   "foundry": {
     "title": "Foundry",
-    "docDesc": "",
+    "docDesc": "Welcome to the Foundry, where you can melt several items to create a new item with the possibility of getting a higher rarity score or better attributes!",
     "docTitle": "$t(foundry.title)$t(titleSuffix)",
     "dialog": {
       "title": "Welcome to the Foundry!",
@@ -966,7 +966,7 @@
   },
   "adventure": {
     "title": "Adventure",
-    "docDesc": "",
+    "docDesc": "The adventure system is now open! In the adventure system, Ottos can explore a wide variety of adventure areas in Ottopia and discover brand new Mission Items, Collectibles, and Wearable Items only available in specific areas.",
     "docTitle": "$t(adventure.title)$t(titleSuffix)",
     "continue": "To Be Continued...",
     "listTitle": "Overview",
