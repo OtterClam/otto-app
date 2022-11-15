@@ -3,7 +3,7 @@ import Arrow from 'views/store/StoreHero/arrow.svg'
 import { useTranslation } from 'next-i18next'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { ContentMedium, Headline } from 'styles/typography'
+import { ContentExtraSmall, ContentMedium, Headline } from 'styles/typography'
 import TreasurySection from 'components/TreasurySection'
 import useInvestments from 'hooks/useInvestments'
 import { Investments_investments } from 'graphs/__generated__/Investments'
@@ -15,6 +15,7 @@ import TreasuryCard from 'components/TreasuryCard'
 import { formatUsd } from 'utils/currency'
 import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
 import DatePicker from 'components/DatePicker'
+import Help from 'components/Help'
 
 const StyledContainer = styled.div`
   font-family: 'Pangolin', 'naikaifont' !important;
@@ -85,6 +86,62 @@ const StyledDate = styled.div`
   background: ${({ theme }) => theme.colors.darkGray300};
   border: 4px solid ${({ theme }) => theme.colors.darkGray400};
   border-radius: 10px;
+`
+
+const StyledMetricsContainer = styled.div`
+  position: relative;
+  margin: 24px 34px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -35px;
+    right: -45px;
+    width: 77px;
+    height: 56px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -24px;
+    right: -35px;
+    width: 105px;
+    height: 85px;
+  }
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 5px;
+    margin: 5px;
+
+    &::before {
+      width: 51px;
+      height: 37px;
+      background-size: 51px 37px;
+      right: -16px;
+      top: -16px;
+    }
+
+    &::after {
+      width: 70px;
+      height: 57px;
+      background-size: 70px 57px;
+      right: -6px;
+      bottom: -5px;
+    }
+  }
+`
+
+const StyledTreasuryCard = styled(TreasuryCard)`
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: black;
 `
 interface InvestmentProps {
   investments?: Investments_investments[]
@@ -157,19 +214,6 @@ export default function InvestmentsPage({ className }: Props) {
   const { investments } = useInvestments(fromDate, toDate)
   const { loading, metrics } = useTreasuryMetrics()
 
-  const joinedInvestments = useMemo(() => {
-    const groupedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
-    const currentInvestments = groupedInvestments.flatMap(x => x.at(-1))
-    const tmv = currentInvestments?.reduce((prev, curr) => prev + Number.parseFloat(curr?.netAssetValue), 0)
-    const portfolioPcts = currentInvestments.flatMap(x => (parseFloat(x?.netAssetValue) / tmv) * 100)
-    return groupedInvestments
-      .map((x, i) => {
-        return { inv: x, pct: portfolioPcts[i] }
-      })
-      .sort((a, b) => b.pct - a.pct)
-  }, [investments])
-
-  const sortedInvestments = useMemo(() => joinedInvestments.map(x => x.inv), [joinedInvestments])
   const toDateMetrics = useMemo(
     () =>
       metrics.reduce(function (prev, curr) {
@@ -178,8 +222,52 @@ export default function InvestmentsPage({ className }: Props) {
     [metrics, toDate]
   )
 
+  const joinedInvestments = useMemo(() => {
+    const groupedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
+    const currentInvestments = groupedInvestments.flatMap(x => x.at(-1))
+    const portfolioPcts = currentInvestments.flatMap(x => {
+      if (parseInt(x?.timestamp ?? '0') != parseInt(toDateMetrics.id) - daySecs) return 0
+      return (parseFloat(x?.netAssetValue) / parseFloat(toDateMetrics.treasuryMarketValue)) * 100
+    })
+    return groupedInvestments
+      .map((x, i) => {
+        return { inv: x, pct: portfolioPcts[i] }
+      })
+      .sort((a, b) => b.pct - a.pct)
+  }, [investments, toDateMetrics])
+
+  const sortedInvestments = useMemo(() => joinedInvestments.map(x => x.inv), [joinedInvestments])
+  const revenue = sortedInvestments?.reduce(
+    (prev, curr) => prev + curr?.reduce((prev2, curr2) => prev2 + Number.parseFloat(curr2?.grossRevenue), 0),
+    0
+  )
+
+  const dateDiff = useMemo(() => (toDate - fromDate) / daySecs, [toDate, fromDate])
+  const netApr = Math.pow(1 + revenue / toDateMetrics.treasuryMarketValue / dateDiff, 365) * 100 - 100
   return (
     <StyledContainer className={className}>
+      <TreasurySection>
+        <StyledMetricsContainer>
+          <StyledTreasuryCard>
+            <Help message={t('marketcapTooltip')}>
+              <ContentExtraSmall>{t('tmv')}</ContentExtraSmall>
+            </Help>
+            <ContentMedium>{loading ? '--' : formatUsd(toDateMetrics.treasuryMarketValue)}</ContentMedium>
+          </StyledTreasuryCard>
+          <StyledTreasuryCard>
+            <Help message={t('marketcapTooltip')}>
+              <ContentExtraSmall>{t('grossRevenue')}</ContentExtraSmall>
+            </Help>
+            <ContentMedium>{loading ? '--' : `${formatUsd(revenue)} / ${dateDiff.toFixed(0)} days`}</ContentMedium>
+          </StyledTreasuryCard>
+          <StyledTreasuryCard>
+            <Help message={t('marketcapTooltip')}>
+              <ContentExtraSmall>{t('totalApy')}</ContentExtraSmall>
+            </Help>
+            <ContentMedium>{loading ? '--' : netApr.toFixed(2)}%</ContentMedium>
+          </StyledTreasuryCard>
+        </StyledMetricsContainer>
+      </TreasurySection>
       <TreasurySection>
         <StyledInnerContainer>
           <StyledDateContainer>

@@ -12,6 +12,7 @@ import OtterClamTab from './OtterClamTab'
 import QiDaoTab from './QiDaoTab'
 import Garden from './garden.png'
 import OtterVote from './otter-vote.png'
+import TreasuryCard from 'components/TreasuryCard'
 
 const StyledContainer = styled.div``
 
