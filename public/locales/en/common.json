@@ -746,7 +746,9 @@
     "wearBy": "{{ name }} is wearing this item",
     "unavailable": "Unavailable",
     "takeOff": "Take Off",
-    "noItems": "No Items Found"
+    "noItems": "No Items Found",
+    "equippedCount_other": "{{count}} Ottos have this trait",
+    "equippedCount_one": "{{count}} Otto have this trait"
   },
   "ongoingOttos": {
     "title": "The Ottos currently exploring this place",

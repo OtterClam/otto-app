@@ -14,6 +14,9 @@ import Otto from 'models/Otto'
 import { AdventureOttoProvider } from 'contexts/AdventureOtto'
 import { useDoItemBatchActions } from 'contracts/functions'
 import { useMyOttos } from 'MyOttosProvider'
+import UseItemCompleteView from 'views/my-items/use-item/UseItemCompleteView'
+import { useDispatch } from 'react-redux'
+import { hideOttoPopup } from 'store/uiSlice'
 
 const StyledContainer = styled.div`
   display: grid;
@@ -78,10 +81,13 @@ const StyledSubmitButtonHelp = styled(Note)`
 `
 
 export default function OttoPopupBody() {
+  const dispatch = useDispatch()
   const container = useRef<HTMLDivElement>(null)
   const { t } = useTranslation('', { keyPrefix: 'ottoPopup' })
   const [preview, setPreview] = useState<{ otto: Otto }>()
   const { updateOtto } = useMyOttos()
+  const [saved, setSaved] = useState(false)
+  const [oldOtto, setOldOtto] = useState<Otto | undefined>()
   const { otto, itemActions, unequipAllItems, setOtto } = useOtto()
   const { ottos: ottosRepo } = useRepositories()
   const [loadingPreviewData, setLoadingPreviewData] = useState(false)
@@ -108,8 +114,9 @@ export default function OttoPopupBody() {
   useEffect(() => {
     if (doItemBatchActionsState.state === 'Success' && otto) {
       otto.raw.resting_until = doItemBatchActionsState.restingUntil?.toISOString()
-      setOtto(otto.clone())
-      updateOtto(otto)
+      setOtto(preview!.otto.clone())
+      updateOtto(preview!.otto)
+      setSaved(true)
     } else if (doItemBatchActionsState.state === 'Fail') {
       alert(doItemBatchActionsState.status.errorMessage)
       resetDoItemBatchActions()
@@ -136,6 +143,17 @@ export default function OttoPopupBody() {
       controller.abort()
     }
   }, [ottosRepo, otto?.id, itemActions])
+
+  if (saved && oldOtto) {
+    return (
+      <UseItemCompleteView
+        otto={oldOtto}
+        updatedOtto={preview?.otto}
+        hideCloseButton
+        onClose={() => dispatch(hideOttoPopup())}
+      />
+    )
+  }
 
   return (
     <AdventureOttoProvider otto={otto} draftOtto={preview?.otto}>
@@ -166,7 +184,10 @@ export default function OttoPopupBody() {
             disabled={!otto || itemActions.length === 0 || loading}
             loading={txPending}
             Typography={Headline}
-            onClick={() => doItemBatchActions(otto!.id, itemActions)}
+            onClick={() => {
+              setOldOtto(otto)
+              doItemBatchActions(otto!.id, itemActions)
+            }}
           >
             {t('submitButton')}
           </StyledSubmitButton>
