@@ -136,6 +136,8 @@ export default class Otto {
 
   public ranking = 0
 
+  public apRanking = 0
+
   public geneticTraits: Trait[] = []
 
   public wearableTraits: Trait[] = []
@@ -222,6 +224,8 @@ export default class Otto {
         this.coatOfArms = String(value)
       } else if (trait_type === 'Ranking') {
         this.ranking = Number(value)
+      } else if (trait_type === 'Ap Ranking') {
+        this.apRanking = Number(value)
       } else if (trait_type === 'Zodiac Sign') {
         this.zodiacSign = String(value)
       } else if (trait_type === 'EXP') {

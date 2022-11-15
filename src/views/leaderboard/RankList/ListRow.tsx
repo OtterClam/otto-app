@@ -1,4 +1,5 @@
 import CLAM from 'assets/clam.png'
+import FISH from 'assets/fish.png'
 import styled from 'styled-components/macro'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import Otto from 'models/Otto'
@@ -167,7 +168,7 @@ const StyledOttoAvatarContainer = styled.div<{ isMyOttoRow?: boolean }>`
   }
 `
 
-const StyledReward = styled(ContentLarge).attrs({ as: 'div' })`
+const StyledReward = styled(ContentLarge).attrs({ as: 'div' })<{ isAdventure?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -176,7 +177,7 @@ const StyledReward = styled(ContentLarge).attrs({ as: 'div' })`
     content: '';
     width: 24px;
     height: 24px;
-    background-image: url(${CLAM.src});
+    background-image: url(${({ isAdventure }) => (isAdventure ? FISH.src : CLAM.src)});
     background-size: 100%;
   }
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -243,7 +244,9 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
               <OttoBoostLabels otto={otto} />
               {isAdventure && (
                 <>
-                  <StyledReward as="div">-</StyledReward>
+                  <StyledReward isAdventure as="div">
+                    -
+                  </StyledReward>
                   <StyledTd>{ap}</StyledTd>
                 </>
               )}
@@ -279,7 +282,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
             </StyledAvatarName>
           </StyledTd>
           <StyledTd>
-            <StyledReward>{isAdventure ? '-' : estimatedReward}</StyledReward>
+            <StyledReward isAdventure={isAdventure}>{isAdventure ? '-' : estimatedReward}</StyledReward>
           </StyledTd>
           {!isAdventure && (
             <>

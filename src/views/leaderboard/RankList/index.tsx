@@ -212,7 +212,7 @@ export default function RankList({ className }: Props) {
           <StyledMyOttoSection isLatestEpoch={isLatestEpoch}>
             <StyledHint>{t('your_rank')}</StyledHint>
             {(expand ? sortedMyOttos : sortedMyOttos.slice(0, 1)).map(otto => (
-              <ListRow key={otto.id} isMyOttoRow otto={otto} rank={otto.ranking} />
+              <ListRow key={otto.id} isMyOttoRow otto={otto} rank={adventure ? otto.apRanking : otto.ranking} />
             ))}
             <StyledExpandColumn as="div" expand={expand} onClick={() => setExpand(expand => !expand)}>
               {expand ? t('show_less') : t('expand', { count: myOttos.length })}
