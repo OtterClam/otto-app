@@ -53,7 +53,6 @@ export const GET_TREASURY_METRICS = gql`
 
       #treasury LPs
       treasuryClamMaiMarketValue
-      treasuryMaiUsdcMarketValue
       treasuryMaiUsdcQiInvestmentValue
       treasuryQiWmaticMarketValue
       treasuryMaiStMaticMarketValue

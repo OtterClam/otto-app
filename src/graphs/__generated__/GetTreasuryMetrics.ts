@@ -33,7 +33,6 @@ export interface GetTreasuryMetrics_protocolMetrics {
   treasuryUsdPlusMarketValue: any;
   treasurySandMarketValue: any;
   treasuryClamMaiMarketValue: any;
-  treasuryMaiUsdcMarketValue: any;
   treasuryMaiUsdcQiInvestmentValue: any;
   treasuryQiWmaticMarketValue: any;
   treasuryMaiStMaticMarketValue: any;
