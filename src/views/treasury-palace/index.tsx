@@ -48,14 +48,14 @@ export default function PalacePage() {
             {t('dashboard_tab')}{' '}
           </StyledTab>
         </Link>
-        <Link href="#governance" replace>
-          <StyledTab selected={tab === PalaceTab.GOVERNANCE} onClick={() => setTab(PalaceTab.GOVERNANCE)}>
-            {t('governance_tab')}{' '}
-          </StyledTab>
-        </Link>
         <Link href="#investments" replace>
           <StyledTab selected={tab === PalaceTab.INVESTMENTS} onClick={() => setTab(PalaceTab.INVESTMENTS)}>
             {t('investments_tab')}{' '}
+          </StyledTab>
+        </Link>
+        <Link href="#governance" replace>
+          <StyledTab selected={tab === PalaceTab.GOVERNANCE} onClick={() => setTab(PalaceTab.GOVERNANCE)}>
+            {t('governance_tab')}{' '}
           </StyledTab>
         </Link>
       </StyledTabs>

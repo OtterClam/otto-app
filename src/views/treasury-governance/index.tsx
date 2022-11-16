@@ -48,19 +48,15 @@ const StyledBody = styled.div`
 `
 
 const StyledDialog = styled.div`
+  font-family: 'Pangolin', 'naikaifont' !important;
   color: ${({ theme }) => theme.colors.otterBlack};
   background: white;
-  position: absolute;
-  top: 20%;
-  left: 15%;
-  width: 35%;
+  position: relative;
+  margin-right: 30%;
+  width: max-content;
   border-radius: 20px;
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
   padding: 20px;
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    visibility: hidden;
-  }
 
   &:after {
     content: '';
@@ -71,6 +67,9 @@ const StyledDialog = styled.div`
     position: absolute;
     top: calc(50% - 9px);
     right: -30px;
+  }
+  > h2 {
+    width: max-content;
   }
 `
 const StyledTreasurySection = styled(TreasurySection)`
@@ -102,14 +101,15 @@ interface Props {
 }
 
 export default function GopvernancePage({ className }: Props) {
-  const { t } = useTranslation('', { keyPrefix: 'governance' })
+  const { t } = useTranslation('', { keyPrefix: 'treasury.governance' })
   const [tab, setTab] = useState<GovernanceTab>(GovernanceTab.OTTERCLAM)
   return (
     <StyledContainer className={className}>
       <StyledTreasurySection>
         <StyledBg unoptimized src={Garden.src} width={2000} height={500} objectFit="none" />
         <StyledDialog>
-          <h1>{t('welcome_message_title')}</h1>
+          <h2>{t('welcome_message_title')}</h2>
+          <br />
           <p>{t('welcome_message_body')}</p>
         </StyledDialog>
         <StyledOtter unoptimized src={OtterVote.src} width={948} height={268} objectFit="contain" />
@@ -120,16 +120,12 @@ export default function GopvernancePage({ className }: Props) {
           <StyledTab selected={tab === GovernanceTab.OTTERCLAM} onClick={() => setTab(GovernanceTab.OTTERCLAM)}>
             {t('otterclam_tab')}{' '}
           </StyledTab>
-          {/* <StyledTab selected={tab === GovernanceTab.DYST_PEN} onClick={() => setTab(GovernanceTab.DYST_PEN)}>
-            {t('dyst_pen_tab')}{' '}
-          </StyledTab> */}
           <StyledTab selected={tab === GovernanceTab.QIDAO} onClick={() => setTab(GovernanceTab.QIDAO)}>
             {t('qidao_tab')}{' '}
           </StyledTab>
         </StyledTabs>
         <StyledBody>
           {tab === GovernanceTab.OTTERCLAM && <OtterClamTab />}
-          {/* {tab === GovernanceTab.DYST_PEN && <DystopiaPenroseTab />} */}
           {tab === GovernanceTab.QIDAO && <QiDaoTab />}
         </StyledBody>
       </TreasurySection>

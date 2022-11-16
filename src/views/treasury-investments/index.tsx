@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Arrow from 'views/store/StoreHero/arrow.svg'
+import { format as formatDate } from 'date-fns'
 import { useTranslation } from 'next-i18next'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
@@ -28,6 +29,15 @@ interface Props {
 const StyledTableHeader = styled.tr`
   color: ${({ theme }) => theme.colors.lightGray400};
   padding-top: 20px;
+  font-size: 18px;
+`
+
+const StyledInnerTableHeader = styled.tr`
+  color: ${({ theme }) => theme.colors.darkGray200};
+
+  justify-content: space-evenly;
+  width: 100%;
+  display: contents;
 `
 
 const StyledTable = styled.table`
@@ -71,6 +81,7 @@ const StyledDateContainer = styled.div`
   display: flex;
   justify-content: right;
   font-family: 'Pangolin', 'naikaifont' !important;
+  margin-bottom: 8px;
 `
 
 const StyledDateButton = styled.button`
@@ -150,6 +161,7 @@ interface InvestmentProps {
 
 function InvestmentPosition({ investments, portfolioPct }: InvestmentProps) {
   if (!investments) return <div></div>
+  const { t } = useTranslation('', { keyPrefix: 'treasury.investments' })
 
   const avgGrossApr = useMemo(
     () => investments?.reduce((prev, curr) => prev + Number.parseFloat(curr.grossApr), 0) / investments.length,
@@ -177,6 +189,18 @@ function InvestmentPosition({ investments, portfolioPct }: InvestmentProps) {
     <StyledRow onClick={() => setIsOpen(!isOpen)}>
       <StyledTable>
         <tbody>
+          {isOpen && (
+            <StyledInnerTableHeader>
+              <tr>
+                <td>{t('tableHeader.investment')}</td>
+                <td>{t('tableHeader.protocol')}</td>
+                <td>{t('tableHeader.portfolioPct')}</td>
+                <td>{t('tableHeader.averageApr')}</td>
+                <td>{t('tableHeader.positionChange')}</td>
+                <td>{t('tableHeader.pnl')}</td>
+              </tr>
+            </StyledInnerTableHeader>
+          )}
           <tr>
             <td>{investments[0].strategy}</td>
             <td>
@@ -249,20 +273,20 @@ export default function InvestmentsPage({ className }: Props) {
       <TreasurySection>
         <StyledMetricsContainer>
           <StyledTreasuryCard>
-            <Help message={t('marketcapTooltip')}>
+            <Help message={t('tooltips.tmv', { date: formatDate(toDate * 1000, 'yyyy-M-d') })}>
               <ContentExtraSmall>{t('tmv')}</ContentExtraSmall>
             </Help>
             <ContentMedium>{loading ? '--' : formatUsd(toDateMetrics.treasuryMarketValue)}</ContentMedium>
           </StyledTreasuryCard>
           <StyledTreasuryCard>
-            <Help message={t('marketcapTooltip')}>
-              <ContentExtraSmall>{t('grossRevenue')}</ContentExtraSmall>
+            <Help message={t('tooltips.revenue')}>
+              <ContentExtraSmall>{t('totalRevenue')}</ContentExtraSmall>
             </Help>
             <ContentMedium>{loading ? '--' : `${formatUsd(revenue)} / ${dateDiff.toFixed(0)} days`}</ContentMedium>
           </StyledTreasuryCard>
           <StyledTreasuryCard>
-            <Help message={t('marketcapTooltip')}>
-              <ContentExtraSmall>{t('totalApy')}</ContentExtraSmall>
+            <Help message={t('tooltips.apr')}>
+              <ContentExtraSmall>{t('totalApr')}</ContentExtraSmall>
             </Help>
             <ContentMedium>{loading ? '--' : netApr.toFixed(2)}%</ContentMedium>
           </StyledTreasuryCard>
@@ -277,7 +301,7 @@ export default function InvestmentsPage({ className }: Props) {
               }}
             >
               {t('fromDate')}
-              <StyledDate>{new Date(fromDate * 1000).toDateString()}</StyledDate>
+              <StyledDate>{formatDate(fromDate * 1000, 'yyyy-M-d')}</StyledDate>
             </StyledDateButton>
             <DatePicker
               isOpen={fromDateOpen}
@@ -299,7 +323,7 @@ export default function InvestmentsPage({ className }: Props) {
               }}
             >
               {t('toDate')}
-              <StyledDate>{new Date(toDate * 1000).toDateString()}</StyledDate>
+              <StyledDate>{formatDate(toDate * 1000, 'yyyy-M-d')}</StyledDate>
             </StyledDateButton>
             <DatePicker
               isOpen={toDateOpen}

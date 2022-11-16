@@ -574,6 +574,9 @@
   },
   "wallet_selector_head": "Connect to a wallet",
   "treasury": {
+    "dashboard_tab": "Dashboard",
+    "governance_tab": "Governance",
+    "investments_tab": "Investments",
     "comingSoon": "Coming Soon!",
     "layout": {
       "nav": {
@@ -623,17 +626,36 @@
       "averageApr": "Average APR"
     },
     "governance": {
+      "otterclam_tab": "OtterClam",
+      "qidao_tab": "Qi DAO",
       "title": "Governance",
+      "welcome_message_title": "Your Vote Counts!",
+      "welcome_message_body": "Ottopia is governed by a Decentralised Autonomous Organisation (DAO)",
       "voteNow": "Vote Now!",
       "votingClosed": "Voting Closed",
       "votes": "Votes",
       "voters": "Voters",
       "ocvoted": "OtterClam Voted:",
-      "youVoted": "You Voted:"
+      "youVoted": "You Voted:",
+      "snapshotEth": "View on Snapshot.eth",
+      "seeLess": "See Less...",
+      "seeMore": "See More...",
+      "proposalState": {
+        "active": "Active",
+        "closed": "Closed"
+      }
     },
     "investments": {
       "fromDate": "From Date:",
       "toDate": "To Date:",
+      "tmv": "Treasury Market Value",
+      "totalRevenue": "Total Revenue",
+      "totalApr": "Net Average APR",
+      "tooltips": {
+        "tmv": "Total value of Treasury Assets on {{ date }}",
+        "revenue": "Total gross revenue during the selected date range.",
+        "apr": "Overall Annualised Percentage Return (APR) of all Treasury Investments during the selected date range."
+      },
       "tableHeader": {
         "investment": "Investment",
         "protocol": "Protocol",

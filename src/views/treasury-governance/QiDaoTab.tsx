@@ -15,8 +15,6 @@ export default function QiDaoTab({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'treasury.governance' })
   return (
     <div className={className}>
-      <Headline as="h1">{t('qiDao')}</Headline>
-      <ContentSmall as="p">{t('desc')}</ContentSmall>
       <SnapshotProposalGroup tab={GovernanceTab.QIDAO} />
     </div>
   )

@@ -12,7 +12,7 @@ export default function useOtterClamProposals(): {
   const snapshotSubgraph = useSnapshotSubgraph()
   const result = useQuery<OtterClamProposals>(GET_OTTERCLAM_PROPOSALS, {
     client: snapshotSubgraph,
-    variables: { first: 5, skip: 0 },
+    variables: { first: 10, skip: 0 },
   })
   const proposals =
     result?.data?.proposals?.flatMap(x => {

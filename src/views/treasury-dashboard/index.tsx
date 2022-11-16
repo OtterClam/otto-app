@@ -275,7 +275,12 @@ export default function TreasuryDashboardPage() {
 
   const { currency } = useCurrency()
 
-  const pctBurnt = trim((parseFloat(latestMetrics?.totalBurnedClam) / parseFloat(latestMetrics?.totalSupply)) * 100, 2)
+  const pctBurnt = trim(
+    (parseFloat(latestMetrics?.totalBurnedClam) /
+      (parseFloat(latestMetrics?.totalSupply) + parseFloat(latestMetrics?.totalBurnedClam))) *
+      100,
+    2
+  )
 
   const allTimeAvgApr =
     pearlBankMetrics.reduce((total, value) => {

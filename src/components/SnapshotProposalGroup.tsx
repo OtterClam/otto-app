@@ -10,6 +10,7 @@ import styled from 'styled-components/macro'
 import { GovernanceTab } from '../models/Tabs'
 import SnapshotProposalPieChart from './SnapshotProposalPieChart'
 import Button from './Button'
+import Link from 'next/link'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -38,8 +39,7 @@ const StyledCard = styled.div<{ maxH: string }>`
 
 const StyledTextBody = styled.div`
   white-space: pre-line;
-  padding-top: 8px;
-  overflow: hidden;
+  padding-top: 28px;
   border-radius: 10px;
   box-sizing: border-box;
   ul {
@@ -54,7 +54,6 @@ const StyledProposalHeadline = styled.span`
   @media ${({ theme }) => theme.breakpoints.mobile} {
     font-size: 20px;
   }
-  max-height: 3em;
 `
 
 const StyledInnerContainer = styled.div`
@@ -74,16 +73,24 @@ const StyledActivityFlag = styled.div<{ flagColor: string }>`
   color: white;
   line-height: 18px;
   padding: 4px;
-  margin: 4px;
   display: inline;
 `
 
 const StyledInlineText = styled.span`
   font-style: normal;
   font-weight: 400;
+  margin-left: 8px;
   font-size: 12px;
   line-height: 18px;
   color: ${({ theme }) => theme.colors.darkGray200};
+`
+const StyledLink = styled.a`
+  float: right;
+  line-height: 18px;
+  color: blue;
+  :hover {
+    text-decoration: underline;
+  }
 `
 
 const StyledSeeAll = styled.a`
@@ -96,17 +103,14 @@ const StyledSeeAll = styled.a`
   width: 0;
   white-space: nowrap;
   bottom: 20px;
+  :hover {
+    text-decoration: underline;
+  }
 `
 
 export interface SnapshotProposalGroupInterface {
   className?: string
   tab: GovernanceTab
-}
-
-// TODO: Replace with translations
-// { active: 'Active', closed: 'Closed'}
-function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 const flagColorFromProposalState: Record<string, string> = {
@@ -119,8 +123,6 @@ export default function SnapshotProposalGroup({ className, tab }: SnapshotPropos
   const [maximisedProposal, setmaximisedProposal] = useState<string>('')
   const { proposals: ocProposals, fetchMore: otterFetchMore } = useOtterClamProposalsWithVotes()
   const { proposals: qiProposals } = useQiDaoProposals()
-
-  const [needsFetch, setNeedsFetch] = useState<boolean>(false)
 
   // Could inject proposals from parent,
   // but we need to propogate the fetchMore function from query for caching
@@ -139,45 +141,51 @@ export default function SnapshotProposalGroup({ className, tab }: SnapshotPropos
       setmaximisedProposal(key)
     }
   }
+  /* This whole section was an attempt at Infinite Scrolling
+    as well as properly using the Apollo Cache.
+    Cut for time, may return one day...
+  */
 
-  const handleScroll = (e: any) => {
-    const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 30
-    if (bottom) {
-      setNeedsFetch(true)
-      // .then(fetchMoreResult: any => {
-      //   // Update variables.limit for the original query to include
-      //   // the newly added feed items.
-      //   console.log(fetchMoreResult)
-      // })
-    }
-  }
+  // const [needsFetch, setNeedsFetch] = useState<boolean>(false)
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, {
-      passive: true,
-    })
+  // const handleScroll = (e: any) => {
+  //   const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 30
+  //   if (bottom) {
+  //     setNeedsFetch(true)
+  //     // .then(fetchMoreResult: any => {
+  //     //   // Update variables.limit for the original query to include
+  //     //   // the newly added feed items.
+  //     //   console.log(fetchMoreResult)
+  //     // })
+  //   }
+  // }
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll, {
+  //     passive: true,
+  //   })
 
-  useMemo(() => {
-    if (needsFetch) {
-      otterFetchMore({
-        variables: {
-          skip: proposals.length,
-        },
-      })
-      // .then(fetchMoreResult: any => {
-      //   // Update variables.limit for the original query to include
-      //   // the newly added feed items.
-      //   console.log(fetchMoreResult)
-      // })
-      setNeedsFetch(false)
-      // console.log(proposals)
-    }
-  }, [needsFetch, proposals, setNeedsFetch, otterFetchMore])
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll)
+  //   }
+  // }, [])
+
+  // useMemo(() => {
+  //   if (needsFetch) {
+  //     otterFetchMore({
+  //       variables: {
+  //         skip: proposals.length,
+  //       },
+  //     })
+  //     // .then(fetchMoreResult: any => {
+  //     //   // Update variables.limit for the original query to include
+  //     //   // the newly added feed items.
+  //     //   console.log(fetchMoreResult)
+  //     // })
+  //     setNeedsFetch(false)
+  //     // console.log(proposals)
+  //   }
+  // }, [needsFetch, proposals, setNeedsFetch, otterFetchMore])
 
   return (
     <StyledContainer className={className}>
@@ -187,14 +195,19 @@ export default function SnapshotProposalGroup({ className, tab }: SnapshotPropos
           <StyledInnerContainer>
             <StyledProposalHeadline as="h1">{proposal.title}</StyledProposalHeadline>
             <StyledActivityFlag flagColor={flagColorFromProposalState[proposal.state ?? '']}>
-              {capitalizeFirstLetter(proposal.state ?? '')}
+              {t('proposalState.' + proposal.state ?? 'default')}
             </StyledActivityFlag>
             <StyledInlineText>{`${proposal.votes} ${t('voters')}`}</StyledInlineText>
+            <StyledLink href={`https://snapshot.org/#/${proposal.space}/proposal/${proposal.id}`} target={'_blank'}>
+              {t('snapshotEth')}
+            </StyledLink>
             <StyledTextBody>
               <ReactMarkdown>{proposal.body ?? ''}</ReactMarkdown>
             </StyledTextBody>
           </StyledInnerContainer>
-          <StyledSeeAll onClick={() => toggleMaximisedProposal(proposal.id)}>...See All</StyledSeeAll>
+          <StyledSeeAll onClick={() => toggleMaximisedProposal(proposal.id)}>
+            {maximisedProposal == proposal.id ? t('seeLess') : t('seeMore')}
+          </StyledSeeAll>
           <SnapshotProposalPieChart proposal={proposal} tab={tab} />
           {(proposal.state === 'active' && tab === GovernanceTab.OTTERCLAM) ?? (
             <Button
