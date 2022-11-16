@@ -36,7 +36,6 @@ export const GET_TREASURY_METRICS = gql`
       totalBurnedClamMarketValue
       treasuryMarketValue
       treasuryMarketValueWithoutClam
-      totalClamUsdPlusRebaseValue
 
       #treasury tokens
       treasuryWmaticMarketValue
@@ -54,7 +53,6 @@ export const GET_TREASURY_METRICS = gql`
 
       #treasury LPs
       treasuryClamMaiMarketValue
-      treasuryMaiUsdcMarketValue
       treasuryMaiUsdcQiInvestmentValue
       treasuryQiWmaticMarketValue
       treasuryMaiStMaticMarketValue
