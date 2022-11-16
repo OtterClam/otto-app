@@ -43,6 +43,11 @@ const marketValues = [
     stopColor: theme.colors.treasury.clamLpRed,
   },
   {
+    label: 'CLAM/USDC (Penrose)',
+    dataKey: 'treasuryDystopiaPairUsdcClamMarketValue',
+    stopColor: ['#EE4B4E', 'rgba(219, 55, 55, 0.5)'],
+  },
+  {
     label: 'CLAM/MAI (Quick)',
     dataKey: 'treasuryClamMaiMarketValue',
     stopColor: theme.colors.treasury.clamLpRed,
@@ -68,9 +73,9 @@ const marketValues = [
     stopColor: theme.colors.treasury.stablecoinGreen,
   },
   {
-    label: 'MAI/USDC',
-    dataKey: 'treasuryMaiUsdcMarketValue',
-    stopColor: theme.colors.treasury.stablecoinGreen,
+    label: 'MAI/USDT (QuickV3)',
+    dataKey: 'treasuryQuickswapV3MaiUsdtStrategyMarketValue',
+    stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
   },
   {
     label: 'USD+',
@@ -191,6 +196,11 @@ const marketValues = [
     label: 'FRAX/USDC (Penrose)',
     dataKey: 'treasuryDystopiaPairFraxUsdcMarketValue',
     stopColor: ['rgba(182, 233, 152, 1)', 'rgba(182, 233, 152, 0.5)'],
+  },
+  {
+    label: 'SAND',
+    dataKey: 'treasurySandMarketValue',
+    stopColor: ['rgba(0, 174, 239, 1)', 'rgba(0, 174, 239, 0.5)'],
   },
 ]
 

@@ -1,14 +1,15 @@
+import OttoImage from 'components/OttoImage'
 import { MAX_OTTOS_PER_LOCATION } from 'constant'
 import { useAdventureLocation } from 'contexts/AdventureLocations'
 import { AdventurePopupStep, AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
 import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
 import { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
+import Image from 'next/image'
 import { useCallback } from 'react'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
 import AdventureRibbonText from '../AdventureRibbonText'
-import CroppedImage from '../CroppedImage'
 import lockImage from './lock.svg'
 
 const WIDTH = 134
@@ -48,7 +49,7 @@ const StyledDetails = styled.div`
   padding-top: 90px;
 `
 
-const StyledPinImage = styled(CroppedImage).attrs({ layout: 'fill' })``
+const StyledPinImage = styled(Image).attrs({ layout: 'fill', width: 120, height: 120 })``
 
 const StyledOttoImageContainer = styled.div`
   border: 1px ${({ theme }) => theme.colors.otterBlack} solid;
@@ -59,8 +60,6 @@ const StyledOttoImageContainer = styled.div`
   height: 24px;
   overflow: hidden;
 `
-
-const StyledOttoImage = styled(CroppedImage).attrs({ width: 22, height: 22 })``
 
 const StyledOttoImages = styled.div`
   display: flex;
@@ -142,7 +141,7 @@ export default function AdventureLocation({ id, className }: AdventureLocationPr
       {location && (
         <>
           <StyledPinImageContainer>
-            <StyledPinImage src={location.image} />
+            <StyledPinImage unoptimized src={location.image} />
           </StyledPinImageContainer>
 
           <StyledRequiredLevel locked={locked}>LV {location.minLevel}</StyledRequiredLevel>
@@ -151,7 +150,7 @@ export default function AdventureLocation({ id, className }: AdventureLocationPr
             <StyledOttoImages>
               {ottos.map(otto => (
                 <StyledOttoImageContainer key={otto.id}>
-                  <StyledOttoImage src={otto.image} />
+                  <OttoImage unoptimized src={otto.image} size={22} />
                 </StyledOttoImageContainer>
               ))}
               {' '

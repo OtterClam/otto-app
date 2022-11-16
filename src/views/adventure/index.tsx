@@ -1,12 +1,10 @@
 import FlatButton, { FlatButtonColor } from 'components/FlatButton'
 import TreasurySection from 'components/TreasurySection'
-import { useAdventureLocations } from 'contexts/AdventureLocations'
 import { useBreakpoints } from 'contexts/Breakpoints'
-import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
-import usePreloadImages from 'hooks/usePreloadImage'
 import { Body } from 'layouts/GameLayout'
 import { useTranslation } from 'next-i18next'
-import { useMemo, useRef, useState } from 'react'
+import Head from 'next/head'
+import { useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import AdventureMap from '../../components/AdventureMap'
 import OttoList from './OttoList'
@@ -33,6 +31,7 @@ const StyledListSectionMobile = styled.div<{ isSelectedView: boolean }>`
 `
 
 const StyledListSection = styled(TreasurySection).attrs({ showRope: false })<{ isSelectedView: boolean }>`
+  position: relative;
   flex: 1 50%;
   background: ${({ theme }) => theme.colors.otterBlack};
 `
@@ -50,47 +49,39 @@ const StyledSwitchButton = styled(FlatButton)`
   width: 82px;
 `
 
+const StyledDesktopOttoList = styled(OttoList)`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+`
+
 enum View {
   Map = 'map',
   List = 'list',
 }
 
-const usePreloadLocationImages = () => {
-  const { locations } = useAdventureLocations()
-
-  const images = useMemo(() => {
-    const images: string[] = []
-    locations.forEach(location => {
-      images.push(location.image)
-      images.push(location.bgImage)
-      images.push(location.bgImageBlack)
-    })
-    return images
-  }, [locations])
-
-  usePreloadImages(images)
-}
-
 export default function AdventureView() {
-  const map = useRef<HTMLDivElement>(null)
   const [view, setView] = useState(View.Map)
   const { t } = useTranslation('', { keyPrefix: 'adventure' })
   const { isTablet } = useBreakpoints()
-  const [maxHeight, setMaxHeight] = useState(0)
 
-  usePreloadLocationImages()
-
-  useBrowserLayoutEffect(() => {
-    if (!map.current) {
-      return
-    }
-    const rect = map.current.getBoundingClientRect()
-    setMaxHeight(rect.height)
-  }, [map.current])
+  const head = (
+    <Head>
+      <title>{t('docTitle')}</title>
+      <meta property="og:title" content={t('docTitle')} />
+      <meta name="description" content={t('docDesc')} />
+      <meta property="og:description" content={t('docDesc')} />
+      <meta property="og:image" content="/og.jpg" />
+    </Head>
+  )
 
   if (isTablet) {
     return (
       <StyledContainer>
+        {head}
         <StyledSwitcher>
           {Object.values(View).map(currView => (
             <StyledSwitchButton
@@ -116,13 +107,14 @@ export default function AdventureView() {
 
   return (
     <Body>
+      {head}
       <StyledContainer>
         <StyledMapSection isSelectedView={view === View.Map}>
-          <AdventureMap ref={map} />
+          <AdventureMap />
         </StyledMapSection>
 
         <StyledListSection isSelectedView={view === View.List}>
-          <OttoList maxHeight={maxHeight} />
+          <StyledDesktopOttoList />
         </StyledListSection>
       </StyledContainer>
     </Body>

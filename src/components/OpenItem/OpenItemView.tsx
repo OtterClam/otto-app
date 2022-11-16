@@ -3,7 +3,7 @@ import Button from 'components/Button'
 import CloseButton from 'components/CloseButton'
 import Fullscreen from 'components/Fullscreen'
 import ItemCell from 'components/ItemCell'
-import Item from 'models/Item'
+import { ItemMetadata } from 'models/Item'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
@@ -110,7 +110,7 @@ enum State {
 }
 
 interface Props {
-  items: Item[]
+  items: ItemMetadata[]
   onClose: () => void
 }
 
@@ -151,7 +151,7 @@ export default function OpenItemView({ items, onClose }: Props) {
             </StyledRibbonText>
             <StyledItemList count={items.length}>
               {items.map((item, index) => (
-                <ItemCell key={index} item={item} />
+                <ItemCell showDetailsPopup key={index} metadata={item} />
               ))}
             </StyledItemList>
             <Link href="/my-items">

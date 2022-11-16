@@ -1,6 +1,8 @@
 import { useEthers } from '@usedapp/core'
-import { useApiCall } from 'contexts/Api'
+import { useRepositories } from 'contexts/Repositories'
+import usePreloadImages from 'hooks/usePreloadImage'
 import useTimer from 'hooks/useTimer'
+import flatten from 'lodash/flatten'
 import noop from 'lodash/noop'
 import Otto from 'models/Otto'
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react'
@@ -40,12 +42,33 @@ export function useIsMyOttos(ottoTokenId?: string): boolean {
 // this component must to be wrapped by AdventureOttosProvider
 export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
   const { account } = useEthers()
+  const { ottos: ottosRepo } = useRepositories()
+  const [loading, setLoading] = useState(false)
   const [ottos, setOttos] = useState<Otto[]>([])
+  const images = useMemo(() => flatten(ottos.map(({ image, imageWoBg }) => [image, imageWoBg])), [])
 
-  const { loading, result, refetch } = useApiCall('getAdventureOttos', [account ?? ''], Boolean(account), [account])
+  usePreloadImages(images)
+
+  const refetch = useCallback(() => {
+    if (!account) {
+      return Promise.resolve()
+    }
+    setLoading(true)
+    return ottosRepo
+      .getOttosByAccount(account)
+      .then(setOttos)
+      .catch(err => {
+        // TODO: handle error
+        alert(err.message)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [account])
+
   useEffect(() => {
-    setOttos(result ?? [])
-  }, [result])
+    refetch()
+  }, [account])
 
   const updateOtto = useCallback(
     (otto: Otto) => {

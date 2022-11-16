@@ -1,6 +1,6 @@
 import { RawAdventureResult } from 'libs/RawAdventureResult'
 import { AdventurePass, fromRawPass } from './AdventurePass'
-import Item, { rawItemToItem } from './Item'
+import { ItemMetadata, rawItemMetadataToItemMetadata } from './Item'
 
 export interface AdventureResult {
   success: boolean
@@ -25,11 +25,11 @@ export type AdventureResultEvents = {
       expToNextLevel: number
     }
     got: {
-      items: Item[]
+      items: ItemMetadata[]
       attrs_points: number
     }
   }
-  treasureChests?: Item[]
+  treasureChests?: ItemMetadata[]
 }
 
 export type AdventureJournalEntry = {
@@ -38,7 +38,7 @@ export type AdventureJournalEntry = {
 }
 
 export type AdventureResultReward = {
-  items: Item[]
+  items: ItemMetadata[]
   exp: number
   tcp: number
   ap: number
@@ -54,7 +54,7 @@ export function fromRawResult(raw: RawAdventureResult): AdventureResult {
       text: e.text,
     })),
     rewards: {
-      items: raw.rewards.items.map(i => rawItemToItem(i.id, i)),
+      items: raw.rewards.items.map(raw => rawItemMetadataToItemMetadata(raw)),
       exp: raw.rewards.exp,
       tcp: raw.rewards.tcp,
       ap: raw.rewards.ap,
@@ -72,11 +72,12 @@ export function fromRawResult(raw: RawAdventureResult): AdventureResult {
           expToNextLevel: raw.events.level_up.to.expToNextLevel,
         },
         got: {
-          items: raw.events.level_up.got.items.map(i => rawItemToItem(i.id, i)),
+          items: raw.events.level_up.got.items.map(raw => rawItemMetadataToItemMetadata(raw)),
           attrs_points: raw.events.level_up.got.attrs_points,
         },
       },
-      treasureChests: raw.events?.treasure_chests && raw.events.treasure_chests.map(i => rawItemToItem(i.id, i)),
+      treasureChests:
+        raw.events?.treasure_chests && raw.events.treasure_chests.map(raw => rawItemMetadataToItemMetadata(raw)),
     },
     pass: fromRawPass(raw.pass),
   }

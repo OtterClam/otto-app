@@ -3,10 +3,9 @@ import assert from 'assert'
 import { Adventure } from 'contracts/__generated__'
 import { BigNumber } from 'ethers'
 import { RawAdventurePass } from 'libs/RawAdventureResult'
-import { getCroppedImageUrl } from 'utils/image'
 import { AdventurePass, fromRawPass } from './AdventurePass'
 import { AdventureResult } from './AdventureResult'
-import Item from './Item'
+import { ItemMetadata, Item } from './Item'
 
 export enum TraitCollection {
   Genesis = 'genesis',
@@ -27,22 +26,23 @@ export interface RawOtto {
   otto_details?: Trait[]
   otto_native_traits?: Trait[]
   animation_url: string
-  tokenURI: string
+  token_uri: string
   mintAt: any
   legendary: boolean
   brs?: number
   rrs?: number
   rarity_score?: number
-  constellationBoost?: number
-  legendaryBoost?: number
-  epochRarityBoost?: number
-  diceCount?: number
+  constellation_boost?: number
+  legendary_boost?: number
+  epoch_rarity_boost?: number
+  dice_count?: number
   image_wo_bg: string
   adventure_status: AdventureOttoStatus
   resting_until?: string
   level: number
   adventurer_title: string
   latest_adventure_pass?: RawAdventurePass
+  adventure_passes_count: number
   next_level_exp: number
 }
 
@@ -51,23 +51,9 @@ export interface Attr {
   value: string | number
 }
 
-export enum TraitRarity {
-  C3 = 'C3',
-  C2 = 'C2',
-  C1 = 'C1',
-  R3 = 'R3',
-  R2 = 'R2',
-  R1 = 'R1',
-  E3 = 'E3',
-  E2 = 'E2',
-  E1 = 'E1',
-}
+export type TraitRarity = 'C3' | 'C2' | 'C1' | 'R3' | 'R2' | 'R1' | 'E3' | 'E2' | 'E1'
 
-export enum OttoGender {
-  Male = 'Male',
-  Female = 'Female',
-  Both = 'Both',
-}
+export type OttoGender = 'Male' | 'Female' | 'Both'
 
 export interface TraitLabel {
   name: string
@@ -138,6 +124,10 @@ export default class Otto {
 
   public wearableTraits: Trait[] = []
 
+  public geneticItemsMetadata: ItemMetadata[] = []
+
+  public wearableItemsMetadata: ItemMetadata[] = []
+
   public epochRarityBoost?: number
 
   public diceCount?: number
@@ -158,7 +148,14 @@ export default class Otto {
 
   public attributePoints = 0
 
-  constructor(raw: RawOtto) {
+  public adventurePassesCount = 0
+
+  constructor(
+    raw: RawOtto,
+    public equippedItems: Item[] = [],
+    public nativeItemsMetadata: ItemMetadata[] = [],
+    public itemsMetadata: ItemMetadata[] = []
+  ) {
     this.raw = raw
     this.rawUpdated()
   }
@@ -166,11 +163,16 @@ export default class Otto {
   private rawUpdated() {
     this.voice = new Audio(this.raw.animation_url)
     this.voice.load()
+    this.nativeItemsMetadata = this.nativeItemsMetadata.map(metadata => ({
+      ...metadata,
+      unreturnable: true,
+    }))
     this.baseRarityScore = this.raw.brs ? String(this.raw.brs) : '?'
     this.relativeRarityScore = this.raw.rrs ? String(this.raw.rrs) : '?'
     this.totalRarityScore = this.raw.rarity_score ? String(this.raw.rarity_score) : '?'
-    this.epochRarityBoost = this.raw.epochRarityBoost
-    this.diceCount = this.raw.diceCount
+    this.epochRarityBoost = this.raw.epoch_rarity_boost
+    this.diceCount = this.raw.dice_count
+    this.adventurePassesCount = this.raw.adventure_passes_count
 
     if (this.raw.latest_adventure_pass) {
       this.latestAdventurePass = fromRawPass(this.raw.latest_adventure_pass)
@@ -228,6 +230,9 @@ export default class Otto {
     }
 
     this.cachedAdventureStatus = this.adventureStatus
+
+    this.geneticItemsMetadata = this.itemsMetadata.filter(itemMetadata => !itemMetadata.wearable)
+    this.wearableItemsMetadata = this.itemsMetadata.filter(itemMetadata => itemMetadata.wearable)
   }
 
   get name(): string {
@@ -236,18 +241,6 @@ export default class Otto {
 
   get image(): string {
     return this.raw.image
-  }
-
-  get largeImage(): string {
-    return getCroppedImageUrl(this.image, { w: 900, h: 900 })
-  }
-
-  get mediumImage(): string {
-    return getCroppedImageUrl(this.image, { w: 400, h: 400 })
-  }
-
-  get smallImage(): string {
-    return getCroppedImageUrl(this.image, { w: 200, h: 200 })
   }
 
   get description(): string {
@@ -259,7 +252,7 @@ export default class Otto {
   }
 
   get tokenURI(): string {
-    return this.raw.tokenURI
+    return this.raw.token_uri
   }
 
   get legendary(): boolean {
@@ -273,11 +266,11 @@ export default class Otto {
   }
 
   get isChosenOne(): boolean {
-    return this.raw.constellationBoost === 150
+    return this.raw.constellation_boost === 150
   }
 
   get zodiacBoost(): number {
-    return this.raw.constellationBoost || 0
+    return this.raw.constellation_boost || 0
   }
 
   get imageWoBg(): string {
@@ -310,6 +303,10 @@ export default class Otto {
     }
   }
 
+  get availableForItem(): boolean {
+    return this.adventureStatus !== AdventureOttoStatus.Ongoing && this.adventureStatus !== AdventureOttoStatus.Finished
+  }
+
   get next_level_exp(): number {
     // TODO: remove the default value
     return this.raw.next_level_exp ?? 1
@@ -324,7 +321,7 @@ export default class Otto {
   }
 
   public clone() {
-    return new Otto(JSON.parse(JSON.stringify(this.raw)))
+    return new Otto(JSON.parse(JSON.stringify(this.raw)), this.equippedItems)
   }
 
   public playVoice() {
@@ -338,11 +335,12 @@ export default class Otto {
     }
   }
 
+  // TODO: use ItemMetadata
   public canWear(item: Item): boolean {
-    if (item.equippable_gender === OttoGender.Both || this.raw.gender === 'Cleo') {
+    if (item.metadata.equippableGender === 'Both' || this.raw.gender === 'Cleo') {
       return true
     }
-    if (item.equippable_gender === OttoGender.Male) {
+    if (item.metadata.equippableGender === 'Male') {
       return this.raw.gender === 'Otto'
     }
     return this.raw.gender === 'Lottie'

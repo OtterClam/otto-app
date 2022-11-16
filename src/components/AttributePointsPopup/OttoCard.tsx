@@ -1,6 +1,6 @@
 import AdventureProgressBar from 'components/AdventureProgressBar'
-import CroppedImage from 'components/CroppedImage'
 import Otto from 'models/Otto'
+import Image from 'next/image'
 import styled from 'styled-components/macro'
 import { Caption, ContentExtraSmall, Note } from 'styles/typography'
 
@@ -114,7 +114,7 @@ export default function OttoCard({ otto, className, newLevel, points = {} }: Ott
   return (
     <StyledOttoCard className={className}>
       <StyledImage>
-        <CroppedImage src={otto.image} layout="fill" />
+        <Image src={otto.image} layout="fill" width={450} height={450} />
       </StyledImage>
       <StyledName>{otto.name}</StyledName>
       <StyledExpContainer>

@@ -5,6 +5,7 @@ import { BoostType } from 'models/AdventureLocation'
 import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
+import Skeleton from 'react-loading-skeleton'
 import styled from 'styled-components/macro'
 import Boost from './Boost'
 
@@ -30,12 +31,14 @@ export interface AdventureConditionalBoostsProps {
   otto?: Otto
   noPreview?: boolean
   locationBoostsOnly?: boolean
+  loading?: boolean
 }
 
 export default function AdventureConditionalBoosts({
   otto,
   noPreview,
   locationBoostsOnly,
+  loading,
 }: AdventureConditionalBoostsProps) {
   const { t, i18n } = useTranslation('', { keyPrefix: 'conditionalBoosts' })
   const location = useAdventureLocation()
@@ -54,8 +57,24 @@ export default function AdventureConditionalBoosts({
   const effectiveBoosts = boosts.filter(boost => boost.effective)
   const ineffectiveBoosts = boosts.filter(boost => !boost.effective)
 
+  if (loading) {
+    return (
+      <AdventureInfoSection
+        title={t(locationBoostsOnly ? 'regional_boosts' : 'title')}
+        help={t(locationBoostsOnly ? 'regional_boosts_help' : 'help')}
+      >
+        <StyledBoosts>
+          <Skeleton width="100%" count={4.8} />
+        </StyledBoosts>
+      </AdventureInfoSection>
+    )
+  }
+
   return (
-    <AdventureInfoSection title={t(locationBoostsOnly ? 'regional_boosts' : 'title')} help={t('help')}>
+    <AdventureInfoSection
+      title={t(locationBoostsOnly ? 'regional_boosts' : 'title')}
+      help={t(locationBoostsOnly ? 'regional_boosts_help' : 'help')}
+    >
       {effectiveBoosts.length > 0 && (
         <StyledBoosts>
           {effectiveBoosts.map((boost, i) => (

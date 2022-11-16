@@ -1,8 +1,9 @@
 import useResizeObserver from '@react-hook/resize-observer'
-import CroppedImage from 'components/CroppedImage'
+import OttoImage from 'components/OttoImage'
 import { useOtto } from 'contexts/Otto'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
+import Image from 'next/image'
 import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react'
 import { useSwipeable } from 'react-swipeable'
 import styled from 'styled-components/macro'
@@ -48,21 +49,17 @@ const StyledItem = styled.div<{ activated: boolean }>`
   `}
 `
 
-const StyledImage = styled.div`
+const StyledImage = styled(OttoImage).attrs({ size: imageSize })`
   display: flex;
   border: 1px ${({ theme }) => theme.colors.otterBlack} solid;
   box-sizing: border-box;
-  width: ${imageSize}px;
-  height: ${imageSize}px;
 `
 
 const OttoItem = React.memo(
   ({ otto, activated, onSelect }: { otto: Otto; activated: boolean; onSelect: (otto: Otto) => void }) => {
     return (
       <StyledItem activated={activated} onClick={() => onSelect(otto)}>
-        <StyledImage>
-          <CroppedImage src={otto.image} draggable="false" width={imageSize} height={imageSize} />
-        </StyledImage>
+        <StyledImage unoptimized src={otto.image} />
       </StyledItem>
     )
   },

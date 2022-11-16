@@ -1,28 +1,33 @@
 import AdventureFullscreen from 'components/AdventureFullscreen'
 import { FilterSelector, SortedBySelector } from 'components/ItemFilterSelect'
+import { AdventureLocationProvider, useAdventureLocation } from 'contexts/AdventureLocation'
 import OttoAttrs from 'components/OttoAttrs'
-import { useAdventureOtto } from 'contexts/AdventureOtto'
+import { ItemActionType } from 'constant'
+import { AdventureOttoProvider, useAdventureOtto } from 'contexts/AdventureOtto'
 import { ItemFiltersProvider } from 'contexts/ItemFilters'
 import { useMyItems } from 'contexts/MyItems'
+import { useRepositories } from 'contexts/Repositories'
 import { useTrait } from 'contexts/TraitContext'
-import useIsWearable from 'hooks/useIsWearable'
-import { traitToItem } from 'models/Item'
+import useAdventurePreviewItems from 'hooks/useAdventurePreviewItems'
+import { ItemAction } from 'models/Item'
+import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, Note } from 'styles/typography'
+import { AdventureLocation } from 'models/AdventureLocation'
 import ItemList from './ItemList'
 import ItemPreview from './ItemPreview'
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ height?: number }>`
   display: flex;
   flex-direction: column;
   margin-top: -25px;
   gap: 20px;
-  max-height: calc(80vh - 2px);
   overflow-y: scroll;
   padding: 35px 18px 15px;
-  height: 100vh;
+  height: ${({ height }) => (height ? `${height}px` : '100vh')};
+  max-height: ${({ height }) => (height ? `${height}px` : 'calc(80vh - 2px)')};
 `
 
 const StyledTitle = styled(ContentExtraSmall)`
@@ -45,10 +50,11 @@ const StyledAction = styled.div`
 
 const StyledActionLabel = styled(Note)``
 
-const StyledFullscreen = styled(AdventureFullscreen)<{ maxWidth?: number }>`
+const StyledFullscreen = styled(AdventureFullscreen)<{ maxWidth?: number; height?: number }>`
   width: 100%;
   background: ${({ theme }) => theme.colors.white} !important;
   ${({ maxWidth }) => maxWidth && `max-width: ${maxWidth}px;`}
+  ${({ height }) => height && `height: ${height}px;`}
 
   .fullscreen-inner {
     padding: 0 !important;
@@ -66,34 +72,100 @@ const StyledOttoAttrs = styled(OttoAttrs)`
   }
 `
 
+function PreviewAttrs({ otto, actions }: { otto?: Otto; actions: ItemAction[] }) {
+  const location = useAdventureLocation()
+  const { ottos: ottosRepo } = useRepositories()
+  const [loading, setLoading] = useState(false)
+  const [preview, setPreview] = useState<{
+    otto: Otto
+    location?: AdventureLocation
+  }>()
+
+  useEffect(() => {
+    if (!otto) {
+      return
+    }
+
+    setLoading(true)
+
+    const controller = new AbortController()
+
+    const timer = setTimeout(() => {
+      ottosRepo
+        .withAbortSignal(controller.signal)
+        .previewAdventureOtto(otto.id, location?.id, actions)
+        .then(setPreview)
+        .catch(err => {
+          if (err.message !== 'canceled') {
+            // handle error
+            alert(err.message)
+          }
+        })
+        .finally(() => setLoading(false))
+    }, 500)
+
+    return () => {
+      clearTimeout(timer)
+      controller.abort()
+    }
+  }, [otto?.id, location?.id, actions, ottosRepo])
+
+  return (
+    <AdventureOttoProvider otto={otto} draftOtto={preview?.otto}>
+      <AdventureLocationProvider location={preview?.location}>
+        <StyledOttoAttrs loading={loading} levelClassName="otto-level" />
+      </AdventureLocationProvider>
+    </AdventureOttoProvider>
+  )
+}
+
 export interface OttoItemsPopupProps {
   className?: string
   onRequestClose?: () => void
   maxWidth?: number
+  height?: number
 }
 
-export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClose }: OttoItemsPopupProps) {
+export default memo(function OttoItemsPopup({ className, maxWidth, height, onRequestClose }: OttoItemsPopupProps) {
   const container = useRef<HTMLDivElement>(null)
-  const { draftOtto: otto } = useAdventureOtto()
+  const { draftOtto, otto, actions: otherActions } = useAdventureOtto()
   const { traitType } = useTrait()
   const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
-  const { items, refetch } = useMyItems()
+  // eslint-disable-next-line prefer-const
+  let { items, refetch } = useMyItems()
+  items = useAdventurePreviewItems(items, draftOtto)
   const [selectedItemId, selectItem] = useState<string>()
-  const isWearable = useIsWearable(items)
-  const filteredItems = items.filter(item => item.type === traitType)
-  const equippedTrait = otto?.wearableTraits.find(trait => trait.type === traitType)
-  const defaultTrait = otto?.ottoNativeTraits?.find(({ id }) => id === selectedItemId)
-  let selectedItem = filteredItems?.filter(({ id }) => id === selectedItemId)?.sort(a => (a.equipped ? 1 : -1))[0]
-  if (!selectedItem && equippedTrait && selectedItemId === equippedTrait.id) {
-    selectedItem = traitToItem(equippedTrait)
-  }
-  if (!selectedItem && defaultTrait && selectedItemId === defaultTrait.id) {
-    selectedItem = traitToItem(defaultTrait)
+  const filteredItems = items.filter(item => item.metadata.type === traitType)
+  const selectedItem = useMemo(() => items.find(({ id }) => id === selectedItemId), [items, selectedItemId])
+  let selectedItemMetadata = filteredItems?.find(({ id }) => id === selectedItemId)?.metadata
+  const equippedItemMetadata = draftOtto?.equippedItems.find(({ id }) => id === selectedItemId)?.metadata
+  const nativeItemMetadata = draftOtto?.nativeItemsMetadata.find(({ type }) => type === traitType)
+  const show = Boolean(traitType)
+
+  if (!selectedItemMetadata && equippedItemMetadata) {
+    selectedItemMetadata = equippedItemMetadata
   }
 
+  if (selectedItemId === 'native') {
+    selectedItemMetadata = nativeItemMetadata
+  }
+
+  const actions = useMemo(() => {
+    if (!selectedItemMetadata) {
+      return otherActions
+    }
+    return otherActions.concat({
+      type: ItemActionType.Equip,
+      item_id: Number(selectedItemMetadata.tokenId),
+      from_otto_id: 0,
+    })
+  }, [otherActions, selectedItemMetadata?.tokenId])
+
   useEffect(() => {
-    refetch()
-  }, [otto?.id])
+    if (show) {
+      refetch()
+    }
+  }, [draftOtto?.id, show])
 
   useEffect(() => {
     if (!traitType) {
@@ -105,13 +177,14 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
     <ItemFiltersProvider items={filteredItems}>
       <StyledFullscreen
         className={className}
-        show={Boolean(traitType)}
+        show={show}
         onRequestClose={onRequestClose}
         maxWidth={maxWidth}
+        height={height}
       >
-        <StyledContainer ref={container}>
+        <StyledContainer ref={container} height={height}>
           <StyledTitle>{t('title', { type: traitType })}</StyledTitle>
-          <StyledOttoAttrs levelClassName="otto-level" />
+          <PreviewAttrs otto={otto} actions={actions} />
           <StyledActions>
             <StyledAction>
               <StyledActionLabel>{t('sort')}</StyledActionLabel>
@@ -123,12 +196,12 @@ export default memo(function OttoItemsPopup({ className, maxWidth, onRequestClos
             </StyledAction>
           </StyledActions>
 
-          <ItemList otto={otto} isWearable={isWearable} selectedItemId={selectedItemId} selectItem={selectItem} />
+          <ItemList otto={draftOtto} selectedItemId={selectedItemId} selectItem={selectItem} />
 
           <ItemPreview
-            item={selectedItem}
+            metadata={selectedItemMetadata}
+            selectedItem={selectedItem}
             selectedItemId={selectedItemId}
-            unavailable={selectedItem && !isWearable(selectedItem.id)}
             onItemUpdated={onRequestClose}
             onClose={() => selectItem(undefined)}
           />

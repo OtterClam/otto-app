@@ -1,30 +1,42 @@
-import dynamic from 'next/dynamic'
 import { ApolloProvider } from '@apollo/client'
 import { ChainId, Config, DAppProvider } from '@usedapp/core'
+import 'abortcontroller-polyfill/dist/polyfill-patch-fetch'
+import ottoLoadingImage from 'assets/ui/otto-loading.jpg'
+import adventureMapImage from 'components/AdventureMap/map.jpg'
+import SkeletonThemeProvider from 'components/SkeletonThemeProvider'
+import { ApiProvider } from 'contexts/Api'
+import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
 import { BreakpointsProvider } from 'contexts/Breakpoints'
+import { CurrencyProvider } from 'contexts/Currency'
+import { MyItemsProvider } from 'contexts/MyItems'
+import { OverlayProvider } from 'contexts/Overlay'
+import { RepositoriesProvider } from 'contexts/Repositories'
+import { WalletProvider } from 'contexts/Wallet'
 import useApollo from 'hooks/useApollo'
 import useContractAddresses from 'hooks/useContractAddresses'
+import usePreloadImages from 'hooks/usePreloadImage'
+import useServiceWorker from 'hooks/useServiceWorker'
 import MyOttosProvider from 'MyOttosProvider'
+import dynamic from 'next/dynamic'
 import OtterSubgraphProvider from 'OtterSubgraphProvider'
 import SnapshotProvider from 'SnapshotSubgraphProvider'
 import { PropsWithChildren, useEffect } from 'react'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
-import { CurrencyProvider } from 'contexts/Currency'
-import useServiceWorker from 'hooks/useServiceWorker'
-import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
-import MintPopup from 'components/MintPopup'
-import { WalletProvider } from 'contexts/Wallet'
-import { ApiProvider } from 'contexts/Api'
-import { OverlayProvider } from 'contexts/Overlay'
-import { SkeletonTheme } from 'react-loading-skeleton'
-import { colors } from 'styles/colors'
+import MyMissionsProvider from 'views/mission/MyMissionsProvider'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
+import MissionPopup from 'views/mission/MissionPopup'
+
+const preloadImages = [ottoLoadingImage.src, adventureMapImage.src]
 
 const AssetsLoader = dynamic(() => import('components/AssetsLoader'), { ssr: false })
 
 const SideMenu = dynamic(() => import('components/SideMenu'), { ssr: false })
+
+const ItemDetailsPopup = dynamic(() => import('components/ItemDetailsPopup'), { ssr: false })
+
+const OttoPopup = dynamic(() => import('components/OttoPopup'), { ssr: false })
 
 const StyledApp = styled.div`
   display: flex;
@@ -64,6 +76,7 @@ function useRealWindowSize() {
 }
 
 const ApolloApp = ({ children }: PropsWithChildren<object>) => {
+  usePreloadImages(preloadImages)
   useServiceWorker()
   useContractAddresses()
   const apollo = useApollo()
@@ -74,29 +87,38 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
       <OtterSubgraphProvider>
         <WalletProvider>
           <ApiProvider>
-            <AssetsLoaderProvider>
-              <CurrencyProvider>
-                <ThemeProvider theme={theme}>
-                  <BreakpointsProvider>
-                    <MyOttosProvider>
-                      <OverlayProvider>
-                        <SnapshotProvider>
-                          <StyledApp>
-                            <SkeletonTheme baseColor={colors.otterBlack} highlightColor={colors.darkGray400}>
-                              <StyledPageContainer>{children}</StyledPageContainer>
-                              <Error />
-                              <WalletSelector />
-                              <SideMenu />
-                              <AssetsLoader />
-                            </SkeletonTheme>
-                          </StyledApp>
-                        </SnapshotProvider>
-                      </OverlayProvider>
-                    </MyOttosProvider>
-                  </BreakpointsProvider>
-                </ThemeProvider>
-              </CurrencyProvider>
-            </AssetsLoaderProvider>
+            <RepositoriesProvider>
+              <AssetsLoaderProvider>
+                <CurrencyProvider>
+                  <ThemeProvider theme={theme}>
+                    <BreakpointsProvider>
+                      <MyOttosProvider>
+                        <MyItemsProvider>
+                          <OverlayProvider>
+                            <SnapshotProvider>
+                              <StyledApp>
+                                <SkeletonThemeProvider>
+                                  <StyledPageContainer>{children}</StyledPageContainer>
+                                  <Error />
+                                  <WalletSelector />
+                                  <SideMenu />
+                                  <MyMissionsProvider>
+                                    <MissionPopup />
+                                  </MyMissionsProvider>
+                                  <AssetsLoader />
+                                  <ItemDetailsPopup />
+                                  <OttoPopup />
+                                </SkeletonThemeProvider>
+                              </StyledApp>
+                            </SnapshotProvider>
+                          </OverlayProvider>
+                        </MyItemsProvider>
+                      </MyOttosProvider>
+                    </BreakpointsProvider>
+                  </ThemeProvider>
+                </CurrencyProvider>
+              </AssetsLoaderProvider>
+            </RepositoriesProvider>
           </ApiProvider>
         </WalletProvider>
       </OtterSubgraphProvider>

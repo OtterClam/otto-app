@@ -18,12 +18,10 @@ import {
   useGoToAdventurePopupStep,
   useSelectedAdventureLocation,
 } from 'contexts/AdventureUIState'
-import { useApiCall } from 'contexts/Api'
 import { useOtto } from 'contexts/Otto'
-import { useAdventureContract } from 'contracts/contracts'
 import { useAdventureExplore } from 'contracts/functions'
 import { parseBoosts } from 'models/AdventureDisplayedBoost'
-import { BoostType } from 'models/AdventureLocation'
+import { AdventureLocation, BoostType } from 'models/AdventureLocation'
 import { ItemAction } from 'models/Item'
 import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
@@ -31,6 +29,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentMedium, Headline } from 'styles/typography'
 import Otto from 'models/Otto'
+import { useRepositories } from 'contexts/Repositories'
+import AdventureAlert from 'components/AdventureAlert'
+import SkeletonThemeProvider, { SkeletonColor } from 'components/SkeletonThemeProvider'
 
 const StyledContainer = styled.div<{ bg: string }>`
   display: flex;
@@ -91,16 +92,18 @@ const StyledItemActionsTooltip = styled(AdventureTooltip)`
   margin-top: -10px;
 `
 
-export default function PreviewOttoStep() {
+export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: () => void }) {
+  const [loadingPreviewData, setLoadingPreviewData] = useState(false)
+  const { ottos: ottosRepo } = useRepositories()
   const container = useRef<HTMLDivElement>(null)
   const { updateOtto, loading: loadingOttos } = useMyOttos()
-  const { otto, itemActions: equippedItemActions, setOtto, resetEquippedItems } = useOtto()
+  const { confirmedOtto: otto, confirmed, confirm } = useConfirmedOtto()
+  const { itemActions: equippedItemActions, setOtto } = useOtto()
   const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
   const { t, i18n } = useTranslation()
   const location = useSelectedAdventureLocation()!
-  const close = useCloseAdventurePopup()
   const goToStep = useGoToAdventurePopupStep()
-  const adventureContract = useAdventureContract()
+  const [preview, setPreview] = useState<{ otto: Otto; location?: AdventureLocation }>()
   const [{ itemPopupWidth, itemPopupHeight, itemPopupOffset }, setItemPopupSize] = useState<{
     itemPopupWidth: number
     itemPopupHeight?: number
@@ -109,6 +112,9 @@ export default function PreviewOttoStep() {
     itemPopupWidth: 375,
     itemPopupOffset: 0,
   })
+  const { explore, exploreState, resetExplore } = useAdventureExplore()
+  const waitingTx = exploreState.state === 'Processing'
+  const loading = !otto || !location || waitingTx || loadingPreviewData
 
   const levelBoost = useMemo(
     () =>
@@ -134,16 +140,34 @@ export default function PreviewOttoStep() {
       }
     })
     return actions
-  }, [equippedItemActions, usedPotionAmounts, otto])
+  }, [equippedItemActions, usedPotionAmounts, otto?.id])
 
-  const { result: preview } = useApiCall(
-    'getOttoAdventurePreview',
-    [otto?.id ?? '', location?.id ?? -1, actions],
-    Boolean(otto && location),
-    [otto, location, actions]
-  )
+  useEffect(() => {
+    if (otto && location) {
+      setLoadingPreviewData(true)
 
-  const { explore, exploreState, resetExplore } = useAdventureExplore()
+      const abortController = new AbortController()
+      const timer = setTimeout(() => {
+        ottosRepo
+          .withAbortSignal(abortController.signal)
+          .previewAdventureOtto(otto.id, location.id, actions)
+          .then(setPreview)
+          .then(() => setLoadingPreviewData(false))
+          .catch(err => {
+            if (err.message !== 'canceled') {
+              // TODO: handle error
+              console.error(err)
+              setLoadingPreviewData(false)
+            }
+          })
+      }, 500)
+
+      return () => {
+        clearTimeout(timer)
+        abortController.abort()
+      }
+    }
+  }, [ottosRepo, otto?.id, location?.id, actions])
 
   const handleExploreButtonClick = useCallback(() => {
     if (!otto || !location) {
@@ -169,22 +193,22 @@ export default function PreviewOttoStep() {
   }, [otto, location, usedPotionAmounts, explore, equippedItemActions])
 
   useEffect(() => {
-    if (exploreState.state === 'Success' && exploreState.passId && otto) {
-      adventureContract
-        .pass(exploreState.passId)
-        .then(pass => {
-          const draftOtto = new Otto({ ...otto.raw, ...preview })
-          draftOtto.explore(exploreState.passId || '', pass)
-          setOtto(draftOtto.clone())
-          updateOtto(draftOtto)
-        })
-        .then(() => goToStep(AdventurePopupStep.ReadyToGo))
-        .catch(err => console.error(err))
+    if (exploreState.state === 'Success' && exploreState.passId && exploreState.pass && otto) {
+      const draftOtto = new Otto(
+        { ...otto.raw, ...preview },
+        otto.equippedItems,
+        otto.nativeItemsMetadata,
+        otto.itemsMetadata
+      )
+      draftOtto.explore(exploreState.passId || '', exploreState.pass)
+      setOtto(draftOtto.clone())
+      updateOtto(draftOtto)
+      goToStep(AdventurePopupStep.ReadyToGo)
     } else if (exploreState.state === 'Fail') {
       alert(exploreState.status.errorMessage)
       resetExplore()
     }
-  }, [exploreState.status, adventureContract])
+  }, [exploreState.state])
 
   useResizeObserver(container, () => {
     const rect = container?.current?.getBoundingClientRect()
@@ -194,14 +218,9 @@ export default function PreviewOttoStep() {
     setItemPopupSize({ itemPopupWidth, itemPopupHeight, itemPopupOffset })
   })
 
-  useEffect(() => {
-    setOtto()
-    resetEquippedItems()
-  }, [])
-
   return (
     <AdventureLocationProvider location={preview?.location}>
-      <AdventureOttoProvider otto={otto} preview={preview}>
+      <AdventureOttoProvider otto={otto} draftOtto={preview?.otto} actions={actions}>
         <StyledContainer bg={location.bgImageBlack} ref={container}>
           <StyledHead>
             <Button
@@ -213,7 +232,7 @@ export default function PreviewOttoStep() {
               {'<'}
             </Button>
             <StyledTitle>{t('adventurePopup.previewOttoTitle')}</StyledTitle>
-            <CloseButton color="white" onClose={close} />
+            <CloseButton color="white" onClose={onRequestClose} />
           </StyledHead>
 
           <OttoSelector />
@@ -221,18 +240,21 @@ export default function PreviewOttoStep() {
           <StyledMain>
             <StyledPreview>
               <OttoPreviewer
+                loading={loading}
                 itemPopupOffset={itemPopupOffset}
                 itemsPopupWidth={itemPopupWidth}
                 itemPopupHeight={itemPopupHeight}
               />
-              {otto && <OttoAdventureLevel otto={otto} boost={Boolean(levelBoost)} />}
-              <OttoStats />
-              <OttoAttrs />
+              <OttoAdventureLevel loading={loading} otto={otto} boost={Boolean(levelBoost)} />
+              <OttoStats loading={loading} />
+              <SkeletonThemeProvider color={SkeletonColor.Light}>
+                <OttoAttrs loading={loading} />
+              </SkeletonThemeProvider>
             </StyledPreview>
 
             <StyledLocation>
-              <AdventureConditionalBoosts />
-              <AdventureRewards canUsePotions onUsePotion={setUsedPotionAmounts} />
+              <AdventureConditionalBoosts loading={loading} />
+              <AdventureRewards loading={loading} canUsePotions onUsePotion={setUsedPotionAmounts} />
             </StyledLocation>
           </StyledMain>
 
@@ -247,6 +269,76 @@ export default function PreviewOttoStep() {
           {equippedItemActions.length > 0 && <StyledItemActionsTooltip content={t('adventurePopup.itemTxDesc')} />}
         </StyledContainer>
       </AdventureOttoProvider>
+
+      <SwitchOttoAlert confirmed={confirmed} confirm={confirm} />
     </AdventureLocationProvider>
   )
+}
+
+function SwitchOttoAlert({ confirmed, confirm }: { confirmed: boolean; confirm: (confirmed: boolean) => void }) {
+  const { t } = useTranslation('', { keyPrefix: 'adventurePopup' })
+
+  return (
+    <AdventureAlert
+      storageKey="switchAdventureOtto"
+      show={!confirmed}
+      content={t('closePopupAlert.content')}
+      okLabel={t('closePopupAlert.okLabel')}
+      cancelLabel={t('closePopupAlert.cancelLabel')}
+      onOk={() => confirm(true)}
+      onCancel={() => confirm(false)}
+    />
+  )
+}
+
+const useConfirmedOtto = () => {
+  const { otto, itemActions, resetEquippedItems, setOtto: selectOtto } = useOtto()
+  const [confirmed, setConfirmed] = useState(true)
+  const [confirmedOtto, setConfirmedOtto] = useState(otto)
+  const [prevOtto, setPrevOtto] = useState<Otto>()
+
+  const confirm = useCallback(
+    (confirmed: boolean) => {
+      if (confirmed) {
+        setConfirmed(true)
+        resetEquippedItems()
+        setConfirmedOtto(otto)
+      } else {
+        selectOtto(prevOtto)
+        setConfirmedOtto(prevOtto)
+      }
+    },
+    [prevOtto?.id, otto?.id]
+  )
+
+  useEffect(() => {
+    resetEquippedItems()
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      setPrevOtto(otto)
+    }
+  }, [otto?.id])
+
+  useEffect(() => {
+    if (prevOtto?.id && confirmed && itemActions.length > 0) {
+      setConfirmed(false)
+    } else {
+      setConfirmedOtto(otto)
+      setConfirmed(true)
+    }
+  }, [otto?.id])
+
+  useEffect(() => {
+    if (confirmed) {
+      setConfirmedOtto(otto)
+    }
+  }, [confirmed])
+
+  return {
+    confirmedOtto,
+    confirmed,
+    confirm,
+  }
 }

@@ -2,6 +2,7 @@ import throttle from 'lodash/throttle'
 import noop from 'lodash/noop'
 import { AdventureLocation } from 'models/AdventureLocation'
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import usePreloadImages from 'hooks/usePreloadImage'
 import { useApi } from './Api'
 
 const defaultValue = {
@@ -22,6 +23,17 @@ export const AdventureLocationsProvider = ({ children }: PropsWithChildren<objec
   const api = useApi()
   const [loading, setLoading] = useState(false)
   const [locations, steLocations] = useState<AdventureLocation[]>([])
+  const images = useMemo(() => {
+    const images: string[] = []
+    locations.forEach(location => {
+      images.push(location.image)
+      images.push(location.bgImage)
+      images.push(location.bgImageBlack)
+    })
+    return images
+  }, [locations])
+
+  usePreloadImages(images)
 
   const refetch = useCallback(
     throttle(() => {

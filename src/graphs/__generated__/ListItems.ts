@@ -9,6 +9,7 @@
 
 export interface ListItems_ottoItems {
   __typename: "OttoItem";
+  id: string;
   tokenId: any;
   amount: number;
   parentTokenId: any | null;
@@ -21,4 +22,5 @@ export interface ListItems {
 
 export interface ListItemsVariables {
   owner: any;
+  skip: number;
 }

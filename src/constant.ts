@@ -45,6 +45,7 @@ export const ROUND_RARITY_REWARD_BEFORE_3 = 2500
 export const ROUND_RARITY_REWARD_AFTER_3 = 3000
 export const ROUND_RARITY_REWARD_S2 = 2500
 export const RARITY_S1_END = 1660867200000
+export const RARITY_S2_END = 1668384000000
 
 export enum Token {
   Clam = 'CLAM',

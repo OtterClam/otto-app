@@ -1,13 +1,14 @@
 import { useItemApplicable } from 'contracts/views'
 import Otto from 'models/Otto'
-import { MyOttosContext } from 'MyOttosProvider'
-import { useContext } from 'react'
+import { useMyOttos } from 'MyOttosProvider'
+import { useMemo } from 'react'
 import styled from 'styled-components/macro'
 
 const StyledOttoList = styled.div`
   display: flex;
   gap: 8px;
   width: 100%;
+  min-height: 54px;
   overflow-x: scroll;
 `
 
@@ -63,21 +64,22 @@ interface Props {
 }
 
 export default function OttoList({ itemId, selectedOtto, onSelect }: Props) {
-  const { ottos } = useContext(MyOttosContext)
+  const { ottos } = useMyOttos()
+  const availableOttos = useMemo(() => ottos.filter(otto => otto.availableForItem), [ottos])
   const applicable = useItemApplicable(
     itemId,
-    ottos.map(otto => otto.id)
+    availableOttos.map(otto => otto.id)
   )
   return (
     <StyledOttoList>
-      {ottos.map((otto, index) => (
+      {availableOttos.map((otto, index) => (
         <StyledOttoCell
           key={index}
           selected={selectedOtto === otto}
           disabled={!applicable[index]}
           onClick={() => onSelect(otto)}
         >
-          <StyledOttoImage src={otto.mediumImage} />
+          <StyledOttoImage src={otto.image} />
           {!applicable[index] && <StyledDisableMask />}
         </StyledOttoCell>
       ))}

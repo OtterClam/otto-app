@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall } from 'styles/typography'
-import TraitCard from './TraitCard'
+import ItemCard from './TraitCard'
 
 const StyledTraitDetails = styled.div``
 
@@ -33,18 +33,19 @@ type Tab = 'genetic' | 'wearable'
 export default function OttoTraitDetails({ otto }: Props) {
   const { t } = useTranslation()
   const [selectedTab, setSelectedTab] = useState<Tab>('genetic')
-  const traits = selectedTab === 'genetic' ? otto.geneticTraits : otto.wearableTraits
+  const itemsMetadata = selectedTab === 'genetic' ? otto.geneticItemsMetadata : otto.wearableItemsMetadata
   const [score, brs, rrs] = useMemo(() => {
     let score = 0
     let brs = 0
     let rrs = 0
-    traits.forEach(trait => {
-      score += trait.total_rarity_score
-      brs += trait.base_rarity_score
-      rrs += trait.relative_rarity_score
+    itemsMetadata.forEach(metadata => {
+      score += metadata.totalRarityScore
+      brs += metadata.baseRarityScore
+      rrs += metadata.relativeRarityScore
     })
     return [score, brs, rrs]
-  }, [traits])
+  }, [itemsMetadata])
+
   return (
     <StyledTraitDetails>
       <StyledTab>
@@ -57,8 +58,8 @@ export default function OttoTraitDetails({ otto }: Props) {
       </StyledTab>
       <StyledRarityScoreSum>{t('otto.total_rarity_score', { score, brs, rrs })}</StyledRarityScoreSum>
       <StyledTraitCards>
-        {traits.map((trait, index) => (
-          <TraitCard key={index} trait={trait} />
+        {itemsMetadata.map((metadata, index) => (
+          <ItemCard key={index} metadata={metadata} />
         ))}
       </StyledTraitCards>
     </StyledTraitDetails>

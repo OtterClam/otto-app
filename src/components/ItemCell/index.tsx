@@ -1,7 +1,13 @@
-import CroppedImage from 'components/CroppedImage'
-import Item from 'models/Item'
+import Help from 'components/Help'
+import noop from 'lodash/noop'
+import { ItemMetadata, Item } from 'models/Item'
 import Otto from 'models/Otto'
-import { useTranslation } from 'next-i18next'
+import { useMyOtto } from 'MyOttosProvider'
+import Image from 'next/image'
+import Link from 'next/link'
+import { memo, useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { showItemDetailsPopup } from 'store/uiSlice'
 import styled from 'styled-components/macro'
 import { ContentLarge, Note } from 'styles/typography'
 import chainedImage from './chained.svg'
@@ -9,14 +15,14 @@ import nonReturnableImage from './nonreturnable.png'
 import selectedFrameCornerImage from './seelcted-frame-corner.svg'
 
 const StyledItemCell = styled.button<{
-  size?: number
+  size: number
   rarity?: string
   selected: boolean
   unavailable: boolean
   canClick: boolean
 }>`
   --selected-bg: radial-gradient(63.75% 63.75% at 50% 50%, rgba(116, 205, 255, 0) 56.25%, #74cdff 100%);
-  width: ${({ size }) => `${size || 115}px`};
+  width: ${({ size }) => `${size}px`};
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 5px;
   position: relative;
@@ -53,6 +59,7 @@ const StyledSelectedFrame = styled.div<{ right?: boolean }>`
   top: 0;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 
   &::before,
   &::after {
@@ -126,13 +133,13 @@ const StyledAmount = styled.div`
 const StyledEquipped = styled.div`
   position: absolute;
   z-index: 1;
-  left: -2px;
-  bottom: -2px;
-  padding: 2px 6px;
-  color: ${({ theme }) => theme.colors.white};
-  background-color: ${({ theme }) => theme.colors.darkGray300};
-  border: 2px solid ${({ theme }) => theme.colors.otterBlack};
-  border-radius: 0 5px 5px 5px;
+  left: 6px;
+  bottom: 6px;
+  width: 25px;
+  height: 25px;
+  border: 2px ${({ theme }) => theme.colors.white} solid;
+  border-radius: 13px;
+  overflow: hidden;
 `
 
 const StyledUnreturnable = styled.div`
@@ -158,8 +165,12 @@ const StyledUnreturnable = styled.div`
   }
 `
 
+// workaround for eslint
+const StyledOttoLink = styled.a``
+
 interface Props {
   item?: Item
+  metadata?: ItemMetadata // component will use this field and ignore "item" if it's not undefined
   currentOtto?: Otto
   unavailable?: boolean
   size?: number
@@ -167,33 +178,49 @@ interface Props {
   onClick?: () => void
   className?: string
   hideAmount?: boolean
+  showDetailsPopup?: boolean
 }
 
-export default function ItemCell({
+export default memo(function ItemCell({
   item,
-  currentOtto,
+  metadata,
+  currentOtto, // for previewer
   unavailable = false,
-  size,
+  size = 115,
   selected = false,
-  onClick,
+  onClick = noop,
   className,
   hideAmount = false,
+  showDetailsPopup = false,
 }: Props) {
-  const { t } = useTranslation()
-  const { id, image, rarity, equipped, amount = 0, unreturnable } = item ?? {}
-  const equippedByCurrentOtto = (!currentOtto || currentOtto?.wearableTraits.find(trait => trait.id === id)) && equipped
+  const { id, equippedBy, amount = 0 } = item ?? {}
+  const equippedByOtto = useMyOtto(equippedBy)
+  const { tokenId, image, rarity, unreturnable } = metadata || (item?.metadata ?? {})
+  const equippedByCurrentOtto = Boolean(currentOtto?.equippedItems.find(item => item.id === id))
+  const dispatch = useDispatch()
+
+  unavailable = Boolean((unavailable && !equippedByCurrentOtto) || (equippedByOtto && !equippedByOtto.availableForItem))
+
+  const handleClickEvent = useCallback(() => {
+    onClick()
+    if (showDetailsPopup) {
+      dispatch(showItemDetailsPopup(tokenId))
+    }
+  }, [onClick, showDetailsPopup, tokenId])
 
   return (
     <StyledItemCell
       size={size}
       rarity={rarity}
-      unavailable={unavailable && !equippedByCurrentOtto}
+      unavailable={unavailable}
       selected={selected}
       canClick={Boolean(onClick)}
       className={className}
-      onClick={onClick}
+      onClick={handleClickEvent}
     >
-      <StyledImageContainer>{image && <CroppedImage src={image} layout="fill" />}</StyledImageContainer>
+      <StyledImageContainer>
+        {image && <Image loading="lazy" src={image} width={size} height={size} />}
+      </StyledImageContainer>
       <StyledRarity rarity={rarity}>
         <Note>{rarity}</Note>
       </StyledRarity>
@@ -202,9 +229,20 @@ export default function ItemCell({
           <ContentLarge>{amount}</ContentLarge>
         </StyledAmount>
       )}
-      {equipped && (
+      {equippedByOtto && (
         <StyledEquipped>
-          <Note>{t('my_items.equipped')}</Note>
+          <Help noicon message={equippedByOtto.name}>
+            <Link href={`/my-ottos/${equippedByOtto.id}`} passHref>
+              <StyledOttoLink onClick={e => e.stopPropagation()}>
+                <Image src={equippedByOtto.image} layout="fill" width={50} height={50} />
+              </StyledOttoLink>
+            </Link>
+          </Help>
+        </StyledEquipped>
+      )}
+      {equippedByCurrentOtto && (
+        <StyledEquipped>
+          <Image src={currentOtto!.image} layout="fill" width={50} height={50} />
         </StyledEquipped>
       )}
       {selected && (
@@ -213,7 +251,7 @@ export default function ItemCell({
           <StyledSelectedFrame right />
         </>
       )}
-      {(unreturnable || id === undefined) && <StyledUnreturnable />}
+      {(unreturnable || tokenId === undefined) && <StyledUnreturnable />}
     </StyledItemCell>
   )
-}
+})

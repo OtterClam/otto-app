@@ -2,7 +2,6 @@ import AdventureFullscreen from 'components/AdventureFullscreen'
 import AdventureProgressBar from 'components/AdventureProgressBar'
 import AdventureRibbonText from 'components/AdventureRibbonText'
 import Button from 'components/Button'
-import CroppedImage from 'components/CroppedImage'
 import RewardRibbonText from 'components/RewardRibbonText'
 import TreasurySection from 'components/TreasurySection'
 import { AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
@@ -15,10 +14,10 @@ import silverImage from 'assets/chests/silver.png'
 import goldenImage from 'assets/chests/golden.png'
 import diamondImage from 'assets/chests/diamond.png'
 import attributePointsImage from 'assets/chests/attribute_points.png'
-import { AdventureDisplayedBoost, parseBoosts } from 'models/AdventureDisplayedBoost'
+import { parseBoosts } from 'models/AdventureDisplayedBoost'
 import { BoostType } from 'models/AdventureLocation'
 import { useApi } from 'contexts/Api'
-import MarkdownWithHtml from 'components/MarkdownWithHtml'
+import Image from 'next/image'
 import arrowImage from './arrow.png'
 
 const rewardItems: { [k: string]: { key: string; image: string } } = {
@@ -165,6 +164,15 @@ export default function LevelUpPopup() {
   const otto = useMyOtto(levelUp?.ottoId)
   const [boosts, setBoosts] = useState<string[]>([])
 
+  const amounts = useMemo(() => {
+    return (levelUp?.levelUp?.got.items ?? [])
+      .filter(item => Boolean(rewardItems[item.tokenId]))
+      .reduce((amounts, item) => {
+        amounts[item.tokenId] = (amounts[item.tokenId] ?? 0) + 1
+        return amounts
+      }, {} as Record<string, number>)
+  }, [levelUp?.levelUp?.got.items])
+
   const handleClose = useCallback(() => {
     dispatch({ type: AdventureUIActionType.LevelUp })
   }, [])
@@ -189,7 +197,7 @@ export default function LevelUpPopup() {
     if (otto && otto.latestAdventurePass) {
       api
         .getOttoAdventurePreview(otto.id, otto.latestAdventurePass.locationId, [])
-        .then(preview => parseBoosts(i18n, otto, preview.location.conditionalBoosts, false))
+        .then(preview => parseBoosts(i18n, otto, preview.location!.conditionalBoosts, false))
         .then(boosts => {
           const boost = boosts.find(({ boostType }) => boostType === BoostType.Exp)
           if (boost && boost.boostType === BoostType.Exp) {
@@ -209,7 +217,7 @@ export default function LevelUpPopup() {
       {otto && levelUp?.levelUp && (
         <StyledContainer>
           <StyledOtto>
-            <CroppedImage src={otto.image} width={140} height={140} />
+            <Image src={otto.image} width={140} height={140} />
             <StyledLevels>
               <StyledLevel>LV.{levelUp.levelUp.from.level}</StyledLevel>
               <StyledArrow />
@@ -245,16 +253,14 @@ export default function LevelUpPopup() {
               <AdventureRibbonText>{t('rewardSectionTitle')}</AdventureRibbonText>
             </StyledRewardTitle>
             <StyledRewards>
-              {levelUp.levelUp.got.items
-                .filter(item => Boolean(rewardItems[item.id]))
-                .map(item => (
-                  <StyledReward key={item.id}>
-                    <StyledRewardIcon image={rewardItems[item.id].image} />
-                    <StyledRewardLabel>
-                      {t(`itemRewardLabel.${rewardItems[item.id].key}`, { amount: item.amount })}
-                    </StyledRewardLabel>
-                  </StyledReward>
-                ))}
+              {Object.entries(amounts).map(([tokenId]) => (
+                <StyledReward key={tokenId}>
+                  <StyledRewardIcon image={rewardItems[tokenId].image} />
+                  <StyledRewardLabel>
+                    {t(`itemRewardLabel.${rewardItems[tokenId].key}`, { amount: amounts[tokenId] })}
+                  </StyledRewardLabel>
+                </StyledReward>
+              ))}
               <StyledReward>
                 <StyledRewardIcon image={attributePointsImage.src} />
                 <StyledRewardLabel>

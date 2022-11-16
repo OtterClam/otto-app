@@ -1,10 +1,8 @@
-import { Trait } from 'models/Otto'
 import styled from 'styled-components/macro'
 import { useTranslation } from 'next-i18next'
 import { Caption, ContentLarge, ContentSmall, Note } from 'styles/typography'
 import ItemCell from 'components/ItemCell'
-import { useMemo } from 'react'
-import { traitToItem } from 'models/Item'
+import { ItemMetadata, Item } from 'models/Item'
 import GenderSpecific from 'components/GenderSpecific'
 import UnreturnableHint from 'components/UnreturnableHint'
 import TraitLabels from 'components/TraitLabels'
@@ -76,27 +74,40 @@ const StyledWearCount = styled(Caption).attrs({ as: 'p' })`
 `
 
 export interface Props {
-  trait: Trait
+  metadata?: ItemMetadata
 }
 
-export default function TraitCard({ trait }: Props) {
+export default function ItemCard({ metadata }: Props) {
+  if (!metadata) {
+    throw new Error('missing required prop')
+  }
+
   const { t } = useTranslation()
+
+  const item: Item = {
+    id: '',
+    amount: 1,
+    unreturnable: false,
+    metadata,
+    updatedAt: new Date(),
+  }
   const {
     type,
     name,
     image,
     stats,
     rarity,
-    total_rarity_score,
-    base_rarity_score,
-    relative_rarity_score,
-    equipped_count,
-    equippable_gender,
+    totalRarityScore,
+    baseRarityScore,
+    relativeRarityScore,
+    equippedCount,
+    equippableGender,
     unreturnable,
     wearable,
-  } = trait
+  } = metadata
+
   const title = t(`otto.traits.title`, { type: t(`otto.traits.${type}`), name })
-  const item = useMemo(() => traitToItem(trait), [trait])
+
   return (
     <StyledTraitCard>
       <StyledTopContainer>
@@ -110,24 +121,24 @@ export default function TraitCard({ trait }: Props) {
       <StyledBottomContainer>
         {image && (
           <div>
-            <ItemCell item={item} />
+            <ItemCell showDetailsPopup={item.metadata.wearable} item={item} />
           </div>
         )}
         <StyledInfoContainer>
           <StyledRarityScore as="p">
-            {t('otto.rarity_score', { score: total_rarity_score, brs: base_rarity_score, rrs: relative_rarity_score })}
+            {t('otto.rarity_score', { score: totalRarityScore, brs: baseRarityScore, rrs: relativeRarityScore })}
           </StyledRarityScore>
-          <TraitLabels highlightMatched trait={trait} />
-          <StyledWearCount>{t('otto.trait_count', { count: equipped_count })}</StyledWearCount>
+          <TraitLabels highlightMatched metadata={metadata} />
+          <StyledWearCount>{t('otto.trait_count', { count: equippedCount })}</StyledWearCount>
           <StyledStats>
-            {stats.map(({ name, value }, i) => (
-              <StyledStat key={i}>
-                <Note>{name}</Note>
-                <Note>{value}</Note>
+            {Object.entries(stats).map(([key, val]) => (
+              <StyledStat key={key}>
+                <Note>{key}</Note>
+                <Note>{val}</Note>
               </StyledStat>
             ))}
           </StyledStats>
-          <GenderSpecific equippableGender={equippable_gender} />
+          <GenderSpecific equippableGender={equippableGender} />
         </StyledInfoContainer>
       </StyledBottomContainer>
       {wearable && unreturnable && <UnreturnableHint />}

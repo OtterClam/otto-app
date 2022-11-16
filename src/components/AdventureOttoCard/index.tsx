@@ -3,15 +3,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import AdventureStatus from 'components/AdventureStatus'
 import Button from 'components/Button'
-import CroppedImage from 'components/CroppedImage'
+import OttoImage from 'components/OttoImage'
 import { useAdventureLocation } from 'contexts/AdventureLocations'
 import { AdventurePopupStep, useGoToAdventureResultStep, useOpenAdventurePopup } from 'contexts/AdventureUIState'
 import { useOtto } from 'contexts/Otto'
-import useTimer from 'hooks/useTimer'
 import isEqual from 'lodash/isEqual'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useTranslation } from 'next-i18next'
-import { memo, useState } from 'react'
+import Image from 'next/image'
+import { memo } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentExtraSmall, ContentMedium } from 'styles/typography'
 import RemainingTime from './RemainingTime'
@@ -24,12 +24,14 @@ const StyledAdventureOttoCard = styled.div`
   overflow: hidden;
 `
 
-const StyledContainer = styled.div<{ disabled: boolean }>`
+const StyledContainer = styled.button<{ disabled: boolean }>`
   display: flex;
   align-items: center;
   gap: 10px;
   background: ${({ theme, disabled }) => (disabled ? theme.colors.lightGray400 : theme.colors.white)};
   padding: 17px 20px;
+  outline: none;
+  text-align: left;
 `
 
 const StyledDetails = styled.div`
@@ -58,8 +60,6 @@ const StyledLocation = styled(Caption)`
   gap: 4px;
 `
 
-const StyledLocationImage = styled(CroppedImage)``
-
 const StyledAvatarContainer = styled.div<{ size: number }>`
   position: relative;
   flex: 0 ${({ size }) => size}px;
@@ -70,8 +70,6 @@ const StyledAvatarContainer = styled.div<{ size: number }>`
   overflow: hidden;
   border: 1px ${({ theme }) => theme.colors.otterBlack} solid;
 `
-
-const StyledAvatar = styled(CroppedImage)``
 
 const StyledAdventureStatus = styled(Caption).attrs({ as: 'div' })`
   padding: 5px 10px;
@@ -110,11 +108,34 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
     openPopup(0, AdventurePopupStep.Resting)
   }
 
+  const onClick = () => {
+    switch (otto.adventureStatus) {
+      case AdventureOttoStatus.Finished:
+        check()
+        break
+      case AdventureOttoStatus.Ready:
+        go()
+        break
+      case AdventureOttoStatus.Resting:
+        if (otto.restingUntil) {
+          openRestingPopup()
+        }
+        break
+      case AdventureOttoStatus.Ongoing:
+        if (otto.latestAdventurePass?.canFinishAt !== undefined) {
+          check()
+        }
+        break
+      default:
+      // do nothing
+    }
+  }
+
   return (
     <StyledAdventureOttoCard>
-      <StyledContainer disabled={otto.adventureStatus === AdventureOttoStatus.Unavailable}>
+      <StyledContainer onClick={onClick} disabled={otto.adventureStatus === AdventureOttoStatus.Unavailable}>
         <StyledAvatarContainer size={50}>
-          <StyledAvatar layout="fill" src={otto.image} />
+          <OttoImage unoptimized size={50} src={otto.image} />
         </StyledAvatarContainer>
 
         <StyledDetails>
@@ -123,7 +144,7 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
             <AdventureStatus status={otto.adventureStatus} />
             {location && (
               <StyledLocation>
-                <StyledLocationImage width={21} height={21} src={location.image} />
+                <Image unoptimized width={21} height={21} src={location.image} />
                 {location.name}
               </StyledLocation>
             )}
@@ -132,24 +153,24 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
 
         <StyledAction>
           {otto.adventureStatus === AdventureOttoStatus.Finished && (
-            <Button onClick={check} Typography={ContentMedium} primaryColor="white" padding="3px 10px">
+            <Button Typography={ContentMedium} primaryColor="white" padding="3px 10px">
               {t('checkOtto')}
             </Button>
           )}
 
           {otto.adventureStatus === AdventureOttoStatus.Ready && (
-            <Button onClick={go} Typography={ContentMedium} primaryColor="white" padding="3px 10px">
+            <Button Typography={ContentMedium} primaryColor="white" padding="3px 10px">
               {t('go')}
             </Button>
           )}
 
           {otto.adventureStatus === AdventureOttoStatus.Resting && otto.restingUntil && (
-            <RemainingTime onClick={openRestingPopup} target={otto.restingUntil} />
+            <RemainingTime target={otto.restingUntil} />
           )}
 
           {otto.adventureStatus === AdventureOttoStatus.Ongoing &&
             otto.latestAdventurePass?.canFinishAt !== undefined && (
-              <RemainingTime onClick={check} target={otto.latestAdventurePass?.canFinishAt} />
+              <RemainingTime target={otto.latestAdventurePass?.canFinishAt} />
             )}
         </StyledAction>
       </StyledContainer>

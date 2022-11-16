@@ -1,6 +1,6 @@
 import { ChainId } from '@usedapp/core'
 import axios, { Axios } from 'axios'
-import { BigNumberish } from 'ethers'
+import { BigNumberish, ethers } from 'ethers'
 import {
   AdventureExploreArgs,
   AdventureLocation,
@@ -12,10 +12,18 @@ import { AdventurePreview, RawAdventurePreview, rawAdventurePreviewToAdventurePr
 import { AdventureResult, fromRawResult } from 'models/AdventureResult'
 import { Dice } from 'models/Dice'
 import { ForgeFormula, RawForgeFormula, rawForgeToForge } from 'models/Forge'
-import Item, { ItemAction, rawItemToItem } from 'models/Item'
+import {
+  Item,
+  ItemAction,
+  ItemMetadata,
+  ItemStatName,
+  RawItemMetadata,
+  rawItemMetadataToItemMetadata,
+} from 'models/Item'
 import { LeaderboardEpoch, RawLeaderboardEpoch, rawLeaderboardEpochToLeaderboardEpoch } from 'models/LeaderboardEpoch'
+import { Mission, MissionInfo, rawMissionToMission } from 'models/Mission'
 import { Notification, RawNotification } from 'models/Notification'
-import Otto, { RawOtto } from 'models/Otto'
+import { RawOtto } from 'models/Otto'
 import Product from 'models/store/Product'
 import { RawAdventureResult } from './RawAdventureResult'
 
@@ -26,7 +34,7 @@ export interface OttoCandidateMeta {
 }
 
 export interface FlashSellResponse {
-  type: string
+  type: ItemStatName
   name: string
   desc: string
   popup_title: string
@@ -35,9 +43,27 @@ export interface FlashSellResponse {
   start_time: number
   end_time: number
   products: Product[]
-  special_items: Item[]
+  special_items: ItemMetadata[]
   processing_images: string[]
 }
+
+export interface FishStoreProduct extends Product {
+  start_time: number
+  end_time: number
+  item: Item
+}
+
+export interface FishStoreResponse {
+  id: number
+  title: string
+  desc: string
+  products: FishStoreProduct[]
+  bg_img: string
+  left_img: string
+  right_img: string
+}
+
+export type MissionFilter = 'ongoing' | 'finished'
 
 const otterclamApiEndpoint: { [key: number]: string } = {
   [ChainId.Polygon]: process.env.NEXT_PUBLIC_API_ENDPOINT_MAINNET!,
@@ -49,20 +75,21 @@ export class Api {
 
   private otterclamClient: Axios
 
-  constructor(chainId: ChainId) {
+  constructor(chainId: ChainId, public readonly locale: string) {
     this.chainId = chainId
     this.otterclamClient = axios.create({
       baseURL: otterclamApiEndpoint[chainId],
     })
+    this.setLanguage(locale)
   }
 
   withAbortController(abortController: AbortController) {
-    const newClient = new Api(this.chainId)
+    const newClient = new Api(this.chainId, this.locale)
     newClient.otterclamClient.defaults.signal = abortController.signal
     return newClient
   }
 
-  setLanguage(lang: string): void {
+  private setLanguage(lang: string): void {
     this.otterclamClient.defaults.headers.common['Accept-language'] = lang
   }
 
@@ -70,8 +97,10 @@ export class Api {
     return this.otterclamClient.get(`/ottos/candidates/metadata/${portalId}`).then(res => res.data)
   }
 
-  public async getOttoMeta(ottoId: string, details: boolean): Promise<RawOtto> {
-    return this.otterclamClient.get(`/ottos/metadata/${ottoId}`, { params: { details } }).then(res => res.data)
+  public async getOttoMeta(ottoId: string, details: boolean, abortSignal?: AbortSignal): Promise<RawOtto> {
+    return this.otterclamClient
+      .get(`/ottos/metadata/${ottoId}`, { params: { details }, signal: abortSignal })
+      .then(res => res.data)
   }
 
   public async getNotifications(): Promise<Notification[]> {
@@ -93,18 +122,18 @@ export class Api {
       .then(res => res.data)
   }
 
-  public async getItem(itemId: string): Promise<Item> {
+  public async getItemsMetadata(
+    tokenIds: string[],
+    abortSignal?: AbortSignal
+  ): Promise<{ [tokenId: string]: ItemMetadata }> {
     return this.otterclamClient
-      .get(`/items/metadata/${itemId}`)
-      .then(res => res.data)
-      .then((data: any) => rawItemToItem(itemId, data))
-  }
-
-  public async getItems(ids: string[]): Promise<Item[]> {
-    return this.otterclamClient
-      .get(`/items/metadata?ids=${ids.join(',')}`)
-      .then(res => res.data)
-      .then((data: any[]) => data.map((d, i) => rawItemToItem(ids[i], d)))
+      .get<RawItemMetadata[]>(`/items/metadata?ids=${tokenIds.join(',')}`, { signal: abortSignal })
+      .then(res =>
+        res.data.reduce((map, metadata) => {
+          map[metadata.id] = rawItemMetadataToItemMetadata(metadata)
+          return map
+        }, {} as { [tokenId: string]: ItemMetadata })
+      )
   }
 
   public async rollTheDice(ottoId: string, tx: string): Promise<Dice> {
@@ -130,10 +159,41 @@ export class Api {
   public async getFlashSell(): Promise<FlashSellResponse> {
     return this.otterclamClient.get('/products/flashsale').then(res => ({
       ...res.data,
+      type: res.data.type,
       start_time: new Date(res.data.start_time).valueOf(),
       end_time: new Date(res.data.end_time).valueOf(),
-      special_items: res.data.special_items.map((i: any) => rawItemToItem('', i)),
+      special_items: res.data.special_items.map((raw: RawItemMetadata) => rawItemMetadataToItemMetadata(raw)),
     }))
+  }
+
+  public async getFishStoreProducts(): Promise<FishStoreResponse[]> {
+    return this.otterclamClient.get('/store').then(res => {
+      return res.data.map((data: any) => ({
+        ...data,
+        products: data.products.map((raw: any): FishStoreProduct => {
+          const itemMeta = rawItemMetadataToItemMetadata(raw.item)
+          return {
+            ...raw,
+            displayPrice: ethers.utils.formatEther(raw.price),
+            discountPrice: raw.discount_price,
+            displayDiscountPrice: ethers.utils.formatEther(raw.discount_price),
+            start_time: new Date(raw.start_time).valueOf(),
+            end_time: new Date(raw.end_time).valueOf(),
+            item: {
+              id: String(raw.item_id),
+              amount: 1,
+              updatedAt: new Date(),
+              metadata: itemMeta,
+              unreturnable: false,
+            },
+          }
+        }),
+      }))
+    })
+  }
+
+  public async signFishStoreProduct({ from, to, productId }: { from: string; to: string; productId: number }) {
+    return this.otterclamClient.post('/store/buy', { from, to, product_id: productId }).then(res => res.data)
   }
 
   public async getFoundryForges(): Promise<ForgeFormula[]> {
@@ -141,21 +201,22 @@ export class Api {
     return result.data.map(rawForgeToForge)
   }
 
-  public async getAdventureOttos(wallet: string): Promise<Otto[]> {
-    const result = await this.otterclamClient.get<RawOtto[]>(`/adventure/wallets/${wallet}`)
-    return result.data.map(raw => new Otto(raw))
+  public async getAdventureOttos(wallet: string, abortSignal?: AbortSignal): Promise<RawOtto[]> {
+    const result = await this.otterclamClient.get<RawOtto[]>(`/adventure/wallets/${wallet}`, { signal: abortSignal })
+    return result.data
   }
 
   public async getOttoAdventurePreview(
     ottoId: string,
-    locationId: number,
-    actions: ItemAction[]
+    locationId: number | undefined,
+    actions: ItemAction[],
+    abortSignal?: AbortSignal
   ): Promise<AdventurePreview> {
-    let url = `/ottos/${ottoId}/adventure/locations/${locationId}/preview`
+    let url = locationId ? `/ottos/${ottoId}/adventure/locations/${locationId}/preview` : `/ottos/${ottoId}/preview`
     if (actions.length) {
       url += `?actions=${JSON.stringify(actions)}`
     }
-    const result = await this.otterclamClient.get<RawAdventurePreview>(url)
+    const result = await this.otterclamClient.get<RawAdventurePreview>(url, { signal: abortSignal })
     return rawAdventurePreviewToAdventurePreview(result.data)
   }
 
@@ -231,6 +292,71 @@ export class Api {
     const result = await this.otterclamClient.get<RawLeaderboardEpoch>('/leaderboard/epoch')
     return rawLeaderboardEpochToLeaderboardEpoch(result.data)
   }
+
+  public async listMissions({
+    account,
+    filter,
+    offset,
+    limit,
+  }: {
+    account: string
+    filter: MissionFilter
+    offset?: number
+    limit?: number
+  }): Promise<Mission[]> {
+    return this.otterclamClient
+      .get(`/wallets/${account}/missions/${filter}`, { params: { offset, limit } })
+      .then(res => res.data.map(rawMissionToMission))
+  }
+
+  public async getMissionInfo({ account }: { account: string }): Promise<MissionInfo> {
+    const result = await this.otterclamClient.get(`/wallets/${account}/missions-info`)
+    return {
+      nextFreeMissionAt: new Date(result.data.next_free_mission_at),
+      newPrice: result.data.new_price,
+      newProductId: String(result.data.new_product_id),
+      refreshPrice: result.data.refresh_price,
+      refreshProductId: String(result.data.refresh_product_id),
+    }
+  }
+
+  public async requestNewMission({ account, tx }: { account: string; tx?: string }): Promise<Mission> {
+    const result = await this.otterclamClient.post(`/missions`, {
+      wallet: account,
+      tx_hash: tx,
+    })
+    return rawMissionToMission(result.data)
+  }
+
+  public async refreshMission({
+    account,
+    missionId,
+    tx,
+  }: {
+    account: string
+    missionId: number
+    tx: string
+  }): Promise<Mission> {
+    return this.otterclamClient
+      .put(`/missions/${missionId}/refresh`, {
+        mission_id: missionId,
+        tx_hash: tx,
+      })
+      .then(res => rawMissionToMission(res.data))
+  }
+
+  public async completeMission({ account, missionId }: { account: string; missionId: number }): Promise<any> {
+    return this.otterclamClient.put(`/missions/${missionId}/complete`).then(res => res.data)
+  }
+
+  public async confirm({ missionId, tx }: { missionId: number; tx: string }): Promise<any> {
+    return this.otterclamClient
+      .put(`/missions/${missionId}/confirm`, {
+        mission_id: missionId,
+        tx_hash: tx,
+      })
+      .then(res => res.data)
+  }
 }
 
-export const defaultApi = new Api(ChainId.Polygon)
+export const defaultApi = new Api(ChainId.Polygon, 'en')

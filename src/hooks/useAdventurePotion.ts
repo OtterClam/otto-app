@@ -18,8 +18,8 @@ export default function useAdventurePotion() {
   const amounts = useMemo(() => {
     const amounts = {} as { [k: string]: number }
     items.forEach(item => {
-      if (potionIdMap[item.id]) {
-        amounts[item.id] = item.amount
+      if (potionIdMap[item.metadata.tokenId]) {
+        amounts[item.metadata.tokenId] = item.amount
       }
     })
     return amounts

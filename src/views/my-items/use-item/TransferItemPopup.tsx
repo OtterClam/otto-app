@@ -4,7 +4,7 @@ import Fullscreen from 'components/Fullscreen'
 import ItemCell from 'components/ItemCell'
 import { useTransferItem } from 'contracts/functions'
 import { ethers } from 'ethers'
-import Item from 'models/Item'
+import { Item } from 'models/Item'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
@@ -108,7 +108,7 @@ export default function TransferItemPopup({ item, onClose }: Props) {
   const loading = transferState.status === 'PendingSignature' || transferState.status === 'Mining'
 
   const onTransfer = () => {
-    transfer(item.id, address, amount)
+    transfer(item.metadata.tokenId, address, amount)
   }
 
   useEffect(() => {
@@ -125,7 +125,7 @@ export default function TransferItemPopup({ item, onClose }: Props) {
         {transferState.status !== 'Success' && (
           <StyledTransferContainer>
             <Headline>{t('title')}</Headline>
-            <ItemCell item={item} size={240} />
+            <ItemCell showDetailsPopup item={item} size={240} />
             <StyledInputContainer>
               <ContentSmall>{t('amount')}</ContentSmall>
               <StyledInput

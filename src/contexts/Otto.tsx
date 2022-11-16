@@ -1,20 +1,22 @@
 import { ItemActionType } from 'constant'
-import useMyItems from 'hooks/useMyItems'
 import noop from 'lodash/noop'
-import Item, { ItemAction } from 'models/Item'
-import Otto, { AdventureOttoStatus } from 'models/Otto'
+import { ItemAction, Item } from 'models/Item'
+import Otto, { AdventureOttoStatus, OttoGender } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import { createContext, FC, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react'
+import { useMyItems } from './MyItems'
 
 const OttoContext = createContext<{
   otto?: Otto
   setOtto: (otto?: Otto) => void
   resetEquippedItems: () => void
+  unequipAllItems: () => void
   equipItem: (traitType: string, traitId: string) => void
   removeItem: (traitType: string) => void
   itemActions: ItemAction[]
 }>({
   setOtto: noop,
+  unequipAllItems: noop,
   resetEquippedItems: noop,
   equipItem: noop,
   removeItem: noop,
@@ -33,21 +35,14 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
   const { ottos } = useMyOttos()
   const { items } = useMyItems()
   const [otto, setOtto] = useState<Otto | undefined>()
-  const [draftItems, setDraftItems] = useState<{
-    [traitType: string]: string | null
-  }>({})
-
-  useEffect(() => {
-    setDraftItems({})
-  }, [otto])
-
-  const value = useMemo(() => {
+  const [draftItems, setDraftItems] = useState<Record<string, string | null>>({})
+  const actions = useMemo(() => {
     const uniqueItems = items.reduce((map, item) => {
       // pick non-equipped items first if there multiple items
-      if (map[item.id] && !map[item.id].equipped) {
+      if (map[item.metadata.tokenId] && !map[item.metadata.tokenId].equippedBy) {
         return map
       }
-      return Object.assign(map, { [item.id]: item })
+      return Object.assign(map, { [item.metadata.tokenId]: item })
     }, {} as Record<string, Item>)
     const ottoIdToOtto = ottos.reduce(
       (map, otto) => Object.assign(map, { [otto.id]: otto }),
@@ -79,7 +74,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
       { ...draftItems }
     )
 
-    const actions = !otto
+    return !otto
       ? []
       : Object.keys(cleanedDraftItems).map(type => {
           const itemId = cleanedDraftItems[type]
@@ -92,7 +87,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
             }
           }
 
-          if (uniqueItems[itemId].equipped) {
+          if (uniqueItems[itemId].equippedBy) {
             return {
               type: ItemActionType.EquipFromOtto,
               item_id: Number(itemId),
@@ -106,12 +101,23 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
             from_otto_id: 0,
           }
         })
+  }, [draftItems, items.map(({ metadata }) => metadata.tokenId).join(',')])
 
+  const value = useMemo(() => {
     return {
       otto,
       setOtto,
       equipItem: (traitType: string, traitId: string) => {
         setDraftItems(map => {
+          const equippedItemIndex = otto?.equippedItems.findIndex(item => item.metadata.tokenId === traitId) ?? -1
+          const nativeItemIndex = otto?.nativeItemsMetadata.findIndex(metadata => metadata.tokenId === traitId) ?? -1
+
+          if (equippedItemIndex !== -1 || nativeItemIndex !== -1) {
+            const newMap = { ...map }
+            delete newMap[traitType]
+            return newMap
+          }
+
           return {
             ...map,
             [traitType]: traitId,
@@ -132,9 +138,18 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
       resetEquippedItems: () => {
         setDraftItems({})
       },
+      unequipAllItems: () => {
+        const draftItems: Record<string, string | null> = {}
+        otto?.wearableTraits.forEach(({ type, unreturnable }) => {
+          if (!unreturnable) {
+            draftItems[type] = null
+          }
+        })
+        setDraftItems(draftItems)
+      },
       itemActions: actions,
     }
-  }, [otto, draftItems, items])
+  }, [otto, actions])
 
   return <OttoContext.Provider value={value}>{children}</OttoContext.Provider>
 }

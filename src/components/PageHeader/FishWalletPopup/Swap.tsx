@@ -13,7 +13,7 @@ import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } from 'styles/typography'
-import { formatClamDecimals, formatClamEthers } from 'utils/currency'
+import { formatClamEthers } from 'utils/currency'
 import BuyFISHIcon from './buy-fish.png'
 import SwapLoading from './SwapLoading'
 import { useTokenInfo } from './token-info'
@@ -133,53 +133,6 @@ const StyledSwapInfo = styled(Note).attrs({ as: 'div' })`
   color: ${({ theme }) => theme.colors.darkGray200};
 `
 
-const StyledSwapButton = styled(Button)`
-  margin-top: 10px;
-`
-
-const StyledTokenSelector = styled.div<{ show: boolean }>`
-  display: ${({ show }) => (show ? 'flex' : 'none')};
-  position: absolute;
-  flex-direction: column;
-  gap: 10px;
-  background: ${({ theme }) => theme.colors.white};
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
-  padding: 10px 0;
-`
-
-const StyledSelectTokenRow = styled.button`
-  display: flex;
-  padding: 0 10px;
-  gap: 5px;
-  align-items: center;
-  width: 100%;
-  &:hover {
-    background: ${({ theme }) => theme.colors.lightGray200};
-  }
-`
-
-const StyledSelectTokenRightContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-`
-
-const StyledSelectTokenName = styled(ContentSmall)``
-
-const StyledSelectTokenAmount = styled(Note)`
-  color: ${({ theme }) => theme.colors.darkGray200};
-`
-
-const StyledPoweredBy = styled(Note)`
-  width: 100%;
-  color: ${({ theme }) => theme.colors.darkGray100};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-`
-
 interface Props {
   onClose: () => void
 }
@@ -192,7 +145,7 @@ export default function Swap({ onClose }: Props) {
   const { CLAM, FISH } = useContractAddresses()
   const tokenInfo = useTokenInfo()
   const wallet = useWallet()
-  const fishReturn = useBuyFishReturn(ethers.utils.parseUnits(clamAmount, 9))
+  const fishReturn = useBuyFishReturn(clamAmount ? ethers.utils.parseUnits(clamAmount, 9) : 0)
   const fishAmount = useMemo(() => ethers.utils.formatUnits(fishReturn, tokenInfo.FISH.decimal), [fishReturn])
   const enoughBalance =
     tokenInfo.CLAM.balance &&
@@ -255,8 +208,8 @@ export default function Swap({ onClose }: Props) {
             <StyledInput
               placeholder={t('placeholder')}
               value={clamAmount}
-              min={1}
-              onChange={e => setClamAmount(e.target.value || '1')}
+              min={0}
+              onChange={e => setClamAmount(e.target.value ?? '')}
             />
           </StyledTokenInputRow>
         </StyledTokenInput>
@@ -285,7 +238,7 @@ export default function Swap({ onClose }: Props) {
       <PaymentButton
         spenderAddress={OTTOPIA_STORE}
         token={Token.Clam}
-        amount={parseUnits(clamAmount, tokenInfo.CLAM.decimal)}
+        amount={clamAmount ? parseUnits(clamAmount, tokenInfo.CLAM.decimal) : 0}
         Typography={Headline}
         onClick={() => buyFish(parseUnits(clamAmount, tokenInfo.CLAM.decimal))}
         disabled={!clamAmount || !enoughBalance}

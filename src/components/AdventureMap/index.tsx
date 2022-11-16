@@ -1,4 +1,3 @@
-import CroppedImage from 'components/CroppedImage'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall } from 'styles/typography'
 import { useTranslation } from 'next-i18next'
@@ -6,6 +5,7 @@ import TreasureChestLevel from 'components/TreasureChestLevel'
 import { useAdventureLocations } from 'contexts/AdventureLocations'
 import AdventureLocation from 'components/AdventureLocation'
 import { forwardRef } from 'react'
+import Image from 'next/image'
 import continueImage from './continue.png'
 import mapImage from './map.jpg'
 
@@ -14,8 +14,8 @@ const StyledContainer = styled.div`
   background: ${({ theme }) => theme.colors.sandBrown};
   min-height: var(--game-body-height);
 
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    padding-bottom: 48px;
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    padding-bottom: 148px;
   }
 `
 
@@ -28,6 +28,10 @@ const StyledFooter = styled.div`
   left: 24px;
   right: 24px;
   z-index: 0;
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    bottom: 100px;
+  }
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     flex-direction: column-reverse;
@@ -53,6 +57,13 @@ const StyledTreasureChestLevel = styled(TreasureChestLevel)`
 
 const StyledImageContainer = styled.div`
   position: relative;
+  width: 100%;
+
+  &::before {
+    content: '';
+    display: block;
+    padding-bottom: 153.333689%;
+  }
 `
 
 export interface AdventureMapProps {
@@ -60,14 +71,14 @@ export interface AdventureMapProps {
   className?: string
 }
 
-export default forwardRef<HTMLDivElement, AdventureMapProps>(function AdventureMap({ hideFooter, className }, ref) {
+export default function AdventureMap({ hideFooter, className }: AdventureMapProps) {
   const { t } = useTranslation('', { keyPrefix: 'adventure' })
   const { locations } = useAdventureLocations()
 
   return (
-    <StyledContainer className={className} ref={ref}>
+    <StyledContainer className={className}>
       <StyledImageContainer>
-        <CroppedImage unoptimized src={mapImage} layout="responsive" />
+        <Image unoptimized src={mapImage} layout="fill" />
         {locations.map(location => (
           <AdventureLocation key={location.id} id={location.id} />
         ))}
@@ -80,4 +91,4 @@ export default forwardRef<HTMLDivElement, AdventureMapProps>(function AdventureM
       )}
     </StyledContainer>
   )
-})
+}

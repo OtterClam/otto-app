@@ -1,5 +1,5 @@
 import noop from 'lodash/noop'
-import Item from 'models/Item'
+import { Item } from 'models/Item'
 import { OttoGender } from 'models/Otto'
 import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react'
 
@@ -35,6 +35,7 @@ export enum ItemType {
   FacialAccessories = 'Facial Accessories',
   Clothes = 'Clothes',
   Background = 'Background',
+  Collectible = 'Collectible',
   Other = 'Other',
 }
 
@@ -81,23 +82,23 @@ export interface ItemFiltersProviderProps {
 
 const filterFunctions = {
   [ItemsFilter.None]: () => true,
-  [ItemsFilter.Equipped]: (item: Item) => item.equipped,
-  [ItemsFilter.NotEquipped]: (item: Item) => !item.equipped,
-  [ItemsFilter.LottieSpecific]: (item: Item) => item.equippable_gender === OttoGender.Female,
-  [ItemsFilter.OttoSpecific]: (item: Item) => item.equippable_gender === OttoGender.Male,
+  [ItemsFilter.Equipped]: (item: Item) => Boolean(item.equippedBy),
+  [ItemsFilter.NotEquipped]: (item: Item) => !item.equippedBy,
+  [ItemsFilter.LottieSpecific]: (item: Item) => item.metadata.equippableGender === 'Female',
+  [ItemsFilter.OttoSpecific]: (item: Item) => item.metadata.equippableGender === 'Male',
 }
 
 type SortableFields<T extends object> = {
   [P in keyof T as T[P] extends number | Date ? P : never]: T[P]
 }
 
-function createSortFunction(key: keyof SortableFields<Item>) {
-  return (lhs: Item, rhs: Item) => rhs[key] - lhs[key]
+function createSortFunction(key: keyof SortableFields<Item['metadata']>) {
+  return (lhs: Item, rhs: Item) => rhs.metadata[key] - lhs.metadata[key]
 }
 
 const sortFunctions = {
-  [ItemsSortBy.TimeReceived]: createSortFunction('update_at'),
-  [ItemsSortBy.Rarity]: createSortFunction('total_rarity_score'),
+  [ItemsSortBy.TimeReceived]: (lhs: Item, rhs: Item) => rhs.updatedAt.getTime() - lhs.updatedAt.getTime(),
+  [ItemsSortBy.Rarity]: createSortFunction('totalRarityScore'),
   [ItemsSortBy.Dex]: createSortFunction('dex'),
   [ItemsSortBy.Luck]: createSortFunction('luck'),
   [ItemsSortBy.Cute]: createSortFunction('cute'),
@@ -117,8 +118,16 @@ export const ItemFiltersProvider = ({ children, items, itemsPerPage }: PropsWith
   const value = useMemo(() => {
     let filteredItems = items.filter(filterFunctions[filter])
 
-    if (itemType !== ItemType.All) {
-      filteredItems = filteredItems.filter(item => item.type === itemType)
+    switch (itemType) {
+      case ItemType.All:
+        // do nothing
+        break
+      case ItemType.Other:
+        const typeValues = Object.values(ItemType)
+        filteredItems = filteredItems.filter(item => !typeValues.includes(item.metadata.type as any))
+        break
+      default:
+        filteredItems = filteredItems.filter(item => (item.metadata.type as any) === itemType)
     }
 
     filteredItems = filteredItems.sort(sortFunctions[sortedBy])

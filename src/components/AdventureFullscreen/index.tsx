@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react'
 import Fullscreen from 'components/Fullscreen'
 import styled from 'styled-components/macro'
-import CloseButton from 'components/CloseButton'
+import CloseButton, { CloseButtonProps } from 'components/CloseButton'
 import noop from 'lodash/noop'
 
 const StyledCloseButton = styled(CloseButton)`
@@ -26,17 +26,19 @@ const StyledFullscreen = styled(Fullscreen)`
 
 export type AdventureFullscreenProps = ComponentProps<typeof Fullscreen> & {
   hideCloseButton?: boolean
+  closeButtonColor?: CloseButtonProps['color']
 }
 
 export default function AdventureFullscreen({
   children,
   hideCloseButton,
+  closeButtonColor,
   onRequestClose = noop,
   ...restProps
 }: AdventureFullscreenProps) {
   return (
     <StyledFullscreen {...restProps}>
-      {!hideCloseButton && <StyledCloseButton onClose={onRequestClose} />}
+      {!hideCloseButton && <StyledCloseButton color={closeButtonColor} onClose={onRequestClose} />}
       {children}
     </StyledFullscreen>
   )

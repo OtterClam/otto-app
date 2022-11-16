@@ -27,6 +27,20 @@ import type {
   OnEvent,
 } from "./common";
 
+export declare namespace OttopiaStore {
+  export type SignatureStruct = {
+    nonce: string;
+    digest: BytesLike;
+    signed: BytesLike;
+  };
+
+  export type SignatureStructOutput = [string, string, string] & {
+    nonce: string;
+    digest: string;
+    signed: string;
+  };
+}
+
 export declare namespace IOttopiaStore {
   export type ProductStruct = {
     price: BigNumberish;
@@ -74,6 +88,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
     "buy(address,uint256,uint256)": FunctionFragment;
     "buyFish(uint256)": FunctionFragment;
     "buyNoChainlink(address,uint256,uint256)": FunctionFragment;
+    "buySigned(address,uint256,uint256,address,uint256,(string,bytes32,bytes))": FunctionFragment;
     "claim(uint256,uint256[])": FunctionFragment;
     "claimNoChainlink(uint256,uint256[])": FunctionFragment;
     "claimed(uint256,uint256)": FunctionFragment;
@@ -103,6 +118,8 @@ export interface OttopiaStoreInterface extends utils.Interface {
     "setBaseURI(string)": FunctionFragment;
     "setFishPerClam(uint256)": FunctionFragment;
     "setItem(address)": FunctionFragment;
+    "setSigner(address)": FunctionFragment;
+    "signer()": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "toFish(uint256)": FunctionFragment;
     "toggleWhitelist(address)": FunctionFragment;
@@ -114,6 +131,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
     "uri(uint256)": FunctionFragment;
+    "usedSignatures(bytes)": FunctionFragment;
   };
 
   getFunction(
@@ -133,6 +151,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
       | "buy"
       | "buyFish"
       | "buyNoChainlink"
+      | "buySigned"
       | "claim"
       | "claimNoChainlink"
       | "claimed"
@@ -162,6 +181,8 @@ export interface OttopiaStoreInterface extends utils.Interface {
       | "setBaseURI"
       | "setFishPerClam"
       | "setItem"
+      | "setSigner"
+      | "signer"
       | "supportsInterface"
       | "toFish"
       | "toggleWhitelist"
@@ -173,6 +194,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
       | "upgradeTo"
       | "upgradeToAndCall"
       | "uri"
+      | "usedSignatures"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "CLAM", values?: undefined): string;
@@ -216,6 +238,17 @@ export interface OttopiaStoreInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "buyNoChainlink",
     values: [string, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "buySigned",
+    values: [
+      string,
+      BigNumberish,
+      BigNumberish,
+      string,
+      BigNumberish,
+      OttopiaStore.SignatureStruct
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "claim",
@@ -324,6 +357,8 @@ export interface OttopiaStoreInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "setItem", values: [string]): string;
+  encodeFunctionData(functionFragment: "setSigner", values: [string]): string;
+  encodeFunctionData(functionFragment: "signer", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
@@ -362,6 +397,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
     values: [string, BytesLike]
   ): string;
   encodeFunctionData(functionFragment: "uri", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "usedSignatures",
+    values: [BytesLike]
+  ): string;
 
   decodeFunctionResult(functionFragment: "CLAM", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "DAO", data: BytesLike): Result;
@@ -396,6 +435,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
     functionFragment: "buyNoChainlink",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "buySigned", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "claimNoChainlink",
@@ -476,6 +516,8 @@ export interface OttopiaStoreInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setItem", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setSigner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "signer", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
@@ -511,10 +553,16 @@ export interface OttopiaStoreInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "uri", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "usedSignatures",
+    data: BytesLike
+  ): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
+    "BuyFish(address,uint256,uint256)": EventFragment;
+    "BuyItem(address,address,uint256,uint256,address,uint256)": EventFragment;
     "BuyProduct(uint256,address,address,uint256,uint256)": EventFragment;
     "CreateProduct(uint256)": EventFragment;
     "DeleteProduct(uint256)": EventFragment;
@@ -530,6 +578,8 @@ export interface OttopiaStoreInterface extends utils.Interface {
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "BuyFish"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "BuyItem"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BuyProduct"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CreateProduct"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DeleteProduct"): EventFragment;
@@ -563,6 +613,33 @@ export type BeaconUpgradedEvent = TypedEvent<
 >;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
+
+export interface BuyFishEventObject {
+  buyer: string;
+  spent: BigNumber;
+  bought: BigNumber;
+}
+export type BuyFishEvent = TypedEvent<
+  [string, BigNumber, BigNumber],
+  BuyFishEventObject
+>;
+
+export type BuyFishEventFilter = TypedEventFilter<BuyFishEvent>;
+
+export interface BuyItemEventObject {
+  buyer: string;
+  receiver: string;
+  itemId: BigNumber;
+  amount: BigNumber;
+  token: string;
+  price: BigNumber;
+}
+export type BuyItemEvent = TypedEvent<
+  [string, string, BigNumber, BigNumber, string, BigNumber],
+  BuyItemEventObject
+>;
+
+export type BuyItemEventFilter = TypedEventFilter<BuyItemEvent>;
 
 export interface BuyProductEventObject {
   id: BigNumber;
@@ -769,6 +846,16 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    buySigned(
+      to_: string,
+      itemId_: BigNumberish,
+      amount_: BigNumberish,
+      token_: string,
+      price_: BigNumberish,
+      sig_: OttopiaStore.SignatureStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     claim(
       productId_: BigNumberish,
       ottoIds_: BigNumberish[],
@@ -944,6 +1031,13 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    setSigner(
+      signer_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    signer(overrides?: CallOverrides): Promise<[string]>;
+
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
@@ -995,6 +1089,11 @@ export interface OttopiaStore extends BaseContract {
     ): Promise<ContractTransaction>;
 
     uri(id_: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
+
+    usedSignatures(
+      arg0: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
   };
 
   CLAM(overrides?: CallOverrides): Promise<string>;
@@ -1050,6 +1149,16 @@ export interface OttopiaStore extends BaseContract {
     to_: string,
     id_: BigNumberish,
     amount_: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  buySigned(
+    to_: string,
+    itemId_: BigNumberish,
+    amount_: BigNumberish,
+    token_: string,
+    price_: BigNumberish,
+    sig_: OttopiaStore.SignatureStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1226,6 +1335,11 @@ export interface OttopiaStore extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setSigner(
+    signer_: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   supportsInterface(
     interfaceId: BytesLike,
     overrides?: CallOverrides
@@ -1277,6 +1391,8 @@ export interface OttopiaStore extends BaseContract {
   ): Promise<ContractTransaction>;
 
   uri(id_: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+  usedSignatures(arg0: BytesLike, overrides?: CallOverrides): Promise<boolean>;
 
   callStatic: {
     CLAM(overrides?: CallOverrides): Promise<string>;
@@ -1332,6 +1448,16 @@ export interface OttopiaStore extends BaseContract {
       to_: string,
       id_: BigNumberish,
       amount_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    buySigned(
+      to_: string,
+      itemId_: BigNumberish,
+      amount_: BigNumberish,
+      token_: string,
+      price_: BigNumberish,
+      sig_: OttopiaStore.SignatureStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1490,6 +1616,10 @@ export interface OttopiaStore extends BaseContract {
 
     setItem(item_: string, overrides?: CallOverrides): Promise<void>;
 
+    setSigner(signer_: string, overrides?: CallOverrides): Promise<void>;
+
+    signer(overrides?: CallOverrides): Promise<string>;
+
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
@@ -1539,6 +1669,11 @@ export interface OttopiaStore extends BaseContract {
     ): Promise<void>;
 
     uri(id_: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+    usedSignatures(
+      arg0: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
   };
 
   filters: {
@@ -1555,6 +1690,34 @@ export interface OttopiaStore extends BaseContract {
       beacon?: string | null
     ): BeaconUpgradedEventFilter;
     BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
+
+    "BuyFish(address,uint256,uint256)"(
+      buyer?: string | null,
+      spent?: null,
+      bought?: null
+    ): BuyFishEventFilter;
+    BuyFish(
+      buyer?: string | null,
+      spent?: null,
+      bought?: null
+    ): BuyFishEventFilter;
+
+    "BuyItem(address,address,uint256,uint256,address,uint256)"(
+      buyer?: string | null,
+      receiver?: string | null,
+      itemId?: BigNumberish | null,
+      amount?: null,
+      token?: null,
+      price?: null
+    ): BuyItemEventFilter;
+    BuyItem(
+      buyer?: string | null,
+      receiver?: string | null,
+      itemId?: BigNumberish | null,
+      amount?: null,
+      token?: null,
+      price?: null
+    ): BuyItemEventFilter;
 
     "BuyProduct(uint256,address,address,uint256,uint256)"(
       id?: BigNumberish | null,
@@ -1694,6 +1857,16 @@ export interface OttopiaStore extends BaseContract {
       to_: string,
       id_: BigNumberish,
       amount_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    buySigned(
+      to_: string,
+      itemId_: BigNumberish,
+      amount_: BigNumberish,
+      token_: string,
+      price_: BigNumberish,
+      sig_: OttopiaStore.SignatureStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1852,6 +2025,13 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    setSigner(
+      signer_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    signer(overrides?: CallOverrides): Promise<BigNumber>;
+
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
@@ -1903,6 +2083,11 @@ export interface OttopiaStore extends BaseContract {
     ): Promise<BigNumber>;
 
     uri(id_: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    usedSignatures(
+      arg0: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -1960,6 +2145,16 @@ export interface OttopiaStore extends BaseContract {
       to_: string,
       id_: BigNumberish,
       amount_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    buySigned(
+      to_: string,
+      itemId_: BigNumberish,
+      amount_: BigNumberish,
+      token_: string,
+      price_: BigNumberish,
+      sig_: OttopiaStore.SignatureStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -2124,6 +2319,13 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    setSigner(
+      signer_: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    signer(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
@@ -2176,6 +2378,11 @@ export interface OttopiaStore extends BaseContract {
 
     uri(
       id_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    usedSignatures(
+      arg0: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

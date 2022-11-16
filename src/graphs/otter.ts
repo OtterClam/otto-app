@@ -36,7 +36,6 @@ export const GET_TREASURY_METRICS = gql`
       totalBurnedClamMarketValue
       treasuryMarketValue
       treasuryMarketValueWithoutClam
-      totalClamUsdPlusRebaseValue
 
       #treasury tokens
       treasuryWmaticMarketValue
@@ -50,10 +49,10 @@ export const GET_TREASURY_METRICS = gql`
       treasuryOtterClamQiMarketValue
       treasuryDaiMarketValue
       treasuryUsdPlusMarketValue
+      treasurySandMarketValue
 
       #treasury LPs
       treasuryClamMaiMarketValue
-      treasuryMaiUsdcMarketValue
       treasuryMaiUsdcQiInvestmentValue
       treasuryQiWmaticMarketValue
       treasuryMaiStMaticMarketValue
@@ -69,6 +68,8 @@ export const GET_TREASURY_METRICS = gql`
       treasuryKyberswapMaticStMaticHedgedMarketValue
       treasuryUniV3HedgedMaticUsdcStrategyMarketValue
       treasuryUniV3UsdcMaiStrategyMarketValue
+      treasuryQuickswapV3MaiUsdtStrategyMarketValue
+      treasuryDystopiaPairUsdcClamMarketValue
     }
   }
 `
@@ -102,6 +103,10 @@ export const GET_TREASURY_REVENUE = gql`
       usdcMarketValue
       maticClamAmount
       maticMarketValue
+      quickClamAmount
+      quickMarketValue
+      usdtClamAmount
+      usdtMarketValue
       totalRevenueClamAmount
       totalRevenueMarketValue
     }

@@ -1,12 +1,13 @@
 import MarkdownWithHtml from 'components/MarkdownWithHtml'
 import { WHITE_PAPER_LINK } from 'constant'
 import { FlashSellResponse } from 'libs/api'
-import { useApi } from 'contexts/Api'
+import { useApi, useApiCall } from 'contexts/Api'
 import useProducts from 'models/store/useProducts'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentMedium, Display3 } from 'styles/typography'
+import Head from 'next/head'
 import BorderedProductCard from './BorderedProductCard'
 import Curtain from './Curtain'
 import FlashSellInfo from './FlashSellInfo'
@@ -16,6 +17,7 @@ import ProductPopup, { GroupedProduct } from './ProductPopup'
 import StarLeft from './star-left.png'
 import StarRight from './star-right.png'
 import StoreHero from './StoreHero'
+import FishProductCard from './FishProductCard'
 
 const StyledStorePage = styled.div`
   color: ${({ theme }) => theme.colors.white};
@@ -32,11 +34,25 @@ const StyledCurtain = styled(Curtain)`
 `
 
 const StyledHeroSection = styled.section`
+  position: relative;
   width: 100%;
   color: ${({ theme }) => theme.colors.white};
   background: ${({ theme }) => theme.colors.otterBlack};
   margin-top: -20px;
   margin-bottom: 20px;
+
+  &::before {
+    content: '';
+    display: block;
+    padding-bottom: 60.7722008%;
+  }
+`
+
+const StyledStoreHero = styled(StoreHero)`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
 `
 
 const StyledFlashSellBody = styled.section`
@@ -72,26 +88,22 @@ const StyledShellChestTitle = styled.h2`
   align-items: center;
 
   > * {
-    &:first-child {
-      width: 230px;
+    &:first-child,
+    &:last-child {
+      max-width: 230px;
+      min-width: 230px;
       height: 120px;
 
       @media ${({ theme }) => theme.breakpoints.mobile} {
-        width: 30%;
+        max-width: 30%;
+        min-width: 30%;
         height: auto;
       }
     }
+
     &:nth-child(2) {
       flex: 1;
       text-align: center;
-    }
-    &:last-child {
-      width: 194px;
-      height: 106px;
-      @media ${({ theme }) => theme.breakpoints.mobile} {
-        width: 30%;
-        height: auto;
-      }
     }
   }
 `
@@ -107,22 +119,24 @@ const StyledChestDesc = styled(ContentMedium).attrs({ as: 'p' })`
 const StyledProductList = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     flex-direction: column;
-    gap: 10px;
   }
 `
 
 const REGULAR_PRODUCT_TYPES = ['silver', 'golden', 'diamond']
 
 export default function StorePage() {
-  const { t, i18n } = useTranslation('', { keyPrefix: 'store' })
+  const { t } = useTranslation('', { keyPrefix: 'store' })
   const api = useApi()
   const bodyRef = useRef<HTMLDivElement>(null)
   const [flashSell, setFlashSell] = useState<FlashSellResponse | null>(null)
   const [selectedProduct, setSelectedProduct] = useState<GroupedProduct | null>(null)
+  const { result: fishStore } = useApiCall('getFishStoreProducts', [], true, [])
   const { products } = useProducts()
   const groupedProducts = useMemo(() => {
     const grouped = products.reduce<Record<string, GroupedProduct>>((acc, product) => {
@@ -141,7 +155,7 @@ export default function StorePage() {
       }
       return acc
     }, {})
-    return Object.values(grouped).sort((a, b) => a.main.id.localeCompare(b.main.id))
+    return Object.values(grouped).sort((a, b) => (a.main.id > b.main.id ? 1 : -1))
   }, [products])
   const displayProducts = useMemo(
     () => groupedProducts.filter(p => REGULAR_PRODUCT_TYPES.indexOf(p.main.type) !== -1),
@@ -158,7 +172,7 @@ export default function StorePage() {
               .filter(p => p.type === sell.type)
               .map(p => ({
                 ...p,
-                ...sell.products.find(sp => String(sp.id) === p.id),
+                ...sell.products.find(sp => sp.id === p.id),
               })),
           })
         })
@@ -167,10 +181,17 @@ export default function StorePage() {
   }, [api, products])
   return (
     <>
+      <Head>
+        <title>{t('docTitle')}</title>
+        <meta property="og:title" content={t('docTitle')} />
+        <meta name="description" content={t('docDesc')} />
+        <meta property="og:description" content={t('docDesc')} />
+        <meta property="og:image" content="/og.jpg" />
+      </Head>
       <StyledStorePage>
         <StyledCurtain />
         <StyledHeroSection>
-          <StoreHero onClickScroll={() => bodyRef?.current?.scrollIntoView({ behavior: 'smooth' })} />
+          <StyledStoreHero onClickScroll={() => bodyRef?.current?.scrollIntoView({ behavior: 'smooth' })} />
         </StyledHeroSection>
         {flashSell && Date.now() < new Date(flashSell.end_time).valueOf() && (
           <StyledFlashSellBody ref={bodyRef}>
@@ -197,6 +218,25 @@ export default function StorePage() {
             />
           </StyledFlashSellBody>
         )}
+        {fishStore &&
+          fishStore.length > 0 &&
+          fishStore.map((store, i) => (
+            <StyledProductBody key={i}>
+              <StyledShellChestTitle>
+                <img src={store.left_img} alt="Left" />
+                <Display3>{store.title}</Display3>
+                <img src={store.right_img} alt="Right" />
+              </StyledShellChestTitle>
+              <StyledChestDesc>
+                <MarkdownWithHtml>{store.desc}</MarkdownWithHtml>
+              </StyledChestDesc>
+              <StyledProductList>
+                {store.products.map((p, index) => (
+                  <FishProductCard key={index} product={p} />
+                ))}
+              </StyledProductList>
+            </StyledProductBody>
+          ))}
         <StyledProductBody ref={flashSell ? null : bodyRef}>
           <StyledShellChestTitle>
             <img src={GemLeft.src} alt="Gem Left" />

@@ -1,4 +1,4 @@
-import Item, { EmptyItem } from 'models/Item'
+import { defaultStats, ItemMetadata } from 'models/Item'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components'
 import { Caption } from 'styles/typography'
@@ -34,27 +34,27 @@ const StyledAttr = styled.div`
 
 interface Props {
   title: string
-  item?: Item
+  metadata?: ItemMetadata
 }
 
-export default function ItemPreviewCard({ title, item = EmptyItem }: Props) {
+export default function ItemPreviewCard({ title, metadata }: Props) {
   const { t } = useTranslation()
   return (
     <StyledItemPreviewCard>
       <Caption>{title}</Caption>
-      <StyledItemCell item={item} />
+      <StyledItemCell showDetailsPopup metadata={metadata} />
       <StyledRarityScore>
-        <Caption>{t('my_items.rarity_score', { score: item.total_rarity_score })}</Caption>
+        <Caption>{t('my_items.rarity_score', { score: metadata?.totalRarityScore ?? 0 })}</Caption>
       </StyledRarityScore>
       <StyledAttrs>
-        {item.stats.map(({ name, value }, i) => (
-          <StyledAttr key={i}>
-            <Caption>{name}</Caption>
-            <Caption>{value}</Caption>
+        {Object.entries(metadata?.stats ?? defaultStats).map(([key, val]) => (
+          <StyledAttr key={key}>
+            <Caption>{key}</Caption>
+            <Caption>{val}</Caption>
           </StyledAttr>
         ))}
       </StyledAttrs>
-      {item.unreturnable && <UnreturnableHint />}
+      {metadata?.unreturnable && <UnreturnableHint />}
     </StyledItemPreviewCard>
   )
 }

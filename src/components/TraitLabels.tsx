@@ -1,3 +1,4 @@
+import { ItemMetadata, Item } from 'models/Item'
 import { Trait } from 'models/Otto'
 import styled from 'styled-components'
 import { Note } from 'styles/typography'
@@ -19,13 +20,13 @@ const StyledLabel = styled.span<{ large?: boolean; matched?: boolean }>`
 `
 
 export interface TraitLabelsProps {
-  trait: Trait
+  metadata: ItemMetadata
   highlightMatched?: boolean
   large?: boolean
 }
 
-export default function TraitLabels({ trait, highlightMatched, large }: TraitLabelsProps) {
-  const labels = trait.labels ?? []
+export default function TraitLabels({ metadata, highlightMatched, large }: TraitLabelsProps) {
+  const { labels } = metadata
 
   return (
     <StyledContainer>
@@ -34,9 +35,9 @@ export default function TraitLabels({ trait, highlightMatched, large }: TraitLab
           {label.name}
         </StyledLabel>
       ))}
-      {trait.theme_boost > 0 && (
+      {metadata.themeBoost > 0 && (
         <StyledLabel matched key="__boost">
-          BRS + {trait.theme_boost} 🔥
+          BRS + {metadata.themeBoost} 🔥
         </StyledLabel>
       )}
     </StyledContainer>
