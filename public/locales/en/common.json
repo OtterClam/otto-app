@@ -574,6 +574,9 @@
   },
   "wallet_selector_head": "Connect to a wallet",
   "treasury": {
+    "palace": {
+      "title": "Palace"
+    },
     "dashboard_tab": "Dashboard",
     "governance_tab": "Governance",
     "investments_tab": "Investments",
@@ -581,17 +584,17 @@
     "layout": {
       "nav": {
         "label": {
-          "dashboard": "Palace",
+          "palace": "Palace",
           "pond": "Clam Pond",
           "bank": "Pearl Bank",
           "farm": "Farm",
           "bond": "Bond"
         },
         "desc": {
-          "dashboard": "OtterClam Finance Stats",
+          "palace": "OtterClam Finance Stats",
           "pond": "Auto-compound CLAM",
           "bank": "Stake CLAM for Pearl",
-          "farm": "Earn defi yield with tokens",
+          "farm": "Earn DeFi yield with tokens",
           "bond": "Provide Liquidity to Earn"
         }
       }

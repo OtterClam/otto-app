@@ -13,6 +13,9 @@ import { GovernanceTab } from '../models/Tabs'
 
 const StyledContainer = styled.div`
   font-family: 'Pangolin', 'naikaifont' !important;
+  height: fit-content;
+  width: fit-content;
+  float: left;
 `
 export interface SnapshotProposalPieChartProps {
   proposal: Proposal

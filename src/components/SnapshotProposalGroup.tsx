@@ -42,6 +42,10 @@ const StyledTextBody = styled.div`
   padding-top: 28px;
   border-radius: 10px;
   box-sizing: border-box;
+  justify-content: space-between;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    flex-wrap: wrap;
+  }
   ul {
     list-style-position: inside;
   }
@@ -72,8 +76,8 @@ const StyledActivityFlag = styled.div<{ flagColor: string }>`
   font-size: 12px;
   color: white;
   line-height: 18px;
-  padding: 4px;
-  display: inline;
+  padding: 4px 4px 20px 4px;
+  display: inline-flex;
 `
 
 const StyledInlineText = styled.span`
@@ -108,6 +112,8 @@ const StyledSeeAll = styled.a`
   }
 `
 
+// @media ${({ theme }) => theme.breakpoints.mobile}
+
 export interface SnapshotProposalGroupInterface {
   className?: string
   tab: GovernanceTab
@@ -141,57 +147,12 @@ export default function SnapshotProposalGroup({ className, tab }: SnapshotPropos
       setmaximisedProposal(key)
     }
   }
-  /* This whole section was an attempt at Infinite Scrolling
-    as well as properly using the Apollo Cache.
-    Cut for time, may return one day...
-  */
-
-  // const [needsFetch, setNeedsFetch] = useState<boolean>(false)
-
-  // const handleScroll = (e: any) => {
-  //   const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 30
-  //   if (bottom) {
-  //     setNeedsFetch(true)
-  //     // .then(fetchMoreResult: any => {
-  //     //   // Update variables.limit for the original query to include
-  //     //   // the newly added feed items.
-  //     //   console.log(fetchMoreResult)
-  //     // })
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll, {
-  //     passive: true,
-  //   })
-
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll)
-  //   }
-  // }, [])
-
-  // useMemo(() => {
-  //   if (needsFetch) {
-  //     otterFetchMore({
-  //       variables: {
-  //         skip: proposals.length,
-  //       },
-  //     })
-  //     // .then(fetchMoreResult: any => {
-  //     //   // Update variables.limit for the original query to include
-  //     //   // the newly added feed items.
-  //     //   console.log(fetchMoreResult)
-  //     // })
-  //     setNeedsFetch(false)
-  //     // console.log(proposals)
-  //   }
-  // }, [needsFetch, proposals, setNeedsFetch, otterFetchMore])
 
   return (
     <StyledContainer className={className}>
       {proposals.map(proposal => (
         // How do animations work with dynamic content max-height pls help
-        <StyledCard key={proposal.id} maxH={maximisedProposal === proposal.id ? '80vh' : '268px'}>
+        <StyledCard key={proposal.id} maxH={maximisedProposal === proposal.id ? 'fit-content' : '420px'}>
           <StyledInnerContainer>
             <StyledProposalHeadline as="h1">{proposal.title}</StyledProposalHeadline>
             <StyledActivityFlag flagColor={flagColorFromProposalState[proposal.state ?? '']}>
@@ -202,13 +163,13 @@ export default function SnapshotProposalGroup({ className, tab }: SnapshotPropos
               {t('snapshotEth')}
             </StyledLink>
             <StyledTextBody>
+              <SnapshotProposalPieChart proposal={proposal} tab={tab} />
               <ReactMarkdown>{proposal.body ?? ''}</ReactMarkdown>
             </StyledTextBody>
           </StyledInnerContainer>
           <StyledSeeAll onClick={() => toggleMaximisedProposal(proposal.id)}>
             {maximisedProposal == proposal.id ? t('seeLess') : t('seeMore')}
           </StyledSeeAll>
-          <SnapshotProposalPieChart proposal={proposal} tab={tab} />
           {(proposal.state === 'active' && tab === GovernanceTab.OTTERCLAM) ?? (
             <Button
               padding="6px 48px"
