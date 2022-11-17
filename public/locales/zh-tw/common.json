@@ -738,7 +738,8 @@
     "wearBy": "{{ name }} 正在穿著此裝備",
     "unavailable": "無法穿著",
     "takeOff": "脫掉",
-    "noItems": "無任何物品"
+    "noItems": "無任何物品",
+    "equippedCount": "{{count}} 阿獺擁有這個特徵"
   },
   "ongoingOttos": {
     "title": "正在此處冒險的阿獺",
