@@ -6,11 +6,13 @@ import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
 import { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import Image from 'next/image'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
+import { useOtto } from 'contexts/Otto'
 import AdventureRibbonText from '../AdventureRibbonText'
 import lockImage from './lock.svg'
+import chainedImage from './chained.svg'
 
 const WIDTH = 134
 const HEIGHT = 150
@@ -27,7 +29,7 @@ const StyledContainer = styled.button<{ left: number; top: number }>`
   outline: none;
 `
 
-const StyledPinImageContainer = styled.div`
+const StyledPinImageContainer = styled.div<{ locked: boolean }>`
   position: absolute;
   top: 0;
   left: 50%;
@@ -35,6 +37,21 @@ const StyledPinImageContainer = styled.div`
   width: 120px;
   height: 120px;
   transform: translateX(-60px);
+
+  ${({ locked }) =>
+    locked &&
+    `
+    &::before {
+      content: '';
+      position: absolute;
+      background: center / cover url(${chainedImage.src});
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+  `}
 `
 
 const StyledDetails = styled.div`
@@ -111,22 +128,28 @@ const formatAdventureTime = (adventureTime: Duration) => {
 export interface AdventureLocationProps {
   className?: string
   id: number
+  ottoLocked?: boolean
 }
 
-export default function AdventureLocation({ id, className }: AdventureLocationProps) {
+export default function AdventureLocation({ id, className, ottoLocked }: AdventureLocationProps) {
   const { dispatch } = useAdventureUIState()
   const location = useAdventureLocation(id)
   const { ottos: allOttos } = useMyOttos()
+  const { setOtto } = useOtto()
   const ottos = useAdventureOttosAtLocation(id)
   const locked =
     !location?.open ||
     !allOttos.find(
       otto => location && otto.level >= location.minLevel && otto.adventureStatus === AdventureOttoStatus.Ready
-    )
+    ) ||
+    ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ongoing).length >= 5
   const top = (location?.mapPositionY ?? 0) * 100
   const left = (location?.mapPositionX ?? 0) * 100
 
   const openPopup = useCallback(() => {
+    if (!ottoLocked) {
+      setOtto(undefined, false)
+    }
     dispatch({
       type: AdventureUIActionType.OpenPopup,
       data: {
@@ -134,13 +157,13 @@ export default function AdventureLocation({ id, className }: AdventureLocationPr
         popupStep: AdventurePopupStep.LocationInfo,
       },
     })
-  }, [dispatch, id])
+  }, [dispatch, id, ottoLocked])
 
   return (
-    <StyledContainer disabled={locked} onClick={openPopup} top={top} left={left} className={className}>
+    <StyledContainer onClick={openPopup} top={top} left={left} className={className}>
       {location && (
         <>
-          <StyledPinImageContainer>
+          <StyledPinImageContainer locked={locked}>
             <StyledPinImage unoptimized src={location.image} />
           </StyledPinImageContainer>
 

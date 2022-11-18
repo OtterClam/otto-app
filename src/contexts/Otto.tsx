@@ -8,12 +8,13 @@ import { useMyItems } from './MyItems'
 
 const OttoContext = createContext<{
   otto?: Otto
-  setOtto: (otto?: Otto) => void
+  setOtto: (otto?: Otto, locked?: boolean) => void
   resetEquippedItems: () => void
   unequipAllItems: () => void
   equipItem: (traitType: string, traitId: string) => void
   removeItem: (traitType: string) => void
   itemActions: ItemAction[]
+  locked: boolean
 }>({
   setOtto: noop,
   unequipAllItems: noop,
@@ -21,6 +22,7 @@ const OttoContext = createContext<{
   equipItem: noop,
   removeItem: noop,
   itemActions: [],
+  locked: false,
 })
 
 export function withOtto<P>(Component: FC<P>): FC<P> {
@@ -34,6 +36,7 @@ export function withOtto<P>(Component: FC<P>): FC<P> {
 export function OttoProvider({ children }: PropsWithChildren<object>) {
   const { ottos } = useMyOttos()
   const { items } = useMyItems()
+  const [locked, setLocked] = useState(false)
   const [otto, setOtto] = useState<Otto | undefined>()
   const [draftItems, setDraftItems] = useState<Record<string, string | null>>({})
   const actions = useMemo(() => {
@@ -106,7 +109,10 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
   const value = useMemo(() => {
     return {
       otto,
-      setOtto,
+      setOtto: (otto?: Otto, locked = false) => {
+        setOtto(otto)
+        setLocked(locked)
+      },
       equipItem: (traitType: string, traitId: string) => {
         setDraftItems(map => {
           const equippedItemIndex = otto?.equippedItems.findIndex(item => item.metadata.tokenId === traitId) ?? -1
@@ -148,6 +154,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
         setDraftItems(draftItems)
       },
       itemActions: actions,
+      locked,
     }
   }, [otto, actions])
 

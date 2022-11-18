@@ -149,10 +149,9 @@ export default function AdventurePopup() {
       0,
       ...ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready).map(otto => otto.level)
     )
-    const avaliableLocations = locations.filter(loc => maxLevel >= loc.minLevel)
-    const index = avaliableLocations.findIndex(loc => loc.id === adventureUIState.selectedLocationId)
-    const nextIndex = avaliableLocations.length <= index + 1 ? 0 : index + 1
-    dispatch({ type: AdventureUIActionType.SelectLocation, data: { locationId: avaliableLocations[nextIndex].id } })
+    const index = locations.findIndex(loc => loc.id === adventureUIState.selectedLocationId)
+    const nextIndex = locations.length <= index + 1 ? 0 : index + 1
+    dispatch({ type: AdventureUIActionType.SelectLocation, data: { locationId: locations[nextIndex].id } })
   }
 
   const prevLocation: MouseEventHandler = e => {
@@ -161,10 +160,9 @@ export default function AdventurePopup() {
       0,
       ...ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready).map(otto => otto.level)
     )
-    const avaliableLocations = locations.filter(loc => maxLevel >= loc.minLevel)
-    const index = avaliableLocations.findIndex(loc => loc.id === adventureUIState.selectedLocationId)
-    const nextIndex = index <= 0 ? avaliableLocations.length - 1 : index - 1
-    dispatch({ type: AdventureUIActionType.SelectLocation, data: { locationId: avaliableLocations[nextIndex].id } })
+    const index = locations.findIndex(loc => loc.id === adventureUIState.selectedLocationId)
+    const nextIndex = index <= 0 ? locations.length - 1 : index - 1
+    dispatch({ type: AdventureUIActionType.SelectLocation, data: { locationId: locations[nextIndex].id } })
   }
 
   const effects = useMemo(() => {

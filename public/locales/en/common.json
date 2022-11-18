@@ -944,7 +944,8 @@
   "adventureLocationPopup": {
     "difficulty": "Difficulty:",
     "nextStep": "Continue",
-    "too_crowed": "This place is too crowded."
+    "too_crowed": "No more entry space",
+    "noQualifiedOttos": "No qualified Ottos"
   },
   "adventureLocation": {
     "successRate": "Success rate",

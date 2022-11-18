@@ -924,7 +924,8 @@
   "adventureLocationPopup": {
     "difficulty": "困難度：",
     "nextStep": "繼續",
-    "too_crowed": "這個區域太多阿獺了，請選擇其他區域"
+    "too_crowed": "這個區域太多阿獺了，請選擇其他區域",
+    "noQualifiedOttos": "沒有符合資格的阿獺"
   },
   "adventureLocation": {
     "successRate": "成功率",

@@ -13,7 +13,7 @@ import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { memo } from 'react'
 import styled from 'styled-components/macro'
-import { Caption, ContentExtraSmall, ContentMedium } from 'styles/typography'
+import { Caption, ContentExtraSmall, ContentMedium, Note } from 'styles/typography'
 import RemainingTime from './RemainingTime'
 
 const StyledAdventureOttoCard = styled.div`
@@ -46,7 +46,11 @@ const StyledAction = styled.div`
   white-space: nowrap;
 `
 
-const StyledName = styled(ContentExtraSmall)``
+const StyledName = styled(ContentExtraSmall)`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`
 
 const StyledLocationContainer = styled.div`
   display: flex;
@@ -80,6 +84,14 @@ const StyledAdventureStatus = styled(Caption).attrs({ as: 'div' })`
   }
 `
 
+const StyledLevel = styled(Note)`
+  display: inline-block;
+  padding: 0 5px;
+  border-radius: 4px;
+  color: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.otterBlack};
+`
+
 export interface AdventureOttoCardProps {
   otto: Otto
 }
@@ -99,7 +111,7 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
   }
 
   const go = () => {
-    setOtto(otto)
+    setOtto(otto, true)
     openPopup(undefined, AdventurePopupStep.Map)
   }
 
@@ -139,7 +151,10 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
         </StyledAvatarContainer>
 
         <StyledDetails>
-          <StyledName>{otto.name}</StyledName>
+          <StyledName>
+            <StyledLevel>LV {otto.level}</StyledLevel>
+            {otto.name}
+          </StyledName>
           <StyledLocationContainer>
             <AdventureStatus status={otto.adventureStatus} />
             {location && (
