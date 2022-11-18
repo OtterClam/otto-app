@@ -12,7 +12,7 @@ import { Note } from 'styles/typography'
 import { useOtto } from 'contexts/Otto'
 import AdventureRibbonText from '../AdventureRibbonText'
 import lockImage from './lock.svg'
-import chainedImage from './chained.svg'
+import chainImage from './chain.png'
 
 const WIDTH = 134
 const HEIGHT = 150
@@ -44,7 +44,7 @@ const StyledPinImageContainer = styled.div<{ locked: boolean }>`
     &::before {
       content: '';
       position: absolute;
-      background: center / cover url(${chainedImage.src});
+      background: center / cover url(${chainImage.src});
       left: 0;
       top: 0;
       width: 100%;
