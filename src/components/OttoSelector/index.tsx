@@ -1,10 +1,11 @@
 import useResizeObserver from '@react-hook/resize-observer'
 import OttoImage from 'components/OttoImage'
+import { useAdventureLocation } from 'contexts/AdventureLocation'
 import { useOtto } from 'contexts/Otto'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import Image from 'next/image'
-import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { useSwipeable } from 'react-swipeable'
 import styled from 'styled-components/macro'
 import arrowImage from './arrow.svg'
@@ -67,9 +68,10 @@ const OttoItem = React.memo(
 )
 
 const useReadyOttos = () => {
+  const location = useAdventureLocation()
   const { ottos } = useMyOttos()
   const map = ottos
-    .filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready)
+    .filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready && otto.level >= (location?.minLevel ?? 0))
     .reduce((map, otto) => Object.assign(map, { [otto.id]: true }), {} as { [k: string]: boolean })
   return ottos.filter(otto => map[otto.id])
 }
