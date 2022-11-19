@@ -32,36 +32,42 @@ const StyledContainer = styled.button<{ disabled: boolean }>`
   padding: 17px 20px;
   outline: none;
   text-align: left;
+  min-width: 0px;
+  overflow: hidden;
 `
 
 const StyledDetails = styled.div`
-  flex: 1 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 5px;
+  min-width: 0px;
 `
 
 const StyledAction = styled.div`
-  flex: 1;
-  white-space: nowrap;
+  display: flex;
+  justify-content: flex-end;
 `
 
 const StyledName = styled(ContentExtraSmall)`
   display: flex;
   align-items: center;
   gap: 5px;
+  flex-wrap: wrap;
 `
 
 const StyledLocationContainer = styled.div`
   display: flex;
   gap: 5px;
   align-items: center;
+  flex-wrap: wrap;
 `
 
 const StyledLocation = styled(Caption)`
   display: flex;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
 `
 
 const StyledAvatarContainer = styled.div<{ size: number }>`
@@ -90,6 +96,11 @@ const StyledLevel = styled(Note)`
   border-radius: 4px;
   color: ${({ theme }) => theme.colors.white};
   background: ${({ theme }) => theme.colors.otterBlack};
+  white-space: nowrap;
+`
+
+const StyledRemainingTime = styled(RemainingTime)`
+  width: 80px;
 `
 
 export interface AdventureOttoCardProps {
@@ -151,10 +162,12 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
         </StyledAvatarContainer>
 
         <StyledDetails>
-          <StyledName>
-            <StyledLevel>LV {otto.level}</StyledLevel>
-            {otto.name}
-          </StyledName>
+          <div>
+            <StyledName>
+              <StyledLevel>LV {otto.level}</StyledLevel>
+              {otto.name}
+            </StyledName>
+          </div>
           <StyledLocationContainer>
             <AdventureStatus status={otto.adventureStatus} />
             {location && (
@@ -180,12 +193,12 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
           )}
 
           {otto.adventureStatus === AdventureOttoStatus.Resting && otto.restingUntil && (
-            <RemainingTime target={otto.restingUntil} />
+            <StyledRemainingTime target={otto.restingUntil} />
           )}
 
           {otto.adventureStatus === AdventureOttoStatus.Ongoing &&
             otto.latestAdventurePass?.canFinishAt !== undefined && (
-              <RemainingTime target={otto.latestAdventurePass?.canFinishAt} />
+              <StyledRemainingTime target={otto.latestAdventurePass?.canFinishAt} />
             )}
         </StyledAction>
       </StyledContainer>
