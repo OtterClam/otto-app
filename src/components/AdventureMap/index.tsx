@@ -5,8 +5,6 @@ import TreasureChestLevel from 'components/TreasureChestLevel'
 import { useAdventureLocations } from 'contexts/AdventureLocations'
 import AdventureLocation from 'components/AdventureLocation'
 import Image from 'next/image'
-import { useOtto } from 'contexts/Otto'
-import { useEffect } from 'react'
 import continueImage from './continue.png'
 import mapImage from './map.jpg'
 
