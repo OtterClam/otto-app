@@ -131,18 +131,20 @@ export interface AdventureLocationProps {
   ottoLocked?: boolean
 }
 
-export default function AdventureLocation({ id, className, ottoLocked }: AdventureLocationProps) {
+export default function AdventureLocation({ id, className, ottoLocked = false }: AdventureLocationProps) {
   const { dispatch } = useAdventureUIState()
   const location = useAdventureLocation(id)
   const { ottos: allOttos } = useMyOttos()
-  const { setOtto } = useOtto()
+  const { setOtto, otto } = useOtto()
   const ottos = useAdventureOttosAtLocation(id)
+  const buttonLocked = ottoLocked && (otto?.level ?? 0) < (location?.minLevel ?? 0)
   const locked =
     !location?.open ||
     !allOttos.find(
       otto => location && otto.level >= location.minLevel && otto.adventureStatus === AdventureOttoStatus.Ready
     ) ||
-    ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ongoing).length >= 5
+    ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ongoing).length >= 5 ||
+    buttonLocked
   const top = (location?.mapPositionY ?? 0) * 100
   const left = (location?.mapPositionX ?? 0) * 100
 
@@ -160,7 +162,7 @@ export default function AdventureLocation({ id, className, ottoLocked }: Adventu
   }, [dispatch, id, ottoLocked])
 
   return (
-    <StyledContainer onClick={openPopup} top={top} left={left} className={className}>
+    <StyledContainer disabled={buttonLocked} onClick={openPopup} top={top} left={left} className={className}>
       {location && (
         <>
           <StyledPinImageContainer locked={locked}>

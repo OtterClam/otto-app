@@ -88,7 +88,9 @@ export function LocationInfoStep() {
   const location = useSelectedAdventureLocation()
   const ottos = useAdventureOttosAtLocation(location?.id)
   const { ottos: allOttos } = useMyOttos()
-  const qualifiedOttos = allOttos.filter(otto => otto.level >= (location?.minLevel ?? 0))
+  const qualifiedOttos = allOttos
+    .filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready)
+    .filter(otto => otto.level >= (location?.minLevel ?? 0))
 
   const ongoingOttos = useMemo(
     () => ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ongoing),
