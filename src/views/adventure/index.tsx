@@ -16,6 +16,11 @@ const StyledContainer = styled.div`
   gap: 30px;
 `
 
+const StyledMobileContainer = styled.div`
+  position: relative;
+  width: 100%;
+`
+
 const StyledMapSectionMobile = styled.div<{ isSelectedView: boolean }>`
   flex: 1 50%;
   display: ${({ isSelectedView }) => (isSelectedView ? 'block' : 'none')};
@@ -26,7 +31,6 @@ const StyledMapSection = styled(TreasurySection).attrs({ showRope: false })<{ is
 `
 
 const StyledListSectionMobile = styled.div<{ isSelectedView: boolean }>`
-  flex: 1 50%;
   display: ${({ isSelectedView }) => (isSelectedView ? 'block' : 'none')};
 `
 
@@ -80,7 +84,7 @@ export default function AdventureView() {
 
   if (isTablet) {
     return (
-      <StyledContainer>
+      <StyledMobileContainer>
         {head}
         <StyledSwitcher>
           {Object.values(View).map(currView => (
@@ -101,7 +105,7 @@ export default function AdventureView() {
         <StyledListSectionMobile isSelectedView={view === View.List}>
           <OttoList />
         </StyledListSectionMobile>
-      </StyledContainer>
+      </StyledMobileContainer>
     )
   }
 
