@@ -11,6 +11,7 @@ import {
   useAdventureUIState,
   useSelectedAdventureLocation,
 } from 'contexts/AdventureUIState'
+import { useOtto } from 'contexts/Otto'
 import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
 import { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
@@ -84,6 +85,7 @@ const StyledNextStepButton = styled(Button).attrs({
 
 export function LocationInfoStep() {
   const { t } = useTranslation('', { keyPrefix: 'adventureLocationPopup' })
+  const { locked, otto } = useOtto()
   const { dispatch } = useAdventureUIState()
   const location = useSelectedAdventureLocation()
   const ottos = useAdventureOttosAtLocation(location?.id)
@@ -98,7 +100,12 @@ export function LocationInfoStep() {
   )
 
   const noSpace = ongoingOttos.length >= MAX_OTTOS_PER_LOCATION
-  const noQualifiedOttos = !qualifiedOttos.length
+
+  let noQualifiedOttos = !qualifiedOttos.length
+
+  if (locked && otto && location) {
+    noQualifiedOttos = otto.level < location.minLevel
+  }
 
   const preview = () => {
     dispatch({ type: AdventureUIActionType.SetPopupStep, data: AdventurePopupStep.PreviewOtto })
