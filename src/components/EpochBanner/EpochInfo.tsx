@@ -9,9 +9,12 @@ import { Caption, ContentMedium, Headline, ContentSmall } from 'styles/typograph
 import InfoImage from 'assets/ui/info.svg'
 import Button from 'components/Button'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { BigNumber } from 'ethers'
 import IconImage from './icon.png'
+import FishImage from './fish-icon.png'
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ isAdventure: boolean }>`
   padding: 10px 50px 10px 20px;
   display: flex;
   gap: 10px;
@@ -24,7 +27,7 @@ const StyledContainer = styled.div`
     min-width: ${IconImage.width / 2}px;
     max-width: ${IconImage.width / 2}px;
     height: ${IconImage.height / 2}px;
-    background: center / cover url(${IconImage.src});
+    background: center / cover url(${({ isAdventure }) => (isAdventure ? FishImage.src : IconImage.src)});
 
     @media ${({ theme }) => theme.breakpoints.mobile} {
       width: 155px;
@@ -80,16 +83,19 @@ const StyledRoundEnd = styled(ContentSmall).attrs({ as: 'div' })`
 `
 
 export default function EpochInfo() {
+  const { query } = useRouter()
+  const isAdventure = Boolean(query.adventure)
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.hero' })
   const { isLatestEpoch, epochEndTime } = useRarityEpoch()
   const epochEnd = Date.now() > epochEndTime
+  const rewardAmount = BigNumber.from(String(TOTAL_RARITY_REWARD)).mul(String(isAdventure ? 1e18 : 1e9))
 
   return (
-    <StyledContainer>
+    <StyledContainer isAdventure={isAdventure}>
       <StyledReward>
         <ContentMedium>{t('title')}</ContentMedium>
         <Headline>
-          <Price token={Token.Clam} amount={TOTAL_RARITY_REWARD * 1e9} showSymbol />
+          <Price token={isAdventure ? Token.Fish : Token.Clam} amount={rewardAmount} showSymbol />
         </Headline>
       </StyledReward>
       <StyledTime>
