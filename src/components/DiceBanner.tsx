@@ -15,7 +15,6 @@ import { setError } from 'store/errorSlice'
 import { useRarityEpoch } from 'contexts/RarityEpoch'
 import { numberWithSign } from 'helpers/number'
 import { useIsMyOttos } from 'MyOttosProvider'
-import { RARITY_S1_END } from 'constant'
 import MarkdownWithHtml from './MarkdownWithHtml'
 import StyledRichContent from './RichContent'
 

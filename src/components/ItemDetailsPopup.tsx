@@ -165,7 +165,7 @@ export default function ItemDetailsPopup() {
                 <StyledWearCount>{t('wear_count', { count: itemMetadata.equippedCount })}</StyledWearCount>
               </>
             )}
-            {!(itemMetadata.type === ItemType.Coupon || itemMetadata.type === ItemType.MissionItem) && (
+            {!(itemMetadata.type === 'Coupon' || itemMetadata.type === 'Mission Item') && (
               <StyledAttrs>
                 {Object.entries(itemMetadata.stats).map(([key, val]) => (
                   <StyledAttr key={key}>

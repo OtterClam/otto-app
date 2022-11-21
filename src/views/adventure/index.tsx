@@ -3,6 +3,7 @@ import TreasurySection from 'components/TreasurySection'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import { Body } from 'layouts/GameLayout'
 import { useTranslation } from 'next-i18next'
+import Head from 'next/head'
 import { useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import AdventureMap from '../../components/AdventureMap'
@@ -15,6 +16,11 @@ const StyledContainer = styled.div`
   gap: 30px;
 `
 
+const StyledMobileContainer = styled.div`
+  position: relative;
+  width: 100%;
+`
+
 const StyledMapSectionMobile = styled.div<{ isSelectedView: boolean }>`
   flex: 1 50%;
   display: ${({ isSelectedView }) => (isSelectedView ? 'block' : 'none')};
@@ -25,7 +31,6 @@ const StyledMapSection = styled(TreasurySection).attrs({ showRope: false })<{ is
 `
 
 const StyledListSectionMobile = styled.div<{ isSelectedView: boolean }>`
-  flex: 1 50%;
   display: ${({ isSelectedView }) => (isSelectedView ? 'block' : 'none')};
 `
 
@@ -67,9 +72,20 @@ export default function AdventureView() {
   const { t } = useTranslation('', { keyPrefix: 'adventure' })
   const { isTablet } = useBreakpoints()
 
+  const head = (
+    <Head>
+      <title>{t('docTitle')}</title>
+      <meta property="og:title" content={t('docTitle')} />
+      <meta name="description" content={t('docDesc')} />
+      <meta property="og:description" content={t('docDesc')} />
+      <meta property="og:image" content="/og.jpg" />
+    </Head>
+  )
+
   if (isTablet) {
     return (
-      <StyledContainer>
+      <StyledMobileContainer>
+        {head}
         <StyledSwitcher>
           {Object.values(View).map(currView => (
             <StyledSwitchButton
@@ -89,12 +105,13 @@ export default function AdventureView() {
         <StyledListSectionMobile isSelectedView={view === View.List}>
           <OttoList />
         </StyledListSectionMobile>
-      </StyledContainer>
+      </StyledMobileContainer>
     )
   }
 
   return (
     <Body>
+      {head}
       <StyledContainer>
         <StyledMapSection isSelectedView={view === View.Map}>
           <AdventureMap />

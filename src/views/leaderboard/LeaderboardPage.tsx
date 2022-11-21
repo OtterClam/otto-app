@@ -8,6 +8,7 @@ import { Display3, Headline } from 'styles/typography'
 import { useLeaderboardEpoch } from 'contexts/LeaderboardEpoch'
 import LeaderboardTabs from 'components/LeaderboardTabs'
 import EpochBanner from 'components/EpochBanner'
+import Head from 'next/head'
 import Info from './Info'
 import RightInfo from './right-info.png'
 import RankList from './RankList'
@@ -76,6 +77,13 @@ export default function LeaderboardPage() {
 
   return (
     <StyledContainer>
+      <Head>
+        <title>{t('docTitle')}</title>
+        <meta property="og:title" content={t('docTitle')} />
+        <meta name="description" content={t('docDesc')} />
+        <meta property="og:description" content={t('docDesc')} />
+        <meta property="og:image" content="/og.jpg" />
+      </Head>
       <LeaderboardTabs />
       <StyledBoard background={Background.Dark}>
         <StyledLeaderboardPage>

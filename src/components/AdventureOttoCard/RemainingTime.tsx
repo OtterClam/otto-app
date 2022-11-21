@@ -29,14 +29,15 @@ const StyledDuration = styled.p`
 
 export interface RemainingTimeProps {
   target: Date
+  className?: string
 }
 
-export default function RemainingTime({ target }: RemainingTimeProps) {
+export default function RemainingTime({ target, className }: RemainingTimeProps) {
   const { t } = useTranslation('', { keyPrefix: 'adventureOttoCard' })
   const duration = useRemainingTime(target)
 
   return (
-    <StyledContainer viewLabel={t('viewLabel')}>
+    <StyledContainer viewLabel={t('viewLabel')} className={className}>
       <StyledDuration>{duration}</StyledDuration>
     </StyledContainer>
   )

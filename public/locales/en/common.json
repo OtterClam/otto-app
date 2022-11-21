@@ -1,9 +1,10 @@
 {
   "languages": {
     "en": "English",
-    "zh-tw": "繁体中文",
+    "zh-tw": "繁體中文",
     "zh-cn": "简体中文"
   },
+  "titleSuffix": " | The first official citizen of the Otter Kingdom",
   "new_version": "A newer version of this web app is available, reload to update?",
   "assets_loader": {
     "name": {
@@ -150,7 +151,9 @@
       "store": "Store",
       "bank": "Pearl Bank"
     },
-    "title": "Ottopia"
+    "title": "Ottopia",
+    "docDesc": "Otto is the first official citizen of the Otter Kingdom. Each Otto is an ERC721 NFT with unique traits and attributes. These NFTs are not only irresistibly cute, but they also happen to be the main characters of OtterClam’s first adventure game – Ottopia.",
+    "docTitle": "$t(home.title)$t(titleSuffix)"
   },
   "leaderboard": {
     "head": "Be the rarest Otto to win the prize!",
@@ -187,6 +190,8 @@
     },
     "shell_chest_link": "Buy Shell Chest >",
     "title": "Leaderboard",
+    "docDesc": "Attend the Ottopia leaderboard competitions to earn CLAM, FISH and previous prizes! It strives to reward the users who are the most thoughtfully and enthusiastically engaged with the ecosystem. As its name suggests, this is a process where you attempt to raise the rarest and bravest Otto, Lottie or Cleo, and get rewarded for doing so.",
+    "docTitle": "$t(leaderboard.title)$t(titleSuffix)",
     "right_info": "The upcoming epoch falls to <span style=\"color: #FFDC77\">{{constellation}}</span>. The god of {{constellation}} has blessed every {{constellation}} Otto, Lottie and Cleo with glory and power! <span style=\"color: #FF6854\">BRS +50</span>",
     "left_info_link": "See how BRS boost works >",
     "left_info": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #FFDC77\">{{ themes }}</span> will receive extra BRS boosts."
@@ -256,6 +261,8 @@
     },
     "portal_amount": "Otto Portals:",
     "title": "Mint Portals",
+    "docDesc": "To enter the Otterverse and find the floating island, you must generate a portal. Portals can be thought of as intergalactic wormholes that transform humans into otters while sending them to the Otterverse.",
+    "docTitle": "$t(mint.title)$t(titleSuffix)",
     "total_payment": "Total Payment:"
   },
   "mint_banner": {
@@ -427,7 +434,8 @@
     "total_rarity_score": "Total Rarity Score: {{score}} (BRS {{brs}} + RRS {{rrs}})",
     "theme_boost": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #3B4BD8\">{{ labels }}</span> will receive extra BRS boosts.",
     "attribute_points": "Available Attribute Points: {{attributePoints}}",
-    "attribute_points_button": "Add Now >"
+    "attribute_points_button": "Add Now >",
+    "change_equipment": "Dress up"
   },
   "otto_one": "{{count}} Otto",
   "otto_other": "{{count}} Ottos",
@@ -557,7 +565,9 @@
     "shell_chest": "Shell Chest",
     "subtitle_1": "These Shell Chests contain more than 600+ pieces of special, wearable equipment, and they're on sale! The more you buy, the more you save! Each Chest holds 1 item!",
     "subtitle_2": "Good things come to Otters who wait, unless they're on sale! These Shell Chests are a deal worth running for!",
-    "title": "Ottopia Store"
+    "title": "Ottopia Store",
+    "docDesc": "These Shell Chests contain more than 600+ pieces of special, wearable equipment, and they're on sale! The more you buy, the more you save! Each Chest holds 1 item!",
+    "docTitle": "$t(store.title)$t(titleSuffix)"
   },
   "unsupported_network": {
     "action": "Switch to Polygon",
@@ -586,6 +596,8 @@
     },
     "dashboard": {
       "title": "Treasury Dashboard",
+      "docDesc": "Checkout the treasury page where you can stake your Clam in the Clam pond or Pearl bank to earn APY on your Clam to earn more CLAM or USD+ stablecoin.",
+      "docTitle": "$t(treasury.dashboard.title)$t(titleSuffix)",
       "clamPrice": "CLAM Price",
       "backing": "Backing per CLAM",
       "backingTooltip": "Market Value of Treasury Assets divided by the circulating supply of CLAM. The value of CLAM tokens in liquidity pools is NOT included in the backing price.",
@@ -747,7 +759,9 @@
     "wearBy": "{{ name }} is wearing this item",
     "unavailable": "Unavailable",
     "takeOff": "Take Off",
-    "noItems": "No Items Found"
+    "noItems": "No Items Found",
+    "equippedCount_other": "{{count}} Ottos have this trait",
+    "equippedCount_one": "{{count}} Otto have this trait"
   },
   "ongoingOttos": {
     "title": "The Ottos currently exploring this place",
@@ -792,6 +806,8 @@
   },
   "foundry": {
     "title": "Foundry",
+    "docDesc": "Welcome to the Foundry, where you can melt several items to create a new item with the possibility of getting a higher rarity score or better attributes!",
+    "docTitle": "$t(foundry.title)$t(titleSuffix)",
     "dialog": {
       "title": "Welcome to the Foundry!",
       "content": "Welcome to the Foundry, where you can melt several items to create a new item with the possibility of getting a higher rarity score or better attributes!"
@@ -930,7 +946,8 @@
   "adventureLocationPopup": {
     "difficulty": "Difficulty:",
     "nextStep": "Continue",
-    "too_crowed": "This place is too crowded."
+    "too_crowed": "No more entry space",
+    "noQualifiedOttos": "No qualified Ottos"
   },
   "adventureLocation": {
     "successRate": "Success rate",
@@ -955,6 +972,8 @@
   },
   "adventure": {
     "title": "Adventure",
+    "docDesc": "The adventure system is now open! In the adventure system, Ottos can explore a wide variety of adventure areas in Ottopia and discover brand new Mission Items, Collectibles, and Wearable Items only available in specific areas.",
+    "docTitle": "$t(adventure.title)$t(titleSuffix)",
     "continue": "To Be Continued...",
     "listTitle": "Overview",
     "viewSwitcher": {
@@ -970,5 +989,36 @@
   "adventure_remaining": "Remaining: {{time}}",
   "adventureAlert": {
     "hideDesc": "Do not show this again"
+  },
+  "ottoStats": {
+    "rarityScore": "Rarity Score: {{total}} (BRS {{brs}} + RRS {{rrs}})"
+  },
+  "ottoPopup": {
+    "title": "Change Otto’s Equipment",
+    "unequipAllButton": "Unequip All",
+    "submitButton": "Save this Setup",
+    "submitButtonHelp": "You will be required to perform a transaction to update the new setup of the equipment on this Otto.",
+    "placeholder": "Click the left equipment thumbnail<br />to change the equipment "
+  },
+  "mission": {
+    "title": "Missions",
+    "ongoingCap": "Ongoing Mission Cap({{current}}/{{max}})",
+    "next_mission": "Next mission coming in: {{time}}",
+    "new_mission_btn": "Get 1 New Mission",
+    "new_mission_btn_free": "Get 1 New Mission (FREE)",
+    "reached_limit": "You’ve reached the ongoing mission capacity limit",
+    "require_desc": "Collect all required items",
+    "ongoing": "Ongoing",
+    "finished": "Finished",
+    "awards": "Awards: ",
+    "required_items": "Required Items",
+    "reward": "Mission Reward",
+    "refresh_desc": "Wanna take another random mission?",
+    "refresh_btn": "Refresh",
+    "complete_btn": "Complete",
+    "new_mission_title": "You got a new mission!",
+    "ok_btn": "OK",
+    "complete_reward": "Here’s your awards!",
+    "close_btn": "Close"
   }
 }

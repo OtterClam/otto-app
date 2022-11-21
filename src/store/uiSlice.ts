@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import Otto from 'models/Otto'
 import { RootState } from '.'
 
@@ -11,8 +11,10 @@ interface UiState {
   showSideMenu: boolean
   showWalletPopup: boolean
   showFishWalletPopup: boolean
+  showMissionPopup: boolean
   ottoInTheHell?: ReturnType<Otto['toJSON']>
   itemDetailsPopup?: string // item token id
+  ottoPopup?: string // otto token id
 }
 
 const initialState: UiState = {
@@ -22,8 +24,10 @@ const initialState: UiState = {
   showSideMenu: false,
   showWalletPopup: false,
   showFishWalletPopup: false,
+  showMissionPopup: false,
   ottoInTheHell: undefined,
   itemDetailsPopup: undefined,
+  ottoPopup: undefined,
 }
 
 export const uiSlice = createSlice({
@@ -73,11 +77,23 @@ export const uiSlice = createSlice({
     hideFishWalletPopup: state => {
       state.showFishWalletPopup = false
     },
+    showMissionPopup: state => {
+      state.showMissionPopup = true
+    },
+    hideMissionPopup: state => {
+      state.showMissionPopup = false
+    },
     showItemDetailsPopup: (state, action) => {
       state.itemDetailsPopup = action.payload
     },
     hideItemDetailsPopup: state => {
       state.itemDetailsPopup = undefined
+    },
+    showOttoPopup: (state, action) => {
+      state.ottoPopup = action.payload
+    },
+    hideOttoPopup: state => {
+      state.ottoPopup = undefined
     },
   },
 })
@@ -97,8 +113,12 @@ export const {
   hideWalletPopup,
   showFishWalletPopup,
   hideFishWalletPopup,
+  showMissionPopup,
+  hideMissionPopup,
   showItemDetailsPopup,
   hideItemDetailsPopup,
+  showOttoPopup,
+  hideOttoPopup,
 } = uiSlice.actions
 
 export const selectConnectingWallet = (state: RootState) => state.ui.connectingWallet
@@ -113,6 +133,8 @@ export const selectShowWalletPopup = (state: RootState) => state.ui.showWalletPo
 
 export const selectShowFishWalletPopup = (state: RootState) => state.ui.showFishWalletPopup
 
+export const selectShowMissionPopup = (state: RootState) => state.ui.showMissionPopup
+
 export const selectItemDetailsPopup = (state: RootState) => state.ui.itemDetailsPopup
 
 export const selectOttoInTheHell = (state: RootState) => {
@@ -121,5 +143,7 @@ export const selectOttoInTheHell = (state: RootState) => {
   }
   return Otto.fromJSON(state.ui.ottoInTheHell)
 }
+
+export const selectOttoPopup = (state: RootState) => state.ui.ottoPopup
 
 export default uiSlice.reducer

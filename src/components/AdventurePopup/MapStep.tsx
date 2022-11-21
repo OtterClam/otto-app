@@ -6,5 +6,5 @@ const StyledAdventureMap = styled(AdventureMap)`
 `
 
 export default function MapStep() {
-  return <StyledAdventureMap hideFooter />
+  return <StyledAdventureMap ottoLocked hideFooter />
 }

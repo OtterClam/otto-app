@@ -17,6 +17,7 @@ import ERC1155 from './ERC1155.json'
 export { default as AdventureAbi } from './Adventure.json'
 export { default as FoundryAbi } from './Foundry.json'
 export { default as OttopiaStoreAbi } from './OttopiaStore.json'
+export { default as MissionAbi } from './Mission.json'
 
 export const ERC20Abi = ERC20.abi
 export const OttoAbi = Otto

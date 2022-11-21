@@ -172,7 +172,6 @@ function ItemList({
           <StyledItemList>
             {items.map(item => (
               <ItemCell
-                showDetailsPopup
                 key={item.id}
                 item={item}
                 selected={item.id === selectedItemId}
@@ -292,7 +291,7 @@ export default function MyItemsPage() {
 
   const onUse = useCallback(() => {
     if (selectedItem) {
-      if (selectedItem.metadata.type === NewItemType.Coupon) {
+      if (selectedItem.metadata.type === 'Coupon') {
         setRedeemingCouponId(selectedItemId)
       } else {
         setUsingItemId(selectedItemId)

@@ -21,8 +21,9 @@ import {
   rawItemMetadataToItemMetadata,
 } from 'models/Item'
 import { LeaderboardEpoch, RawLeaderboardEpoch, rawLeaderboardEpochToLeaderboardEpoch } from 'models/LeaderboardEpoch'
+import { Mission, MissionInfo, rawMissionToMission } from 'models/Mission'
 import { Notification, RawNotification } from 'models/Notification'
-import Otto, { RawOtto } from 'models/Otto'
+import { RawOtto } from 'models/Otto'
 import Product from 'models/store/Product'
 import { RawAdventureResult } from './RawAdventureResult'
 
@@ -61,6 +62,8 @@ export interface FishStoreResponse {
   left_img: string
   right_img: string
 }
+
+export type MissionFilter = 'ongoing' | 'finished'
 
 const otterclamApiEndpoint: { [key: number]: string } = {
   [ChainId.Polygon]: process.env.NEXT_PUBLIC_API_ENDPOINT_MAINNET!,
@@ -205,11 +208,11 @@ export class Api {
 
   public async getOttoAdventurePreview(
     ottoId: string,
-    locationId: number,
+    locationId: number | undefined,
     actions: ItemAction[],
     abortSignal?: AbortSignal
   ): Promise<AdventurePreview> {
-    let url = `/ottos/${ottoId}/adventure/locations/${locationId}/preview`
+    let url = locationId ? `/ottos/${ottoId}/adventure/locations/${locationId}/preview` : `/ottos/${ottoId}/preview`
     if (actions.length) {
       url += `?actions=${JSON.stringify(actions)}`
     }
@@ -288,6 +291,71 @@ export class Api {
   public async getLeaderBoardEpoch(): Promise<LeaderboardEpoch> {
     const result = await this.otterclamClient.get<RawLeaderboardEpoch>('/leaderboard/epoch')
     return rawLeaderboardEpochToLeaderboardEpoch(result.data)
+  }
+
+  public async listMissions({
+    account,
+    filter,
+    offset,
+    limit,
+  }: {
+    account: string
+    filter: MissionFilter
+    offset?: number
+    limit?: number
+  }): Promise<Mission[]> {
+    return this.otterclamClient
+      .get(`/wallets/${account}/missions/${filter}`, { params: { offset, limit } })
+      .then(res => res.data.map(rawMissionToMission))
+  }
+
+  public async getMissionInfo({ account }: { account: string }): Promise<MissionInfo> {
+    const result = await this.otterclamClient.get(`/wallets/${account}/missions-info`)
+    return {
+      nextFreeMissionAt: new Date(result.data.next_free_mission_at),
+      newPrice: result.data.new_price,
+      newProductId: String(result.data.new_product_id),
+      refreshPrice: result.data.refresh_price,
+      refreshProductId: String(result.data.refresh_product_id),
+    }
+  }
+
+  public async requestNewMission({ account, tx }: { account: string; tx?: string }): Promise<Mission> {
+    const result = await this.otterclamClient.post(`/missions`, {
+      wallet: account,
+      tx_hash: tx,
+    })
+    return rawMissionToMission(result.data)
+  }
+
+  public async refreshMission({
+    account,
+    missionId,
+    tx,
+  }: {
+    account: string
+    missionId: number
+    tx: string
+  }): Promise<Mission> {
+    return this.otterclamClient
+      .put(`/missions/${missionId}/refresh`, {
+        mission_id: missionId,
+        tx_hash: tx,
+      })
+      .then(res => rawMissionToMission(res.data))
+  }
+
+  public async completeMission({ account, missionId }: { account: string; missionId: number }): Promise<any> {
+    return this.otterclamClient.put(`/missions/${missionId}/complete`).then(res => res.data)
+  }
+
+  public async confirm({ missionId, tx }: { missionId: number; tx: string }): Promise<any> {
+    return this.otterclamClient
+      .put(`/missions/${missionId}/confirm`, {
+        mission_id: missionId,
+        tx_hash: tx,
+      })
+      .then(res => res.data)
   }
 }
 

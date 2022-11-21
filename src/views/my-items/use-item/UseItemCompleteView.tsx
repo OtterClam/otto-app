@@ -80,24 +80,32 @@ const CloseButtonLarge = styled(Button)``
 
 interface Props {
   otto: Otto | null
+  updatedOtto?: Otto
   receivedItem?: ItemMetadata
+  hideCloseButton?: boolean
   onClose: () => void
 }
 
-export default function UseItemCompleteView({ otto, receivedItem, onClose }: Props) {
+export default function UseItemCompleteView({ otto, hideCloseButton, updatedOtto, receivedItem, onClose }: Props) {
   const { t } = useTranslation()
   const [newOttoReady, setNewOttoReady] = useState(false)
   const { otto: newOtto, refetch } = useOtto(otto?.id, true)
+
   useEffect(() => {
+    if (updatedOtto) {
+      setNewOttoReady(true)
+      return
+    }
     if (newOtto?.image === otto?.image) {
       setTimeout(() => refetch(), 5000)
     } else {
       setNewOttoReady(true)
     }
-  }, [newOtto, otto])
+  }, [newOtto, otto, updatedOtto])
+
   return (
     <StyledUseItemComplete>
-      <StyledCloseButton color="white" onClose={onClose} />
+      {!hideCloseButton && <StyledCloseButton color="white" onClose={onClose} />}
       <StyledTitle>
         <Headline>{t('my_items.use_item.completed_title')}</Headline>
         <ContentSmall>{t('my_items.use_item.completed_subtitle')}</ContentSmall>
@@ -105,7 +113,7 @@ export default function UseItemCompleteView({ otto, receivedItem, onClose }: Pro
       <StyledOttoResult>
         {otto && <StyledOttoCard otto={otto} />}
         <StyledArrow src={Arrow.src} />
-        {newOttoReady && newOtto && <StyledOttoCard otto={newOtto} />}
+        {newOttoReady && (updatedOtto || newOtto) && <StyledOttoCard otto={(updatedOtto || newOtto)!} />}
       </StyledOttoResult>
       {receivedItem && (
         <StyledReceivedItem>

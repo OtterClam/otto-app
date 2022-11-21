@@ -5,10 +5,11 @@ import { BigNumber, BigNumberish, constants, Contract, ethers, utils } from 'eth
 import useContractAddresses from 'hooks/useContractAddresses'
 import { Api } from 'libs/api'
 import _ from 'lodash'
-import { ItemAction, ItemMetadata, Item } from 'models/Item'
+import { Item, ItemAction, ItemMetadata } from 'models/Item'
+import { Mission } from 'models/Mission'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ItemsRepository } from 'repositories/items'
 import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
 import {
@@ -19,6 +20,7 @@ import {
   useFoundry,
   useItemContract,
   useItemGiveaway,
+  useMissionContract,
   useOttoContract,
   useOttoSummonerContract,
   usePearlBank,
@@ -957,4 +959,170 @@ export const useBuyFishItem = () => {
     buyState,
     resetBuy,
   }
+}
+
+export const useCompleteMission = () => {
+  const mission = useMissionContract()
+  const item = useItemContract()
+  const { account } = useEthers()
+  const api = useApi()
+  const { state, send, resetState } = useContractFunction(mission, 'complete', {})
+  const {
+    state: approveState,
+    send: approve,
+    resetState: resetApprove,
+  } = useContractFunction(item, 'setApprovalForAll', {})
+  const [completeMissionState, setCompleteMissionState] = useState<OttoTransactionWriteState>({
+    state: 'None',
+    status: state,
+  })
+  const complete = useCallback(
+    async (missionId: number) => {
+      if (account) {
+        setCompleteMissionState({
+          state: 'Processing',
+          status: state,
+        })
+        try {
+          const approved = await item.isApprovedForAll(account, mission.address)
+          if (!approved) {
+            await approve(mission.address, true)
+          }
+          const tx = await api.completeMission({ account, missionId }).then(calldata => (send as any)(...calldata))
+          if (tx) {
+            await api.confirm({ missionId, tx: tx.transactionHash })
+            setCompleteMissionState({
+              state: 'Success',
+              status: state,
+            })
+          }
+        } catch (err: any) {
+          setCompleteMissionState({
+            state: 'Fail',
+            status: {
+              ...state,
+              errorMessage: err.message,
+            },
+          })
+        }
+      }
+    },
+    [account, api, approve, item, mission.address, send, state]
+  )
+  const resetCompleteMission = useCallback(() => {
+    resetApprove()
+    resetState()
+  }, [resetApprove, resetState])
+  useEffect(() => {
+    if (approveState.status === 'Exception' || approveState.status === 'Fail') {
+      setCompleteMissionState({
+        state: 'Fail',
+        status: approveState,
+      })
+    } else if (state.status !== 'Success') {
+      setCompleteMissionState({
+        state: txState(state.status),
+        status: state,
+      })
+    }
+  }, [account, api, state, approveState])
+  return { completeMissionState, complete, resetCompleteMission }
+}
+
+export interface OttoNewMissionState extends OttoTransactionWriteState {
+  mission?: Mission
+}
+
+export const useRequestNewMission = () => {
+  const { account } = useEthers()
+  const { i18n } = useTranslation()
+  const api = useApi()
+  const store = useStoreContract()
+  const { state, send, resetState } = useContractFunction(store, 'buyNoChainlink', {})
+  const [buyState, setBuyState] = useState<OttoNewMissionState>({
+    state: 'None',
+    status: state,
+  })
+  const buy = useCallback(
+    async (productId: string) => {
+      setBuyState({
+        state: 'Processing',
+        status: state,
+      })
+      send(account || '', productId, 1)
+    },
+    [account, send, state]
+  )
+  useEffect(() => {
+    if (state.status === 'Success') {
+      api
+        .requestNewMission({ account: account || '', tx: state.transaction?.hash || '' })
+        .then(mission =>
+          setBuyState({
+            state: 'Success',
+            status: state,
+            mission,
+          })
+        )
+        .catch((err: any) =>
+          setBuyState({
+            state: 'Fail',
+            status: {
+              ...state,
+              errorMessage: err.message,
+            },
+          })
+        )
+    } else {
+      setBuyState({ state: txState(state.status), status: state })
+    }
+  }, [state, i18n, api, account])
+  return { buyState, buy, resetBuy: resetState }
+}
+
+export const useRefreshMission = (missionId: number) => {
+  const { account } = useEthers()
+  const { i18n } = useTranslation()
+  const api = useApi()
+  const store = useStoreContract()
+  const { state, send, resetState } = useContractFunction(store, 'buyNoChainlink', {})
+  const [refreshState, setBuyState] = useState<OttoNewMissionState>({
+    state: 'None',
+    status: state,
+  })
+  const refresh = useCallback(
+    async (productId: string) => {
+      setBuyState({
+        state: 'Processing',
+        status: state,
+      })
+      send(account || '', productId, 1)
+    },
+    [account, send, state]
+  )
+  useEffect(() => {
+    if (state.status === 'Success' && account && state.transaction?.hash) {
+      api
+        .refreshMission({ account, missionId, tx: state.transaction.hash })
+        .then(mission =>
+          setBuyState({
+            state: 'Success',
+            status: state,
+            mission,
+          })
+        )
+        .catch((err: any) =>
+          setBuyState({
+            state: 'Fail',
+            status: {
+              ...state,
+              errorMessage: err.message,
+            },
+          })
+        )
+    } else {
+      setBuyState({ state: txState(state.status), status: state })
+    }
+  }, [state, i18n, api, account, missionId])
+  return { refreshState, refresh, resetRefresh: resetState }
 }
