@@ -52,7 +52,6 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
       {} as { [k: string]: Otto }
     )
     const equippedItemToOtto = ottos
-      .filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready)
       .map(({ id }) => ottoIdToOtto[id])
       .filter(Boolean)
       .map(otto =>
