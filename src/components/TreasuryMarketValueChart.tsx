@@ -202,6 +202,11 @@ const marketValues = [
     dataKey: 'treasurySandMarketValue',
     stopColor: ['rgba(0, 174, 239, 1)', 'rgba(0, 174, 239, 0.5)'],
   },
+  {
+    label: 'CLAM',
+    dataKey: 'treasuryClamValue',
+    stopColor: ['rgba(255, 172, 161, 1)', 'rgba(255, 172, 161, 0.5)'],
+  },
 ]
 
 const keySettingMap = marketValues.reduce(

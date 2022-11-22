@@ -654,6 +654,8 @@
       "tmv": "Treasury Market Value",
       "totalRevenue": "Total Revenue",
       "totalApr": "Net Average APR",
+      "togglePnl": "Toggle PnL",
+      "pnlNote": "Please Note: OtterClam frequently rebalances the Treasury. Large percentage changes may be due to funds moving between investments. Click on any row for more details.",
       "tooltips": {
         "tmv": "Total value of Treasury Assets on {{ date }}",
         "revenue": "Total gross revenue during the selected date range.",

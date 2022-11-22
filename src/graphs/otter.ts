@@ -70,6 +70,7 @@ export const GET_TREASURY_METRICS = gql`
       treasuryUniV3UsdcMaiStrategyMarketValue
       treasuryQuickswapV3MaiUsdtStrategyMarketValue
       treasuryDystopiaPairUsdcClamMarketValue
+      treasuryClamValue
     }
   }
 `

@@ -10,13 +10,12 @@ import useInvestments from 'hooks/useInvestments'
 import { Investments_investments } from 'graphs/__generated__/Investments'
 import InvestmentsChart from 'components/InvestmentsChart'
 import * as _ from 'lodash'
-import LinkIcon from './link_icon.svg'
-
 import TreasuryCard from 'components/TreasuryCard'
 import { formatUsd } from 'utils/currency'
 import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
 import DatePicker from 'components/DatePicker'
 import Help from 'components/Help'
+import LinkIcon from './link_icon.svg'
 
 const StyledContainer = styled.div`
   font-family: 'Pangolin', 'naikaifont' !important;
@@ -97,6 +96,25 @@ const StyledDate = styled.div`
   background: ${({ theme }) => theme.colors.darkGray300};
   border: 4px solid ${({ theme }) => theme.colors.darkGray400};
   border-radius: 10px;
+  :hover {
+    background: ${({ theme }) => theme.colors.darkGray200};
+  }
+`
+
+const StyledToggleButton = styled.button`
+  padding: 1px;
+  background: ${({ theme }) => theme.colors.darkGray300};
+  border: 4px solid ${({ theme }) => theme.colors.darkGray400};
+  border-radius: 10px;
+  color: white;
+  :hover {
+    background: ${({ theme }) => theme.colors.darkGray200};
+  }
+  padding-top: 0px;
+  height: 28px;
+  margin-top: 18px;
+  margin-right: 20px;
+  font-family: 'Pangolin', 'naikaifont' !important;
 `
 
 const StyledMetricsContainer = styled.div`
@@ -157,10 +175,11 @@ const StyledTreasuryCard = styled(TreasuryCard)`
 interface InvestmentProps {
   investments?: Investments_investments[]
   portfolioPct?: number
+  showPnl?: boolean
 }
 
-function InvestmentPosition({ investments, portfolioPct }: InvestmentProps) {
-  if (!investments) return <div></div>
+function InvestmentPosition({ investments, portfolioPct, showPnl }: InvestmentProps) {
+  if (!investments) return <div />
   const { t } = useTranslation('', { keyPrefix: 'treasury.investments' })
 
   const avgGrossApr = useMemo(
@@ -185,6 +204,7 @@ function InvestmentPosition({ investments, portfolioPct }: InvestmentProps) {
   const pnlPct = (pnl / parseFloat(investments[0]?.netAssetValue)) * 100
 
   const [isOpen, setIsOpen] = useState<boolean>(false)
+
   return (
     <StyledRow onClick={() => setIsOpen(!isOpen)}>
       <StyledTable>
@@ -210,8 +230,8 @@ function InvestmentPosition({ investments, portfolioPct }: InvestmentProps) {
             <td>{portfolioPct?.toFixed(2)}%</td>
             <td>{avgGrossApr.toFixed(2)}%</td>
             {/* <td>{formatUsd(investments.at(-1)?.grossRevenue)}</td> */}
-            <td>{`${negStr}${valueChangePct.toFixed(2)}%`}</td>
-            <td>{pnlPct.toFixed(2)}%</td>
+            {showPnl && <td>{`${negStr}${valueChangePct.toFixed(2)}%`}</td>}
+            {showPnl && <td>{pnlPct.toFixed(2)}%</td>}
           </tr>
         </tbody>
       </StyledTable>
@@ -241,7 +261,7 @@ export default function InvestmentsPage({ className }: Props) {
   const toDateMetrics = useMemo(
     () =>
       metrics.reduce(function (prev, curr) {
-        return Math.abs(parseInt(curr.id) - toDate) < Math.abs(parseInt(prev.id) - toDate) ? curr : prev
+        return Math.abs(parseInt(curr.id, 10) - toDate) < Math.abs(parseInt(prev.id, 10) - toDate) ? curr : prev
       }),
     [metrics, toDate]
   )
@@ -250,7 +270,7 @@ export default function InvestmentsPage({ className }: Props) {
     const groupedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
     const currentInvestments = groupedInvestments.flatMap(x => x.at(-1))
     const portfolioPcts = currentInvestments.flatMap(x => {
-      if (parseInt(x?.timestamp ?? '0') != parseInt(toDateMetrics.id) - daySecs) return 0
+      if (parseInt(x?.timestamp ?? '0', 10) !== parseInt(toDateMetrics.id, 10) - daySecs) return 0
       return (parseFloat(x?.netAssetValue) / parseFloat(toDateMetrics.treasuryMarketValue)) * 100
     })
     return groupedInvestments
@@ -267,7 +287,10 @@ export default function InvestmentsPage({ className }: Props) {
   )
 
   const dateDiff = useMemo(() => (toDate - fromDate) / daySecs, [toDate, fromDate])
-  const netApr = Math.pow(1 + revenue / toDateMetrics.treasuryMarketValue / dateDiff, 365) * 100 - 100
+  const netApr = (1 + revenue / toDateMetrics.treasuryMarketValue / dateDiff) ** 365 * 100 - 100
+
+  const [showPnl, setShowPnl] = useState<boolean>(false)
+  const showMemo = useMemo(() => showPnl, [showPnl])
   return (
     <StyledContainer className={className}>
       <TreasurySection>
@@ -295,6 +318,7 @@ export default function InvestmentsPage({ className }: Props) {
       <TreasurySection>
         <StyledInnerContainer>
           <StyledDateContainer>
+            <StyledToggleButton onClick={() => setShowPnl(!showPnl)}>{t('togglePnl')}</StyledToggleButton>
             <StyledDateButton
               onClick={() => {
                 setFromDateOpen(true)
@@ -340,6 +364,7 @@ export default function InvestmentsPage({ className }: Props) {
             />
           </StyledDateContainer>
 
+          {showPnl && <p>{t('pnlNote')}</p>}
           <StyledTable>
             <thead>
               <StyledTableHeader>
@@ -347,14 +372,14 @@ export default function InvestmentsPage({ className }: Props) {
                 <td>{t('tableHeader.protocol')}</td>
                 <td>{t('tableHeader.portfolioPct')}</td>
                 <td>{t('tableHeader.averageApr')}</td>
-                <td>{t('tableHeader.positionChange')}</td>
-                <td>{t('tableHeader.pnl')}</td>
+                {showPnl && <td>{t('tableHeader.positionChange')}</td>}
+                {showPnl && <td>{t('tableHeader.pnl')}</td>}
               </StyledTableHeader>
             </thead>
           </StyledTable>
           {sortedInvestments.map((inv, i) => (
             <StyledCard key={`card_${i}`}>
-              <InvestmentPosition investments={inv} portfolioPct={joinedInvestments[i].pct} />
+              <InvestmentPosition investments={inv} portfolioPct={joinedInvestments[i].pct} showPnl={showMemo} />
             </StyledCard>
           ))}
         </StyledInnerContainer>

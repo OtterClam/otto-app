@@ -152,7 +152,7 @@ export default function SnapshotProposalGroup({ className, tab }: SnapshotPropos
     <StyledContainer className={className}>
       {proposals.map(proposal => (
         // How do animations work with dynamic content max-height pls help
-        <StyledCard key={proposal.id} maxH={maximisedProposal === proposal.id ? 'fit-content' : '420px'}>
+        <StyledCard key={proposal.id} maxH={maximisedProposal === proposal.id ? '150vh' : '420px'}>
           <StyledInnerContainer>
             <StyledProposalHeadline as="h1">{proposal.title}</StyledProposalHeadline>
             <StyledActivityFlag flagColor={flagColorFromProposalState[proposal.state ?? '']}>
