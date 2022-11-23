@@ -187,35 +187,6 @@ export default function AdventureRewards({ loading, canUsePotions, onUsePotion =
       [potion]: usedPotionAmounts[potion] === 1 ? 0 : 1,
     }))
   }, [])
-  const effectiveBoosts = (location?.conditionalBoosts ?? []).filter(boost => boost.effective)
-  const itemReward = effectiveBoosts.reduce(
-    ([min, max], boost) => {
-      const artwork = boost.amounts[BoostTarget.AdditionalArtwork]
-      const item = boost.amounts[BoostTarget.AdditionalItem]
-
-      if (artwork) {
-        max += artwork.value
-        if (artwork.percentage === 100) {
-          min += artwork.value
-        }
-      }
-
-      if (item) {
-        max += item.value
-        if (item.percentage === 100) {
-          min += item.value
-        }
-      }
-
-      return [min, max]
-    },
-    [0, 0]
-  )
-
-  if (location?.successRewards.item) {
-    itemReward[0] += location.successRewards.item.min ?? 0
-    itemReward[1] += location.successRewards.item.max ?? 0
-  }
 
   useEffect(() => {
     onUsePotion(usedPotionAmounts)
@@ -359,7 +330,9 @@ export default function AdventureRewards({ loading, canUsePotions, onUsePotion =
 
           <StyledReward>
             <StyledRewardIcon icon={itemsImage.src} />
-            <StyledRewardValue>{itemReward.join('~')} Items</StyledRewardValue>
+            <StyledRewardValue>
+              {[location.successRewards?.item.min, location.successRewards?.item.max].join('~')} Items
+            </StyledRewardValue>
             {canUsePotions && (
               <PotionButton
                 potion={AdventurePotion.Str}
