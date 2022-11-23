@@ -944,9 +944,9 @@
     "regional_boosts": "區域加成條件"
   },
   "adventureBoostTarget": {
-    "success_rate": "成功率 +{{ amount }}%",
-    "additional_item": "找到物品 +{{ amount }}",
-    "additional_artwork": "找到收藏品 +{{ amount }}"
+    "success_rate": "{{ percentage }}% 成功率 +{{ amount }}%",
+    "additional_item": "{{ percentage }}% 找到物品 +{{ amount }}",
+    "additional_artwork": "{{ percentage }}% 找到收藏品 +{{ amount }}"
   },
   "adventure": {
     "title": "冒險",
