@@ -18,6 +18,7 @@ import { AdventureResult } from 'models/AdventureResult'
 import { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
+import Head from 'next/head'
 import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
@@ -128,6 +129,40 @@ export default function ResultStep() {
 
   return (
     <StyledResultStep bg={location.bgImageBlack}>
+      {result && otto && (
+        <Head>
+          <title>
+            {t('og:title', {
+              name: otto.name,
+              result: t(result ? 'result_succeeded' : 'result_failed'),
+              location: location.name,
+            })}
+          </title>
+          <meta
+            property="description"
+            content={t('og:description', {
+              name: otto.name,
+              location: location.name,
+            })}
+          />
+          <meta
+            property="og:title"
+            content={t('og:title', {
+              name: otto.name,
+              result: t(result ? 'result_succeeded' : 'result_failed'),
+              location: location.name,
+            })}
+          />
+          <meta
+            property="og:description"
+            content={t('og:description', {
+              name: otto.name,
+              location: location.name,
+            })}
+          />
+          <meta property="og:image" content={result.image} />
+        </Head>
+      )}
       <StyledBody>
         <StyledJournalSection result={result} />
         {result && otto && <StyledRewardSection result={result} otto={otto} />}
