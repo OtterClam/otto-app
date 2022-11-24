@@ -11,6 +11,7 @@ export default function useSharedAdventureResult(): void {
 
   const tx = String(router.query.adventure_tx)
   const locationId = Number(router.query.location ?? 0)
+  const ottoId = String(router.query.otto ?? 0)
 
   useEffect(() => {
     if (!(tx && locationId)) {
@@ -20,7 +21,7 @@ export default function useSharedAdventureResult(): void {
       router.pathname = '/'
       router.push(router)
     } else if (finishedTx !== tx) {
-      gotoResultStep({ tx, locationId })
+      gotoResultStep({ ottoId, tx, locationId })
     }
-  }, [tx, locationId, router.asPath])
+  }, [tx, ottoId, locationId, router.asPath])
 }
