@@ -16,7 +16,7 @@ import useContractAddresses from 'hooks/useContractAddresses'
 import { AdventurePreview } from 'models/AdventurePreview'
 import { AdventureResult } from 'models/AdventureResult'
 import { AdventureOttoStatus } from 'models/Otto'
-import { useMyOttos } from 'MyOttosProvider'
+import { useIsMyOttos, useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import Head from 'next/head'
 import { useCallback, useEffect, useState } from 'react'
@@ -62,6 +62,7 @@ export default function ResultStep() {
   const { ADVENTURE } = useContractAddresses()
   const openPopup = useOpenAdventurePopup()
   const { dispatch } = useAdventureUIState()
+  const isMyOtto = useIsMyOttos(otto?.id)
 
   const closePopup = useCallback(() => {
     dispatch({ type: AdventureUIActionType.ClosePopup })
@@ -168,7 +169,7 @@ export default function ResultStep() {
         {result && otto && <StyledRewardSection result={result} otto={otto} />}
         {result && (
           <StyledButtons>
-            {result.success && (
+            {isMyOtto && result.success && (
               <Button
                 Typography={Headline}
                 onClick={() => {
@@ -184,7 +185,7 @@ export default function ResultStep() {
                 {t('explore_again_btn')}
               </Button>
             )}
-            {!(result.success || result.revived) && (
+            {isMyOtto && !(result.success || result.revived) && (
               <PaymentButton
                 Typography={Headline}
                 loading={reviveState.status === 'PendingSignature' || reviveState.status === 'Mining'}
