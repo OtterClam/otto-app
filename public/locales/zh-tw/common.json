@@ -887,8 +887,8 @@
       "failed_desc": "你的阿獺冒險失敗了，因此你無法得到此次冒險的任何獎勵。",
       "failed_hint": "想要得到冒險中找到的物品嗎？只需要花費 1 $CLAM，小森靈就會幫你取回物品喔！ (不包含 EXP 及 TCP) 如果你都未取回物品，這些物品將會在下一次出發冒險時永遠消失。",
       "failed_tooltip": "想要得到冒險中找到的物品嗎？只需要花費 1 $CLAM，小森靈就會幫你取回物品喔！ (不包含 EXP 及 TCP) 如果你都未取回物品，這些物品將會在下一次出發冒險時永遠消失。",
-      "og:title": "{{ name }} {{ result }} the {{ location }} adventure!",
-      "og:description": "Check out the Adventure Journey {{ name }} to find our more about the hilarious and surprising events that occurred during the adventure in {{ location }}"
+      "og_title": "{{ name }} {{ result }} the {{ location }} adventure!",
+      "og_description": "Check out the Adventure Journey {{ name }} to find our more about the hilarious and surprising events that occurred during the adventure in {{ location }}"
     },
     "restingStep": {
       "title": "{{name}} 正在休息中...",
