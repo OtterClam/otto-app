@@ -1,10 +1,8 @@
 import Board, { Background } from 'components/Board'
-import Button from 'components/Button'
 import { useRarityEpoch } from 'contexts/RarityEpoch'
 import { useTranslation } from 'next-i18next'
-import Link from 'next/link'
 import styled from 'styled-components/macro'
-import { Display3, Headline } from 'styles/typography'
+import { Display3 } from 'styles/typography'
 import { useLeaderboardEpoch } from 'contexts/LeaderboardEpoch'
 import LeaderboardTabs from 'components/LeaderboardTabs'
 import EpochBanner from 'components/EpochBanner'
@@ -87,31 +85,6 @@ export default function LeaderboardPage() {
       <LeaderboardTabs />
       <StyledBoard background={Background.Dark}>
         <StyledLeaderboardPage>
-          <StyledHead>
-            <StyledEpochNav>
-              {!hasPrevEpoch && <div />}
-              {hasPrevEpoch && (
-                <Link href={`/leaderboard?epoch=${epoch - 1}`}>
-                  <a>
-                    <Button padding="0 6px" Typography={Headline}>
-                      {t('prev')}
-                    </Button>
-                  </a>
-                </Link>
-              )}
-              {!hasNextEpoch && <div />}
-              {hasNextEpoch && (
-                <Link href={`/leaderboard?epoch=${epoch + 1}`}>
-                  <a>
-                    <Button padding="0 6px" Typography={Headline}>
-                      {t('next')}
-                    </Button>
-                  </a>
-                </Link>
-              )}
-            </StyledEpochNav>
-            <StyledTitlie>{t('head')}</StyledTitlie>
-          </StyledHead>
           <EpochBanner />
           <StyledInfos>
             <Info
