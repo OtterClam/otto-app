@@ -152,7 +152,7 @@ export default function ResultStep() {
           <title>
             {t('og_title', {
               name: displayedOtto.name,
-              result: t(result ? 'result_succeeded' : 'result_failed'),
+              result: t(result ? 'og_succeeded' : 'og_failed'),
               location: location.name,
             })}
           </title>
@@ -167,7 +167,7 @@ export default function ResultStep() {
             property="og:title"
             content={t('og_title', {
               name: displayedOtto.name,
-              result: t(result ? 'result_succeeded' : 'result_failed'),
+              result: t(result ? 'og_succeeded' : 'og_failed'),
               location: location.name,
             })}
           />
