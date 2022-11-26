@@ -76,7 +76,7 @@ function useRealWindowSize() {
   }, [])
 }
 
-const ApolloApp = ({ children }: PropsWithChildren<object>) => {
+const App = ({ children }: PropsWithChildren<object>) => {
   usePreloadImages(preloadImages)
   useServiceWorker()
   useContractAddresses()
@@ -85,6 +85,7 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
   useRealWindowSize()
 
   const CombinedProvider = combine(
+    [DAppProvider, { config }],
     [ApolloProvider, { client: apollo }],
     [OtterSubgraphProvider, {}],
     [WalletProvider, {}],
@@ -115,14 +116,6 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
         </MyMissionsProvider>
       </StyledApp>
     </CombinedProvider>
-  )
-}
-
-const App = ({ children }: PropsWithChildren<object>) => {
-  return (
-    <DAppProvider config={config}>
-      <ApolloApp>{children}</ApolloApp>
-    </DAppProvider>
   )
 }
 
