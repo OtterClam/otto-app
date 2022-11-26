@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
-import { Caption, Headline } from 'styles/typography'
+import { Note, ContentLarge } from 'styles/typography'
 
 const StyledCountdown = styled.section`
   width: 100%;
@@ -32,7 +32,7 @@ const StyledNumbers = styled.p`
 const StyledNumber = styled.span`
   width: 28px;
   height: 36px;
-  border-radius: 8px;
+  border-radius: 4px;
   background-color: ${({ theme }) => theme.colors.otterBlue};
   display: flex;
   justify-content: center;
@@ -53,14 +53,14 @@ function NumberSlot({ num, unit }: { num: number; unit: string }) {
     <StyledNumberSlot>
       <StyledNumbers>
         <StyledNumber>
-          <Headline>{firstDigit}</Headline>
+          <ContentLarge>{firstDigit}</ContentLarge>
         </StyledNumber>
         <StyledNumber>
-          <Headline>{secondDigit}</Headline>
+          <ContentLarge>{secondDigit}</ContentLarge>
         </StyledNumber>
       </StyledNumbers>
       <StyledUnit>
-        <Caption>{unit}</Caption>
+        <Note>{unit}</Note>
       </StyledUnit>
     </StyledNumberSlot>
   )
