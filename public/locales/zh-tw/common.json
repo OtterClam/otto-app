@@ -888,9 +888,9 @@
       "failed_hint": "想要得到冒險中找到的物品嗎？只需要花費 1 $CLAM，小森靈就會幫你取回物品喔！ (不包含 EXP 及 TCP) 如果你都未取回物品，這些物品將會在下一次出發冒險時永遠消失。",
       "failed_tooltip": "想要得到冒險中找到的物品嗎？只需要花費 1 $CLAM，小森靈就會幫你取回物品喔！ (不包含 EXP 及 TCP) 如果你都未取回物品，這些物品將會在下一次出發冒險時永遠消失。",
       "og_succeeded": "成功",
-      "og_failed": "成功",
-      "og_title": "{{ name }} {{ result }} the {{ location }} adventure!",
-      "og_description": "Check out the Adventure Journey {{ name }} to find our more about the hilarious and surprising events that occurred during the adventure in {{ location }}"
+      "og_failed": "失敗",
+      "og_title": "{{ name }} 在 {{ location }} 的冒險 {{ result }} 了!",
+      "og_description": "這隻 {{ name }} 在 {{ location }} 經歷了許多驚奇有趣事件，也發現了不少珍稀寶物，快打開冒險日誌瞧瞧吧"
     },
     "restingStep": {
       "title": "{{name}} 正在休息中...",
