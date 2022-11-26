@@ -40,12 +40,11 @@ const StyledContainer = styled.div<{ background: Background }>`
 
 export interface BoardProps {
   background?: Background
-  className?: string
 }
 
-export default function Board({ className, background = Background.White, children }: PropsWithChildren<BoardProps>) {
+export default function Board({ background = Background.White, children }: PropsWithChildren<BoardProps>) {
   return (
-    <StyledBorder className={className}>
+    <StyledBorder>
       <StyledInnerBorder>
         <StyledContainer background={background}>{children}</StyledContainer>
       </StyledInnerBorder>

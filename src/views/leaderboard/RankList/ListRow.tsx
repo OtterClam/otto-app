@@ -1,5 +1,4 @@
 import CLAM from 'assets/clam.png'
-import FISH from 'assets/fish.png'
 import styled from 'styled-components/macro'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import Otto from 'models/Otto'
@@ -9,14 +8,12 @@ import { ContentLarge } from 'styles/typography'
 import Image from 'next/image'
 import OttoBoostLabels from 'components/OttoBoostLabels'
 import useEstimatedReward from 'hooks/useEstimatedReward'
-import { useRouter } from 'next/router'
 import FirstRank from './Icon/Rank/1st.png'
 import SecondRank from './Icon/Rank/2nd.png'
 import ThirdRank from './Icon/Rank/3rd.png'
 import RarityScore from './rarity_score.png'
 
-// TODO: use a more readable way to impelemnt this table
-const StyledRow = styled.div<{ isMyOttoRow?: boolean; adventure: boolean }>`
+const StyledRow = styled.div<{ isMyOttoRow?: boolean }>`
   display: flex;
   align-items: center;
 
@@ -34,35 +31,17 @@ const StyledRow = styled.div<{ isMyOttoRow?: boolean; adventure: boolean }>`
       width: 154px;
       text-align: center;
     }
-    ${({ adventure }) =>
-      !adventure &&
-      `
-      &:nth-child(4) {
-        // rarity score
-        width: 122px;
-        text-align: center;
-      }
-      &:nth-child(5),
-      &:nth-child(6) {
-        // brs + rrs
-        width: 64px;
-        text-align: center;
-      }
-    `}
-    ${({ adventure }) =>
-      adventure &&
-      `
-      &:nth-child(4) {
-        // ap
-        width: 64px;
-        text-align: center;
-      }
-      &:nth-child(5) {
-        // Success/Total (%)
-        width: 192px;
-        text-align: center;
-      }
-    `}
+    &:nth-child(4) {
+      // rarity score
+      width: 122px;
+      text-align: center;
+    }
+    &:nth-child(5),
+    &:nth-child(6) {
+      // brs + rrs
+      width: 64px;
+      text-align: center;
+    }
   }
 
   ${({ isMyOttoRow, theme }) =>
@@ -168,7 +147,7 @@ const StyledOttoAvatarContainer = styled.div<{ isMyOttoRow?: boolean }>`
   }
 `
 
-const StyledReward = styled(ContentLarge).attrs({ as: 'div' })<{ isAdventure?: boolean }>`
+const StyledReward = styled(ContentLarge).attrs({ as: 'div' })`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -177,7 +156,7 @@ const StyledReward = styled(ContentLarge).attrs({ as: 'div' })<{ isAdventure?: b
     content: '';
     width: 24px;
     height: 24px;
-    background-image: url(${({ isAdventure }) => (isAdventure ? FISH.src : CLAM.src)});
+    background-image: url(${CLAM.src});
     background-size: 100%;
   }
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -211,21 +190,8 @@ export interface ListRowProps {
 // we will update leaderboard epoch periodically, the rank list will be updated periodically as well.
 // so we cache rendering result via `React.memo` to improve rendering performance.
 export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) {
-  const { query } = useRouter()
-  const isAdventure = Boolean(query.adventure)
   const { isMobile } = useBreakpoints()
-  const {
-    id,
-    image,
-    name,
-    totalRarityScore,
-    baseRarityScore,
-    relativeRarityScore,
-    ap,
-    finishedAdventurePassesCount,
-    succeededAdventurePassesCount,
-    adventureSuccessRate,
-  } = otto
+  const { id, image, name, totalRarityScore, baseRarityScore, relativeRarityScore } = otto
   const estimatedReward = useEstimatedReward(rank)
 
   if (isMobile) {
@@ -242,20 +208,8 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
             <StyledMobileContent>
               <StyledAvatarName>{name}</StyledAvatarName>
               <OttoBoostLabels otto={otto} />
-              {isAdventure && (
-                <>
-                  <StyledReward isAdventure as="div">
-                    -
-                  </StyledReward>
-                  <StyledTd>{ap}</StyledTd>
-                </>
-              )}
-              {!isAdventure && (
-                <>
-                  <StyledReward as="div">{estimatedReward}</StyledReward>
-                  <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
-                </>
-              )}
+              <StyledReward as="div">{estimatedReward}</StyledReward>
+              <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
             </StyledMobileContent>
           </StyledMobileRow>
         </a>
@@ -266,7 +220,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
   return (
     <Link href={`/ottos/${id}`} passHref>
       <a>
-        <StyledOttoRow isMyOttoRow={isMyOttoRow} adventure={isAdventure}>
+        <StyledOttoRow isMyOttoRow={isMyOttoRow}>
           <StyledTd>
             <StyledRank rank={rank}>{rank}</StyledRank>
           </StyledTd>
@@ -282,24 +236,11 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
             </StyledAvatarName>
           </StyledTd>
           <StyledTd>
-            <StyledReward isAdventure={isAdventure}>{isAdventure ? '-' : estimatedReward}</StyledReward>
+            <StyledReward>{estimatedReward}</StyledReward>
           </StyledTd>
-          {!isAdventure && (
-            <>
-              <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
-              <StyledTd>{baseRarityScore}</StyledTd>
-              <StyledTd>{relativeRarityScore}</StyledTd>
-            </>
-          )}
-          {isAdventure && (
-            <>
-              <StyledTd>{ap}</StyledTd>
-              <StyledTd>
-                {succeededAdventurePassesCount}/{finishedAdventurePassesCount} ({Math.round(adventureSuccessRate * 100)}
-                %)
-              </StyledTd>
-            </>
-          )}
+          <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
+          <StyledTd>{baseRarityScore}</StyledTd>
+          <StyledTd>{relativeRarityScore}</StyledTd>
         </StyledOttoRow>
       </a>
     </Link>

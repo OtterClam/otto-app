@@ -1,7 +1,6 @@
 export enum BannerType {
   AdBanner = 'AdBanner',
   HomePageSmallAd = 'HomePageSmallAd',
-  Leaderboard = 'Leaderboard',
 }
 
 export interface Banner {

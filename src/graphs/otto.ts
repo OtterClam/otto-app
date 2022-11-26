@@ -79,23 +79,6 @@ export const LIST_RANKED_OTTOS = gql`
   }
 `
 
-export const LIST_ADVENTURE_RANKED_OTTOS = gql`
-  query ListAdventureRankedOttos($epoch: Int!, $first: Int!, $skip: Int!) {
-    ottos(orderBy: apRank, orderDirection: desc, first: $first, skip: $skip, where: { epoch: $epoch }) {
-      tokenId
-      tokenURI
-      mintAt
-      legendary
-      brs
-      rrs
-      rarityScore
-      constellationBoost
-      epochRarityBoost
-      diceCount
-    }
-  }
-`
-
 export const LIST_MY_PORTALS = gql`
   query ListMyPortals($owner: Bytes!) {
     ottos(where: { owner: $owner, portalStatus_not: SUMMONED, epoch: -1 }, orderBy: tokenId) {
