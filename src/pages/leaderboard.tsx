@@ -1,3 +1,4 @@
+import Board, { Background } from 'components/Board'
 import LeaderboardView from 'views/leaderboard/LeaderboardPage'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
@@ -18,7 +19,9 @@ LeaderBoardPage.getLayout = (page, i18n) => {
   return (
     <DefaultLayout title={i18n.t('leaderboard.title')}>
       <RarityEpochProvider>
-        <LeaderboardEpochProvider>{page}</LeaderboardEpochProvider>
+        <LeaderboardEpochProvider>
+          <Board background={Background.Dark}>{page}</Board>
+        </LeaderboardEpochProvider>
       </RarityEpochProvider>
     </DefaultLayout>
   )

@@ -1,15 +1,12 @@
 import { ApolloClient } from '@apollo/client'
 import { Api } from 'libs/api'
 import { ItemsRepository } from './items'
-import { LeaderboardsRepository } from './leaderboards'
 import { OttosRepository } from './ottos'
 
 export class Repositories {
   public readonly items: ItemsRepository
 
   public readonly ottos: OttosRepository
-
-  public readonly leaderboards: LeaderboardsRepository
 
   public readonly api: Api
 
@@ -20,6 +17,5 @@ export class Repositories {
     this.ottoSubgraph = ottoSubgraph
     this.items = new ItemsRepository(this)
     this.ottos = new OttosRepository(this)
-    this.leaderboards = new LeaderboardsRepository(this)
   }
 }

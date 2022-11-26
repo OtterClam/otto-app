@@ -1,7 +1,7 @@
-// TODO: refactor the table
+import { useQuery } from '@apollo/client'
 import ArrowDown from 'assets/ui/arrow_down.svg'
 import Button from 'components/Button'
-import { useMyOttos } from 'hooks/useOtto'
+import { useMyOttos, useOttos } from 'hooks/useOtto'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
@@ -10,8 +10,8 @@ import { ContentMedium, Headline } from 'styles/typography'
 import { useRarityEpoch } from 'contexts/RarityEpoch'
 import { createSearchParams } from 'utils/url'
 import { useRouter } from 'next/router'
-import { useRepositories } from 'contexts/Repositories'
-import { Leaderboard, LeaderboardType } from 'models/Leaderboard'
+import { LIST_RANKED_OTTOS } from 'graphs/otto'
+import { ListRankedOttos, ListRankedOttosVariables } from 'graphs/__generated__/ListRankedOttos'
 import LoadingGif from './loading.gif'
 import ListRow from './ListRow'
 
@@ -26,7 +26,7 @@ const StyledTable = styled.section`
   width: 100%;
 `
 
-const StyledRow = styled.div<{ adventure: boolean }>`
+const StyledRow = styled.div`
   display: flex;
   align-items: center;
 
@@ -44,35 +44,17 @@ const StyledRow = styled.div<{ adventure: boolean }>`
       width: 154px;
       text-align: center;
     }
-    ${({ adventure }) =>
-      !adventure &&
-      `
-      &:nth-child(4) {
-        // rarity score
-        width: 122px;
-        text-align: center;
-      }
-      &:nth-child(5),
-      &:nth-child(6) {
-        // brs + rrs
-        width: 64px;
-        text-align: center;
-      }
-    `}
-    ${({ adventure }) =>
-      adventure &&
-      `
-      &:nth-child(4) {
-        // ap
-        width: 64px;
-        text-align: center;
-      }
-      &:nth-child(5) {
-        // Success/Total (%)
-        width: 192px;
-        text-align: center;
-      }
-    `}
+    &:nth-child(4) {
+      // rarity score
+      width: 122px;
+      text-align: center;
+    }
+    &:nth-child(5),
+    &:nth-child(6) {
+      // brs + rrs
+      width: 64px;
+      text-align: center;
+    }
   }
 `
 
@@ -144,9 +126,7 @@ const StyledLoading = styled.div`
   }
 `
 
-const StyledTh = styled(ContentMedium).attrs({ as: 'div' })`
-  white-space: nowrap;
-`
+const StyledTh = styled(ContentMedium).attrs({ as: 'div' })``
 
 const StyledPagination = styled.div`
   display: flex;
@@ -180,30 +160,31 @@ const PAGE = 20
 export default function RankList({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.rank_list' })
   const router = useRouter()
-  const isAdventure = Boolean(router.query.adventure)
-  const { leaderboards: leaderboardsRepo } = useRepositories()
   const page = Number(router.query.page || 0)
-  const adventure = Boolean(router.query.adventure)
   const { epoch, isLatestEpoch } = useRarityEpoch()
-  const [leaderboard, setLeaderboard] = useState<Leaderboard>()
-  const [loadingApi, setLoadingApi] = useState(false)
+  const {
+    data,
+    loading: loadingGraph,
+    refetch,
+  } = useQuery<ListRankedOttos, ListRankedOttosVariables>(LIST_RANKED_OTTOS, {
+    variables: {
+      skip: page * PAGE,
+      first: PAGE,
+      epoch,
+    },
+    skip: epoch === -1,
+  })
   const epochInQuery = isLatestEpoch ? undefined : epoch
+  const ottoIds = useMemo(() => data?.ottos.map(o => o.tokenId) || [], [data])
+  const { ottos, loading: loadingApi } = useOttos(ottoIds, { details: true, epoch: epochInQuery })
   const { ottos: myOttos } = useMyOttos(epochInQuery)
   const sortedMyOttos = useMemo(() => myOttos.sort((a, b) => a.ranking - b.ranking), [myOttos])
   const [expand, setExpand] = useState(false)
-  const loading = !leaderboard || loadingApi
+  const loading = loadingGraph || loadingApi
 
   useEffect(() => {
-    setLoadingApi(true)
-    leaderboardsRepo
-      .get({
-        type: adventure ? LeaderboardType.AdventurePoint : LeaderboardType.RarityScore,
-        page,
-        epoch,
-      })
-      .then(setLeaderboard)
-      .finally(() => setLoadingApi(false))
-  }, [page, epoch, adventure])
+    refetch({ skip: page * PAGE, first: PAGE })
+  }, [page])
 
   return (
     <StyledRankList className={className}>
@@ -212,40 +193,27 @@ export default function RankList({ className }: Props) {
           <StyledMyOttoSection isLatestEpoch={isLatestEpoch}>
             <StyledHint>{t('your_rank')}</StyledHint>
             {(expand ? sortedMyOttos : sortedMyOttos.slice(0, 1)).map(otto => (
-              <ListRow key={otto.id} isMyOttoRow otto={otto} rank={adventure ? otto.apRanking : otto.ranking} />
+              <ListRow key={otto.id} isMyOttoRow otto={otto} rank={otto.ranking} />
             ))}
             <StyledExpandColumn as="div" expand={expand} onClick={() => setExpand(expand => !expand)}>
               {expand ? t('show_less') : t('expand', { count: myOttos.length })}
             </StyledExpandColumn>
           </StyledMyOttoSection>
         )}
-        <StyledTableHead adventure={adventure}>
+        <StyledTableHead>
           <StyledTh>{t('rank')}</StyledTh>
           <StyledTh>{t('name')}</StyledTh>
           <StyledTh>{t('est_reward')}</StyledTh>
-          {!isAdventure && (
-            <>
-              <StyledTh>{t('rarity_score')}</StyledTh>
-              <StyledTh>{t('brs')}</StyledTh>
-              <StyledTh>{t('rrs')}</StyledTh>
-            </>
-          )}
-          {isAdventure && (
-            <>
-              <StyledTh>{t('ap')}</StyledTh>
-              <StyledTh>{t('success_rate')}</StyledTh>
-            </>
-          )}
+          <StyledTh>{t('rarity_score')}</StyledTh>
+          <StyledTh>{t('brs')}</StyledTh>
+          <StyledTh>{t('rrs')}</StyledTh>
         </StyledTableHead>
         {loading && (
           <StyledLoading>
             <img src={LoadingGif.src} alt="loading" />
           </StyledLoading>
         )}
-        {!loading &&
-          leaderboard.page.data.map((otto, index) => (
-            <ListRow key={otto.id} rank={page * PAGE + index + 1} otto={otto} />
-          ))}
+        {!loading && ottos.map((otto, index) => <ListRow key={otto.id} rank={page * PAGE + index + 1} otto={otto} />)}
       </StyledTable>
       {!loading && (
         <StyledPagination>

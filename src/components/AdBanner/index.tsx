@@ -1,8 +1,9 @@
 import { Carousel } from 'react-responsive-carousel'
 import Image from 'next/image'
 import styled from 'styled-components/macro'
-import { BannerType } from 'models/Banner'
-import { useBanners } from 'contexts/Banners'
+import { useEffect, useState } from 'react'
+import { useApi } from 'contexts/Api'
+import { Banner, BannerType } from 'models/Banner'
 
 const StyledLink = styled.a`
   display: flex !important;
@@ -14,7 +15,15 @@ const newTabProps = {
 }
 
 export default function AdBanner({ showIndicators }: { showIndicators?: boolean }) {
-  const ads = useBanners([BannerType.AdBanner])
+  const [ads, setAds] = useState<Banner[]>([])
+  const api = useApi()
+
+  useEffect(() => {
+    fetch('/api/banners')
+      .then(res => res.json())
+      .then(data => data.filter(({ type }: Banner) => type === BannerType.AdBanner))
+      .then(setAds)
+  }, [api])
 
   if (!ads.length) {
     return <div />
