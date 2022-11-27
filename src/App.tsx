@@ -6,6 +6,7 @@ import adventureMapImage from 'components/AdventureMap/map.jpg'
 import SkeletonThemeProvider from 'components/SkeletonThemeProvider'
 import { ApiProvider } from 'contexts/Api'
 import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
+import { BannersProvider } from 'contexts/Banners'
 import { BreakpointsProvider } from 'contexts/Breakpoints'
 import { CurrencyProvider } from 'contexts/Currency'
 import { MyItemsProvider } from 'contexts/MyItems'
@@ -94,22 +95,24 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                     <BreakpointsProvider>
                       <MyOttosProvider>
                         <MyItemsProvider>
-                          <OverlayProvider>
-                            <StyledApp>
-                              <SkeletonThemeProvider>
-                                <StyledPageContainer>{children}</StyledPageContainer>
-                                <Error />
-                                <WalletSelector />
-                                <SideMenu />
-                                <MyMissionsProvider>
-                                  <MissionPopup />
-                                </MyMissionsProvider>
-                                <AssetsLoader />
-                                <ItemDetailsPopup />
-                                <OttoPopup />
-                              </SkeletonThemeProvider>
-                            </StyledApp>
-                          </OverlayProvider>
+                          <BannersProvider>
+                            <OverlayProvider>
+                              <StyledApp>
+                                <SkeletonThemeProvider>
+                                  <StyledPageContainer>{children}</StyledPageContainer>
+                                  <Error />
+                                  <WalletSelector />
+                                  <SideMenu />
+                                  <MyMissionsProvider>
+                                    <MissionPopup />
+                                  </MyMissionsProvider>
+                                  <AssetsLoader />
+                                  <ItemDetailsPopup />
+                                  <OttoPopup />
+                                </SkeletonThemeProvider>
+                              </StyledApp>
+                            </OverlayProvider>
+                          </BannersProvider>
                         </MyItemsProvider>
                       </MyOttosProvider>
                     </BreakpointsProvider>
