@@ -1,3 +1,4 @@
+import { useBanners } from 'contexts/Banners'
 import { Banner, BannerType } from 'models/Banner'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -15,14 +16,8 @@ const newTabProps = {
 }
 
 export default function SmallAd({ className }: { className?: string }) {
-  const [ad, setAd] = useState<Banner>()
-
-  useEffect(() => {
-    fetch('/api/banners')
-      .then(res => res.json())
-      .then(data => data.find(({ type }: Banner) => type === BannerType.HomePageSmallAd))
-      .then(setAd)
-  }, [])
+  const banners = useBanners([BannerType.HomePageSmallAd])
+  const ad = banners[0]
 
   // suspense
   if (!ad) {
