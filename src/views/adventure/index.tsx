@@ -1,7 +1,6 @@
 import FlatButton, { FlatButtonColor } from 'components/FlatButton'
 import TreasurySection from 'components/TreasurySection'
 import { useBreakpoints } from 'contexts/Breakpoints'
-import useSharedAdventureResult from 'hooks/useSharedAdventureResult'
 import { Body } from 'layouts/GameLayout'
 import { useTranslation } from 'next-i18next'
 import Head from 'next/head'
@@ -72,8 +71,6 @@ export default function AdventureView() {
   const [view, setView] = useState(View.Map)
   const { t } = useTranslation('', { keyPrefix: 'adventure' })
   const { isTablet } = useBreakpoints()
-
-  useSharedAdventureResult()
 
   const head = (
     <Head>
