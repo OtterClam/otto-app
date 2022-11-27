@@ -214,7 +214,6 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
                     otto.latestAdventurePass &&
                       otto.latestAdventurePass?.finishedTx &&
                       goToAdventureResultStep({
-                        ottoId: otto.id,
                         tx: otto.latestAdventurePass.finishedTx,
                         locationId: otto.latestAdventurePass.locationId,
                       })
@@ -238,7 +237,6 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
                 otto.latestAdventurePass &&
                   otto.latestAdventurePass?.finishedTx &&
                   goToAdventureResultStep({
-                    ottoId: otto.id,
                     tx: otto.latestAdventurePass.finishedTx,
                     locationId: otto.latestAdventurePass.locationId,
                   })

@@ -10,7 +10,6 @@ export interface AdventureResult {
   rewards: AdventureResultReward
   events: AdventureResultEvents
   pass: AdventurePass
-  image: string
 }
 
 export type AdventureResultEvents = {
@@ -81,6 +80,5 @@ export function fromRawResult(raw: RawAdventureResult): AdventureResult {
         raw.events?.treasure_chests && raw.events.treasure_chests.map(raw => rawItemMetadataToItemMetadata(raw)),
     },
     pass: fromRawPass(raw.pass),
-    image: raw.image,
   }
 }

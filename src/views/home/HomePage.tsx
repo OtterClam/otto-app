@@ -1,6 +1,5 @@
 import { useBreakpoints } from 'contexts/Breakpoints'
 import useAssetsBundles from 'hooks/useAssetsBundles'
-import useSharedAdventureResult from 'hooks/useSharedAdventureResult'
 import { useTranslation } from 'next-i18next'
 import Head from 'next/head'
 import { BundleName } from 'worker/consts'
@@ -12,7 +11,6 @@ export default function HomePage() {
   const { isTablet, isMobile, isDesktop } = useBreakpoints()
   const desktopVersion = !(isTablet || isMobile || isDesktop)
 
-  useSharedAdventureResult()
   useAssetsBundles([BundleName.HomePage])
 
   return (

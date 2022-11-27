@@ -2,7 +2,6 @@ import noop from 'lodash/noop'
 import { AdventurePreview } from 'models/AdventurePreview'
 import { AdventureResultEvents, AdventureResultReward } from 'models/AdventureResult'
 import { ItemMetadata } from 'models/Item'
-import { useRouter } from 'next/router'
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useReducer } from 'react'
 import { useAdventureLocation } from './AdventureLocations'
 
@@ -174,16 +173,10 @@ export const useGoToAdventurePopupStep = () => {
 
 export const useGoToAdventureResultStep = () => {
   const { dispatch } = useAdventureUIState()
-  const router = useRouter()
   return useCallback(
-    ({ ottoId, tx, locationId }: { ottoId: string; tx: string; locationId: number }) => {
-      router.query.adventure_tx = tx
-      router.query.location = String(locationId)
-      router.query.otto = String(ottoId)
-      router.push(router)
-      dispatch({ type: AdventureUIActionType.GoToResult, data: { tx, locationId } })
-    },
-    [router]
+    ({ tx, locationId }: { tx: string; locationId: number }) =>
+      dispatch({ type: AdventureUIActionType.GoToResult, data: { tx, locationId } }),
+    [dispatch]
   )
 }
 
