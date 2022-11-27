@@ -6,7 +6,6 @@ import adventureMapImage from 'components/AdventureMap/map.jpg'
 import SkeletonThemeProvider from 'components/SkeletonThemeProvider'
 import { ApiProvider } from 'contexts/Api'
 import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
-import { BannersProvider } from 'contexts/Banners'
 import { BreakpointsProvider } from 'contexts/Breakpoints'
 import { CurrencyProvider } from 'contexts/Currency'
 import { MyItemsProvider } from 'contexts/MyItems'
@@ -23,7 +22,6 @@ import OtterSubgraphProvider from 'OtterSubgraphProvider'
 import { PropsWithChildren, useEffect } from 'react'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
-import { combine } from 'utils/provider'
 import MissionPopup from 'views/mission/MissionPopup'
 import MyMissionsProvider from 'views/mission/MyMissionsProvider'
 import Error from './components/Error'
@@ -76,7 +74,7 @@ function useRealWindowSize() {
   }, [])
 }
 
-const App = ({ children }: PropsWithChildren<object>) => {
+const ApolloApp = ({ children }: PropsWithChildren<object>) => {
   usePreloadImages(preloadImages)
   useServiceWorker()
   useContractAddresses()
@@ -84,38 +82,53 @@ const App = ({ children }: PropsWithChildren<object>) => {
 
   useRealWindowSize()
 
-  const CombinedProvider = combine(
-    [DAppProvider, { config }],
-    [ApolloProvider, { client: apollo }],
-    [OtterSubgraphProvider, {}],
-    [WalletProvider, {}],
-    [ApiProvider, {}],
-    [RepositoriesProvider, {}],
-    [AssetsLoaderProvider, {}],
-    [CurrencyProvider, {}],
-    [ThemeProvider, { theme }],
-    [BreakpointsProvider, {}],
-    [MyOttosProvider, {}],
-    [MyItemsProvider, {}],
-    [OverlayProvider, {}],
-    [BannersProvider, {}],
-    [SkeletonThemeProvider, {}]
-  )
-
   return (
-    <CombinedProvider>
-      <StyledApp>
-        <StyledPageContainer>{children}</StyledPageContainer>
-        <Error />
-        <WalletSelector />
-        <SideMenu />
-        <AssetsLoader />
-        <ItemDetailsPopup />
-        <MyMissionsProvider>
-          <MissionPopup />
-        </MyMissionsProvider>
-      </StyledApp>
-    </CombinedProvider>
+    <ApolloProvider client={apollo}>
+      <OtterSubgraphProvider>
+        <WalletProvider>
+          <ApiProvider>
+            <RepositoriesProvider>
+              <AssetsLoaderProvider>
+                <CurrencyProvider>
+                  <ThemeProvider theme={theme}>
+                    <BreakpointsProvider>
+                      <MyOttosProvider>
+                        <MyItemsProvider>
+                          <OverlayProvider>
+                            <StyledApp>
+                              <SkeletonThemeProvider>
+                                <StyledPageContainer>{children}</StyledPageContainer>
+                                <Error />
+                                <WalletSelector />
+                                <SideMenu />
+                                <MyMissionsProvider>
+                                  <MissionPopup />
+                                </MyMissionsProvider>
+                                <AssetsLoader />
+                                <ItemDetailsPopup />
+                                <OttoPopup />
+                              </SkeletonThemeProvider>
+                            </StyledApp>
+                          </OverlayProvider>
+                        </MyItemsProvider>
+                      </MyOttosProvider>
+                    </BreakpointsProvider>
+                  </ThemeProvider>
+                </CurrencyProvider>
+              </AssetsLoaderProvider>
+            </RepositoriesProvider>
+          </ApiProvider>
+        </WalletProvider>
+      </OtterSubgraphProvider>
+    </ApolloProvider>
+  )
+}
+
+const App = ({ children }: PropsWithChildren<object>) => {
+  return (
+    <DAppProvider config={config}>
+      <ApolloApp>{children}</ApolloApp>
+    </DAppProvider>
   )
 }
 
