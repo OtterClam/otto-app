@@ -265,7 +265,9 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
               {isAdventure && (
                 <>
                   <OttoBoostLabels otto={otto} isAdventure />
-                  <StyledReward as="div">{estimatedReward}</StyledReward>
+                  <StyledReward as="div" isAdventure>
+                    {estimatedReward}
+                  </StyledReward>
                   <StyledAP>{ap}</StyledAP>
                 </>
               )}
