@@ -39,12 +39,12 @@ const StyledImageContainer = styled.div`
 `
 
 export default function LeaderboardTab({ banner }: { banner: Banner }) {
-  const { asPath } = useRouter()
+  const { pathname } = useRouter()
   const { isMobile } = useBreakpoints()
 
   return (
     <Link href={banner.link} passHref>
-      <StyledButton data-active={asPath === banner.link ? 'true' : 'false'}>
+      <StyledButton data-active={pathname === banner.link ? 'true' : 'false'}>
         <StyledImageContainer>
           <Image src={banner.image} width={isMobile ? 156 : 438} height={isMobile ? 48 : 113} />
         </StyledImageContainer>

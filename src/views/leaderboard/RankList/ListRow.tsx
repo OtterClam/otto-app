@@ -226,7 +226,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
     succeededAdventurePassesCount,
     adventureSuccessRate,
   } = otto
-  const estimatedReward = useEstimatedReward(rank)
+  const estimatedReward = useEstimatedReward(rank, isAdventure)
 
   if (isMobile) {
     return (
@@ -241,17 +241,15 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
             </StyledOttoAvatarContainer>
             <StyledMobileContent>
               <StyledAvatarName>{name}</StyledAvatarName>
-              <OttoBoostLabels otto={otto} />
               {isAdventure && (
                 <>
-                  <StyledReward isAdventure as="div">
-                    -
-                  </StyledReward>
+                  <StyledReward as="div">{estimatedReward}</StyledReward>
                   <StyledTd>{ap}</StyledTd>
                 </>
               )}
               {!isAdventure && (
                 <>
+                  <OttoBoostLabels otto={otto} />
                   <StyledReward as="div">{estimatedReward}</StyledReward>
                   <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
                 </>
@@ -277,12 +275,12 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
               </StyledOttoAvatarContainer>
               <StyledNameColumn>
                 {name}
-                <OttoBoostLabels otto={otto} />
+                {!isAdventure && <OttoBoostLabels otto={otto} />}
               </StyledNameColumn>
             </StyledAvatarName>
           </StyledTd>
           <StyledTd>
-            <StyledReward isAdventure={isAdventure}>{isAdventure ? '-' : estimatedReward}</StyledReward>
+            <StyledReward isAdventure={isAdventure}>{estimatedReward}</StyledReward>
           </StyledTd>
           {!isAdventure && (
             <>
