@@ -20,6 +20,7 @@ const RarityEpochContext = createContext({
 export const RarityEpochProvider = ({ children }: PropsWithChildren<object>) => {
   const { t } = useTranslation()
   const router = useRouter()
+  const isAdventure = Boolean(router.query.adventure)
   const now = Date.now()
   let epochNum = Number(router.query.epoch || -1)
   if (now > RARITY_S2_END && now < RARITY_S3_START) {
@@ -37,7 +38,7 @@ export const RarityEpochProvider = ({ children }: PropsWithChildren<object>) => 
   const epochEndTime = (epoch?.endedAt || 0) * 1000
   const hasPrevEpoch = (epochNum === -1 || epochNum > 0) && (latestEpoch?.num || 0) > 0
   const hasNextEpoch = !isLatestEpoch
-  const totalOttoSupply = (epoch?.totalOttos ?? 0) - 250
+  const totalOttoSupply = (epoch?.totalOttos ?? 0) - (isAdventure ? 20 : 250)
   const value = useMemo(
     () => ({
       epoch: epochNum,

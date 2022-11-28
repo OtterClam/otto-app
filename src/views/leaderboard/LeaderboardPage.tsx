@@ -7,10 +7,14 @@ import { useLeaderboardEpoch } from 'contexts/LeaderboardEpoch'
 import LeaderboardTabs from 'components/LeaderboardTabs'
 import EpochBanner from 'components/EpochBanner'
 import Head from 'next/head'
+import { useApi } from 'contexts/Api'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import Info from './Info'
 import RightInfo from './right-info.png'
 import RankList from './RankList'
 import LeftInfo from './left-info.png'
+import APBoostEmptyImage from './ap-boost-empty.png'
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -72,6 +76,19 @@ export default function LeaderboardPage() {
   const {
     epoch: { themes },
   } = useLeaderboardEpoch()
+  const [boost, setBoost] = useState<null | { location: string; successRate: number; image: string }>(null)
+  const api = useApi()
+  const router = useRouter()
+  const isAdventure = Boolean(router.query.adventure)
+
+  useEffect(() => {
+    api
+      .getAdventureBoost()
+      .then(setBoost)
+      .catch(err => {
+        alert(err.message)
+      })
+  }, [api])
 
   return (
     <StyledContainer>
@@ -87,13 +104,39 @@ export default function LeaderboardPage() {
         <StyledLeaderboardPage>
           <EpochBanner />
           <StyledInfos>
-            <Info
-              image={LeftInfo.src}
-              desc={t('left_info', { themes })}
-              links={[
-                { text: t('left_info_link'), href: 'https://docs.ottopia.app/ottopia/events/rarity-competition-s2' },
-              ]}
-            />
+            {isAdventure && boost && (
+              <Info
+                image={boost.image}
+                desc={t('left_info_ap', boost)}
+                links={[
+                  {
+                    text: t('left_info_link_ap'),
+                    href: 'https://docs.ottopia.app/ottopia/events/adventure-competition-s1',
+                  },
+                ]}
+              />
+            )}
+            {isAdventure && !boost && (
+              <Info
+                image={APBoostEmptyImage.src}
+                desc={t('left_info_ap_empty')}
+                links={[
+                  {
+                    text: t('left_info_link_ap'),
+                    href: 'https://docs.ottopia.app/ottopia/events/adventure-competition-s1',
+                  },
+                ]}
+              />
+            )}
+            {!isAdventure && (
+              <Info
+                image={LeftInfo.src}
+                desc={t('left_info', { themes })}
+                links={[
+                  { text: t('left_info_link'), href: 'https://docs.ottopia.app/ottopia/events/rarity-competition-s2' },
+                ]}
+              />
+            )}
             <Info image={RightInfo.src} desc={t('right_info', { constellation })} links={[]} />
           </StyledInfos>
           <StyledRankList />

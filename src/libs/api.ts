@@ -357,6 +357,21 @@ export class Api {
       })
       .then(res => res.data)
   }
+
+  public async getAdventureBoost() {
+    const res = await this.otterclamClient.get<{ location?: string; success_rate?: number; image?: string }>(
+      '/adventure/boost'
+    )
+    const { location, success_rate, image } = res.data ?? {}
+    if (!location || !success_rate || !image) {
+      return null
+    }
+    return {
+      location,
+      successRate: success_rate,
+      image,
+    }
+  }
 }
 
 export const defaultApi = new Api(ChainId.Polygon, 'en')

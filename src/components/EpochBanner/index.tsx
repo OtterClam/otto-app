@@ -1,6 +1,4 @@
-import { useRouter } from 'next/router'
-import { useBanners } from 'contexts/Banners'
-import { BannerType } from 'models/Banner'
+import { useAdventureBanners } from 'contexts/Banners'
 import Link from 'next/link'
 import Skeleton from 'react-loading-skeleton'
 import styled from 'styled-components/macro'
@@ -35,8 +33,8 @@ const BannerImageSkeleton = styled(Skeleton)`
 `
 
 export default function EpochBanner() {
-  const { asPath } = useRouter()
-  const banner = useBanners([BannerType.Leaderboard]).find(banner => banner.link === asPath)
+  const banners = useAdventureBanners()
+  const banner = banners.find(({ active }) => active)?.banner
 
   if (!banner) {
     return (
