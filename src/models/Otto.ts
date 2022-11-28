@@ -3,6 +3,7 @@ import assert from 'assert'
 import { Adventure } from 'contracts/__generated__'
 import { BigNumber } from 'ethers'
 import { RawAdventurePass } from 'libs/RawAdventureResult'
+import { AdventureLocationConditionalBoost } from './AdventureLocation'
 import { AdventurePass, fromRawPass } from './AdventurePass'
 import { AdventureResult } from './AdventureResult'
 import { ItemMetadata, Item } from './Item'
@@ -46,6 +47,7 @@ export interface RawOtto {
   next_level_exp: number
   finished_adventure_passes_count: number
   succeeded_adventure_passes_count: number
+  ap_boosts: AdventureLocationConditionalBoost[]
 }
 
 export interface Attr {
@@ -158,6 +160,8 @@ export default class Otto {
 
   public succeededAdventurePassesCount = 0
 
+  public apBoosts: AdventureLocationConditionalBoost[] = []
+
   constructor(
     raw: RawOtto,
     public equippedItems: Item[] = [],
@@ -183,6 +187,7 @@ export default class Otto {
     this.adventurePassesCount = this.raw.adventure_passes_count
     this.finishedAdventurePassesCount = this.raw.finished_adventure_passes_count ?? 0
     this.succeededAdventurePassesCount = this.raw.succeeded_adventure_passes_count ?? 0
+    this.apBoosts = this.raw.ap_boosts ?? []
 
     if (this.raw.latest_adventure_pass) {
       this.latestAdventurePass = fromRawPass(this.raw.latest_adventure_pass)
@@ -280,6 +285,10 @@ export default class Otto {
 
   get zodiacBoost(): number {
     return this.raw.constellation_boost || 0
+  }
+
+  get legendaryBoost(): number {
+    return this.raw.legendary_boost || 0
   }
 
   get imageWoBg(): string {

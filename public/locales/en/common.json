@@ -172,6 +172,7 @@
     "rank_list": {
       "brs": "BRS",
       "chosen_one": "The Chosen Otto (BRS+150)",
+      "chosen_one_ap": "The Chosen Otto (RS+{{ boost }}%)",
       "est_reward": "Est. Reward",
       "expand": "Expand all your {{count}} Ottos",
       "hell_dice": "Dice X{{ diceCount }} (BRS{{ boost }})",
@@ -184,9 +185,12 @@
       "show_less": "Show less",
       "your_rank": "Your Ottos’ rank:",
       "zodiac_boost": "{{zodiac}} (BRS+50)",
+      "zodiac_boost_ap": "{{zodiac}} (RS+{{ boost }}%)",
       "theme_boost": "Theme Boost (BRS+{{ boost }})",
       "ap": "AP",
-      "success_rate": "Success/Total (%)"
+      "success_rate": "Success/Total (%)",
+      "legendary_boost": "Legendary (BRS+{{ boost }})",
+      "legendary_boost_ap": "Legendary (SR+{{ boost }}%)"
     },
     "shell_chest_link": "Buy Shell Chest >",
     "title": "Leaderboard",
