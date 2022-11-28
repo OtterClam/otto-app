@@ -908,7 +908,11 @@
       "give_up_back_btn": "Back",
       "failed_desc": "Because your Otto FAILED the adventure, you can not claim those rewards.",
       "failed_hint": "Wanna retrieve the items you’ve found? Just need to spend 1 $CLAM and Kodama will help you retrive them! (but not EXP nor TCP) The found items will be lost forever if this Otto proceeds on another adventure.",
-      "failed_tooltip": "Wanna retrieve the items you’ve found? Just need to spend 1 $CLAM and Kodama will help you retrive them! (but not EXP nor TCP) The found items will be lost forever if this Otto proceeds on another adventure."
+      "failed_tooltip": "Wanna retrieve the items you’ve found? Just need to spend 1 $CLAM and Kodama will help you retrive them! (but not EXP nor TCP) The found items will be lost forever if this Otto proceeds on another adventure.",
+      "og_succeeded": "succeeded",
+      "og_failed": "failed",
+      "og_title": "{{ name }} {{ result }} the {{ location }} adventure!",
+      "og_description": "Check out the Adventure Journey {{ name }} to find our more about the hilarious and surprising events that occurred during the adventure in {{ location }}"
     },
     "restingStep": {
       "title": "{{name}} is resting...",
