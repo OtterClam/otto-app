@@ -1,3 +1,4 @@
+import AdventureResultSharePopup from 'components/AdventureResultSharePopup'
 import Button from 'components/Button'
 import PaymentButton from 'components/PaymentButton'
 import { Token } from 'constant'
@@ -20,11 +21,12 @@ import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
 import JournalSection from './JournalSection'
 import RewardSection from './RewardSection'
+import ShareImage from './share.png'
 
 const StyledResultStep = styled.div<{ bg: string }>`
   background: center / cover url(${({ bg }) => bg});
@@ -47,6 +49,25 @@ const StyledButtons = styled.div`
   flex-direction: column;
   gap: 10px;
   padding-top: 20px;
+`
+
+const StyledButtonGroup = styled.div`
+  display: flex;
+  gap: 10px;
+`
+
+const StyledShareButtonText = styled.span`
+  display: flex;
+  align-items: center;
+  gap 4px;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    background: center / cover url(${ShareImage.src});
+    width: ${ShareImage.width / 2}px;
+    height: ${ShareImage.height / 2}px;
+  }
 `
 
 export default function ResultStep() {
@@ -78,6 +99,10 @@ export default function ResultStep() {
       api.getAdventureResult(finishedTx).then(data => setResult(data))
     }
   }, [api, finishedTx])
+
+  const share = useCallback(() => {
+    dispatch({ type: AdventureUIActionType.OpenSharePopup })
+  }, [])
 
   useEffect(() => {
     if (router.query.otto) {
@@ -214,12 +239,25 @@ export default function ResultStep() {
                 {t('revive_btn')}
               </PaymentButton>
             )}
-            <Button Typography={Headline} primaryColor="white" onClick={closePopup}>
-              {t('close_btn')}
-            </Button>
+            <StyledButtonGroup>
+              <Button width="50%" Typography={Headline} primaryColor="white" onClick={share}>
+                <StyledShareButtonText>{t('share_btn')}</StyledShareButtonText>
+              </Button>
+              <Button width="50%" Typography={Headline} primaryColor="white" onClick={closePopup}>
+                {t('close_btn')}
+              </Button>
+            </StyledButtonGroup>
           </StyledButtons>
         )}
       </StyledBody>
+      {result && displayedOtto && router.query.location && router.query.adventure_tx && (
+        <AdventureResultSharePopup
+          result={result}
+          ottoId={displayedOtto.id}
+          tx={router.query.adventure_tx as string}
+          locationId={router.query.location as string}
+        />
+      )}
     </StyledResultStep>
   )
 }

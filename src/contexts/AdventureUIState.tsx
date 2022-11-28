@@ -15,6 +15,8 @@ export enum AdventureUIActionType {
   DistributeAttributePoints,
   SetTreasuryChestItem,
   SelectLocation,
+  OpenSharePopup,
+  CloseSharePopup,
 }
 
 export enum AdventurePopupStep {
@@ -72,6 +74,9 @@ export type AdventureUIAction =
       type: AdventureUIActionType.SelectLocation
       data?: { locationId: number }
     }
+  | {
+      type: AdventureUIActionType.OpenSharePopup | AdventureUIActionType.CloseSharePopup
+    }
 
 export interface AdventureUIState {
   selectedLocationId?: number
@@ -89,6 +94,7 @@ export interface AdventureUIState {
   }
   treasuryChest?: ItemMetadata
   finishedTx?: string
+  showSharePopup: boolean
 }
 
 export interface AdventureUIStateDispatcher {
@@ -104,6 +110,7 @@ const defaultValue: AdventureUIValue = {
   state: {
     popupOpened: false,
     popupStep: AdventurePopupStep.LocationInfo,
+    showSharePopup: false,
   },
   dispatch: noop,
 }
@@ -140,6 +147,10 @@ export const AdventureUIStateProvider = ({ children }: PropsWithChildren<object>
         return { ...state, treasuryChest: action.data }
       case AdventureUIActionType.SelectLocation:
         return { ...state, selectedLocationId: action.data?.locationId }
+      case AdventureUIActionType.OpenSharePopup:
+        return { ...state, showSharePopup: true }
+      case AdventureUIActionType.CloseSharePopup:
+        return { ...state, showSharePopup: false }
       default:
         return state
     }
