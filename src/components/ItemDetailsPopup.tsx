@@ -175,7 +175,7 @@ export default function ItemDetailsPopup() {
                 ))}
               </StyledAttrs>
             )}
-            {itemMetadata.themeBoost > 0 && <TraitLabels metadata={itemMetadata} large highlightMatched />}
+            <TraitLabels metadata={itemMetadata} large highlightMatched />
           </>
         )}
       </StyledContainer>
