@@ -1,4 +1,4 @@
-import { useBanners } from 'contexts/Banners'
+import { useAdventureBanners, useBanners } from 'contexts/Banners'
 import { BannerType } from 'models/Banner'
 import { memo } from 'react'
 import styled from 'styled-components/macro'
@@ -23,12 +23,13 @@ const StyledTabs = styled.div`
 `
 
 export default memo(function LeaderboardTabs({ className }: { className?: string }) {
-  const banners = useBanners([BannerType.Leaderboard])
+  const banners = useAdventureBanners()
+
   return (
     <StyledContainer className={className}>
       <StyledTabs>
-        {banners.map(banner => (
-          <Tab key={banner.name} banner={banner} />
+        {banners.map(({ banner, active }) => (
+          <Tab key={banner.name} banner={banner} active={active} />
         ))}
       </StyledTabs>
     </StyledContainer>

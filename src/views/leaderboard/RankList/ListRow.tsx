@@ -243,6 +243,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
               <StyledAvatarName>{name}</StyledAvatarName>
               {isAdventure && (
                 <>
+                  <OttoBoostLabels otto={otto} isAdventure />
                   <StyledReward as="div">{estimatedReward}</StyledReward>
                   <StyledTd>{ap}</StyledTd>
                 </>
@@ -275,7 +276,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
               </StyledOttoAvatarContainer>
               <StyledNameColumn>
                 {name}
-                {!isAdventure && <OttoBoostLabels otto={otto} />}
+                <OttoBoostLabels otto={otto} isAdventure={isAdventure} />
               </StyledNameColumn>
             </StyledAvatarName>
           </StyledTd>

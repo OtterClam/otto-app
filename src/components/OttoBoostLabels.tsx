@@ -45,12 +45,21 @@ const StyledChosenOne = styled(StyledLabel)`
 
 export interface OttoBoostLabelsProps {
   otto: Otto
+  isAdventure?: boolean
 }
 
-export default function OttoBoostLabels({ otto }: OttoBoostLabelsProps) {
+export default function OttoBoostLabels({ otto, isAdventure }: OttoBoostLabelsProps) {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.rank_list' })
 
-  const { zodiacBoost, isChosenOne, themeBoost, diceCount, zodiacSign, epochRarityBoost } = otto
+  const { level, zodiacBoost, isChosenOne, themeBoost, diceCount, zodiacSign, epochRarityBoost } = otto
+
+  if (isAdventure) {
+    return (
+      <StyledContainer>
+        <StyledLabel>LV {level}</StyledLabel>
+      </StyledContainer>
+    )
+  }
 
   return (
     <StyledContainer>
