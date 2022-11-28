@@ -58,4 +58,5 @@ export interface RawAdventureResult {
   rewards: Rewards
   pass: RawAdventurePass
   events: Events
+  image: string
 }
