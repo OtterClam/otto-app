@@ -1,7 +1,7 @@
 import Countdown from 'components/Countdown'
 import Help from 'components/Help'
 import Price from 'components/Price'
-import { Token, TOTAL_RARITY_REWARD } from 'constant'
+import { Token, TOTAL_RARITY_REWARD, TOTAL_ADVENTURE_REWARD } from 'constant'
 import { useRarityEpoch } from 'contexts/RarityEpoch'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
@@ -88,7 +88,9 @@ export default function EpochInfo() {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.hero' })
   const { isLatestEpoch, epochEndTime } = useRarityEpoch()
   const epochEnd = Date.now() > epochEndTime
-  const rewardAmount = BigNumber.from(String(TOTAL_RARITY_REWARD)).mul(String(isAdventure ? 1e18 : 1e9))
+  const rewardAmount = isAdventure
+    ? BigNumber.from(String(TOTAL_ADVENTURE_REWARD)).mul(String(1e18))
+    : BigNumber.from(String(TOTAL_RARITY_REWARD)).mul(String(1e9))
 
   return (
     <StyledContainer isAdventure={isAdventure}>
