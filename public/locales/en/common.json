@@ -192,9 +192,12 @@
     "title": "Leaderboard",
     "docDesc": "Attend the Ottopia leaderboard competitions to earn CLAM, FISH and previous prizes! It strives to reward the users who are the most thoughtfully and enthusiastically engaged with the ecosystem. As its name suggests, this is a process where you attempt to raise the rarest and bravest Otto, Lottie or Cleo, and get rewarded for doing so.",
     "docTitle": "$t(leaderboard.title)$t(titleSuffix)",
-    "right_info": "The upcoming epoch falls to <span style=\"color: #FFDC77\">{{constellation}}</span>. The god of {{constellation}} has blessed every {{constellation}} Otto, Lottie and Cleo with glory and power! <span style=\"color: #FF6854\">BRS +50</span>",
+    "right_info": "The upcoming epoch falls to <span style=\"color: #FFDC77\">{{constellation}}</span>. The god of {{constellation}} has blessed every {{constellation}} Otto, Lottie and Cleo with glory and power! <span style=\"color: #FF6854\">Success Rate +10%</span>",
     "left_info_link": "See how BRS boost works >",
-    "left_info": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #FFDC77\">{{ themes }}</span> will receive extra BRS boosts."
+    "left_info": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #FFDC77\">{{ themes }}</span> will receive extra BRS boosts.",
+    "left_info_ap_empty": "Need a speed boost? Speedy Potion is your best choice when going on an adventure. Available in the Ottopia Store now!",
+    "left_info_ap": "The adventure success rate of {{ location }} has been increased by {{ successRate }} during this epoch. Explore it and find the precious treasury!",
+    "left_info_link_ap": "See how Adventure Points (AP) works >"
   },
   "mint": {
     "approve_button": "Approve",

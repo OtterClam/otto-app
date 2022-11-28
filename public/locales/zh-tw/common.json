@@ -184,9 +184,12 @@
     "title": "排行榜",
     "docDesc": "阿獺王國會不定期舉辦各類型比賽的排行榜，準備好你的阿獺，讓他們發揮自己最大的優勢，站上排行榜之列，並贏得包含 CLAM, FISH 甚至稀有道具等獎品吧！",
     "docTitle": "$t(leaderboard.title)$t(titleSuffix)",
-    "right_info": "這一輪比賽獎勵星座落在<span style=\"color: #FFDC77\">處女座</span>，所有此星座的阿獺、蘿提及克蕾歐都會被神祝福並賜予特殊效果： <span style=\"color: #FF6854\">BRS +50</span>",
+    "right_info": "這一輪比賽獎勵星座落在<span style=\"color: #FFDC77\">處女座</span>，所有此星座的阿獺、蘿提及克蕾歐都會被神祝福並賜予特殊效果： <span style=\"color: #FF6854\">Success Rate +10%</span>",
     "left_info_link": "主題加成如何運作 >",
-    "left_info": "只要你的阿獺 NFT 穿上的物品符合此輪比賽所指定的主題標籤： <span style=\"color: #FFDC77\">{{ themes }}</span> ，就可以得到額外稀有度分數加成！"
+    "left_info": "只要你的阿獺 NFT 穿上的物品符合此輪比賽所指定的主題標籤： <span style=\"color: #FFDC77\">{{ themes }}</span> ，就可以得到額外稀有度分數加成！",
+    "left_info_ap_empty": "Need a speed boost? Speedy Potion is your best choice when going on an adventure. Available in the Ottopia Store now!",
+    "left_info_ap": "The adventure success rate of {{ location }} has been increased by {{ successRate }} during this epoch. Explore it and find the precious treasury!",
+    "left_info_link_ap": "See how Adventure Points (AP) works >"
   },
   "mint": {
     "approve_button": "允許花費",

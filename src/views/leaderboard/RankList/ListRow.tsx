@@ -14,6 +14,7 @@ import FirstRank from './Icon/Rank/1st.png'
 import SecondRank from './Icon/Rank/2nd.png'
 import ThirdRank from './Icon/Rank/3rd.png'
 import RarityScore from './rarity_score.png'
+import APIcon from './ap.png'
 
 // TODO: use a more readable way to impelemnt this table
 const StyledRow = styled.div<{ isMyOttoRow?: boolean; adventure: boolean }>`
@@ -117,6 +118,26 @@ const StyledRank = styled(ContentLarge).attrs({ as: 'div' })<{ rank: number }>`
   background-position: center;
 `
 
+const StyledAP = styled(ContentLarge).attrs({
+  as: 'div',
+})`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  &:before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    background-image: url(${APIcon.src});
+    background-size: 100%;
+  }
+
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    justify-content: start;
+  }
+`
+
 const StyledRarityScore = styled(ContentLarge).attrs({
   as: 'div',
 })`
@@ -128,7 +149,7 @@ const StyledRarityScore = styled(ContentLarge).attrs({
     content: '';
     width: 24px;
     height: 24px;
-    background-image: url(${RarityScore});
+    background-image: url(${RarityScore.src});
     background-size: 100%;
   }
 
@@ -245,7 +266,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
                 <>
                   <OttoBoostLabels otto={otto} isAdventure />
                   <StyledReward as="div">{estimatedReward}</StyledReward>
-                  <StyledTd>{ap}</StyledTd>
+                  <StyledAP>{ap}</StyledAP>
                 </>
               )}
               {!isAdventure && (
@@ -292,7 +313,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
           )}
           {isAdventure && (
             <>
-              <StyledTd>{ap}</StyledTd>
+              <StyledAP>{ap}</StyledAP>
               <StyledTd>
                 {succeededAdventurePassesCount}/{finishedAdventurePassesCount} ({Math.round(adventureSuccessRate * 100)}
                 %)
