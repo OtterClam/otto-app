@@ -41,6 +41,7 @@ export const ottoClick = IS_SERVER ? { play: noop, load: noop } : new Audio('htt
 ottoClick.load()
 
 export const TOTAL_RARITY_REWARD = 10000
+export const TOTAL_ADVENTURE_REWARD = 10000000
 export const ROUND_RARITY_REWARD_BEFORE_3 = 2500
 export const ROUND_RARITY_REWARD_AFTER_3 = 3000
 export const ROUND_RARITY_REWARD_S2 = 2500

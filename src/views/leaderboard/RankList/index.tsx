@@ -251,8 +251,12 @@ export default function RankList({ className }: Props) {
         <StyledPagination>
           <Link
             href={{
-              pathname: '/leaderboard',
-              search: `?${createSearchParams({ page: String(page - 1), epoch: String(epoch) })}`,
+              ...router,
+              query: {
+                ...router.query,
+                page: String(page - 1),
+                epoch: String(epoch),
+              },
             }}
           >
             <StyledPaginationLink show={page > 0}>
@@ -263,8 +267,12 @@ export default function RankList({ className }: Props) {
           </Link>
           <Link
             href={{
-              pathname: '/leaderboard',
-              search: `?${createSearchParams({ page: String(page + 1), epoch: String(epoch) })}`,
+              ...router,
+              query: {
+                ...router.query,
+                page: String(page + 1),
+                epoch: String(epoch),
+              },
             }}
           >
             <StyledPaginationLink show>
