@@ -31,5 +31,5 @@ export default function useEstimatedReward(rank: number, isAdventure: boolean) {
     return totalReward / sum
   }, [prizeCount, epoch, isAdventure])
 
-  return rank <= prizeCount ? trim(topReward * (1 / rank), 2) : '-'
+  return rank <= prizeCount ? trim(topReward * (1 / rank), isAdventure ? 0 : 2) : '-'
 }

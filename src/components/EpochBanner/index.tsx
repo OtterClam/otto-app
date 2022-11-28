@@ -35,8 +35,8 @@ const BannerImageSkeleton = styled(Skeleton)`
 `
 
 export default function EpochBanner() {
-  const { asPath } = useRouter()
-  const banner = useBanners([BannerType.Leaderboard]).find(banner => banner.link === asPath)
+  const { pathname } = useRouter()
+  const banner = useBanners([BannerType.Leaderboard]).find(banner => banner.link === pathname)
 
   if (!banner) {
     return (
