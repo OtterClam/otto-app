@@ -883,6 +883,7 @@
       "adventure_point": "冒險點數",
       "explore_again_btn": "再次冒險",
       "close_btn": "關閉",
+      "share_btn": "分享",
       "revive_btn": "取回物品",
       "give_up_btn": "放棄 (放棄所有物品)",
       "give_up_yes_btn": "對，我要放棄！",
@@ -984,5 +985,11 @@
   },
   "ottoStats": {
     "rarityScore": "Rarity Score: {{total}} (BRS {{brs}} + RRS {{rrs}})"
+  },
+  "copy": "複製",
+  "copied": "已複製！",
+  "adventureSharePopup": {
+    "title": "Share this adventure result",
+    "desc": "You can copy and paste the link on any social media platform. Anyone who has the link can see your Otto’s adventure result."
   }
 }

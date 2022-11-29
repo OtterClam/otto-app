@@ -909,6 +909,7 @@
       "adventure_point": "Adventure Points",
       "explore_again_btn": "Explore Again",
       "close_btn": "Close",
+      "share_btn": "Share",
       "revive_btn": "Retrieve Items",
       "give_up_btn": "Give Up (Discard all Rewards)",
       "give_up_yes_btn": "Yes. Give up",
@@ -1031,5 +1032,11 @@
     "ok_btn": "OK",
     "complete_reward": "Here’s your awards!",
     "close_btn": "Close"
+  },
+  "copy": "Copy",
+  "copied": "Copied!",
+  "adventureSharePopup": {
+    "title": "Share this adventure result",
+    "desc": "You can copy and paste the link on any social media platform. Anyone who has the link can see your Otto’s adventure result."
   }
 }
