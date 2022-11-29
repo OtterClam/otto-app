@@ -200,7 +200,7 @@
     "left_info_link": "See how BRS boost works >",
     "left_info": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #FFDC77\">{{ themes }}</span> will receive extra BRS boosts.",
     "left_info_ap_empty": "Need a speed boost? Speedy Potion is your best choice when going on an adventure. Available in the Ottopia Store now!",
-    "left_info_ap": "The adventure success rate of {{ location }} has been increased by {{ successRate }} during this epoch. Explore it and find the precious treasury!",
+    "left_info_ap": "The adventure success rate of {{ location }} has been increased by {{ successRate }} during the limited time. Explore it and find the precious treasury!",
     "left_info_link_ap": "See how Adventure Points (AP) works >"
   },
   "mint": {
