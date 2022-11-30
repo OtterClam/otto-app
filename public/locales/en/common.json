@@ -979,8 +979,8 @@
   },
   "adventureBoostTarget": {
     "success_rate": "{{ percentage }} Total Success +{{ amount }}%",
-    "additional_item": "{{ percentage }}% Found Item +{{ amount }}",
-    "additional_artwork": "{{ percentage }}% Found Artwork Item +{{ amount }}"
+    "additional_item": "{{ percentage }} Found Item +{{ amount }}",
+    "additional_artwork": "{{ percentage }} Found Artwork Item +{{ amount }}"
   },
   "adventure": {
     "title": "Adventure",
