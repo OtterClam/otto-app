@@ -1,3 +1,4 @@
+import AdventureShareMeta from 'components/AdventureShareMeta'
 import FlatButton, { FlatButtonColor } from 'components/FlatButton'
 import TreasurySection from 'components/TreasurySection'
 import { useBreakpoints } from 'contexts/Breakpoints'
@@ -7,6 +8,7 @@ import { useTranslation } from 'next-i18next'
 import Head from 'next/head'
 import { useRef, useState } from 'react'
 import styled from 'styled-components/macro'
+import { ServerSideAdventureShare } from 'utils/adventure'
 import AdventureMap from '../../components/AdventureMap'
 import OttoList from './OttoList'
 
@@ -68,7 +70,7 @@ enum View {
   List = 'list',
 }
 
-export default function AdventureView() {
+export default function AdventureView({ adventure }: { adventure?: ServerSideAdventureShare }) {
   const [view, setView] = useState(View.Map)
   const { t } = useTranslation('', { keyPrefix: 'adventure' })
   const { isTablet } = useBreakpoints()
@@ -76,13 +78,13 @@ export default function AdventureView() {
   useSharedAdventureResult()
 
   const head = (
-    <Head>
+    <AdventureShareMeta adventure={adventure}>
       <title>{t('docTitle')}</title>
       <meta property="og:title" content={t('docTitle')} />
       <meta name="description" content={t('docDesc')} />
       <meta property="og:description" content={t('docDesc')} />
       <meta property="og:image" content="/og.jpg" />
-    </Head>
+    </AdventureShareMeta>
   )
 
   if (isTablet) {

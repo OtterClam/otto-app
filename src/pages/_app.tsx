@@ -7,8 +7,9 @@ import { AppProps } from 'next/app'
 import { appWithTranslation, I18n, useTranslation } from 'next-i18next'
 import { NextPage } from 'next'
 import { ReactElement, ReactNode } from 'react'
+import { ServerSideAdventureShare } from 'utils/adventure'
 
-export type NextPageWithLayout = NextPage & {
+export type NextPageWithLayout = NextPage<{ adventure?: ServerSideAdventureShare }> & {
   getLayout?: (page: ReactElement, i18n: I18n) => ReactNode
 }
 
