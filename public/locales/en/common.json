@@ -978,7 +978,7 @@
     "regional_boosts": "Regional Boosts"
   },
   "adventureBoostTarget": {
-    "success_rate": "{{ percentage }}% Total Success +{{ amount }}%",
+    "success_rate": "{{ percentage }} Total Success +{{ amount }}%",
     "additional_item": "{{ percentage }}% Found Item +{{ amount }}",
     "additional_artwork": "{{ percentage }}% Found Artwork Item +{{ amount }}"
   },
