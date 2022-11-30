@@ -111,7 +111,7 @@ const stringifyBoostAmounts = (i18n: I18n, amounts: BoostAmounts): string => {
     .map(target =>
       i18n.t(`adventureBoostTarget.${target}`, {
         amount: amounts[target].value,
-        percentage: amounts[target].percentage,
+        percentage: amounts[target].percentage >= 100 ? '' : `${amounts[target].percentage}%`,
       })
     )
     .join(' | ')
