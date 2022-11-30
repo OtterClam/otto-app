@@ -68,7 +68,6 @@ export default class MyDocument extends Document<{ asPath: string }> {
             `,
             }}
           />
-          <title>Otto | The first official citizen of the Otter Kingdom</title>
           <meta charSet="utf-8" />
           <link rel="icon" href="/favicon.ico" />
           <link rel="canonical" href={process.env.BASE_URL + this.props.asPath} />
