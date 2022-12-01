@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import styled from 'styled-components/macro'
+import DefaultMetaTags from 'components/DefaultMetaTags'
 import AuctionHouseIcon from './icons/auction-house.png'
 import ForgeHouseIcon from './icons/forge-house.png'
 import LeaderboardIcon from './icons/leaderboard.png'
@@ -70,6 +71,7 @@ const PlayPage = () => {
 
   return (
     <StyledPlayPage>
+      <DefaultMetaTags />
       <StyledBanner />
       {menus.map(({ title, icon, href }, i) => (
         <Link key={i} href={href || ''}>
