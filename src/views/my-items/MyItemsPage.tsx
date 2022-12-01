@@ -14,6 +14,7 @@ import { ItemFiltersProvider, ItemType, useItemFilters } from 'contexts/ItemFilt
 import { FilterSelector, OrderSelector, SortedBySelector } from 'components/ItemFilterSelect'
 import Button from 'components/Button'
 import { useMyItem, useMyItems } from 'contexts/MyItems'
+import DefaultMetaTags from 'components/DefaultMetaTags'
 import EmptyStatus from './empty.png'
 import ItemDetails from './use-item/ItemDetails'
 
@@ -302,6 +303,7 @@ export default function MyItemsPage() {
 
   return (
     <StyledMyItemsPage>
+      <DefaultMetaTags />
       <ItemFiltersProvider items={items} itemsPerPage={36}>
         <SectionTabs />
         <StyledItemSection>

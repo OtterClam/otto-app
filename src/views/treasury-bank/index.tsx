@@ -1,3 +1,4 @@
+import DefaultMetaTags from 'components/DefaultMetaTags'
 import TreasurySection from 'components/TreasurySection'
 import styled, { keyframes } from 'styled-components/macro'
 import BG from './bg.jpg'
@@ -81,6 +82,7 @@ const StyledOtter = styled.div`
 export default function StakePage() {
   return (
     <StyledTreasurySection showRope={false}>
+      <DefaultMetaTags />
       <StyledStakePage>
         <StyledStakePageInner>
           <StyledOtter />

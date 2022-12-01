@@ -1,3 +1,4 @@
+import DefaultMetaTags from 'components/DefaultMetaTags'
 import TreasurySection from 'components/TreasurySection'
 import styled, { keyframes } from 'styled-components/macro'
 import BG from './bg.jpg'
@@ -110,6 +111,7 @@ const StyledOtter = styled.img<{ delay: number }>`
 export default function ClamPond() {
   return (
     <StyledTreasurySection showRope={false}>
+      <DefaultMetaTags />
       <StyledOtter src={Otter1.src} delay={0} />
       <StyledOtter src={Otter2.src} delay={1000} />
       <StyledClamPond>
