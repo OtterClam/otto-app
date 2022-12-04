@@ -125,7 +125,7 @@ export default function TransferItemPopup({ item, onClose }: Props) {
         {transferState.status !== 'Success' && (
           <StyledTransferContainer>
             <Headline>{t('title')}</Headline>
-            <ItemCell showDetailsPopup item={item} size={240} />
+            <ItemCell showDetailsPopup hideAmount item={item} size={240} />
             <StyledInputContainer>
               <ContentSmall>{t('amount')}</ContentSmall>
               <StyledInput
@@ -158,7 +158,7 @@ export default function TransferItemPopup({ item, onClose }: Props) {
           <StyledTransferContainer>
             <Headline>{t('success_title')}</Headline>
             <StyledTransferItemBg>
-              <StyledTransferItemCell item={item} size={100} />
+              <StyledTransferItemCell hideAmount item={item} size={100} />
             </StyledTransferItemBg>
             <StyledDesc>{t('success_desc')}</StyledDesc>
             <Button Typography={Headline} width="100%" primaryColor="white" onClick={onClose}>
