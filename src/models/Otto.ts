@@ -11,6 +11,7 @@ import { ItemMetadata, Item } from './Item'
 export enum TraitCollection {
   Genesis = 'genesis',
   Second = 'second',
+  Third = 'gen3',
 }
 
 type RawOttoGender = 'Otto' | 'Lottie' | 'Cleo'
