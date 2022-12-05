@@ -12,7 +12,7 @@ const images = {
 
 const StyledImage = styled.img`
   width: 44px;
-  height; 44px;
+  height: 44px;
 `
 
 export interface ItemCollectionBadgeProps {
@@ -23,5 +23,5 @@ export interface ItemCollectionBadgeProps {
 
 export default function ItemCollectionBadge({ collection, collectionName, className }: ItemCollectionBadgeProps) {
   const image = images[collection]
-  return <StyledImage className={className} src={image.src} alt={collectionName} />
+  return image && <StyledImage className={className} src={image.src} alt={collectionName} />
 }
