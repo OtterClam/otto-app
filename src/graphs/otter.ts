@@ -50,6 +50,7 @@ export const GET_TREASURY_METRICS = gql`
       treasuryDaiMarketValue
       treasuryUsdPlusMarketValue
       treasurySandMarketValue
+      treasuryOHMStrategyMarketValue
 
       #treasury LPs
       treasuryClamMaiMarketValue
