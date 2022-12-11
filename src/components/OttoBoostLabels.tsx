@@ -5,6 +5,7 @@ import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
+import { BoostType } from 'models/AdventureLocation'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -45,12 +46,56 @@ const StyledChosenOne = styled(StyledLabel)`
 
 export interface OttoBoostLabelsProps {
   otto: Otto
+  isAdventure?: boolean
 }
 
-export default function OttoBoostLabels({ otto }: OttoBoostLabelsProps) {
+export default function OttoBoostLabels({ otto, isAdventure }: OttoBoostLabelsProps) {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.rank_list' })
 
-  const { zodiacBoost, isChosenOne, themeBoost, diceCount, zodiacSign, epochRarityBoost } = otto
+  const {
+    level,
+    zodiacBoost,
+    isChosenOne,
+    themeBoost,
+    diceCount,
+    zodiacSign,
+    epochRarityBoost,
+    legendaryBoost,
+    apBoosts,
+  } = otto
+
+  if (isAdventure) {
+    const apZodiacBoost =
+      apBoosts.find(boost => boost.type === BoostType.Zodiac && boost.effective)?.amounts?.success_rate ?? 0
+    const apBirthdayBoost =
+      apBoosts.find(boost => boost.type === BoostType.Birthday && boost.effective)?.amounts?.success_rate ?? 0
+    const apLegendaryBoost =
+      apBoosts.find(boost => boost.type === BoostType.Legendary && boost.effective)?.amounts?.success_rate ?? 0
+
+    return (
+      <StyledContainer>
+        <StyledLabel>LV {level}</StyledLabel>
+        {apBirthdayBoost > 0 && (
+          <StyledLabel>
+            <img src="/trait-icons/Birthday.png" alt="Birthday Boost" />
+            {t('chosen_one_ap', { boost: apBirthdayBoost })}
+          </StyledLabel>
+        )}
+        {apZodiacBoost > 0 && (
+          <StyledLabel>
+            <img src={ConstellationIcons[zodiacSign]} alt="Zodiac Boost" />
+            {t('zodiac_boost_ap', { boost: apZodiacBoost, zodiac: zodiacSign })}
+          </StyledLabel>
+        )}
+        {apLegendaryBoost > 0 && (
+          <StyledLabel>
+            <img src="/trait-icons/Legendary.png" alt="Legendary" />
+            {t('legendary_boost_ap', { boost: apLegendaryBoost })}
+          </StyledLabel>
+        )}
+      </StyledContainer>
+    )
+  }
 
   return (
     <StyledContainer>
@@ -76,6 +121,12 @@ export default function OttoBoostLabels({ otto }: OttoBoostLabelsProps) {
         <StyledLabel>
           <img src="/trait-icons/Theme.png" alt="Theme Boost" />
           {t('theme_boost', { boost: themeBoost })}
+        </StyledLabel>
+      )}
+      {legendaryBoost > 0 && (
+        <StyledLabel>
+          <img src="/trait-icons/Legendary.png" alt="Legendary" />
+          {t('legendary_boost_ap', { boost: legendaryBoost })}
         </StyledLabel>
       )}
     </StyledContainer>

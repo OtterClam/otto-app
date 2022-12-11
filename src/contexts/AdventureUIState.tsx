@@ -2,6 +2,7 @@ import noop from 'lodash/noop'
 import { AdventurePreview } from 'models/AdventurePreview'
 import { AdventureResultEvents, AdventureResultReward } from 'models/AdventureResult'
 import { ItemMetadata } from 'models/Item'
+import { useRouter } from 'next/router'
 import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useReducer } from 'react'
 import { useAdventureLocation } from './AdventureLocations'
 
@@ -14,6 +15,8 @@ export enum AdventureUIActionType {
   DistributeAttributePoints,
   SetTreasuryChestItem,
   SelectLocation,
+  OpenSharePopup,
+  CloseSharePopup,
 }
 
 export enum AdventurePopupStep {
@@ -71,6 +74,9 @@ export type AdventureUIAction =
       type: AdventureUIActionType.SelectLocation
       data?: { locationId: number }
     }
+  | {
+      type: AdventureUIActionType.OpenSharePopup | AdventureUIActionType.CloseSharePopup
+    }
 
 export interface AdventureUIState {
   selectedLocationId?: number
@@ -88,6 +94,7 @@ export interface AdventureUIState {
   }
   treasuryChest?: ItemMetadata
   finishedTx?: string
+  showSharePopup: boolean
 }
 
 export interface AdventureUIStateDispatcher {
@@ -103,6 +110,7 @@ const defaultValue: AdventureUIValue = {
   state: {
     popupOpened: false,
     popupStep: AdventurePopupStep.LocationInfo,
+    showSharePopup: false,
   },
   dispatch: noop,
 }
@@ -139,6 +147,10 @@ export const AdventureUIStateProvider = ({ children }: PropsWithChildren<object>
         return { ...state, treasuryChest: action.data }
       case AdventureUIActionType.SelectLocation:
         return { ...state, selectedLocationId: action.data?.locationId }
+      case AdventureUIActionType.OpenSharePopup:
+        return { ...state, showSharePopup: true }
+      case AdventureUIActionType.CloseSharePopup:
+        return { ...state, showSharePopup: false }
       default:
         return state
     }
@@ -173,10 +185,16 @@ export const useGoToAdventurePopupStep = () => {
 
 export const useGoToAdventureResultStep = () => {
   const { dispatch } = useAdventureUIState()
+  const router = useRouter()
   return useCallback(
-    ({ tx, locationId }: { tx: string; locationId: number }) =>
-      dispatch({ type: AdventureUIActionType.GoToResult, data: { tx, locationId } }),
-    [dispatch]
+    ({ ottoId, tx, locationId }: { ottoId: string; tx: string; locationId: number }) => {
+      router.query.adventure_tx = tx
+      router.query.location = String(locationId)
+      router.query.otto = String(ottoId)
+      router.push(router)
+      dispatch({ type: AdventureUIActionType.GoToResult, data: { tx, locationId } })
+    },
+    [router]
   )
 }
 

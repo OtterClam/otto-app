@@ -161,7 +161,7 @@ export default function ExploringStep() {
     if (finishState.state === 'Success' && otto && finishState.status.transaction?.hash && location) {
       otto.raw.resting_until = finishResult?.restingUntil.toISOString()
       updateOtto(otto)
-      goToResult({ tx: finishState.status.transaction.hash, locationId: location.id })
+      goToResult({ ottoId: otto.id, tx: finishState.status.transaction.hash, locationId: location.id })
     } else if (finishState.state === 'Fail') {
       alert(finishState.status.errorMessage)
       resetFinish()

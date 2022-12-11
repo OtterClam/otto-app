@@ -24,6 +24,7 @@ import { AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUI
 import { useIsMyOttos } from 'MyOttosProvider'
 import { useDispatch } from 'react-redux'
 import { showOttoPopup } from 'store/uiSlice'
+import { AdventureOttoStatus } from 'models/Otto'
 import PlayIcon from './icons/play-voice.svg'
 import Theme from './icons/theme.png'
 import TheOtter from './icons/the_otter.png'
@@ -361,7 +362,16 @@ export default function OttoPage() {
               {t('otto.play_voice')}
             </StyledPlayButton>
             {isMyOtto && (
-              <StyledChangeEquipmentButton onClick={openOttoPopup} Typography={StyledChangeEquipmentButtonText}>
+              <StyledChangeEquipmentButton
+                disabled={
+                  !(
+                    otto?.adventureStatus === AdventureOttoStatus.Ready ||
+                    otto?.adventureStatus === AdventureOttoStatus.Resting
+                  )
+                }
+                onClick={openOttoPopup}
+                Typography={StyledChangeEquipmentButtonText}
+              >
                 {t('otto.change_equipment')}
               </StyledChangeEquipmentButton>
             )}

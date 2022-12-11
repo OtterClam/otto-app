@@ -207,6 +207,11 @@ const marketValues = [
     dataKey: 'treasuryClamValue',
     stopColor: ['rgba(255, 172, 161, 1)', 'rgba(255, 172, 161, 0.5)'],
   },
+  {
+    label: 'OHM',
+    dataKey: 'treasuryOHMStrategyMarketValue',
+    stopColor: ['#676B74', 'rgba(103, 107, 116, 0.5)'],
+  },
 ]
 
 const keySettingMap = marketValues.reduce(

@@ -184,9 +184,12 @@
     "title": "排行榜",
     "docDesc": "阿獺王國會不定期舉辦各類型比賽的排行榜，準備好你的阿獺，讓他們發揮自己最大的優勢，站上排行榜之列，並贏得包含 CLAM, FISH 甚至稀有道具等獎品吧！",
     "docTitle": "$t(leaderboard.title)$t(titleSuffix)",
-    "right_info": "這一輪比賽獎勵星座落在<span style=\"color: #FFDC77\">處女座</span>，所有此星座的阿獺、蘿提及克蕾歐都會被神祝福並賜予特殊效果： <span style=\"color: #FF6854\">BRS +50</span>",
+    "right_info": "這一輪比賽獎勵星座落在<span style=\"color: #FFDC77\">處女座</span>，所有此星座的阿獺、蘿提及克蕾歐都會被神祝福並賜予特殊效果： <span style=\"color: #FF6854\">Success Rate +10%</span>",
     "left_info_link": "主題加成如何運作 >",
-    "left_info": "只要你的阿獺 NFT 穿上的物品符合此輪比賽所指定的主題標籤： <span style=\"color: #FFDC77\">{{ themes }}</span> ，就可以得到額外稀有度分數加成！"
+    "left_info": "只要你的阿獺 NFT 穿上的物品符合此輪比賽所指定的主題標籤： <span style=\"color: #FFDC77\">{{ themes }}</span> ，就可以得到額外稀有度分數加成！",
+    "left_info_ap_empty": "需要加速你的阿獺冒險時間嗎？那麼加速藥水是你補可或缺的好夥伴。阿獺王國商店現正販售中，快來準備幾瓶吧！",
+    "left_info_ap": "{{ location }} 的冒險成功率限時加成 {{ successRate }} ，快把握時間，讓你的阿獺來探索這片區域吧！",
+    "left_info_link_ap": "查看冒險點數 (AP) 無何運作 >"
   },
   "mint": {
     "approve_button": "允許花費",
@@ -738,7 +741,8 @@
     "wearBy": "{{ name }} 正在穿著此裝備",
     "unavailable": "無法穿著",
     "takeOff": "脫掉",
-    "noItems": "無任何物品"
+    "noItems": "無任何物品",
+    "equippedCount": "{{count}} 阿獺擁有這個特徵"
   },
   "ongoingOttos": {
     "title": "正在此處冒險的阿獺",
@@ -879,13 +883,18 @@
       "adventure_point": "冒險點數",
       "explore_again_btn": "再次冒險",
       "close_btn": "關閉",
+      "share_btn": "分享",
       "revive_btn": "取回物品",
       "give_up_btn": "放棄 (放棄所有物品)",
       "give_up_yes_btn": "對，我要放棄！",
       "give_up_back_btn": "讓我再想想",
       "failed_desc": "你的阿獺冒險失敗了，因此你無法得到此次冒險的任何獎勵。",
       "failed_hint": "想要得到冒險中找到的物品嗎？只需要花費 1 $CLAM，小森靈就會幫你取回物品喔！ (不包含 EXP 及 TCP) 如果你都未取回物品，這些物品將會在下一次出發冒險時永遠消失。",
-      "failed_tooltip": "想要得到冒險中找到的物品嗎？只需要花費 1 $CLAM，小森靈就會幫你取回物品喔！ (不包含 EXP 及 TCP) 如果你都未取回物品，這些物品將會在下一次出發冒險時永遠消失。"
+      "failed_tooltip": "想要得到冒險中找到的物品嗎？只需要花費 1 $CLAM，小森靈就會幫你取回物品喔！ (不包含 EXP 及 TCP) 如果你都未取回物品，這些物品將會在下一次出發冒險時永遠消失。",
+      "og_succeeded": "成功",
+      "og_failed": "失敗",
+      "og_title": "{{ name }} 在 {{ location }} 的冒險 {{ result }} 了!",
+      "og_description": "這隻 {{ name }} 在 {{ location }} 經歷了許多驚奇有趣事件，也發現了不少珍稀寶物，快打開冒險日誌瞧瞧吧"
     },
     "restingStep": {
       "title": "{{name}} 正在休息中...",
@@ -923,7 +932,8 @@
   "adventureLocationPopup": {
     "difficulty": "困難度：",
     "nextStep": "繼續",
-    "too_crowed": "這個區域太多阿獺了，請選擇其他區域"
+    "too_crowed": "這個區域太多阿獺了，請選擇其他區域",
+    "noQualifiedOttos": "沒有符合資格的阿獺"
   },
   "adventureLocation": {
     "successRate": "成功率",
@@ -942,9 +952,9 @@
     "regional_boosts": "區域加成條件"
   },
   "adventureBoostTarget": {
-    "success_rate": "成功率 +{{ amount }}%",
-    "additional_item": "找到物品 +{{ amount }}",
-    "additional_artwork": "找到收藏品 +{{ amount }}"
+    "success_rate": "{{ percentage }} 成功率 +{{ amount }}%",
+    "additional_item": "{{ percentage }} 找到物品 +{{ amount }}",
+    "additional_artwork": "{{ percentage }} 找到收藏品 +{{ amount }}"
   },
   "adventure": {
     "title": "冒險",
@@ -975,5 +985,11 @@
   },
   "ottoStats": {
     "rarityScore": "Rarity Score: {{total}} (BRS {{brs}} + RRS {{rrs}})"
+  },
+  "copy": "複製",
+  "copied": "已複製！",
+  "adventureSharePopup": {
+    "title": "Share this adventure result",
+    "desc": "You can copy and paste the link on any social media platform. Anyone who has the link can see your Otto’s adventure result."
   }
 }

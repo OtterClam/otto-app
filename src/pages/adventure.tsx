@@ -1,13 +1,15 @@
 import AdventureView from 'views/adventure'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 import GameLayout from 'layouts/GameLayout'
 import AdventureProvider from 'AdventureProvider'
+import { serverSideAdventureShare } from 'utils/adventure'
 import { NextPageWithLayout } from './_app'
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+export const getServerSideProps: GetServerSideProps = async ({ locale, query }) => ({
   props: {
     ...(await serverSideTranslations(locale ?? '', ['common'])),
+    ...(await serverSideAdventureShare(query)),
   },
 })
 

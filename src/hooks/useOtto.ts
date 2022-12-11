@@ -5,6 +5,7 @@ import { useRepositories } from 'contexts/Repositories'
 import { LIST_MY_OTTOS } from 'graphs/otto'
 import { ListMyOttos, ListMyOttosVariables } from 'graphs/__generated__/ListMyOttos'
 import Otto from 'models/Otto'
+import { useMyOtto } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -18,6 +19,9 @@ export default function useOtto(id: string | Falsy, details: boolean) {
   const [fetchCount, setFetchCount] = useState(0)
   const { ottos: ottosRepo } = useRepositories()
   const [otto, setOtto] = useState<Otto | null>(null)
+
+  // TODO: fucking hack
+  const myOtto = useMyOtto(id || undefined)
 
   useEffect(() => {
     if (id) {
@@ -37,7 +41,7 @@ export default function useOtto(id: string | Falsy, details: boolean) {
 
   const refetch = () => setFetchCount(fetchCount + 1)
 
-  return { loading, otto, error, refetch }
+  return { loading, otto: myOtto ?? otto, error, refetch }
 }
 
 export function useOttos(ids: string[] | Falsy, { details, epoch }: { details: boolean; epoch?: number }) {

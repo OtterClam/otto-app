@@ -6,6 +6,7 @@ import adventureMapImage from 'components/AdventureMap/map.jpg'
 import SkeletonThemeProvider from 'components/SkeletonThemeProvider'
 import { ApiProvider } from 'contexts/Api'
 import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
+import { BannersProvider } from 'contexts/Banners'
 import { BreakpointsProvider } from 'contexts/Breakpoints'
 import { CurrencyProvider } from 'contexts/Currency'
 import { MyItemsProvider } from 'contexts/MyItems'
@@ -24,9 +25,9 @@ import { PropsWithChildren, useEffect } from 'react'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
 import MyMissionsProvider from 'views/mission/MyMissionsProvider'
+import MissionPopup from 'views/mission/MissionPopup'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
-import MissionPopup from 'views/mission/MissionPopup'
 
 const preloadImages = [ottoLoadingImage.src, adventureMapImage.src]
 
@@ -94,24 +95,26 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                     <BreakpointsProvider>
                       <MyOttosProvider>
                         <MyItemsProvider>
-                          <OverlayProvider>
-                            <SnapshotProvider>
-                              <StyledApp>
-                                <SkeletonThemeProvider>
-                                  <StyledPageContainer>{children}</StyledPageContainer>
-                                  <Error />
-                                  <WalletSelector />
-                                  <SideMenu />
-                                  <MyMissionsProvider>
-                                    <MissionPopup />
-                                  </MyMissionsProvider>
-                                  <AssetsLoader />
-                                  <ItemDetailsPopup />
-                                  <OttoPopup />
-                                </SkeletonThemeProvider>
-                              </StyledApp>
-                            </SnapshotProvider>
-                          </OverlayProvider>
+                          <BannersProvider>
+                            <OverlayProvider>
+                              <SnapshotProvider>
+                                <StyledApp>
+                                  <SkeletonThemeProvider>
+                                    <StyledPageContainer>{children}</StyledPageContainer>
+                                    <Error />
+                                    <WalletSelector />
+                                    <SideMenu />
+                                    <MyMissionsProvider>
+                                      <MissionPopup />
+                                    </MyMissionsProvider>
+                                    <AssetsLoader />
+                                    <ItemDetailsPopup />
+                                    <OttoPopup />
+                                  </SkeletonThemeProvider>
+                                </StyledApp>
+                              </SnapshotProvider>
+                            </OverlayProvider>
+                          </BannersProvider>
                         </MyItemsProvider>
                       </MyOttosProvider>
                     </BreakpointsProvider>

@@ -9,6 +9,7 @@ import ConnectView from 'components/ConnectView'
 import { useRouter } from 'next/router'
 import { LIST_MY_PORTALS } from 'graphs/otto'
 import { ListMyPortals, ListMyPortalsVariables } from 'graphs/__generated__/ListMyPortals'
+import DefaultMetaTags from 'components/DefaultMetaTags'
 import NoPortalView from './NoPortalView'
 import PortalCard from './PortalCard'
 import PortalContainer from './PortalContainer'
@@ -88,5 +89,10 @@ export default function MyPortalsPage() {
         return <ConnectView />
     }
   }, [state, data])
-  return <StyledMyPortalsPage>{renderContent()}</StyledMyPortalsPage>
+  return (
+    <StyledMyPortalsPage>
+      <DefaultMetaTags />
+      {renderContent()}
+    </StyledMyPortalsPage>
+  )
 }

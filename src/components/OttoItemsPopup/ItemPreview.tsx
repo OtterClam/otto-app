@@ -3,8 +3,8 @@ import CloseButton from 'components/CloseButton'
 import ItemCell from 'components/ItemCell'
 import ItemCollectionBadge from 'components/ItemCollectionBadge'
 import ItemRarityBadge from 'components/ItemRarityBadge'
+import TraitLabels from 'components/TraitLabels'
 import { useAdventureOtto } from 'contexts/AdventureOtto'
-import { useMyItem } from 'contexts/MyItems'
 import { useOtto } from 'contexts/Otto'
 import { useTrait } from 'contexts/TraitContext'
 import useOnClickOutside from 'hooks/useOnClickOutside'
@@ -15,7 +15,7 @@ import { useTranslation } from 'next-i18next'
 import { memo, useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import styled from 'styled-components/macro'
-import { ContentSmall, Headline, Note } from 'styles/typography'
+import { ContentSmall, Headline, Note, Caption } from 'styles/typography'
 
 const StyledItemPreview = styled.div`
   display: flex;
@@ -107,6 +107,10 @@ const StyledCloseButton = styled(CloseButton)`
   top: 10px;
 `
 
+const StyledWearCount = styled(Caption).attrs({ as: 'p' })`
+  color: ${({ theme }) => theme.colors.darkGray100};
+`
+
 export interface ItemPreviewProps {
   metadata?: ItemMetadata
   selectedItem?: Item
@@ -132,7 +136,11 @@ export default memo(function ItemPreview({
   const equippedByCurrentOtto = equippedOtto?.id === otto?.id || selectedItemId?.startsWith('draft_')
   const equippedSameToken =
     equippedItem && selectedItem && equippedItem.metadata.tokenId === selectedItem.metadata.tokenId
-  const unavailable = selectedItem && equippedOtto && equippedOtto.adventureStatus !== AdventureOttoStatus.Ready
+  const unavailable =
+    selectedItem &&
+    equippedOtto &&
+    equippedOtto.adventureStatus !== AdventureOttoStatus.Ready &&
+    equippedOtto.adventureStatus !== AdventureOttoStatus.Resting
 
   const onEquip = (type: string, itemId: string) => {
     equipItem(type, itemId)
@@ -161,6 +169,8 @@ export default memo(function ItemPreview({
               )}
               {metadata?.name}
             </StyledItemName>
+            {metadata && <TraitLabels highlightMatched metadata={metadata} />}
+            <StyledWearCount>{t('equippedCount', { count: metadata?.equippedCount ?? 0 })}</StyledWearCount>
             <StyledItemLevels>
               {Object.entries(metadata?.stats ?? {}).map(([name, value]) => (
                 <StyledItemLevel key={name}>

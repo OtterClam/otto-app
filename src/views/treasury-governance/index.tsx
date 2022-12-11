@@ -1,4 +1,3 @@
-import AdBanner from 'components/AdBanner'
 import Image from 'next/image'
 import Arrow from 'views/store/StoreHero/arrow.svg'
 import { GovernanceTab } from 'models/Tabs'
@@ -7,12 +6,10 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { ContentMedium, Headline } from 'styles/typography'
 import TreasurySection from 'components/TreasurySection'
-import DystopiaPenroseTab from './DystopiaPenroseTab'
 import OtterClamTab from './OtterClamTab'
 import QiDaoTab from './QiDaoTab'
 import Garden from './garden.png'
 import OtterVote from './otter-vote.png'
-import TreasuryCard from 'components/TreasuryCard'
 
 const StyledContainer = styled.div``
 

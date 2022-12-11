@@ -11,8 +11,10 @@ import {
   useAdventureUIState,
   useSelectedAdventureLocation,
 } from 'contexts/AdventureUIState'
+import { useOtto } from 'contexts/Otto'
 import useAdventureOttosAtLocation from 'hooks/useAdventureOttosAtLocation'
 import { AdventureOttoStatus } from 'models/Otto'
+import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useMemo } from 'react'
@@ -76,18 +78,39 @@ const StyledImageWrapper = styled.div`
   }
 `
 
+const StyledNextStepButton = styled(Button).attrs({
+  padding: '3px 0',
+  Typography: Headline,
+})``
+
 export function LocationInfoStep() {
   const { t } = useTranslation('', { keyPrefix: 'adventureLocationPopup' })
+  const { locked, otto } = useOtto()
   const { dispatch } = useAdventureUIState()
   const location = useSelectedAdventureLocation()
   const ottos = useAdventureOttosAtLocation(location?.id)
+  const { ottos: allOttos } = useMyOttos()
+  const qualifiedOttos = allOttos
+    .filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready)
+    .filter(otto => otto.level >= (location?.minLevel ?? 0))
+
   const ongoingOttos = useMemo(
     () => ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ongoing),
     [ottos]
   )
+
+  const noSpace = ongoingOttos.length >= MAX_OTTOS_PER_LOCATION
+
+  let noQualifiedOttos = !qualifiedOttos.length
+
+  if (locked && otto && location) {
+    noQualifiedOttos = otto.level < location.minLevel
+  }
+
   const preview = () => {
     dispatch({ type: AdventureUIActionType.SetPopupStep, data: AdventurePopupStep.PreviewOtto })
   }
+
   return (
     <StyledContainer>
       {location && (
@@ -95,21 +118,18 @@ export function LocationInfoStep() {
           <StyledHead bg={location.bgImage}>
             <StyledName location={location} />
             <StyledImageWrapper>
-              <Image layout="fill" src={location.image} unoptimized />
+              <Image key={`location-image-${location.id}`} layout="fill" src={location.image} unoptimized />
             </StyledImageWrapper>
           </StyledHead>
           <StyledDetails>
             <AdventureRewards />
             <AdventureConditionalBoosts noPreview locationBoostsOnly />
             <AdventureOngoingOttos ongoingOttos={ongoingOttos} />
-            <Button
-              padding="3px 0"
-              Typography={Headline}
-              onClick={preview}
-              disabled={ongoingOttos.length === MAX_OTTOS_PER_LOCATION}
-            >
-              {t(ongoingOttos.length === MAX_OTTOS_PER_LOCATION ? 'too_crowed' : 'nextStep')}
-            </Button>
+            {noSpace && <StyledNextStepButton disabled>{t('too_crowed')}</StyledNextStepButton>}
+            {noQualifiedOttos && <StyledNextStepButton disabled>{t('noQualifiedOttos')}</StyledNextStepButton>}
+            {!noSpace && !noQualifiedOttos && (
+              <StyledNextStepButton onClick={preview}>{t('nextStep')}</StyledNextStepButton>
+            )}
           </StyledDetails>
         </AdventureLocationProvider>
       )}

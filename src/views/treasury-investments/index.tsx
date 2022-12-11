@@ -15,7 +15,6 @@ import { formatUsd } from 'utils/currency'
 import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
 import DatePicker from 'components/DatePicker'
 import Help from 'components/Help'
-import LinkIcon from './link_icon.svg'
 
 const StyledContainer = styled.div`
   font-family: 'Pangolin', 'naikaifont' !important;
@@ -173,22 +172,21 @@ const StyledTreasuryCard = styled(TreasuryCard)`
   color: black;
 `
 interface InvestmentProps {
-  investments?: Investments_investments[]
+  investments: Investments_investments[]
   portfolioPct?: number
   showPnl?: boolean
 }
 
 function InvestmentPosition({ investments, portfolioPct, showPnl }: InvestmentProps) {
-  if (!investments) return <div />
   const { t } = useTranslation('', { keyPrefix: 'treasury.investments' })
 
   const avgGrossApr = useMemo(
-    () => investments?.reduce((prev, curr) => prev + Number.parseFloat(curr.grossApr), 0) / investments.length,
+    () => investments.reduce((prev, curr) => prev + Number.parseFloat(curr.grossApr), 0) / investments.length,
     [investments]
   )
 
   const revenueSum = useMemo(
-    () => investments?.reduce((prev, curr) => prev + Number.parseFloat(curr.grossRevenue), 0),
+    () => investments.reduce((prev, curr) => prev + Number.parseFloat(curr.grossRevenue), 0),
     [investments]
   )
 
@@ -282,7 +280,7 @@ export default function InvestmentsPage({ className }: Props) {
 
   const sortedInvestments = useMemo(() => joinedInvestments.map(x => x.inv), [joinedInvestments])
   const revenue = sortedInvestments?.reduce(
-    (prev, curr) => prev + curr?.reduce((prev2, curr2) => prev2 + Number.parseFloat(curr2?.grossRevenue), 0),
+    (prev, curr) => prev + curr.reduce((prev2, curr2) => prev2 + Number.parseFloat(curr2.grossRevenue), 0),
     0
   )
 
@@ -331,8 +329,8 @@ export default function InvestmentsPage({ className }: Props) {
               isOpen={fromDateOpen}
               onChange={(date: Date | null) => {
                 setFromDateOpen(false)
-                if (date === null) return
-                setFromDate(date?.getTime() / 1000)
+                if (date === null || !date) return
+                setFromDate(date.getTime() / 1000)
               }}
               onClose={() => setFromDateOpen(false)}
               defaultValue={new Date(fromDate * 1000)}
@@ -353,8 +351,8 @@ export default function InvestmentsPage({ className }: Props) {
               isOpen={toDateOpen}
               onChange={(date: Date | null) => {
                 setToDateOpen(false)
-                if (date === null) return
-                setToDate(date?.getTime() / 1000)
+                if (date === null || !date) return
+                setToDate(date.getTime() / 1000)
               }}
               onClose={() => setToDateOpen(false)}
               defaultValue={new Date(now * 1000)}

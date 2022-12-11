@@ -9,8 +9,6 @@ import { MouseEventHandler, useCallback, useEffect, useMemo, useState } from 're
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components/macro'
 import { useAdventureLocations } from 'contexts/AdventureLocations'
-import { useMyOttos } from 'MyOttosProvider'
-import { AdventureOttoStatus } from 'models/Otto'
 import ExploringStep from './ExploringStep'
 import { LocationInfoStep } from './LocationInfoStep'
 import MapStep from './MapStep'
@@ -122,7 +120,6 @@ const Components = {
 export default function AdventurePopup() {
   const { locations } = useAdventureLocations()
   const { setOtto } = useOtto()
-  const { ottos } = useMyOttos()
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup' })
   const [closePopupRequested, setClosePopupRequested] = useState(false)
   const { state: adventureUIState, dispatch } = useAdventureUIState()
@@ -145,26 +142,16 @@ export default function AdventurePopup() {
 
   const nextLocation: MouseEventHandler = e => {
     e.stopPropagation()
-    const maxLevel = Math.max(
-      0,
-      ...ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready).map(otto => otto.level)
-    )
-    const avaliableLocations = locations.filter(loc => maxLevel >= loc.minLevel)
-    const index = avaliableLocations.findIndex(loc => loc.id === adventureUIState.selectedLocationId)
-    const nextIndex = avaliableLocations.length <= index + 1 ? 0 : index + 1
-    dispatch({ type: AdventureUIActionType.SelectLocation, data: { locationId: avaliableLocations[nextIndex].id } })
+    const index = locations.findIndex(loc => loc.id === adventureUIState.selectedLocationId)
+    const nextIndex = locations.length <= index + 1 ? 0 : index + 1
+    dispatch({ type: AdventureUIActionType.SelectLocation, data: { locationId: locations[nextIndex].id } })
   }
 
   const prevLocation: MouseEventHandler = e => {
     e.stopPropagation()
-    const maxLevel = Math.max(
-      0,
-      ...ottos.filter(otto => otto.adventureStatus === AdventureOttoStatus.Ready).map(otto => otto.level)
-    )
-    const avaliableLocations = locations.filter(loc => maxLevel >= loc.minLevel)
-    const index = avaliableLocations.findIndex(loc => loc.id === adventureUIState.selectedLocationId)
-    const nextIndex = index <= 0 ? avaliableLocations.length - 1 : index - 1
-    dispatch({ type: AdventureUIActionType.SelectLocation, data: { locationId: avaliableLocations[nextIndex].id } })
+    const index = locations.findIndex(loc => loc.id === adventureUIState.selectedLocationId)
+    const nextIndex = index <= 0 ? locations.length - 1 : index - 1
+    dispatch({ type: AdventureUIActionType.SelectLocation, data: { locationId: locations[nextIndex].id } })
   }
 
   const effects = useMemo(() => {

@@ -14,10 +14,10 @@ const addresses: { [key: number]: typeof POLYGON_MAINNET } = {
 const useContractAddresses = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { chainId } = useEthers()
+  const { chainId, active } = useEthers()
 
   useEffect(() => {
-    if (!chainId || Object.keys(addresses).includes(String(chainId))) {
+    if (!active || Object.keys(addresses).includes(String(chainId))) {
       dispatch(clearError())
     } else {
       dispatch(

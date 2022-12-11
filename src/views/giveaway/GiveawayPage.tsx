@@ -1,5 +1,6 @@
 import Star from 'assets/ui/star.svg'
 import BorderContainer from 'components/BorderContainer'
+import DefaultMetaTags from 'components/DefaultMetaTags'
 import Silver from 'models/store/images/silver.png'
 import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
@@ -81,6 +82,7 @@ export default function GiveawayPage() {
   const { t } = useTranslation('', { keyPrefix: 'giveaway' })
   return (
     <StyledGiveawayPage>
+      <DefaultMetaTags />
       <StyledHeadline>{t('headline')}</StyledHeadline>
       <StyledSubtitle>{t('subtitle')}</StyledSubtitle>
       <StyledHero>

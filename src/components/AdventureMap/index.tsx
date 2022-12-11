@@ -4,7 +4,6 @@ import { useTranslation } from 'next-i18next'
 import TreasureChestLevel from 'components/TreasureChestLevel'
 import { useAdventureLocations } from 'contexts/AdventureLocations'
 import AdventureLocation from 'components/AdventureLocation'
-import { forwardRef } from 'react'
 import Image from 'next/image'
 import continueImage from './continue.png'
 import mapImage from './map.jpg'
@@ -67,11 +66,12 @@ const StyledImageContainer = styled.div`
 `
 
 export interface AdventureMapProps {
+  ottoLocked?: boolean
   hideFooter?: boolean
   className?: string
 }
 
-export default function AdventureMap({ hideFooter, className }: AdventureMapProps) {
+export default function AdventureMap({ hideFooter, className, ottoLocked }: AdventureMapProps) {
   const { t } = useTranslation('', { keyPrefix: 'adventure' })
   const { locations } = useAdventureLocations()
 
@@ -80,7 +80,7 @@ export default function AdventureMap({ hideFooter, className }: AdventureMapProp
       <StyledImageContainer>
         <Image unoptimized src={mapImage} layout="fill" />
         {locations.map(location => (
-          <AdventureLocation key={location.id} id={location.id} />
+          <AdventureLocation key={location.id} ottoLocked={ottoLocked} id={location.id} />
         ))}
       </StyledImageContainer>
       {!hideFooter && (

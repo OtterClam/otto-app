@@ -145,7 +145,9 @@
       "bank": "珍珠银行"
     },
     "play": "开始玩",
-    "title": "欢迎来到阿獭王国"
+    "title": "欢迎来到阿獭王国",
+    "docDesc": "在阿獭王国，你的角色将透过传送门化身为阿獭，在这片美丽又迷人的国度进行生活和探险，这里还有许多集会、比赛以及道具商店，让你跟你的阿獭能快乐游玩！",
+    "docTitle": "$t(home.title)$t(titleSuffix)"
   },
   "leaderboard": {
     "head": "成为最稀有的阿獭来赢得奖金!",
@@ -180,9 +182,14 @@
     },
     "shell_chest_link": "购买贝壳宝箱 >",
     "title": "排行榜",
-    "right_info": "这一轮比赛奖励星座落在<span style=\"color: #FFDC77\">处女座</span>，所有此星座的阿獭、萝提及克蕾欧都会被神祝福并赐予特殊效果： <span style=\"color: #FF6854\">BRS +50</span>",
+    "docDesc": "阿獭王国会不定期举办各类型比赛的排行榜，准备好你的阿獭，让他们发挥自己最大的优势，站上排行榜之列，并赢得包含 CLAM, FISH 甚至稀有道具等奖品吧！",
+    "docTitle": "$t(leaderboard.title)$t(titleSuffix)",
+    "right_info": "这一轮比赛奖励星座落在<span style=\"color: #FFDC77\">处女座</span>，所有此星座的阿獭、萝提及克蕾欧都会被神祝福并赐予特殊效果： <span style=\"color: #FF6854\">Success Rate +10%</span>",
     "left_info_link": "主题加成如何运作 >",
-    "left_info": "只要你的阿獭 NFT 穿上的物品符合此轮比赛所指定的主题标签： <span style=\"color: #FFDC77\">{{ themes }}</span> ，就可以得到额外稀有度分数加成！"
+    "left_info": "只要你的阿獭 NFT 穿上的物品符合此轮比赛所指定的主题标签： <span style=\"color: #FFDC77\">{{ themes }}</span> ，就可以得到额外稀有度分数加成！",
+    "left_info_ap_empty": "需要加速你的阿獭冒险时间吗？那么加速药水是你补可或缺的好伙伴。阿獭王国商店现正贩售中，快来准备几瓶吧！",
+    "left_info_ap": "{{ location }} 的冒险成功率限时加成 {{ successRate }} ，快把握时间，让你的阿獭来探索这片区域吧！",
+    "left_info_link_ap": "查看冒险点数 (AP) 无何运作 >"
   },
   "mint": {
     "approve_button": "允许花费",
@@ -249,6 +256,8 @@
     },
     "portal_amount": "传送门:",
     "title": "铸造传送门",
+    "docDesc": "想要加入阿獭王国，首先你得需要传送门将阿獭传送到王国。马上铸造一个传送门，就可以开启你的专属阿獭进行游玩了！",
+    "docTitle": "$t(mint.title)$t(titleSuffix)",
     "total_payment": "总计:"
   },
   "mint_banner": {
@@ -282,7 +291,9 @@
       "Facial Accessories": "脸部配件",
       "Headwear": "头饰",
       "Holding": "手持物",
-      "Other": "其他物品"
+      "Other": "其他物品",
+      "Collectible": "收藏品",
+      "Mission Item": "任务道具"
     },
     "sorted_by": "排序",
     "sorted_by_options": {
@@ -360,6 +371,7 @@
     "title": "我的传送门"
   },
   "otto": {
+    "times": "{{ times }} 次",
     "birthday": "生日： {{birthday}}",
     "chosen_one": "这只是天选之獭！\n这一轮的稀有度大赛日期落在了 {{birthday}}，所有与此日期相同生日的阿獭、萝提及克蕾欧都会被阿獭之神祝福并赐予特殊效果。",
     "classic": "经典",
@@ -379,6 +391,7 @@
     "opensea_link": "在 OpenSea 上瞧瞧",
     "personality": "个性： {{personality}}",
     "play_voice": "听听这只阿獭的声音",
+    "change_equipment": "Dress up",
     "rarity": {
       "C1": "不常见",
       "C2": "常见",
@@ -543,7 +556,9 @@
     "shell_chest": "贝壳宝箱",
     "subtitle_1": "这些宝箱可开启多达 600 多个特殊道具，且宝箱现正特价中，买越多省越多，呜獭！一个宝箱可以开启一个道具，呜獭！",
     "subtitle_2": "走过路过千万别错过！这些宝箱里的道具可以让阿獭变得更强，趁打折期间快来增强战力，呜獭！",
-    "title": "阿獭王国商店"
+    "title": "阿獭王国商店",
+    "docDesc": "在阿獭王国商店，有众多商品供你选购，除了常驻的贝壳宝箱之外，也会有不定期的主题宝箱或季节限定宝箱，也会有限时道具特卖，记得每天都要上来看看有什么新货到来喔。",
+    "docTitle": "$t(store.title)$t(titleSuffix)"
   },
   "unsupported_network": {
     "action": "切换到 Polygon",
@@ -572,6 +587,8 @@
     },
     "dashboard": {
       "title": "国库概况",
+      "docDesc": "透过阿獭王国的国库概况，可以了解到王国目前的财政状况，在这里，你也可以投入贝壳币到水池，或是存入珍珠银行，来赚取更多奖励。",
+      "docTitle": "$t(treasury.dashboard.title)$t(titleSuffix)",
       "clamPrice": "CLAM 价格",
       "backing": "CLAM 单位价值",
       "backingTooltip": "国库的总资产价值除以 CLAM 流通量。已排除国库中的 CLAM 价值。",
@@ -701,7 +718,8 @@
     "items": "我的物品",
     "treasury": "国库",
     "ottos": "我的阿獭",
-    "missions": "我的任务"
+    "missions": "我的任务",
+    "adventure": "冒险"
   },
   "treasuryChestLevel": {
     "title": "冒险宝箱",
@@ -723,7 +741,8 @@
     "wearBy": "{{ name }} 正在穿着此装备",
     "unavailable": "无法穿着",
     "takeOff": "脱掉",
-    "noItems": "无任何物品"
+    "noItems": "无任何物品",
+    "equippedCount": "{{count}} 阿獭拥有这个特征"
   },
   "ongoingOttos": {
     "title": "正在此处冒险的阿獭",
@@ -768,6 +787,8 @@
   },
   "foundry": {
     "title": "铸造厂",
+    "docDesc": "欢迎来到铸造厂，在这里你可以将多个物品重新铸造成一个新物品, 并且有机会得到稀有度或数值较高的物品！",
+    "docTitle": "$t(foundry.title)$t(titleSuffix)",
     "dialog": {
       "title": "欢迎来到铸造厂！",
       "content": "欢迎来到铸造厂，在这里你可以将多个物品重新铸造成一个新物品, 并且有机会得到稀有度或数值较高的物品！"
@@ -779,7 +800,7 @@
       "title": "必要的物品："
     },
     "forgeButton": "铸造",
-    "forgeButton_insufficient": "铸造 (物品不)",
+    "forgeButton_insufficient": "铸造 (物品不足)",
     "forgeAvailableTime": "可铸造时间 {{ startTime }} - {{ endTime }} ({{ timeZone }})",
     "comingSoon": "即将登场...",
     "approve": "同意签署",
@@ -803,7 +824,9 @@
   },
   "conditionalBoosts": {
     "title": "特殊加成条件",
-    "help": "帮助",
+    "regional_boosts": "区域加成条件",
+    "help": "你目前符合的加成条件，更换装备以提升你的成功机率！",
+    "regional_boosts_help": "每个区域都会有独特的加成设定，符合区域的加成条件可以提升冒险成功的机率！",
     "effectiveUntil": "<span style='color: #FFDC77'>{{ duration }}</span>",
     "legendary": "传说级阿獭：",
     "zodiac": "星座：",
@@ -860,13 +883,18 @@
       "adventure_point": "冒险点数",
       "explore_again_btn": "再次冒险",
       "close_btn": "关闭",
+      "share_btn": "分享",
       "revive_btn": "取回物品",
       "give_up_btn": "放弃 (放弃所有物品)",
       "give_up_yes_btn": "对，我要放弃！",
       "give_up_back_btn": "让我再想想",
       "failed_desc": "你的阿獭冒险失败了，因此你无法得到此次冒险的任何奖励。",
       "failed_hint": "想要得到冒险中找到的物品吗？只需要花费 1 $CLAM，小森灵就会帮你取回物品喔！ (不包含 EXP 及 TCP) 如果你都未取回物品，这些物品将会在下一次出发冒险时永远消失。",
-      "failed_tooltip": "想要得到冒险中找到的物品吗？只需要花费 1 $CLAM，小森灵就会帮你取回物品喔！ (不包含 EXP 及 TCP) 如果你都未取回物品，这些物品将会在下一次出发冒险时永远消失。"
+      "failed_tooltip": "想要得到冒险中找到的物品吗？只需要花费 1 $CLAM，小森灵就会帮你取回物品喔！ (不包含 EXP 及 TCP) 如果你都未取回物品，这些物品将会在下一次出发冒险时永远消失。",
+      "og_succeeded": "成功",
+      "og_failed": "失败",
+      "og_title": "{{ name }} 在 {{ location }} 的冒险 {{ result }} 了!",
+      "og_description": "这只 {{ name }} 在 {{ location }} 经历了许多惊奇有趣事件，也发现了不少珍稀宝物，快打开冒险日志瞧瞧吧"
     },
     "restingStep": {
       "title": "{{name}} 正在休息中...",
@@ -904,14 +932,16 @@
   "adventureLocationPopup": {
     "difficulty": "困难度：",
     "nextStep": "继续",
-    "too_crowed": "这个区域太多阿獭了，请选择其他区域"
+    "too_crowed": "这个区域太多阿獭了，请选择其他区域",
+    "noQualifiedOttos": "没有符合资格的阿獭"
   },
   "adventureLocation": {
     "successRate": "成功率",
     "adventureTime": "冒险时间",
     "restingTime": "休息时间",
-    "successRateHelp": "帮助",
-    "restingTimeHelp": "帮助",
+    "successRateHelp": "阿獭进入这个区域冒险的成功机率，你可以通过满足加成条件来增加冒险的成功机率。",
+    "restingTimeHelp": "冒险结束时，你的阿獭会需要休息的时间，在休息期间将无法进行下一次冒险，您可以使用加速药水缩短阿獭的休息时间。",
+    "rewardsHelp": "每次冒险成功时能获得的奖励，包含经验值 (EXP)、该地区随机物品、冒险宝箱点数 (TCP) 与冒险点数 (AP)。",
     "rewardSectionTitle": "冒险成功奖励",
     "usePotion": "使用",
     "noPotion": "你有 0 个",
@@ -922,12 +952,14 @@
     "regional_boosts": "区域加成条件"
   },
   "adventureBoostTarget": {
-    "success_rate": "成功率 +{{ amount }}%",
-    "additional_item": "找到物品 +{{ amount }}",
-    "additional_artwork": "找到收藏品 +{{ amount }}"
+    "success_rate": "{{ percentage }} 成功率 +{{ amount }}%",
+    "additional_item": "{{ percentage }} 找到物品 +{{ amount }}",
+    "additional_artwork": "{{ percentage }} 找到收藏品 +{{ amount }}"
   },
   "adventure": {
     "title": "冒险",
+    "docDesc": "准备好踏出阿獭王国去探险了吗？在丛林、沙漠、溪流甚至是未知之境，藏着许多宝藏和任务道具等着你来探索，快准备好阿獭的装备，出发冒险吧！",
+    "docTitle": "$t(adventure.title)$t(titleSuffix)",
     "continue": "更多区域即将开放...",
     "listTitle": "阿獭概况",
     "viewSwitcher": {
@@ -943,5 +975,21 @@
   "adventure_remaining": "剩余时间： {{time}}",
   "adventureAlert": {
     "hideDesc": "不要再显示"
+  },
+  "ottoPopup": {
+    "title": "Change Otto’s Equipment",
+    "unequipAllButton": "Unequip All",
+    "submitButton": "Save this Setup",
+    "submitButtonHelp": "You will be required to perform a transaction to update the new setup of the equipment on this Otto.",
+    "placeholder": "Click the left equipment thumbnail<br />to chage the equipment "
+  },
+  "ottoStats": {
+    "rarityScore": "Rarity Score: {{total}} (BRS {{brs}} + RRS {{rrs}})"
+  },
+  "copy": "复制",
+  "copied": "已复制！",
+  "adventureSharePopup": {
+    "title": "Share this adventure result",
+    "desc": "You can copy and paste the link on any social media platform. Anyone who has the link can see your Otto’s adventure result."
   }
 }

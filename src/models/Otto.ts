@@ -3,6 +3,7 @@ import assert from 'assert'
 import { Adventure } from 'contracts/__generated__'
 import { BigNumber } from 'ethers'
 import { RawAdventurePass } from 'libs/RawAdventureResult'
+import { AdventureLocationConditionalBoost } from './AdventureLocation'
 import { AdventurePass, fromRawPass } from './AdventurePass'
 import { AdventureResult } from './AdventureResult'
 import { ItemMetadata, Item } from './Item'
@@ -10,6 +11,7 @@ import { ItemMetadata, Item } from './Item'
 export enum TraitCollection {
   Genesis = 'genesis',
   Second = 'second',
+  Third = 'gen3',
 }
 
 type RawOttoGender = 'Otto' | 'Lottie' | 'Cleo'
@@ -44,6 +46,9 @@ export interface RawOtto {
   latest_adventure_pass?: RawAdventurePass
   adventure_passes_count: number
   next_level_exp: number
+  finished_adventure_passes_count: number
+  succeeded_adventure_passes_count: number
+  ap_boosts: AdventureLocationConditionalBoost[]
 }
 
 export interface Attr {
@@ -120,6 +125,8 @@ export default class Otto {
 
   public ranking = 0
 
+  public apRanking = 0
+
   public geneticTraits: Trait[] = []
 
   public wearableTraits: Trait[] = []
@@ -150,6 +157,12 @@ export default class Otto {
 
   public adventurePassesCount = 0
 
+  public finishedAdventurePassesCount = 0
+
+  public succeededAdventurePassesCount = 0
+
+  public apBoosts: AdventureLocationConditionalBoost[] = []
+
   constructor(
     raw: RawOtto,
     public equippedItems: Item[] = [],
@@ -173,6 +186,9 @@ export default class Otto {
     this.epochRarityBoost = this.raw.epoch_rarity_boost
     this.diceCount = this.raw.dice_count
     this.adventurePassesCount = this.raw.adventure_passes_count
+    this.finishedAdventurePassesCount = this.raw.finished_adventure_passes_count ?? 0
+    this.succeededAdventurePassesCount = this.raw.succeeded_adventure_passes_count ?? 0
+    this.apBoosts = this.raw.ap_boosts ?? []
 
     if (this.raw.latest_adventure_pass) {
       this.latestAdventurePass = fromRawPass(this.raw.latest_adventure_pass)
@@ -186,9 +202,6 @@ export default class Otto {
       }
     }
 
-    if (!this.raw.otto_traits) {
-      console.log(this.raw)
-    }
     for (let idx = 0; idx < this.raw.otto_traits?.length ?? 0; idx++) {
       const { trait_type, value } = this.raw.otto_traits[idx]
       if (trait_type === 'Gender') {
@@ -203,6 +216,8 @@ export default class Otto {
         this.coatOfArms = String(value)
       } else if (trait_type === 'Ranking') {
         this.ranking = Number(value)
+      } else if (trait_type === 'Ap Ranking') {
+        this.apRanking = Number(value)
       } else if (trait_type === 'Zodiac Sign') {
         this.zodiacSign = String(value)
       } else if (trait_type === 'EXP') {
@@ -273,6 +288,10 @@ export default class Otto {
     return this.raw.constellation_boost || 0
   }
 
+  get legendaryBoost(): number {
+    return this.raw.legendary_boost || 0
+  }
+
   get imageWoBg(): string {
     return this.raw.image_wo_bg
   }
@@ -318,6 +337,13 @@ export default class Otto {
 
   get ottoNativeTraits() {
     return this.raw.otto_native_traits ?? []
+  }
+
+  get adventureSuccessRate(): number {
+    if (!this.finishedAdventurePassesCount) {
+      return 0
+    }
+    return this.succeededAdventurePassesCount / this.finishedAdventurePassesCount
   }
 
   public clone() {

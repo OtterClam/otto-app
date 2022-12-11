@@ -5,7 +5,7 @@ const { i18n } = require('./next-i18next.config')
 const { AssetsManifestPlugin } = require('./webpack/assets-manifest')
 const withTM = require('next-transpile-modules')(['@usedapp/core'])
 
-const imageDomains = ['api.otterclam.finance', 'api-testnet.otterclam.finance']
+const imageDomains = ['api.otterclam.finance', 'api-testnet.otterclam.finance', 'imgur.com']
 if (process.env.NODE_ENV === 'development') {
   imageDomains.push('localhost')
 }

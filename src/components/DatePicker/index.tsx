@@ -183,14 +183,14 @@ const DatePicker = ({
 
         <div className={styles.nav}>
           <div className={styles.selector}>
-            <select onChange={e => setMonth(parseInt(e.target.value))} value={month}>
+            <select onChange={e => setMonth(parseInt(e.target.value, 10))} value={month}>
               {months.map((monthName, index) => (
                 <option key={index} value={index}>
                   {monthName}
                 </option>
               ))}
             </select>
-            <select onChange={e => setYear(parseInt(e.target.value))} value={year}>
+            <select onChange={e => setYear(parseInt(e.target.value, 10))} value={year}>
               {Array(maxDate.getFullYear() - minDate.getFullYear() + 1)
                 .fill(0)
                 .map((_, index) => (
@@ -205,6 +205,7 @@ const DatePicker = ({
               disabled={minDate.getFullYear() === year && minDate.getMonth() === month}
               className={styles.navButton}
               onClick={() => changeMonth(-1)}
+              type="button"
             >
               <svg
                 width={24}
@@ -223,6 +224,7 @@ const DatePicker = ({
               disabled={maxDate.getFullYear() === year && maxDate.getMonth() === month}
               className={styles.navButton}
               onClick={() => changeMonth(+1)}
+              type="button"
             >
               <svg
                 width={24}
@@ -261,6 +263,7 @@ const DatePicker = ({
                   }}
                   onClick={() => selectDate(day)}
                   disabled={day.getTime() < minDate.getTime() || day.getTime() > maxDate.getTime()}
+                  type="button"
                 >
                   {day.getDate()}
                 </button>
@@ -270,10 +273,10 @@ const DatePicker = ({
         </div>
 
         <div className={styles.footer}>
-          <button disabled={!selectedDate} onClick={handleClear} style={{ color: colorScheme }}>
+          <button disabled={!selectedDate} onClick={handleClear} style={{ color: colorScheme }} type="button">
             {clearText}
           </button>
-          <button style={{ color: colorScheme }} onClick={handleClose}>
+          <button style={{ color: colorScheme }} onClick={handleClose} type="button">
             {closeText}
           </button>
         </div>

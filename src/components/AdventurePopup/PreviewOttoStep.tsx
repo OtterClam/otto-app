@@ -98,7 +98,7 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
   const container = useRef<HTMLDivElement>(null)
   const { updateOtto, loading: loadingOttos } = useMyOttos()
   const { confirmedOtto: otto, confirmed, confirm } = useConfirmedOtto()
-  const { itemActions: equippedItemActions, setOtto } = useOtto()
+  const { itemActions: equippedItemActions, setOtto, locked } = useOtto()
   const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
   const { t, i18n } = useTranslation()
   const location = useSelectedAdventureLocation()!
@@ -235,7 +235,7 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
             <CloseButton color="white" onClose={onRequestClose} />
           </StyledHead>
 
-          <OttoSelector />
+          {!locked && <OttoSelector />}
 
           <StyledMain>
             <StyledPreview>

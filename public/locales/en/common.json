@@ -172,6 +172,7 @@
     "rank_list": {
       "brs": "BRS",
       "chosen_one": "The Chosen Otto (BRS+150)",
+      "chosen_one_ap": "The Chosen Otto (RS+{{ boost }}%)",
       "est_reward": "Est. Reward",
       "expand": "Expand all your {{count}} Ottos",
       "hell_dice": "Dice X{{ diceCount }} (BRS{{ boost }})",
@@ -184,15 +185,23 @@
       "show_less": "Show less",
       "your_rank": "Your Ottos’ rank:",
       "zodiac_boost": "{{zodiac}} (BRS+50)",
-      "theme_boost": "Theme Boost (BRS+{{ boost }})"
+      "zodiac_boost_ap": "{{zodiac}} (RS+{{ boost }}%)",
+      "theme_boost": "Theme Boost (BRS+{{ boost }})",
+      "ap": "AP",
+      "success_rate": "Success/Total (%)",
+      "legendary_boost": "Legendary (BRS+{{ boost }})",
+      "legendary_boost_ap": "Legendary (SR+{{ boost }}%)"
     },
     "shell_chest_link": "Buy Shell Chest >",
     "title": "Leaderboard",
     "docDesc": "Attend the Ottopia leaderboard competitions to earn CLAM, FISH and previous prizes! It strives to reward the users who are the most thoughtfully and enthusiastically engaged with the ecosystem. As its name suggests, this is a process where you attempt to raise the rarest and bravest Otto, Lottie or Cleo, and get rewarded for doing so.",
     "docTitle": "$t(leaderboard.title)$t(titleSuffix)",
-    "right_info": "The upcoming epoch falls to <span style=\"color: #FFDC77\">{{constellation}}</span>. The god of {{constellation}} has blessed every {{constellation}} Otto, Lottie and Cleo with glory and power! <span style=\"color: #FF6854\">BRS +50</span>",
+    "right_info": "The upcoming epoch falls to <span style=\"color: #FFDC77\">{{constellation}}</span>. The god of {{constellation}} has blessed every {{constellation}} Otto, Lottie and Cleo with glory and power! <span style=\"color: #FF6854\">Success Rate +10%</span>",
     "left_info_link": "See how BRS boost works >",
-    "left_info": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #FFDC77\">{{ themes }}</span> will receive extra BRS boosts."
+    "left_info": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #FFDC77\">{{ themes }}</span> will receive extra BRS boosts.",
+    "left_info_ap_empty": "Need a speed boost? Speedy Potion is your best choice when going on an adventure. Available in the Ottopia Store now!",
+    "left_info_ap": "The adventure success rate of {{ location }} has been increased by {{ successRate }} during the limited time. Explore it and find the precious treasury!",
+    "left_info_link_ap": "See how Adventure Points (AP) works >"
   },
   "mint": {
     "approve_button": "Approve",
@@ -806,7 +815,9 @@
     "wearBy": "{{ name }} is wearing this item",
     "unavailable": "Unavailable",
     "takeOff": "Take Off",
-    "noItems": "No Items Found"
+    "noItems": "No Items Found",
+    "equippedCount_other": "{{count}} Ottos have this trait",
+    "equippedCount_one": "{{count}} Otto have this trait"
   },
   "ongoingOttos": {
     "title": "The Ottos currently exploring this place",
@@ -947,13 +958,18 @@
       "adventure_point": "Adventure Points",
       "explore_again_btn": "Explore Again",
       "close_btn": "Close",
+      "share_btn": "Share",
       "revive_btn": "Retrieve Items",
       "give_up_btn": "Give Up (Discard all Rewards)",
       "give_up_yes_btn": "Yes. Give up",
       "give_up_back_btn": "Back",
       "failed_desc": "Because your Otto FAILED the adventure, you can not claim those rewards.",
       "failed_hint": "Wanna retrieve the items you’ve found? Just need to spend 1 $CLAM and Kodama will help you retrive them! (but not EXP nor TCP) The found items will be lost forever if this Otto proceeds on another adventure.",
-      "failed_tooltip": "Wanna retrieve the items you’ve found? Just need to spend 1 $CLAM and Kodama will help you retrive them! (but not EXP nor TCP) The found items will be lost forever if this Otto proceeds on another adventure."
+      "failed_tooltip": "Wanna retrieve the items you’ve found? Just need to spend 1 $CLAM and Kodama will help you retrive them! (but not EXP nor TCP) The found items will be lost forever if this Otto proceeds on another adventure.",
+      "og_succeeded": "succeeded",
+      "og_failed": "failed",
+      "og_title": "{{ name }} {{ result }} the {{ location }} adventure!",
+      "og_description": "Check out the Adventure Journey {{ name }} to find our more about the hilarious and surprising events that occurred during the adventure in {{ location }}"
     },
     "restingStep": {
       "title": "{{name}} is resting...",
@@ -991,7 +1007,8 @@
   "adventureLocationPopup": {
     "difficulty": "Difficulty:",
     "nextStep": "Continue",
-    "too_crowed": "This place is too crowded."
+    "too_crowed": "No more entry space",
+    "noQualifiedOttos": "No qualified Ottos"
   },
   "adventureLocation": {
     "successRate": "Success rate",
@@ -1010,9 +1027,9 @@
     "regional_boosts": "Regional Boosts"
   },
   "adventureBoostTarget": {
-    "success_rate": "Total Success +{{ amount }}%",
-    "additional_item": "Found Item +{{ amount }}",
-    "additional_artwork": "Found Artwork Item +{{ amount }}"
+    "success_rate": "{{ percentage }} Total Success +{{ amount }}%",
+    "additional_item": "{{ percentage }} Found Item +{{ amount }}",
+    "additional_artwork": "{{ percentage }} Found Artwork Item +{{ amount }}"
   },
   "adventure": {
     "title": "Adventure",
@@ -1064,5 +1081,11 @@
     "ok_btn": "OK",
     "complete_reward": "Here’s your awards!",
     "close_btn": "Close"
+  },
+  "copy": "Copy",
+  "copied": "Copied!",
+  "adventureSharePopup": {
+    "title": "Share this adventure result",
+    "desc": "You can copy and paste the link on any social media platform. Anyone who has the link can see your Otto’s adventure result."
   }
 }

@@ -1,4 +1,5 @@
 import AdventureFullscreen from 'components/AdventureFullscreen'
+import { useMyItems } from 'contexts/MyItems'
 import { useOtto, withOtto } from 'contexts/Otto'
 import { withTrait } from 'contexts/TraitContext'
 import { useMyOtto } from 'MyOttosProvider'
@@ -15,7 +16,8 @@ const StyledAdventureFullscreen = styled(AdventureFullscreen)`
 
 export default withOtto(
   withTrait(function OttoPopup() {
-    const { setOtto } = useOtto()
+    const { refetch: refreshMyItems } = useMyItems()
+    const { setOtto, resetEquippedItems } = useOtto()
     const dispatch = useDispatch()
     const ottoTokenId = useSelector(selectOttoPopup)
     const otto = useMyOtto(ottoTokenId)
@@ -26,6 +28,11 @@ export default withOtto(
 
     useEffect(() => {
       setOtto(otto)
+      if (otto) {
+        refreshMyItems()
+      } else {
+        resetEquippedItems()
+      }
     }, [otto])
 
     return (

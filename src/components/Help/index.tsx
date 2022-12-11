@@ -31,9 +31,16 @@ export interface HelpProps {
   message: string
   className?: string
   noicon?: boolean
+  icon?: string
 }
 
-export default function Help({ className, children, message, noicon }: PropsWithChildren<HelpProps>) {
+export default function Help({
+  className,
+  children,
+  message,
+  icon = InfoIcon.src,
+  noicon,
+}: PropsWithChildren<HelpProps>) {
   const [id] = useState(() => `help-${nextId++}`)
   const [mounted, setMounted] = useState(false)
 
@@ -46,7 +53,7 @@ export default function Help({ className, children, message, noicon }: PropsWith
     <StyledContainer>
       <StyledContent className={className} data-tip data-for={id}>
         {children}
-        {!noicon && <StyledIcon src={InfoIcon.src} />}
+        {!noicon && <StyledIcon src={icon} />}
       </StyledContent>
       {mounted && (
         <ReactTooltip id={id} effect="solid">

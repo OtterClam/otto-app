@@ -10,7 +10,6 @@ import styled from 'styled-components/macro'
 import { GovernanceTab } from '../models/Tabs'
 import SnapshotProposalPieChart from './SnapshotProposalPieChart'
 import Button from './Button'
-import Link from 'next/link'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -156,10 +155,10 @@ export default function SnapshotProposalGroup({ className, tab }: SnapshotPropos
           <StyledInnerContainer>
             <StyledProposalHeadline as="h1">{proposal.title}</StyledProposalHeadline>
             <StyledActivityFlag flagColor={flagColorFromProposalState[proposal.state ?? '']}>
-              {t('proposalState.' + proposal.state ?? 'default')}
+              {t(`proposalState.${proposal.state ?? 'default'}`)}
             </StyledActivityFlag>
             <StyledInlineText>{`${proposal.votes} ${t('voters')}`}</StyledInlineText>
-            <StyledLink href={`https://snapshot.org/#/${proposal.space}/proposal/${proposal.id}`} target={'_blank'}>
+            <StyledLink href={`https://snapshot.org/#/${proposal.space}/proposal/${proposal.id}`} target="_blank">
               {t('snapshotEth')}
             </StyledLink>
             <StyledTextBody>
@@ -168,7 +167,7 @@ export default function SnapshotProposalGroup({ className, tab }: SnapshotPropos
             </StyledTextBody>
           </StyledInnerContainer>
           <StyledSeeAll onClick={() => toggleMaximisedProposal(proposal.id)}>
-            {maximisedProposal == proposal.id ? t('seeLess') : t('seeMore')}
+            {maximisedProposal === proposal.id ? t('seeLess') : t('seeMore')}
           </StyledSeeAll>
           {(proposal.state === 'active' && tab === GovernanceTab.OTTERCLAM) ?? (
             <Button
