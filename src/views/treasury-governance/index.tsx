@@ -105,9 +105,9 @@ export default function GopvernancePage({ className }: Props) {
       <StyledTreasurySection>
         <StyledBg unoptimized src={Garden.src} width={2000} height={500} objectFit="none" />
         <StyledDialog>
-          <h2>{t('welcome_message_title')}</h2>
+          <h2>{tab === GovernanceTab.OTTERCLAM ? t('welcome_message_title') : t('qidao_message_title')}</h2>
           <br />
-          <p>{t('welcome_message_body')}</p>
+          <p>{tab === GovernanceTab.OTTERCLAM ? t('welcome_message_body') : t('qidao_message_body')}</p>
         </StyledDialog>
         <StyledOtter unoptimized src={OtterVote.src} width={948} height={268} objectFit="contain" />
       </StyledTreasurySection>

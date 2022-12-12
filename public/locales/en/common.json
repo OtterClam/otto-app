@@ -642,7 +642,9 @@
       "qidao_tab": "Qi DAO",
       "title": "Governance",
       "welcome_message_title": "Your Vote Counts!",
-      "welcome_message_body": "Ottopia is governed by a Decentralised Autonomous Organisation (DAO)",
+      "welcome_message_body": "OtterClam is governed by a Decentralised Autonomous Organisation (DAO)",
+      "qidao_message_title": "QiDAO Governance",
+      "qidao_message_body": "OtterClam's policy is to vote for the pool with the highest bribe rewards!",
       "voteNow": "Vote Now!",
       "votingClosed": "Voting Closed",
       "votes": "Votes",
@@ -664,11 +666,13 @@
       "totalRevenue": "Total Revenue",
       "totalApr": "Net Average APR",
       "togglePnl": "Toggle PnL",
-      "pnlNote": "Please Note: OtterClam frequently rebalances the Treasury. Large percentage changes may be due to funds moving between investments. Click on any row for more details.",
+      "pnlNote": "Please Note: OtterClam actively manages treasury investments, and so rebalancing occurs frequently. Large percentage changes may be due to funds moving between investment positions. Click on any row & modify the date ranges for more details.",
       "tooltips": {
         "tmv": "Total value of Treasury Assets on {{ date }}",
         "revenue": "Total gross revenue during the selected date range.",
-        "apr": "Overall Annualised Percentage Return (APR) of all Treasury Investments during the selected date range."
+        "apr": "Overall Annualised Percentage Return (APR) of all Treasury Investments during the selected date range.",
+        "positionChange": "Percentage difference between the market value of the position on {{ fromDate }} and {{ toDate }}",
+        "pnl": "Position Change plus the total revenue generated during the selected date range (as a percentage of the value on {{ fromDate }} )"
       },
       "tableHeader": {
         "investment": "Investment",

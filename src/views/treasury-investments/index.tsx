@@ -100,20 +100,16 @@ const StyledDate = styled.div`
   }
 `
 
-const StyledToggleButton = styled.button`
-  padding: 1px;
+const StyledCheckbox = styled.input`
   background: ${({ theme }) => theme.colors.darkGray300};
   border: 4px solid ${({ theme }) => theme.colors.darkGray400};
   border-radius: 10px;
   color: white;
-  :hover {
-    background: ${({ theme }) => theme.colors.darkGray200};
+  width: 20px;
+  height: 24px;
+  div {
+    font-size: 4px;
   }
-  padding-top: 0px;
-  height: 28px;
-  margin-top: 18px;
-  margin-right: 20px;
-  font-family: 'Pangolin', 'naikaifont' !important;
 `
 
 const StyledMetricsContainer = styled.div`
@@ -171,10 +167,29 @@ const StyledTreasuryCard = styled(TreasuryCard)`
   min-width: 0;
   color: black;
 `
+
+const StyledTextAbove = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-right: 20px;
+  font-size: 14px;
+`
+
+const StyledPnlNote = styled.div`
+  margin: 10px;
+  text-align: center;
+`
 interface InvestmentProps {
   investments: Investments_investments[]
   portfolioPct?: number
-  showPnl?: boolean
+  showPnl: boolean
+}
+
+interface TableHeaders {
+  showPnl: boolean
+  fromDate: number
+  toDate: number
 }
 
 function InvestmentPosition({ investments, portfolioPct, showPnl }: InvestmentProps) {
@@ -203,6 +218,8 @@ function InvestmentPosition({ investments, portfolioPct, showPnl }: InvestmentPr
 
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
+  const fromDate = investments[0].timestamp
+  const toDate = investments?.at(-1)?.timestamp
   return (
     <StyledRow onClick={() => setIsOpen(!isOpen)}>
       <StyledTable>
@@ -210,12 +227,7 @@ function InvestmentPosition({ investments, portfolioPct, showPnl }: InvestmentPr
           {isOpen && (
             <StyledInnerTableHeader>
               <tr>
-                <td>{t('tableHeader.investment')}</td>
-                <td>{t('tableHeader.protocol')}</td>
-                <td>{t('tableHeader.portfolioPct')}</td>
-                <td>{t('tableHeader.averageApr')}</td>
-                <td>{t('tableHeader.positionChange')}</td>
-                <td>{t('tableHeader.pnl')}</td>
+                <TableHeaders showPnl={showPnl} fromDate={fromDate} toDate={toDate} />
               </tr>
             </StyledInnerTableHeader>
           )}
@@ -227,7 +239,6 @@ function InvestmentPosition({ investments, portfolioPct, showPnl }: InvestmentPr
             </td>
             <td>{portfolioPct?.toFixed(2)}%</td>
             <td>{avgGrossApr.toFixed(2)}%</td>
-            {/* <td>{formatUsd(investments.at(-1)?.grossRevenue)}</td> */}
             {showPnl && <td>{`${negStr}${valueChangePct.toFixed(2)}%`}</td>}
             {showPnl && <td>{pnlPct.toFixed(2)}%</td>}
           </tr>
@@ -316,7 +327,11 @@ export default function InvestmentsPage({ className }: Props) {
       <TreasurySection>
         <StyledInnerContainer>
           <StyledDateContainer>
-            <StyledToggleButton onClick={() => setShowPnl(!showPnl)}>{t('togglePnl')}</StyledToggleButton>
+            <StyledTextAbove>
+              <div>{t('togglePnl')}</div>
+              <StyledCheckbox type="checkbox" onChange={() => setShowPnl(!showPnl)} />
+            </StyledTextAbove>
+
             <StyledDateButton
               onClick={() => {
                 setFromDateOpen(true)
@@ -361,17 +376,12 @@ export default function InvestmentsPage({ className }: Props) {
               headerFormat="m/dd"
             />
           </StyledDateContainer>
+          {showPnl && <StyledPnlNote>{t('pnlNote')}</StyledPnlNote>}
 
-          {showPnl && <p>{t('pnlNote')}</p>}
           <StyledTable>
             <thead>
               <StyledTableHeader>
-                <td>{t('tableHeader.investment')}</td>
-                <td>{t('tableHeader.protocol')}</td>
-                <td>{t('tableHeader.portfolioPct')}</td>
-                <td>{t('tableHeader.averageApr')}</td>
-                {showPnl && <td>{t('tableHeader.positionChange')}</td>}
-                {showPnl && <td>{t('tableHeader.pnl')}</td>}
+                <TableHeaders showPnl={showPnl} fromDate={fromDate} toDate={toDate} />
               </StyledTableHeader>
             </thead>
           </StyledTable>
@@ -383,5 +393,36 @@ export default function InvestmentsPage({ className }: Props) {
         </StyledInnerContainer>
       </TreasurySection>
     </StyledContainer>
+  )
+}
+
+function TableHeaders({ showPnl, fromDate, toDate }: TableHeaders): JSX.Element {
+  const { t } = useTranslation('', { keyPrefix: 'treasury.investments' })
+  return (
+    <>
+      <td>{t('tableHeader.investment')}</td>
+      <td>{t('tableHeader.protocol')}</td>
+      <td>{t('tableHeader.portfolioPct')}</td>
+      <td>{t('tableHeader.averageApr')}</td>
+      {showPnl && (
+        <td>
+          <Help
+            message={t('tooltips.positionChange', {
+              fromDate: formatDate(fromDate * 1000, 'yyyy-M-d'),
+              toDate: formatDate(toDate * 1000, 'yyyy-M-d'),
+            })}
+          >
+            {t('tableHeader.positionChange')}
+          </Help>
+        </td>
+      )}
+      {showPnl && (
+        <td>
+          <Help message={t('tooltips.pnl', { fromDate: formatDate(fromDate * 1000, 'yyyy-M-d') })}>
+            {t('tableHeader.pnl')}
+          </Help>
+        </td>
+      )}
+    </>
   )
 }
