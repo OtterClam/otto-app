@@ -269,9 +269,11 @@ export default function InvestmentsPage({ className }: Props) {
 
   const toDateMetrics = useMemo(
     () =>
-      metrics.reduce(function (prev, curr) {
-        return Math.abs(parseInt(curr.id, 10) - toDate) < Math.abs(parseInt(prev.id, 10) - toDate) ? curr : prev
-      }),
+      metrics.length > 0
+        ? metrics.reduce(function (prev, curr) {
+            return Math.abs(parseInt(curr.id, 10) - toDate) < Math.abs(parseInt(prev.id, 10) - toDate) ? curr : prev
+          })
+        : undefined,
     [metrics, toDate]
   )
 
@@ -279,8 +281,8 @@ export default function InvestmentsPage({ className }: Props) {
     const groupedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
     const currentInvestments = groupedInvestments.flatMap(x => x.at(-1))
     const portfolioPcts = currentInvestments.flatMap(x => {
-      if (parseInt(x?.timestamp ?? '0', 10) !== parseInt(toDateMetrics.id, 10) - daySecs) return 0
-      return (parseFloat(x?.netAssetValue) / parseFloat(toDateMetrics.treasuryMarketValue)) * 100
+      if (parseInt(x?.timestamp ?? '0', 10) !== parseInt(toDateMetrics?.id ?? '0', 10) - daySecs) return 0
+      return (parseFloat(x?.netAssetValue) / parseFloat(toDateMetrics?.treasuryMarketValue)) * 100
     })
     return groupedInvestments
       .map((x, i) => {
@@ -296,7 +298,8 @@ export default function InvestmentsPage({ className }: Props) {
   )
 
   const dateDiff = useMemo(() => (toDate - fromDate) / daySecs, [toDate, fromDate])
-  const netApr = (1 + revenue / toDateMetrics.treasuryMarketValue / dateDiff) ** 365 * 100 - 100
+  const maybeTmv = toDateMetrics?.treasuryMarketValue ?? 1
+  const netApr = (1 + revenue / maybeTmv / dateDiff) ** 365 * 100 - 100
 
   const [showPnl, setShowPnl] = useState<boolean>(false)
   const showMemo = useMemo(() => showPnl, [showPnl])
@@ -308,7 +311,7 @@ export default function InvestmentsPage({ className }: Props) {
             <Help message={t('tooltips.tmv', { date: formatDate(toDate * 1000, 'yyyy-M-d') })}>
               <ContentExtraSmall>{t('tmv')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{loading ? '--' : formatUsd(toDateMetrics.treasuryMarketValue)}</ContentMedium>
+            <ContentMedium>{loading ? '--' : formatUsd(toDateMetrics?.treasuryMarketValue)}</ContentMedium>
           </StyledTreasuryCard>
           <StyledTreasuryCard>
             <Help message={t('tooltips.revenue')}>

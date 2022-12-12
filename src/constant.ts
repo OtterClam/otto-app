@@ -11,7 +11,7 @@ export const WHITE_PAPER_LINK = 'https://docs.ottopia.app/ottopia/'
 
 export const DAO_LINK = 'https://snapshot.org/#/otterclam.eth'
 
-export const TREASURY_LINK = '/treasury/palace'
+export const TREASURY_LINK = '/treasury/palace#dashboard'
 
 export const DISCORD_LINK = 'https://discord.gg/otterclam'
 
