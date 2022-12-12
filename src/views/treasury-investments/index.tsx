@@ -182,6 +182,13 @@ const StyledPnlNote = styled.div`
   text-align: center;
 `
 
+const StyledHeader = styled.h2`
+  font-weight: 400;
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: center;
+`
+
 const StyledPieCard = styled.div``
 interface InvestmentProps {
   investments: Investments_investments[]
@@ -264,17 +271,18 @@ export default function InvestmentsPage({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'treasury.investments' })
 
   const daySecs = 60 * 60 * 24
-  const nowDate = new Date(Date.now()).setUTCHours(0, 0, 0, 0)
+  const nowDate = new Date(Date.now()).setHours(0, 0, 0, 0)
   const now = nowDate / 1000
-  const [fromDate, setFromDate] = useState<number>(now - daySecs * 7)
+  const [fromDate, setFromDate] = useState<number>(now - daySecs * 6)
   const [toDate, setToDate] = useState<number>(now)
   const [fromDateOpen, setFromDateOpen] = useState(false)
   const [toDateOpen, setToDateOpen] = useState(false)
 
   // ensure dates are utc for query, but not ui
-  console.log(toDate, new Date(toDate * 1000).setUTCHours(0, 0, 0, 0) / 1000 + daySecs)
-
-  const { investments } = useInvestments(fromDate, new Date(toDate * 1000).setUTCHours(0, 0, 0, 0) / 1000 + daySecs)
+  const { investments } = useInvestments(
+    new Date(fromDate * 1000).setUTCHours(0, 0, 0, 0) / 1000 + daySecs,
+    new Date(toDate * 1000).setUTCHours(0, 0, 0, 0) / 1000 + daySecs
+  )
   const { loading, metrics } = useTreasuryMetrics()
 
   const toDateMetrics = useMemo(
@@ -291,7 +299,7 @@ export default function InvestmentsPage({ className }: Props) {
     const groupedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
     const currentInvestments = groupedInvestments.flatMap(x => x.at(-1))
     const portfolioPcts = currentInvestments.flatMap(x => {
-      if (parseInt(x?.timestamp ?? '0', 10) !== parseInt(toDateMetrics?.id ?? '0', 10) - daySecs) return 0
+      // if (parseInt(x?.timestamp ?? '0', 10) !== parseInt(toDateMetrics?.id ?? '0', 10) - daySecs) return 0
       return (parseFloat(x?.netAssetValue) / parseFloat(toDateMetrics?.treasuryMarketValue)) * 100
     })
     return groupedInvestments
@@ -339,7 +347,7 @@ export default function InvestmentsPage({ className }: Props) {
       </TreasurySection>
       <TreasurySection>
         <StyledInnerContainer>
-          <h2>OtterClam Investment Portfolio</h2>
+          <StyledHeader>{t('header')}</StyledHeader>
           <StyledPieCard>
             <TreasuryMarketValuePieChart data={investments} />
           </StyledPieCard>

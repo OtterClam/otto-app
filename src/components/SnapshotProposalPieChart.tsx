@@ -22,7 +22,7 @@ export interface SnapshotProposalPieChartProps {
   tab: GovernanceTab
 }
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
+const COLORS = ['#0088FE', '#FFBB28', '#00C49F', '#FF8042']
 
 const renderTooltip: (i18nClient: i18n, tab: GovernanceTab) => TooltipRenderer =
   (i18n, tab) =>

@@ -45,7 +45,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       key: 'grossApr',
       label: 'Gross APR',
       value: `${parseFloat(payload[1]?.payload?.grossApr).toFixed(2)}%`,
-      color: '#F0E0E0',
+      color: 'black',
     }
 
     const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
@@ -67,10 +67,6 @@ export default function InvestmentsChart({ data, avgApr, stopColor }: Investment
           <linearGradient key="area" id={colorId} x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor={stopColor[0]} stopOpacity={1} />
             <stop offset="90%" stopColor={stopColor[1]} stopOpacity={0.5} />
-          </linearGradient>
-          <linearGradient key="line" id="color-line" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgba(255, 255, 255, 1)" stopOpacity={1} />
-            <stop offset="90%" stopColor="rgba(255, 255, 255, 0.5)" stopOpacity={1} />
           </linearGradient>
         </defs>
         <ChartXAxis
@@ -122,11 +118,11 @@ export default function InvestmentsChart({ data, avgApr, stopColor }: Investment
         />
         <Line
           key={`grossApr${Math.random()}`} // All charts on page must have unique ID for Dots
-          stroke="url(#color-line)"
+          stroke="black"
           dataKey="grossApr"
           yAxisId="right"
         />
-        <ReferenceLine yAxisId="right" y={avgApr} stroke="white" strokeDasharray="3 3" />
+        <ReferenceLine yAxisId="right" y={avgApr} stroke="black" strokeDasharray="3 3" />
       </ComposedChart>
     </StyledContainer>
   )
