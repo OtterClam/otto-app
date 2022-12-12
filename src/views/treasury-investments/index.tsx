@@ -3,7 +3,7 @@ import Arrow from 'views/store/StoreHero/arrow.svg'
 import { format as formatDate } from 'date-fns'
 import { useTranslation } from 'next-i18next'
 import { useMemo, useState } from 'react'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { ContentExtraSmall, ContentMedium, Headline } from 'styles/typography'
 import TreasurySection from 'components/TreasurySection'
 import useInvestments from 'hooks/useInvestments'
@@ -15,6 +15,7 @@ import { formatUsd } from 'utils/currency'
 import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
 import DatePicker from 'components/DatePicker'
 import Help from 'components/Help'
+import TreasuryMarketValuePieChart from 'components/TreasuryMarketValuePieChart'
 
 const StyledContainer = styled.div`
   font-family: 'Pangolin', 'naikaifont' !important;
@@ -180,10 +181,13 @@ const StyledPnlNote = styled.div`
   margin: 10px;
   text-align: center;
 `
+
+const StyledPieCard = styled.div``
 interface InvestmentProps {
   investments: Investments_investments[]
   portfolioPct?: number
   showPnl: boolean
+  index: number
 }
 
 interface TableHeaders {
@@ -192,9 +196,10 @@ interface TableHeaders {
   toDate: number
 }
 
-function InvestmentPosition({ investments, portfolioPct, showPnl }: InvestmentProps) {
+function InvestmentPosition({ investments, portfolioPct, showPnl, index }: InvestmentProps) {
+  console.log(investments)
   const { t } = useTranslation('', { keyPrefix: 'treasury.investments' })
-
+  const theme = useTheme()
   const avgGrossApr = useMemo(
     () => investments.reduce((prev, curr) => prev + Number.parseFloat(curr.grossApr), 0) / investments.length,
     [investments]
@@ -220,24 +225,21 @@ function InvestmentPosition({ investments, portfolioPct, showPnl }: InvestmentPr
 
   const fromDate = investments[0].timestamp
   const toDate = investments?.at(-1)?.timestamp
+
+  const colorVals = Object.values(theme.colors.rarity)
   return (
     <StyledRow onClick={() => setIsOpen(!isOpen)}>
       <StyledTable>
         <tbody>
           {isOpen && (
             <StyledInnerTableHeader>
-              <tr>
-                <TableHeaders showPnl={showPnl} fromDate={fromDate} toDate={toDate} />
-              </tr>
+              <TableHeaders showPnl={showPnl} fromDate={fromDate} toDate={toDate} />
             </StyledInnerTableHeader>
           )}
           <tr>
             <td>{investments[0].strategy}</td>
-            <td>
-              {investments[0].protocol}{' '}
-              {/* <StyledImage height={100} style={{ display: 'unset !important' }} src={LinkIcon} /> */}
-            </td>
-            <td>{portfolioPct?.toFixed(2)}%</td>
+            <td>{investments[0].protocol} </td>
+            <td>{portfolioPct?.toFixed(2)}% </td>
             <td>{avgGrossApr.toFixed(2)}%</td>
             {showPnl && <td>{`${negStr}${valueChangePct.toFixed(2)}%`}</td>}
             {showPnl && <td>{pnlPct.toFixed(2)}%</td>}
@@ -246,7 +248,12 @@ function InvestmentPosition({ investments, portfolioPct, showPnl }: InvestmentPr
       </StyledTable>
       {isOpen && (
         <StyledChartCard>
-          <InvestmentsChart data={investments} avgApr={avgGrossApr} key={Math.random()} />
+          <InvestmentsChart
+            stopColor={[colorVals[index % colorVals.length], colorVals[index % colorVals.length]]}
+            data={investments}
+            avgApr={avgGrossApr}
+            key={Math.random()}
+          />
         </StyledChartCard>
       )}
     </StyledRow>
@@ -257,14 +264,17 @@ export default function InvestmentsPage({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'treasury.investments' })
 
   const daySecs = 60 * 60 * 24
-  const nowDate = new Date(Date.now()).setHours(0, 0, 0, 0)
+  const nowDate = new Date(Date.now()).setUTCHours(0, 0, 0, 0)
   const now = nowDate / 1000
   const [fromDate, setFromDate] = useState<number>(now - daySecs * 7)
   const [toDate, setToDate] = useState<number>(now)
   const [fromDateOpen, setFromDateOpen] = useState(false)
   const [toDateOpen, setToDateOpen] = useState(false)
 
-  const { investments } = useInvestments(fromDate, toDate)
+  // ensure dates are utc for query, but not ui
+  console.log(toDate, new Date(toDate * 1000).setUTCHours(0, 0, 0, 0) / 1000 + daySecs)
+
+  const { investments } = useInvestments(fromDate, new Date(toDate * 1000).setUTCHours(0, 0, 0, 0) / 1000 + daySecs)
   const { loading, metrics } = useTreasuryMetrics()
 
   const toDateMetrics = useMemo(
@@ -289,7 +299,7 @@ export default function InvestmentsPage({ className }: Props) {
         return { inv: x, pct: portfolioPcts[i] }
       })
       .sort((a, b) => b.pct - a.pct)
-  }, [investments, toDateMetrics])
+  }, [investments, toDateMetrics, daySecs])
 
   const sortedInvestments = useMemo(() => joinedInvestments.map(x => x.inv), [joinedInvestments])
   const revenue = sortedInvestments?.reduce(
@@ -297,7 +307,7 @@ export default function InvestmentsPage({ className }: Props) {
     0
   )
 
-  const dateDiff = useMemo(() => (toDate - fromDate) / daySecs, [toDate, fromDate])
+  const dateDiff = useMemo(() => (toDate - fromDate) / daySecs, [toDate, fromDate, daySecs])
   const maybeTmv = toDateMetrics?.treasuryMarketValue ?? 1
   const netApr = (1 + revenue / maybeTmv / dateDiff) ** 365 * 100 - 100
 
@@ -329,6 +339,10 @@ export default function InvestmentsPage({ className }: Props) {
       </TreasurySection>
       <TreasurySection>
         <StyledInnerContainer>
+          <h2>OtterClam Investment Portfolio</h2>
+          <StyledPieCard>
+            <TreasuryMarketValuePieChart data={investments} />
+          </StyledPieCard>
           <StyledDateContainer>
             <StyledTextAbove>
               <div>{t('togglePnl')}</div>
@@ -390,7 +404,12 @@ export default function InvestmentsPage({ className }: Props) {
           </StyledTable>
           {sortedInvestments.map((inv, i) => (
             <StyledCard key={`card_${i}`}>
-              <InvestmentPosition investments={inv} portfolioPct={joinedInvestments[i].pct} showPnl={showMemo} />
+              <InvestmentPosition
+                index={i}
+                investments={inv}
+                portfolioPct={joinedInvestments[i].pct}
+                showPnl={showMemo}
+              />
             </StyledCard>
           ))}
         </StyledInnerContainer>

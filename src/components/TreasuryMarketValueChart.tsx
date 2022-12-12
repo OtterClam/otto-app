@@ -31,7 +31,7 @@ const formatCurrency = (c: number) => {
 
 const ytickFormatter = (number: string) => `${formatCurrency(parseFloat(number) / 1000000)}M`
 
-const marketValues = [
+export const marketValues = [
   {
     label: 'Total',
     dataKey: 'treasuryMarketValue',

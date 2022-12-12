@@ -10,6 +10,7 @@ const StyledContainer = styled.div`
   border-radius: 8px;
   border: 1px ${({ theme }) => theme.colors.lightGray400} solid;
   white-space: nowrap;
+  color: black !important;
 `
 
 const StyledHeader = styled.div`

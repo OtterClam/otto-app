@@ -25,6 +25,7 @@ const yAxisTickProps = { fontSize: '12px' }
 export interface InvestmentsChartProps {
   data: Investments_investments[]
   avgApr?: number
+  stopColor: string[]
 }
 
 const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
@@ -33,19 +34,18 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     if (!active || !payload?.length) {
       return null
     }
-
     const nav = {
       key: 'netAssetValue',
       label: 'Market Value',
       value: formatUsd(payload[0]?.payload?.netAssetValue),
-      color: '#EE4B4E',
+      color: 'red',
     }
 
     const apr = {
       key: 'grossApr',
       label: 'Gross APR',
       value: `${parseFloat(payload[1]?.payload?.grossApr).toFixed(2)}%`,
-      color: 'rgba(0, 55, 55, 1)',
+      color: '#F0E0E0',
     }
 
     const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
@@ -53,19 +53,20 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     return <ChartTooltip headerLabel={headerLabel} headerValue="" items={[nav, apr]} footer={footer} />
   }
 
-export default function InvestmentsChart({ data, avgApr }: InvestmentsChartProps) {
+export default function InvestmentsChart({ data, avgApr, stopColor }: InvestmentsChartProps) {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
 
   const numberData = data.flatMap(d => _.mapValues(d, parseFloat))
+  const colorId = `color-area-${stopColor}`
   return (
     <StyledContainer ref={containerRef}>
       <ComposedChart data={numberData} width={size?.width} height={size?.height}>
         <defs>
-          <linearGradient key="area" id="color-area" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#EE4B4E" stopOpacity={1} />
-            <stop offset="90%" stopColor="rgba(219, 55, 55, 0.5)" stopOpacity={1} />
+          <linearGradient key="area" id={colorId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={stopColor[0]} stopOpacity={1} />
+            <stop offset="90%" stopColor={stopColor[1]} stopOpacity={0.5} />
           </linearGradient>
           <linearGradient key="line" id="color-line" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="rgba(255, 255, 255, 1)" stopOpacity={1} />
@@ -114,16 +115,15 @@ export default function InvestmentsChart({ data, avgApr }: InvestmentsChartProps
           stroke="none"
           dataKey="netAssetValue"
           label="Net Asset Value"
-          fill="url(#color-area)"
-          fillOpacity="1"
+          fill={`url(#${colorId})`}
           stackId="1"
+          fillOpacity="1"
           yAxisId="left"
         />
         <Line
           key={`grossApr${Math.random()}`} // All charts on page must have unique ID for Dots
           stroke="url(#color-line)"
           dataKey="grossApr"
-          fill="url(#color-line)"
           yAxisId="right"
         />
         <ReferenceLine yAxisId="right" y={avgApr} stroke="white" strokeDasharray="3 3" />

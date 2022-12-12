@@ -132,17 +132,6 @@ export const GET_GOVERNANCE_METRICS = gql`
   }
 `
 
-export const GET_PENROSE_VOTES = gql`
-  query GetPenroseVotes {
-    votePosition(id: "1") {
-      votes {
-        id
-        timestamp
-        vote
-      }
-    }
-  }
-`
 export const GET_LAST_PAYOUT_TO_ADDRESS = gql`
   query LastPayout($address: ID!) {
     stakedBalances(where: { id: $address }) {
