@@ -190,6 +190,13 @@ const StyledHeader = styled.h2`
 `
 
 const StyledPieCard = styled.div``
+
+const StyledHr = styled.hr<{ width: any }>`
+  width: ${({ width }) => width}%;
+  justify-content: center;
+  display: flex;
+  margin: auto;
+`
 interface InvestmentProps {
   investments: Investments_investments[]
   portfolioPct?: number
@@ -204,9 +211,7 @@ interface TableHeaders {
 }
 
 function InvestmentPosition({ investments, portfolioPct, showPnl, index }: InvestmentProps) {
-  console.log(investments)
   const { t } = useTranslation('', { keyPrefix: 'treasury.investments' })
-  const theme = useTheme()
   const avgGrossApr = useMemo(
     () => investments.reduce((prev, curr) => prev + Number.parseFloat(curr.grossApr), 0) / investments.length,
     [investments]
@@ -233,6 +238,7 @@ function InvestmentPosition({ investments, portfolioPct, showPnl, index }: Inves
   const fromDate = investments[0].timestamp
   const toDate = investments?.at(-1)?.timestamp
 
+  const theme = useTheme()
   const colorVals = Object.values(theme.colors.rarity)
   return (
     <StyledRow onClick={() => setIsOpen(!isOpen)}>
@@ -246,7 +252,10 @@ function InvestmentPosition({ investments, portfolioPct, showPnl, index }: Inves
           <tr>
             <td>{investments[0].strategy}</td>
             <td>{investments[0].protocol} </td>
-            <td>{portfolioPct?.toFixed(2)}% </td>
+            <td>
+              {portfolioPct?.toFixed(2)}%{' '}
+              <StyledHr color={colorVals[index % colorVals.length]} width={(portfolioPct ?? 0) * 2} />
+            </td>
             <td>{avgGrossApr.toFixed(2)}%</td>
             {showPnl && <td>{`${negStr}${valueChangePct.toFixed(2)}%`}</td>}
             {showPnl && <td>{pnlPct.toFixed(2)}%</td>}
@@ -349,7 +358,11 @@ export default function InvestmentsPage({ className }: Props) {
         <StyledInnerContainer>
           <StyledHeader>{t('header')}</StyledHeader>
           <StyledPieCard>
-            <TreasuryMarketValuePieChart data={investments} />
+            <TreasuryMarketValuePieChart
+              date={formatDate(toDate * 1000, 'yyyy-M-d')}
+              tmv={formatUsd(toDateMetrics?.treasuryMarketValue)}
+              data={investments}
+            />
           </StyledPieCard>
           <StyledDateContainer>
             <StyledTextAbove>

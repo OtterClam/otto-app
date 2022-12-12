@@ -36,6 +36,8 @@ const keySettingMap = marketValues.reduce(
 
 export interface TreasuryMarketValueChartProps {
   data: Investments_investments[]
+  tmv: string
+  date: string
 }
 
 const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
@@ -57,7 +59,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
     return <ChartTooltip headerLabel="Market Value" items={items} footer={footer} />
   }
 
-export default function TreasuryMarketValuePieChart({ data }: TreasuryMarketValueChartProps) {
+export default function TreasuryMarketValuePieChart({ data, tmv, date }: TreasuryMarketValueChartProps) {
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
@@ -68,7 +70,7 @@ export default function TreasuryMarketValuePieChart({ data }: TreasuryMarketValu
     const uid = `${element.protocol}_${element.strategy}`
     if (!pieData?.map(x => x.uid).includes(uid)) {
       pieData.push({
-        uid: uid,
+        uid,
         value: parseFloat(element.netAssetValue),
         label: element.strategy,
         dataKey: 'netAssetValue',
@@ -89,19 +91,39 @@ export default function TreasuryMarketValuePieChart({ data }: TreasuryMarketValu
       <PieChart width={size?.width} height={size?.height}>
         <Tooltip wrapperStyle={{ zIndex: 1 }} content={renderTooltip(i18n) as any} />
 
-        <Pie
-          data={pieData}
-          labelLine={false}
-          nameKey="label"
-          outerRadius={120}
-          innerRadius={70}
-          dataKey="value"
-          minAngle={3}
-        >
+        <Pie data={pieData} nameKey="label" outerRadius={120} innerRadius={70} dataKey="value" minAngle={3}>
           {pieData.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.stopColor} />
           ))}
-          <Label value="any text" position="center" />
+          <Label
+            content={props => {
+              const {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                viewBox: { cx, cy }, // eslint-disable-line
+              } = props
+              const positioningProps = {
+                x: cx,
+                y: cy,
+                textAnchor: 'middle',
+                verticalAnchor: 'middle',
+              }
+              const positioningPropsTwo = {
+                x: cx - 40,
+                y: cy + 20,
+              }
+              return (
+                <>
+                  <text {...positioningProps} style={{ fontSize: '24px', fill: 'white' }}>
+                    {tmv}
+                  </text>
+                  <text {...positioningPropsTwo} style={{ fill: 'white' }}>
+                    {date}
+                  </text>
+                </>
+              )
+            }}
+          />
         </Pie>
       </PieChart>
     </StyledContainer>
