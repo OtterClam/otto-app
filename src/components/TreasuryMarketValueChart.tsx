@@ -212,6 +212,11 @@ export const marketValues = [
     dataKey: 'treasuryOHMStrategyMarketValue',
     stopColor: ['#676B74', 'rgba(103, 107, 116, 0.5)'],
   },
+  {
+    label: 'wMEMO',
+    dataKey: 'treasuryWMEMOStrategyMarketValue',
+    stopColor: ['#121415', 'rgba(18,20,21,0.5)'],
+  },
 ]
 
 const keySettingMap = marketValues.reduce(

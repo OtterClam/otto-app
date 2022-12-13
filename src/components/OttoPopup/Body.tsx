@@ -156,7 +156,7 @@ export default function OttoPopupBody() {
   }
 
   return (
-    <AdventureOttoProvider otto={otto} draftOtto={preview?.otto}>
+    <AdventureOttoProvider otto={otto} draftOtto={preview?.otto} actions={itemActions}>
       <StyledContainer ref={container}>
         <StyledTitle>
           <StyledUnequipAllButton Typography={ContentMedium} onClick={unequipAllItems}>
