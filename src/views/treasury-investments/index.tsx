@@ -314,7 +314,7 @@ export default function InvestmentsPage({ className }: Props) {
     const groupedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
     const currentInvestments = groupedInvestments.flatMap(x => x.at(-1))
     const portfolioPcts = currentInvestments.flatMap(x => {
-      if (parseInt(x?.timestamp ?? '0', 10) !== parseInt(toDateMetrics?.id ?? '0', 10) - daySecs) return 0
+      if (parseInt(x?.timestamp ?? '0', 10) !== lastDataDate) return 0
       return (parseFloat(x?.netAssetValue) / parseFloat(toDateMetrics?.treasuryMarketValue)) * 100
     })
     return groupedInvestments
@@ -331,7 +331,6 @@ export default function InvestmentsPage({ className }: Props) {
   )
 
   const dateDiff = useMemo(() => (utcTo - utcFrom) / daySecs, [toDate, fromDate, daySecs])
-
   const maybeTmv = toDateMetrics?.treasuryMarketValue ?? 1
   const netApr = (1 + revenue / maybeTmv / dateDiff) ** 365 * 100 - 100
 

@@ -76,7 +76,6 @@ export default function TreasuryMarketValuePieChart({ data, tmv, date }: Treasur
     timestamp: date,
   })
 
-  console.log(pieData)
   return (
     <StyledContainer ref={containerRef}>
       <PieChart width={size?.width} height={size?.height}>
