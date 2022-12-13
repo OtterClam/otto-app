@@ -126,11 +126,10 @@ const flagColorFromProposalState: Record<string, string> = {
 export default function SnapshotProposalGroup({ className, tab }: SnapshotProposalGroupInterface) {
   const { t } = useTranslation('', { keyPrefix: 'treasury.governance' })
   const [maximisedProposal, setmaximisedProposal] = useState<string>('')
-  const { proposals: ocProposals, fetchMore: otterFetchMore } = useOtterClamProposalsWithVotes()
+  const { proposals: ocProposals } = useOtterClamProposalsWithVotes()
   const { proposals: qiProposals } = useQiDaoProposals()
 
-  // Could inject proposals from parent,
-  // but we need to propogate the fetchMore function from query for caching
+  // Could change to inject from parent
   let proposals: Proposal[] = []
   if (tab === GovernanceTab.OTTERCLAM) {
     proposals = ocProposals

@@ -3,7 +3,7 @@ import Arrow from 'views/store/StoreHero/arrow.svg'
 import { GovernanceTab } from 'models/Tabs'
 import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { ContentMedium, Headline } from 'styles/typography'
 import TreasurySection from 'components/TreasurySection'
 import OtterClamTab from './OtterClamTab'
@@ -115,7 +115,7 @@ export default function GopvernancePage({ className }: Props) {
       <TreasurySection>
         <StyledTabs>
           <StyledTab selected={tab === GovernanceTab.OTTERCLAM} onClick={() => setTab(GovernanceTab.OTTERCLAM)}>
-            {t('otterclam_tab')}{' '}
+            {t('otterclam_tab')}
           </StyledTab>
           <StyledTab selected={tab === GovernanceTab.QIDAO} onClick={() => setTab(GovernanceTab.QIDAO)}>
             {t('qidao_tab')}{' '}

@@ -2,12 +2,12 @@ import { PalaceTab } from 'models/Tabs'
 import { useTranslation } from 'next-i18next'
 import TreasuryDashboardPage from 'views/treasury-dashboard'
 import { useMemo, useEffect, useState } from 'react'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { ContentMedium } from 'styles/typography'
 import GovernancePage from 'views/treasury-governance'
 import InvestmentsPage from 'views/treasury-investments'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
+import useOtterClamProposalsWithVotes from 'hooks/useOtterClamProposalsWithVotes'
 
 const StyledTabs = styled.div`
   display: flex;
@@ -33,12 +33,27 @@ const StyledTab = styled(ContentMedium).attrs({ as: 'button' })<{ selected?: boo
   border-radius: 8px 8px 0px 0px;
 `
 
+const StyledToolTip = styled.div`
+  background: ${({ theme }) => theme.colors.clamPink};
+  border: 1px solid ${({ theme }) => theme.colors.otterBlack};
+  padding: 1px 10px !important;
+  width: 90px;
+  opacity: 1 !important;
+  border-radius: 5px !important;
+  position: absolute;
+  bottom: 60%;
+  right: -10%;
+  color: white;
+  transform: rotate(25deg);
+  font-size: 14px;
+`
 const StyledBody = styled.div``
 
 export default function PalacePage() {
   const { t } = useTranslation('', { keyPrefix: 'treasury' })
   const [tab, setTab] = useState<PalaceTab>(PalaceTab.DASHBOARD)
-  const router = useRouter()
+  const theme = useTheme()
+  const { proposalActive } = useOtterClamProposalsWithVotes()
 
   useEffect(() => {
     if (!window) return
@@ -62,7 +77,9 @@ export default function PalacePage() {
         </Link>
         <Link href="#governance" replace>
           <StyledTab selected={tab === PalaceTab.GOVERNANCE} onClick={() => setTab(PalaceTab.GOVERNANCE)}>
-            {t('governance_tab')}{' '}
+            {t('governance_tab')}
+
+            {proposalActive && <StyledToolTip>{t('governance.voteNow')}</StyledToolTip>}
           </StyledTab>
         </Link>
       </StyledTabs>

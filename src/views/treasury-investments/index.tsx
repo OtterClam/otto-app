@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import Arrow from 'views/store/StoreHero/arrow.svg'
 import { format as formatDate } from 'date-fns'
 import { useTranslation } from 'next-i18next'
 import { useMemo, useState } from 'react'

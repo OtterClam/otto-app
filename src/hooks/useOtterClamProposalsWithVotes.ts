@@ -6,10 +6,10 @@ import useOtterClamProposalUserVotes from './useOtterClamProposalUserVotes'
 export default function useOtterClamProposalsWithVotes(): {
   loading: boolean
   proposals: Proposal[]
-  fetchMore: any
+  proposalActive: boolean
 } {
   const { loading: loadingVotes, proposals: votedProposals } = useOtterClamProposalUserVotes()
-  const { loading, proposals, fetchMore } = useOtterClamProposals()
+  const { loading, proposals } = useOtterClamProposals()
   const finalProposals: Proposal[] = []
 
   // iterate all OtterClam proposals
@@ -26,10 +26,11 @@ export default function useOtterClamProposalsWithVotes(): {
     }
   }
 
+  const proposalActive = finalProposals.reduce((a, b) => a || (b.state === 'active' && !b.voted), false)
   return {
     loading: loading && loadingVotes,
     proposals: finalProposals,
-    fetchMore,
+    proposalActive,
   }
 }
 
