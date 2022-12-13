@@ -28,7 +28,7 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
       return null
     }
     const items = payload
-      .filter(({ value }) => Math.round(value) > 10)
+      .filter(({ value }) => Math.round(value) > 1)
       .map(({ name, value, payload }) => ({
         key: payload.dataKey,
         label: name,
@@ -36,8 +36,8 @@ const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
         color: payload.stopColor,
       }))
     const footer = format(parseInt(payload[0]?.payload?.timestamp ?? '0', 10) * 1000, 'LLL d, yyyy')
-    // formatUsd(payload[0]?.value
-    return <ChartTooltip headerLabel="Market Value" items={items} footer={footer} />
+    const headerLabel = payload[0]?.dataKey === 'nav' ? 'Market Value' : 'Last Harvest'
+    return <ChartTooltip headerLabel={headerLabel} items={items} footer={footer} />
   }
 
 export default function TreasuryMarketValuePieChart({ data, tmv, date }: TreasuryMarketValueChartProps) {
@@ -53,6 +53,7 @@ export default function TreasuryMarketValuePieChart({ data, tmv, date }: Treasur
       pieData.push({
         uid,
         nav: parseFloat(element.netAssetValue),
+        revenue: parseFloat(element.grossRevenue),
         label: element.strategy,
         stopColor: '',
         timestamp: element.timestamp,
@@ -71,6 +72,7 @@ export default function TreasuryMarketValuePieChart({ data, tmv, date }: Treasur
   pieData.push({
     uid: 'Untracked',
     nav: trackedVal,
+    revenue: 0,
     label: 'Untracked',
     stopColor: 'gray',
     timestamp: date,
@@ -81,7 +83,7 @@ export default function TreasuryMarketValuePieChart({ data, tmv, date }: Treasur
       <PieChart width={size?.width} height={size?.height}>
         <Tooltip wrapperStyle={{ zIndex: 1 }} content={renderTooltip(i18n) as any} />
 
-        <Pie data={pieData} nameKey="label" outerRadius={120} innerRadius={70} dataKey="nav" minAngle={3}>
+        <Pie data={pieData} nameKey="label" outerRadius={90} innerRadius={60} dataKey="nav" minAngle={3}>
           {pieData.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.stopColor} />
           ))}
@@ -104,7 +106,7 @@ export default function TreasuryMarketValuePieChart({ data, tmv, date }: Treasur
               }
               return (
                 <>
-                  <text {...positioningProps} style={{ fontSize: '24px', fill: 'white' }}>
+                  <text {...positioningProps} style={{ fontSize: '20px', fill: 'white' }}>
                     {formatUsd(tmv)}
                   </text>
                   <text {...positioningPropsTwo} style={{ fill: 'white' }}>
@@ -114,6 +116,12 @@ export default function TreasuryMarketValuePieChart({ data, tmv, date }: Treasur
               )
             }}
           />
+        </Pie>
+
+        <Pie data={pieData} nameKey="label" outerRadius={115} innerRadius={105} dataKey="revenue" minAngle={3}>
+          {pieData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={entry.stopColor} />
+          ))}
         </Pie>
       </PieChart>
     </StyledContainer>
