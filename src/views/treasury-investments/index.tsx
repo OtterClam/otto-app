@@ -288,10 +288,9 @@ export default function InvestmentsPage({ className }: Props) {
   const [toDateOpen, setToDateOpen] = useState(false)
 
   // ensure dates are utc for query, but not ui
-  const { investments } = useInvestments(
-    new Date(fromDate * 1000).setUTCHours(0, 0, 0, 0) / 1000 + daySecs,
-    new Date(toDate * 1000).setUTCHours(0, 0, 0, 0) / 1000 + daySecs
-  )
+  const utcFrom = useMemo(() => new Date(fromDate * 1000).setUTCHours(0, 0, 0, 0) / 1000 + daySecs, [fromDate, daySecs])
+  const utcTo = useMemo(() => new Date(toDate * 1000).setUTCHours(0, 0, 0, 0) / 1000 + daySecs, [toDate, daySecs])
+  const { investments } = useInvestments(utcFrom, utcTo)
   const { loading, metrics } = useTreasuryMetrics()
 
   const toDateMetrics = useMemo(
@@ -304,11 +303,18 @@ export default function InvestmentsPage({ className }: Props) {
     [metrics, toDate]
   )
 
+  const lastDataDate = useMemo(() => {
+    const groupedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
+    const currentInvestments = groupedInvestments.flatMap(x => x.at(-1))
+    const lastDate = Math.max(...currentInvestments.flatMap(x => parseInt(x?.timestamp, 10)))
+    return lastDate > 0 ? lastDate : 0
+  }, [investments])
+
   const joinedInvestments = useMemo(() => {
     const groupedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
     const currentInvestments = groupedInvestments.flatMap(x => x.at(-1))
     const portfolioPcts = currentInvestments.flatMap(x => {
-      // if (parseInt(x?.timestamp ?? '0', 10) !== parseInt(toDateMetrics?.id ?? '0', 10) - daySecs) return 0
+      if (parseInt(x?.timestamp ?? '0', 10) !== parseInt(toDateMetrics?.id ?? '0', 10) - daySecs) return 0
       return (parseFloat(x?.netAssetValue) / parseFloat(toDateMetrics?.treasuryMarketValue)) * 100
     })
     return groupedInvestments
@@ -324,7 +330,8 @@ export default function InvestmentsPage({ className }: Props) {
     0
   )
 
-  const dateDiff = useMemo(() => (toDate - fromDate) / daySecs, [toDate, fromDate, daySecs])
+  const dateDiff = useMemo(() => (utcTo - utcFrom) / daySecs, [toDate, fromDate, daySecs])
+
   const maybeTmv = toDateMetrics?.treasuryMarketValue ?? 1
   const netApr = (1 + revenue / maybeTmv / dateDiff) ** 365 * 100 - 100
 
@@ -344,7 +351,7 @@ export default function InvestmentsPage({ className }: Props) {
             <Help message={t('tooltips.revenue')}>
               <ContentExtraSmall>{t('totalRevenue')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{loading ? '--' : `${formatUsd(revenue)} / ${dateDiff.toFixed(0)} days`}</ContentMedium>
+            <ContentMedium>{loading ? '--' : `${formatUsd(revenue)}`}</ContentMedium>
           </StyledTreasuryCard>
           <StyledTreasuryCard>
             <Help message={t('tooltips.apr')}>
@@ -359,8 +366,8 @@ export default function InvestmentsPage({ className }: Props) {
           <StyledHeader>{t('header')}</StyledHeader>
           <StyledPieCard>
             <TreasuryMarketValuePieChart
-              date={formatDate(toDate * 1000, 'yyyy-M-d')}
-              tmv={formatUsd(toDateMetrics?.treasuryMarketValue)}
+              date={lastDataDate}
+              tmv={toDateMetrics?.treasuryMarketValue}
               data={investments}
             />
           </StyledPieCard>

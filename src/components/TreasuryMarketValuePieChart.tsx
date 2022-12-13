@@ -1,5 +1,5 @@
 import format from 'date-fns/format'
-import { GetTreasuryMetrics_protocolMetrics } from 'graphs/__generated__/GetTreasuryMetrics'
+import { format as formatDate } from 'date-fns'
 import { Investments_investments } from 'graphs/__generated__/Investments'
 import useSize from 'hooks/useSize'
 import { i18n } from 'i18next'
@@ -10,34 +10,15 @@ import styled from 'styled-components/macro'
 import { theme } from 'styles'
 import { formatUsd } from 'utils/currency'
 import ChartTooltip from './ChartTooltip'
-import { marketValues } from './TreasuryMarketValueChart'
 
 const StyledContainer = styled.div`
   height: 260px;
   width: 100%;
 `
-
-const formatCurrency = (c: number) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-    minimumFractionDigits: 0,
-  }).format(c)
-}
-
-const keySettingMap = marketValues.reduce(
-  (map, setting) =>
-    Object.assign(map, {
-      [setting.dataKey]: setting,
-    }),
-  {} as { [k: string]: typeof marketValues[0] }
-)
-
 export interface TreasuryMarketValueChartProps {
   data: Investments_investments[]
-  tmv: string
-  date: string
+  tmv: number
+  date: number
 }
 
 const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
@@ -68,30 +49,40 @@ export default function TreasuryMarketValuePieChart({ data, tmv, date }: Treasur
   for (let index = data.length - 1; index > 0; index--) {
     const element = data[index]
     const uid = `${element.protocol}_${element.strategy}`
-    if (!pieData?.map(x => x.uid).includes(uid)) {
+    if (!pieData?.map(x => x.uid).includes(uid) && parseInt(element.timestamp, 10) === date) {
       pieData.push({
         uid,
-        value: parseFloat(element.netAssetValue),
+        nav: parseFloat(element.netAssetValue),
         label: element.strategy,
-        dataKey: 'netAssetValue',
         stopColor: '',
         timestamp: element.timestamp,
       })
     }
   }
 
-  pieData = pieData.sort((a, b) => b.value - a.value)
+  pieData = pieData.sort((a, b) => b.nav - a.nav)
   pieData.forEach((val, index) => {
     const colorVals = Object.values(theme.colors.rarity)
     val.stopColor = colorVals[index % colorVals.length]
   })
 
+  // add untracked value to pie chart
+  const trackedVal = tmv - pieData.reduce((curr, next) => curr + next.nav, 0)
+  pieData.push({
+    uid: 'Untracked',
+    nav: trackedVal,
+    label: 'Untracked',
+    stopColor: 'gray',
+    timestamp: date,
+  })
+
+  console.log(pieData)
   return (
     <StyledContainer ref={containerRef}>
       <PieChart width={size?.width} height={size?.height}>
         <Tooltip wrapperStyle={{ zIndex: 1 }} content={renderTooltip(i18n) as any} />
 
-        <Pie data={pieData} nameKey="label" outerRadius={120} innerRadius={70} dataKey="value" minAngle={3}>
+        <Pie data={pieData} nameKey="label" outerRadius={120} innerRadius={70} dataKey="nav" minAngle={3}>
           {pieData.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.stopColor} />
           ))}
@@ -100,7 +91,7 @@ export default function TreasuryMarketValuePieChart({ data, tmv, date }: Treasur
               const {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                viewBox: { cx, cy }, // eslint-disable-line
+                viewBox: { cx, cy },
               } = props
               const positioningProps = {
                 x: cx,
@@ -115,10 +106,10 @@ export default function TreasuryMarketValuePieChart({ data, tmv, date }: Treasur
               return (
                 <>
                   <text {...positioningProps} style={{ fontSize: '24px', fill: 'white' }}>
-                    {tmv}
+                    {formatUsd(tmv)}
                   </text>
                   <text {...positioningPropsTwo} style={{ fill: 'white' }}>
-                    {date}
+                    {formatDate(date * 1000, 'yyyy-M-d')}
                   </text>
                 </>
               )
