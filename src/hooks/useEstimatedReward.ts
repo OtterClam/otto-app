@@ -8,6 +8,7 @@ import {
   TOTAL_RARITY_REWARD,
 } from 'constant'
 import { trim } from 'helpers/trim'
+import Otto from 'models/Otto'
 
 export default function useEstimatedReward(rank: number, isAdventure: boolean) {
   const { epoch, totalOttoSupply } = useRarityEpoch()
@@ -32,4 +33,36 @@ export default function useEstimatedReward(rank: number, isAdventure: boolean) {
   }, [prizeCount, epoch, isAdventure])
 
   return rank <= prizeCount ? trim(topReward * (1 / rank), isAdventure ? 0 : 2) : '-'
+}
+
+export function useEstimatedTotalReward(myOttos: Otto[], isAdventure: boolean, epoch: number, totalOttoSupply: number) {
+  const estimatedTotalReward = useMemo(() => {
+    return myOttos.reduce((a, b) => {
+      // let val = parseFloat(
+      //   useStaticEstimatedReward(isAdventure ? b.apRanking : b.ranking, isAdventure, epoch, totalOttoSupply)
+      // )
+      const rank = isAdventure ? b.apRanking : b.ranking
+      const prizeCount = Math.floor(totalOttoSupply * 0.5)
+      let sum = 0
+      let totalReward =
+        epoch >= 6
+          ? ROUND_RARITY_REWARD_S2
+          : epoch > 3 || epoch === -1
+          ? ROUND_RARITY_REWARD_AFTER_3
+          : ROUND_RARITY_REWARD_BEFORE_3
+      if (isAdventure) {
+        totalReward = TOTAL_ADVENTURE_REWARD / 4
+      }
+      for (let i = 1; i <= prizeCount; i++) {
+        sum += 1 / i
+      }
+      const topReward = totalReward / sum
+
+      let val = parseFloat(rank <= prizeCount ? trim(topReward * (1 / rank), isAdventure ? 0 : 2) : '-')
+      if (val === Infinity || val === -Infinity || !val) val = 0
+      return a + val
+    }, 0)
+  }, [myOttos, isAdventure])
+
+  return estimatedTotalReward
 }
