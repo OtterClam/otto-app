@@ -10,7 +10,6 @@ import Link from 'next/link'
 import styled from 'styled-components/macro'
 import { ContentMedium, Headline } from 'styles/typography'
 import { useRarityEpoch } from 'contexts/RarityEpoch'
-import { createSearchParams } from 'utils/url'
 import { useRouter } from 'next/router'
 import { useRepositories } from 'contexts/Repositories'
 import { Leaderboard, LeaderboardType } from 'models/Leaderboard'
@@ -210,7 +209,7 @@ export default function RankList({ className }: Props) {
   const { leaderboards: leaderboardsRepo } = useRepositories()
   const page = Number(router.query.page || 0)
   const adventure = Boolean(router.query.adventure)
-  const { epoch, totalOttoSupply, isLatestEpoch } = useRarityEpoch()
+  const { epoch, isLatestEpoch } = useRarityEpoch()
   const [leaderboard, setLeaderboard] = useState<Leaderboard>()
   const [loadingApi, setLoadingApi] = useState(false)
   const epochInQuery = isLatestEpoch ? undefined : epoch
@@ -222,7 +221,7 @@ export default function RankList({ className }: Props) {
   )
   const [expand, setExpand] = useState(false)
   const loading = !leaderboard || loadingApi
-  const estimatedTotalReward = useEstimatedTotalReward(myOttos, adventure, epoch, totalOttoSupply)
+  const estimatedTotalReward = useEstimatedTotalReward(myOttos, adventure)
 
   useEffect(() => {
     setLoadingApi(true)

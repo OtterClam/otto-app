@@ -35,12 +35,11 @@ export default function useEstimatedReward(rank: number, isAdventure: boolean) {
   return rank <= prizeCount ? trim(topReward * (1 / rank), isAdventure ? 0 : 2) : '-'
 }
 
-export function useEstimatedTotalReward(myOttos: Otto[], isAdventure: boolean, epoch: number, totalOttoSupply: number) {
+// todo: refactor logic into static function in a non-hook file
+export function useEstimatedTotalReward(myOttos: Otto[], isAdventure: boolean) {
+  const { epoch, totalOttoSupply } = useRarityEpoch()
   const estimatedTotalReward = useMemo(() => {
     return myOttos.reduce((a, b) => {
-      // let val = parseFloat(
-      //   useStaticEstimatedReward(isAdventure ? b.apRanking : b.ranking, isAdventure, epoch, totalOttoSupply)
-      // )
       const rank = isAdventure ? b.apRanking : b.ranking
       const prizeCount = Math.floor(totalOttoSupply * 0.5)
       let sum = 0
@@ -62,7 +61,7 @@ export function useEstimatedTotalReward(myOttos: Otto[], isAdventure: boolean, e
       if (val === Infinity || val === -Infinity || !val) val = 0
       return a + val
     }, 0)
-  }, [myOttos, isAdventure])
+  }, [myOttos, isAdventure, epoch])
 
   return estimatedTotalReward
 }
