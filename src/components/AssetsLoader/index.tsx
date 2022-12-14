@@ -113,6 +113,7 @@ const StyledDialogContainer = styled.div`
 `
 
 const StyledDialog = styled.div`
+  font-family: 'Pangolin', 'naikaifont';
   font-size: 16px;
   color: ${({ theme }) => theme.colors.otterBlack};
   background: ${({ theme }) => theme.colors.white};
@@ -128,6 +129,7 @@ const StyledDialog = styled.div`
 `
 
 const StyledOttoName = styled.div`
+  font-family: 'Pangolin', 'naikaifont';
   font-size: 16px;
   color: ${({ theme }) => theme.colors.white};
   margin-left: 4px;
