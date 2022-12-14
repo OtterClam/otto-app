@@ -20,11 +20,12 @@ import useServiceWorker from 'hooks/useServiceWorker'
 import MyOttosProvider from 'MyOttosProvider'
 import dynamic from 'next/dynamic'
 import OtterSubgraphProvider from 'OtterSubgraphProvider'
+import SnapshotProvider from 'SnapshotSubgraphProvider'
 import { PropsWithChildren, useEffect } from 'react'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
-import MissionPopup from 'views/mission/MissionPopup'
 import MyMissionsProvider from 'views/mission/MyMissionsProvider'
+import MissionPopup from 'views/mission/MissionPopup'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
 
@@ -80,7 +81,6 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
   useServiceWorker()
   useContractAddresses()
   const apollo = useApollo()
-
   useRealWindowSize()
 
   return (
@@ -97,20 +97,22 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                         <MyItemsProvider>
                           <BannersProvider>
                             <OverlayProvider>
-                              <StyledApp>
-                                <SkeletonThemeProvider>
-                                  <StyledPageContainer>{children}</StyledPageContainer>
-                                  <Error />
-                                  <WalletSelector />
-                                  <SideMenu />
-                                  <MyMissionsProvider>
-                                    <MissionPopup />
-                                  </MyMissionsProvider>
-                                  <AssetsLoader />
-                                  <ItemDetailsPopup />
-                                  <OttoPopup />
-                                </SkeletonThemeProvider>
-                              </StyledApp>
+                              <SnapshotProvider>
+                                <StyledApp>
+                                  <SkeletonThemeProvider>
+                                    <StyledPageContainer>{children}</StyledPageContainer>
+                                    <Error />
+                                    <WalletSelector />
+                                    <SideMenu />
+                                    <MyMissionsProvider>
+                                      <MissionPopup />
+                                    </MyMissionsProvider>
+                                    <AssetsLoader />
+                                    <ItemDetailsPopup />
+                                    <OttoPopup />
+                                  </SkeletonThemeProvider>
+                                </StyledApp>
+                              </SnapshotProvider>
                             </OverlayProvider>
                           </BannersProvider>
                         </MyItemsProvider>

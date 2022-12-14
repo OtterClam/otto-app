@@ -124,7 +124,7 @@ export default function BankAvgAprChart({ data, aprRange }: BankAvgAprChartProps
             fill={`url(#color-${dataKey})`}
             fillOpacity="1"
             stackId={i}
-            minPointSize={10}
+            minPointSize={3}
           />
         ))}
       </BarChart>

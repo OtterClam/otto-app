@@ -91,7 +91,7 @@ export default function StakeTab({ className }: Props) {
       wallet?.setBalance(tokenAddress, balance => balance.sub(utils.parseUnits(stakeAmount, 9)))
       wallet?.setBalance(CLAM_POND, balance => balance.add(utils.parseUnits(stakeAmount, 9)))
     }
-  }, [stakeState.state])
+  }, [stakeState.state, CLAM_POND, stakeAmount, tokenAddress, wallet])
 
   return (
     <StyledStakeTab className={className}>

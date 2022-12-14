@@ -72,6 +72,7 @@ export const GET_TREASURY_METRICS = gql`
       treasuryUniV3UsdcMaiStrategyMarketValue
       treasuryQuickswapV3MaiUsdtStrategyMarketValue
       treasuryDystopiaPairUsdcClamMarketValue
+      treasuryClamValue
     }
   }
 `
@@ -115,6 +116,23 @@ export const GET_TREASURY_REVENUE = gql`
   }
 `
 
+export const GET_GOVERNANCE_METRICS = gql`
+  query GetGovernanceMetrics {
+    governanceMetrics(orderBy: timestamp, orderDirection: desc) {
+      id
+      timestamp
+      qiDaoVeDystAmt
+      dystMarketCap
+      veDystMarketCap
+      penDystMarketCap
+      vlPenMarketCap
+      otterClamVlPenMarketCap
+      otterClamVlPenPercentOwned
+      otterClamVeDystPercentOwned
+    }
+  }
+`
+
 export const GET_LAST_PAYOUT_TO_ADDRESS = gql`
   query LastPayout($address: ID!) {
     stakedBalances(where: { id: $address }) {
@@ -122,6 +140,31 @@ export const GET_LAST_PAYOUT_TO_ADDRESS = gql`
       clamPondLastPayout
       clamPondLastPayoutUsd
       pearlBankLastPayout
+    }
+  }
+`
+
+export const GET_INVESTMENTS = gql`
+  query Investments($from: BigInt, $to: BigInt) {
+    investments(
+      where: { timestamp_gte: $from, timestamp_lte: $to }
+      orderBy: timestamp
+      orderDirection: asc
+      first: 1000
+    ) {
+      id
+      protocol
+      strategy
+      timestamp
+      netAssetValue
+      grossApr
+      grossRevenue
+      netApr
+      netRevenue
+      # rewardTokens {
+      #   token
+      #   amountUsd
+      # }
     }
   }
 `

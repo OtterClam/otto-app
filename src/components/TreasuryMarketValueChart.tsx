@@ -8,6 +8,7 @@ import { useTranslation } from 'next-i18next'
 import { RefObject, useRef } from 'react'
 import { Area, AreaChart, Tooltip } from 'recharts'
 import styled from 'styled-components/macro'
+import { theme } from 'styles'
 import { formatUsd } from 'utils/currency'
 import ChartTooltip from './ChartTooltip'
 
@@ -30,16 +31,16 @@ const formatCurrency = (c: number) => {
 
 const ytickFormatter = (number: string) => `${formatCurrency(parseFloat(number) / 1000000)}M`
 
-const marketValues = [
+export const marketValues = [
   {
     label: 'Total',
     dataKey: 'treasuryMarketValue',
-    stopColor: ['#EE4B4E', 'rgba(219, 55, 55, 0.5)'],
+    stopColor: theme.colors.treasury.clamLpRed,
   },
   {
     label: 'CLAM/USD+ (Penrose)',
     dataKey: 'treasuryDystopiaPairUSDPLUSClamMarketValue',
-    stopColor: ['#EE4B4E', 'rgba(219, 55, 55, 0.5)'],
+    stopColor: theme.colors.treasury.clamLpRed,
   },
   {
     label: 'CLAM/USDC (Penrose)',
@@ -49,17 +50,12 @@ const marketValues = [
   {
     label: 'CLAM/MAI (Quick)',
     dataKey: 'treasuryClamMaiMarketValue',
-    stopColor: ['#EE4B4E', 'rgba(219, 55, 55, 0.5)'],
+    stopColor: theme.colors.treasury.clamLpRed,
   },
   {
     label: 'CLAM/MAI (Penrose)',
     dataKey: 'treasuryDystopiaPairMaiClamMarketValue',
-    stopColor: ['#EE4B4E', 'rgba(219, 55, 55, 0.5)'],
-  },
-  {
-    label: 'FRAX',
-    dataKey: 'treasuryFraxMarketValue',
-    stopColor: ['#8F5AE8', 'rgba(143, 90, 232, 0.5)'],
+    stopColor: theme.colors.treasury.clamLpRed,
   },
   {
     label: 'MATIC',
@@ -69,12 +65,12 @@ const marketValues = [
   {
     label: 'MAI/USDC (QiDAO)',
     dataKey: 'treasuryMaiUsdcQiInvestmentValue',
-    stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
+    stopColor: theme.colors.treasury.stablecoinGreen,
   },
   {
     label: 'MAI/USDC (UniV3)',
     dataKey: 'treasuryUniV3UsdcMaiStrategyMarketValue',
-    stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
+    stopColor: theme.colors.treasury.stablecoinGreen,
   },
   {
     label: 'MAI/USDT (QuickV3)',
@@ -94,7 +90,7 @@ const marketValues = [
   {
     label: 'DAI (Gains)',
     dataKey: 'treasuryDaiMarketValue',
-    stopColor: ['rgba(254, 129, 22,0.8)', 'rgba(254, 129, 22,0.5)'],
+    stopColor: theme.colors.treasury.gainsDai,
   },
   {
     label: 'TUSD/USDC (Penrose)',
@@ -104,37 +100,37 @@ const marketValues = [
   {
     label: 'stMATIC/USD+ (Penrose)',
     dataKey: 'treasuryDystopiaPairUsdplusStMaticMarketValue',
-    stopColor: ['rgba(131, 71, 229, 0.8)', 'rgba(131, 71, 229, 0.5)'],
+    stopColor: theme.colors.treasury.maticPurple,
   },
   {
     label: 'stMATIC/MAI (QiDAO)',
     dataKey: 'treasuryMaiStMaticMarketValue',
-    stopColor: ['rgba(131, 71, 229, 0.8)', 'rgba(131, 71, 229, 0.5)'],
+    stopColor: theme.colors.treasury.maticPurple,
   },
   {
     label: 'Hedged USDC/MATIC (Penrose)',
     dataKey: 'treasuryPenroseHedgedMaticMarketValue',
-    stopColor: ['rgba(131, 71, 229, 0.8)', 'rgba(131, 71, 229, 0.5)'],
+    stopColor: theme.colors.treasury.maticPurple,
   },
   {
     label: 'Hedged MATIC/stMATIC (Kyberswap)',
     dataKey: 'treasuryKyberswapMaticStMaticHedgedMarketValue',
-    stopColor: ['rgba(131, 71, 229, 0.8)', 'rgba(131, 71, 229, 0.5)'],
+    stopColor: theme.colors.treasury.maticPurple,
   },
   {
     label: 'Hedged MATIC/USDC (UniV3)',
     dataKey: 'treasuryUniV3HedgedMaticUsdcStrategyMarketValue',
-    stopColor: ['rgba(131, 71, 229, 0.8)', 'rgba(131, 71, 229, 0.5)'],
+    stopColor: theme.colors.treasury.maticPurple,
   },
   {
     label: 'Qi',
     dataKey: 'treasuryQiMarketValue',
-    stopColor: ['#F4D258', 'rgba(244, 210, 88, 0.5)'],
+    stopColor: theme.colors.treasury.qiYellow,
   },
   {
     label: 'Qi (Locked)',
     dataKey: 'treasuryOtterClamQiMarketValue',
-    stopColor: ['#F4D258', 'rgba(244, 210, 88, 0.5)'],
+    stopColor: theme.colors.treasury.qiYellow,
   },
   {
     label: 'dQUICK',
@@ -144,7 +140,7 @@ const marketValues = [
   {
     label: 'Qi/MATIC',
     dataKey: 'treasuryQiWmaticQiInvestmentMarketValue',
-    stopColor: ['#F4D258', 'rgba(244, 210, 88, 0.5)'],
+    stopColor: theme.colors.treasury.qiYellow,
   },
   {
     label: 'Qi/TetuQi (Penrose)',
@@ -154,7 +150,7 @@ const marketValues = [
   {
     label: 'DAI',
     dataKey: 'treasuryDaiRiskFreeValue',
-    stopColor: ['#F4D258', 'rgba(244, 210, 88, 0.5)'],
+    stopColor: theme.colors.treasury.qiYellow,
   },
   {
     label: 'TetuQi',
@@ -184,7 +180,7 @@ const marketValues = [
   {
     label: 'penDYST',
     dataKey: 'treasuryPenDystMarketValue',
-    stopColor: ['rgba(108, 111, 227, 1)', 'rgba(8, 95, 142, 0.5)'],
+    stopColor: theme.colors.treasury.penDyst,
   },
   {
     label: 'MATIC/DYST (Penrose)',
@@ -205,6 +201,11 @@ const marketValues = [
     label: 'SAND',
     dataKey: 'treasurySandMarketValue',
     stopColor: ['rgba(0, 174, 239, 1)', 'rgba(0, 174, 239, 0.5)'],
+  },
+  {
+    label: 'CLAM',
+    dataKey: 'treasuryClamValue',
+    stopColor: ['rgba(255, 172, 161, 1)', 'rgba(255, 172, 161, 0.5)'],
   },
   {
     label: 'OHM',
@@ -260,10 +261,9 @@ export default function TreasuryMarketValueChart({ data }: TreasuryMarketValueCh
   const containerRef = useRef<HTMLDivElement>() as RefObject<HTMLDivElement>
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
-
   return (
     <StyledContainer ref={containerRef}>
-      <AreaChart data={data} width={size?.width ?? 300} height={size?.height ?? 260}>
+      <AreaChart data={data} width={size?.width} height={size?.height}>
         <defs>
           {marketValues.map(({ dataKey: key, stopColor }) => (
             <linearGradient key={key} id={`color-${key}`} x1="0" y1="0" x2="0" y2="1">

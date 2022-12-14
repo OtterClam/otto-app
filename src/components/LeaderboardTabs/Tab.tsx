@@ -2,7 +2,6 @@ import { useBreakpoints } from 'contexts/Breakpoints'
 import { Banner } from 'models/Banner'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import styled from 'styled-components/macro'
 
 const StyledButton = styled.a`

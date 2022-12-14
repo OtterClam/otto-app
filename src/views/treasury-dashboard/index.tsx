@@ -7,18 +7,13 @@ import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentExtraSmall, ContentMedium, ContentSmall } from 'styles/typography'
 import ClamIcon from 'assets/clam.png'
-import PearlIcon from 'assets/pearl.png'
 import Help from 'components/Help'
 import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
 import { trim } from 'helpers/trim'
-import { BigNumber, BigNumberish, ethers } from 'ethers'
 import { useMemo, useState } from 'react'
 import useTreasuryRevenues from 'hooks/useTreasuryRevenues'
 import usePearlBankMetrics from 'hooks/usePearlBankMetrics'
-import ClamSupplyChart from 'components/ClamSupplyChart'
-// import ClamBuybackChart from 'components/ClamBuybackChart'
 import CurrencySwitcher from 'components/CurrencySwitcher'
-import useCurrencyFormatter from 'hooks/useCurrencyFormatter'
 import { Currency, useCurrency } from 'contexts/Currency'
 import Switcher from 'components/Switcher'
 import { formatClamString, formatUsd } from 'utils/currency'
@@ -92,6 +87,7 @@ const StyledTreasuryCard = styled(TreasuryCard)`
 
 const StyledChartCard = styled(TreasuryCard)`
   min-height: 260px;
+  width: 100%;
 `
 
 const StyledTokenContainer = styled.div`
@@ -222,34 +218,25 @@ const StyledTopBar = styled.div`
   display: inline-flex;
   justify-content: space-between;
 `
-
-const formatFinancialNumber = (num: BigNumberish, decimal = 9, digits = 2) =>
-  `$${formatBigNumber(num, decimal, digits)}`
-
-const formatBigNumber = (num: BigNumberish, decimal = 9, digits = 2) => {
-  try {
-    return trim(ethers.utils.formatUnits(num, decimal), digits)
-  } catch {
-    return ''
-  }
-}
-
 export enum PearlBankAvgAprRange {
   Week = 7,
   Month = 30,
+  ThreeMonth = 90,
 }
 
 const usePearlBankApr = () => {
   const [range, setRange] = useState(PearlBankAvgAprRange.Week)
   const { metrics: pearlBankMetrics } = usePearlBankMetrics()
-  const startDate = useMemo(
-    () => subDays(Number(pearlBankMetrics[0]?.timestamp ?? 0) * 1000, range),
-    [range, pearlBankMetrics]
-  )
-  const avgApy = useMemo(() => {
+  const startDate = useMemo(() => {
+    const pastDayFromRange = subDays(Number(pearlBankMetrics[0]?.timestamp ?? 0) * 1000, range - 1)
+    const oldestDataDate = new Date((pearlBankMetrics[pearlBankMetrics.length - 1]?.timestamp ?? 0) * 1000)
+
+    return pastDayFromRange > oldestDataDate ? pastDayFromRange : oldestDataDate
+  }, [range, pearlBankMetrics])
+  const avgApr = useMemo(() => {
     const metricsSlice = pearlBankMetrics.slice(0, range)
     const totalSum = metricsSlice.reduce((total, value) => {
-      return total + parseFloat(value.apy)
+      return total + parseFloat(value.apr)
     }, 0)
 
     const average = totalSum / metricsSlice.length
@@ -258,7 +245,7 @@ const usePearlBankApr = () => {
   }, [range, pearlBankMetrics])
 
   return {
-    avgApy,
+    avgApr,
     startDate,
     pearlBankAvgAprRange: range,
     setPearlBankAvgAprRange: setRange,
@@ -267,14 +254,28 @@ const usePearlBankApr = () => {
 
 export default function TreasuryDashboardPage() {
   const { t } = useTranslation('', { keyPrefix: 'treasury.dashboard' })
-  const { metrics, latestMetrics } = useTreasuryMetrics()
-  const { metrics: pearlBankMetrics, latestMetrics: pearlBankLatestMetrics } = usePearlBankMetrics()
-  const { revenues, latestRevenues } = useTreasuryRevenues()
-  const { avgApy, pearlBankAvgAprRange, setPearlBankAvgAprRange } = usePearlBankApr()
-  const pearlBankAvgAprRangeStartDate = subDays(new Date(), pearlBankAvgAprRange)
+  const { loading, metrics, latestMetrics } = useTreasuryMetrics()
+  const {
+    loading: pearlBankLoading,
+    metrics: pearlBankMetrics,
+    latestMetrics: pearlBankLatestMetrics,
+  } = usePearlBankMetrics()
+  const { loading: revenuesLoading, revenues, latestRevenues } = useTreasuryRevenues()
+  const {
+    avgApr,
+    startDate: pearlBankAvgAprRangeStartDate,
+    pearlBankAvgAprRange,
+    setPearlBankAvgAprRange,
+  } = usePearlBankApr()
+
   const { currency } = useCurrency()
 
-  const pctBurnt = trim((parseFloat(latestMetrics?.totalBurnedClam) / parseFloat(latestMetrics?.totalSupply)) * 100, 2)
+  const pctBurnt = trim(
+    (parseFloat(latestMetrics?.totalBurnedClam) /
+      (parseFloat(latestMetrics?.totalSupply) + parseFloat(latestMetrics?.totalBurnedClam))) *
+      100,
+    2
+  )
 
   const allTimeAvgApr =
     pearlBankMetrics.reduce((total, value) => {
@@ -298,7 +299,7 @@ export default function TreasuryDashboardPage() {
           <StyledTreasuryCard>
             <StyledTokenContainer>
               <StyledTokenLabel>{t('clamPrice')}</StyledTokenLabel>
-              <StyledTokenPrice>{formatUsd(latestMetrics?.clamPrice, 2)}</StyledTokenPrice>
+              <StyledTokenPrice>{loading ? '--' : formatUsd(latestMetrics?.clamPrice, 2)}</StyledTokenPrice>
               <StyledTokenIcon src={ClamIcon.src} />
             </StyledTokenContainer>
           </StyledTreasuryCard>
@@ -307,7 +308,7 @@ export default function TreasuryDashboardPage() {
             <Help message={t('marketcapTooltip')}>
               <ContentExtraSmall>{t('marketcap')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatUsd(latestMetrics?.marketCap)}</ContentMedium>
+            <ContentMedium>{loading ? '--' : formatUsd(latestMetrics?.marketCap)}</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
@@ -315,7 +316,8 @@ export default function TreasuryDashboardPage() {
               <ContentExtraSmall>{t('clamCirculatingSupply')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {formatClamString(latestMetrics?.clamCirculatingSupply)} / {formatClamString(latestMetrics?.totalSupply)}
+              {loading ? '--' : formatClamString(latestMetrics?.clamCirculatingSupply)} /
+              {loading ? '--' : formatClamString(latestMetrics?.totalSupply)}
             </ContentMedium>
           </StyledTreasuryCard>
 
@@ -323,7 +325,7 @@ export default function TreasuryDashboardPage() {
             <Help message={t('backingTooltip')}>
               <ContentExtraSmall>{t('backing')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{formatUsd(latestMetrics?.clamBacking, 2)}</ContentMedium>
+            <ContentMedium>{loading ? '--' : formatUsd(latestMetrics?.clamBacking, 2)}</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
@@ -331,9 +333,9 @@ export default function TreasuryDashboardPage() {
               <ContentExtraSmall>{t('burned')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {formatClamString(latestMetrics?.totalBurnedClam)}
-              {` 🔥 ${formatUsd(latestMetrics?.totalBurnedClamMarketValue)}`}
-              {` 🔥 ${pctBurnt}%`}
+              {loading ? '--' : formatClamString(latestMetrics?.totalBurnedClam)}
+              {` 🔥 ${loading ? '--' : formatUsd(latestMetrics?.totalBurnedClamMarketValue)}`}
+              {` 🔥 ${loading ? '--' : pctBurnt}%`}
             </ContentMedium>
           </StyledTreasuryCard>
 
@@ -342,7 +344,8 @@ export default function TreasuryDashboardPage() {
               <ContentExtraSmall>{t('distributed')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {formatUsd(pearlBankLatestMetrics?.cumulativeRewardPayoutMarketValue)} @ {trim(allTimeAvgApr, 1)}% APR
+              {pearlBankLoading ? '--' : formatUsd(pearlBankLatestMetrics?.cumulativeRewardPayoutMarketValue)} @{' '}
+              {pearlBankLoading ? '--' : trim(allTimeAvgApr, 1)}% APR
             </ContentMedium>
           </StyledTreasuryCard>
         </StyledMetricsContainer>
@@ -354,7 +357,7 @@ export default function TreasuryDashboardPage() {
             <StyledChartHeader>
               <StyledChartTitle>{t('treasuryMarketValue')}</StyledChartTitle>
               <StyledChartKeyValue>
-                {formatUsd(latestMetrics?.treasuryMarketValue)}
+                {pearlBankLoading ? '--' : formatUsd(latestMetrics?.treasuryMarketValue)}
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
               </StyledChartKeyValue>
             </StyledChartHeader>
@@ -371,8 +374,8 @@ export default function TreasuryDashboardPage() {
               </StyledTopBar>
               <StyledChartKeyValue>
                 {currency === Currency.CLAM
-                  ? `${formatClamString(latestRevenues?.totalRevenueClamAmount, true)}`
-                  : formatUsd(latestRevenues?.totalRevenueMarketValue)}
+                  ? `${revenuesLoading ? '--' : formatClamString(latestRevenues?.totalRevenueClamAmount, true)}`
+                  : `${revenuesLoading ? '--' : formatUsd(latestRevenues?.totalRevenueMarketValue)}`}
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
               </StyledChartKeyValue>
             </StyledChartHeader>
@@ -392,11 +395,12 @@ export default function TreasuryDashboardPage() {
                   options={[
                     { label: 'Week', value: PearlBankAvgAprRange.Week },
                     { label: 'Month', value: PearlBankAvgAprRange.Month },
+                    { label: '3 Months', value: PearlBankAvgAprRange.ThreeMonth },
                   ]}
                 />
               </StyledTopBar>
               <StyledChartKeyValue>
-                {avgApy ?? 0}%
+                {avgApr ?? 0}%
                 <StyledChartKeyDate>
                   {t('averageAprStartDate', { date: formatDate(pearlBankAvgAprRangeStartDate, 'MMM d') })}
                 </StyledChartKeyDate>

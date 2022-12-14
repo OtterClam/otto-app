@@ -13,9 +13,10 @@ import DashboardIcon from './icon_48_dashboard.png'
 
 const menuIcons = {
   bond: BondIcon.src,
-  dashboard: DashboardIcon.src,
+  palace: DashboardIcon.src,
   bank: PearlIcon.src,
   pond: ClamIcon.src,
+  governance: ClamIcon.src,
 }
 
 const StyledContainer = styled.div`
@@ -159,11 +160,12 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { key: 'dashboard' },
+  { key: 'palace' },
   { key: 'pond' },
   { key: 'bank' },
   // { key: 'farm', disabled: true },
   // { key: 'bond', legacy: '/#/bonds' },
+  // { key: 'governance' },
 ]
 
 const getUrlForMenuItem = (item: MenuItem) =>

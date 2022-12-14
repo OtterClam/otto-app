@@ -103,7 +103,7 @@ export const pins: PinData[] = [
   {
     key: 'palace',
     image: palaceImage,
-    link: '/treasury/dashboard',
+    link: '/treasury/palace',
     position: {
       x: 1.35,
       y: -11,

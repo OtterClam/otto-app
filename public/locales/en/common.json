@@ -578,25 +578,32 @@
   },
   "unsupported_network": {
     "action": "Switch to Polygon",
-    "desc": "Only Polygon Mainnet are supported.",
+    "desc": "Only Polygon Mainnet is currently supported.",
     "title": "Unsupported Network"
   },
   "wallet_selector_head": "Connect to a wallet",
   "treasury": {
+    "palace": {
+      "title": "Palace"
+    },
+    "dashboard_tab": "Dashboard",
+    "governance_tab": "Governance",
+    "investments_tab": "Investments",
+    "comingSoon": "Coming Soon!",
     "layout": {
       "nav": {
         "label": {
-          "dashboard": "Dashboard",
+          "palace": "Palace",
           "pond": "Clam Pond",
           "bank": "Pearl Bank",
           "farm": "Farm",
           "bond": "Bond"
         },
         "desc": {
-          "dashboard": "OtterClam Finance Stats",
+          "palace": "OtterClam Finance Stats",
           "pond": "Auto-compound CLAM",
           "bank": "Stake CLAM for Pearl",
-          "farm": "Earn defi yield with tokens",
+          "farm": "Earn DeFi yield with tokens",
           "bond": "Provide Liquidity to Earn"
         }
       }
@@ -612,7 +619,7 @@
       "tvdTooltip": "Total Value Deposited, is the dollar amount of all CLAM staked in the protocol. This metric is often used as growth or health indicator in DeFi projects.",
       "chartHeaderLabel": "Total",
       "dailyPayout": "Daily Payout:",
-      "rewardsTooltip": "Reward Rate is the daily percentage gain for staking in either pool.\nAnnual Percentage Rate (APR) is the daily reward rate multiplied over 365 days, the effective payout for Clam Pond.\nAnnual Percentage Yield (APY) is the yearly return accounting for the effect of daily auto-compounding in the Clam Pond.",
+      "rewardsTooltip": "Reward Rate is the daily percentage gain for staking in either pool.\nAnnual Percentage Rate (APR) is the daily reward rate multiplied over 365 days, the effective payout for Pearl Bank.\nAnnual Percentage Yield (APY) is the yearly return accounting for the effect of daily auto-compounding in the Clam Pond.",
       "today": "Today",
       "treasuryMarketValue": "Market Value of Treasury Assets",
       "treasuryRevenue": "Protocol Revenue",
@@ -629,6 +636,53 @@
       "autocompoundChartHeader": "Auto-Compound",
       "averageAprStartDate": "from {{ date }}",
       "averageApr": "Average APR"
+    },
+    "governance": {
+      "otterclam_tab": "OtterClam",
+      "qidao_tab": "Qi DAO",
+      "title": "Governance",
+      "welcome_message_title": "Your Vote Counts!",
+      "welcome_message_body": "OtterClam is governed by a Decentralised Autonomous Organisation (DAO)",
+      "qidao_message_title": "QiDAO Governance",
+      "qidao_message_body": "OtterClam's policy is to vote for the pool with the highest bribe rewards!",
+      "voteNow": "Vote Now!",
+      "votingClosed": "Voting Closed",
+      "votes": "Votes",
+      "voters": "Voters",
+      "ocvoted": "OtterClam Voted:",
+      "youVoted": "You Voted:",
+      "snapshotEth": "View on Snapshot.eth",
+      "seeLess": "See Less...",
+      "seeMore": "See More...",
+      "proposalState": {
+        "active": "Active",
+        "closed": "Closed"
+      }
+    },
+    "investments": {
+      "fromDate": "From Date:",
+      "toDate": "To Date:",
+      "tmv": "Treasury Market Value",
+      "header": "OtterClam Investment Portfolio",
+      "totalRevenue": "Total Revenue",
+      "totalApr": "Net Average APR",
+      "togglePnl": "Toggle PnL",
+      "pnlNote": "Please Note: OtterClam actively manages treasury investments, and so rebalancing occurs frequently. Large percentage changes may be due to funds moving between investment positions. Click on any row & modify the date ranges for more details.",
+      "tooltips": {
+        "tmv": "Total value of Treasury Assets on {{ date }}",
+        "revenue": "Total gross revenue during the selected date range.",
+        "apr": "Overall Annualised Percentage Return (APR) of all Treasury Investments during the selected date range.",
+        "positionChange": "Percentage difference between the market value of the position on {{ fromDate }} and {{ toDate }}",
+        "pnl": "Position Change plus the total revenue generated during the selected date range (as a percentage of the value on {{ fromDate }} )"
+      },
+      "tableHeader": {
+        "investment": "Investment",
+        "protocol": "Protocol",
+        "portfolioPct": "Portfolio %",
+        "averageApr": "Average APR",
+        "positionChange": "Position Change",
+        "pnl": "Net Profit/Loss"
+      }
     }
   },
   "stake": {
