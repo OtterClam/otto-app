@@ -1,4 +1,6 @@
 // TODO: refactor the table
+import CLAM from 'assets/clam.png'
+import FISH from 'assets/fish.png'
 import ArrowDown from 'assets/ui/arrow_down.svg'
 import Button from 'components/Button'
 import { useMyOttos } from 'hooks/useOtto'
@@ -8,10 +10,10 @@ import Link from 'next/link'
 import styled from 'styled-components/macro'
 import { ContentMedium, Headline } from 'styles/typography'
 import { useRarityEpoch } from 'contexts/RarityEpoch'
-import { createSearchParams } from 'utils/url'
 import { useRouter } from 'next/router'
 import { useRepositories } from 'contexts/Repositories'
 import { Leaderboard, LeaderboardType } from 'models/Leaderboard'
+import { useEstimatedTotalReward } from 'hooks/useEstimatedReward'
 import LoadingGif from './loading.gif'
 import ListRow from './ListRow'
 
@@ -111,10 +113,12 @@ const StyledMyOttoSection = styled.section<{ isLatestEpoch: boolean }>`
   }
 `
 
+const StyledTextWrapper = styled.div``
+
 const StyledHint = styled(ContentMedium)`
   margin-bottom: 10px;
+  display: inline-block;
 `
-
 const StyledExpandColumn = styled(ContentMedium)<{ expand: boolean }>`
   display: flex;
   align-items: center;
@@ -171,6 +175,26 @@ const StyledButton = styled(Button)`
   width: 100%;
 `
 
+const StyledEstimatedReward = styled(ContentMedium).attrs({ as: 'div' })<{ isAdventure?: boolean }>`
+  margin-bottom: 10px;
+  display: flex;
+  vertical-align: top;
+  float: right;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  &:before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    background-image: url(${({ isAdventure }) => (isAdventure ? FISH.src : CLAM.src)});
+    background-size: 100%;
+  }
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    justify-content: start;
+  }
+`
+
 interface Props {
   className?: string
 }
@@ -180,6 +204,7 @@ const PAGE = 20
 export default function RankList({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.rank_list' })
   const router = useRouter()
+
   const isAdventure = Boolean(router.query.adventure)
   const { leaderboards: leaderboardsRepo } = useRepositories()
   const page = Number(router.query.page || 0)
@@ -189,9 +214,14 @@ export default function RankList({ className }: Props) {
   const [loadingApi, setLoadingApi] = useState(false)
   const epochInQuery = isLatestEpoch ? undefined : epoch
   const { ottos: myOttos } = useMyOttos(epochInQuery)
-  const sortedMyOttos = useMemo(() => myOttos.sort((a, b) => a.ranking - b.ranking), [myOttos])
+  const sortedMyOttos = useMemo(
+    () =>
+      adventure ? myOttos.sort((a, b) => a.apRanking - b.apRanking) : myOttos.sort((a, b) => a.ranking - b.ranking),
+    [myOttos]
+  )
   const [expand, setExpand] = useState(false)
   const loading = !leaderboard || loadingApi
+  const estimatedTotalReward = useEstimatedTotalReward(myOttos, adventure)
 
   useEffect(() => {
     setLoadingApi(true)
@@ -210,7 +240,12 @@ export default function RankList({ className }: Props) {
       <StyledTable>
         {myOttos.length > 0 && (
           <StyledMyOttoSection isLatestEpoch={isLatestEpoch}>
-            <StyledHint>{t('your_rank')}</StyledHint>
+            <StyledTextWrapper>
+              <StyledHint>{t('your_rank')}</StyledHint>
+              <StyledEstimatedReward as="div" isAdventure={adventure}>
+                {estimatedTotalReward}
+              </StyledEstimatedReward>
+            </StyledTextWrapper>
             {(expand ? sortedMyOttos : sortedMyOttos.slice(0, 1)).map(otto => (
               <ListRow key={otto.id} isMyOttoRow otto={otto} rank={adventure ? otto.apRanking : otto.ranking} />
             ))}
