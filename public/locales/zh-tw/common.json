@@ -570,9 +570,9 @@
     "palace": {
       "title": "Palace"
     },
-    "dashboard_tab": "Dashboard",
-    "governance_tab": "Governance",
-    "investments_tab": "Investments",
+    "dashboard_tab": "總覽",
+    "governance_tab": "治理",
+    "investments_tab": "投資",
     "layout": {
       "nav": {
         "label": {
@@ -604,7 +604,7 @@
       "today": "今日",
       "treasuryMarketValue": "國庫資產市值",
       "treasuryRevenue": "協議營收",
-      "treasuryRevenueTooltip": "國庫投資/Ottopia的每日營收。這不會呈現國庫資產的市場價格變化，只會考慮提領收益時的市價。",
+      "treasuryRevenueTooltip": "國庫投資/Ottopia 的每日營收。這不會呈現國庫資產的市場價格變化，只會考慮提領收益時的市價。",
       "clamCirculatingSupply": "CLAM 流通量",
       "clamCirculatingSupplyTooltip": "CLAM 流通量，和總量的差額為在 DAO 和 Ottopia 獎勵池的 CLAM。",
       "burned": "燒掉的 CLAM",
@@ -615,54 +615,54 @@
       "averageAprStartDate": "從 {{ date }}",
       "marketcap": "CLAM 市值",
       "marketcapTooltip": "流通中的 CLAM 數量乘以 CLAM 價格。",
-      "autocompoundChartHeader": "Auto-Compound",
-      "stakedChartHeader": "Staked"
+      "autocompoundChartHeader": "自動複利質押",
+      "stakedChartHeader": "質押"
     },
     "governance": {
-      "otterclam_tab": "OtterClam",
+      "otterclam_tab": "阿獺王國",
       "qidao_tab": "Qi DAO",
-      "title": "Governance",
-      "welcome_message_title": "Your Vote Counts!",
-      "welcome_message_body": "OtterClam is governed by a Decentralised Autonomous Organisation (DAO)",
-      "qidao_message_title": "QiDAO Governance",
-      "qidao_message_body": "OtterClam's policy is to vote for the pool with the highest bribe rewards!",
-      "voteNow": "Vote Now!",
-      "votingClosed": "Voting Closed",
-      "votes": "Votes",
-      "voters": "Voters",
-      "ocvoted": "OtterClam Voted:",
-      "youVoted": "You Voted:",
-      "snapshotEth": "View on Snapshot.eth",
-      "seeLess": "See Less...",
-      "seeMore": "See More...",
+      "title": "治理",
+      "welcome_message_title": "你也可以決定阿獺王國的未來!",
+      "welcome_message_body": "阿獺王國是由一群熱忱的阿獺家人們（去中心自治組織 DAO）共同治理",
+      "qidao_message_title": "QiDAO 治理",
+      "qidao_message_body": "阿獺王國的唯一準則：投給對我們最有利、獎金最多的池子！",
+      "voteNow": "投票!",
+      "votingClosed": "已結束投票",
+      "votes": "票",
+      "voters": "投票者",
+      "ocvoted": "阿獺王國投票:",
+      "youVoted": "你投了:",
+      "snapshotEth": "在 Snapshot.eth 上檢視",
+      "seeLess": "顯示更少...",
+      "seeMore": "顯示更多...",
       "proposalState": {
-        "active": "Active",
-        "closed": "Closed"
+        "active": "進行中",
+        "closed": "已結束"
       }
     },
     "investments": {
-      "fromDate": "From Date:",
-      "toDate": "To Date:",
-      "tmv": "Treasury Market Value",
-      "header": "OtterClam Investment Portfolio",
-      "totalRevenue": "Total Revenue",
-      "totalApr": "Net Average APR",
-      "togglePnl": "Toggle PnL",
-      "pnlNote": "Please Note: OtterClam actively manages treasury investments, and so rebalancing occurs frequently. Large percentage changes may be due to funds moving between investment positions. Click on any row & modify the date ranges for more details.",
+      "fromDate": "從:",
+      "toDate": "到:",
+      "tmv": "國庫資產市值",
+      "header": "國庫投資總覽",
+      "totalRevenue": "總收益",
+      "totalApr": "平均年利率 APR",
+      "togglePnl": "顯示損益",
+      "pnlNote": "注意: 阿獺王國積極管理資金投資，因此經常會有投資比例再平衡。較大的百分比變化可能是由於資金在投資標的之間轉移所致。點擊該列並修改日期範圍以獲得更多詳細資訊。",
       "tooltips": {
-        "tmv": "Total value of Treasury Assets on {{ date }}",
-        "revenue": "Total gross revenue during the selected date range.",
-        "apr": "Overall Annualised Percentage Return (APR) of all Treasury Investments during the selected date range.",
-        "positionChange": "Percentage difference between the market value of the position on {{ fromDate }} and {{ toDate }}",
-        "pnl": "Position Change plus the total revenue generated during the selected date range (as a percentage of the value on {{ fromDate }} )"
+        "tmv": "國庫資產總價值 {{ date }}",
+        "revenue": "所選期間的總收入",
+        "apr": "所選期間的總平均年利率 APR",
+        "positionChange": "從 {{ fromDate }} 到 {{ toDate }} 該倉位市值的百分比差異",
+        "pnl": "倉位變化加上所選日期範圍內產生的損益百分比（從 {{ fromDate }} 起算）"
       },
       "tableHeader": {
-        "investment": "Investment",
-        "protocol": "Protocol",
-        "portfolioPct": "Portfolio %",
-        "averageApr": "Average APR",
-        "positionChange": "Position Change",
-        "pnl": "Net Profit/Loss"
+        "investment": "投資",
+        "protocol": "協議",
+        "portfolioPct": "投資佔比 %",
+        "averageApr": "平均年利率 APR",
+        "positionChange": "倉位變動",
+        "pnl": "淨損益比"
       }
     }
   },
@@ -787,7 +787,7 @@
     "boostMultiplier": "物品連擊加成 x {{ multiplier }} 🔥"
   },
   "ottoPreviewer": {
-    "feedButton": "+ 料理"
+    "feedButton": "+"
   },
   "ottoItemsPopup": {
     "title": "更換 {{ type }}",
@@ -1034,19 +1034,19 @@
     "hideDesc": "不要再顯示"
   },
   "ottoPopup": {
-    "title": "Change Otto’s Equipment",
-    "unequipAllButton": "Unequip All",
-    "submitButton": "Save this Setup",
-    "submitButtonHelp": "You will be required to perform a transaction to update the new setup of the equipment on this Otto.",
-    "placeholder": "Click the left equipment thumbnail<br />to chage the equipment "
+    "title": "更換阿獺裝備",
+    "unequipAllButton": "一鍵全脫",
+    "submitButton": "儲存配置",
+    "submitButtonHelp": "你將會執行一筆交易以更新這隻阿獺的裝備配置",
+    "placeholder": "點擊左邊裝備縮圖<br />來更換裝備 "
   },
   "ottoStats": {
-    "rarityScore": "Rarity Score: {{total}} (BRS {{brs}} + RRS {{rrs}})"
+    "rarityScore": "稀有度分數: {{total}} (BRS {{brs}} + RRS {{rrs}})"
   },
   "copy": "複製",
   "copied": "已複製！",
   "adventureSharePopup": {
-    "title": "Share this adventure result",
-    "desc": "You can copy and paste the link on any social media platform. Anyone who has the link can see your Otto’s adventure result."
+    "title": "分享冒險結果",
+    "desc": "你可以複製此連結並貼上任何社交平台上。其他人點擊連結即可看到你的阿獺此次冒險結果"
   }
 }
