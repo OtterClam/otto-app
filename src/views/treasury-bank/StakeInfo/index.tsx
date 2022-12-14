@@ -292,7 +292,7 @@ export default function StakeInfo({ className }: Props) {
             <StyledInfos>
               {payout ? (
                 <StyledInfoContainerLower>
-                  <StyledInfoTitleLower>{t('lastPayout')}</StyledInfoTitleLower>
+                  <StyledInfoTitleLower>{t('latest_reward')}</StyledInfoTitleLower>
                   <StyledPayoutBalance>
                     + <Image src={USDPlus} width="22px" height="22px" />
                     {formatUsd(payout?.pearlBankLastPayout, 2)} USD+
@@ -301,7 +301,7 @@ export default function StakeInfo({ className }: Props) {
               ) : null}
 
               <StyledInfoContainerLower>
-                <StyledInfoTitleLower>{t('lastYield')}</StyledInfoTitleLower>
+                <StyledInfoTitleLower>{t('latest_reward_yield')}</StyledInfoTitleLower>
                 <StyledPayoutBalance>{trim(latestMetrics?.rewardRate, 3)}%</StyledPayoutBalance>
               </StyledInfoContainerLower>
               <StyledInfoContainerLower>
