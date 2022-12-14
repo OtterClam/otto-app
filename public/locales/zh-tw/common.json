@@ -567,6 +567,12 @@
   },
   "wallet_selector_head": "連接錢包",
   "treasury": {
+    "palace": {
+      "title": "Palace"
+    },
+    "dashboard_tab": "Dashboard",
+    "governance_tab": "Governance",
+    "investments_tab": "Investments",
     "layout": {
       "nav": {
         "label": {
@@ -608,7 +614,56 @@
       "averageApr": "平均年利率 APR",
       "averageAprStartDate": "從 {{ date }}",
       "marketcap": "CLAM 市值",
-      "marketcapTooltip": "流通中的 CLAM 數量乘以 CLAM 價格。"
+      "marketcapTooltip": "流通中的 CLAM 數量乘以 CLAM 價格。",
+      "autocompoundChartHeader": "Auto-Compound",
+      "stakedChartHeader": "Staked"
+    },
+    "governance": {
+      "otterclam_tab": "OtterClam",
+      "qidao_tab": "Qi DAO",
+      "title": "Governance",
+      "welcome_message_title": "Your Vote Counts!",
+      "welcome_message_body": "OtterClam is governed by a Decentralised Autonomous Organisation (DAO)",
+      "qidao_message_title": "QiDAO Governance",
+      "qidao_message_body": "OtterClam's policy is to vote for the pool with the highest bribe rewards!",
+      "voteNow": "Vote Now!",
+      "votingClosed": "Voting Closed",
+      "votes": "Votes",
+      "voters": "Voters",
+      "ocvoted": "OtterClam Voted:",
+      "youVoted": "You Voted:",
+      "snapshotEth": "View on Snapshot.eth",
+      "seeLess": "See Less...",
+      "seeMore": "See More...",
+      "proposalState": {
+        "active": "Active",
+        "closed": "Closed"
+      }
+    },
+    "investments": {
+      "fromDate": "From Date:",
+      "toDate": "To Date:",
+      "tmv": "Treasury Market Value",
+      "header": "OtterClam Investment Portfolio",
+      "totalRevenue": "Total Revenue",
+      "totalApr": "Net Average APR",
+      "togglePnl": "Toggle PnL",
+      "pnlNote": "Please Note: OtterClam actively manages treasury investments, and so rebalancing occurs frequently. Large percentage changes may be due to funds moving between investment positions. Click on any row & modify the date ranges for more details.",
+      "tooltips": {
+        "tmv": "Total value of Treasury Assets on {{ date }}",
+        "revenue": "Total gross revenue during the selected date range.",
+        "apr": "Overall Annualised Percentage Return (APR) of all Treasury Investments during the selected date range.",
+        "positionChange": "Percentage difference between the market value of the position on {{ fromDate }} and {{ toDate }}",
+        "pnl": "Position Change plus the total revenue generated during the selected date range (as a percentage of the value on {{ fromDate }} )"
+      },
+      "tableHeader": {
+        "investment": "Investment",
+        "protocol": "Protocol",
+        "portfolioPct": "Portfolio %",
+        "averageApr": "Average APR",
+        "positionChange": "Position Change",
+        "pnl": "Net Profit/Loss"
+      }
     }
   },
   "stake": {
@@ -631,6 +686,8 @@
     "next_reward": "最近一次獎勵數量",
     "rebase_countdown": " 下次收成倒數: {{countdown}}",
     "next_reward_yield": "最近一次獎勵收益率",
+    "latest_reward": "最近一次獎勵",
+    "latest_reward_yield": "最近一次獎勵年化報酬率",
     "apy": "年度百分比收益率 APY",
     "chest_reward": "最大值 ",
     "extra_rewards": "更多豐富獎勵即將登場...",

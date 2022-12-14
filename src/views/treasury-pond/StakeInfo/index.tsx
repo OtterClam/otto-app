@@ -260,7 +260,7 @@ export default function StakeInfo({ className }: Props) {
             <StyledInfos>
               {payout ? (
                 <StyledInfoContainer>
-                  <StyledInfoTitle>{t('lastPayout')}</StyledInfoTitle>
+                  <StyledInfoTitle>{t('latest_reward')}</StyledInfoTitle>
                   <div>
                     <StyledPayoutBalance>
                       + <Image src={USDPlus} width={22} height={22} unoptimized />
@@ -279,7 +279,7 @@ export default function StakeInfo({ className }: Props) {
                 </StyledInfoContainer>
               ) : null}
               <StyledInfoContainer>
-                <StyledInfoTitle>{t('lastYield')}</StyledInfoTitle>
+                <StyledInfoTitle>{t('latest_reward_yield')}</StyledInfoTitle>
                 <StyledRewardRate>{trim(latestMetrics?.rewardRate, 3)}%</StyledRewardRate>
               </StyledInfoContainer>
               <StyledInfoContainer>
