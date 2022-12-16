@@ -20,8 +20,9 @@ import useServiceWorker from 'hooks/useServiceWorker'
 import MyOttosProvider from 'MyOttosProvider'
 import dynamic from 'next/dynamic'
 import OtterSubgraphProvider from 'OtterSubgraphProvider'
+import AvaxSubgraphProvider from 'AvaxSubgraphProvider'
 import SnapshotProvider from 'SnapshotSubgraphProvider'
-import { PropsWithChildren, useEffect } from 'react'
+import React, { PropsWithChildren, useEffect } from 'react'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
 import MyMissionsProvider from 'views/mission/MyMissionsProvider'
@@ -98,20 +99,22 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                           <BannersProvider>
                             <OverlayProvider>
                               <SnapshotProvider>
-                                <StyledApp>
-                                  <SkeletonThemeProvider>
-                                    <StyledPageContainer>{children}</StyledPageContainer>
-                                    <Error />
-                                    <WalletSelector />
-                                    <SideMenu />
-                                    <MyMissionsProvider>
-                                      <MissionPopup />
-                                    </MyMissionsProvider>
-                                    <AssetsLoader />
-                                    <ItemDetailsPopup />
-                                    <OttoPopup />
-                                  </SkeletonThemeProvider>
-                                </StyledApp>
+                                <AvaxSubgraphProvider>
+                                  <StyledApp>
+                                    <SkeletonThemeProvider>
+                                      <StyledPageContainer>{children}</StyledPageContainer>
+                                      <Error />
+                                      <WalletSelector />
+                                      <SideMenu />
+                                      <MyMissionsProvider>
+                                        <MissionPopup />
+                                      </MyMissionsProvider>
+                                      <AssetsLoader />
+                                      <ItemDetailsPopup />
+                                      <OttoPopup />
+                                    </SkeletonThemeProvider>
+                                  </StyledApp>
+                                </AvaxSubgraphProvider>
                               </SnapshotProvider>
                             </OverlayProvider>
                           </BannersProvider>
