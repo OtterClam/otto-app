@@ -6,7 +6,7 @@ import {
 } from 'graphs/__generated__/GetAvaxTreasuryMetrics'
 import { useAvaxSubgraph } from './useAvaxSubgraph'
 
-export default function useTreasuryMetrics(): {
+export default function useAvaxTreasuryMarketValues(): {
   loading: boolean
   metrics: GetAvaxTreasuryMetrics_avaxTreasuryMarketValues[]
   latestMetrics?: GetAvaxTreasuryMetrics_avaxTreasuryMarketValues

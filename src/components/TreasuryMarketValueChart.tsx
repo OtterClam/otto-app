@@ -10,6 +10,7 @@ import { Area, AreaChart, Tooltip } from 'recharts'
 import styled from 'styled-components/macro'
 import { theme } from 'styles'
 import { formatUsd } from 'utils/currency'
+import { AggregatedMetrics } from 'views/treasury-dashboard'
 import ChartTooltip from './ChartTooltip'
 
 const StyledContainer = styled.div`
@@ -212,9 +213,19 @@ export const marketValues = [
     dataKey: 'treasuryOHMStrategyMarketValue',
     stopColor: ['#676B74', 'rgba(103, 107, 116, 0.5)'],
   },
+  // {
+  //   label: 'wMEMO',
+  //   dataKey: 'treasuryWMEMOStrategyMarketValue',
+  //   stopColor: ['#121415', 'rgba(18,20,21,0.5)'],
+  // },
   {
-    label: 'wMEMO',
-    dataKey: 'treasuryWMEMOStrategyMarketValue',
+    label: 'USDC (AVAX)',
+    dataKey: 'avaxUsdcMarketValue',
+    stopColor: ['#121415', 'rgba(18,20,21,0.5)'],
+  },
+  {
+    label: 'wMEMO (AVAX)',
+    dataKey: 'avaxWMemoMarketValue',
     stopColor: ['#121415', 'rgba(18,20,21,0.5)'],
   },
 ]
@@ -228,7 +239,7 @@ const keySettingMap = marketValues.reduce(
 )
 
 export interface TreasuryMarketValueChartProps {
-  data: GetTreasuryMetrics_protocolMetrics[]
+  data: AggregatedMetrics[]
 }
 
 const renderTooltip: (i18nClient: i18n) => TooltipRenderer =
