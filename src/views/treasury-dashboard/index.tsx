@@ -9,6 +9,7 @@ import { ContentExtraSmall, ContentMedium, ContentSmall } from 'styles/typograph
 import ClamIcon from 'assets/clam.png'
 import Help from 'components/Help'
 import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
+import useAvaxTreasuryMarketValues from 'hooks/useAvaxTreasuryMarketValues'
 import { trim } from 'helpers/trim'
 import { useMemo, useState } from 'react'
 import useTreasuryRevenues from 'hooks/useTreasuryRevenues'
@@ -17,6 +18,8 @@ import CurrencySwitcher from 'components/CurrencySwitcher'
 import { Currency, useCurrency } from 'contexts/Currency'
 import Switcher from 'components/Switcher'
 import { formatClamString, formatUsd } from 'utils/currency'
+import { GetTreasuryMetrics_protocolMetrics } from 'graphs/__generated__/GetTreasuryMetrics'
+import { GetAvaxTreasuryMetrics_avaxTreasuryMarketValues } from 'graphs/__generated__/GetAvaxTreasuryMetrics'
 import Head from 'next/head'
 import Leaves from './leaves.png'
 import Shell from './shell.png'
@@ -252,9 +255,14 @@ const usePearlBankApr = () => {
   }
 }
 
+export interface AggregatedMetrics
+  extends Omit<GetTreasuryMetrics_protocolMetrics, '__typename'>,
+    Omit<GetAvaxTreasuryMetrics_avaxTreasuryMarketValues, '__typename'> {}
+
 export default function TreasuryDashboardPage() {
   const { t } = useTranslation('', { keyPrefix: 'treasury.dashboard' })
   const { loading, metrics, latestMetrics } = useTreasuryMetrics()
+  const { metrics: avaxMetrics } = useAvaxTreasuryMarketValues()
   const {
     loading: pearlBankLoading,
     metrics: pearlBankMetrics,
@@ -277,11 +285,79 @@ export default function TreasuryDashboardPage() {
     2
   )
 
-  const allTimeAvgApr =
-    pearlBankMetrics.reduce((total, value) => {
-      return total + parseFloat(value.apr)
-    }, 0) / pearlBankMetrics.length
+  const allTimeAvgApr = useMemo(
+    () =>
+      pearlBankMetrics.reduce((total, value) => {
+        return total + parseFloat(value.apr)
+      }, 0) / pearlBankMetrics.length,
+    [pearlBankMetrics]
+  )
 
+  // Aggregate Cross-Chain metrics
+  const aggregatedMetrics = useMemo(
+    () =>
+      metrics?.map(x => {
+        const matchAvax = avaxMetrics?.find(a => a.id === x.id)
+        console.log(matchAvax)
+        const backingWithoutClam =
+          parseFloat(x.treasuryMarketValueWithoutClam) + parseFloat(matchAvax?.avaxTotalMarketValue ?? '0')
+
+        // TODO: Key settings map?
+        return {
+          id: x.id,
+          treasuryMarketValue: parseFloat(x.treasuryMarketValue) + parseFloat(matchAvax?.avaxTotalMarketValue ?? '0'),
+          treasuryMarketValueWithoutClam: backingWithoutClam,
+          clamBacking: backingWithoutClam / parseInt(x.clamCirculatingSupply, 10),
+
+          avaxTotalMarketValue: matchAvax?.avaxTotalMarketValue,
+          avaxUsdcMarketValue: matchAvax?.avaxUsdcMarketValue,
+          avaxWMemoMarketValue: matchAvax?.avaxWMemoMarketValue,
+          clamCirculatingSupply: x.clamCirculatingSupply,
+          clamPrice: x.clamPrice,
+          marketCap: x.marketCap,
+          timestamp: x.timestamp,
+          totalBurnedClam: x.totalBurnedClam,
+          totalBurnedClamMarketValue: x.totalBurnedClamMarketValue,
+          totalSupply: x.totalSupply,
+          treasuryClamMaiMarketValue: x.treasuryClamMaiMarketValue,
+          treasuryClamValue: x.treasuryClamValue,
+          treasuryDaiMarketValue: x.treasuryDaiMarketValue,
+          treasuryDystMarketValue: x.treasuryDystMarketValue,
+          treasuryDystopiaPairMaiClamMarketValue: x.treasuryDystopiaPairMaiClamMarketValue,
+          treasuryDystopiaPairQiTetuQiMarketValue: x.treasuryDystopiaPairQiTetuQiMarketValue,
+          treasuryDystopiaPairUSDPLUSClamMarketValue: x.treasuryDystopiaPairUSDPLUSClamMarketValue,
+          treasuryDystopiaPairUsdcClamMarketValue: x.treasuryDystopiaPairUsdcClamMarketValue,
+          treasuryDystopiaPairUsdcTusdMarketValue: x.treasuryDystopiaPairUsdcTusdMarketValue,
+          treasuryDystopiaPairUsdplusStMaticMarketValue: x.treasuryDystopiaPairUsdplusStMaticMarketValue,
+          treasuryDystopiaPairUsdplusUsdcMarketValue: x.treasuryDystopiaPairUsdplusUsdcMarketValue,
+          treasuryDystopiaPairwMaticDystMarketValue: x.treasuryDystopiaPairwMaticDystMarketValue,
+          treasuryKyberswapMaticStMaticHedgedMarketValue: x.treasuryKyberswapMaticStMaticHedgedMarketValue,
+          treasuryMaiStMaticMarketValue: x.treasuryMaiStMaticMarketValue,
+          treasuryMaiUsdcQiInvestmentValue: x.treasuryMaiUsdcQiInvestmentValue,
+          treasuryOHMStrategyMarketValue: x.treasuryOHMStrategyMarketValue,
+          treasuryOtterClamQiMarketValue: x.treasuryOtterClamQiMarketValue,
+          treasuryPenDystMarketValue: x.treasuryPenDystMarketValue,
+          treasuryPenMarketValue: x.treasuryPenMarketValue,
+          treasuryPenroseHedgedMaticMarketValue: x.treasuryPenroseHedgedMaticMarketValue,
+          treasuryQiMarketValue: x.treasuryQiMarketValue,
+          treasuryQiWmaticMarketValue: x.treasuryQiWmaticMarketValue,
+          treasuryQiWmaticQiInvestmentMarketValue: x.treasuryQiWmaticQiInvestmentMarketValue,
+          treasuryQuickswapV3MaiUsdtStrategyMarketValue: x.treasuryQuickswapV3MaiUsdtStrategyMarketValue,
+          treasurySandMarketValue: x.treasurySandMarketValue,
+          treasuryTetuQiMarketValue: x.treasuryTetuQiMarketValue,
+          treasuryUniV3HedgedMaticUsdcStrategyMarketValue: x.treasuryUniV3HedgedMaticUsdcStrategyMarketValue,
+          treasuryUniV3UsdcMaiStrategyMarketValue: x.treasuryUniV3UsdcMaiStrategyMarketValue,
+          treasuryUsdPlusMarketValue: x.treasuryUsdPlusMarketValue,
+          treasuryVeDystMarketValue: x.treasuryVeDystMarketValue,
+          treasuryVlPenMarketValue: x.treasuryVlPenMarketValue,
+          treasuryWMEMOStrategyMarketValue: x.treasuryWMEMOStrategyMarketValue, // now unused
+          treasuryWmaticMarketValue: x.treasuryWmaticMarketValue,
+        } as AggregatedMetrics
+      }),
+    [metrics, avaxMetrics]
+  )
+
+  const latestAggregatedMetric = aggregatedMetrics[0]
   return (
     <div>
       <Head>
@@ -299,7 +375,7 @@ export default function TreasuryDashboardPage() {
           <StyledTreasuryCard>
             <StyledTokenContainer>
               <StyledTokenLabel>{t('clamPrice')}</StyledTokenLabel>
-              <StyledTokenPrice>{loading ? '--' : formatUsd(latestMetrics?.clamPrice, 2)}</StyledTokenPrice>
+              <StyledTokenPrice>{loading ? '--' : formatUsd(latestAggregatedMetric?.clamPrice, 2)}</StyledTokenPrice>
               <StyledTokenIcon src={ClamIcon.src} />
             </StyledTokenContainer>
           </StyledTreasuryCard>
@@ -308,7 +384,7 @@ export default function TreasuryDashboardPage() {
             <Help message={t('marketcapTooltip')}>
               <ContentExtraSmall>{t('marketcap')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{loading ? '--' : formatUsd(latestMetrics?.marketCap)}</ContentMedium>
+            <ContentMedium>{loading ? '--' : formatUsd(latestAggregatedMetric?.marketCap)}</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
@@ -316,8 +392,8 @@ export default function TreasuryDashboardPage() {
               <ContentExtraSmall>{t('clamCirculatingSupply')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {loading ? '--' : formatClamString(latestMetrics?.clamCirculatingSupply)} /
-              {loading ? '--' : formatClamString(latestMetrics?.totalSupply)}
+              {loading ? '--' : formatClamString(latestAggregatedMetric?.clamCirculatingSupply)} /
+              {loading ? '--' : formatClamString(latestAggregatedMetric?.totalSupply)}
             </ContentMedium>
           </StyledTreasuryCard>
 
@@ -325,7 +401,7 @@ export default function TreasuryDashboardPage() {
             <Help message={t('backingTooltip')}>
               <ContentExtraSmall>{t('backing')}</ContentExtraSmall>
             </Help>
-            <ContentMedium>{loading ? '--' : formatUsd(latestMetrics?.clamBacking, 2)}</ContentMedium>
+            <ContentMedium>{loading ? '--' : formatUsd(latestAggregatedMetric?.clamBacking, 2)}</ContentMedium>
           </StyledTreasuryCard>
 
           <StyledTreasuryCard>
@@ -333,8 +409,8 @@ export default function TreasuryDashboardPage() {
               <ContentExtraSmall>{t('burned')}</ContentExtraSmall>
             </Help>
             <ContentMedium>
-              {loading ? '--' : formatClamString(latestMetrics?.totalBurnedClam)}
-              {` 🔥 ${loading ? '--' : formatUsd(latestMetrics?.totalBurnedClamMarketValue)}`}
+              {loading ? '--' : formatClamString(latestAggregatedMetric?.totalBurnedClam)}
+              {` 🔥 ${loading ? '--' : formatUsd(latestAggregatedMetric?.totalBurnedClamMarketValue)}`}
               {` 🔥 ${loading ? '--' : pctBurnt}%`}
             </ContentMedium>
           </StyledTreasuryCard>
@@ -357,11 +433,11 @@ export default function TreasuryDashboardPage() {
             <StyledChartHeader>
               <StyledChartTitle>{t('treasuryMarketValue')}</StyledChartTitle>
               <StyledChartKeyValue>
-                {pearlBankLoading ? '--' : formatUsd(latestMetrics?.treasuryMarketValue)}
+                {pearlBankLoading ? '--' : formatUsd(latestAggregatedMetric?.treasuryMarketValue)}
                 <StyledChartKeyDate>{t('today')}</StyledChartKeyDate>
               </StyledChartKeyValue>
             </StyledChartHeader>
-            <TreasuryMarketValueChart data={metrics} />
+            <TreasuryMarketValueChart data={aggregatedMetrics} />
           </StyledChartCard>
 
           <StyledChartCard>
