@@ -9589,11 +9589,6 @@ react-responsive-carousel@^3.2.23:
     prop-types "^15.5.8"
     react-easy-swipe "^0.0.21"
 
-react-responsive-datepicker@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/react-responsive-datepicker/-/react-responsive-datepicker-1.0.6.tgz#7d17a5b0a5d557eb0f44759c959ca229b781b541"
-  integrity sha512-R0YCJe32wayGNItwDDAj8IufoZZKZeuloUHKcAUk9pKbROjb0kj7caoJSxVWUxLKJau2jmwZ20o2HK1J2a/xuw==
-
 react-responsive@^9.0.0-beta.10:
   version "9.0.0-beta.10"
   resolved "https://registry.yarnpkg.com/react-responsive/-/react-responsive-9.0.0-beta.10.tgz#892db936da48eb30babf5cb7e31737c7b5677209"

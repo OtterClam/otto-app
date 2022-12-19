@@ -48,9 +48,7 @@ export class LeaderboardsRepository {
     })
 
     const ottoTokenIds = result.data.ottos.map(({ tokenId }) => tokenId)
-
-    const ottos = await this.ottos.getOttosByTokenIds(ottoTokenIds)
-
+    const ottos = await this.ottos.getOttosByTokenIds(ottoTokenIds, epoch)
     return {
       type,
       epoch,
