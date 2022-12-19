@@ -72,7 +72,7 @@ const StyledTitlie = styled.div``
 
 export default function LeaderboardPage() {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard' })
-  const { constellation, epoch, hasPrevEpoch, hasNextEpoch } = useRarityEpoch()
+  const { constellation } = useRarityEpoch()
   const {
     epoch: { themes },
   } = useLeaderboardEpoch()
