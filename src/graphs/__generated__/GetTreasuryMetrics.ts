@@ -53,6 +53,7 @@ export interface GetTreasuryMetrics_protocolMetrics {
   treasuryQuickswapV3MaiUsdtStrategyMarketValue: any;
   treasuryDystopiaPairUsdcClamMarketValue: any;
   treasuryClamValue: any;
+  treasuryArrakisUsdcMaiMarketValue: any;
 }
 
 export interface GetTreasuryMetrics {
