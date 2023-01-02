@@ -16,7 +16,7 @@
     "codegen:otter-graph": "yarn download-schema:otter && apollo codegen:generate --includes=src/graphs/otter.ts --localSchemaFile=otter-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=./src/__generated__/otter/global-types.ts && rm ./src/__generated__/otter/global-types.ts",
     "codegen:otter-avax": "yarn download-schema:avax && apollo codegen:generate --includes=src/graphs/avax.ts --localSchemaFile=avax-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=./src/__generated__/avax/global-types.ts && rm ./src/__generated__/avax/global-types.ts",
     "codegen:snapshot-graph": "yarn download-schema:snapshot && apollo codegen:generate --includes=src/graphs/snapshot.ts --localSchemaFile=snapshot-graphql-schema.json --target=typescript --tagName=gql --globalTypesFile=./src/__generated__/snapshot/global-types.ts && rm ./src/__generated__/snapshot/global-types.ts",
-    "codegen": "yarn codegen:contract && yarn codegen:otto-graph && yarn codegen:otter-graph && yarn codegen:avax && yarn codegen:snapshot-graph",
+    "codegen": "yarn codegen:contract && yarn codegen:otto-graph && yarn codegen:otter-graph && yarn codegen:otter-avax && yarn codegen:snapshot-graph",
     "prepare": "husky install",
     "codegen:cn": "node ./scripts/gen-cn.mjs ./public/locales/zh-tw/common.json",
     "check-trans": "node ./scripts/validate-translation-files.mjs"

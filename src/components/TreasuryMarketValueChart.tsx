@@ -2,6 +2,7 @@ import ChartXAxis from 'components/ChartXAxis'
 import ChartYAxis from 'components/ChartYAxis'
 import format from 'date-fns/format'
 import { GetTreasuryMetrics_protocolMetrics } from 'graphs/__generated__/GetTreasuryMetrics'
+import { AggregatedMetrics } from 'hooks/useCrossChainTreasuryMetrics'
 import useSize from 'hooks/useSize'
 import { i18n } from 'i18next'
 import { useTranslation } from 'next-i18next'
@@ -10,7 +11,6 @@ import { Area, AreaChart, Tooltip } from 'recharts'
 import styled from 'styled-components/macro'
 import { theme } from 'styles'
 import { formatUsd } from 'utils/currency'
-import { AggregatedMetrics } from 'views/treasury-dashboard'
 import ChartTooltip from './ChartTooltip'
 
 const StyledContainer = styled.div`
@@ -79,6 +79,11 @@ export const marketValues = [
     stopColor: ['#5CBD6B', 'rgba(92, 189, 107, 0.5)'],
   },
   {
+    label: 'USDC/MAI (Arrakis)',
+    dataKey: 'treasuryArrakisUsdcMaiMarketValue',
+    stopColor: theme.colors.treasury.stablecoinGreen,
+  },
+  {
     label: 'USD+',
     dataKey: 'treasuryUsdPlusMarketValue',
     stopColor: ['rgba(72, 229, 8, 1)', 'rgba(72, 229, 8, 0.5)'],
@@ -123,6 +128,7 @@ export const marketValues = [
     dataKey: 'treasuryUniV3HedgedMaticUsdcStrategyMarketValue',
     stopColor: theme.colors.treasury.maticPurple,
   },
+
   {
     label: 'Qi',
     dataKey: 'treasuryQiMarketValue',

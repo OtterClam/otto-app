@@ -11,7 +11,7 @@ import InvestmentsChart from 'components/InvestmentsChart'
 import * as _ from 'lodash'
 import TreasuryCard from 'components/TreasuryCard'
 import { formatUsd } from 'utils/currency'
-import useTreasuryMetrics from 'hooks/useTreasuryMetrics'
+import useCrossChainTreasuryMetrics from 'hooks/useCrossChainTreasuryMetrics'
 import DatePicker from 'components/DatePicker'
 import Help from 'components/Help'
 import TreasuryMarketValuePieChart from 'components/TreasuryMarketValuePieChart'
@@ -290,7 +290,7 @@ export default function InvestmentsPage({ className }: Props) {
   const utcFrom = useMemo(() => new Date(fromDate * 1000).setUTCHours(0, 0, 0, 0) / 1000 + daySecs, [fromDate, daySecs])
   const utcTo = useMemo(() => new Date(toDate * 1000).setUTCHours(0, 0, 0, 0) / 1000 + daySecs, [toDate, daySecs])
   const { investments } = useInvestments(utcFrom, utcTo)
-  const { loading, metrics } = useTreasuryMetrics()
+  const { loading, metrics } = useCrossChainTreasuryMetrics()
 
   const toDateMetrics = useMemo(
     () =>
