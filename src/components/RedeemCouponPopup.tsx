@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default memo(function RedeemCouponPopup({
-  coupon: { tokenId: id, productFactory, productType },
+  coupon: { tokenId: id, productFactory, productType, productImages },
   onClose,
 }: Props) {
   const [state, setState] = useState<State>(State.Loading)
@@ -33,6 +33,6 @@ export default memo(function RedeemCouponPopup({
     }
   }, [redeemState])
 
-  if (state === State.Loading) return <LoadingView type={productType} />
+  if (state === State.Loading) return <LoadingView type={productType} images={productImages} />
   return <OpenItemView items={redeemState.receivedItems || []} onClose={onClose} />
 })
