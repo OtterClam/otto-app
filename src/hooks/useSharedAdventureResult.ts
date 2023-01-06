@@ -21,7 +21,7 @@ export default function useSharedAdventureResult(): void {
       router.pathname = '/'
       router.push(router)
     } else if (finishedTx !== tx) {
-      gotoResultStep({ ottoId, tx, locationId })
+      gotoResultStep({ ottoId, tx, locationId, showEvent: false })
     }
   }, [tx, ottoId, locationId, router.asPath])
 }
