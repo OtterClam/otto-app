@@ -567,6 +567,12 @@
   },
   "wallet_selector_head": "连接钱包",
   "treasury": {
+    "palace": {
+      "title": "Palace"
+    },
+    "dashboard_tab": "总览",
+    "governance_tab": "治理",
+    "investments_tab": "投资",
     "layout": {
       "nav": {
         "label": {
@@ -598,7 +604,7 @@
       "today": "今日",
       "treasuryMarketValue": "国库资产市值",
       "treasuryRevenue": "协议营收",
-      "treasuryRevenueTooltip": "国库投资/Ottopia的每日营收。这不会呈现国库资产的市场价格变化，只会考虑提领收益时的市价。",
+      "treasuryRevenueTooltip": "国库投资/Ottopia 的每日营收。这不会呈现国库资产的市场价格变化，只会考虑提领收益时的市价。",
       "clamCirculatingSupply": "CLAM 流通量",
       "clamCirculatingSupplyTooltip": "CLAM 流通量，和总量的差额为在 DAO 和 Ottopia 奖励池的 CLAM。",
       "burned": "烧掉的 CLAM",
@@ -608,7 +614,56 @@
       "averageApr": "平均年利率 APR",
       "averageAprStartDate": "从 {{ date }}",
       "marketcap": "CLAM 市值",
-      "marketcapTooltip": "流通中的 CLAM 数量乘以 CLAM 价格。"
+      "marketcapTooltip": "流通中的 CLAM 数量乘以 CLAM 价格。",
+      "autocompoundChartHeader": "自动复利质押",
+      "stakedChartHeader": "质押"
+    },
+    "governance": {
+      "otterclam_tab": "阿獭王国",
+      "qidao_tab": "Qi DAO",
+      "title": "治理",
+      "welcome_message_title": "你也可以决定阿獭王国的未来!",
+      "welcome_message_body": "阿獭王国是由一群热忱的阿獭家人们（去中心自治组织 DAO）共同治理",
+      "qidao_message_title": "QiDAO 治理",
+      "qidao_message_body": "阿獭王国的唯一准则：投给对我们最有利、奖金最多的池子！",
+      "voteNow": "投票!",
+      "votingClosed": "已结束投票",
+      "votes": "票",
+      "voters": "投票者",
+      "ocvoted": "阿獭王国投票:",
+      "youVoted": "你投了:",
+      "snapshotEth": "在 Snapshot.eth 上检视",
+      "seeLess": "显示更少...",
+      "seeMore": "显示更多...",
+      "proposalState": {
+        "active": "进行中",
+        "closed": "已结束"
+      }
+    },
+    "investments": {
+      "fromDate": "从:",
+      "toDate": "到:",
+      "tmv": "国库资产市值",
+      "header": "国库投资总览",
+      "totalRevenue": "总收益",
+      "totalApr": "平均年利率 APR",
+      "togglePnl": "显示损益",
+      "pnlNote": "注意: 阿獭王国积极管理资金投资，因此经常会有投资比例再平衡。较大的百分比变化可能是由于资金在投资标的之间转移所致。点击该列并修改日期范围以获得更多详细资讯。",
+      "tooltips": {
+        "tmv": "国库资产总价值 {{ date }}",
+        "revenue": "所选期间的总收入",
+        "apr": "所选期间的总平均年利率 APR",
+        "positionChange": "从 {{ fromDate }} 到 {{ toDate }} 该仓位市值的百分比差异",
+        "pnl": "仓位变化加上所选日期范围内产生的损益百分比（从 {{ fromDate }} 起算）"
+      },
+      "tableHeader": {
+        "investment": "投资",
+        "protocol": "协议",
+        "portfolioPct": "投资占比 %",
+        "averageApr": "平均年利率 APR",
+        "positionChange": "仓位变动",
+        "pnl": "净损益比"
+      }
     }
   },
   "stake": {
@@ -631,6 +686,8 @@
     "next_reward": "最近一次奖励数量",
     "rebase_countdown": " 下次收成倒数: {{countdown}}",
     "next_reward_yield": "最近一次奖励收益率",
+    "latest_reward": "最近一次奖励",
+    "latest_reward_yield": "最近一次奖励年化报酬率",
     "apy": "年度百分比收益率 APY",
     "chest_reward": "最大值 ",
     "extra_rewards": "更多丰富奖励即将登场...",
@@ -730,7 +787,7 @@
     "boostMultiplier": "物品连击加成 x {{ multiplier }} 🔥"
   },
   "ottoPreviewer": {
-    "feedButton": "+ 料理"
+    "feedButton": "+"
   },
   "ottoItemsPopup": {
     "title": "更换 {{ type }}",
@@ -977,19 +1034,19 @@
     "hideDesc": "不要再显示"
   },
   "ottoPopup": {
-    "title": "Change Otto’s Equipment",
-    "unequipAllButton": "Unequip All",
-    "submitButton": "Save this Setup",
-    "submitButtonHelp": "You will be required to perform a transaction to update the new setup of the equipment on this Otto.",
-    "placeholder": "Click the left equipment thumbnail<br />to chage the equipment "
+    "title": "更换阿獭装备",
+    "unequipAllButton": "一键全脱",
+    "submitButton": "储存配置",
+    "submitButtonHelp": "你将会执行一笔交易以更新这只阿獭的装备配置",
+    "placeholder": "点击左边装备缩图<br />来更换装备 "
   },
   "ottoStats": {
-    "rarityScore": "Rarity Score: {{total}} (BRS {{brs}} + RRS {{rrs}})"
+    "rarityScore": "稀有度分数: {{total}} (BRS {{brs}} + RRS {{rrs}})"
   },
   "copy": "复制",
   "copied": "已复制！",
   "adventureSharePopup": {
-    "title": "Share this adventure result",
-    "desc": "You can copy and paste the link on any social media platform. Anyone who has the link can see your Otto’s adventure result."
+    "title": "分享冒险结果",
+    "desc": "你可以复制此连结并贴上任何社交平台上。其他人点击连结即可看到你的阿獭此次冒险结果"
   }
 }

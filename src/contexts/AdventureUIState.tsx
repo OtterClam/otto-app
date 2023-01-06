@@ -64,6 +64,7 @@ export type AdventureUIAction =
       data: {
         locationId: number
         tx: string
+        showEvent: boolean
       }
     }
   | {
@@ -83,6 +84,7 @@ export interface AdventureUIState {
   popupOpened: boolean
   popupStep: AdventurePopupStep
   preview?: AdventurePreview
+  showEvent: boolean
   levelUp?: {
     ottoId: string
     levelUp: AdventureResultEvents['level_up']
@@ -111,6 +113,7 @@ const defaultValue: AdventureUIValue = {
     popupOpened: false,
     popupStep: AdventurePopupStep.LocationInfo,
     showSharePopup: false,
+    showEvent: true,
   },
   dispatch: noop,
 }
@@ -142,6 +145,7 @@ export const AdventureUIStateProvider = ({ children }: PropsWithChildren<object>
           popupStep: AdventurePopupStep.Result,
           finishedTx: action.data.tx,
           selectedLocationId: action.data.locationId,
+          showEvent: action.data.showEvent,
         }
       case AdventureUIActionType.SetTreasuryChestItem:
         return { ...state, treasuryChest: action.data }
@@ -187,12 +191,12 @@ export const useGoToAdventureResultStep = () => {
   const { dispatch } = useAdventureUIState()
   const router = useRouter()
   return useCallback(
-    ({ ottoId, tx, locationId }: { ottoId: string; tx: string; locationId: number }) => {
+    ({ ottoId, tx, locationId, showEvent }: { ottoId: string; tx: string; locationId: number; showEvent: boolean }) => {
       router.query.adventure_tx = tx
       router.query.location = String(locationId)
       router.query.otto = String(ottoId)
       router.push(router)
-      dispatch({ type: AdventureUIActionType.GoToResult, data: { tx, locationId } })
+      dispatch({ type: AdventureUIActionType.GoToResult, data: { tx, locationId, showEvent } })
     },
     [router]
   )

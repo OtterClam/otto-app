@@ -217,6 +217,7 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
                         ottoId: otto.id,
                         tx: otto.latestAdventurePass.finishedTx,
                         locationId: otto.latestAdventurePass.locationId,
+                        showEvent: false,
                       })
                   }}
                 >
@@ -241,6 +242,7 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
                     ottoId: otto.id,
                     tx: otto.latestAdventurePass.finishedTx,
                     locationId: otto.latestAdventurePass.locationId,
+                    showEvent: false,
                   })
               }}
             >
