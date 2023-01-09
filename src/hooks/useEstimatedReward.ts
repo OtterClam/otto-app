@@ -4,8 +4,8 @@ import {
   ROUND_RARITY_REWARD_AFTER_3,
   ROUND_RARITY_REWARD_BEFORE_3,
   ROUND_RARITY_REWARD_S2,
+  ROUND_RARITY_REWARD_S2_NEW,
   TOTAL_ADVENTURE_REWARD,
-  TOTAL_RARITY_REWARD,
 } from 'constant'
 import { trim } from 'helpers/trim'
 import Otto from 'models/Otto'
@@ -18,9 +18,11 @@ export default function useEstimatedReward(rank: number, isAdventure: boolean) {
   const topReward = useMemo(() => {
     let sum = 0
     let totalReward =
-      epoch >= 6
+      epoch >= 12 || epoch === -1
+        ? ROUND_RARITY_REWARD_S2_NEW
+        : epoch >= 6
         ? ROUND_RARITY_REWARD_S2
-        : epoch > 3 || epoch === -1
+        : epoch > 3
         ? ROUND_RARITY_REWARD_AFTER_3
         : ROUND_RARITY_REWARD_BEFORE_3
     if (isAdventure) {
