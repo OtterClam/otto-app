@@ -10,25 +10,6 @@ import {
 import { trim } from 'helpers/trim'
 import Otto from 'models/Otto'
 
-const calcTopReward = (prizeCount: number, epoch: number, isAdventure: boolean) => {
-  let sum = 0
-  let totalReward =
-    epoch >= 12 || epoch === -1
-      ? ROUND_RARITY_REWARD_S2_NEW
-      : epoch >= 6
-      ? ROUND_RARITY_REWARD_S2
-      : epoch > 3
-      ? ROUND_RARITY_REWARD_AFTER_3
-      : ROUND_RARITY_REWARD_BEFORE_3
-  if (isAdventure) {
-    totalReward = TOTAL_ADVENTURE_REWARD / 4
-  }
-  for (let i = 1; i <= prizeCount; i++) {
-    sum += 1 / i
-  }
-  return totalReward / sum
-}
-
 const calcReward = (rank: number, prizeCount: number, epoch: number, isAdventure: boolean) => {
   let sum = 0
   let totalReward =
