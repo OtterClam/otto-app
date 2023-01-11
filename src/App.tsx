@@ -29,6 +29,7 @@ import MyMissionsProvider from 'views/mission/MyMissionsProvider'
 import MissionPopup from 'views/mission/MissionPopup'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
+import BscSubgraphProvider from 'BscSubgraphProvider'
 
 const preloadImages = [ottoLoadingImage.src, adventureMapImage.src]
 
@@ -100,20 +101,22 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                             <OverlayProvider>
                               <SnapshotProvider>
                                 <AvaxSubgraphProvider>
-                                  <StyledApp>
-                                    <SkeletonThemeProvider>
-                                      <StyledPageContainer>{children}</StyledPageContainer>
-                                      <Error />
-                                      <WalletSelector />
-                                      <SideMenu />
-                                      <MyMissionsProvider>
-                                        <MissionPopup />
-                                      </MyMissionsProvider>
-                                      <AssetsLoader />
-                                      <ItemDetailsPopup />
-                                      <OttoPopup />
-                                    </SkeletonThemeProvider>
-                                  </StyledApp>
+                                  <BscSubgraphProvider>
+                                    <StyledApp>
+                                      <SkeletonThemeProvider>
+                                        <StyledPageContainer>{children}</StyledPageContainer>
+                                        <Error />
+                                        <WalletSelector />
+                                        <SideMenu />
+                                        <MyMissionsProvider>
+                                          <MissionPopup />
+                                        </MyMissionsProvider>
+                                        <AssetsLoader />
+                                        <ItemDetailsPopup />
+                                        <OttoPopup />
+                                      </SkeletonThemeProvider>
+                                    </StyledApp>
+                                  </BscSubgraphProvider>
                                 </AvaxSubgraphProvider>
                               </SnapshotProvider>
                             </OverlayProvider>

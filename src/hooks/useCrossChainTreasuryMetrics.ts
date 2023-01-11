@@ -1,12 +1,15 @@
 import { useMemo } from 'react'
 import { GetTreasuryMetrics_protocolMetrics } from '../graphs/__generated__/GetTreasuryMetrics'
 import { GetAvaxTreasuryMetrics_avaxTreasuryMarketValues } from '../graphs/__generated__/GetAvaxTreasuryMetrics'
+import { GetBscTreasuryMetrics_bscTreasuryMarketValues } from 'graphs/__generated__/GetBscTreasuryMetrics'
 import useAvaxTreasuryMarketValues from './useAvaxTreasuryMarketValues'
 import useTreasuryMetrics from './useTreasuryMetrics'
+import useBscTreasuryMarketValues from './useBscTreasuryMarketValues'
 
 export interface AggregatedMetrics
   extends Omit<GetTreasuryMetrics_protocolMetrics, '__typename'>,
-    Omit<GetAvaxTreasuryMetrics_avaxTreasuryMarketValues, '__typename'> {}
+    Omit<GetAvaxTreasuryMetrics_avaxTreasuryMarketValues, '__typename'>,
+    Omit<GetBscTreasuryMetrics_bscTreasuryMarketValues, '__typename'> {}
 
 export default function useCrossChainTreasuryMetrics(): {
   loading: boolean
@@ -15,25 +18,38 @@ export default function useCrossChainTreasuryMetrics(): {
 } {
   const { loading, metrics } = useTreasuryMetrics()
   const { loading: avaxLoading, metrics: avaxMetrics } = useAvaxTreasuryMarketValues()
+  const { loading: bscLoading, metrics: bscMetrics } = useBscTreasuryMarketValues()
 
   // Aggregate Cross-Chain metrics
   const aggregatedMetrics = useMemo(
     () =>
       metrics?.map(x => {
         const matchAvax = avaxMetrics?.find(a => a.id === x.id)
+        const matchBsc = bscMetrics?.find(a => a.id === x.id)
+
+        const tmv =
+          parseFloat(x.treasuryMarketValue) +
+          parseFloat(matchAvax?.avaxTotalMarketValue ?? '0') +
+          parseFloat(matchBsc?.bscTotalMarketValue ?? '0')
         const backingWithoutClam =
-          parseFloat(x.treasuryMarketValueWithoutClam) + parseFloat(matchAvax?.avaxTotalMarketValue ?? '0')
+          parseFloat(x.treasuryMarketValueWithoutClam) +
+          parseFloat(matchAvax?.avaxTotalMarketValue ?? '0') +
+          parseFloat(matchBsc?.bscTotalMarketValue ?? '0')
 
         // TODO: Key settings map?
         return {
           id: x.id,
-          treasuryMarketValue: parseFloat(x.treasuryMarketValue) + parseFloat(matchAvax?.avaxTotalMarketValue ?? '0'),
+          treasuryMarketValue: tmv,
           treasuryMarketValueWithoutClam: backingWithoutClam,
           clamBacking: backingWithoutClam / parseInt(x.clamCirculatingSupply, 10),
-
+          // AVAX
           avaxTotalMarketValue: matchAvax?.avaxTotalMarketValue,
           avaxUsdcMarketValue: matchAvax?.avaxUsdcMarketValue,
           avaxWMemoMarketValue: matchAvax?.avaxWMemoMarketValue,
+          // BSC
+          bscThenaPairBusdUsdcMarketValue: matchBsc?.bscThenaPairBusdUsdcMarketValue,
+          bscTotalMarketValue: matchBsc?.bscTotalMarketValue,
+          // POLYGON
           clamCirculatingSupply: x.clamCirculatingSupply,
           clamPrice: x.clamPrice,
           marketCap: x.marketCap,

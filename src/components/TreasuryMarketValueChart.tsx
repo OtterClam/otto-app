@@ -234,6 +234,12 @@ export const marketValues = [
     dataKey: 'avaxWMemoMarketValue',
     stopColor: ['#121415', 'rgba(18,20,21,0.5)'],
   },
+
+  {
+    label: 'BUSD/USDC (Thena)',
+    dataKey: 'bscThenaPairBusdUsdcMarketValue',
+    stopColor: ['rgba(249,206,49,1)', 'rgba(249,206,49,0.5)'],
+  },
 ]
 
 const keySettingMap = marketValues.reduce(
