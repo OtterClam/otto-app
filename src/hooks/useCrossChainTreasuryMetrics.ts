@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
+import { GetBscTreasuryMetrics_bscTreasuryMarketValues } from 'graphs/__generated__/GetBscTreasuryMetrics'
 import { GetTreasuryMetrics_protocolMetrics } from '../graphs/__generated__/GetTreasuryMetrics'
 import { GetAvaxTreasuryMetrics_avaxTreasuryMarketValues } from '../graphs/__generated__/GetAvaxTreasuryMetrics'
-import { GetBscTreasuryMetrics_bscTreasuryMarketValues } from 'graphs/__generated__/GetBscTreasuryMetrics'
 import useAvaxTreasuryMarketValues from './useAvaxTreasuryMarketValues'
 import useTreasuryMetrics from './useTreasuryMetrics'
 import useBscTreasuryMarketValues from './useBscTreasuryMarketValues'
