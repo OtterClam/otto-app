@@ -217,7 +217,7 @@ export default function RankList({ className }: Props) {
   const sortedMyOttos = useMemo(
     () =>
       adventure ? myOttos.sort((a, b) => a.apRanking - b.apRanking) : myOttos.sort((a, b) => a.ranking - b.ranking),
-    [myOttos]
+    [myOttos, adventure]
   )
   const [expand, setExpand] = useState(false)
   const loading = !leaderboard || loadingApi
