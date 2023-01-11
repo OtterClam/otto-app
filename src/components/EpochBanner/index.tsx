@@ -32,6 +32,14 @@ const BannerImageSkeleton = styled(Skeleton)`
   height: 100%;
 `
 
+const StyledImage = styled.img`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+`
+
 export default function EpochBanner() {
   const banners = useAdventureBanners()
   const banner = banners.find(({ active }) => active)?.banner
@@ -51,7 +59,7 @@ export default function EpochBanner() {
     <StyledContainer>
       <Link href={banner.link} passHref>
         <BannerLink>
-          <Image layout="fill" src={banner.image} />
+          <StyledImage src={banner.image} key={banner.name} />
         </BannerLink>
       </Link>
       <EpochInfo />

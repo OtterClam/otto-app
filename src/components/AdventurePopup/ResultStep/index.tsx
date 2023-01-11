@@ -73,7 +73,7 @@ const StyledShareButtonText = styled.span`
 export default function ResultStep() {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.resultStep' })
   const {
-    state: { finishedTx },
+    state: { finishedTx, showEvent },
   } = useAdventureUIState()
   const router = useRouter()
   const location = useSelectedAdventureLocation()
@@ -139,7 +139,7 @@ export default function ResultStep() {
   }, [dispatch, finishedTx, otto, result, setOtto, updateOtto])
 
   useEffect(() => {
-    if (!(otto && result?.events && result.events.level_up)) {
+    if (!(otto && result?.events && result.events.level_up && showEvent)) {
       return
     }
     dispatch({
@@ -150,10 +150,10 @@ export default function ResultStep() {
         rewards: result.rewards,
       },
     })
-  }, [dispatch, otto, result])
+  }, [dispatch, otto, result, showEvent])
 
   useEffect(() => {
-    if (!(otto && result)) {
+    if (!(otto && result && showEvent)) {
       return
     }
     const chests = result.events.treasureChests
@@ -164,7 +164,7 @@ export default function ResultStep() {
       type: AdventureUIActionType.SetTreasuryChestItem,
       data: chests[0],
     })
-  }, [dispatch, otto, result])
+  }, [dispatch, otto, result, showEvent])
 
   if (!location) {
     return null

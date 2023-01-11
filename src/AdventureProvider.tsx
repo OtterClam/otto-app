@@ -1,14 +1,13 @@
 import AdventurePopup from 'components/AdventurePopup'
+import AttributePointsPopup from 'components/AttributePointsPopup'
+import LevelUpPopup from 'components/LevelUpPopup'
+import TreasuryChestPopup from 'components/TreasuryChestPopup'
 import { AdventureContractStateProvider } from 'contexts/AdventureContractState'
 import { AdventureLocationsProvider } from 'contexts/AdventureLocations'
 import { AdventureUIStateProvider } from 'contexts/AdventureUIState'
-import { MyItemsProvider } from 'contexts/MyItems'
 import { OttoProvider } from 'contexts/Otto'
 import { TraitProvider } from 'contexts/TraitContext'
 import { PropsWithChildren } from 'react'
-import LevelUpPopup from 'components/LevelUpPopup'
-import AttributePointsPopup from 'components/AttributePointsPopup'
-import TreasuryChestPopup from 'components/TreasuryChestPopup'
 
 export default function AdventureProvider({ children }: PropsWithChildren<object>) {
   return (

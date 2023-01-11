@@ -65,6 +65,7 @@ export interface RawItemMetadata {
     product_factory?: string
     product_type?: string
     unreturnable?: boolean
+    product_images?: string[]
   }
 }
 
@@ -96,6 +97,7 @@ export interface ItemMetadata {
   labels: TraitLabel[]
   unreturnable: boolean
   wearable: boolean
+  productImages: string[]
 }
 
 const parseNumericalStat = (val?: string): number => {
@@ -140,6 +142,7 @@ export const rawItemMetadataToItemMetadata = (raw: RawItemMetadata): ItemMetadat
     labels: raw.details.labels,
     unreturnable: Boolean(raw.details.unreturnable),
     wearable: Boolean(raw.details.wearable),
+    productImages: raw.details.product_images || [],
   }
 }
 

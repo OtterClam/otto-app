@@ -34,7 +34,7 @@ const Stable = keyframes`
 `
 
 const StyledImageContainer = styled.div`
-  flex:1
+  flex: 1;
   position: relative;
 
   > img {
