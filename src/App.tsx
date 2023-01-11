@@ -22,6 +22,7 @@ import dynamic from 'next/dynamic'
 import OtterSubgraphProvider from 'OtterSubgraphProvider'
 import AvaxSubgraphProvider from 'AvaxSubgraphProvider'
 import SnapshotProvider from 'SnapshotSubgraphProvider'
+import BscSubgraphProvider from 'BscSubgraphProvider'
 import React, { PropsWithChildren, useEffect } from 'react'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
@@ -29,7 +30,6 @@ import MyMissionsProvider from 'views/mission/MyMissionsProvider'
 import MissionPopup from 'views/mission/MissionPopup'
 import Error from './components/Error'
 import WalletSelector from './components/WalletSelector'
-import BscSubgraphProvider from 'BscSubgraphProvider'
 
 const preloadImages = [ottoLoadingImage.src, adventureMapImage.src]
 
