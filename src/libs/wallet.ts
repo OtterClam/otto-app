@@ -13,7 +13,7 @@ export interface TokenInfo {
   decimals: number
   balance: BigNumber
   contract: Erc20
-  transferEventListender: providers.Listener
+  transferEventListener: providers.Listener
 }
 
 export default class Wallet extends EventEmitter {
@@ -38,7 +38,7 @@ export default class Wallet extends EventEmitter {
     Array.from(this.tokenInfo).forEach(([, info]) => {
       const eventFilters = this.getTokenTransferEventFilters(info.contract)
       eventFilters.forEach(eventFilter => {
-        this.ethersProvider.off(eventFilter, info.transferEventListender)
+        this.ethersProvider.off(eventFilter, info.transferEventListener)
       })
     })
   }
@@ -52,11 +52,14 @@ export default class Wallet extends EventEmitter {
       return
     }
 
+    const contract = Erc20__factory.connect(tokenAddress, this.ethersProvider)
+    const [decimals, balance] = await Promise.all([contract.decimals(), contract.balanceOf(this.accountAddress)])
+
     const info: TokenInfo = {
-      balance: BigNumber.from(0),
-      decimals: 0,
-      contract: Erc20__factory.connect(tokenAddress, this.ethersProvider),
-      transferEventListender: debounce(this.handleTokenTransferEvent.bind(this, tokenAddress), 500),
+      balance,
+      decimals,
+      contract,
+      transferEventListener: debounce(this.handleTokenTransferEvent.bind(this, tokenAddress), 500),
     }
 
     this.tokenInfo.set(tokenAddress, info)
@@ -65,14 +68,6 @@ export default class Wallet extends EventEmitter {
     eventFilters.forEach(eventFilter => {
       this.ethersProvider.on(eventFilter, this.handleTokenTransferEvent)
     })
-
-    const [decimals, balance] = await Promise.all([
-      info.contract.decimals(),
-      info.contract.balanceOf(this.accountAddress),
-    ])
-
-    info.decimals = decimals
-    info.balance = balance
 
     this.fireBalanceUpdatedEvent(tokenAddress, info.balance)
   }

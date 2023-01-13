@@ -226,7 +226,7 @@ export function useClamPondDepositInfo() {
 
   return {
     timestamp: info?.value?.timestamp ?? constants.Zero,
-    balance: balance?.value[0] ?? constants.Zero,
+    balance: balance?.value?.[0] ?? constants.Zero,
   }
 }
 
