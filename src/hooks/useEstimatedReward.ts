@@ -10,7 +10,7 @@ import {
 import { trim } from 'helpers/trim'
 import Otto from 'models/Otto'
 
-const calcReward = (rank: number, prizeCount: number, epoch: number, isAdventure: boolean) => {
+const calcReward = (rank: number, prizeCount: number, epoch: number, isAdventure: boolean, ap?: number) => {
   let sum = 0
   let totalReward =
     epoch >= 12 || epoch === -1
@@ -27,17 +27,20 @@ const calcReward = (rank: number, prizeCount: number, epoch: number, isAdventure
     sum += 1 / i
   }
   const topReward = totalReward / sum
+  if (isAdventure && ap === 0) {
+    return 0
+  }
   return rank <= prizeCount ? topReward * (1 / rank) : 0
 }
 
-export default function useEstimatedReward(rank: number, isAdventure: boolean) {
+export default function useEstimatedReward(rank: number, isAdventure: boolean, ap?: number) {
   const { epoch, totalOttoSupply } = useRarityEpoch()
 
   const prizeCount = Math.floor(totalOttoSupply * 0.5)
 
   return useMemo(
-    () => trim(calcReward(rank, prizeCount, epoch, isAdventure), isAdventure ? 0 : 2),
-    [rank, prizeCount, epoch, isAdventure]
+    () => trim(calcReward(rank, prizeCount, epoch, isAdventure, ap), isAdventure ? 0 : 2),
+    [rank, prizeCount, epoch, isAdventure, ap]
   )
 }
 
@@ -50,7 +53,7 @@ export function useEstimatedTotalReward(myOttos: Otto[], isAdventure: boolean) {
     return trim(
       myOttos.reduce((total, otto) => {
         const rank = isAdventure ? otto.apRanking : otto.ranking
-        const reward = calcReward(rank, prizeCount, epoch, isAdventure)
+        const reward = calcReward(rank, prizeCount, epoch, isAdventure, otto.ap)
         return total + reward
       }, 0),
       isAdventure ? 0 : 2
