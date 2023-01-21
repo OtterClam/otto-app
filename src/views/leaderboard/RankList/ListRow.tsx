@@ -247,7 +247,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
     succeededAdventurePassesCount,
     adventureSuccessRate,
   } = otto
-  const estimatedReward = useEstimatedReward(rank, isAdventure)
+  const estimatedReward = useEstimatedReward(rank, isAdventure, ap)
 
   if (isMobile) {
     return (
