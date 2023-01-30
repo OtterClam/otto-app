@@ -32,7 +32,7 @@ export const RarityEpochProvider = ({ children }: PropsWithChildren<object>) => 
   const latestEpoch = data?.latestEpoch[0]
   const epoch = data?.epoches[0] || data?.latestEpoch[0]
   let isLatestEpoch = data?.epoches?.length === 0 || epoch?.num === latestEpoch?.num
-  if (Date.now() > RARITY_S2_END) {
+  if (now > RARITY_S2_END && now < RARITY_S3_START) {
     isLatestEpoch = true
   }
   const epochEndTime = (epoch?.endedAt || 0) * 1000
