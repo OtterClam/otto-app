@@ -42,20 +42,3 @@ jobs:
           gcloud auth configure-docker
           ./scripts/dockerbuild.sh $BRANCH_NAME
           docker push ${IMAGE_NAME} --all-tags
-
-      - name: Slack notification
-        uses: 8398a7/action-slack@v3
-        with:
-          status: custom
-          fields: workflow,job,commit,repo,ref,author,took
-          custom_payload: |
-            {
-              text: '${{ job.status }}' === 'success' ? ':rocket: :rocket: :rocket: ' : '${{ job.status }}' === 'failure' ? ':no_entry: :no_entry: :no_entry: ' : ':warning: :warning: :warning: ',
-              attachments: [{
-                color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-                text: `${process.env.AS_WORKFLOW} - ${process.env.AS_REPO}@${process.env.BRANCH_NAME}:${process.env.AS_COMMIT}\nby ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}`,
-              }]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
