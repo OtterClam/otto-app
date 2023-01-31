@@ -1,0 +1,61 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  GCR: us.gcr.io
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.0
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+          create_credentials_file: true
+          export_environment_variables: true
+
+      - name: Set env variables
+        run: |
+          echo "IMAGE_NAME=$GCR/$GCP_PROJECT/otter-web" >> $GITHUB_ENV
+          echo "BRANCH_NAME=$(git branch --show-current)" >> $GITHUB_ENV
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
+        with:
+          project_id: ${{ env.GCP_PROJECT }}
+
+      - name: 'Push images'
+        run: |
+          gcloud auth configure-docker
+          ./scripts/dockerbuild.sh $BRANCH_NAME
+          docker push ${IMAGE_NAME} --all-tags
+
+      - name: Slack notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: workflow,job,commit,repo,ref,author,took
+          custom_payload: |
+            {
+              text: '${{ job.status }}' === 'success' ? ':rocket: :rocket: :rocket: ' : '${{ job.status }}' === 'failure' ? ':no_entry: :no_entry: :no_entry: ' : ':warning: :warning: :warning: ',
+              attachments: [{
+                color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+                text: `${process.env.AS_WORKFLOW} - ${process.env.AS_REPO}@${process.env.BRANCH_NAME}:${process.env.AS_COMMIT}\nby ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}`,
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
