@@ -29,7 +29,7 @@ jobs:
 
       - name: Set env variables
         run: |
-          echo "IMAGE_NAME=$GCR/$GCP_PROJECT/otter-web" >> $GITHUB_ENV
+          echo "IMAGE_NAME=$GCR/$GCP_PROJECT/otter-app" >> $GITHUB_ENV
           echo "BRANCH_NAME=$(git branch --show-current)" >> $GITHUB_ENV
 
       - name: 'Set up Cloud SDK'
