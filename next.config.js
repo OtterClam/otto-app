@@ -38,5 +38,13 @@ module.exports = withPWA(
       domains: imageDomains,
       formats: ['image/avif', 'image/webp'],
     },
+    rewrites: async () => {
+      return [
+        {
+          source: '/health',
+          destination: '/api/health',
+        },
+      ]
+    },
   })
 )
