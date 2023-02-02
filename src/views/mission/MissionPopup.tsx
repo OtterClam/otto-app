@@ -3,10 +3,10 @@ import Button from 'components/Button'
 import CloseButton from 'components/CloseButton'
 import Fullscreen from 'components/Fullscreen'
 import PaymentButton from 'components/PaymentButton'
-import { Token } from 'constant'
 import { useApi } from 'contexts/Api'
 import { useRequestNewMission } from 'contracts/functions'
 import { intervalToDuration } from 'date-fns'
+import { useTokenInfo } from 'hooks/token-info'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
@@ -102,6 +102,7 @@ export default function MissionPopup() {
   const { t } = useTranslation('', { keyPrefix: 'mission' })
   const { OTTOPIA_STORE } = useContractAddresses()
   const showPopup = useSelector(selectShowMissionPopup)
+  const { MATIC } = useTokenInfo()
   const dispatch = useDispatch()
   const { account } = useEthers()
   const api = useApi()
@@ -154,7 +155,7 @@ export default function MissionPopup() {
                   disabled={reachedLimit}
                   width="100%"
                   amount={info.newPrice}
-                  token={Token.Clam}
+                  token={MATIC}
                   spenderAddress={OTTOPIA_STORE}
                   loading={buyState.state === 'Processing'}
                   onClick={onRequestNewMission}

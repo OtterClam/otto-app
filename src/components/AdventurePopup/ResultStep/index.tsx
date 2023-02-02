@@ -14,6 +14,7 @@ import { useOtto } from 'contexts/Otto'
 import { useRepositories } from 'contexts/Repositories'
 import { useAdventureRevive } from 'contracts/functions'
 import { ethers } from 'ethers'
+import { useTokenInfo } from 'hooks/token-info'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { AdventureResult } from 'models/AdventureResult'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
@@ -87,6 +88,7 @@ export default function ResultStep() {
   const { ADVENTURE } = useContractAddresses()
   const openPopup = useOpenAdventurePopup()
   const { dispatch } = useAdventureUIState()
+  const { MATIC } = useTokenInfo()
 
   const displayedOtto = otto || sharedOtto
 
@@ -232,7 +234,7 @@ export default function ResultStep() {
                 Typography={Headline}
                 loading={reviveState.status === 'PendingSignature' || reviveState.status === 'Mining'}
                 spenderAddress={ADVENTURE}
-                token={Token.Clam}
+                token={MATIC}
                 amount={ethers.utils.parseUnits('1', 9)}
                 onClick={() => otto && revive(otto.id)}
               >

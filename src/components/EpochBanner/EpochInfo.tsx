@@ -1,18 +1,19 @@
+import InfoImage from 'assets/ui/info.svg'
+import Button from 'components/Button'
 import Countdown from 'components/Countdown'
 import Help from 'components/Help'
 import Price from 'components/Price'
-import { Token, TOTAL_RARITY_REWARD, TOTAL_ADVENTURE_REWARD } from 'constant'
+import { TOTAL_ADVENTURE_REWARD, TOTAL_RARITY_REWARD } from 'constant'
 import { useRarityEpoch } from 'contexts/RarityEpoch'
+import { BigNumber } from 'ethers'
+import { useTokenInfo } from 'hooks/token-info'
 import { useTranslation } from 'next-i18next'
-import styled from 'styled-components/macro'
-import { Caption, ContentMedium, Headline, ContentSmall } from 'styles/typography'
-import InfoImage from 'assets/ui/info.svg'
-import Button from 'components/Button'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { BigNumber } from 'ethers'
-import IconImage from './icon.png'
+import styled from 'styled-components/macro'
+import { Caption, ContentMedium, ContentSmall, Headline } from 'styles/typography'
 import FishImage from './fish-icon.png'
+import IconImage from './icon.png'
 
 const StyledContainer = styled.div<{ isAdventure: boolean }>`
   padding: 10px 50px 10px 20px;
@@ -87,6 +88,7 @@ export default function EpochInfo() {
   const isAdventure = Boolean(query.adventure)
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.hero' })
   const { isLatestEpoch, epochEndTime } = useRarityEpoch()
+  const { MATIC, FISH } = useTokenInfo()
   const epochEnd = Date.now() > epochEndTime
   const rewardAmount = isAdventure
     ? BigNumber.from(String(TOTAL_ADVENTURE_REWARD)).mul(String(1e18))
@@ -97,7 +99,7 @@ export default function EpochInfo() {
       <StyledReward>
         <ContentMedium>{t('title')}</ContentMedium>
         <Headline>
-          <Price token={isAdventure ? Token.Fish : Token.Clam} amount={rewardAmount} showSymbol />
+          <Price token={isAdventure ? FISH : MATIC} amount={rewardAmount} showSymbol />
         </Headline>
       </StyledReward>
       <StyledTime>

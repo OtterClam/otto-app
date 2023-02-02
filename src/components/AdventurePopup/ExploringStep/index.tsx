@@ -2,12 +2,12 @@ import TimeIcon from 'assets/icons/icon_time.svg'
 import AdventureLocationName from 'components/AdventureLocationName'
 import Button from 'components/Button'
 import PaymentButton from 'components/PaymentButton'
-import { Token } from 'constant'
 import { useGoToAdventureResultStep, useSelectedAdventureLocation } from 'contexts/AdventureUIState'
 import { useOtto } from 'contexts/Otto'
 import { useAdventureFinish, useUsePotions } from 'contracts/functions'
 import { useFinishFee } from 'contracts/views'
 import formatDistance from 'date-fns/formatDistance'
+import { useTokenInfo } from 'hooks/token-info'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
@@ -121,6 +121,7 @@ export default function ExploringStep() {
   const now = new Date()
   const { otto, setOtto } = useOtto()
   const { updateOtto } = useMyOttos()
+  const { MATIC } = useTokenInfo()
   const location = useSelectedAdventureLocation()
   const { finishState, finish, resetFinish, finishResult } = useAdventureFinish()
   const { state: usePotionsState, send: applyPotions, resetState: resetUsePotions } = useUsePotions()
@@ -223,7 +224,7 @@ export default function ExploringStep() {
                 spenderAddress={ADVENTURE}
                 loading={loading}
                 amount={finishFee}
-                token={Token.Clam}
+                token={MATIC}
                 Typography={ContentLarge}
                 padding="6px 20px 0"
                 onClick={() => onClick(true)}

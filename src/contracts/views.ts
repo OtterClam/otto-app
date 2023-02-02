@@ -272,18 +272,10 @@ export function useIsApprovedForAll(contract: string, account: string, operator:
   }
 }
 
-export const useBuyFishReturn = (clamAmount: BigNumberish) => {
+export const useBuyFishReturn = (amount: BigNumberish) => {
   const store = useStoreContract()
-  const { library } = useEthers()
-  const [fishAmount, setFishAmount] = useState<BigNumberish>(0)
-
-  useEffect(() => {
-    if (library) {
-      store.toFish(clamAmount).then(setFishAmount)
-    }
-  }, [clamAmount.toString(), library])
-
-  return fishAmount
+  const result = useCall({ contract: store, method: 'maticToFish', args: [amount] })
+  return result?.value?.[0].toString() || '0'
 }
 
 export const useFinishFee = (passId: BigNumberish | undefined) => {

@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { hideDicePopup, selectOttoInTheHell } from 'store/uiSlice'
 import styled, { keyframes, useTheme } from 'styled-components/macro'
 import { ContentExtraSmall, ContentLarge, ContentMedium, ContentSmall, Display3, Headline } from 'styles/typography'
+import { useTokenInfo } from 'hooks/token-info'
 import StyledRichContent from './RichContent'
 
 const rollingDiceAudioSrc = '/audio/rolling_dice.mp3'
@@ -223,6 +224,7 @@ interface StateProps {
 function IntroState({ diceRoller, otto }: StateProps) {
   const { OTTO_HELL_DICE_ROLLER } = useContractAddresses()
   const { t } = useTranslation()
+  const { MATIC } = useTokenInfo()
 
   return (
     <StyledIntroStateContainer>
@@ -239,7 +241,7 @@ function IntroState({ diceRoller, otto }: StateProps) {
         padding="6px 12px 3px"
         spenderAddress={OTTO_HELL_DICE_ROLLER}
         Typography={Headline}
-        token={Token.Clam}
+        token={MATIC}
         disabled={!diceRoller.product?.price || diceRoller.loading}
         amount={diceRoller.product?.price ?? '0'}
         onClick={diceRoller.rollTheDice}
@@ -276,6 +278,7 @@ function ResultState({ diceRoller, otto }: StateProps) {
   const rolledAudio = useAudio(rolledAudioSrc)
   const eventIndex = diceRoller.state === State.FirstResult ? 0 : 1
   const event = diceRoller.dice?.events[eventIndex] ?? { event: '', image: '', type: EventType.Good }
+  const { MATIC } = useTokenInfo()
   const bg = {
     [EventType.Good]: good.src,
     [EventType.Bad]: bad.src,
@@ -347,7 +350,7 @@ function ResultState({ diceRoller, otto }: StateProps) {
               padding="6px 12px 3px"
               spenderAddress={OTTOPIA_STORE}
               Typography={Headline}
-              token={Token.Clam}
+              token={MATIC}
               disabled={!diceRoller.product?.price}
               amount={diceRoller.product?.price ?? '0'}
               onClick={diceRoller.rollTheDice}

@@ -758,19 +758,19 @@ export const useUseAttributePoints = () => {
 
 export const useBuyFish = () => {
   const store = useStoreContract()
-  const { state, send, resetState } = useContractFunction(store, 'buyFish', {})
+  const { state, send, resetState } = useContractFunction(store, 'buyFishWithMatic', {})
 
   const [buyFishState, setBuyFishState] = useState<OttoTransactionState>({
     state: 'None',
     status: state,
   })
 
-  const buyFish = async (clamAmount: BigNumber) => {
+  const buyFish = async (amountIn: BigNumber) => {
     setBuyFishState({
       state: 'PendingSignature',
       status: state,
     })
-    send(clamAmount)
+    send({ value: amountIn })
   }
 
   const resetBuyFish = () => {

@@ -554,6 +554,13 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "buyFishWithMatic",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -970,6 +977,25 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "maticAmount_",
+        type: "uint256",
+      },
+    ],
+    name: "maticToFish",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "",
         type: "address",
@@ -1226,6 +1252,19 @@ const _abi = [
       },
     ],
     name: "setFishPerClam",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "fishPerMatic_",
+        type: "uint256",
+      },
+    ],
+    name: "setFishPerMatic",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

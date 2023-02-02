@@ -1,22 +1,19 @@
-import Button from 'components/Button'
 import PaymentButton from 'components/PaymentButton'
-import { Token } from 'constant'
 import { useWallet } from 'contexts/Wallet'
 import { useBuyFish } from 'contracts/functions'
 import { useBuyFishReturn } from 'contracts/views'
 import { ethers, utils } from 'ethers'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { trim } from 'helpers/trim'
+import { useTokenInfo } from 'hooks/token-info'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } from 'styles/typography'
-import { formatClamEthers } from 'utils/currency'
 import BuyFISHIcon from './buy-fish.png'
 import SwapLoading from './SwapLoading'
-import { useTokenInfo } from './token-info'
 
 const StyledSwap = styled.div`
   display: flex;
@@ -140,16 +137,14 @@ interface Props {
 export default function Swap({ onClose }: Props) {
   const { OTTOPIA_STORE } = useContractAddresses()
   const { t } = useTranslation('', { keyPrefix: 'wallet_popup.swap' })
-  const [clamAmount, setClamAmount] = useState('1')
+  const [amountIn, setAmountIn] = useState('1')
   const { buyFishState, buyFish, resetBuyFish } = useBuyFish()
-  const { CLAM, FISH } = useContractAddresses()
   const tokenInfo = useTokenInfo()
+  const [tokenIn, tokenOut] = [tokenInfo.MATIC, tokenInfo.FISH]
   const wallet = useWallet()
-  const fishReturn = useBuyFishReturn(clamAmount ? ethers.utils.parseUnits(clamAmount, 9) : 0)
-  const fishAmount = useMemo(() => ethers.utils.formatUnits(fishReturn, tokenInfo.FISH.decimal), [fishReturn])
-  const enoughBalance =
-    tokenInfo.CLAM.balance &&
-    tokenInfo.CLAM.balance.gte(clamAmount ? parseUnits(clamAmount, tokenInfo.CLAM.decimal) : 0)
+  const fishReturn = useBuyFishReturn(amountIn ? parseUnits(amountIn, tokenIn.decimal) : 0)
+  const fishAmount = useMemo(() => formatUnits(fishReturn, tokenOut.decimal), [fishReturn])
+  const enoughBalance = tokenIn.balance && tokenIn.balance.gte(amountIn ? parseUnits(amountIn, tokenIn.decimal) : 0)
   const swapState = useMemo(
     () => ({
       ...buyFishState,
@@ -158,12 +153,11 @@ export default function Swap({ onClose }: Props) {
     [buyFishState, fishAmount]
   )
   const setMax = () => {
-    setClamAmount(trim(formatUnits(tokenInfo.CLAM.balance, tokenInfo.CLAM.decimal), 4))
+    setAmountIn(trim(formatUnits(tokenIn.balance || '0', tokenIn.decimal), 4))
   }
   useEffect(() => {
     if (swapState.state === 'Success') {
-      wallet?.setBalance(CLAM, balance => balance.sub(utils.parseUnits(clamAmount, 9)))
-      wallet?.setBalance(FISH, balance => balance.add(utils.parseEther(fishAmount)))
+      wallet?.setBalance(tokenOut.address, balance => balance.add(utils.parseEther(fishAmount)))
     }
     if (swapState.state === 'Fail' || swapState.state === 'Exception') {
       window.alert(swapState.status.errorMessage)
@@ -175,8 +169,8 @@ export default function Swap({ onClose }: Props) {
     return (
       <SwapLoading
         swapState={swapState}
-        fromTokenInfo={tokenInfo.CLAM}
-        toTokenInfo={tokenInfo.FISH}
+        fromTokenInfo={tokenIn}
+        toTokenInfo={tokenOut}
         onClose={onClose}
         onSuccess={resetBuyFish}
       />
@@ -185,12 +179,12 @@ export default function Swap({ onClose }: Props) {
 
   return (
     <StyledSwap>
-      <StyledTitle>{t('title')}</StyledTitle>
+      <StyledTitle>{t('fish_title')}</StyledTitle>
       <StyledAvailable>
         {t('available')}
-        <StyledAvailableToken src={tokenInfo.CLAM.icon} width="18px" height="18px" />
-        <StyledAvailableAmount>{`${tokenInfo.CLAM.balance ? formatClamEthers(tokenInfo.CLAM.balance) : '-'} ${
-          tokenInfo.CLAM.symbol
+        <StyledAvailableToken src={tokenIn.icon} width="18px" height="18px" />
+        <StyledAvailableAmount>{`${tokenIn.balance ? trim(formatUnits(tokenIn.balance, tokenIn.decimal), 4) : '-'} ${
+          tokenInfo.MATIC.symbol
         }`}</StyledAvailableAmount>
       </StyledAvailable>
       <StyledTokenInputContainer>
@@ -202,14 +196,14 @@ export default function Swap({ onClose }: Props) {
             </StyledMaxButton>
           </StyledTokenInputRow>
           <StyledTokenInputRow>
-            <StyledTokenSymbol icon={tokenInfo.CLAM.icon.src}>
-              <ContentSmall>{tokenInfo.CLAM.symbol}</ContentSmall>
+            <StyledTokenSymbol icon={tokenIn.icon.src}>
+              <ContentSmall>{tokenIn.symbol}</ContentSmall>
             </StyledTokenSymbol>
             <StyledInput
               placeholder={t('placeholder')}
-              value={clamAmount}
+              value={amountIn}
               min={0}
-              onChange={e => setClamAmount(e.target.value ?? '')}
+              onChange={e => setAmountIn(e.target.value ?? '')}
             />
           </StyledTokenInputRow>
         </StyledTokenInput>
@@ -218,8 +212,8 @@ export default function Swap({ onClose }: Props) {
             <StyledTokenHeader>{t('to')}</StyledTokenHeader>
           </StyledTokenInputRow>
           <StyledTokenInputRow>
-            <StyledTokenSymbol icon={tokenInfo.FISH.icon.src}>
-              <ContentSmall>{tokenInfo.FISH.symbol}</ContentSmall>
+            <StyledTokenSymbol icon={tokenOut.icon.src}>
+              <ContentSmall>{tokenOut.symbol}</ContentSmall>
             </StyledTokenSymbol>
             <ContentSmall>
               <StyledInput value={trim(fishAmount, 4)} disabled />
@@ -229,25 +223,21 @@ export default function Swap({ onClose }: Props) {
       </StyledTokenInputContainer>
       <StyledSwapInfoContainer>
         <StyledSwapInfo>
-          <p>1 {tokenInfo.CLAM.symbol}</p>
+          <p>1 {tokenIn.symbol}</p>
           <p>
-            {fishAmount && clamAmount ? trim(Number(fishAmount) / Number(clamAmount), 4) : '-'} {tokenInfo.FISH.symbol}
+            {fishAmount && amountIn ? trim(Number(fishAmount) / Number(amountIn), 4) : '-'} {tokenOut.symbol}
           </p>
         </StyledSwapInfo>
       </StyledSwapInfoContainer>
       <PaymentButton
         spenderAddress={OTTOPIA_STORE}
-        token={Token.Clam}
-        amount={clamAmount ? parseUnits(clamAmount, tokenInfo.CLAM.decimal) : 0}
+        token={tokenIn}
+        amount={amountIn ? parseUnits(amountIn, tokenIn.decimal) : 0}
         Typography={Headline}
-        onClick={() => buyFish(parseUnits(clamAmount, tokenInfo.CLAM.decimal))}
-        disabled={!clamAmount || !enoughBalance}
+        onClick={() => buyFish(parseUnits(amountIn, tokenIn.decimal))}
+        disabled={!amountIn || !enoughBalance}
       >
-        {!clamAmount
-          ? t('placeholder')
-          : enoughBalance
-          ? t('swap')
-          : t('not_enough_balance', { symbol: tokenInfo.CLAM.symbol })}
+        {!amountIn ? t('placeholder') : enoughBalance ? t('swap') : t('not_enough_balance', { symbol: tokenIn.symbol })}
       </PaymentButton>
     </StyledSwap>
   )

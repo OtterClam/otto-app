@@ -87,6 +87,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
     "amountOf(uint256)": FunctionFragment;
     "buy(address,uint256,uint256)": FunctionFragment;
     "buyFish(uint256)": FunctionFragment;
+    "buyFishWithMatic()": FunctionFragment;
     "buyNoChainlink(address,uint256,uint256)": FunctionFragment;
     "buySigned(address,uint256,uint256,address,uint256,(string,bytes32,bytes))": FunctionFragment;
     "claim(uint256,uint256[])": FunctionFragment;
@@ -105,6 +106,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
     "hasRole(bytes32,address)": FunctionFragment;
     "initialize(address,address,address,address)": FunctionFragment;
     "initializeFish(address)": FunctionFragment;
+    "maticToFish(uint256)": FunctionFragment;
     "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": FunctionFragment;
     "onERC1155Received(address,address,uint256,uint256,bytes)": FunctionFragment;
     "owner()": FunctionFragment;
@@ -117,6 +119,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
     "setAirdropInfo(uint256,uint256,uint256,uint256)": FunctionFragment;
     "setBaseURI(string)": FunctionFragment;
     "setFishPerClam(uint256)": FunctionFragment;
+    "setFishPerMatic(uint256)": FunctionFragment;
     "setItem(address)": FunctionFragment;
     "setSigner(address)": FunctionFragment;
     "signer()": FunctionFragment;
@@ -150,6 +153,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
       | "amountOf"
       | "buy"
       | "buyFish"
+      | "buyFishWithMatic"
       | "buyNoChainlink"
       | "buySigned"
       | "claim"
@@ -168,6 +172,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
       | "hasRole"
       | "initialize"
       | "initializeFish"
+      | "maticToFish"
       | "onERC1155BatchReceived"
       | "onERC1155Received"
       | "owner"
@@ -180,6 +185,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
       | "setAirdropInfo"
       | "setBaseURI"
       | "setFishPerClam"
+      | "setFishPerMatic"
       | "setItem"
       | "setSigner"
       | "signer"
@@ -234,6 +240,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "buyFish",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "buyFishWithMatic",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "buyNoChainlink",
@@ -315,6 +325,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
+    functionFragment: "maticToFish",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "onERC1155BatchReceived",
     values: [string, string, BigNumberish[], BigNumberish[], BytesLike]
   ): string;
@@ -354,6 +368,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "setBaseURI", values: [string]): string;
   encodeFunctionData(
     functionFragment: "setFishPerClam",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setFishPerMatic",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "setItem", values: [string]): string;
@@ -432,6 +450,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "buy", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "buyFish", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "buyFishWithMatic",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "buyNoChainlink",
     data: BytesLike
   ): Result;
@@ -480,6 +502,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "maticToFish",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "onERC1155BatchReceived",
     data: BytesLike
   ): Result;
@@ -513,6 +539,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "setBaseURI", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setFishPerClam",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setFishPerMatic",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setItem", data: BytesLike): Result;
@@ -839,6 +869,10 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    buyFishWithMatic(
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     buyNoChainlink(
       to_: string,
       id_: BigNumberish,
@@ -942,6 +976,11 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    maticToFish(
+      maticAmount_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     onERC1155BatchReceived(
       arg0: string,
       arg1: string,
@@ -1023,6 +1062,11 @@ export interface OttopiaStore extends BaseContract {
 
     setFishPerClam(
       fishPerClam_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setFishPerMatic(
+      fishPerMatic_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -1145,6 +1189,10 @@ export interface OttopiaStore extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  buyFishWithMatic(
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   buyNoChainlink(
     to_: string,
     id_: BigNumberish,
@@ -1246,6 +1294,11 @@ export interface OttopiaStore extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  maticToFish(
+    maticAmount_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   onERC1155BatchReceived(
     arg0: string,
     arg1: string,
@@ -1327,6 +1380,11 @@ export interface OttopiaStore extends BaseContract {
 
   setFishPerClam(
     fishPerClam_: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setFishPerMatic(
+    fishPerMatic_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1444,6 +1502,8 @@ export interface OttopiaStore extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    buyFishWithMatic(overrides?: CallOverrides): Promise<void>;
+
     buyNoChainlink(
       to_: string,
       id_: BigNumberish,
@@ -1538,6 +1598,11 @@ export interface OttopiaStore extends BaseContract {
 
     initializeFish(fish_: string, overrides?: CallOverrides): Promise<void>;
 
+    maticToFish(
+      maticAmount_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     onERC1155BatchReceived(
       arg0: string,
       arg1: string,
@@ -1611,6 +1676,11 @@ export interface OttopiaStore extends BaseContract {
 
     setFishPerClam(
       fishPerClam_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setFishPerMatic(
+      fishPerMatic_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1853,6 +1923,10 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    buyFishWithMatic(
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     buyNoChainlink(
       to_: string,
       id_: BigNumberish,
@@ -1957,6 +2031,11 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    maticToFish(
+      maticAmount_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     onERC1155BatchReceived(
       arg0: string,
       arg1: string,
@@ -2017,6 +2096,11 @@ export interface OttopiaStore extends BaseContract {
 
     setFishPerClam(
       fishPerClam_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setFishPerMatic(
+      fishPerMatic_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -2141,6 +2225,10 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    buyFishWithMatic(
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     buyNoChainlink(
       to_: string,
       id_: BigNumberish,
@@ -2248,6 +2336,11 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    maticToFish(
+      maticAmount_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     onERC1155BatchReceived(
       arg0: string,
       arg1: string,
@@ -2311,6 +2404,11 @@ export interface OttopiaStore extends BaseContract {
 
     setFishPerClam(
       fishPerClam_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setFishPerMatic(
+      fishPerMatic_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

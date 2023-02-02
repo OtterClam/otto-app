@@ -1,10 +1,11 @@
-import { BigNumber } from 'ethers'
+import { BigNumber, constants } from 'ethers'
 import CLAMIcon from 'assets/tokens/CLAM.svg'
 import FISHIcon from 'assets/tokens/FISH.svg'
+import MATICIcon from 'assets/tokens/WMATIC.svg'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
-import { TransactionState, TransactionStatus } from '@usedapp/core'
+import { TransactionState, TransactionStatus, useEtherBalance, useEthers } from '@usedapp/core'
 
 export interface SwapTransactionState {
   state: TransactionState
@@ -20,9 +21,11 @@ export interface TokenInfo {
   symbol: string
 }
 
-export const useTokenInfo = () => {
+export const useTokenInfo = (): Record<string, TokenInfo> => {
   const { CLAM, FISH } = useContractAddresses()
+  const { account } = useEthers()
 
+  const maticBalance = useEtherBalance(account) || constants.Zero
   const clamBalance = useTokenBalance(CLAM)
   const fishBalance = useTokenBalance(FISH)
 
@@ -42,7 +45,14 @@ export const useTokenInfo = () => {
         address: FISH,
         symbol: 'FISH',
       },
+      MATIC: {
+        icon: MATICIcon,
+        balance: maticBalance,
+        decimal: 18,
+        address: constants.AddressZero,
+        symbol: 'MATIC',
+      },
     }),
-    [fishBalance, clamBalance]
+    [fishBalance, clamBalance, maticBalance]
   )
 }
