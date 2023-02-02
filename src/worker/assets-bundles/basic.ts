@@ -9,9 +9,6 @@ export const basic = new BasicAssetsBundle(BundleName.Basic, [
   '/fonts/PaytoneOne-Regular.ttf',
   '/fonts/paytoneone-regular.woff2',
   '/ottoclick.mp3',
-  'src/assets/bg.jpg',
-  'src/assets/cursor-pointer.png',
-  'src/assets/cursor-default.png',
 
   // header
   'src/components/PageHeader/Logo/logo-small.png',
