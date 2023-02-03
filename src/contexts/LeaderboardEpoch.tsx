@@ -1,4 +1,4 @@
-import { throttle } from 'lodash'
+import throttle from 'lodash/throttle'
 import noop from 'lodash/noop'
 import { LeaderboardEpoch } from 'models/LeaderboardEpoch'
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react'

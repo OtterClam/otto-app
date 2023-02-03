@@ -5,7 +5,7 @@ import { GetTreasuryMetrics_protocolMetrics } from 'graphs/__generated__/GetTrea
 import { Investments_investments } from 'graphs/__generated__/Investments'
 import useSize from 'hooks/useSize'
 import { i18n } from 'i18next'
-import * as _ from 'lodash'
+import mapValues from 'lodash/mapValues'
 import { useTranslation } from 'next-i18next'
 import { RefObject, useRef } from 'react'
 import { Area, ComposedChart, Line, ReferenceLine, Tooltip } from 'recharts'
@@ -58,7 +58,7 @@ export default function InvestmentsChart({ data, avgApr, stopColor }: Investment
   const { t, i18n } = useTranslation()
   const size = useSize(containerRef)
 
-  const numberData = data.flatMap(d => _.mapValues(d, parseFloat))
+  const numberData = data.flatMap(d => mapValues(d, parseFloat))
   const colorId = `color-area-${stopColor}`
   return (
     <StyledContainer ref={containerRef}>

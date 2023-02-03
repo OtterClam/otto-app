@@ -1,6 +1,6 @@
 import TreasurySection from 'components/TreasurySection'
 import { format } from 'date-fns'
-import _ from 'lodash'
+import range from 'lodash/range'
 import { AdventureJournalEntry, AdventureResult } from 'models/AdventureResult'
 import { useTranslation } from 'next-i18next'
 import Skeleton from 'react-loading-skeleton'
@@ -22,7 +22,7 @@ export default function AdventureJournal({ className, result }: Props) {
       <StyledTitle>{t('journal')}</StyledTitle>
       <StyledScrollContainer>
         <StyledJournalEntryContainer>
-          {!result && _.range(10).map(i => <JournalEntrySkeleton key={i} />)}
+          {!result && range(10).map(i => <JournalEntrySkeleton key={i} />)}
           {result && result.journal.map((entry, i) => <DisplayJournalEntry key={i} {...entry} />)}
         </StyledJournalEntryContainer>
       </StyledScrollContainer>

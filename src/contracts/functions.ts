@@ -4,7 +4,7 @@ import { useRepositories } from 'contexts/Repositories'
 import { BigNumber, BigNumberish, constants, Contract, ethers, utils } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { Api } from 'libs/api'
-import _ from 'lodash'
+import last from 'lodash/last'
 import { Item, ItemAction, ItemMetadata } from 'models/Item'
 import { Mission } from 'models/Mission'
 import Product from 'models/store/Product'
@@ -837,7 +837,7 @@ export const useDoItemBatchActions = () => {
   }, [approveItemState])
   useEffect(() => {
     if (state.status === 'Success' && state.receipt) {
-      const restingUntil = _.last(
+      const restingUntil = last(
         state.receipt.logs
           .map(log => {
             try {
