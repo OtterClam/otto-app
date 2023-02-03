@@ -46,5 +46,18 @@ module.exports = withPWA(
         },
       ]
     },
+    headers: async () => {
+      return [
+        {
+          source: '/:all*(svg|je?pg|png|js|json|ttf|woff2|mp3)',
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: 'public,max-age=86400',
+            },
+          ],
+        },
+      ]
+    },
   })
 )
