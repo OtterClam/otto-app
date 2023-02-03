@@ -88,6 +88,7 @@
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "^4.26.0",
+    "@next/bundle-analyzer": "^13.1.6",
     "@types/graphql": "14.5.0",
     "@types/lodash": "^4.14.180",
     "@types/md5": "^2.3.2",
