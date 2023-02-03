@@ -40,7 +40,7 @@ const OttoPopup = dynamic(() => import('components/OttoPopup'), { ssr: false })
 
 const MissionPopup = dynamic(() => import('views/mission/MissionPopup'))
 
-const Error = dynamic(() => import('views/mission/MissionPopup'), { ssr: false })
+const Error = dynamic(() => import('./components/Error'), { ssr: false })
 
 const WalletSelector = dynamic(() => import('./components/WalletSelector'), { ssr: false })
 
