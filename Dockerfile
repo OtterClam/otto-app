@@ -1,4 +1,7 @@
 FROM node:16-buster-slim AS builder
+
+ENV NEXT_PUBLIC_DISCORD_CLIENT_ID
+
 ADD . /app
 WORKDIR /app
 RUN apt-get update && apt-get install -y \
