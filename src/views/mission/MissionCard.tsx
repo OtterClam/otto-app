@@ -9,14 +9,16 @@ import { ethers } from 'ethers'
 import { Item } from 'models/Item'
 import { Mission, MissionReward } from 'models/Mission'
 import { useTranslation } from 'next-i18next'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentSmall, Note } from 'styles/typography'
-import CompleteMissionPopup from './CompleteMissionPopup'
 import FinishedStamp from './FinishedStamp'
 import LevelIcon from './LevelIcon'
 import { useMyMissions } from './MyMissionsProvider'
+
+const CompleteMissionPopup = dynamic(() => import('./CompleteMissionPopup'))
 
 const StyledMissionCard = styled.div`
   background: ${({ theme }) => theme.colors.white};

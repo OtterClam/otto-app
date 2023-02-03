@@ -6,8 +6,10 @@ import { MouseRelativePositionProvider } from 'contexts/MouseRelativePosition'
 import { Body } from 'layouts/GameLayout'
 import styled from 'styled-components/macro'
 import FloatingNavButtons from 'components/FloatingNavButtons'
-import Banner from './Banner'
+import dynamic from 'next/dynamic'
 import Map from './Map'
+
+const Banner = dynamic(() => import('./Banner'))
 
 const StyedBody = styled(Body)`
   margin-bottom: 0;

@@ -4,8 +4,10 @@ import SmallAd from 'components/SmallAd'
 import styled from 'styled-components/macro'
 import FloatingNavButtons from 'components/FloatingNavButtons'
 import { useBreakpoints } from 'contexts/Breakpoints'
-import Banner from './Banner'
+import dynamic from 'next/dynamic'
 import { FixedMap } from './Map'
+
+const Banner = dynamic(() => import('./Banner'))
 
 const StyledContainer = styled.div`
   --map-z-index: 0;

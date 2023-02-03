@@ -8,7 +8,7 @@ import TreasurySection from 'components/TreasurySection'
 import useInvestments from 'hooks/useInvestments'
 import { Investments_investments } from 'graphs/__generated__/Investments'
 import InvestmentsChart from 'components/InvestmentsChart'
-import * as _ from 'lodash'
+import groupBy from 'lodash/groupBy'
 import TreasuryCard from 'components/TreasuryCard'
 import { formatUsd } from 'utils/currency'
 import useCrossChainTreasuryMetrics from 'hooks/useCrossChainTreasuryMetrics'
@@ -303,14 +303,14 @@ export default function InvestmentsPage({ className }: Props) {
   )
 
   const lastDataDate = useMemo(() => {
-    const groupedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
+    const groupedInvestments = Object.values(groupBy(investments, i => `${i.protocol}_${i.strategy}`))
     const currentInvestments = groupedInvestments.flatMap(x => x.at(-1))
     const lastDate = Math.max(...currentInvestments.flatMap(x => parseInt(x?.timestamp, 10)))
     return lastDate > 0 ? lastDate : 0
   }, [investments])
 
   const joinedInvestments = useMemo(() => {
-    const groupedInvestments = Object.values(_.groupBy(investments, i => `${i.protocol}_${i.strategy}`))
+    const groupedInvestments = Object.values(groupBy(investments, i => `${i.protocol}_${i.strategy}`))
     const currentInvestments = groupedInvestments.flatMap(x => x.at(-1))
     const portfolioPcts = currentInvestments.flatMap(x => {
       if (parseInt(x?.timestamp ?? '0', 10) !== lastDataDate) return 0

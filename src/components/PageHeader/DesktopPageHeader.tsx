@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic'
 import styled from 'styled-components/macro'
-import useIsAtTop from 'hooks/useIsAtTop'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { useEthers } from '@usedapp/core'
 import { connectWallet, showFishWalletPopup, showWalletPopup } from 'store/uiSlice'
 import { useDispatch } from 'react-redux'
@@ -11,9 +10,9 @@ import Title from './Title'
 import { PageHeaderProps } from './type'
 import { ClamBalance, FishBalance } from './Balance'
 import MenuButton from './MenuButton'
-import FishWalletPopup from './FishWalletPopup'
 
 const WalletPopup = dynamic(() => import('./WalletPopup'), { ssr: false })
+const FishWalletPopup = dynamic(() => import('./FishWalletPopup'), { ssr: false })
 
 const StyledContainer = styled.div`
   position: fixed;
