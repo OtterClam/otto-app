@@ -69,7 +69,6 @@ export const ClamBalance = ({ onClick }: Props) => {
   return (
     <div data-tip ref={tooltipRef}>
       <Balance
-        showBuyButton
         background={bg.src}
         width={width}
         balance={balance}

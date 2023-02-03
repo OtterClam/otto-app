@@ -5,6 +5,7 @@ import CLAMIcon from 'assets/tokens/CLAM.svg'
 import PEARLIcon from 'assets/tokens/PEARL.svg'
 import BorderContainer from 'components/BorderContainer'
 import useContractAddresses from 'hooks/useContractAddresses'
+import useTokenBalance from 'hooks/useTokenBalance'
 import { useTranslation } from 'next-i18next'
 import { RefObject, useEffect } from 'react'
 import ReactDOM from 'react-dom'
@@ -12,7 +13,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { hideWalletPopup, selectShowWalletPopup } from 'store/uiSlice'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
-import useTokenBalance from 'hooks/useTokenBalance'
 import { formatClamEthers } from 'utils/currency'
 import BalanceCell from './BalanceCell'
 import Swap from './Swap'
@@ -136,7 +136,7 @@ export default function WalletPopup({ alignRef, className }: Props) {
               />
             </StyledBalanceCells>
           </StyledBalancesContainer>
-          <StyledSwap onClose={onClose} />
+          {/* <StyledSwap onClose={onClose} /> */}
         </StyledBorderContainer>
       </StyledWalletPopup>
     </StyledPopup>
