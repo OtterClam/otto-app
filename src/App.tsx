@@ -27,9 +27,6 @@ import React, { PropsWithChildren, useEffect } from 'react'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
 import MyMissionsProvider from 'views/mission/MyMissionsProvider'
-import MissionPopup from 'views/mission/MissionPopup'
-import Error from './components/Error'
-import WalletSelector from './components/WalletSelector'
 
 const preloadImages = [ottoLoadingImage.src, adventureMapImage.src]
 
@@ -40,6 +37,12 @@ const SideMenu = dynamic(() => import('components/SideMenu'), { ssr: false })
 const ItemDetailsPopup = dynamic(() => import('components/ItemDetailsPopup'), { ssr: false })
 
 const OttoPopup = dynamic(() => import('components/OttoPopup'), { ssr: false })
+
+const MissionPopup = dynamic(() => import('views/mission/MissionPopup'))
+
+const Error = dynamic(() => import('views/mission/MissionPopup'), { ssr: false })
+
+const WalletSelector = dynamic(() => import('./components/WalletSelector'), { ssr: false })
 
 const StyledApp = styled.div`
   display: flex;
