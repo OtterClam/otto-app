@@ -196,6 +196,10 @@ export class Api {
     return this.otterclamClient.post('/store/buy', { from, to, product_id: productId }).then(res => res.data)
   }
 
+  public async signOpenChest({ from, to, itemId }: { from: string; to: string; itemId: number }) {
+    return this.otterclamClient.post('/chest-store/open', { from, to, id: itemId, amount: 1 }).then(res => res.data)
+  }
+
   public async getFoundryForges(): Promise<ForgeFormula[]> {
     const result = await this.otterclamClient.get<RawForgeFormula[]>('/foundry/formulas')
     return result.data.map(rawForgeToForge)

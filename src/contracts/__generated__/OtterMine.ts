@@ -33,6 +33,7 @@ export interface OtterMineInterface extends utils.Interface {
     "MANAGER_ROLE()": FunctionFragment;
     "burnAddress()": FunctionFragment;
     "clam()": FunctionFragment;
+    "deadline()": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
@@ -41,6 +42,7 @@ export interface OtterMineInterface extends utils.Interface {
     "proxiableUUID()": FunctionFragment;
     "renounceRole(bytes32,address)": FunctionFragment;
     "revokeRole(bytes32,address)": FunctionFragment;
+    "setDeadline(uint256)": FunctionFragment;
     "setUsdPerClam(uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
@@ -56,6 +58,7 @@ export interface OtterMineInterface extends utils.Interface {
       | "MANAGER_ROLE"
       | "burnAddress"
       | "clam"
+      | "deadline"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
@@ -64,6 +67,7 @@ export interface OtterMineInterface extends utils.Interface {
       | "proxiableUUID"
       | "renounceRole"
       | "revokeRole"
+      | "setDeadline"
       | "setUsdPerClam"
       | "supportsInterface"
       | "upgradeTo"
@@ -86,6 +90,7 @@ export interface OtterMineInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "clam", values?: undefined): string;
+  encodeFunctionData(functionFragment: "deadline", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
     values: [BytesLike]
@@ -114,6 +119,10 @@ export interface OtterMineInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "revokeRole",
     values: [BytesLike, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setDeadline",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "setUsdPerClam",
@@ -151,6 +160,7 @@ export interface OtterMineInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "clam", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "deadline", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
     data: BytesLike
@@ -168,6 +178,10 @@ export interface OtterMineInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setDeadline",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "setUsdPerClam",
     data: BytesLike
@@ -193,6 +207,7 @@ export interface OtterMineInterface extends utils.Interface {
     "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
     "RoleGranted(bytes32,address,address)": EventFragment;
     "RoleRevoked(bytes32,address,address)": EventFragment;
+    "SetDeadline(uint256)": EventFragment;
     "SetUsdPerClam(uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
     "Withdraw(address,uint256)": EventFragment;
@@ -205,6 +220,7 @@ export interface OtterMineInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "RoleAdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleGranted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleRevoked"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SetDeadline"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SetUsdPerClam"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
@@ -287,6 +303,13 @@ export type RoleRevokedEvent = TypedEvent<
 
 export type RoleRevokedEventFilter = TypedEventFilter<RoleRevokedEvent>;
 
+export interface SetDeadlineEventObject {
+  deadline: BigNumber;
+}
+export type SetDeadlineEvent = TypedEvent<[BigNumber], SetDeadlineEventObject>;
+
+export type SetDeadlineEventFilter = TypedEventFilter<SetDeadlineEvent>;
+
 export interface SetUsdPerClamEventObject {
   usdPerClam: BigNumber;
 }
@@ -350,6 +373,8 @@ export interface OtterMine extends BaseContract {
 
     clam(overrides?: CallOverrides): Promise<[string]>;
 
+    deadline(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
 
     grantRole(
@@ -386,6 +411,11 @@ export interface OtterMine extends BaseContract {
     revokeRole(
       role: BytesLike,
       account: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setDeadline(
+      deadline_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -428,6 +458,8 @@ export interface OtterMine extends BaseContract {
 
   clam(overrides?: CallOverrides): Promise<string>;
 
+  deadline(overrides?: CallOverrides): Promise<BigNumber>;
+
   getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
 
   grantRole(
@@ -464,6 +496,11 @@ export interface OtterMine extends BaseContract {
   revokeRole(
     role: BytesLike,
     account: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setDeadline(
+    deadline_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -506,6 +543,8 @@ export interface OtterMine extends BaseContract {
 
     clam(overrides?: CallOverrides): Promise<string>;
 
+    deadline(overrides?: CallOverrides): Promise<BigNumber>;
+
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
 
     grantRole(
@@ -539,6 +578,11 @@ export interface OtterMine extends BaseContract {
     revokeRole(
       role: BytesLike,
       account: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setDeadline(
+      deadline_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -635,6 +679,9 @@ export interface OtterMine extends BaseContract {
       sender?: string | null
     ): RoleRevokedEventFilter;
 
+    "SetDeadline(uint256)"(deadline?: null): SetDeadlineEventFilter;
+    SetDeadline(deadline?: null): SetDeadlineEventFilter;
+
     "SetUsdPerClam(uint256)"(usdPerClam?: null): SetUsdPerClamEventFilter;
     SetUsdPerClam(usdPerClam?: null): SetUsdPerClamEventFilter;
 
@@ -656,6 +703,8 @@ export interface OtterMine extends BaseContract {
     burnAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     clam(overrides?: CallOverrides): Promise<BigNumber>;
+
+    deadline(overrides?: CallOverrides): Promise<BigNumber>;
 
     getRoleAdmin(
       role: BytesLike,
@@ -696,6 +745,11 @@ export interface OtterMine extends BaseContract {
     revokeRole(
       role: BytesLike,
       account: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setDeadline(
+      deadline_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -741,6 +795,8 @@ export interface OtterMine extends BaseContract {
 
     clam(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    deadline(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getRoleAdmin(
       role: BytesLike,
       overrides?: CallOverrides
@@ -780,6 +836,11 @@ export interface OtterMine extends BaseContract {
     revokeRole(
       role: BytesLike,
       account: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setDeadline(
+      deadline_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

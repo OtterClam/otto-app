@@ -215,25 +215,28 @@ export const useBuyProduct = (claim: boolean) => {
 
 export const useRedeemProduct = () => {
   const { items: itemsRepo } = useRepositories()
-  const { OTTOPIA_STORE } = useContractAddresses()
   const { account, library } = useEthers()
-  const { i18n } = useTranslation()
   const api = useApi()
-  const [factory, setFactory] = useState<Contract | undefined>()
+  const store = useStoreContract()
   const item = useItemContract()
-  const { state, send, resetState } = useContractFunction(item, 'safeTransferFrom')
+  const { state, send, resetState } = useContractFunction(store, 'openChest')
   const [redeemState, setRedeemState] = useState<OttoBuyTransactionState>({
     state: 'None',
     status: state,
   })
-  const redeem = async (couponId: string, factoryAddr: string) => {
-    if (account) {
+  const redeem = async (couponId: string) => {
+    const signer = library?.getSigner()
+    if (account && signer) {
       setRedeemState({
         state: 'PendingSignature',
         status: state,
       })
-      setFactory(new Contract(factoryAddr, IOttoItemFactoryAbi, library))
-      send(account, OTTOPIA_STORE, couponId, 1, [], { gasLimit: 1000000 })
+      const isApprovedForAll = await item.connect(signer).isApprovedForAll(account, store.address)
+      if (!isApprovedForAll) {
+        await (await item.setApprovalForAll(store.address, true)).wait()
+      }
+      const data = await api.signOpenChest({ from: account, to: account, itemId: Number(couponId) })
+      ;(send as any)(...data, { gasLimit: 1000000 })
     }
   }
   const resetRedeem = () => {
@@ -264,7 +267,7 @@ export const useRedeemProduct = () => {
     } else {
       setRedeemState({ state: state.status, status: state })
     }
-  }, [state, i18n, factory])
+  }, [state])
   return { redeemState, redeem, resetRedeem }
 }
 

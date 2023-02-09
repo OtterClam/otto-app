@@ -71,8 +71,8 @@ export function useOttoSummonerContract() {
 
 export function useItemContract() {
   const { OTTO_ITEM } = useContractAddresses()
-  const { library } = useEthers()
-  return new Contract(OTTO_ITEM, OttoItemAbi, library) as OttoItem
+  const { account, library } = useEthers()
+  return useMemo(() => new Contract(OTTO_ITEM, OttoItemAbi, library?.getSigner()), [account, library])
 }
 
 export function useStoreContract() {

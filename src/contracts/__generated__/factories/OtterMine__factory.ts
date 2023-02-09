@@ -158,6 +158,19 @@ const _abi = [
       {
         indexed: false,
         internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+    ],
+    name: "SetDeadline",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
         name: "usdPerClam",
         type: "uint256",
       },
@@ -244,6 +257,19 @@ const _abi = [
         internalType: "contract IERC20Upgradeable",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "deadline",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -386,6 +412,19 @@ const _abi = [
       },
     ],
     name: "revokeRole",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "deadline_",
+        type: "uint256",
+      },
+    ],
+    name: "setDeadline",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
