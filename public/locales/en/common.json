@@ -764,6 +764,7 @@
     "pearl_bank": "Pearl Bank",
     "swap": {
       "title": "Swap CLAM",
+      "fish_title": "Swap FISH",
       "from": "From",
       "available": "Available:",
       "max": "MAX",
@@ -782,8 +783,7 @@
       "tx_success_title": "Swap Successful!",
       "tx_success_desc": "You just received {{amount}} {{to}}",
       "close_btn": "Close",
-      "success_btn": "Back",
-      "fish_title": "Swap FISH"
+      "success_btn": "Back"
     }
   },
   "floatingNavButtons": {
@@ -1091,5 +1091,18 @@
   "adventureSharePopup": {
     "title": "Share this adventure result",
     "desc": "You can copy and paste the link on any social media platform. Anyone who has the link can see your Otto’s adventure result."
+  },
+  "mine": {
+    "title": "Mine",
+    "welcome": "Make your CLAM stable!",
+    "desc": "Mining deadline: {{deadline}}",
+    "clam_balance": "Your Balance:",
+    "from": "From",
+    "to": "To",
+    "max": "Max",
+    "placeholder": "0",
+    "current_supply": "Current Supply",
+    "mine_btn": "Mine Now!",
+    "extra": "Or you can make your CLAM more valuable..."
   }
 }

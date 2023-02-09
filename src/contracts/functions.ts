@@ -27,6 +27,7 @@ import {
   usePortalCreatorContract,
   useStoreContract,
 } from './contracts'
+import useOtterMine from './useOtterMine'
 import { Adventure } from './__generated__'
 
 export const useApprove = (tokenAddress?: string) => {
@@ -1125,4 +1126,38 @@ export const useRefreshMission = (missionId: number) => {
     }
   }, [state, i18n, api, account, missionId])
   return { refreshState, refresh, resetRefresh: resetState }
+}
+
+export const useMine = () => {
+  const otterMine = useOtterMine()
+  const { CLAM } = useContractAddresses()
+  const { account } = useEthers()
+  const clam = useERC20(CLAM)
+  const { state, send, resetState } = useContractFunction(otterMine, 'mine', {})
+  const [mineState, setMineState] = useState<OttoTransactionState>({
+    state: 'None',
+    status: state,
+  })
+  const mine = async (amount: string) => {
+    try {
+      const clamAmount = ethers.utils.parseUnits(amount, 9)
+      setMineState({
+        state: 'PendingSignature',
+        status: state,
+      })
+      const clamAllowance = account ? await clam.allowance(account, otterMine.address) : constants.Zero
+      const noAllowance = clamAllowance.lt(clamAmount)
+      if (noAllowance) {
+        await (await clam.approve(otterMine.address, constants.MaxUint256)).wait()
+      }
+      send(clamAmount)
+    } catch (error: any) {
+      window.alert(error.message)
+      setMineState({ state: 'None', status: state })
+    }
+  }
+  useEffect(() => {
+    setMineState({ state: state.status, status: state })
+  }, [state])
+  return { mineState, mine, resetMine: resetState }
 }

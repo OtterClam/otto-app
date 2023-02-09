@@ -2,6 +2,7 @@ import { BigNumber, constants } from 'ethers'
 import CLAMIcon from 'assets/tokens/CLAM.svg'
 import FISHIcon from 'assets/tokens/FISH.svg'
 import MATICIcon from 'assets/tokens/WMATIC.svg'
+import USDCIcon from 'assets/tokens/USDC.svg'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
@@ -22,7 +23,11 @@ export interface TokenInfo {
 }
 
 export const useTokenInfo = (): Record<string, TokenInfo> => {
-  const { CLAM, FISH } = useContractAddresses()
+  const {
+    CLAM,
+    FISH,
+    tokens: { USDC },
+  } = useContractAddresses()
   const { account } = useEthers()
 
   const maticBalance = useEtherBalance(account) || constants.Zero
@@ -51,6 +56,13 @@ export const useTokenInfo = (): Record<string, TokenInfo> => {
         decimal: 18,
         address: constants.AddressZero,
         symbol: 'MATIC',
+      },
+      USDC: {
+        icon: USDCIcon,
+        balance: constants.Zero,
+        decimal: 6,
+        address: USDC,
+        symbol: 'USDC',
       },
     }),
     [fishBalance, clamBalance, maticBalance]

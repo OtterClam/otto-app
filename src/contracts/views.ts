@@ -6,6 +6,7 @@ import {
   useAdventureContract,
   useClamPond,
   useERC1155,
+  useERC20,
   useItemContract,
   useOcUsdPlus,
   useOttoContract,
@@ -14,6 +15,7 @@ import {
   useRewardManager,
   useStoreContract,
 } from './contracts'
+import useOtterMine from './useOtterMine'
 
 export const useMintInfo = (quantity: number) => {
   const contract = usePortalCreatorContract()
@@ -282,4 +284,38 @@ export const useFinishFee = (passId: BigNumberish | undefined) => {
   const adventure = useAdventureContract()
   const result = useCall(passId ? { contract: adventure, method: 'finishFee', args: [passId] } : undefined)
   return result?.value?.[0].toString() || '0'
+}
+
+export const useMineInfo = () => {
+  const mine = useOtterMine()
+  const usd = useCall({ contract: mine, method: 'usd', args: [] })?.value?.[0] || ''
+  const usdToken = useERC20(usd)
+  const [usdPerClam, deadline, availableSupply, decimals] = useCalls([
+    {
+      contract: mine,
+      method: 'usdPerClam',
+      args: [],
+    },
+    {
+      contract: mine,
+      method: 'deadline',
+      args: [],
+    },
+    {
+      contract: usdToken,
+      method: 'balanceOf',
+      args: [mine.address],
+    },
+    {
+      contract: usdToken,
+      method: 'decimals',
+      args: [],
+    },
+  ])
+  return {
+    usdPerClam: usdPerClam?.value?.[0],
+    deadline: deadline?.value?.[0],
+    availableSupply: availableSupply?.value?.[0],
+    decimals: decimals?.value?.[0] || 0,
+  }
 }
