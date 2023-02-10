@@ -1,6 +1,7 @@
-import CLAM from 'assets/clam.png'
+import MATIC from 'assets/tokens/WMATIC.svg'
 import Star from 'assets/ui/star.svg'
 import Button from 'components/Button'
+import { ethers } from 'ethers'
 import { trim } from 'helpers/trim'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
@@ -48,7 +49,7 @@ const StyledPrice = styled.div`
   align-items: center;
   &:before {
     content: '';
-    background-image: url(${CLAM.src});
+    background-image: url(${MATIC.src});
     background-size: contain;
     background-repeat: no-repeat;
     width: 28px;
@@ -70,7 +71,7 @@ interface Props {
 }
 
 export default function ProductCard({
-  product: { name, image, displayPrice, airdropAmount },
+  product: { name, image, price, airdropAmount },
   enabled = true,
   button,
   onClick,
@@ -83,7 +84,7 @@ export default function ProductCard({
         <img src={image} alt={name} width="100%" />
       </StyledImage>
       <StyledPrice>
-        <ContentLarge>{trim(displayPrice, 2)}</ContentLarge>
+        <ContentLarge>{trim(ethers.utils.formatEther(price), 5)}</ContentLarge>
       </StyledPrice>
       <Button Typography={Headline} disabled={!enabled} onClick={onClick}>
         {button || t('store.product_card.select')}

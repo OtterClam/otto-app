@@ -65,6 +65,7 @@ export default function useProducts() {
         airdropAmount: 0, // airdropAmounts[idx],
         displayPrice: utils.formatUnits(p.price, 9),
         displayDiscountPrice: utils.formatUnits(p.discountPrice, 9),
+        discount_price: p.discountPrice,
       })) || [],
     [data]
   )

@@ -145,39 +145,30 @@ export interface OttoBuyTransactionState extends OttoTransactionState {
   receivedItems?: ItemMetadata[]
 }
 
-export const useBuyProduct = (claim: boolean) => {
+export const useBuyProduct = () => {
   const { items: itemsRepo } = useRepositories()
-  const { CLAM, OTTOPIA_STORE } = useContractAddresses()
-  const { account, library } = useEthers()
+  const { account } = useEthers()
   const { i18n } = useTranslation()
   const api = useApi()
-  const [factory, setFactory] = useState<Contract | undefined>()
-  const clam = new Contract(CLAM, ERC20Abi, library?.getSigner())
   const store = useStoreContract()
-  const { state, send, resetState } = useContractFunction(store, claim ? 'claimNoChainlink' : 'buyNoChainlink', {})
+  const { state, send, resetState } = useContractFunction(store, 'buyWithMatic', {})
   const [buyState, setBuyState] = useState<OttoBuyTransactionState>({
     state: 'None',
     status: state,
   })
-  const buy = async ({ id, discountPrice, factory: factoryAddr }: Product, ottoIds: string[]) => {
-    setBuyState({
-      state: 'PendingSignature',
-      status: state,
-    })
-    setFactory(new Contract(factoryAddr, IOttoItemFactoryAbi, library))
-    if (claim) {
-      send(id, ottoIds, {
-        gasLimit: 1000000,
+  const buy = async ({ sellId, amount }: { sellId: number; amount: number }) => {
+    if (account) {
+      setBuyState({
+        state: 'PendingSignature',
+        status: state,
       })
-    } else {
-      const clamAllowance = await clam.allowance(account, OTTOPIA_STORE)
-      const noAllowance = clamAllowance.lt(discountPrice)
-      if (noAllowance) {
-        await (await clam.approve(OTTOPIA_STORE, constants.MaxUint256)).wait()
-      }
-      send(account || '', id, '1', {
-        gasLimit: 2500000,
+      const data = await api.signBuyProduct({
+        id: sellId,
+        amount,
+        from: account,
+        to: account,
       })
+      ;(send as any)(...data, { gasLimit: 1000000 })
     }
   }
   const resetBuy = () => {
@@ -209,7 +200,7 @@ export const useBuyProduct = (claim: boolean) => {
     } else {
       setBuyState({ state: state.status, status: state })
     }
-  }, [state, i18n, factory])
+  }, [state, i18n, account])
   return { buyState, buy, resetBuy }
 }
 

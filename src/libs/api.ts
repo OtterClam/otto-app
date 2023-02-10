@@ -33,7 +33,13 @@ export interface OttoCandidateMeta {
   image: string
 }
 
-export interface FlashSellResponse {
+export interface ChestStoreResponse {
+  regulars: SellData[]
+  flashSells: SellData[]
+}
+
+export interface SellData {
+  id: number
   type: ItemStatName
   name: string
   desc: string
@@ -156,13 +162,16 @@ export class Api {
       .then(res => new Dice(res.data))
   }
 
-  public async getFlashSell(): Promise<FlashSellResponse> {
-    return this.otterclamClient.get('/products/flashsale').then(res => ({
-      ...res.data,
-      type: res.data.type,
-      start_time: new Date(res.data.start_time).valueOf(),
-      end_time: new Date(res.data.end_time).valueOf(),
-      special_items: res.data.special_items.map((raw: RawItemMetadata) => rawItemMetadataToItemMetadata(raw)),
+  public async getChestStore(): Promise<ChestStoreResponse> {
+    const toSellData = (raw: any): SellData => ({
+      ...raw,
+      start_time: new Date(raw.start_time).valueOf(),
+      end_time: new Date(raw.end_time).valueOf(),
+      special_items: raw.special_items.map((raw: RawItemMetadata) => rawItemMetadataToItemMetadata(raw)),
+    })
+    return this.otterclamClient.get('/chest-store').then(res => ({
+      regulars: res.data.regulars.map(toSellData),
+      flashSells: res.data.flashSells.map(toSellData),
     }))
   }
 
@@ -194,6 +203,10 @@ export class Api {
 
   public async signFishStoreProduct({ from, to, productId }: { from: string; to: string; productId: number }) {
     return this.otterclamClient.post('/store/buy', { from, to, product_id: productId }).then(res => res.data)
+  }
+
+  public async signBuyProduct({ from, to, id, amount }: { from: string; to: string; id: number; amount: number }) {
+    return this.otterclamClient.post('/chest-store/buy', { from, to, id, amount }).then(res => res.data)
   }
 
   public async signOpenChest({ from, to, itemId }: { from: string; to: string; itemId: number }) {
