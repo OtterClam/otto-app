@@ -338,3 +338,21 @@ export const useDiceInfo = () => {
   )
   return { price: price?.value?.[0] }
 }
+
+export const useReviveInfo = () => {
+  const adventure = useAdventureContract()
+  const store = useStoreContract()
+  const key = useCall({
+    contract: adventure,
+    method: 'REVIVE_PAYMENT_KEY',
+    args: [],
+  })
+  const price = useCall(
+    key?.value?.[0] && {
+      contract: store,
+      method: 'payment',
+      args: [key.value[0]],
+    }
+  )
+  return { price: price?.value?.[0] }
+}

@@ -1,17 +1,16 @@
 import { TransactionState, TransactionStatus, useCall, useCalls, useContractFunction, useEthers } from '@usedapp/core'
 import { useApi } from 'contexts/Api'
 import { useRepositories } from 'contexts/Repositories'
-import { BigNumber, BigNumberish, constants, Contract, ethers, utils } from 'ethers'
+import { BigNumber, BigNumberish, constants, ethers, utils } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { Api } from 'libs/api'
 import last from 'lodash/last'
 import { Item, ItemAction, ItemMetadata } from 'models/Item'
 import { Mission } from 'models/Mission'
-import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useState } from 'react'
 import { ItemsRepository } from 'repositories/items'
-import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
+import { OttoItemAbi } from './abis'
 import {
   useAdventureContract,
   useClamPond,
@@ -705,9 +704,7 @@ export const useAdventureFinish = () => {
         return
       }
       setFinishState({ status: state, state: 'Processing' })
-      api
-        .finish({ ottoId, wallet: account, immediately, potions })
-        .then(inputs => (send as any)(...inputs, { gasLimit: 2000000 }))
+      api.finish({ ottoId, wallet: account, immediately, potions }).then(inputs => (send as any)(...inputs))
     },
     [api, account, send, state]
   )
