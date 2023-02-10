@@ -121,7 +121,7 @@ export default function MissionPopup() {
   const { buyState, buy, resetBuy } = useRequestNewMission()
   const onRequestNewMission = async () => {
     if (info) {
-      buy(info.newProductId)
+      buy(info.new_matic_payment_key, info.new_matic_price)
     }
   }
   useEffect(() => {
@@ -147,14 +147,14 @@ export default function MissionPopup() {
         </StyledListContainer>
         {filter !== 'finished' && info && (
           <StyledNewMissionSection>
-            {info.newPrice !== '0' && (
+            {info.new_matic_price !== '0' && (
               <>
                 <Countdown target={info.nextFreeMissionAt} />
                 <PaymentButton
                   Typography={ContentLarge}
                   disabled={reachedLimit}
                   width="100%"
-                  amount={info.newPrice}
+                  amount={info.new_matic_price}
                   token={MATIC}
                   spenderAddress={OTTOPIA_STORE}
                   loading={buyState.state === 'Processing'}
@@ -164,7 +164,7 @@ export default function MissionPopup() {
                 </PaymentButton>
               </>
             )}
-            {info.newPrice === '0' && (
+            {info.new_matic_price === '0' && (
               <Button
                 Typography={ContentLarge}
                 disabled={reachedLimit}

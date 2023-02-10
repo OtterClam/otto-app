@@ -1,4 +1,4 @@
-import ClamIcon from 'assets/clam.png'
+import MaticIcon from 'assets/tokens/WMATIC.svg'
 import FishIcon from 'assets/fish.png'
 import ArrowDown from 'assets/ui/arrow_down.svg'
 import RefreshIcon from 'assets/ui/refresh_icon.svg'
@@ -256,13 +256,13 @@ export default function MissionCard({ mission, myItems }: Props) {
                 onClick={e => {
                   e.stopPropagation()
                   if (info) {
-                    refresh(info.refreshProductId)
+                    refresh(info.refresh_matic_payment_key, info.refresh_matic_price)
                   }
                 }}
               >
                 <Image src={RefreshIcon} width="20px" height="20px" />
                 <Note>{t('refresh_btn')}</Note>
-                <Image src={ClamIcon} width="20px" height="20px" />
+                <Image src={MaticIcon} width="20px" height="20px" />
                 <Note>1</Note>
               </StyledRefreshButton>
             </StyledRefreshContainer>

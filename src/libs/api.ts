@@ -329,6 +329,7 @@ export class Api {
   public async getMissionInfo({ account }: { account: string }): Promise<MissionInfo> {
     const result = await this.otterclamClient.get(`/wallets/${account}/missions-info`)
     return {
+      ...result.data,
       nextFreeMissionAt: new Date(result.data.next_free_mission_at),
       newPrice: result.data.new_price,
       newProductId: String(result.data.new_product_id),

@@ -1030,18 +1030,18 @@ export const useRequestNewMission = () => {
   const { i18n } = useTranslation()
   const api = useApi()
   const store = useStoreContract()
-  const { state, send, resetState } = useContractFunction(store, 'buyNoChainlink', {})
+  const { state, send, resetState } = useContractFunction(store, 'payWithMatic', {})
   const [buyState, setBuyState] = useState<OttoNewMissionState>({
     state: 'None',
     status: state,
   })
   const buy = useCallback(
-    async (productId: string) => {
+    async (key: string, price: string) => {
       setBuyState({
         state: 'Processing',
         status: state,
       })
-      send(account || '', productId, 1)
+      send(key, 1, { value: price })
     },
     [account, send, state]
   )
@@ -1077,18 +1077,18 @@ export const useRefreshMission = (missionId: number) => {
   const { i18n } = useTranslation()
   const api = useApi()
   const store = useStoreContract()
-  const { state, send, resetState } = useContractFunction(store, 'buyNoChainlink', {})
+  const { state, send, resetState } = useContractFunction(store, 'payWithMatic', {})
   const [refreshState, setBuyState] = useState<OttoNewMissionState>({
     state: 'None',
     status: state,
   })
   const refresh = useCallback(
-    async (productId: string) => {
+    async (key: string, price: string) => {
       setBuyState({
         state: 'Processing',
         status: state,
       })
-      send(account || '', productId, 1)
+      send(key, 1, { value: price })
     },
     [account, send, state]
   )
