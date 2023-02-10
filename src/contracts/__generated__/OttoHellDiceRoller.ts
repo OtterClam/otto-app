@@ -36,6 +36,7 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
     "ITEM()": FunctionFragment;
     "MANAGER_ROLE()": FunctionFragment;
     "OTTO()": FunctionFragment;
+    "PAYMENT_KEY()": FunctionFragment;
     "STORE()": FunctionFragment;
     "applicable(address,uint256,uint256,bytes)": FunctionFragment;
     "applyTo(address,uint256,uint256,bytes)": FunctionFragment;
@@ -49,6 +50,7 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
     "renounceRole(bytes32,address)": FunctionFragment;
     "revokeRole(bytes32,address)": FunctionFragment;
     "roll(uint256,uint256)": FunctionFragment;
+    "rollWithMatic(uint256,uint256)": FunctionFragment;
     "shipNoChainlink(address,uint256,address,uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
@@ -64,6 +66,7 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
       | "ITEM"
       | "MANAGER_ROLE"
       | "OTTO"
+      | "PAYMENT_KEY"
       | "STORE"
       | "applicable"
       | "applyTo"
@@ -77,6 +80,7 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
       | "renounceRole"
       | "revokeRole"
       | "roll"
+      | "rollWithMatic"
       | "shipNoChainlink"
       | "supportsInterface"
       | "upgradeTo"
@@ -102,6 +106,10 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "OTTO", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "PAYMENT_KEY",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "STORE", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "applicable",
@@ -152,6 +160,10 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
     values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "rollWithMatic",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "shipNoChainlink",
     values: [string, BigNumberish, string, BigNumberish]
   ): string;
@@ -184,6 +196,10 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "OTTO", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "PAYMENT_KEY",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "STORE", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "applicable", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "applyTo", data: BytesLike): Result;
@@ -213,6 +229,10 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "roll", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "rollWithMatic",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "shipNoChainlink",
     data: BytesLike
   ): Result;
@@ -229,6 +249,7 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
   events: {
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
+    "Initialized(uint8)": EventFragment;
     "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
     "RoleGranted(bytes32,address,address)": EventFragment;
     "RoleRevoked(bytes32,address,address)": EventFragment;
@@ -240,6 +261,7 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleAdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleGranted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleRevoked"): EventFragment;
@@ -269,6 +291,13 @@ export type BeaconUpgradedEvent = TypedEvent<
 >;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
+
+export interface InitializedEventObject {
+  version: number;
+}
+export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
+
+export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
 export interface RoleAdminChangedEventObject {
   role: string;
@@ -389,6 +418,8 @@ export interface OttoHellDiceRoller extends BaseContract {
 
     OTTO(overrides?: CallOverrides): Promise<[string]>;
 
+    PAYMENT_KEY(overrides?: CallOverrides): Promise<[string]>;
+
     STORE(overrides?: CallOverrides): Promise<[string]>;
 
     applicable(
@@ -469,6 +500,12 @@ export interface OttoHellDiceRoller extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    rollWithMatic(
+      ottoId_: BigNumberish,
+      amount_: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     shipNoChainlink(
       from_: string,
       fromProductId_: BigNumberish,
@@ -507,6 +544,8 @@ export interface OttoHellDiceRoller extends BaseContract {
   MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
 
   OTTO(overrides?: CallOverrides): Promise<string>;
+
+  PAYMENT_KEY(overrides?: CallOverrides): Promise<string>;
 
   STORE(overrides?: CallOverrides): Promise<string>;
 
@@ -588,6 +627,12 @@ export interface OttoHellDiceRoller extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  rollWithMatic(
+    ottoId_: BigNumberish,
+    amount_: BigNumberish,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   shipNoChainlink(
     from_: string,
     fromProductId_: BigNumberish,
@@ -626,6 +671,8 @@ export interface OttoHellDiceRoller extends BaseContract {
     MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
 
     OTTO(overrides?: CallOverrides): Promise<string>;
+
+    PAYMENT_KEY(overrides?: CallOverrides): Promise<string>;
 
     STORE(overrides?: CallOverrides): Promise<string>;
 
@@ -707,6 +754,12 @@ export interface OttoHellDiceRoller extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    rollWithMatic(
+      ottoId_: BigNumberish,
+      amount_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     shipNoChainlink(
       from_: string,
       fromProductId_: BigNumberish,
@@ -746,6 +799,9 @@ export interface OttoHellDiceRoller extends BaseContract {
       beacon?: string | null
     ): BeaconUpgradedEventFilter;
     BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
+
+    "Initialized(uint8)"(version?: null): InitializedEventFilter;
+    Initialized(version?: null): InitializedEventFilter;
 
     "RoleAdminChanged(bytes32,bytes32,bytes32)"(
       role?: BytesLike | null,
@@ -832,6 +888,8 @@ export interface OttoHellDiceRoller extends BaseContract {
 
     OTTO(overrides?: CallOverrides): Promise<BigNumber>;
 
+    PAYMENT_KEY(overrides?: CallOverrides): Promise<BigNumber>;
+
     STORE(overrides?: CallOverrides): Promise<BigNumber>;
 
     applicable(
@@ -915,6 +973,12 @@ export interface OttoHellDiceRoller extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    rollWithMatic(
+      ottoId_: BigNumberish,
+      amount_: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     shipNoChainlink(
       from_: string,
       fromProductId_: BigNumberish,
@@ -956,6 +1020,8 @@ export interface OttoHellDiceRoller extends BaseContract {
     MANAGER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     OTTO(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    PAYMENT_KEY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     STORE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1038,6 +1104,12 @@ export interface OttoHellDiceRoller extends BaseContract {
       ottoId_: BigNumberish,
       amount_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    rollWithMatic(
+      ottoId_: BigNumberish,
+      amount_: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     shipNoChainlink(

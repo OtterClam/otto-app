@@ -10,6 +10,7 @@ import {
   useItemContract,
   useOcUsdPlus,
   useOttoContract,
+  useOttoHellDiceRoller,
   usePearlBank,
   usePortalCreatorContract,
   useRewardManager,
@@ -318,4 +319,22 @@ export const useMineInfo = () => {
     availableSupply: availableSupply?.value?.[0],
     decimals: decimals?.value?.[0] || 0,
   }
+}
+
+export const useDiceInfo = () => {
+  const ottoHellDiceRoller = useOttoHellDiceRoller()
+  const store = useStoreContract()
+  const key = useCall({
+    contract: ottoHellDiceRoller,
+    method: 'PAYMENT_KEY',
+    args: [],
+  })
+  const price = useCall(
+    key?.value?.[0] && {
+      contract: store,
+      method: 'payment',
+      args: [key.value[0]],
+    }
+  )
+  return { price: price?.value?.[0] }
 }
