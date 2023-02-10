@@ -168,7 +168,7 @@ export const useBuyProduct = () => {
         from: account,
         to: account,
       })
-      ;(send as any)(...data, { gasLimit: 1000000 })
+      ;(send as any)(...data)
     }
   }
   const resetBuy = () => {
