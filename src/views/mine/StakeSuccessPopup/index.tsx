@@ -1,11 +1,13 @@
 import CloseIcon from 'assets/ui/close_icon.svg'
 import Fullscreen from 'components/Fullscreen'
 import { useTranslation } from 'next-i18next'
-import styled from 'styled-components/macro'
+import styled, { keyframes } from 'styled-components/macro'
 import { Display3, Headline } from 'styles/typography'
-import Gif from './stake.gif'
+import Image from 'next/image'
+import { trim } from 'helpers/trim'
+import Otto from './mine_otto.png'
 
-const StyledStakeSuccessPopup = styled.div`
+const StyledMineSuccessPopup = styled.div`
   padding: 45px;
   display: flex;
   flex-direction: column;
@@ -24,14 +26,9 @@ const StyledHeadline = styled(Headline).attrs({ as: 'h2' })``
 
 const StyledTitle = styled(Display3)``
 
-const StyledGif = styled.img.attrs({ src: Gif.src })`
-  width: 200px;
-  position: relative;
-`
-
 const StyledDesc = styled(Headline)`
   > span {
-    color: ${({ theme }) => theme.colors.clamPink};
+    color: ${({ theme }) => theme.colors.crownYellow};
   }
 `
 
@@ -41,26 +38,39 @@ const StyledCloseIcon = styled.button`
   right: 44px;
 `
 
+const Animation = keyframes`
+  0%   { background-position: left top }
+  50%  { background-position: right top }
+`
+
+const StyledOtter = styled.div`
+  width: 260px;
+  height: 210px;
+  animation: ${Animation} 2000ms steps(1) infinite;
+  background: left top / 200% 100% url(${Otto.src});
+  pointer-events: none;
+`
+
 interface Props {
-  clamAmount: string
+  amount: string
   onClose: () => void
 }
 
-export default function StakeSuccessPopup({ clamAmount, onClose }: Props) {
-  const { t } = useTranslation('', { keyPrefix: 'bank.stake_popup' })
+export default function MineSuccessPopup({ amount, onClose }: Props) {
+  const { t } = useTranslation('', { keyPrefix: 'mine.success_popup' })
   return (
     <Fullscreen width="unset">
-      <StyledStakeSuccessPopup>
+      <StyledMineSuccessPopup>
         <StyledHeadline>{t('headline')}</StyledHeadline>
         <StyledTitle>{t('title')}</StyledTitle>
-        <StyledGif />
+        <StyledOtter />
         <StyledDesc>
-          {t('desc')} <span>{clamAmount}</span> PEARL!
+          {t('desc')} <span>{trim(amount, 2)}</span> USDC!
         </StyledDesc>
         <StyledCloseIcon onClick={onClose}>
-          <img src={CloseIcon.src} alt="close" />
+          <Image src={CloseIcon.src} alt="close" width={16} height={16} />
         </StyledCloseIcon>
-      </StyledStakeSuccessPopup>
+      </StyledMineSuccessPopup>
     </Fullscreen>
   )
 }

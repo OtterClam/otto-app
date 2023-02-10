@@ -288,12 +288,7 @@ export default function MineDialog({ className }: Props) {
           {t('mine_btn')}
         </StyledButton>
         <Caption>{t('extra')}</Caption>
-        {mineState.state === 'Success' && (
-          <StakeSuccessPopup
-            clamAmount={trim(utils.formatUnits(utils.parseUnits(clamAmount, 9), 9), 4)}
-            onClose={resetMine}
-          />
-        )}
+        {mineState.state === 'Success' && <StakeSuccessPopup amount={usdAmount} onClose={resetMine} />}
         <StyledGashaponTicket src={GashaponTicketEn.src} />
       </StyledBody>
     </StyledMineDialog>

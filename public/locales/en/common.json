@@ -1103,6 +1103,11 @@
     "placeholder": "0",
     "current_supply": "Current Supply",
     "mine_btn": "Mine Now!",
-    "extra": "Or you can make your CLAM more valuable..."
+    "extra": "Or you can make your CLAM more valuable...",
+    "success_popup": {
+      "headline": "Otter’standing!",
+      "title": "Your mining was successful.",
+      "desc": "You just received "
+    }
   }
 }

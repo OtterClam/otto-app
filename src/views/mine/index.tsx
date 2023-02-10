@@ -55,11 +55,11 @@ const Animation = keyframes`
 
 const StyledOtter = styled.div`
   position: absolute;
-  width: 352px;
-  height: 314px;
+  width: 440px;
+  height: 334px;
   left: 50%;
   bottom: 0;
-  z-index: 10;
+  z-index: 1;
   transform: translate(-600px);
   animation: ${Animation} 2000ms steps(1) infinite;
   background: left top / 200% 100% url(${Otto.src});
@@ -69,8 +69,8 @@ const StyledOtter = styled.div`
     position: absolute;
     left: 0;
     transform: unset;
-    width: 210px;
-    height: 188px;
+    width: 293px;
+    height: 222px;
   }
 `
 
