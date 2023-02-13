@@ -53,10 +53,10 @@ export default function StakeDialog({ className }: Props) {
     <StyledStakeDialog className={className}>
       <StyledTabs>
         <StyledTab selected={tab === 'stake'} onClick={() => setTab('stake')}>
-          {t('stake_tab')}{' '}
+          {t('stake_tab')}
         </StyledTab>
         <StyledTab selected={tab === 'unstake'} onClick={() => setTab('unstake')}>
-          {t('unstake_tab')}{' '}
+          {t('unstake_tab')}
         </StyledTab>
       </StyledTabs>
       <StyledBody>
