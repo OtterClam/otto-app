@@ -62,15 +62,19 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
     "discountConfig()": FunctionFragment;
     "emergencyWithdraw(address)": FunctionFragment;
     "initializeV2(address,address,address,address,address,uint256)": FunctionFragment;
+    "maticPrice()": FunctionFragment;
     "mint(address,uint256,uint256,bool)": FunctionFragment;
+    "mintWithMatic(address,uint256)": FunctionFragment;
     "ottolisted(address)": FunctionFragment;
     "owner()": FunctionFragment;
     "price()": FunctionFragment;
     "priceInCLAM()": FunctionFragment;
+    "priceInMatic(uint256)": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "saleConfig(uint8)": FunctionFragment;
     "setDiscount((uint256,uint256,uint256,uint256))": FunctionFragment;
+    "setMaticPrice(uint256)": FunctionFragment;
     "setPrice(uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
@@ -91,15 +95,19 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
       | "discountConfig"
       | "emergencyWithdraw"
       | "initializeV2"
+      | "maticPrice"
       | "mint"
+      | "mintWithMatic"
       | "ottolisted"
       | "owner"
       | "price"
       | "priceInCLAM"
+      | "priceInMatic"
       | "proxiableUUID"
       | "renounceOwnership"
       | "saleConfig"
       | "setDiscount"
+      | "setMaticPrice"
       | "setPrice"
       | "transferOwnership"
       | "upgradeTo"
@@ -134,8 +142,16 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
     values: [string, string, string, string, string, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "maticPrice",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "mint",
     values: [string, BigNumberish, BigNumberish, boolean]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "mintWithMatic",
+    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "ottolisted", values: [string]): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
@@ -143,6 +159,10 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "priceInCLAM",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "priceInMatic",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
@@ -159,6 +179,10 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "setDiscount",
     values: [OttopiaPortalCreatorV2.DiscountConfigStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setMaticPrice",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "setPrice",
@@ -198,12 +222,21 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
     functionFragment: "initializeV2",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "maticPrice", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "mintWithMatic",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "ottolisted", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "price", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "priceInCLAM",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "priceInMatic",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -217,6 +250,10 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "saleConfig", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setDiscount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setMaticPrice",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setPrice", data: BytesLike): Result;
@@ -233,6 +270,7 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
   events: {
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
+    "Initialized(uint8)": EventFragment;
     "OttoMinted(address,address,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "Upgraded(address)": EventFragment;
@@ -240,6 +278,7 @@ export interface OttopiaPortalCreatorInterface extends utils.Interface {
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OttoMinted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
@@ -265,6 +304,13 @@ export type BeaconUpgradedEvent = TypedEvent<
 >;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
+
+export interface InitializedEventObject {
+  version: number;
+}
+export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
+
+export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
 export interface OttoMintedEventObject {
   minter: string;
@@ -371,12 +417,20 @@ export interface OttopiaPortalCreator extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    maticPrice(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     mint(
       to_: string,
       quantity_: BigNumberish,
       maxPrice_: BigNumberish,
       payInCLAM: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    mintWithMatic(
+      to_: string,
+      quantity_: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     ottolisted(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -386,6 +440,11 @@ export interface OttopiaPortalCreator extends BaseContract {
     price(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     priceInCLAM(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    priceInMatic(
+      quantity_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
@@ -402,6 +461,11 @@ export interface OttopiaPortalCreator extends BaseContract {
 
     setDiscount(
       discountConfig_: OttopiaPortalCreatorV2.DiscountConfigStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setMaticPrice(
+      price_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -474,12 +538,20 @@ export interface OttopiaPortalCreator extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  maticPrice(overrides?: CallOverrides): Promise<BigNumber>;
+
   mint(
     to_: string,
     quantity_: BigNumberish,
     maxPrice_: BigNumberish,
     payInCLAM: boolean,
     overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  mintWithMatic(
+    to_: string,
+    quantity_: BigNumberish,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   ottolisted(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
@@ -489,6 +561,11 @@ export interface OttopiaPortalCreator extends BaseContract {
   price(overrides?: CallOverrides): Promise<BigNumber>;
 
   priceInCLAM(overrides?: CallOverrides): Promise<BigNumber>;
+
+  priceInMatic(
+    quantity_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
@@ -505,6 +582,11 @@ export interface OttopiaPortalCreator extends BaseContract {
 
   setDiscount(
     discountConfig_: OttopiaPortalCreatorV2.DiscountConfigStruct,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setMaticPrice(
+    price_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -574,11 +656,19 @@ export interface OttopiaPortalCreator extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    maticPrice(overrides?: CallOverrides): Promise<BigNumber>;
+
     mint(
       to_: string,
       quantity_: BigNumberish,
       maxPrice_: BigNumberish,
       payInCLAM: boolean,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    mintWithMatic(
+      to_: string,
+      quantity_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -589,6 +679,11 @@ export interface OttopiaPortalCreator extends BaseContract {
     price(overrides?: CallOverrides): Promise<BigNumber>;
 
     priceInCLAM(overrides?: CallOverrides): Promise<BigNumber>;
+
+    priceInMatic(
+      quantity_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
@@ -603,6 +698,11 @@ export interface OttopiaPortalCreator extends BaseContract {
 
     setDiscount(
       discountConfig_: OttopiaPortalCreatorV2.DiscountConfigStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setMaticPrice(
+      price_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -639,6 +739,9 @@ export interface OttopiaPortalCreator extends BaseContract {
       beacon?: string | null
     ): BeaconUpgradedEventFilter;
     BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
+
+    "Initialized(uint8)"(version?: null): InitializedEventFilter;
+    Initialized(version?: null): InitializedEventFilter;
 
     "OttoMinted(address,address,uint256)"(
       minter?: string | null,
@@ -703,12 +806,20 @@ export interface OttopiaPortalCreator extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    maticPrice(overrides?: CallOverrides): Promise<BigNumber>;
+
     mint(
       to_: string,
       quantity_: BigNumberish,
       maxPrice_: BigNumberish,
       payInCLAM: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    mintWithMatic(
+      to_: string,
+      quantity_: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     ottolisted(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
@@ -718,6 +829,11 @@ export interface OttopiaPortalCreator extends BaseContract {
     price(overrides?: CallOverrides): Promise<BigNumber>;
 
     priceInCLAM(overrides?: CallOverrides): Promise<BigNumber>;
+
+    priceInMatic(
+      quantity_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -732,6 +848,11 @@ export interface OttopiaPortalCreator extends BaseContract {
 
     setDiscount(
       discountConfig_: OttopiaPortalCreatorV2.DiscountConfigStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setMaticPrice(
+      price_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -796,12 +917,20 @@ export interface OttopiaPortalCreator extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    maticPrice(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     mint(
       to_: string,
       quantity_: BigNumberish,
       maxPrice_: BigNumberish,
       payInCLAM: boolean,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    mintWithMatic(
+      to_: string,
+      quantity_: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     ottolisted(
@@ -814,6 +943,11 @@ export interface OttopiaPortalCreator extends BaseContract {
     price(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     priceInCLAM(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    priceInMatic(
+      quantity_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -828,6 +962,11 @@ export interface OttopiaPortalCreator extends BaseContract {
 
     setDiscount(
       discountConfig_: OttopiaPortalCreatorV2.DiscountConfigStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setMaticPrice(
+      price_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

@@ -1,16 +1,17 @@
-import { shortenAddress, useEthers, useTokenAllowance, useTokenBalance } from '@usedapp/core'
-import CLAM from 'assets/clam.png'
+import { shortenAddress, useEthers } from '@usedapp/core'
+import MATIC from 'assets/tokens/WMATIC.svg'
 import Button from 'components/Button'
 import { useBreakpoints } from 'contexts/Breakpoints'
-import { useApprove, useMint } from 'contracts/functions'
+import { useMint } from 'contracts/functions'
 import { useMintInfo, useOttoInfo } from 'contracts/views'
 import { ethers } from 'ethers'
+import { formatEther } from 'ethers/lib/utils'
 import { trim } from 'helpers/trim'
-import useContractAddresses from 'hooks/useContractAddresses'
+import { useTokenInfo } from 'hooks/token-info'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { connectWallet, mintFailed, mintStart, mintSuccess, showWalletPopup } from 'store/uiSlice'
+import { connectWallet, mintFailed, mintStart, mintSuccess } from 'store/uiSlice'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentMedium, ContentSmall, Display2, Headline, Note } from 'styles/typography'
 import PortalPreviewImage from './portal-preview.png'
@@ -128,11 +129,11 @@ const StyledCLAMMintPrice = styled(ContentLarge).attrs({ as: 'div' })`
     content: '';
     width: 24px;
     height: 24px;
-    background: url(${CLAM.src});
+    background: url(${MATIC.src});
     display: inline-block;
     background-size: 24px 24px;
-    margin-right: 5px; */
-
+    margin-right: 5px;
+  }
 `
 
 const StyledOriginPrice = styled(ContentLarge)`
@@ -199,37 +200,15 @@ const StyledCLAMBalance = styled.p`
     width: 24px;
     height: 24px;
     margin-right: 4px;
-    background: url(${CLAM.src});
+    background: url(${MATIC.src});
     display: inline-block;
     background-size: 24px 24px;
   }
 `
 
-const StyledBuyCLAM = styled.p`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-`
+const ORIGIN_PRICE = ethers.utils.parseEther('100')
 
-const StyledBuyCLAMLink = styled(ContentSmall)`
-  color: ${({ theme }) => theme.colors.clamPink};
-  display: inline-flex;
-  justify-content: right;
-  align-items: center;
-  &::before {
-    content: '';
-    width: 24px;
-    height: 24px;
-    margin-right: 4px;
-    background: url(${CLAM.src});
-    display: inline-block;
-    background-size: 24px 24px;
-  }
-`
-
-const ORIGIN_PRICE = ethers.utils.parseUnits('50', 9)
+const maxCanMint = 6
 
 const percentFormatter = new Intl.NumberFormat('en-US', {
   style: 'percent',
@@ -239,27 +218,19 @@ export default function Mint() {
   const { t } = useTranslation()
   const { isMobile } = useBreakpoints()
   const dispatch = useDispatch()
-  const { PORTAL_CREATOR, CLAM } = useContractAddresses()
-  const { account, chainId } = useEthers()
-  const maxCanMint = 6
+  const { account } = useEthers()
   const [quantity, setQuantity] = useState(maxCanMint)
-  const clamPrice = useMintInfo(quantity)
+  const price = useMintInfo(quantity)
   const [ottoSupply] = useOttoInfo()
-  const clamBalance = useTokenBalance(CLAM, account, { chainId }) || 0
-  const clamAllowance = useTokenAllowance(CLAM, account, PORTAL_CREATOR, { chainId })
-  const { approveState, approve } = useApprove()
+  const { MATIC } = useTokenInfo()
   const { mintState, mint, resetMint } = useMint()
-  const totalPaymentCLAM = clamPrice.mul(quantity)
-  const hasAllowance = clamAllowance?.gte(totalPaymentCLAM)
-  const hasDiscount = clamPrice.lt(ORIGIN_PRICE)
-  const onApprove = useCallback(() => {
-    approve(PORTAL_CREATOR, ethers.utils.parseUnits('10000', 9))
-  }, [totalPaymentCLAM, approve])
+  const totalPayment = price.mul(quantity)
+  const hasDiscount = price.lt(ORIGIN_PRICE)
   const onMint = useCallback(() => {
     if (account) {
-      mint(account, quantity, totalPaymentCLAM, true)
+      mint(account, quantity, { value: totalPayment })
     }
-  }, [account, quantity, totalPaymentCLAM, mint])
+  }, [account, quantity, totalPayment, mint])
 
   useEffect(() => {
     if (mintState.status === 'Mining') dispatch(mintStart())
@@ -286,17 +257,15 @@ export default function Mint() {
                   <StyledPortalInfoAmountLeft>
                     {t('mint.mint.amount_left', { amount: 5000 - ottoSupply })}
                   </StyledPortalInfoAmountLeft>
-                  {clamPrice.gt(0) && (
+                  {totalPayment.gt(0) && (
                     <StyledCLAMMintPrice>
-                      {hasDiscount && (
-                        <StyledOriginPrice>{ethers.utils.formatUnits(ORIGIN_PRICE, 9)}</StyledOriginPrice>
-                      )}
-                      {ethers.utils.formatUnits(clamPrice, 9)}
+                      {hasDiscount && <StyledOriginPrice>{ethers.utils.formatEther(ORIGIN_PRICE)}</StyledOriginPrice>}
+                      {ethers.utils.formatEther(price)}
                       {hasDiscount && (
                         <StyledDiscount>
                           {t('mint.mint.discount', {
                             discount: percentFormatter.format(
-                              ORIGIN_PRICE.sub(clamPrice).toNumber() / ORIGIN_PRICE.toNumber()
+                              ORIGIN_PRICE.sub(price).mul(100).div(ORIGIN_PRICE).toNumber() / 100
                             ),
                           })}
                         </StyledDiscount>
@@ -345,7 +314,7 @@ export default function Mint() {
                 <>
                   <StyledSummaryItem>
                     <p>{t('mint.clam_balance')}</p>
-                    <StyledCLAMBalance>{trim(ethers.utils.formatUnits(clamBalance, 9), 2)}</StyledCLAMBalance>
+                    <StyledCLAMBalance>{trim(formatEther(MATIC.balance || '0'), 2)}</StyledCLAMBalance>
                   </StyledSummaryItem>
                   <StyledSummaryItem>
                     <p>{t('mint.portal_amount')}</p>
@@ -354,7 +323,7 @@ export default function Mint() {
                   <StyledDivider />
                   <StyledSummaryItem>
                     <p>{t('mint.total_payment')}</p>
-                    <StyledCLAMBalance>{trim(ethers.utils.formatUnits(totalPaymentCLAM, 9), 2)} </StyledCLAMBalance>
+                    <StyledCLAMBalance>{trim(ethers.utils.formatEther(totalPayment), 2)} </StyledCLAMBalance>
                   </StyledSummaryItem>
                 </>
               )}
@@ -365,20 +334,11 @@ export default function Mint() {
                 {t('mint.connect')}
               </Button>
             )}
-            {account && hasAllowance && (
+            {account && (
               <Button Typography={Headline} onClick={onMint}>
                 {t('mint.mint_button')}
               </Button>
             )}
-            {account && !hasAllowance && (
-              <Button Typography={Headline} onClick={onApprove} loading={approveState.status === 'Mining'}>
-                {t('mint.approve_button')}
-              </Button>
-            )}
-            <StyledBuyCLAM>
-              <ContentSmall>{t('mint.not_enough_clam')}</ContentSmall>
-              <StyledBuyCLAMLink onClick={() => dispatch(showWalletPopup())}>{t('mint.buy')}</StyledBuyCLAMLink>
-            </StyledBuyCLAM>
           </StyledRightSection>
         </StyledSection>
       </StyledContainer>

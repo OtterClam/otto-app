@@ -38,7 +38,7 @@ export const useApprove = (tokenAddress?: string) => {
 
 export const useMint = () => {
   const portal = usePortalCreatorContract()
-  const { state: mintState, send: mint, resetState: resetMint } = useContractFunction(portal, 'mint')
+  const { state: mintState, send: mint, resetState: resetMint } = useContractFunction(portal, 'mintWithMatic')
   return { mintState, mint, resetMint }
 }
 

@@ -22,7 +22,7 @@ export const useMintInfo = (quantity: number) => {
   const contract = usePortalCreatorContract()
   const result = useCall({
     contract,
-    method: 'currentPrice',
+    method: 'priceInMatic',
     args: [quantity],
   })
   return (result?.value?.[0] || constants.Zero).div(quantity)

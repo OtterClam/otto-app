@@ -256,7 +256,7 @@
     "mint_button": "Mint",
     "minted_desc": "You have already minted",
     "minted_desc_amount": " {{amount}} Otto Portal(s)",
-    "not_enough_clam": "Not enough CLAM?",
+    "not_enough_clam": "Not enough MATIC?",
     "pay_with_clam": "Pay with CLAM",
     "pay_with_eth": "Pay with ETH",
     "payment_method": "Payment Method",
