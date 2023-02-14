@@ -988,6 +988,40 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    name: "discountConfigs",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "startedAt",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "endedAt",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amountThreshold",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "percentageOff",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "id_",
         type: "uint256",
@@ -1002,6 +1036,13 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "distributeMatic",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -1176,6 +1217,21 @@ const _abi = [
       {
         internalType: "uint256",
         name: "finishImmediatelyPrice_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "buyMissionPrice_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "refreshMissionPrice_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "buyPortalPrice_",
         type: "uint256",
       },
     ],
@@ -1556,6 +1612,46 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "string",
+        name: "key_",
+        type: "string",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "startedAt",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "endedAt",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "amountThreshold",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "percentageOff",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct OttopiaStore.DiscountConfig",
+        name: "discountConfig_",
+        type: "tuple",
+      },
+    ],
+    name: "setDiscount",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "fishPerClam_",
         type: "uint256",
@@ -1690,6 +1786,30 @@ const _abi = [
     name: "toggleWhitelist",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "key_",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "amount_",
+        type: "uint256",
+      },
+    ],
+    name: "totalPayment",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {

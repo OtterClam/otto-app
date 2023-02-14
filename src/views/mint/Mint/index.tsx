@@ -206,8 +206,6 @@ const StyledCLAMBalance = styled.p`
   }
 `
 
-const ORIGIN_PRICE = ethers.utils.parseEther('100')
-
 const maxCanMint = 6
 
 const percentFormatter = new Intl.NumberFormat('en-US', {
@@ -220,12 +218,11 @@ export default function Mint() {
   const dispatch = useDispatch()
   const { account } = useEthers()
   const [quantity, setQuantity] = useState(maxCanMint)
-  const price = useMintInfo(quantity)
+  const { price, totalPayment } = useMintInfo(quantity)
   const [ottoSupply] = useOttoInfo()
   const { MATIC } = useTokenInfo()
   const { mintState, mint, resetMint } = useMint()
-  const totalPayment = price.mul(quantity)
-  const hasDiscount = price.lt(ORIGIN_PRICE)
+  const hasDiscount = price.mul(quantity).gt(totalPayment)
   const onMint = useCallback(() => {
     if (account) {
       mint(account, quantity, { value: totalPayment })
@@ -259,13 +256,13 @@ export default function Mint() {
                   </StyledPortalInfoAmountLeft>
                   {totalPayment.gt(0) && (
                     <StyledCLAMMintPrice>
-                      {hasDiscount && <StyledOriginPrice>{ethers.utils.formatEther(ORIGIN_PRICE)}</StyledOriginPrice>}
+                      {hasDiscount && <StyledOriginPrice>{ethers.utils.formatEther(price)}</StyledOriginPrice>}
                       {ethers.utils.formatEther(price)}
                       {hasDiscount && (
                         <StyledDiscount>
                           {t('mint.mint.discount', {
                             discount: percentFormatter.format(
-                              ORIGIN_PRICE.sub(price).mul(100).div(ORIGIN_PRICE).toNumber() / 100
+                              price.sub(totalPayment.div(quantity)).mul(100).div(price).toNumber() / 100
                             ),
                           })}
                         </StyledDiscount>
@@ -323,7 +320,7 @@ export default function Mint() {
                   <StyledDivider />
                   <StyledSummaryItem>
                     <p>{t('mint.total_payment')}</p>
-                    <StyledCLAMBalance>{trim(ethers.utils.formatEther(totalPayment), 2)} </StyledCLAMBalance>
+                    <StyledCLAMBalance>{trim(ethers.utils.formatEther(totalPayment), 6)} </StyledCLAMBalance>
                   </StyledSummaryItem>
                 </>
               )}

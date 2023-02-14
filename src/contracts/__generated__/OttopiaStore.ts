@@ -67,6 +67,25 @@ export declare namespace OttopiaStore {
     startedAt: BigNumber;
     endedAt: BigNumber;
   };
+
+  export type DiscountConfigStruct = {
+    startedAt: BigNumberish;
+    endedAt: BigNumberish;
+    amountThreshold: BigNumberish;
+    percentageOff: BigNumberish;
+  };
+
+  export type DiscountConfigStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ] & {
+    startedAt: BigNumber;
+    endedAt: BigNumber;
+    amountThreshold: BigNumber;
+    percentageOff: BigNumber;
+  };
 }
 
 export interface OttopiaStoreInterface extends utils.Interface {
@@ -101,7 +120,9 @@ export interface OttopiaStoreInterface extends utils.Interface {
     "createProduct((uint256,uint256,uint256,string,uint256,uint256,uint256),address)": FunctionFragment;
     "deleteCoupon(uint256)": FunctionFragment;
     "deleteProduct(uint256)": FunctionFragment;
+    "discountConfigs(string)": FunctionFragment;
     "discountPriceOf(uint256)": FunctionFragment;
+    "distributeMatic()": FunctionFragment;
     "factories(uint256)": FunctionFragment;
     "fishPerMatic()": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
@@ -110,7 +131,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
     "hasRole(bytes32,address)": FunctionFragment;
     "initialize(address,address,address,address)": FunctionFragment;
     "initializeFish(address)": FunctionFragment;
-    "initializeMaticFeatures(uint256,uint256,uint256,uint256,uint256)": FunctionFragment;
+    "initializeMaticFeatures(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256)": FunctionFragment;
     "maticToFish(uint256)": FunctionFragment;
     "minMaticToBuyFish()": FunctionFragment;
     "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": FunctionFragment;
@@ -127,6 +148,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
     "revokeRole(bytes32,address)": FunctionFragment;
     "setAirdropInfo(uint256,uint256,uint256,uint256)": FunctionFragment;
     "setBaseURI(string)": FunctionFragment;
+    "setDiscount(string,(uint256,uint256,uint256,uint256))": FunctionFragment;
     "setFishPerClam(uint256)": FunctionFragment;
     "setFishPerMatic(uint256,uint256)": FunctionFragment;
     "setItem(address)": FunctionFragment;
@@ -136,6 +158,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
     "supportsInterface(bytes4)": FunctionFragment;
     "toFish(uint256)": FunctionFragment;
     "toggleWhitelist(address)": FunctionFragment;
+    "totalPayment(string,uint256)": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "updateCoupon(uint256,uint256)": FunctionFragment;
@@ -179,7 +202,9 @@ export interface OttopiaStoreInterface extends utils.Interface {
       | "createProduct"
       | "deleteCoupon"
       | "deleteProduct"
+      | "discountConfigs"
       | "discountPriceOf"
+      | "distributeMatic"
       | "factories"
       | "fishPerMatic"
       | "getRoleAdmin"
@@ -205,6 +230,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
       | "revokeRole"
       | "setAirdropInfo"
       | "setBaseURI"
+      | "setDiscount"
       | "setFishPerClam"
       | "setFishPerMatic"
       | "setItem"
@@ -214,6 +240,7 @@ export interface OttopiaStoreInterface extends utils.Interface {
       | "supportsInterface"
       | "toFish"
       | "toggleWhitelist"
+      | "totalPayment"
       | "totalSupply"
       | "transferOwnership"
       | "updateCoupon"
@@ -338,8 +365,16 @@ export interface OttopiaStoreInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "discountConfigs",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "discountPriceOf",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "distributeMatic",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "factories",
@@ -376,6 +411,9 @@ export interface OttopiaStoreInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "initializeMaticFeatures",
     values: [
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
       BigNumberish,
       BigNumberish,
       BigNumberish,
@@ -445,6 +483,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "setBaseURI", values: [string]): string;
   encodeFunctionData(
+    functionFragment: "setDiscount",
+    values: [string, OttopiaStore.DiscountConfigStruct]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setFishPerClam",
     values: [BigNumberish]
   ): string;
@@ -470,6 +512,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "toggleWhitelist",
     values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "totalPayment",
+    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
@@ -581,7 +627,15 @@ export interface OttopiaStoreInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "discountConfigs",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "discountPriceOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "distributeMatic",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "factories", data: BytesLike): Result;
@@ -655,6 +709,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "setBaseURI", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "setDiscount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setFishPerClam",
     data: BytesLike
   ): Result;
@@ -673,6 +731,10 @@ export interface OttopiaStoreInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "toFish", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "toggleWhitelist",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "totalPayment",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -1102,10 +1164,26 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    discountConfigs(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber] & {
+        startedAt: BigNumber;
+        endedAt: BigNumber;
+        amountThreshold: BigNumber;
+        percentageOff: BigNumber;
+      }
+    >;
+
     discountPriceOf(
       id_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    distributeMatic(
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     factories(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
 
@@ -1149,6 +1227,9 @@ export interface OttopiaStore extends BaseContract {
       dicePrice_: BigNumberish,
       revivePrice_: BigNumberish,
       finishImmediatelyPrice_: BigNumberish,
+      buyMissionPrice_: BigNumberish,
+      refreshMissionPrice_: BigNumberish,
+      buyPortalPrice_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -1255,6 +1336,12 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    setDiscount(
+      key_: string,
+      discountConfig_: OttopiaStore.DiscountConfigStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     setFishPerClam(
       fishPerClam_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1298,6 +1385,12 @@ export interface OttopiaStore extends BaseContract {
       contract_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    totalPayment(
+      key_: string,
+      amount_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -1474,10 +1567,26 @@ export interface OttopiaStore extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  discountConfigs(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, BigNumber, BigNumber, BigNumber] & {
+      startedAt: BigNumber;
+      endedAt: BigNumber;
+      amountThreshold: BigNumber;
+      percentageOff: BigNumber;
+    }
+  >;
+
   discountPriceOf(
     id_: BigNumberish,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  distributeMatic(
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   factories(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
@@ -1521,6 +1630,9 @@ export interface OttopiaStore extends BaseContract {
     dicePrice_: BigNumberish,
     revivePrice_: BigNumberish,
     finishImmediatelyPrice_: BigNumberish,
+    buyMissionPrice_: BigNumberish,
+    refreshMissionPrice_: BigNumberish,
+    buyPortalPrice_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1627,6 +1739,12 @@ export interface OttopiaStore extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setDiscount(
+    key_: string,
+    discountConfig_: OttopiaStore.DiscountConfigStruct,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   setFishPerClam(
     fishPerClam_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -1668,6 +1786,12 @@ export interface OttopiaStore extends BaseContract {
     contract_: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  totalPayment(
+    key_: string,
+    amount_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1838,10 +1962,24 @@ export interface OttopiaStore extends BaseContract {
 
     deleteProduct(id_: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
+    discountConfigs(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber] & {
+        startedAt: BigNumber;
+        endedAt: BigNumber;
+        amountThreshold: BigNumber;
+        percentageOff: BigNumber;
+      }
+    >;
+
     discountPriceOf(
       id_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    distributeMatic(overrides?: CallOverrides): Promise<void>;
 
     factories(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
@@ -1879,6 +2017,9 @@ export interface OttopiaStore extends BaseContract {
       dicePrice_: BigNumberish,
       revivePrice_: BigNumberish,
       finishImmediatelyPrice_: BigNumberish,
+      buyMissionPrice_: BigNumberish,
+      refreshMissionPrice_: BigNumberish,
+      buyPortalPrice_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1977,6 +2118,12 @@ export interface OttopiaStore extends BaseContract {
 
     setBaseURI(baseURI_: string, overrides?: CallOverrides): Promise<void>;
 
+    setDiscount(
+      key_: string,
+      discountConfig_: OttopiaStore.DiscountConfigStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setFishPerClam(
       fishPerClam_: BigNumberish,
       overrides?: CallOverrides
@@ -2014,6 +2161,12 @@ export interface OttopiaStore extends BaseContract {
       contract_: string,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    totalPayment(
+      key_: string,
+      amount_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -2339,9 +2492,18 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    discountConfigs(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     discountPriceOf(
       id_: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    distributeMatic(
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     factories(
@@ -2392,6 +2554,9 @@ export interface OttopiaStore extends BaseContract {
       dicePrice_: BigNumberish,
       revivePrice_: BigNumberish,
       finishImmediatelyPrice_: BigNumberish,
+      buyMissionPrice_: BigNumberish,
+      refreshMissionPrice_: BigNumberish,
+      buyPortalPrice_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -2477,6 +2642,12 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    setDiscount(
+      key_: string,
+      discountConfig_: OttopiaStore.DiscountConfigStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     setFishPerClam(
       fishPerClam_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -2519,6 +2690,12 @@ export interface OttopiaStore extends BaseContract {
     toggleWhitelist(
       contract_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    totalPayment(
+      key_: string,
+      amount_: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
@@ -2698,9 +2875,18 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    discountConfigs(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     discountPriceOf(
       id_: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    distributeMatic(
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     factories(
@@ -2751,6 +2937,9 @@ export interface OttopiaStore extends BaseContract {
       dicePrice_: BigNumberish,
       revivePrice_: BigNumberish,
       finishImmediatelyPrice_: BigNumberish,
+      buyMissionPrice_: BigNumberish,
+      refreshMissionPrice_: BigNumberish,
+      buyPortalPrice_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -2842,6 +3031,12 @@ export interface OttopiaStore extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    setDiscount(
+      key_: string,
+      discountConfig_: OttopiaStore.DiscountConfigStruct,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     setFishPerClam(
       fishPerClam_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -2884,6 +3079,12 @@ export interface OttopiaStore extends BaseContract {
     toggleWhitelist(
       contract_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    totalPayment(
+      key_: string,
+      amount_: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;

@@ -19,13 +19,23 @@ import {
 import useOtterMine from './useOtterMine'
 
 export const useMintInfo = (quantity: number) => {
-  const contract = usePortalCreatorContract()
-  const result = useCall({
-    contract,
-    method: 'priceInMatic',
-    args: [quantity],
-  })
-  return (result?.value?.[0] || constants.Zero).div(quantity)
+  const contract = useStoreContract()
+  const result = useCalls([
+    {
+      contract,
+      method: 'payment',
+      args: ['portal'],
+    },
+    {
+      contract,
+      method: 'totalPayment',
+      args: ['portal', quantity],
+    },
+  ])
+  return {
+    price: (result?.[0]?.value?.[0] || constants.Zero) as BigNumber,
+    totalPayment: (result?.[1]?.value?.[0] || constants.Zero) as BigNumber,
+  }
 }
 
 export const useOttoInfo = () => {
