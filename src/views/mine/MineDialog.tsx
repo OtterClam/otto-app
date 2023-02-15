@@ -16,7 +16,7 @@ import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Caption, ContentSmall, Headline, Note, RegularInput } from 'styles/typography'
 import { formatUsd } from 'utils/currency'
-import GashaponTicketEn from '../treasury-bank/StakeInfo/gashapon-ticket-en.jpg'
+import FoodaySale from './redemption-presale.jpg'
 
 const StakeSuccessPopup = dynamic(() => import('./StakeSuccessPopup'), { ssr: false })
 
@@ -289,7 +289,9 @@ export default function MineDialog({ className }: Props) {
         </StyledButton>
         <Caption>{t('extra')}</Caption>
         {mineState.state === 'Success' && <StakeSuccessPopup amount={usdAmount} onClose={resetMine} />}
-        <StyledGashaponTicket src={GashaponTicketEn.src} />
+        <a href="https://presale.fooday.app" target="_blank" rel="noreferrer">
+          <StyledGashaponTicket src={FoodaySale.src} />
+        </a>
       </StyledBody>
     </StyledMineDialog>
   )
