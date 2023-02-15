@@ -67,88 +67,11 @@ interface Props {
 }
 
 export default function StakeTab({ className }: Props) {
-  const { CLAM, CLAM_POND, PEARL_BANK } = useContractAddresses()
-  const wallet = useWallet()
   const { t } = useTranslation('', { keyPrefix: 'stake' })
-  const tokens = usePondTokens()
-  const [stakeAmount, setStakeAmount] = useState('')
-  const [token, setToken] = useState<ClamPondToken>('CLAM')
-  const tokenAddress = token === 'CLAM' ? CLAM : PEARL_BANK
-  const { stakeState, stake, resetStake } = useClamPondDeposit(token)
-  const { base: feeBase, feeRate, duration } = useClamPondFee()
-  const { balance } = tokens[token]
-  const unlockTime = useMemo(() => new Date(Date.now() + duration * 1000), [duration])
-
-  useEffect(() => {
-    if (stakeState.state === 'Fail' || stakeState.state === 'Exception') {
-      window.alert(stakeState.status.errorMessage)
-      resetStake()
-    }
-  }, [stakeState, resetStake])
-
-  useEffect(() => {
-    if (stakeState.state === 'Success') {
-      wallet?.setBalance(tokenAddress, balance => balance.sub(utils.parseUnits(stakeAmount, 9)))
-      wallet?.setBalance(CLAM_POND, balance => balance.add(utils.parseUnits(stakeAmount, 9)))
-    }
-  }, [stakeState.state, CLAM_POND, stakeAmount, tokenAddress, wallet])
-
   return (
     <StyledStakeTab className={className}>
       <Headline as="h1">{t('welcome')}</Headline>
-      <ContentSmall as="p">{t('desc')}</ContentSmall>
-      <StyledClamBalance>
-        {t('available')}
-        <StyledClamBalanceText icon={tokens[token].smallIcon}>
-          {balance !== undefined ? trim(utils.formatUnits(balance, 9), 2) : '-'}
-        </StyledClamBalanceText>
-        <Button
-          Typography={ContentLarge}
-          primaryColor="white"
-          padding="0 12px"
-          onClick={() => balance && setStakeAmount(utils.formatUnits(balance, 9))}
-        >
-          {t('max')}
-        </Button>
-      </StyledClamBalance>
-      <ClamPondInput
-        tokens={tokens}
-        selectedToken={tokens[token]}
-        value={stakeAmount}
-        onTokenSelected={({ id }) => setToken(id as ClamPondToken)}
-        onValueChanged={setStakeAmount}
-      />
-      {token === 'CLAM' && (
-        <>
-          <StyledField>
-            <StyledFieldLabel>
-              {t('fee', { feeRate: trim((feeRate.toNumber() / feeBase.toNumber()) * 100, 2) })}
-            </StyledFieldLabel>
-          </StyledField>
-          <StyledNote>
-            {t('stake_note', {
-              feeRate: trim((feeRate.toNumber() / feeBase.toNumber()) * 100, 2),
-              date: formatDate(unlockTime, 'yyyy-MM-dd'),
-              days: formatDistanceToNowStrict(unlockTime, { unit: 'day' }),
-            })}
-          </StyledNote>
-        </>
-      )}
-      <StyledButton
-        Typography={Headline}
-        padding="6px"
-        isWeb3
-        loading={stakeState.state !== 'None'}
-        onClick={() => stake(stakeAmount)}
-      >
-        {t('stake_btn')}
-      </StyledButton>
-      {stakeState.state === 'Success' && (
-        <StakeSuccessPopup
-          clamAmount={trim(utils.formatUnits(utils.parseUnits(stakeAmount, 9), 9), 4)}
-          onClose={resetStake}
-        />
-      )}
+      <ContentSmall as="p">{t('desc', { time: new Date('2023-02-16 00:00:00Z').toLocaleString() })}</ContentSmall>
     </StyledStakeTab>
   )
 }

@@ -690,7 +690,7 @@
     "stake_tab": "Deposit",
     "unstake_tab": "Withdraw",
     "welcome": "Welcome to Clam Pond!",
-    "desc": "Deposit your CLAM to automatically compound your USD+ rewards into more CLAM and maximize your passive-income potential. You can deposit and withdraw CLAM at any time.",
+    "desc": "By CIP056, Clam Pond will fully stop at {{time}}.\n\nPlease move your CLAM to Pearl Bank or withdraw your CLAM after that time.",
     "available": "Available:",
     "max": "MAX",
     "input_placeholder": "Enter your amount",

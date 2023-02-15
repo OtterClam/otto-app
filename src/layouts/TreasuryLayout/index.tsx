@@ -160,7 +160,7 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { key: 'palace' },
+  // { key: 'palace' },
   { key: 'pond' },
   { key: 'bank' },
   // { key: 'farm', disabled: true },

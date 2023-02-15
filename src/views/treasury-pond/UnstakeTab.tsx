@@ -120,7 +120,7 @@ export default function UnstakeTab({ className }: Props) {
   return (
     <StyledUnstakeTab className={className}>
       <Headline as="h1">{t('welcome')}</Headline>
-      <ContentSmall as="p">{t('desc')}</ContentSmall>
+      <ContentSmall as="p">{t('desc', { time: new Date('2023-02-16 00:00:00Z').toLocaleString() })}</ContentSmall>
       <StyledPearlBalance>
         {t('available')}
         <StyledPearlBalanceText>
