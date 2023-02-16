@@ -256,8 +256,8 @@ export default function Mint() {
                   </StyledPortalInfoAmountLeft>
                   {totalPayment.gt(0) && (
                     <StyledCLAMMintPrice>
-                      {hasDiscount && <StyledOriginPrice>{ethers.utils.formatEther(price)}</StyledOriginPrice>}
-                      {ethers.utils.formatEther(price)}
+                      {hasDiscount && <StyledOriginPrice>{formatEther(price)}</StyledOriginPrice>}
+                      {formatEther(totalPayment.div(quantity))}
                       {hasDiscount && (
                         <StyledDiscount>
                           {t('mint.mint.discount', {
@@ -320,7 +320,7 @@ export default function Mint() {
                   <StyledDivider />
                   <StyledSummaryItem>
                     <p>{t('mint.total_payment')}</p>
-                    <StyledCLAMBalance>{trim(ethers.utils.formatEther(totalPayment), 6)} </StyledCLAMBalance>
+                    <StyledCLAMBalance>{trim(formatEther(totalPayment), 6)} </StyledCLAMBalance>
                   </StyledSummaryItem>
                 </>
               )}
