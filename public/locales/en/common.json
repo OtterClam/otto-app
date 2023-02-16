@@ -256,7 +256,7 @@
     "mint_button": "Mint",
     "minted_desc": "You have already minted",
     "minted_desc_amount": " {{amount}} Otto Portal(s)",
-    "not_enough_clam": "Not enough CLAM?",
+    "not_enough_clam": "Not enough MATIC?",
     "pay_with_clam": "Pay with CLAM",
     "pay_with_eth": "Pay with ETH",
     "payment_method": "Payment Method",
@@ -764,6 +764,7 @@
     "pearl_bank": "Pearl Bank",
     "swap": {
       "title": "Swap CLAM",
+      "fish_title": "Swap FISH",
       "from": "From",
       "available": "Available:",
       "max": "MAX",
@@ -1090,5 +1091,23 @@
   "adventureSharePopup": {
     "title": "Share this adventure result",
     "desc": "You can copy and paste the link on any social media platform. Anyone who has the link can see your Otto’s adventure result."
+  },
+  "mine": {
+    "title": "Mine",
+    "welcome": "Make your CLAM stable!",
+    "desc": "Mining deadline: {{deadline}}",
+    "clam_balance": "Your Balance:",
+    "from": "From",
+    "to": "To",
+    "max": "Max",
+    "placeholder": "0",
+    "current_supply": "Current Supply",
+    "mine_btn": "Mine Now!",
+    "extra": "Or you can make your CLAM more valuable...",
+    "success_popup": {
+      "headline": "Otter’standing!",
+      "title": "Your mining was successful.",
+      "desc": "You just received "
+    }
   }
 }

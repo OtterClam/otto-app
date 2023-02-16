@@ -1,13 +1,14 @@
-import CLAM from 'assets/clam.png'
+import MATIC from 'assets/tokens/WMATIC.svg'
+import YellowRibbonXL from 'assets/ui/ribbon-yellow-xl.svg'
+import Star from 'assets/ui/star.svg'
 import BorderContainer from 'components/BorderContainer'
 import Button from 'components/Button'
+import { ethers } from 'ethers'
+import { trim } from 'helpers/trim'
 import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { Caption, ContentLarge, Headline, Note } from 'styles/typography'
-import YellowRibbonXL from 'assets/ui/ribbon-yellow-xl.svg'
-import Star from 'assets/ui/star.svg'
-import Image from 'next/image'
 import useProductBorderColor from '../useProductBorderColor'
 
 const StyledProductCard = styled(BorderContainer)`
@@ -62,7 +63,7 @@ const StyledPrice = styled.div`
   flex: 1;
   &:before {
     content: '';
-    background-image: url(${CLAM.src});
+    background-image: url(${MATIC.src});
     background-size: contain;
     background-repeat: no-repeat;
     width: 28px;
@@ -102,18 +103,7 @@ interface Props {
 }
 
 export default function BuyProductCard({
-  product: {
-    type,
-    name,
-    image,
-    price,
-    displayPrice,
-    discountPrice,
-    displayDiscountPrice,
-    amount,
-    mustDesc,
-    guarantee_rarity,
-  },
+  product: { type, name, image, price, discount_price: discountPrice, amount, mustDesc, guarantee_rarity },
   onClick,
 }: Props) {
   const { t } = useTranslation()
@@ -127,8 +117,8 @@ export default function BuyProductCard({
         <img src={image} alt={name} width="100%" />
       </StyledImage>
       <StyledPrice>
-        {hasDiscount && <StyledOriginPrice>{displayPrice}</StyledOriginPrice>}
-        <ContentLarge>{displayDiscountPrice}</ContentLarge>
+        {hasDiscount && <StyledOriginPrice>{trim(ethers.utils.formatEther(price), 5)}</StyledOriginPrice>}
+        <ContentLarge>{trim(ethers.utils.formatEther(discountPrice), 5)}</ContentLarge>
       </StyledPrice>
       {hasDiscount && <StyledDiscount>{t('store.popup.discount', { discount })}</StyledDiscount>}
       <Button Typography={Headline} onClick={onClick}>

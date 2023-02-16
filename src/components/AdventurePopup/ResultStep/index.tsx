@@ -13,7 +13,9 @@ import { useApi } from 'contexts/Api'
 import { useOtto } from 'contexts/Otto'
 import { useRepositories } from 'contexts/Repositories'
 import { useAdventureRevive } from 'contracts/functions'
+import { useReviveInfo } from 'contracts/views'
 import { ethers } from 'ethers'
+import { useTokenInfo } from 'hooks/token-info'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { AdventureResult } from 'models/AdventureResult'
 import Otto, { AdventureOttoStatus } from 'models/Otto'
@@ -81,12 +83,14 @@ export default function ResultStep() {
   const [sharedOtto, setSharedOtto] = useState<Otto | null>(null)
   const { ottos: ottosRepo } = useRepositories()
   const [result, setResult] = useState<AdventureResult | null>(null)
+  const { price } = useReviveInfo()
   const { revive, reviveState, resetRevive } = useAdventureRevive()
   const { updateOtto } = useMyOttos()
   const { otto, setOtto } = useOtto()
   const { ADVENTURE } = useContractAddresses()
   const openPopup = useOpenAdventurePopup()
   const { dispatch } = useAdventureUIState()
+  const { MATIC } = useTokenInfo()
 
   const displayedOtto = otto || sharedOtto
 
@@ -232,9 +236,9 @@ export default function ResultStep() {
                 Typography={Headline}
                 loading={reviveState.status === 'PendingSignature' || reviveState.status === 'Mining'}
                 spenderAddress={ADVENTURE}
-                token={Token.Clam}
-                amount={ethers.utils.parseUnits('1', 9)}
-                onClick={() => otto && revive(otto.id)}
+                token={MATIC}
+                amount={price || '0'}
+                onClick={() => otto && revive(otto.id, { value: price || '0', gasLimit: 2000000 })}
               >
                 {t('revive_btn')}
               </PaymentButton>

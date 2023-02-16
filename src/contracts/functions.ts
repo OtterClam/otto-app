@@ -1,17 +1,16 @@
 import { TransactionState, TransactionStatus, useCall, useCalls, useContractFunction, useEthers } from '@usedapp/core'
 import { useApi } from 'contexts/Api'
 import { useRepositories } from 'contexts/Repositories'
-import { BigNumber, BigNumberish, constants, Contract, ethers, utils } from 'ethers'
+import { BigNumber, BigNumberish, constants, ethers, utils } from 'ethers'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { Api } from 'libs/api'
 import last from 'lodash/last'
 import { Item, ItemAction, ItemMetadata } from 'models/Item'
 import { Mission } from 'models/Mission'
-import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
 import { useCallback, useEffect, useState } from 'react'
 import { ItemsRepository } from 'repositories/items'
-import { ERC20Abi, IOttoItemFactoryAbi, OttoItemAbi } from './abis'
+import { OttoItemAbi } from './abis'
 import {
   useAdventureContract,
   useClamPond,
@@ -27,6 +26,7 @@ import {
   usePortalCreatorContract,
   useStoreContract,
 } from './contracts'
+import useOtterMine from './useOtterMine'
 import { Adventure } from './__generated__'
 
 export const useApprove = (tokenAddress?: string) => {
@@ -38,7 +38,7 @@ export const useApprove = (tokenAddress?: string) => {
 
 export const useMint = () => {
   const portal = usePortalCreatorContract()
-  const { state: mintState, send: mint, resetState: resetMint } = useContractFunction(portal, 'mint')
+  const { state: mintState, send: mint, resetState: resetMint } = useContractFunction(portal, 'mintWithMatic')
   return { mintState, mint, resetMint }
 }
 
@@ -144,39 +144,30 @@ export interface OttoBuyTransactionState extends OttoTransactionState {
   receivedItems?: ItemMetadata[]
 }
 
-export const useBuyProduct = (claim: boolean) => {
+export const useBuyProduct = () => {
   const { items: itemsRepo } = useRepositories()
-  const { CLAM, OTTOPIA_STORE } = useContractAddresses()
-  const { account, library } = useEthers()
+  const { account } = useEthers()
   const { i18n } = useTranslation()
   const api = useApi()
-  const [factory, setFactory] = useState<Contract | undefined>()
-  const clam = new Contract(CLAM, ERC20Abi, library?.getSigner())
   const store = useStoreContract()
-  const { state, send, resetState } = useContractFunction(store, claim ? 'claimNoChainlink' : 'buyNoChainlink', {})
+  const { state, send, resetState } = useContractFunction(store, 'buyWithMatic', {})
   const [buyState, setBuyState] = useState<OttoBuyTransactionState>({
     state: 'None',
     status: state,
   })
-  const buy = async ({ id, discountPrice, factory: factoryAddr }: Product, ottoIds: string[]) => {
-    setBuyState({
-      state: 'PendingSignature',
-      status: state,
-    })
-    setFactory(new Contract(factoryAddr, IOttoItemFactoryAbi, library))
-    if (claim) {
-      send(id, ottoIds, {
-        gasLimit: 1000000,
+  const buy = async ({ sellId, amount }: { sellId: number; amount: number }) => {
+    if (account) {
+      setBuyState({
+        state: 'PendingSignature',
+        status: state,
       })
-    } else {
-      const clamAllowance = await clam.allowance(account, OTTOPIA_STORE)
-      const noAllowance = clamAllowance.lt(discountPrice)
-      if (noAllowance) {
-        await (await clam.approve(OTTOPIA_STORE, constants.MaxUint256)).wait()
-      }
-      send(account || '', id, '1', {
-        gasLimit: 2500000,
+      const data = await api.signBuyProduct({
+        id: sellId,
+        amount,
+        from: account,
+        to: account,
       })
+      ;(send as any)(...data)
     }
   }
   const resetBuy = () => {
@@ -208,31 +199,34 @@ export const useBuyProduct = (claim: boolean) => {
     } else {
       setBuyState({ state: state.status, status: state })
     }
-  }, [state, i18n, factory])
+  }, [state, i18n, account])
   return { buyState, buy, resetBuy }
 }
 
 export const useRedeemProduct = () => {
   const { items: itemsRepo } = useRepositories()
-  const { OTTOPIA_STORE } = useContractAddresses()
   const { account, library } = useEthers()
-  const { i18n } = useTranslation()
   const api = useApi()
-  const [factory, setFactory] = useState<Contract | undefined>()
+  const store = useStoreContract()
   const item = useItemContract()
-  const { state, send, resetState } = useContractFunction(item, 'safeTransferFrom')
+  const { state, send, resetState } = useContractFunction(store, 'openChest')
   const [redeemState, setRedeemState] = useState<OttoBuyTransactionState>({
     state: 'None',
     status: state,
   })
-  const redeem = async (couponId: string, factoryAddr: string) => {
-    if (account) {
+  const redeem = async (couponId: string) => {
+    const signer = library?.getSigner()
+    if (account && signer) {
       setRedeemState({
         state: 'PendingSignature',
         status: state,
       })
-      setFactory(new Contract(factoryAddr, IOttoItemFactoryAbi, library))
-      send(account, OTTOPIA_STORE, couponId, 1, [], { gasLimit: 1000000 })
+      const isApprovedForAll = await item.connect(signer).isApprovedForAll(account, store.address)
+      if (!isApprovedForAll) {
+        await (await item.setApprovalForAll(store.address, true)).wait()
+      }
+      const data = await api.signOpenChest({ from: account, to: account, itemId: Number(couponId) })
+      ;(send as any)(...data, { gasLimit: 1000000 })
     }
   }
   const resetRedeem = () => {
@@ -263,7 +257,7 @@ export const useRedeemProduct = () => {
     } else {
       setRedeemState({ state: state.status, status: state })
     }
-  }, [state, i18n, factory])
+  }, [state])
   return { redeemState, redeem, resetRedeem }
 }
 
@@ -710,9 +704,7 @@ export const useAdventureFinish = () => {
         return
       }
       setFinishState({ status: state, state: 'Processing' })
-      api
-        .finish({ ottoId, wallet: account, immediately, potions })
-        .then(inputs => (send as any)(...inputs, { gasLimit: 2000000 }))
+      api.finish({ ottoId, wallet: account, immediately, potions }).then(inputs => (send as any)(...inputs))
     },
     [api, account, send, state]
   )
@@ -758,19 +750,19 @@ export const useUseAttributePoints = () => {
 
 export const useBuyFish = () => {
   const store = useStoreContract()
-  const { state, send, resetState } = useContractFunction(store, 'buyFish', {})
+  const { state, send, resetState } = useContractFunction(store, 'buyFishWithMatic', {})
 
   const [buyFishState, setBuyFishState] = useState<OttoTransactionState>({
     state: 'None',
     status: state,
   })
 
-  const buyFish = async (clamAmount: BigNumber) => {
+  const buyFish = async (amountIn: BigNumber) => {
     setBuyFishState({
       state: 'PendingSignature',
       status: state,
     })
-    send(clamAmount)
+    send({ value: amountIn })
   }
 
   const resetBuyFish = () => {
@@ -1038,18 +1030,18 @@ export const useRequestNewMission = () => {
   const { i18n } = useTranslation()
   const api = useApi()
   const store = useStoreContract()
-  const { state, send, resetState } = useContractFunction(store, 'buyNoChainlink', {})
+  const { state, send, resetState } = useContractFunction(store, 'payWithMatic', {})
   const [buyState, setBuyState] = useState<OttoNewMissionState>({
     state: 'None',
     status: state,
   })
   const buy = useCallback(
-    async (productId: string) => {
+    async (key: string, price: string) => {
       setBuyState({
         state: 'Processing',
         status: state,
       })
-      send(account || '', productId, 1)
+      send(key, 1, { value: price })
     },
     [account, send, state]
   )
@@ -1085,18 +1077,18 @@ export const useRefreshMission = (missionId: number) => {
   const { i18n } = useTranslation()
   const api = useApi()
   const store = useStoreContract()
-  const { state, send, resetState } = useContractFunction(store, 'buyNoChainlink', {})
+  const { state, send, resetState } = useContractFunction(store, 'payWithMatic', {})
   const [refreshState, setBuyState] = useState<OttoNewMissionState>({
     state: 'None',
     status: state,
   })
   const refresh = useCallback(
-    async (productId: string) => {
+    async (key: string, price: string) => {
       setBuyState({
         state: 'Processing',
         status: state,
       })
-      send(account || '', productId, 1)
+      send(key, 1, { value: price })
     },
     [account, send, state]
   )
@@ -1125,4 +1117,38 @@ export const useRefreshMission = (missionId: number) => {
     }
   }, [state, i18n, api, account, missionId])
   return { refreshState, refresh, resetRefresh: resetState }
+}
+
+export const useMine = () => {
+  const otterMine = useOtterMine()
+  const { CLAM } = useContractAddresses()
+  const { account } = useEthers()
+  const clam = useERC20(CLAM)
+  const { state, send, resetState } = useContractFunction(otterMine, 'mine', {})
+  const [mineState, setMineState] = useState<OttoTransactionState>({
+    state: 'None',
+    status: state,
+  })
+  const mine = async (amount: string) => {
+    try {
+      const clamAmount = ethers.utils.parseUnits(amount, 9)
+      setMineState({
+        state: 'PendingSignature',
+        status: state,
+      })
+      const clamAllowance = account ? await clam.allowance(account, otterMine.address) : constants.Zero
+      const noAllowance = clamAllowance.lt(clamAmount)
+      if (noAllowance) {
+        await (await clam.approve(otterMine.address, constants.MaxUint256)).wait()
+      }
+      send(clamAmount)
+    } catch (error: any) {
+      window.alert(error.message)
+      setMineState({ state: 'None', status: state })
+    }
+  }
+  useEffect(() => {
+    setMineState({ state: state.status, status: state })
+  }, [state])
+  return { mineState, mine, resetMine: resetState }
 }

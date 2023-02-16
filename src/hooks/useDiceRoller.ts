@@ -2,16 +2,15 @@ import { Dice } from 'models/Dice'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setError } from 'store/errorSlice'
-import useProducts from 'models/store/useProducts'
 import { useOttoHellDiceRoller, useStoreContract } from 'contracts/contracts'
 import Otto from 'models/Otto'
 import { useEthers } from '@usedapp/core'
-import Product from 'models/store/Product'
 import { connectContractToSigner } from '@usedapp/core/dist/esm/src/hooks'
 import { useTranslation } from 'next-i18next'
 import { selectOttoInTheHell } from 'store/uiSlice'
-import { BigNumber } from 'ethers'
+import { BigNumber, BigNumberish } from 'ethers'
 import { useApi } from 'contexts/Api'
+import { OttoHellDiceRoller } from 'contracts/__generated__'
 
 export enum State {
   Intro = 1,
@@ -23,17 +22,11 @@ export enum State {
 export interface DiceRoller {
   state: State
   dice?: Dice
-  product?: Product
-  rollTheDice: () => void
+  rollTheDice: (value: BigNumberish) => void
   answerQuestion: (index: number, answer: number) => void
   nextEvent: () => void
   reset: () => void
   loading: boolean
-}
-
-const useHellDiceProduct = () => {
-  const { products } = useProducts()
-  return products.find(product => product?.type === 'helldice')
 }
 
 const useUnfinishDice = (ottoId?: string) => {
@@ -68,7 +61,6 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
   const [state, setState] = useState(State.Intro)
   const [dice, setDice] = useState<Dice>()
   const { account } = useEthers()
-  const product = useHellDiceProduct()
   const ottoHellDiceRoller = useOttoHellDiceRoller()
   const { library } = useEthers()
 
@@ -79,31 +71,33 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
     }
   }, [unfinishDice, api])
 
-  const rollTheDice = useCallback(async () => {
-    if (!otto || !account || !product || !library) {
-      return
-    }
-
-    try {
-      setState(State.Processing)
-      const tx = await connectContractToSigner(ottoHellDiceRoller, {}, library.getSigner()).roll(
-        otto.id,
-        BigNumber.from('1')
-      )
-      await tx.wait()
-      setDice(await api.rollTheDice(otto.id, tx.hash))
-      setState(State.FirstResult)
-    } catch (err: any) {
-      if (err.reason === 'repriced') {
-        setDice(await api.rollTheDice(otto.id, err.replacement.hash))
-        setState(State.FirstResult)
-      } else {
-        window.alert(JSON.stringify(err))
-        setState(State.Intro)
-        dispatch(setError(err as any))
+  const rollTheDice = useCallback(
+    async (value: BigNumberish) => {
+      if (!otto || !account || !library) {
+        return
       }
-    }
-  }, [api, otto, account, product, library])
+
+      try {
+        setState(State.Processing)
+        const tx = await (
+          connectContractToSigner(ottoHellDiceRoller, {}, library.getSigner()) as OttoHellDiceRoller
+        ).rollWithMatic(otto.id, BigNumber.from('1'), { value })
+        await tx.wait()
+        setDice(await api.rollTheDice(otto.id, tx.hash))
+        setState(State.FirstResult)
+      } catch (err: any) {
+        if (err.reason === 'repriced') {
+          setDice(await api.rollTheDice(otto.id, err.replacement.hash))
+          setState(State.FirstResult)
+        } else {
+          window.alert(JSON.stringify(err))
+          setState(State.Intro)
+          dispatch(setError(err as any))
+        }
+      }
+    },
+    [api, otto, account, library]
+  )
 
   const answerQuestion = useCallback(
     (index: number, answer: number) => {
@@ -134,7 +128,6 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
     answerQuestion,
     nextEvent,
     reset,
-    product,
     loading,
   }
 }

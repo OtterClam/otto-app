@@ -174,6 +174,37 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "string",
+        name: "payment",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "value",
+        type: "uint256",
+      },
+    ],
+    name: "GotPaid",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: false,
         internalType: "uint8",
         name: "version",
@@ -307,6 +338,37 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "action",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "bytes",
+        name: "sig",
+        type: "bytes",
+      },
+    ],
+    name: "SignatureUsed",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "uint256",
         name: "id_",
         type: "uint256",
@@ -382,6 +444,19 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "HUNDRED_PERCENT",
+    outputs: [
+      {
+        internalType: "uint16",
+        name: "",
+        type: "uint16",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "ITEM",
     outputs: [
       {
@@ -401,6 +476,45 @@ const _abi = [
         internalType: "bytes32",
         name: "",
         type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "NUM_RARITIES",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "ORDER_BUY",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "ORDER_OPEN_CHEST",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -554,6 +668,13 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "buyFishWithMatic",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -629,6 +750,56 @@ const _abi = [
     name: "buySigned",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "to_",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "itemId_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amount_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256[]",
+        name: "contents_",
+        type: "uint256[]",
+      },
+      {
+        components: [
+          {
+            internalType: "string",
+            name: "nonce",
+            type: "string",
+          },
+          {
+            internalType: "bytes32",
+            name: "digest",
+            type: "bytes32",
+          },
+          {
+            internalType: "bytes",
+            name: "signed",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct OttopiaStore.Signature",
+        name: "sig_",
+        type: "tuple",
+      },
+    ],
+    name: "buyWithMatic",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -773,7 +944,7 @@ const _abi = [
             type: "uint256",
           },
         ],
-        internalType: "struct IOttopiaStore.Product",
+        internalType: "struct OttopiaStore.Product",
         name: "product_",
         type: "tuple",
       },
@@ -817,6 +988,40 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    name: "discountConfigs",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "startedAt",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "endedAt",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amountThreshold",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "percentageOff",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "id_",
         type: "uint256",
@@ -834,6 +1039,13 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "distributeMatic",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -847,6 +1059,19 @@ const _abi = [
         internalType: "address",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "fishPerMatic",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -970,6 +1195,86 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "fishPerMatic_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "minMaticToBuyFish_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "dicePrice_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "revivePrice_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "finishImmediatelyPrice_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "buyMissionPrice_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "refreshMissionPrice_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "buyPortalPrice_",
+        type: "uint256",
+      },
+    ],
+    name: "initializeMaticFeatures",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "maticAmount_",
+        type: "uint256",
+      },
+    ],
+    name: "maticToFish",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "minMaticToBuyFish",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "",
         type: "address",
@@ -1046,6 +1351,56 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "to_",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "itemId_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amount_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256[]",
+        name: "contents_",
+        type: "uint256[]",
+      },
+      {
+        components: [
+          {
+            internalType: "string",
+            name: "nonce",
+            type: "string",
+          },
+          {
+            internalType: "bytes32",
+            name: "digest",
+            type: "bytes32",
+          },
+          {
+            internalType: "bytes",
+            name: "signed",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct OttopiaStore.Signature",
+        name: "sig_",
+        type: "tuple",
+      },
+    ],
+    name: "openChest",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "owner",
     outputs: [
@@ -1053,6 +1408,43 @@ const _abi = [
         internalType: "address",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "key_",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "amount_",
+        type: "uint256",
+      },
+    ],
+    name: "payWithMatic",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    name: "payment",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -1220,6 +1612,46 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "string",
+        name: "key_",
+        type: "string",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "startedAt",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "endedAt",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "amountThreshold",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "percentageOff",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct OttopiaStore.DiscountConfig",
+        name: "discountConfig_",
+        type: "tuple",
+      },
+    ],
+    name: "setDiscount",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "fishPerClam_",
         type: "uint256",
@@ -1233,12 +1665,48 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "fishPerMatic_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "minMatic_",
+        type: "uint256",
+      },
+    ],
+    name: "setFishPerMatic",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "item_",
         type: "address",
       },
     ],
     name: "setItem",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "key_",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "value_",
+        type: "uint256",
+      },
+    ],
+    name: "setPayment",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1318,6 +1786,30 @@ const _abi = [
     name: "toggleWhitelist",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "key_",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "amount_",
+        type: "uint256",
+      },
+    ],
+    name: "totalPayment",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -1409,7 +1901,7 @@ const _abi = [
             type: "uint256",
           },
         ],
-        internalType: "struct IOttopiaStore.Product",
+        internalType: "struct OttopiaStore.Product",
         name: "product_",
         type: "tuple",
       },

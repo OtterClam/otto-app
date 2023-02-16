@@ -2,7 +2,7 @@ import BorderContainer from 'components/BorderContainer'
 import Countdown from 'components/Countdown'
 import ItemCell from 'components/ItemCell'
 import { format } from 'date-fns'
-import { FlashSellResponse } from 'libs/api'
+import { SellData } from 'libs/api'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Caption, ContentSmall } from 'styles/typography'
@@ -63,7 +63,7 @@ const StyledSellRange = styled(ContentSmall)``
 const StyledCountdownContainer = styled.div``
 
 interface Props {
-  flashSell: FlashSellResponse
+  flashSell: SellData
   onClick: () => void
 }
 

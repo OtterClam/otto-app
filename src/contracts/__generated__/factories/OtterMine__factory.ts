@@ -4,10 +4,7 @@
 
 import { Contract, Signer, utils } from "ethers";
 import type { Provider } from "@ethersproject/providers";
-import type {
-  OttoHellDiceRoller,
-  OttoHellDiceRollerInterface,
-} from "../OttoHellDiceRoller";
+import type { OtterMine, OtterMineInterface } from "../OtterMine";
 
 const _abi = [
   {
@@ -53,6 +50,31 @@ const _abi = [
       },
     ],
     name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "clamAmount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "usdAmount",
+        type: "uint256",
+      },
+    ],
+    name: "Mine",
     type: "event",
   },
   {
@@ -134,75 +156,26 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
-        internalType: "address",
-        name: "roller",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "ottoId",
-        type: "uint256",
-      },
-      {
         indexed: false,
         internalType: "uint256",
-        name: "amount",
+        name: "deadline",
         type: "uint256",
       },
     ],
-    name: "RollDice",
+    name: "SetDeadline",
     type: "event",
   },
   {
     anonymous: false,
     inputs: [
       {
-        indexed: true,
-        internalType: "bytes32",
-        name: "orderId",
-        type: "bytes32",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "buyer",
-        type: "address",
-      },
-    ],
-    name: "ShipOrder",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "productId",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
-      {
         indexed: false,
         internalType: "uint256",
-        name: "amount",
+        name: "usdPerClam",
         type: "uint256",
       },
     ],
-    name: "ShipOrderNoChainLink",
+    name: "SetUsdPerClam",
     type: "event",
   },
   {
@@ -219,17 +192,23 @@ const _abi = [
     type: "event",
   },
   {
-    inputs: [],
-    name: "CLAM",
-    outputs: [
+    anonymous: false,
+    inputs: [
       {
-        internalType: "contract IERC20",
-        name: "",
+        indexed: true,
+        internalType: "address",
+        name: "sender",
         type: "address",
       },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "usdAmount",
+        type: "uint256",
+      },
     ],
-    stateMutability: "view",
-    type: "function",
+    name: "Withdraw",
+    type: "event",
   },
   {
     inputs: [],
@@ -239,45 +218,6 @@ const _abi = [
         internalType: "bytes32",
         name: "",
         type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "DICE_ITEM_ID",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "DICE_PRODUCT_ID",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "ITEM",
-    outputs: [
-      {
-        internalType: "contract IOttoItemERC1155",
-        name: "",
-        type: "address",
       },
     ],
     stateMutability: "view",
@@ -298,10 +238,10 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "OTTO",
+    name: "burnAddress",
     outputs: [
       {
-        internalType: "contract IOttoV3ERC721",
+        internalType: "address",
         name: "",
         type: "address",
       },
@@ -311,12 +251,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "PAYMENT_KEY",
+    name: "clam",
     outputs: [
       {
-        internalType: "string",
+        internalType: "contract IERC20Upgradeable",
         name: "",
-        type: "string",
+        type: "address",
       },
     ],
     stateMutability: "view",
@@ -324,77 +264,15 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "STORE",
+    name: "deadline",
     outputs: [
       {
-        internalType: "contract IOttopiaStore",
+        internalType: "uint256",
         name: "",
-        type: "address",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-      {
-        internalType: "bytes",
-        name: "",
-        type: "bytes",
-      },
-    ],
-    name: "applicable",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "ottoContract_",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "ottoId_",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "itemId_",
-        type: "uint256",
-      },
-      {
-        internalType: "bytes",
-        name: "data_",
-        type: "bytes",
-      },
-    ],
-    name: "applyTo",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -467,28 +345,8 @@ const _abi = [
       },
       {
         internalType: "address",
-        name: "otto_",
+        name: "usd_",
         type: "address",
-      },
-      {
-        internalType: "address",
-        name: "item_",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "store_",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "diceProductId_",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "diceItemId_",
-        type: "uint256",
       },
     ],
     name: "initialize",
@@ -499,78 +357,13 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-      {
-        internalType: "uint256[]",
-        name: "",
-        type: "uint256[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "",
-        type: "uint256[]",
-      },
-      {
-        internalType: "bytes",
-        name: "",
-        type: "bytes",
-      },
-    ],
-    name: "onERC1155BatchReceived",
-    outputs: [
-      {
-        internalType: "bytes4",
-        name: "",
-        type: "bytes4",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-      {
         internalType: "uint256",
-        name: "",
+        name: "clamAmount_",
         type: "uint256",
       },
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-      {
-        internalType: "bytes",
-        name: "",
-        type: "bytes",
-      },
     ],
-    name: "onERC1155Received",
-    outputs: [
-      {
-        internalType: "bytes4",
-        name: "",
-        type: "bytes4",
-      },
-    ],
+    name: "mine",
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -627,16 +420,11 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
-        name: "ottoId_",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "amount_",
+        name: "deadline_",
         type: "uint256",
       },
     ],
-    name: "roll",
+    name: "setDeadline",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -645,44 +433,11 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
-        name: "ottoId_",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "amount_",
+        name: "usdPerClam_",
         type: "uint256",
       },
     ],
-    name: "rollWithMatic",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "from_",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "fromProductId_",
-        type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "to_",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "productAmount_",
-        type: "uint256",
-      },
-    ],
-    name: "shipNoChainlink",
+    name: "setUsdPerClam",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -737,17 +492,56 @@ const _abi = [
     stateMutability: "payable",
     type: "function",
   },
+  {
+    inputs: [],
+    name: "usd",
+    outputs: [
+      {
+        internalType: "contract IERC20Upgradeable",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "usdPerClam",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "usdAmount_",
+        type: "uint256",
+      },
+    ],
+    name: "withdraw",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
 ];
 
-export class OttoHellDiceRoller__factory {
+export class OtterMine__factory {
   static readonly abi = _abi;
-  static createInterface(): OttoHellDiceRollerInterface {
-    return new utils.Interface(_abi) as OttoHellDiceRollerInterface;
+  static createInterface(): OtterMineInterface {
+    return new utils.Interface(_abi) as OtterMineInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): OttoHellDiceRoller {
-    return new Contract(address, _abi, signerOrProvider) as OttoHellDiceRoller;
+  ): OtterMine {
+    return new Contract(address, _abi, signerOrProvider) as OtterMine;
   }
 }

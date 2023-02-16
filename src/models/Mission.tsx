@@ -35,9 +35,13 @@ export interface Mission {
 }
 
 export interface MissionInfo {
+  new_matic_payment_key: string
+  new_matic_price: string
   nextFreeMissionAt: Date
   newPrice: string
   newProductId: string
+  refresh_matic_payment_key: string
+  refresh_matic_price: string
   refreshPrice: string
   refreshProductId: string
 }

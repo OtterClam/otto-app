@@ -11,6 +11,7 @@ import { useForge, useSetApprovalForAll } from 'contracts/functions'
 import formatDate from 'date-fns/format'
 import isAfter from 'date-fns/isAfter'
 import isBefore from 'date-fns/isBefore'
+import { useTokenInfo } from 'hooks/token-info'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { ForgeFormula } from 'models/Forge'
 import { useTranslation } from 'next-i18next'
@@ -196,6 +197,7 @@ const useAvailableCount = (formula: ForgeFormula, itemCounts: MyItemAmounts): nu
 const isProcessing = (state: TransactionStatus) => state.status === 'PendingSignature' || state.status === 'Mining'
 
 export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyItems }: ForgeItemProps) {
+  const { FISH } = useTokenInfo()
   const { FOUNDRY } = useContractAddresses()
   const { t } = useTranslation('', { keyPrefix: 'foundry' })
   const startTime = formatDate(formula.startTime, TIME_FORMAT)
@@ -276,7 +278,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
           </StyledMaterialList>
           <PaymentButton
             spenderAddress={FOUNDRY}
-            token={Token.Fish}
+            token={FISH}
             amount={formula.fish}
             loading={processing}
             disabled={disabled}

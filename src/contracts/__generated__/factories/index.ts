@@ -9,6 +9,7 @@ export { ERC1155__factory } from "./ERC1155__factory";
 export { Foundry__factory } from "./Foundry__factory";
 export { IOttoItemFactory__factory } from "./IOttoItemFactory__factory";
 export { Mission__factory } from "./Mission__factory";
+export { OtterMine__factory } from "./OtterMine__factory";
 export { OtterRewardManager__factory } from "./OtterRewardManager__factory";
 export { OtterStakingPearlHelper__factory } from "./OtterStakingPearlHelper__factory";
 export { OtterWrappedUsdPlusToken__factory } from "./OtterWrappedUsdPlusToken__factory";

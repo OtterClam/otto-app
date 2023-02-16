@@ -6,23 +6,36 @@ import {
   useAdventureContract,
   useClamPond,
   useERC1155,
+  useERC20,
   useItemContract,
   useOcUsdPlus,
   useOttoContract,
+  useOttoHellDiceRoller,
   usePearlBank,
   usePortalCreatorContract,
   useRewardManager,
   useStoreContract,
 } from './contracts'
+import useOtterMine from './useOtterMine'
 
 export const useMintInfo = (quantity: number) => {
-  const contract = usePortalCreatorContract()
-  const result = useCall({
-    contract,
-    method: 'currentPrice',
-    args: [quantity],
-  })
-  return (result?.value?.[0] || constants.Zero).div(quantity)
+  const contract = useStoreContract()
+  const result = useCalls([
+    {
+      contract,
+      method: 'payment',
+      args: ['portal'],
+    },
+    {
+      contract,
+      method: 'totalPayment',
+      args: ['portal', quantity],
+    },
+  ])
+  return {
+    price: (result?.[0]?.value?.[0] || constants.Zero) as BigNumber,
+    totalPayment: (result?.[1]?.value?.[0] || constants.Zero) as BigNumber,
+  }
 }
 
 export const useOttoInfo = () => {
@@ -272,22 +285,84 @@ export function useIsApprovedForAll(contract: string, account: string, operator:
   }
 }
 
-export const useBuyFishReturn = (clamAmount: BigNumberish) => {
+export const useBuyFishReturn = (amount: BigNumberish) => {
   const store = useStoreContract()
-  const { library } = useEthers()
-  const [fishAmount, setFishAmount] = useState<BigNumberish>(0)
-
-  useEffect(() => {
-    if (library) {
-      store.toFish(clamAmount).then(setFishAmount)
-    }
-  }, [clamAmount.toString(), library])
-
-  return fishAmount
+  const result = useCall({ contract: store, method: 'maticToFish', args: [amount] })
+  return result?.value?.[0].toString() || '0'
 }
 
 export const useFinishFee = (passId: BigNumberish | undefined) => {
   const adventure = useAdventureContract()
   const result = useCall(passId ? { contract: adventure, method: 'finishFee', args: [passId] } : undefined)
   return result?.value?.[0].toString() || '0'
+}
+
+export const useMineInfo = () => {
+  const mine = useOtterMine()
+  const usd = useCall({ contract: mine, method: 'usd', args: [] })?.value?.[0] || ''
+  const usdToken = useERC20(usd)
+  const [usdPerClam, deadline, availableSupply, decimals] = useCalls([
+    {
+      contract: mine,
+      method: 'usdPerClam',
+      args: [],
+    },
+    {
+      contract: mine,
+      method: 'deadline',
+      args: [],
+    },
+    {
+      contract: usdToken,
+      method: 'balanceOf',
+      args: [mine.address],
+    },
+    {
+      contract: usdToken,
+      method: 'decimals',
+      args: [],
+    },
+  ])
+  return {
+    usdPerClam: usdPerClam?.value?.[0],
+    deadline: deadline?.value?.[0],
+    availableSupply: availableSupply?.value?.[0],
+    decimals: decimals?.value?.[0] || 0,
+  }
+}
+
+export const useDiceInfo = () => {
+  const ottoHellDiceRoller = useOttoHellDiceRoller()
+  const store = useStoreContract()
+  const key = useCall({
+    contract: ottoHellDiceRoller,
+    method: 'PAYMENT_KEY',
+    args: [],
+  })
+  const price = useCall(
+    key?.value?.[0] && {
+      contract: store,
+      method: 'payment',
+      args: [key.value[0]],
+    }
+  )
+  return { price: price?.value?.[0] }
+}
+
+export const useReviveInfo = () => {
+  const adventure = useAdventureContract()
+  const store = useStoreContract()
+  const key = useCall({
+    contract: adventure,
+    method: 'REVIVE_PAYMENT_KEY',
+    args: [],
+  })
+  const price = useCall(
+    key?.value?.[0] && {
+      contract: store,
+      method: 'payment',
+      args: [key.value[0]],
+    }
+  )
+  return { price: price?.value?.[0] }
 }

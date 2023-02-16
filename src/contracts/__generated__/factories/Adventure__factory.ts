@@ -101,6 +101,43 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "address",
+        name: "wallet",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "passId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "ottoId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint32",
+        name: "lv",
+        type: "uint32",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "chests",
+        type: "uint256[]",
+      },
+    ],
+    name: "LevelUpChestsGot",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "uint256",
         name: "passId",
         type: "uint256",
@@ -290,6 +327,25 @@ const _abi = [
       {
         indexed: true,
         internalType: "address",
+        name: "wallet",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "chests",
+        type: "uint256[]",
+      },
+    ],
+    name: "TreasureChestsGot",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
         name: "implementation",
         type: "address",
       },
@@ -325,6 +381,19 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "FINISH_IMMEDIATELY_PAYMENT_KEY",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "ITEM",
     outputs: [
       {
@@ -344,6 +413,19 @@ const _abi = [
         internalType: "bytes32",
         name: "",
         type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MAX_OTTOS_PER_WALLET",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -416,12 +498,38 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "REVIVE_PAYMENT_KEY",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "STORE",
     outputs: [
       {
         internalType: "contract IOttopiaStore",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "TREASURE_CHEST_ITEM_ID",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -667,7 +775,7 @@ const _abi = [
     ],
     name: "finish",
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -848,6 +956,25 @@ const _abi = [
         type: "uint256",
       },
     ],
+    name: "latestPassIdOf",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "ottoId_",
+        type: "uint256",
+      },
+    ],
     name: "latestPassOf",
     outputs: [
       {
@@ -938,6 +1065,30 @@ const _abi = [
         internalType: "struct Adventure.Pass",
         name: "",
         type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "",
+        type: "uint32",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "levelUpChests",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -1058,6 +1209,49 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "ottoCount",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "ottoId_",
+        type: "uint256",
+      },
+    ],
+    name: "ottoOwnerOf",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "passId_",
         type: "uint256",
@@ -1160,6 +1354,13 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "pause",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "proxiableUUID",
     outputs: [
       {
@@ -1209,6 +1410,13 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "resume",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -1218,7 +1426,20 @@ const _abi = [
     ],
     name: "revive",
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "reviveFee",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -1291,17 +1512,12 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "reviveProduct_",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "finishImmediatelyProduct_",
-        type: "uint256",
+        internalType: "address",
+        name: "signer_",
+        type: "address",
       },
     ],
-    name: "setProducts",
+    name: "setSigner",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1358,25 +1574,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "owner_",
-        type: "address",
-      },
-    ],
-    name: "stakedOttosOf",
-    outputs: [
-      {
-        internalType: "uint256[]",
-        name: "",
-        type: "uint256[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "bytes4",
         name: "interfaceId",
         type: "bytes4",
@@ -1391,6 +1588,13 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "upgradeForLevelUpChests",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {

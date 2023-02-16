@@ -6,6 +6,7 @@ export default interface Product {
   displayPrice: string
   airdropAmount: number
   discountPrice: string
+  discount_price: string
   displayDiscountPrice: string
   amount: number
   type: string

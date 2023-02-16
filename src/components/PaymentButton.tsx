@@ -1,13 +1,11 @@
 import { useEthers, useTokenAllowance } from '@usedapp/core'
-import assert from 'assert'
-import TxButton, { TxButtonProps } from 'components/TxButton'
 import Price, { PriceProps } from 'components/Price'
+import TxButton, { TxButtonProps } from 'components/TxButton'
 import { useApprove } from 'contracts/functions'
-import useContractAddresses from 'hooks/useContractAddresses'
+import { BigNumber, constants, ethers } from 'ethers'
+import noop from 'lodash/noop'
 import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { ethers, BigNumber } from 'ethers'
-import noop from 'lodash/noop'
 
 export interface PaymentButtonProps extends PriceProps, TxButtonProps {
   spenderAddress: string
@@ -44,14 +42,13 @@ export default function PaymentButton({
   loading,
   ...btnProps
 }: PaymentButtonProps) {
-  const addresses = useContractAddresses()
-  const tokenAddress = addresses[token]
-  assert(tokenAddress, `unknown token: ${token}`)
-
   const [btnState, setBtnState] = useState(BtnState.WaitingClick)
   const { account, chainId } = useEthers()
-  const allowance = useTokenAllowance(tokenAddress, account, spenderAddress, { chainId })
-  const { approve, approveState } = useApprove(tokenAddress)
+  let allowance = useTokenAllowance(token.address, account, spenderAddress, { chainId })
+  const { approve, approveState } = useApprove(token.address)
+  if (token.address === constants.AddressZero) {
+    allowance = constants.MaxUint256
+  }
   const approving = allowance === undefined || btnState === BtnState.WaitingApprove
   const noAmount = BigNumber.from(amount).eq(0)
 
@@ -74,11 +71,7 @@ export default function PaymentButton({
   useEffect(() => {
     if (approveState.status === 'Exception') {
       setBtnState(BtnState.WaitingClick)
-    }
-  }, [approveState.status])
-
-  useEffect(() => {
-    if (approveState.status === 'Success') {
+    } else if (approveState.status === 'Success') {
       onSuccess()
     }
   }, [approveState.status])

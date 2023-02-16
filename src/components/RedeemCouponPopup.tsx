@@ -15,13 +15,13 @@ interface Props {
 }
 
 export default memo(function RedeemCouponPopup({
-  coupon: { tokenId: id, productFactory, productType, productImages },
+  coupon: { tokenId: id, productType, productImages },
   onClose,
 }: Props) {
   const [state, setState] = useState<State>(State.Loading)
   const { resetRedeem, redeem, redeemState } = useRedeemProduct()
   useEffect(() => {
-    redeem(id, productFactory)
+    redeem(id)
   }, [])
   useEffect(() => {
     if (redeemState.state === 'Success') {

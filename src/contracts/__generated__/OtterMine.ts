@@ -27,98 +27,70 @@ import type {
   OnEvent,
 } from "./common";
 
-export interface OttoHellDiceRollerInterface extends utils.Interface {
+export interface OtterMineInterface extends utils.Interface {
   functions: {
-    "CLAM()": FunctionFragment;
     "DEFAULT_ADMIN_ROLE()": FunctionFragment;
-    "DICE_ITEM_ID()": FunctionFragment;
-    "DICE_PRODUCT_ID()": FunctionFragment;
-    "ITEM()": FunctionFragment;
     "MANAGER_ROLE()": FunctionFragment;
-    "OTTO()": FunctionFragment;
-    "PAYMENT_KEY()": FunctionFragment;
-    "STORE()": FunctionFragment;
-    "applicable(address,uint256,uint256,bytes)": FunctionFragment;
-    "applyTo(address,uint256,uint256,bytes)": FunctionFragment;
+    "burnAddress()": FunctionFragment;
+    "clam()": FunctionFragment;
+    "deadline()": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
-    "initialize(address,address,address,address,uint256,uint256)": FunctionFragment;
-    "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": FunctionFragment;
-    "onERC1155Received(address,address,uint256,uint256,bytes)": FunctionFragment;
+    "initialize(address,address)": FunctionFragment;
+    "mine(uint256)": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceRole(bytes32,address)": FunctionFragment;
     "revokeRole(bytes32,address)": FunctionFragment;
-    "roll(uint256,uint256)": FunctionFragment;
-    "rollWithMatic(uint256,uint256)": FunctionFragment;
-    "shipNoChainlink(address,uint256,address,uint256)": FunctionFragment;
+    "setDeadline(uint256)": FunctionFragment;
+    "setUsdPerClam(uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
+    "usd()": FunctionFragment;
+    "usdPerClam()": FunctionFragment;
+    "withdraw(uint256)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "CLAM"
       | "DEFAULT_ADMIN_ROLE"
-      | "DICE_ITEM_ID"
-      | "DICE_PRODUCT_ID"
-      | "ITEM"
       | "MANAGER_ROLE"
-      | "OTTO"
-      | "PAYMENT_KEY"
-      | "STORE"
-      | "applicable"
-      | "applyTo"
+      | "burnAddress"
+      | "clam"
+      | "deadline"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
       | "initialize"
-      | "onERC1155BatchReceived"
-      | "onERC1155Received"
+      | "mine"
       | "proxiableUUID"
       | "renounceRole"
       | "revokeRole"
-      | "roll"
-      | "rollWithMatic"
-      | "shipNoChainlink"
+      | "setDeadline"
+      | "setUsdPerClam"
       | "supportsInterface"
       | "upgradeTo"
       | "upgradeToAndCall"
+      | "usd"
+      | "usdPerClam"
+      | "withdraw"
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "CLAM", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "DEFAULT_ADMIN_ROLE",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "DICE_ITEM_ID",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "DICE_PRODUCT_ID",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "ITEM", values?: undefined): string;
-  encodeFunctionData(
     functionFragment: "MANAGER_ROLE",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "OTTO", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "PAYMENT_KEY",
+    functionFragment: "burnAddress",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "STORE", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "applicable",
-    values: [string, BigNumberish, BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "applyTo",
-    values: [string, BigNumberish, BigNumberish, BytesLike]
-  ): string;
+  encodeFunctionData(functionFragment: "clam", values?: undefined): string;
+  encodeFunctionData(functionFragment: "deadline", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
     values: [BytesLike]
@@ -133,16 +105,9 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [string, string, string, string, BigNumberish, BigNumberish]
+    values: [string, string]
   ): string;
-  encodeFunctionData(
-    functionFragment: "onERC1155BatchReceived",
-    values: [string, string, BigNumberish[], BigNumberish[], BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "onERC1155Received",
-    values: [string, string, BigNumberish, BigNumberish, BytesLike]
-  ): string;
+  encodeFunctionData(functionFragment: "mine", values: [BigNumberish]): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
@@ -156,16 +121,12 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
     values: [BytesLike, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "roll",
-    values: [BigNumberish, BigNumberish]
+    functionFragment: "setDeadline",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "rollWithMatic",
-    values: [BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "shipNoChainlink",
-    values: [string, BigNumberish, string, BigNumberish]
+    functionFragment: "setUsdPerClam",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
@@ -176,33 +137,30 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     values: [string, BytesLike]
   ): string;
+  encodeFunctionData(functionFragment: "usd", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "usdPerClam",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdraw",
+    values: [BigNumberish]
+  ): string;
 
-  decodeFunctionResult(functionFragment: "CLAM", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "DEFAULT_ADMIN_ROLE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "DICE_ITEM_ID",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "DICE_PRODUCT_ID",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "ITEM", data: BytesLike): Result;
-  decodeFunctionResult(
     functionFragment: "MANAGER_ROLE",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "OTTO", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "PAYMENT_KEY",
+    functionFragment: "burnAddress",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "STORE", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "applicable", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "applyTo", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "clam", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "deadline", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
     data: BytesLike
@@ -210,14 +168,7 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "onERC1155BatchReceived",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "onERC1155Received",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "mine", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
     data: BytesLike
@@ -227,13 +178,12 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "roll", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "rollWithMatic",
+    functionFragment: "setDeadline",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "shipNoChainlink",
+    functionFragment: "setUsdPerClam",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -245,30 +195,35 @@ export interface OttoHellDiceRollerInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "usd", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "usdPerClam", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
+    "Mine(address,uint256,uint256)": EventFragment;
     "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
     "RoleGranted(bytes32,address,address)": EventFragment;
     "RoleRevoked(bytes32,address,address)": EventFragment;
-    "RollDice(address,uint256,uint256)": EventFragment;
-    "ShipOrder(bytes32,address)": EventFragment;
-    "ShipOrderNoChainLink(address,uint256,address,uint256)": EventFragment;
+    "SetDeadline(uint256)": EventFragment;
+    "SetUsdPerClam(uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
+    "Withdraw(address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Mine"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleAdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleGranted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleRevoked"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RollDice"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ShipOrder"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ShipOrderNoChainLink"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SetDeadline"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SetUsdPerClam"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
 }
 
 export interface AdminChangedEventObject {
@@ -298,6 +253,18 @@ export interface InitializedEventObject {
 export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
 
 export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
+
+export interface MineEventObject {
+  sender: string;
+  clamAmount: BigNumber;
+  usdAmount: BigNumber;
+}
+export type MineEvent = TypedEvent<
+  [string, BigNumber, BigNumber],
+  MineEventObject
+>;
+
+export type MineEventFilter = TypedEventFilter<MineEvent>;
 
 export interface RoleAdminChangedEventObject {
   role: string;
@@ -336,39 +303,22 @@ export type RoleRevokedEvent = TypedEvent<
 
 export type RoleRevokedEventFilter = TypedEventFilter<RoleRevokedEvent>;
 
-export interface RollDiceEventObject {
-  roller: string;
-  ottoId: BigNumber;
-  amount: BigNumber;
+export interface SetDeadlineEventObject {
+  deadline: BigNumber;
 }
-export type RollDiceEvent = TypedEvent<
-  [string, BigNumber, BigNumber],
-  RollDiceEventObject
+export type SetDeadlineEvent = TypedEvent<[BigNumber], SetDeadlineEventObject>;
+
+export type SetDeadlineEventFilter = TypedEventFilter<SetDeadlineEvent>;
+
+export interface SetUsdPerClamEventObject {
+  usdPerClam: BigNumber;
+}
+export type SetUsdPerClamEvent = TypedEvent<
+  [BigNumber],
+  SetUsdPerClamEventObject
 >;
 
-export type RollDiceEventFilter = TypedEventFilter<RollDiceEvent>;
-
-export interface ShipOrderEventObject {
-  orderId: string;
-  buyer: string;
-}
-export type ShipOrderEvent = TypedEvent<[string, string], ShipOrderEventObject>;
-
-export type ShipOrderEventFilter = TypedEventFilter<ShipOrderEvent>;
-
-export interface ShipOrderNoChainLinkEventObject {
-  from: string;
-  productId: BigNumber;
-  to: string;
-  amount: BigNumber;
-}
-export type ShipOrderNoChainLinkEvent = TypedEvent<
-  [string, BigNumber, string, BigNumber],
-  ShipOrderNoChainLinkEventObject
->;
-
-export type ShipOrderNoChainLinkEventFilter =
-  TypedEventFilter<ShipOrderNoChainLinkEvent>;
+export type SetUsdPerClamEventFilter = TypedEventFilter<SetUsdPerClamEvent>;
 
 export interface UpgradedEventObject {
   implementation: string;
@@ -377,12 +327,23 @@ export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
-export interface OttoHellDiceRoller extends BaseContract {
+export interface WithdrawEventObject {
+  sender: string;
+  usdAmount: BigNumber;
+}
+export type WithdrawEvent = TypedEvent<
+  [string, BigNumber],
+  WithdrawEventObject
+>;
+
+export type WithdrawEventFilter = TypedEventFilter<WithdrawEvent>;
+
+export interface OtterMine extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: OttoHellDiceRollerInterface;
+  interface: OtterMineInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -404,39 +365,15 @@ export interface OttoHellDiceRoller extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    CLAM(overrides?: CallOverrides): Promise<[string]>;
-
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
-
-    DICE_ITEM_ID(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    DICE_PRODUCT_ID(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    ITEM(overrides?: CallOverrides): Promise<[string]>;
 
     MANAGER_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
-    OTTO(overrides?: CallOverrides): Promise<[string]>;
+    burnAddress(overrides?: CallOverrides): Promise<[string]>;
 
-    PAYMENT_KEY(overrides?: CallOverrides): Promise<[string]>;
+    clam(overrides?: CallOverrides): Promise<[string]>;
 
-    STORE(overrides?: CallOverrides): Promise<[string]>;
-
-    applicable(
-      arg0: string,
-      arg1: BigNumberish,
-      arg2: BigNumberish,
-      arg3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    applyTo(
-      ottoContract_: string,
-      ottoId_: BigNumberish,
-      itemId_: BigNumberish,
-      data_: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    deadline(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
 
@@ -454,29 +391,12 @@ export interface OttoHellDiceRoller extends BaseContract {
 
     initialize(
       clam_: string,
-      otto_: string,
-      item_: string,
-      store_: string,
-      diceProductId_: BigNumberish,
-      diceItemId_: BigNumberish,
+      usd_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    onERC1155BatchReceived(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    onERC1155Received(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BigNumberish,
-      arg4: BytesLike,
+    mine(
+      clamAmount_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -494,23 +414,13 @@ export interface OttoHellDiceRoller extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    roll(
-      ottoId_: BigNumberish,
-      amount_: BigNumberish,
+    setDeadline(
+      deadline_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    rollWithMatic(
-      ottoId_: BigNumberish,
-      amount_: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    shipNoChainlink(
-      from_: string,
-      fromProductId_: BigNumberish,
-      to_: string,
-      productAmount_: BigNumberish,
+    setUsdPerClam(
+      usdPerClam_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -529,41 +439,26 @@ export interface OttoHellDiceRoller extends BaseContract {
       data: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-  };
 
-  CLAM(overrides?: CallOverrides): Promise<string>;
+    usd(overrides?: CallOverrides): Promise<[string]>;
+
+    usdPerClam(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    withdraw(
+      usdAmount_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+  };
 
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
-  DICE_ITEM_ID(overrides?: CallOverrides): Promise<BigNumber>;
-
-  DICE_PRODUCT_ID(overrides?: CallOverrides): Promise<BigNumber>;
-
-  ITEM(overrides?: CallOverrides): Promise<string>;
-
   MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
 
-  OTTO(overrides?: CallOverrides): Promise<string>;
+  burnAddress(overrides?: CallOverrides): Promise<string>;
 
-  PAYMENT_KEY(overrides?: CallOverrides): Promise<string>;
+  clam(overrides?: CallOverrides): Promise<string>;
 
-  STORE(overrides?: CallOverrides): Promise<string>;
-
-  applicable(
-    arg0: string,
-    arg1: BigNumberish,
-    arg2: BigNumberish,
-    arg3: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  applyTo(
-    ottoContract_: string,
-    ottoId_: BigNumberish,
-    itemId_: BigNumberish,
-    data_: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  deadline(overrides?: CallOverrides): Promise<BigNumber>;
 
   getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
 
@@ -581,29 +476,12 @@ export interface OttoHellDiceRoller extends BaseContract {
 
   initialize(
     clam_: string,
-    otto_: string,
-    item_: string,
-    store_: string,
-    diceProductId_: BigNumberish,
-    diceItemId_: BigNumberish,
+    usd_: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  onERC1155BatchReceived(
-    arg0: string,
-    arg1: string,
-    arg2: BigNumberish[],
-    arg3: BigNumberish[],
-    arg4: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  onERC1155Received(
-    arg0: string,
-    arg1: string,
-    arg2: BigNumberish,
-    arg3: BigNumberish,
-    arg4: BytesLike,
+  mine(
+    clamAmount_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -621,23 +499,13 @@ export interface OttoHellDiceRoller extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  roll(
-    ottoId_: BigNumberish,
-    amount_: BigNumberish,
+  setDeadline(
+    deadline_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  rollWithMatic(
-    ottoId_: BigNumberish,
-    amount_: BigNumberish,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  shipNoChainlink(
-    from_: string,
-    fromProductId_: BigNumberish,
-    to_: string,
-    productAmount_: BigNumberish,
+  setUsdPerClam(
+    usdPerClam_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -657,40 +525,25 @@ export interface OttoHellDiceRoller extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  usd(overrides?: CallOverrides): Promise<string>;
+
+  usdPerClam(overrides?: CallOverrides): Promise<BigNumber>;
+
+  withdraw(
+    usdAmount_: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
-    CLAM(overrides?: CallOverrides): Promise<string>;
-
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
-
-    DICE_ITEM_ID(overrides?: CallOverrides): Promise<BigNumber>;
-
-    DICE_PRODUCT_ID(overrides?: CallOverrides): Promise<BigNumber>;
-
-    ITEM(overrides?: CallOverrides): Promise<string>;
 
     MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
 
-    OTTO(overrides?: CallOverrides): Promise<string>;
+    burnAddress(overrides?: CallOverrides): Promise<string>;
 
-    PAYMENT_KEY(overrides?: CallOverrides): Promise<string>;
+    clam(overrides?: CallOverrides): Promise<string>;
 
-    STORE(overrides?: CallOverrides): Promise<string>;
-
-    applicable(
-      arg0: string,
-      arg1: BigNumberish,
-      arg2: BigNumberish,
-      arg3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    applyTo(
-      ottoContract_: string,
-      ottoId_: BigNumberish,
-      itemId_: BigNumberish,
-      data_: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    deadline(overrides?: CallOverrides): Promise<BigNumber>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
 
@@ -708,31 +561,11 @@ export interface OttoHellDiceRoller extends BaseContract {
 
     initialize(
       clam_: string,
-      otto_: string,
-      item_: string,
-      store_: string,
-      diceProductId_: BigNumberish,
-      diceItemId_: BigNumberish,
+      usd_: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    onERC1155BatchReceived(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    onERC1155Received(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BigNumberish,
-      arg4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<string>;
+    mine(clamAmount_: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
@@ -748,23 +581,13 @@ export interface OttoHellDiceRoller extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    roll(
-      ottoId_: BigNumberish,
-      amount_: BigNumberish,
+    setDeadline(
+      deadline_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    rollWithMatic(
-      ottoId_: BigNumberish,
-      amount_: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    shipNoChainlink(
-      from_: string,
-      fromProductId_: BigNumberish,
-      to_: string,
-      productAmount_: BigNumberish,
+    setUsdPerClam(
+      usdPerClam_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -781,6 +604,15 @@ export interface OttoHellDiceRoller extends BaseContract {
     upgradeToAndCall(
       newImplementation: string,
       data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    usd(overrides?: CallOverrides): Promise<string>;
+
+    usdPerClam(overrides?: CallOverrides): Promise<BigNumber>;
+
+    withdraw(
+      usdAmount_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -802,6 +634,17 @@ export interface OttoHellDiceRoller extends BaseContract {
 
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
+
+    "Mine(address,uint256,uint256)"(
+      sender?: string | null,
+      clamAmount?: null,
+      usdAmount?: null
+    ): MineEventFilter;
+    Mine(
+      sender?: string | null,
+      clamAmount?: null,
+      usdAmount?: null
+    ): MineEventFilter;
 
     "RoleAdminChanged(bytes32,bytes32,bytes32)"(
       role?: BytesLike | null,
@@ -836,77 +679,32 @@ export interface OttoHellDiceRoller extends BaseContract {
       sender?: string | null
     ): RoleRevokedEventFilter;
 
-    "RollDice(address,uint256,uint256)"(
-      roller?: string | null,
-      ottoId?: BigNumberish | null,
-      amount?: null
-    ): RollDiceEventFilter;
-    RollDice(
-      roller?: string | null,
-      ottoId?: BigNumberish | null,
-      amount?: null
-    ): RollDiceEventFilter;
+    "SetDeadline(uint256)"(deadline?: null): SetDeadlineEventFilter;
+    SetDeadline(deadline?: null): SetDeadlineEventFilter;
 
-    "ShipOrder(bytes32,address)"(
-      orderId?: BytesLike | null,
-      buyer?: string | null
-    ): ShipOrderEventFilter;
-    ShipOrder(
-      orderId?: BytesLike | null,
-      buyer?: string | null
-    ): ShipOrderEventFilter;
-
-    "ShipOrderNoChainLink(address,uint256,address,uint256)"(
-      from?: string | null,
-      productId?: BigNumberish | null,
-      to?: string | null,
-      amount?: null
-    ): ShipOrderNoChainLinkEventFilter;
-    ShipOrderNoChainLink(
-      from?: string | null,
-      productId?: BigNumberish | null,
-      to?: string | null,
-      amount?: null
-    ): ShipOrderNoChainLinkEventFilter;
+    "SetUsdPerClam(uint256)"(usdPerClam?: null): SetUsdPerClamEventFilter;
+    SetUsdPerClam(usdPerClam?: null): SetUsdPerClamEventFilter;
 
     "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
     Upgraded(implementation?: string | null): UpgradedEventFilter;
+
+    "Withdraw(address,uint256)"(
+      sender?: string | null,
+      usdAmount?: null
+    ): WithdrawEventFilter;
+    Withdraw(sender?: string | null, usdAmount?: null): WithdrawEventFilter;
   };
 
   estimateGas: {
-    CLAM(overrides?: CallOverrides): Promise<BigNumber>;
-
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
-
-    DICE_ITEM_ID(overrides?: CallOverrides): Promise<BigNumber>;
-
-    DICE_PRODUCT_ID(overrides?: CallOverrides): Promise<BigNumber>;
-
-    ITEM(overrides?: CallOverrides): Promise<BigNumber>;
 
     MANAGER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
-    OTTO(overrides?: CallOverrides): Promise<BigNumber>;
+    burnAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
-    PAYMENT_KEY(overrides?: CallOverrides): Promise<BigNumber>;
+    clam(overrides?: CallOverrides): Promise<BigNumber>;
 
-    STORE(overrides?: CallOverrides): Promise<BigNumber>;
-
-    applicable(
-      arg0: string,
-      arg1: BigNumberish,
-      arg2: BigNumberish,
-      arg3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    applyTo(
-      ottoContract_: string,
-      ottoId_: BigNumberish,
-      itemId_: BigNumberish,
-      data_: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    deadline(overrides?: CallOverrides): Promise<BigNumber>;
 
     getRoleAdmin(
       role: BytesLike,
@@ -927,29 +725,12 @@ export interface OttoHellDiceRoller extends BaseContract {
 
     initialize(
       clam_: string,
-      otto_: string,
-      item_: string,
-      store_: string,
-      diceProductId_: BigNumberish,
-      diceItemId_: BigNumberish,
+      usd_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    onERC1155BatchReceived(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    onERC1155Received(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BigNumberish,
-      arg4: BytesLike,
+    mine(
+      clamAmount_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -967,23 +748,13 @@ export interface OttoHellDiceRoller extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    roll(
-      ottoId_: BigNumberish,
-      amount_: BigNumberish,
+    setDeadline(
+      deadline_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    rollWithMatic(
-      ottoId_: BigNumberish,
-      amount_: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    shipNoChainlink(
-      from_: string,
-      fromProductId_: BigNumberish,
-      to_: string,
-      productAmount_: BigNumberish,
+    setUsdPerClam(
+      usdPerClam_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1002,44 +773,29 @@ export interface OttoHellDiceRoller extends BaseContract {
       data: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    usd(overrides?: CallOverrides): Promise<BigNumber>;
+
+    usdPerClam(overrides?: CallOverrides): Promise<BigNumber>;
+
+    withdraw(
+      usdAmount_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    CLAM(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     DEFAULT_ADMIN_ROLE(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    DICE_ITEM_ID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    DICE_PRODUCT_ID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    ITEM(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     MANAGER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    OTTO(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    burnAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    PAYMENT_KEY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    clam(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    STORE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    applicable(
-      arg0: string,
-      arg1: BigNumberish,
-      arg2: BigNumberish,
-      arg3: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    applyTo(
-      ottoContract_: string,
-      ottoId_: BigNumberish,
-      itemId_: BigNumberish,
-      data_: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    deadline(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getRoleAdmin(
       role: BytesLike,
@@ -1060,29 +816,12 @@ export interface OttoHellDiceRoller extends BaseContract {
 
     initialize(
       clam_: string,
-      otto_: string,
-      item_: string,
-      store_: string,
-      diceProductId_: BigNumberish,
-      diceItemId_: BigNumberish,
+      usd_: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    onERC1155BatchReceived(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    onERC1155Received(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BigNumberish,
-      arg4: BytesLike,
+    mine(
+      clamAmount_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1100,23 +839,13 @@ export interface OttoHellDiceRoller extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    roll(
-      ottoId_: BigNumberish,
-      amount_: BigNumberish,
+    setDeadline(
+      deadline_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    rollWithMatic(
-      ottoId_: BigNumberish,
-      amount_: BigNumberish,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    shipNoChainlink(
-      from_: string,
-      fromProductId_: BigNumberish,
-      to_: string,
-      productAmount_: BigNumberish,
+    setUsdPerClam(
+      usdPerClam_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1134,6 +863,15 @@ export interface OttoHellDiceRoller extends BaseContract {
       newImplementation: string,
       data: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    usd(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    usdPerClam(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    withdraw(
+      usdAmount_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

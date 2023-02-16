@@ -13,15 +13,18 @@ import MarkdownWithHtml from 'components/MarkdownWithHtml'
 import PaymentButton from 'components/PaymentButton'
 import { Question } from 'components/Question'
 import RibbonText from 'components/RibbonText'
-import { Token } from 'constant'
+import { useDiceInfo } from 'contracts/views'
+import { BigNumber, BigNumberish, ethers } from 'ethers'
 import { numberWithDirection, numberWithSign } from 'helpers/number'
+import { trim } from 'helpers/trim'
+import { useTokenInfo } from 'hooks/token-info'
 import useAudio from 'hooks/useAudio'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { DiceRoller, State, useDiceRoller } from 'hooks/useDiceRoller'
 import { EventType } from 'models/Dice'
 import Otto from 'models/Otto'
-import { FC, useEffect } from 'react'
 import { useTranslation } from 'next-i18next'
+import { FC, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { hideDicePopup, selectOttoInTheHell } from 'store/uiSlice'
 import styled, { keyframes, useTheme } from 'styled-components/macro'
@@ -216,13 +219,15 @@ const StyledFullscreenContainer = styled.div`
 `
 
 interface StateProps {
+  price: BigNumberish
   otto: Otto
   diceRoller: DiceRoller
 }
 
-function IntroState({ diceRoller, otto }: StateProps) {
+function IntroState({ price, diceRoller, otto }: StateProps) {
   const { OTTO_HELL_DICE_ROLLER } = useContractAddresses()
   const { t } = useTranslation()
+  const { MATIC } = useTokenInfo()
 
   return (
     <StyledIntroStateContainer>
@@ -239,10 +244,10 @@ function IntroState({ diceRoller, otto }: StateProps) {
         padding="6px 12px 3px"
         spenderAddress={OTTO_HELL_DICE_ROLLER}
         Typography={Headline}
-        token={Token.Clam}
-        disabled={!diceRoller.product?.price || diceRoller.loading}
-        amount={diceRoller.product?.price ?? '0'}
-        onClick={diceRoller.rollTheDice}
+        token={MATIC}
+        disabled={!price || diceRoller.loading}
+        amount={price}
+        onClick={() => diceRoller.rollTheDice(price)}
       >
         {t('dice_popup.intro.start_button')}
       </PaymentButton>
@@ -250,7 +255,7 @@ function IntroState({ diceRoller, otto }: StateProps) {
   )
 }
 
-function ProcessingState({ diceRoller, otto }: StateProps) {
+function ProcessingState({ price, diceRoller, otto }: StateProps) {
   const { t } = useTranslation()
   const rollingDiceAudio = useAudio(rollingDiceAudioSrc)
 
@@ -270,12 +275,13 @@ function ProcessingState({ diceRoller, otto }: StateProps) {
   )
 }
 
-function ResultState({ diceRoller, otto }: StateProps) {
+function ResultState({ price, diceRoller, otto }: StateProps) {
   const { t } = useTranslation()
   const { OTTOPIA_STORE } = useContractAddresses()
   const rolledAudio = useAudio(rolledAudioSrc)
   const eventIndex = diceRoller.state === State.FirstResult ? 0 : 1
   const event = diceRoller.dice?.events[eventIndex] ?? { event: '', image: '', type: EventType.Good }
+  const { MATIC } = useTokenInfo()
   const bg = {
     [EventType.Good]: good.src,
     [EventType.Bad]: bad.src,
@@ -347,10 +353,10 @@ function ResultState({ diceRoller, otto }: StateProps) {
               padding="6px 12px 3px"
               spenderAddress={OTTOPIA_STORE}
               Typography={Headline}
-              token={Token.Clam}
-              disabled={!diceRoller.product?.price}
-              amount={diceRoller.product?.price ?? '0'}
-              onClick={diceRoller.rollTheDice}
+              token={MATIC}
+              disabled={!price}
+              amount={price}
+              onClick={() => diceRoller.rollTheDice(price)}
             >
               {t('dice_popup.play_again_button')}
             </PaymentButton>
@@ -378,6 +384,7 @@ const stateView: { [key: string]: FC<StateProps> } = {
 export default function DicePopup() {
   const theme = useTheme()
   const otto = useSelector(selectOttoInTheHell)
+  const { price } = useDiceInfo()
   const diceRoller = useDiceRoller(otto)
   const StateView = stateView[diceRoller.state]
   const dispatch = useDispatch()
@@ -394,7 +401,7 @@ export default function DicePopup() {
       <StyledFullscreenContainer>
         {diceRoller.state !== State.Processing && <StyledCloseButton color="white" onClose={close} />}
         <StyledContainer>
-          {otto && <StateView key={diceRoller.state} otto={otto} diceRoller={diceRoller} />}
+          {otto && <StateView key={diceRoller.state} otto={otto} price={price || '0'} diceRoller={diceRoller} />}
         </StyledContainer>
       </StyledFullscreenContainer>
     </Fullscreen>

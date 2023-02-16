@@ -1,15 +1,15 @@
 import MarkdownWithHtml from 'components/MarkdownWithHtml'
 import { WHITE_PAPER_LINK } from 'constant'
-import { FlashSellResponse } from 'libs/api'
-import { useApi, useApiCall } from 'contexts/Api'
-import useProducts from 'models/store/useProducts'
+import { useApiCall } from 'contexts/Api'
+import { SellData } from 'libs/api'
 import { useTranslation } from 'next-i18next'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import Head from 'next/head'
+import { useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentMedium, Display3 } from 'styles/typography'
-import Head from 'next/head'
 import BorderedProductCard from './BorderedProductCard'
 import Curtain from './Curtain'
+import FishProductCard from './FishProductCard'
 import FlashSellInfo from './FlashSellInfo'
 import GemLeft from './gem-left.png'
 import GemRight from './gem-right.png'
@@ -17,7 +17,6 @@ import ProductPopup, { GroupedProduct } from './ProductPopup'
 import StarLeft from './star-left.png'
 import StarRight from './star-right.png'
 import StoreHero from './StoreHero'
-import FishProductCard from './FishProductCard'
 
 const StyledStorePage = styled.div`
   color: ${({ theme }) => theme.colors.white};
@@ -128,57 +127,23 @@ const StyledProductList = styled.div`
   }
 `
 
-const REGULAR_PRODUCT_TYPES = ['silver', 'golden', 'diamond']
-
 export default function StorePage() {
   const { t } = useTranslation('', { keyPrefix: 'store' })
-  const api = useApi()
   const bodyRef = useRef<HTMLDivElement>(null)
-  const [flashSell, setFlashSell] = useState<FlashSellResponse | null>(null)
+  const { result: chestStore } = useApiCall('getChestStore', [], true, [])
   const [selectedProduct, setSelectedProduct] = useState<GroupedProduct | null>(null)
   const { result: fishStore } = useApiCall('getFishStoreProducts', [], true, [])
-  const { products } = useProducts()
-  const groupedProducts = useMemo(() => {
-    const grouped = products.reduce<Record<string, GroupedProduct>>((acc, product) => {
-      if (!acc[product.type]) {
-        acc[product.type] = {
-          title: product.name,
-          desc: product.desc,
-          main: product,
-          all: [product],
-        }
-      } else {
-        if (product.amount === 1) {
-          acc[product.type].main = product
-        }
-        acc[product.type].all.push(product)
-      }
-      return acc
-    }, {})
-    return Object.values(grouped).sort((a, b) => (a.main.id > b.main.id ? 1 : -1))
-  }, [products])
-  const displayProducts = useMemo(
-    () => groupedProducts.filter(p => REGULAR_PRODUCT_TYPES.indexOf(p.main.type) !== -1),
-    [groupedProducts]
-  )
-  useEffect(() => {
-    if (products.length > 0) {
-      api
-        .getFlashSell()
-        .then(sell => {
-          setFlashSell({
-            ...sell,
-            products: products
-              .filter(p => p.type === sell.type)
-              .map(p => ({
-                ...p,
-                ...sell.products.find(sp => sp.id === p.id),
-              })),
-          })
-        })
-        .catch(console.error)
-    }
-  }, [api, products])
+  const onSelectSell = (data: SellData) => {
+    setSelectedProduct({
+      sellId: data.id,
+      title: data.popup_title,
+      desc: data.popup_desc,
+      image: data.popup_image,
+      main: data.products[0],
+      all: data.products,
+      processing_images: data.processing_images,
+    })
+  }
   return (
     <>
       <Head>
@@ -193,30 +158,21 @@ export default function StorePage() {
         <StyledHeroSection>
           <StyledStoreHero onClickScroll={() => bodyRef?.current?.scrollIntoView({ behavior: 'smooth' })} />
         </StyledHeroSection>
-        {flashSell && Date.now() < new Date(flashSell.end_time).valueOf() && (
-          <StyledFlashSellBody ref={bodyRef}>
-            <StyledShellChestTitle>
-              <img src={StarLeft.src} alt="Star Left" />
-              <Display3>{flashSell.name}</Display3>
-              <img src={StarRight.src} alt="Star Left" />
-            </StyledShellChestTitle>
-            <StyledChestDesc>
-              <MarkdownWithHtml>{flashSell.desc}</MarkdownWithHtml>
-            </StyledChestDesc>
-            <FlashSellInfo
-              flashSell={flashSell}
-              onClick={() =>
-                setSelectedProduct({
-                  title: flashSell.popup_title,
-                  desc: flashSell.popup_desc,
-                  image: flashSell.popup_image,
-                  main: flashSell.products[0],
-                  all: flashSell.products,
-                  processing_images: flashSell.processing_images,
-                })
-              }
-            />
-          </StyledFlashSellBody>
+        {chestStore?.flashSells?.map(
+          (flashSell, i) =>
+            Date.now() < new Date(flashSell.end_time).valueOf() && (
+              <StyledFlashSellBody key={flashSell.id} ref={i === 0 ? bodyRef : null}>
+                <StyledShellChestTitle>
+                  <img src={StarLeft.src} alt="Star Left" />
+                  <Display3>{flashSell.name}</Display3>
+                  <img src={StarRight.src} alt="Star Left" />
+                </StyledShellChestTitle>
+                <StyledChestDesc>
+                  <MarkdownWithHtml>{flashSell.desc}</MarkdownWithHtml>
+                </StyledChestDesc>
+                <FlashSellInfo flashSell={flashSell} onClick={() => onSelectSell(flashSell)} />
+              </StyledFlashSellBody>
+            )
         )}
         {fishStore &&
           fishStore.length > 0 &&
@@ -237,7 +193,7 @@ export default function StorePage() {
               </StyledProductList>
             </StyledProductBody>
           ))}
-        <StyledProductBody ref={flashSell ? null : bodyRef}>
+        <StyledProductBody ref={(chestStore?.flashSells.length || 0) > 0 ? null : bodyRef}>
           <StyledShellChestTitle>
             <img src={GemLeft.src} alt="Gem Left" />
             <Display3>{t('shell_chest')}</Display3>
@@ -250,8 +206,8 @@ export default function StorePage() {
             </a>
           </StyledChestDesc>
           <StyledProductList>
-            {displayProducts.map((p, index) => (
-              <BorderedProductCard key={index} product={p.main} onClick={() => setSelectedProduct(p)} />
+            {chestStore?.regulars.map((p, index) => (
+              <BorderedProductCard key={index} product={p.products[0]} onClick={() => onSelectSell(p)} />
             ))}
           </StyledProductList>
         </StyledProductBody>

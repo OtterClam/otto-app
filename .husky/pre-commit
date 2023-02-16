@@ -2,5 +2,5 @@
 . "$(dirname "$0")/_/husky.sh"
 
 yarn check-types
-yarn next lint
+yarn next lint --quiet
 ./node_modules/.bin/lint-staged

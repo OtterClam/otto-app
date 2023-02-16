@@ -54,6 +54,7 @@ export const RARITY_S3_START = 1669593600000 // 2022-11-28 0:00 UTC
 export enum Token {
   Clam = 'CLAM',
   Fish = 'FISH',
+  MATIC = 'MATIC',
 }
 
 export const reserveOttoAmount = (chainId?: number) => (chainId === 137 ? 250 : 0)

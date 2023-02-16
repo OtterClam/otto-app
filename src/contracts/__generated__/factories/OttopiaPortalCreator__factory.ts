@@ -46,6 +46,19 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "uint8",
+        name: "version",
+        type: "uint8",
+      },
+    ],
+    name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "address",
         name: "minter",
@@ -302,6 +315,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "maticPrice",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -327,6 +353,24 @@ const _abi = [
     name: "mint",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "to_",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "quantity_",
+        type: "uint256",
+      },
+    ],
+    name: "mintWithMatic",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -377,6 +421,25 @@ const _abi = [
   {
     inputs: [],
     name: "priceInCLAM",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "quantity_",
+        type: "uint256",
+      },
+    ],
+    name: "priceInMatic",
     outputs: [
       {
         internalType: "uint256",
@@ -462,6 +525,19 @@ const _abi = [
       },
     ],
     name: "setDiscount",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "price_",
+        type: "uint256",
+      },
+    ],
+    name: "setMaticPrice",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

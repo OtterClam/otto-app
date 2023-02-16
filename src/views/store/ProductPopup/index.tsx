@@ -101,6 +101,7 @@ const StyledCloseButton = styled(CloseButton)`
 `
 
 export interface GroupedProduct {
+  sellId: number
   title: string
   desc: string
   image?: string
@@ -121,16 +122,13 @@ interface Props {
 }
 
 export default function ProductPopup({
-  product: { title, desc, image, main, all, processing_images },
+  product: { sellId, title, desc, image, main, all, processing_images },
   onClose,
 }: Props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { ottos } = useMyOttos()
-  const { airdropAmount } = main
   const [state, setState] = useState<State>(State.ChoosePackage)
-  const [mode] = useState<'buy' | 'claim'>(airdropAmount > 0 ? 'claim' : 'buy')
-  const { buy, buyState, resetBuy } = useBuyProduct(mode === 'claim')
+  const { buy, buyState, resetBuy } = useBuyProduct()
   useEffect(() => {
     if (buyState.state === 'Success') {
       setState(State.Success)
@@ -154,39 +152,19 @@ export default function ProductPopup({
             <StyledDesc>{desc}</StyledDesc>
           </StyledInfoSection>
         </StyledTopContainer>
-        <StyledChoosePackage>
-          {airdropAmount > 0
-            ? t('store.popup.claim_title', { amount: airdropAmount })
-            : t('store.popup.choose_package')}
-        </StyledChoosePackage>
-        {airdropAmount > 0 && (
-          <StyledAirdropContainer>
-            <AirdropProductCard
-              product={main}
+        <StyledChoosePackage>{t('store.popup.choose_package')}</StyledChoosePackage>
+        <StyledPackageList>
+          {all.map((p, index) => (
+            <BuyProductCard
+              key={index}
+              product={p}
               onClick={() => {
                 setState(State.Loading)
-                buy(
-                  main,
-                  ottos.map(o => o.id)
-                )
+                buy({ sellId, amount: p.amount })
               }}
             />
-          </StyledAirdropContainer>
-        )}
-        {airdropAmount === 0 && (
-          <StyledPackageList>
-            {all.map((p, index) => (
-              <BuyProductCard
-                key={index}
-                product={p}
-                onClick={() => {
-                  setState(State.Loading)
-                  buy(p, [])
-                }}
-              />
-            ))}
-          </StyledPackageList>
-        )}
+          ))}
+        </StyledPackageList>
         <StyledCloseButton color="white" onClose={onClose} />
       </StyledProductPopup>
     </Fullscreen>

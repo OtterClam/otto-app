@@ -17,6 +17,9 @@ module.exports = withBundleAnalyzer(
   withPWA(
     withTM({
       productionBrowserSourceMaps: false,
+      eslint: {
+        ignoreDuringBuilds: true,
+      },
       webpack: config => {
         config.module.rules.push({
           test: /\.mp3$/,
