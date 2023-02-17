@@ -180,7 +180,7 @@ interface Props {
 
 export default function MineDialog({ className }: Props) {
   const { t } = useTranslation('', { keyPrefix: 'mine' })
-  const { CLAM, USDC } = useTokenInfo()
+  const { CLAM, DAI } = useTokenInfo()
   const wallet = useWallet()
   const [clamAmount, setClamAmount] = useState('')
   const clamBalance = useClamBalance()
@@ -249,8 +249,8 @@ export default function MineDialog({ className }: Props) {
               <StyledTokenHeader>{t('to')}</StyledTokenHeader>
             </StyledTokenInputRow>
             <StyledTokenInputRow>
-              <StyledTokenSymbol icon={USDC.icon.src}>
-                <ContentSmall>{USDC.symbol}</ContentSmall>
+              <StyledTokenSymbol icon={DAI.icon.src}>
+                <ContentSmall>{DAI.symbol}</ContentSmall>
               </StyledTokenSymbol>
               <ContentSmall>
                 <StyledInput value={trim(usdAmount, 4)} disabled />
@@ -264,8 +264,10 @@ export default function MineDialog({ className }: Props) {
               <Caption>{t('current_supply')}</Caption>
             </p>
             <p>
-              <StyledSwapInfoTokenSymbol icon={USDC.icon.src}>
-                <Caption>{availableSupply && formatUsd(formatUnits(availableSupply, decimals))} USDC</Caption>
+              <StyledSwapInfoTokenSymbol icon={DAI.icon.src}>
+                <Caption>
+                  {availableSupply && formatUsd(formatUnits(availableSupply, decimals))} {DAI.symbol}
+                </Caption>
               </StyledSwapInfoTokenSymbol>
             </p>
           </StyledSwapInfo>
@@ -274,7 +276,9 @@ export default function MineDialog({ className }: Props) {
               <Caption>1 CLAM</Caption>
             </p>
             <p>
-              <Caption>= {usdPerClam && formatUnits(usdPerClam, decimals)} USDC</Caption>
+              <Caption>
+                = {usdPerClam && formatUnits(usdPerClam, decimals)} {DAI.symbol}
+              </Caption>
             </p>
           </StyledSwapInfo>
         </StyledSwapInfoContainer>

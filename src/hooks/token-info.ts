@@ -3,6 +3,7 @@ import CLAMIcon from 'assets/tokens/CLAM.svg'
 import FISHIcon from 'assets/tokens/FISH.svg'
 import MATICIcon from 'assets/tokens/WMATIC.svg'
 import USDCIcon from 'assets/tokens/USDC.svg'
+import DAIIcon from 'assets/tokens/DAI.png'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useMemo } from 'react'
@@ -26,7 +27,7 @@ export const useTokenInfo = (): Record<string, TokenInfo> => {
   const {
     CLAM,
     FISH,
-    tokens: { USDC },
+    tokens: { USDC, DAI },
   } = useContractAddresses()
   const { account } = useEthers()
 
@@ -63,6 +64,13 @@ export const useTokenInfo = (): Record<string, TokenInfo> => {
         decimal: 6,
         address: USDC,
         symbol: 'USDC',
+      },
+      DAI: {
+        icon: DAIIcon,
+        balance: constants.Zero,
+        decimal: 18,
+        address: DAI,
+        symbol: 'DAI',
       },
     }),
     [fishBalance, clamBalance, maticBalance]
