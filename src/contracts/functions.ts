@@ -1139,7 +1139,7 @@ export const useMine = () => {
       const clamAllowance = account ? await clam.allowance(account, otterMine.address) : constants.Zero
       const noAllowance = clamAllowance.lt(clamAmount)
       if (noAllowance) {
-        await (await clam.approve(otterMine.address, constants.MaxUint256)).wait()
+        await (await clam.approve(otterMine.address, clamAmount)).wait()
       }
       send(clamAmount)
     } catch (error: any) {
