@@ -65,7 +65,7 @@ export default function MineSuccessPopup({ amount, onClose }: Props) {
         <StyledTitle>{t('title')}</StyledTitle>
         <StyledOtter />
         <StyledDesc>
-          {t('desc')} <span>{trim(amount, 2)}</span> USDC!
+          {t('desc')} <span>{trim(amount, 2)}</span> DAI!
         </StyledDesc>
         <StyledCloseIcon onClick={onClose}>
           <Image src={CloseIcon.src} alt="close" width={16} height={16} />
