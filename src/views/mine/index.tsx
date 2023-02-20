@@ -26,16 +26,15 @@ const StyledTreasurySection = styled(TreasurySection)`
 
 const StyledMinePage = styled.div`
   width: 100%;
+  height: 100%;
   background: no-repeat center / cover url(${BG.src});
-  position: relative;
-  /* overflow-y: scroll; */
+  overflow-y: auto;
 `
 
 const StyledMinePageInner = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
 
   @media ${({ theme }) => theme.breakpoints.tablet} {
     height: unset;
@@ -43,6 +42,8 @@ const StyledMinePageInner = styled.div`
 `
 
 const StyledMineDialog = styled(MineDialog)`
+  padding: 34px 0;
+
   @media ${({ theme }) => theme.breakpoints.mobile} {
     padding: 34px;
     padding-bottom: 128px;
@@ -55,7 +56,7 @@ const Animation = keyframes`
 `
 
 const StyledOtter = styled.div`
-  position: absolute;
+  position: fixed;
   width: 440px;
   height: 334px;
   left: 50%;
@@ -67,8 +68,9 @@ const StyledOtter = styled.div`
   pointer-events: none;
 
   @media ${({ theme }) => theme.breakpoints.tablet} {
+    position: absolute;
     left: 0;
-    bottom: -96px;
+    bottom: 0;
     transform: unset;
     width: 293px;
     height: 222px;
@@ -77,16 +79,14 @@ const StyledOtter = styled.div`
 
 export default function MinePage() {
   return (
-    <>
-      <StyledTreasurySection showRope={false}>
-        <DefaultMetaTags />
-        <StyledMinePage>
-          <StyledMinePageInner>
-            <StyledMineDialog />
-          </StyledMinePageInner>
-        </StyledMinePage>
-      </StyledTreasurySection>
-      <StyledOtter />
-    </>
+    <StyledTreasurySection showRope={false}>
+      <DefaultMetaTags />
+      <StyledMinePage>
+        <StyledMinePageInner>
+          <StyledMineDialog />
+        </StyledMinePageInner>
+        <StyledOtter />
+      </StyledMinePage>
+    </StyledTreasurySection>
   )
 }
