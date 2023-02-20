@@ -1,20 +1,19 @@
 import Board, { Background } from 'components/Board'
+import EpochBanner from 'components/EpochBanner'
+import LeaderboardTabs from 'components/LeaderboardTabs'
+import { useApi } from 'contexts/Api'
+import { useLeaderboardEpoch } from 'contexts/LeaderboardEpoch'
 import { useRarityEpoch } from 'contexts/RarityEpoch'
 import { useTranslation } from 'next-i18next'
-import styled from 'styled-components/macro'
-import { Display3 } from 'styles/typography'
-import { useLeaderboardEpoch } from 'contexts/LeaderboardEpoch'
-import LeaderboardTabs from 'components/LeaderboardTabs'
-import EpochBanner from 'components/EpochBanner'
 import Head from 'next/head'
-import { useApi } from 'contexts/Api'
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Info from './Info'
-import RightInfo from './right-info.png'
-import RankList from './RankList'
-import LeftInfo from './left-info.png'
+import { useEffect, useState } from 'react'
+import styled from 'styled-components/macro'
 import APBoostEmptyImage from './ap-boost-empty.png'
+import Info from './Info'
+import LeftInfo from './left-info.png'
+import RankList from './RankList'
+import RightInfo from './right-info.png'
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -36,11 +35,6 @@ const StyledLeaderboardPage = styled.div`
   }
 `
 
-const StyledHead = styled(Display3).attrs({ as: 'h1' })`
-  width: 100%;
-  text-align: center;
-`
-
 const StyledInfos = styled.div`
   display: flex;
   gap: 20px;
@@ -57,18 +51,6 @@ const StyledRankList = styled(RankList)`
 const StyledBoard = styled(Board)`
   width: 100%;
 `
-
-const StyledEpochNav = styled.div`
-  margin-bottom: -1.5em;
-  display: flex;
-  justify-content: space-between;
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    margin-bottom: 15px;
-  }
-`
-
-const StyledTitlie = styled.div``
 
 export default function LeaderboardPage() {
   const { t } = useTranslation('', { keyPrefix: 'leaderboard' })

@@ -6,6 +6,7 @@ import {
   ROUND_RARITY_REWARD_S2,
   ROUND_RARITY_REWARD_S2_NEW,
   TOTAL_ADVENTURE_REWARD,
+  ROUND_RARITY_REWARD_SEASON_CLAM_FINAL,
 } from 'constant'
 import { trim } from 'helpers/trim'
 import Otto from 'models/Otto'
@@ -13,7 +14,9 @@ import Otto from 'models/Otto'
 const calcReward = (rank: number, prizeCount: number, epoch: number, isAdventure: boolean, ap?: number) => {
   let sum = 0
   let totalReward =
-    epoch >= 12 || epoch === -1
+    epoch >= 15 || epoch === -1
+      ? ROUND_RARITY_REWARD_SEASON_CLAM_FINAL
+      : epoch >= 12
       ? ROUND_RARITY_REWARD_S2_NEW
       : epoch >= 6
       ? ROUND_RARITY_REWARD_S2

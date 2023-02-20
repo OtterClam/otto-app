@@ -88,7 +88,7 @@ export default function EpochInfo() {
   const isAdventure = Boolean(query.adventure)
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.hero' })
   const { isLatestEpoch, epochEndTime } = useRarityEpoch()
-  const { MATIC, FISH } = useTokenInfo()
+  const { CLAM, FISH } = useTokenInfo()
   const epochEnd = Date.now() > epochEndTime
   const rewardAmount = isAdventure
     ? BigNumber.from(String(TOTAL_ADVENTURE_REWARD)).mul(String(1e18))
@@ -99,7 +99,7 @@ export default function EpochInfo() {
       <StyledReward>
         <ContentMedium>{t('title')}</ContentMedium>
         <Headline>
-          <Price token={isAdventure ? FISH : MATIC} amount={rewardAmount} showSymbol />
+          <Price token={isAdventure ? FISH : CLAM} amount={rewardAmount} showSymbol />
         </Headline>
       </StyledReward>
       <StyledTime>
