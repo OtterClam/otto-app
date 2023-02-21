@@ -104,7 +104,7 @@ export const pins: PinData[] = [
   {
     key: 'palace',
     image: palaceImage,
-    // link: '/treasury/palace',
+    link: 'https://warm-egg-c0e.notion.site/64952dfd28ee4aee85a1c837af30f71d?v=251e24cda631430992c183fba21ed185',
     position: {
       x: 1.35,
       y: -11,
@@ -142,6 +142,7 @@ export function Pin({ pin, width, className }: { pin: PinData; width: number; cl
   const button = (
     <ImageButton
       as="a"
+      target={(pin.link ?? '').startsWith('https://') ? '_blank' : undefined}
       data-disabled={!pin.link}
       className={className}
       states={buttonStates}
