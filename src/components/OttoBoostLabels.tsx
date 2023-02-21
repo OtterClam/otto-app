@@ -113,7 +113,7 @@ export default function OttoBoostLabels({ otto, isAdventure }: OttoBoostLabelsPr
         ))}
       {(diceCount ?? 0) > 0 && (
         <StyledLabel>
-          <img src="/trait-icons/Dice.png" alt="Hell Dice" />
+          <img src="/trait-icons/dice.png" alt="Hell Dice" />
           {t('hell_dice', { diceCount, boost: numberWithSign(epochRarityBoost ?? 0) })}
         </StyledLabel>
       )}
