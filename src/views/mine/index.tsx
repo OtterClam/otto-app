@@ -46,7 +46,7 @@ const StyledMineDialog = styled(MineDialog)`
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     padding: 34px;
-    padding-bottom: 128px;
+    padding-bottom: 168px;
   }
 `
 
