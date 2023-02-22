@@ -214,7 +214,7 @@ export const useRedeemProduct = () => {
     state: 'None',
     status: state,
   })
-  const redeem = async (couponId: string) => {
+  const redeem = async (couponId: string, amount = 1) => {
     const signer = library?.getSigner()
     if (account && signer) {
       setRedeemState({
@@ -225,7 +225,7 @@ export const useRedeemProduct = () => {
       if (!isApprovedForAll) {
         await (await item.setApprovalForAll(store.address, true)).wait()
       }
-      const data = await api.signOpenChest({ from: account, to: account, itemId: Number(couponId) })
+      const data = await api.signOpenChest({ from: account, to: account, itemId: Number(couponId), amount })
       ;(send as any)(...data, { gasLimit: 1000000 })
     }
   }

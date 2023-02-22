@@ -285,6 +285,7 @@ export default function MyItemsPage() {
   const [selectedItemId, setSelectedItemId] = useState<string>()
   const [usingItemId, setUsingItemId] = useState<string>()
   const [redeemingCouponId, setRedeemingCouponId] = useState<string>()
+  const [redeemingCouponCount, setRedeemingCouponCount] = useState<number>(1)
   const { items, loading, refetch } = useMyItems()
   const selectedItem = useMyItem(selectedItemId)
   const usingItem = useMyItem(usingItemId)
@@ -325,6 +326,7 @@ export default function MyItemsPage() {
         {redeemingCoupon && (
           <RedeemCouponPopup
             coupon={redeemingCoupon.metadata}
+            item={redeemingCoupon}
             onClose={() => {
               refetch()
               setRedeemingCouponId(undefined)

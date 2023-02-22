@@ -209,8 +209,18 @@ export class Api {
     return this.otterclamClient.post('/chest-store/buy', { from, to, id, amount }).then(res => res.data)
   }
 
-  public async signOpenChest({ from, to, itemId }: { from: string; to: string; itemId: number }) {
-    return this.otterclamClient.post('/chest-store/open', { from, to, id: itemId, amount: 1 }).then(res => res.data)
+  public async signOpenChest({
+    from,
+    to,
+    itemId,
+    amount,
+  }: {
+    from: string
+    to: string
+    itemId: number
+    amount: number
+  }) {
+    return this.otterclamClient.post('/chest-store/open', { from, to, id: itemId, amount }).then(res => res.data)
   }
 
   public async getFoundryForges(): Promise<ForgeFormula[]> {
