@@ -67,20 +67,20 @@ export default function FishWalletPopup({ alignRef, className }: Props) {
     }
   }, [show])
 
-  if (typeof document === 'undefined') return null
-
   const { left, bottom } = alignRef?.current?.getBoundingClientRect() || { left: 0, bottom: 0 }
 
-  const dom = (
-    <StyledPopup show={show}>
-      <StyledBackground onClick={onClose} />
-      <StyledWalletPopup className={className} top={bottom} left={left}>
-        <StyledBorderContainer size="xs">
-          <StyledSwap onClose={onClose} />
-        </StyledBorderContainer>
-      </StyledWalletPopup>
-    </StyledPopup>
-  )
-
-  return ReactDOM.createPortal(dom, document.querySelector('#modal-root') ?? document.body)
+  if (show) {
+    const dom = (
+      <StyledPopup show={show}>
+        <StyledBackground onClick={onClose} />
+        <StyledWalletPopup className={className} top={bottom} left={left}>
+          <StyledBorderContainer size="xs">
+            <StyledSwap onClose={onClose} />
+          </StyledBorderContainer>
+        </StyledWalletPopup>
+      </StyledPopup>
+    )
+    return ReactDOM.createPortal(dom, document.querySelector('#modal-root') ?? document.body)
+  }
+  return null
 }
