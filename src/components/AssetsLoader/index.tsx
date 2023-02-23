@@ -148,7 +148,7 @@ function useLoadingImage(): string {
   return [Loading1, Loading2][num].src
 }
 
-const dialogCounts = [4, 3, 3]
+const dialogCounts = [4, 2, 2]
 
 function useOtto() {
   const [ottoNo] = useState(() => getRandomNumber(0, 2))
