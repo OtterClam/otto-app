@@ -1,4 +1,4 @@
-import React, { ComponentProps, PropsWithChildren } from 'react'
+import { ComponentProps, PropsWithChildren, forwardRef } from 'react'
 import styled from 'styled-components/macro'
 
 interface NextImage {
@@ -34,7 +34,7 @@ export type ImageButtonProps = ComponentProps<typeof StyledButton> & {
   scale?: number
 }
 
-export default React.forwardRef(function ImageButton(
+export default forwardRef(function ImageButton(
   { scale = 0.5, states = [], ...restProps }: PropsWithChildren<ImageButtonProps>,
   ref
 ) {
