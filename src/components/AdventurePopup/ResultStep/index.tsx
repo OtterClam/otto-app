@@ -174,8 +174,25 @@ export default function ResultStep() {
     return null
   }
 
+  const exploreAgainButton = (
+    <Button
+      Typography={Headline}
+      onClick={() => {
+        closePopup();
+        openPopup(
+          undefined,
+          otto?.adventureStatus === AdventureOttoStatus.Resting
+            ? AdventurePopupStep.Resting
+            : AdventurePopupStep.Map
+        );
+      }}
+    >
+      {t('explore_again_btn')}
+    </Button>
+  );
+
   return (
-    <StyledResultStep bg={location.bgImageBlack}>
+    <StyledResultStep bg={location?.bgImageBlack}>
       {result && displayedOtto && (
         <Head>
           <title>
@@ -215,34 +232,22 @@ export default function ResultStep() {
         {result && displayedOtto && <StyledRewardSection result={result} otto={displayedOtto} />}
         {result && (
           <StyledButtons>
-            {otto && result.success && (
-              <Button
-                Typography={Headline}
-                onClick={() => {
-                  closePopup()
-                  openPopup(
-                    undefined,
-                    otto?.adventureStatus === AdventureOttoStatus.Resting
-                      ? AdventurePopupStep.Resting
-                      : AdventurePopupStep.Map
-                  )
-                }}
-              >
-                {t('explore_again_btn')}
-              </Button>
+            {otto && !result.success && !result.revived && (
+              <>
+                <PaymentButton
+                  Typography={Headline}
+                  loading={reviveState.status === 'PendingSignature' || reviveState.status === 'Mining'}
+                  spenderAddress={ADVENTURE}
+                  token={MATIC}
+                  amount={price || '0'}
+                  onClick={() => otto && revive(otto.id, { value: price || '0', gasLimit: 2000000 })}
+                >
+                  {t('revive_btn')}
+                </PaymentButton>
+                {exploreAgainButton}
+              </>
             )}
-            {otto && !(result.success || result.revived) && (
-              <PaymentButton
-                Typography={Headline}
-                loading={reviveState.status === 'PendingSignature' || reviveState.status === 'Mining'}
-                spenderAddress={ADVENTURE}
-                token={MATIC}
-                amount={price || '0'}
-                onClick={() => otto && revive(otto.id, { value: price || '0', gasLimit: 2000000 })}
-              >
-                {t('revive_btn')}
-              </PaymentButton>
-            )}
+            {otto && (result.success || result.revived) && exploreAgainButton}
             <StyledButtonGroup>
               <Button width="50%" Typography={Headline} primaryColor="white" onClick={share}>
                 <StyledShareButtonText>{t('share_btn')}</StyledShareButtonText>
