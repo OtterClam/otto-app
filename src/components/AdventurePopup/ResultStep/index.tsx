@@ -192,7 +192,7 @@ export default function ResultStep() {
   );
 
   return (
-    <StyledResultStep bg={location?.bgImageBlack}>
+    <StyledResultStep bg={location.bgImageBlack}>
       {result && displayedOtto && (
         <Head>
           <title>
