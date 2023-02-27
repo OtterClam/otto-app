@@ -20,14 +20,12 @@
         "3": "Did you know we offer discounts for Chests purchased in larger quantities? Uta!"
       },
       "1": {
-        "0": "Throw your CLAM in CLAM Pond, and the pond will automatically compound your rewards! Omi!",
-        "1": "Rest easy and don't worry about auto-compounding your yields! The pond keeper does it all for you. Omi!",
-        "2": "Remember! There's a 1% fee for deposit withdrawals before 30 days have passed! Omi!"
+        "0": "The CLAM redemption process is now underway! Please visit the Mine! Omi!",
+        "1": "Remember! There's no fee for withdrawals at this time!"
       },
       "2": {
-        "0": "Don’t forget to claim your USD+ rewards everyday! You can claim USD+ in Pearl Bank with just one click. Apo!",
-        "1": "Remember! There's a 1% fee for deposit withdrawals before 30 days have passed!",
-        "2": "Want rewards without volatility? Then Pearl Bank is for you!"
+        "0": "The CLAM redemption process is now underway! Please visit the Mine! Apo!",
+        "1": "Remember! There's no fee for withdrawals at this time!"
       }
     }
   },

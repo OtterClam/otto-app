@@ -1,5 +1,5 @@
 import BorderContainer from 'components/BorderContainer'
-import { RefObject, useEffect } from 'react'
+import { RefObject, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { hideFishWalletPopup, selectShowFishWalletPopup } from 'store/uiSlice'
@@ -57,8 +57,10 @@ export default function FishWalletPopup({ alignRef, className }: Props) {
   const show = useSelector(selectShowFishWalletPopup)
   const dispatch = useDispatch()
   const onClose = () => dispatch(hideFishWalletPopup())
+  const [hydrated, setHydrated] = useState(false)
 
   useEffect(() => {
+    setHydrated(true)
     if (show) {
       document.body.style.overflow = 'hidden'
       return () => {
@@ -67,20 +69,20 @@ export default function FishWalletPopup({ alignRef, className }: Props) {
     }
   }, [show])
 
-  if (typeof document === 'undefined') return null
-
   const { left, bottom } = alignRef?.current?.getBoundingClientRect() || { left: 0, bottom: 0 }
 
-  const dom = (
-    <StyledPopup show={show}>
-      <StyledBackground onClick={onClose} />
-      <StyledWalletPopup className={className} top={bottom} left={left}>
-        <StyledBorderContainer size="xs">
-          <StyledSwap onClose={onClose} />
-        </StyledBorderContainer>
-      </StyledWalletPopup>
-    </StyledPopup>
-  )
-
-  return ReactDOM.createPortal(dom, document.querySelector('#modal-root') ?? document.body)
+  if (hydrated) {
+    const dom = (
+      <StyledPopup show={show}>
+        <StyledBackground onClick={onClose} />
+        <StyledWalletPopup className={className} top={bottom} left={left}>
+          <StyledBorderContainer size="xs">
+            <StyledSwap onClose={onClose} />
+          </StyledBorderContainer>
+        </StyledWalletPopup>
+      </StyledPopup>
+    )
+    return ReactDOM.createPortal(dom, document.querySelector('#modal-root') ?? document.body)
+  }
+  return null
 }
