@@ -246,9 +246,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
           <Headline>{t('result.title')}</Headline>
           {formula.result && (
             <>
-              <a href={getOpenSeaItemLink(formula.result.tokenId)} target="_blank" rel="noreferrer">
-                <StyledResultItemPreview metadata={formula.result} />
-              </a>
+              <StyledResultItemPreview metadata={formula.result} showDetailsPopup />
               <ContentMedium>{formula.result.name}</ContentMedium>
               <StyledItemType type={formula.result.type} />
             </>
