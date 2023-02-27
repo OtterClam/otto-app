@@ -221,12 +221,24 @@ export const useRedeemProduct = () => {
         state: 'PendingSignature',
         status: state,
       })
-      const isApprovedForAll = await item.connect(signer).isApprovedForAll(account, store.address)
-      if (!isApprovedForAll) {
-        await (await item.setApprovalForAll(store.address, true)).wait()
+      try {
+        const isApprovedForAll = await item.connect(signer).isApprovedForAll(account, store.address)
+        if (!isApprovedForAll) {
+          await (await item.setApprovalForAll(store.address, true)).wait()
+        }
+        const data = await api.signOpenChest({ from: account, to: account, itemId: Number(couponId), amount })
+        ;(send as any)(...data, { gasLimit: 1000000 })
+      } catch (err: any) {
+        const message =
+          err.response && err.response.data && err.response.data.error ? err.response.data.error : err.message
+        setRedeemState({
+          state: 'Fail',
+          status: {
+            ...state,
+            errorMessage: message,
+          },
+        })
       }
-      const data = await api.signOpenChest({ from: account, to: account, itemId: Number(couponId), amount })
-      ;(send as any)(...data, { gasLimit: 1000000 })
     }
   }
   const resetRedeem = () => {

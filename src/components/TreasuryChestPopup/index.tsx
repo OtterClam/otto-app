@@ -73,7 +73,12 @@ export default function TreasuryChestPopup() {
         </StyledContainer>
       </StyledFullscreen>
       {redeem && treasuryChest && (
-        <RedeemCouponPopup coupon={treasuryChest} item={undefined} onClose={closeRedeemCouponPopup} />
+        <RedeemCouponPopup
+          coupon={treasuryChest}
+          amount={1}
+          onErrorClose={closeRedeemCouponPopup}
+          onClose={closeRedeemCouponPopup}
+        />
       )}
     </>
   )

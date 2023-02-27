@@ -18,7 +18,7 @@ import DefaultMetaTags from 'components/DefaultMetaTags'
 import EmptyStatus from './empty.png'
 import ItemDetails from './use-item/ItemDetails'
 
-const RedeemCouponPopup = dynamic(() => import('../../components/RedeemCouponPopup'), { ssr: false })
+const RedeemCouponPopupQuery = dynamic(() => import('../../components/RedeemCouponPopupQuery'), { ssr: false })
 const UseItemPopup = dynamic(() => import('./use-item/ItemPopup'), { ssr: false })
 
 const StyledMyItemsPage = styled.div`
@@ -285,7 +285,6 @@ export default function MyItemsPage() {
   const [selectedItemId, setSelectedItemId] = useState<string>()
   const [usingItemId, setUsingItemId] = useState<string>()
   const [redeemingCouponId, setRedeemingCouponId] = useState<string>()
-  const [redeemingCouponCount, setRedeemingCouponCount] = useState<number>(1)
   const { items, loading, refetch } = useMyItems()
   const selectedItem = useMyItem(selectedItemId)
   const usingItem = useMyItem(usingItemId)
@@ -324,8 +323,7 @@ export default function MyItemsPage() {
           />
         )}
         {redeemingCoupon && (
-          <RedeemCouponPopup
-            coupon={redeemingCoupon.metadata}
+          <RedeemCouponPopupQuery
             item={redeemingCoupon}
             onClose={() => {
               refetch()
