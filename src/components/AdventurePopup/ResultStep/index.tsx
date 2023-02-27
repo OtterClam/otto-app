@@ -174,16 +174,14 @@ export default function ResultStep() {
     return null
   }
 
-  const exploreAgainButton = (
+  const exploreAgainButton = otto?.adventureStatus !== AdventureOttoStatus.Resting && (
     <Button
       Typography={Headline}
       onClick={() => {
         closePopup();
         openPopup(
           undefined,
-          otto?.adventureStatus === AdventureOttoStatus.Resting
-            ? AdventurePopupStep.Resting
-            : AdventurePopupStep.Map
+          AdventurePopupStep.Map
         );
       }}
     >
