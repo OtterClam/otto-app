@@ -180,7 +180,7 @@ export default function ResultStep() {
       onClick={() => {
         setOtto(otto, true);
         closePopup();
-        openPopup(undefined, AdventurePopupStep.Map);
+        openPopup(location.id, AdventurePopupStep.PreviewOtto);
       }}
     >
       {t('explore_again_btn')}
