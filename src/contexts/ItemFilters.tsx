@@ -1,6 +1,6 @@
 import noop from 'lodash/noop'
 import { Item } from 'models/Item'
-import { OttoGender } from 'models/Otto'
+import { OttoGender, TraitRarity } from 'models/Otto'
 import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react'
 
 export enum ItemsFilter {
@@ -96,9 +96,46 @@ function createSortFunction(key: keyof SortableFields<Item['metadata']>) {
   return (lhs: Item, rhs: Item) => rhs.metadata[key] - lhs.metadata[key]
 }
 
+const typeClassMap: { [key: string]: number } = {
+  Holding: 10,
+  Headwear: 10,
+  'Facial Accessories': 10,
+  Clothes: 10,
+  Background: 10,
+  Coupon: 9,
+  Consumable: 8,
+  'Mission Item': 7,
+  Collectible: 6,
+  Other: 5,
+}
+const rarityClassMap: { [key: string]: number } = {
+  E1: 300,
+  E2: 290,
+  E3: 280,
+  R1: 200,
+  R2: 190,
+  R3: 180,
+  C1: 100,
+  C2: 90,
+  C3: 80,
+}
+
+function raritySort(lhs: Item, rhs: Item) {
+  let cmp = typeClassMap[rhs.metadata.type] - typeClassMap[lhs.metadata.type]
+  if (cmp !== 0) return cmp
+  if (lhs.metadata.type === 'Mission Item' || lhs.metadata.type === 'Collectible') {
+    return rarityClassMap[rhs.metadata.rarity] - rarityClassMap[lhs.metadata.rarity]
+  }
+  cmp = rhs.metadata.totalRarityScore - lhs.metadata.totalRarityScore
+  if (cmp !== 0) return cmp
+  cmp = rhs.metadata.baseRarityScore - lhs.metadata.baseRarityScore
+  if (cmp !== 0) return cmp
+  return rarityClassMap[rhs.metadata.rarity] - rarityClassMap[lhs.metadata.rarity]
+}
+
 const sortFunctions = {
   [ItemsSortBy.TimeReceived]: (lhs: Item, rhs: Item) => rhs.updatedAt.getTime() - lhs.updatedAt.getTime(),
-  [ItemsSortBy.Rarity]: createSortFunction('totalRarityScore'),
+  [ItemsSortBy.Rarity]: raritySort,
   [ItemsSortBy.Dex]: createSortFunction('dex'),
   [ItemsSortBy.Luck]: createSortFunction('luck'),
   [ItemsSortBy.Cute]: createSortFunction('cute'),
