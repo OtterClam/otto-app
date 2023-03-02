@@ -32,6 +32,11 @@ const StyledOttoCard = styled(BorderContainer)`
   }
 `
 
+const StyledImageWrap = styled.div`
+  display: inline-block;
+  position: relative;
+`
+
 const StyledOttoImage = styled(OttoImage).attrs({ size: 225 })`
   border: 4px solid ${({ theme }) => theme.colors.otterBlack};
 
@@ -39,6 +44,19 @@ const StyledOttoImage = styled(OttoImage).attrs({ size: 225 })`
     width: 90%;
     height: unset;
   }
+`
+
+const StyledLevelBadge = styled.div`
+  display: inline-block;
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 5px 0;
+  border-radius: 4px;
+  color: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.otterBlack};
+  white-space: nowrap;
 `
 
 const StyledOttoName = styled.h2`
@@ -164,7 +182,13 @@ export default function OttoCard({ otto, oldOtto, withItem: item, takeOff = fals
 
   return (
     <StyledOttoCard borderColor={theme.colors.lightGray400} className={className}>
-      <StyledOttoImage unoptimized={isMyOtto} src={otto.image} />
+      <StyledImageWrap>
+        <StyledOttoImage unoptimized={isMyOtto} src={otto.image}/>
+        <StyledLevelBadge>
+          <Caption>LV.</Caption>
+          <Caption>{otto.level}</Caption>
+        </StyledLevelBadge>
+      </StyledImageWrap>
       <StyledOttoName>
         <ContentMedium>{otto.name}</ContentMedium>
       </StyledOttoName>
@@ -176,10 +200,6 @@ export default function OttoCard({ otto, oldOtto, withItem: item, takeOff = fals
         <StyledRanking>{`#${otto.ranking}`}</StyledRanking>
       </StyledOttoRarity>
       <StyledAttrs>
-        <StyledAttr>
-          <Caption>Level</Caption>
-          <Caption>{otto.level}</Caption>
-        </StyledAttr>
         {otto.displayAttrs.map(({ trait_type, value }, index) => (
           <StyledAttr key={index}>
             <Caption>{trait_type}</Caption>
