@@ -158,7 +158,7 @@ const StyledInfo = styled.div<{ icon: string }>`
 const StyledAttrs = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 118px);
-  column-gap: 20px;
+  column-gap: 30px;
 `
 
 const StyledAttr = styled.div`
@@ -446,6 +446,10 @@ export default function OttoPage() {
             </StyledDescription>
 
             <StyledAttrs>
+              <StyledAttr>
+                <ContentLarge>Level</ContentLarge>
+                <ContentLarge>{otto?.level}</ContentLarge>
+              </StyledAttr>
               {otto?.displayAttrs.map(({ trait_type, value }, index) => (
                 <StyledAttr key={index}>
                   <ContentLarge>{trait_type}</ContentLarge>

@@ -78,7 +78,7 @@ const StyledRanking = styled(ContentSmall).attrs({
 const StyledAttrs = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 80px);
-  column-gap: 10px;
+  column-gap: 20px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 100%;
