@@ -18,10 +18,10 @@ const StyledOttoCard = styled(BorderContainer)`
 
   padding: 15px;
   gap: 12px;
+  align-items: center;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     gap: 8px;
-    align-items: center;
   }
 
   &:hover {
