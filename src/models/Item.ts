@@ -10,6 +10,7 @@ export type ItemType =
   | 'Coupon'
   | 'Mission Item'
   | 'Collectible'
+  | 'Consumable'
   | 'Other'
 
 export type ItemStats = Record<ItemStatName, string>
