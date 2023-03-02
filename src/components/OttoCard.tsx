@@ -176,6 +176,10 @@ export default function OttoCard({ otto, oldOtto, withItem: item, takeOff = fals
         <StyledRanking>{`#${otto.ranking}`}</StyledRanking>
       </StyledOttoRarity>
       <StyledAttrs>
+        <StyledAttr>
+          <Caption>Level</Caption>
+          <Caption>{otto.level}</Caption>
+        </StyledAttr>
         {otto.displayAttrs.map(({ trait_type, value }, index) => (
           <StyledAttr key={index}>
             <Caption>{trait_type}</Caption>
