@@ -386,6 +386,7 @@
     "legendary_boost_added": "BRS+100",
     "legendary_boost_removed": "BRS+0\n（初始配置已被替换）",
     "legendary_note": "绝无仅有，为艺术家钦定的传奇梦幻阿獭。",
+    "level": "等级： {{level}}",
     "opensea_link": "在 OpenSea 上瞧瞧",
     "personality": "个性： {{personality}}",
     "play_voice": "听听这只阿獭的声音",

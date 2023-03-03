@@ -185,7 +185,7 @@ export default function OttoCard({ otto, oldOtto, withItem: item, takeOff = fals
       <StyledImageWrap>
         <StyledOttoImage unoptimized={isMyOtto} src={otto.image}/>
         <StyledLevelBadge>
-          <Caption>LV.</Caption>
+          <Caption>LV. </Caption>
           <Caption>{otto.level}</Caption>
         </StyledLevelBadge>
       </StyledImageWrap>

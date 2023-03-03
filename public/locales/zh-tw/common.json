@@ -386,6 +386,7 @@
     "legendary_boost_added": "BRS+100",
     "legendary_boost_removed": "BRS+0\n（初始配置已被替換）",
     "legendary_note": "絕無僅有，為藝術家欽定的傳奇夢幻阿獺。",
+    "level": "等級： {{level}}",
     "opensea_link": "在 OpenSea 上瞧瞧",
     "personality": "個性： {{personality}}",
     "play_voice": "聽聽這隻阿獺的聲音",

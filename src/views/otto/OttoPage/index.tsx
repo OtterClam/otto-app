@@ -334,10 +334,14 @@ export default function OttoPage() {
               icon: Constellations[otto.zodiacSign],
               text: t('otto.zodiac_sign', { constellation: otto.zodiacSign }),
             },
+            {
+              icon: '/trait-icons/Holding.png',
+              text: t('otto.level', { level: otto.level }),
+            },
           ]
         : null,
     [otto, t]
-  )
+  );
 
   const openAttributePointsPopup = () => {
     dispatch({ type: AdventureUIActionType.DistributeAttributePoints, data: { ottoId } })
@@ -445,32 +449,29 @@ export default function OttoPage() {
               )}
             </StyledDescription>
 
-            <StyledAttrs>
-              <StyledAttr>
-                <ContentLarge>Level</ContentLarge>
-                <ContentLarge>{otto?.level}</ContentLarge>
-              </StyledAttr>
-              {otto?.displayAttrs.map(({ trait_type, value }, index) => (
-                <StyledAttr key={index}>
-                  <ContentLarge>{trait_type}</ContentLarge>
-                  <ContentLarge>{value}</ContentLarge>
-                </StyledAttr>
-              ))}
-            </StyledAttrs>
-
-            {isMyOtto && (otto?.attributePoints || 0) > 0 && (
-              <StyledAttributePoints>
-                {t('otto.attribute_points', { attributePoints: otto?.attributePoints ?? 0 })}
-                <Button
-                  onClick={openAttributePointsPopup}
-                  padding="0 12px"
-                  Typography={ContentMedium}
-                  disabled={!otto?.attributePoints}
-                >
-                  {t('otto.attribute_points_button')}
-                </Button>
-              </StyledAttributePoints>
-            )}
+            <StyledStat>
+              <StyledAttrs>
+                {otto?.displayAttrs.map(({ trait_type, value }, index) => (
+                  <StyledAttr key={index}>
+                    <ContentLarge>{trait_type}</ContentLarge>
+                    <ContentLarge>{value}</ContentLarge>
+                  </StyledAttr>
+                ))}
+              </StyledAttrs>
+              {isMyOtto && (otto?.attributePoints || 0) > 0 && (
+                <StyledAttributePoints>
+                  {t('otto.attribute_points', { attributePoints: otto?.attributePoints ?? 0 })}
+                  <Button
+                    onClick={openAttributePointsPopup}
+                    padding="0 12px"
+                    Typography={ContentMedium}
+                    disabled={!otto?.attributePoints}
+                  >
+                    {t('otto.attribute_points_button')}
+                  </Button>
+                </StyledAttributePoints>
+              )}
+            </StyledStat>
 
             {otto && (
               <>
