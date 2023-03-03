@@ -5,7 +5,7 @@ import { AdventureOttoStatus } from 'models/Otto'
 
 const StyledContainer = styled(Note)<{ status: AdventureOttoStatus }>`
   background: ${({ theme, status }) => theme.colors.adventureStatus[status]};
-  padding: 0 5px;
+  padding: 2px 5px 0;
   line-height: 18px;
   border-radius: 4px;
 `

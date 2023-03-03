@@ -92,7 +92,8 @@ const StyledAdventureStatus = styled(Caption).attrs({ as: 'div' })`
 
 const StyledLevel = styled(Note)`
   display: inline-block;
-  padding: 0 5px;
+  padding: 3px 5px 0;
+  margin-top: -3px;
   border-radius: 4px;
   color: ${({ theme }) => theme.colors.white};
   background: ${({ theme }) => theme.colors.otterBlack};
