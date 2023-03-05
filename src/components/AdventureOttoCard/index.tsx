@@ -19,7 +19,6 @@ import RemainingTime from './RemainingTime'
 const StyledAdventureOttoCard = styled.div`
   display: flex;
   flex-direction: column;
-
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.colors.otterBlack};
   overflow: hidden;
@@ -32,7 +31,6 @@ const StyledAdventureOttoCard = styled.div`
 const StyledContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
   padding: 14px;
   outline: none;
   text-align: left;
@@ -44,7 +42,7 @@ const StyledContainer = styled.div`
 const StyledDetails = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 9px;
   justify-content: flex-start;
   width: 100%;
 `
@@ -84,8 +82,9 @@ const StyledAvatarContainer = styled.div<{ size: number }>`
 
 const StyledLevel = styled(Caption)`
   display: inline-flex;
+  margin: 1px 0 -1px;
   padding: 3px 5px 1px;
-  border-radius: 4px;
+  border-radius: 3px;
   color: ${({ theme }) => theme.colors.white};
   background: ${({ theme }) => theme.colors.otterBlack};
   white-space: nowrap;
@@ -110,7 +109,7 @@ const StyledLocationContainer = styled.div`
   align-self: flex-start;
   gap: 5px;
   flex-wrap: wrap;
-  margin: 4px 4px 0 0;
+  margin: 5px 4px 0 0;
 `
 
 const StyledLocation = styled(Caption)`
@@ -134,6 +133,9 @@ const StyledAdventureStatus = styled.span`
 
 const StyledRemainingTime = styled(RemainingTime)`
   width: 80px;
+  p, p::after {
+    margin-top:2px;
+  }
 `
 
 const StyledJournalButton = styled.div`
