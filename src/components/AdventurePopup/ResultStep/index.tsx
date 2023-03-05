@@ -174,18 +174,18 @@ export default function ResultStep() {
     return null
   }
 
-  const exploreAgainButton = otto?.adventureStatus !== AdventureOttoStatus.Resting && (
-  <Button
-    Typography={Headline}
-    onClick={() => {
-      setOtto(otto, true);
-      closePopup();
-      openPopup(undefined, AdventurePopupStep.Map);
-    }}
-  >
-    {t('explore_again_btn')}
-  </Button>
-);
+  const exploreAgainButton = otto?.adventureStatus === AdventureOttoStatus.Ready && (
+    <Button
+      Typography={Headline}
+      onClick={() => {
+        setOtto(otto, true);
+        closePopup();
+        openPopup(location.id, AdventurePopupStep.PreviewOtto);
+      }}
+    >
+      {t('explore_again_btn')}
+    </Button>
+  );
 
   return (
     <StyledResultStep bg={location.bgImageBlack}>
