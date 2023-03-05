@@ -19,6 +19,7 @@ import RemainingTime from './RemainingTime'
 const StyledAdventureOttoCard = styled.div`
   display: flex;
   flex-direction: column;
+
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.colors.otterBlack};
   overflow: hidden;
@@ -44,13 +45,14 @@ const StyledDetails = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
 `
 
 const StyledColumn = styled.div`
   display: flex;
   flex-direction: column;
+  flex-basis: min-content;
 `
 
 const StyledRightColumn = styled.div`
@@ -61,6 +63,8 @@ const StyledRightColumn = styled.div`
 `
 
 const StyledRow = styled.div`
+  display: flex;
+  flex-direction: row;
   align-self: flex-end;
   button, a div{
     min-width: 90px;
