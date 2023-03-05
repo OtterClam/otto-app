@@ -43,6 +43,7 @@ export interface ItemFilters {
   order: ItemsOrder
   sortedBy?: ItemsSortBy
   filter?: ItemsFilter
+  searchString?: string
   itemType: ItemType
   page: number
   hasNextPage: boolean
@@ -50,6 +51,7 @@ export interface ItemFilters {
   setOrder: (order: ItemsOrder) => void
   setSortedBy: (sortedBy: ItemsSortBy) => void
   setFilter: (filter: ItemsFilter) => void
+  setSearchString: (searchString: string) => void
   setItemType: (type: ItemType) => void
   setPage: (page: number) => void
   nextPage: () => void
@@ -67,6 +69,7 @@ const ItemFiltersContext = createContext<ItemFilters>({
   setOrder: noop,
   setSortedBy: noop,
   setFilter: noop,
+  setSearchString: noop,
   setItemType: noop,
   setPage: noop,
   nextPage: noop,
@@ -149,6 +152,7 @@ export const ItemFiltersProvider = ({ children, items, itemsPerPage }: PropsWith
   const [order, setOrder] = useState<ItemsOrder>(ItemsOrder.Desc)
   const [sortedBy, setSortedBy] = useState<ItemsSortBy>(ItemsSortBy.TimeReceived)
   const [filter, setFilter] = useState<ItemsFilter>(ItemsFilter.None)
+  const [searchString, setSearchString] = useState<string>('')
   const [itemType, setItemType] = useState<ItemType>(ItemType.All)
   const [page, setPage] = useState<number>(0)
 
@@ -167,6 +171,11 @@ export const ItemFiltersProvider = ({ children, items, itemsPerPage }: PropsWith
         filteredItems = filteredItems.filter(item => (item.metadata.type as any) === itemType)
     }
 
+    if (searchString)
+      filteredItems = filteredItems.filter(item => {
+        return item.metadata.name.toLowerCase().indexOf(searchString.toLowerCase()) > -1
+      })
+
     filteredItems = filteredItems.sort(sortFunctions[sortedBy])
 
     if (order === ItemsOrder.Asc) {
@@ -183,11 +192,13 @@ export const ItemFiltersProvider = ({ children, items, itemsPerPage }: PropsWith
       order,
       sortedBy,
       filter,
+      searchString,
       itemType,
       page,
       setOrder,
       setSortedBy,
       setFilter,
+      setSearchString,
       setItemType,
       setPage,
       hasNextPage: page !== lastPage,
@@ -197,7 +208,7 @@ export const ItemFiltersProvider = ({ children, items, itemsPerPage }: PropsWith
       items,
       filteredItems,
     }
-  }, [order, sortedBy, filter, itemType, items, itemsPerPage, page])
+  }, [order, sortedBy, filter, searchString, itemType, items, itemsPerPage, page])
 
   return <ItemFiltersContext.Provider value={value}>{children}</ItemFiltersContext.Provider>
 }

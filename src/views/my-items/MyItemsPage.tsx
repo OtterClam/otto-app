@@ -7,11 +7,11 @@ import { memo, useCallback, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
-import { FilterIcon, SortedIcon } from 'assets/icons'
+import { AscendingIcon, FilterIcon, SearchIcon, SortedIcon } from 'assets/icons'
 // FIX:
 import { Item, ItemType as NewItemType } from 'models/Item'
 import { ItemFiltersProvider, ItemType, useItemFilters } from 'contexts/ItemFilters'
-import { FilterSelector, OrderSelector, SortedBySelector } from 'components/ItemFilterSelect'
+import { FilterSelector, OrderSelector, SortedBySelector, SearchBar } from 'components/ItemFilterSelect'
 import Button from 'components/Button'
 import { useMyItem, useMyItems } from 'contexts/MyItems'
 import DefaultMetaTags from 'components/DefaultMetaTags'
@@ -82,6 +82,9 @@ const StyledMenuBar = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 20px 30px;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    flex-direction: column;
+  }
 `
 
 const StyledMenuItem = styled(ContentSmall).attrs({ as: 'div' })`
@@ -228,14 +231,12 @@ const ItemFilters = memo(() => {
   return (
     <StyledMenuBar>
       <StyledMenuItem>
-        {isMobile ? <SortedIcon /> : <p>{t('sorted_by')}</p>}
         <SortedBySelector />
-        {isMobile ? '' : <p>{t('sort_order')}</p>}
         <OrderSelector />
+        <FilterSelector />
       </StyledMenuItem>
       <StyledMenuItem>
-        {isMobile ? <FilterIcon /> : <p>{t('filter')}</p>}
-        <FilterSelector />
+        <SearchBar />
       </StyledMenuItem>
     </StyledMenuBar>
   )
