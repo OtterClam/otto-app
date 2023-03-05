@@ -983,7 +983,9 @@
     "resting_2": "點此查看前一次冒險結果 >",
     "resting_1": "{{name}} 正在休息中",
     "ready": "{{name}} 已經準備好冒險！",
-    "ongoing": "{{name}} 正在 {{location}} 冒險中..."
+    "ongoing": "{{name}} 正在 {{location}} 冒險中...",
+    "finished": "{{name}} 完成了對 {{location}} 的探索！",
+    "results":"成果"
   },
   "adventureLocationPopup": {
     "difficulty": "困難度：",

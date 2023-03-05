@@ -1002,11 +1002,12 @@
     "checkOtto": "Check >",
     "viewLabel": "View",
     "go": "Go >",
-    "journal": "Results",
     "resting_2": "View the previous adventure journal here >",
     "resting_1": "{{name}} is resting now. ",
     "ready": "{{name}} is ready for an adventure!",
-    "ongoing": "{{name}} is exploring {{location}}..."
+    "ongoing": "{{name}} is exploring {{location}}...",
+    "finished": "{{name}} has finished exploring {{location}}!",
+    "results": "Results"
   },
   "adventureLocationPopup": {
     "difficulty": "Difficulty:",

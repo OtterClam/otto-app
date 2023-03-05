@@ -37,6 +37,7 @@ const StyledContainer = styled.div`
   text-align: left;
   min-width: 0px;
   overflow: hidden;
+  background-color: rgba(245, 234, 228, 0.7);
 `
 
 const StyledDetails = styled.div`
@@ -90,7 +91,7 @@ const StyledLevel = styled(Caption)`
 
 const StyledName = styled(Caption)`
   display: inline-flex;
-  padding: 3px 5px 1px;
+  padding: 3px 7px 1px;
   margin: 0 5px;
   border-radius: 4px;
   color: ${({ theme }) => theme.colors.otterBlack};
@@ -147,11 +148,11 @@ const StyledAdventureText = styled(Caption).attrs({ as: 'div' })`
   justify-content: space-between;
   padding: 7px 14px 5px 14px;
   color: ${({ theme }) => theme.colors.darkGray300};
-  background: ${({ theme }) => theme.colors.lightGray200};
+  background-color: rgba(255, 255, 255, 0.8);
   a {
     color: ${({ theme }) => theme.colors.otterBlue};
   }
-  opacity: 0.9;
+  
 `
 
 export interface AdventureOttoCardProps {
@@ -271,34 +272,34 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
           </StyledRightColumn>
         </StyledDetails>
       </StyledContainer>
-        {otto.adventureStatus === AdventureOttoStatus.Finished && (
-          <StyledAdventureText />
-        )}
-        {otto.adventureStatus === AdventureOttoStatus.Ongoing && (
-          <StyledAdventureText>
-            <span>{t('ongoing', { name: otto.name, location: location?.name })}</span>
-          </StyledAdventureText>
-        )}
-        {otto.adventureStatus === AdventureOttoStatus.Ready && (
-          <StyledAdventureText>
-            <span>{t('ready', { name: otto.name })}</span>
-            <ContentSmall  onClick={goToJournal}>
-              <StyledJournalButton>
-                <a>{t('journal')}</a>
-              </StyledJournalButton>
-            </ContentSmall>
-          </StyledAdventureText>
-        )}
-        {otto.adventureStatus === AdventureOttoStatus.Resting && (
-          <StyledAdventureText>
-            <span>{t('resting_1', { name: otto.name })}</span>
-            <ContentSmall onClick={goToJournal}>
-              <StyledJournalButton>
-                <a>{t('journal')}</a>
-              </StyledJournalButton>
-            </ContentSmall>
-          </StyledAdventureText>
-        )}
+      {otto.adventureStatus === AdventureOttoStatus.Finished && (
+        <StyledAdventureText />
+      )}
+      {otto.adventureStatus === AdventureOttoStatus.Ongoing && (
+        <StyledAdventureText>
+          <span>{t('ongoing', { name: otto.name, location: location?.name })}</span>
+        </StyledAdventureText>
+      )}
+      {otto.adventureStatus === AdventureOttoStatus.Ready && (
+        <StyledAdventureText>
+          <span>{t('ready', { name: otto.name })}</span>
+          <ContentSmall  onClick={goToJournal}>
+            <StyledJournalButton>
+              <a>{t('journal')}</a>
+            </StyledJournalButton>
+          </ContentSmall>
+        </StyledAdventureText>
+      )}
+      {otto.adventureStatus === AdventureOttoStatus.Resting && (
+        <StyledAdventureText>
+          <span>{t('resting_1', { name: otto.name })}</span>
+          <ContentSmall onClick={goToJournal}>
+            <StyledJournalButton>
+              <a>{t('journal')}</a>
+            </StyledJournalButton>
+          </ContentSmall>
+        </StyledAdventureText>
+      )}
     </StyledAdventureOttoCard>
   )
 }, isEqual)
