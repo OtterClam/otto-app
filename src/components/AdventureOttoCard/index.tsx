@@ -45,7 +45,7 @@ const StyledDetails = styled.div`
   flex-wrap: wrap;
   gap: 5px;
   justify-content: space-between;
-  width:100%;
+  width: 100%;
 `
 
 const StyledColumn = styled.div`
@@ -56,12 +56,10 @@ const StyledColumn = styled.div`
 const StyledRightColumn = styled.div`
   display: flex;
   flex: 1;
-  justify-content: flex-right;
+  justify-content: flex-end;
   flex-direction: column;
-  StyledRow{
-
-  }
 `
+
 const StyledRow = styled.div`
   align-self: flex-end;
   button, a div{
@@ -118,7 +116,7 @@ const StyledLocation = styled(Caption)`
 `
 
 const StyledAdventureStatus = styled.span`
-  span{
+  span {
     display: flex;
     width: 90px;
     justify-content: space-around;
@@ -131,15 +129,12 @@ const StyledRemainingTime = styled(RemainingTime)`
 `
 
 const StyledJournalButton = styled.div`
-  display:flex;
+  display: flex;
   width: 87px;
   justify-content: space-around;
   border-radius: 4px;
-  background-image: url("/trait-icons/Mission Item.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  padding: 0 0 0 20px;
-  background-position: left;
+  background: url("/trait-icons/Mission Item.png") left/contain no-repeat;
+  padding-left: 20px;
   margin-top: -3px;
 `
 
@@ -152,7 +147,6 @@ const StyledAdventureText = styled(Caption).attrs({ as: 'div' })`
   a {
     color: ${({ theme }) => theme.colors.otterBlue};
   }
-  
 `
 
 export interface AdventureOttoCardProps {
