@@ -184,14 +184,9 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
       })
   }
 
-  const go = () => {
-    setOtto(otto, true)
-    openPopup(undefined, AdventurePopupStep.Map)
-  }
-
-  const openRestingPopup = () => {
+  const openPopupWithStep = (step: AdventurePopupStep) => {
     setOtto(otto)
-    openPopup(0, AdventurePopupStep.Resting)
+    openPopup(step === AdventurePopupStep.Resting ? 0 : undefined, step)
   }
 
   const onClick = () => {
@@ -200,11 +195,11 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
         check()
         break
       case AdventureOttoStatus.Ready:
-        go()
+        openPopupWithStep(AdventurePopupStep.Map)
         break
       case AdventureOttoStatus.Resting:
         if (otto.restingUntil) {
-          openRestingPopup()
+          openPopupWithStep(AdventurePopupStep.Resting)
         }
         break
       case AdventureOttoStatus.Ongoing:
