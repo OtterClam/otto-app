@@ -25,7 +25,7 @@ const StyledAdventureOttoCard = styled.div`
   margin-bottom: 8px;
   background: ${({ theme, disabled, bg }) =>
     bg ? `center / cover url(${bg})` : (disabled ? theme.colors.lightGray400 : theme.colors.white)};
-  background-position-y: -160px;
+  background-position-y: 70%;
 `
 
 const StyledContainer = styled.div`
@@ -37,7 +37,7 @@ const StyledContainer = styled.div`
   text-align: left;
   min-width: 0px;
   overflow: hidden;
-  background-color: rgba(245, 234, 228, 0.7);
+  background-color: rgba(245, 234, 228, 0.75);
 `
 
 const StyledDetails = styled.div`
@@ -109,7 +109,7 @@ const StyledLocationContainer = styled.div`
 
 const StyledLocation = styled(Caption)`
   display: inline-flex;
-  padding: 0 5px;
+  padding: 3px 7px 2px 2px;
   gap: 4px;
   white-space: nowrap;
   border-radius: 4px;
@@ -132,15 +132,15 @@ const StyledRemainingTime = styled(RemainingTime)`
 
 const StyledJournalButton = styled.div`
   display:flex;
-  width: 90px;
+  width: 87px;
   justify-content: space-around;
   border-radius: 4px;
   background-image: url("/trait-icons/Mission Item.png");
   background-size: contain;
   background-repeat: no-repeat;
-  padding: 2px 0 2px 25px;
+  padding: 0 0 0 20px;
   background-position: left;
-  margin-top:-4px;
+  margin-top: -3px;
 `
 
 const StyledAdventureText = styled(Caption).attrs({ as: 'div' })`
@@ -148,7 +148,7 @@ const StyledAdventureText = styled(Caption).attrs({ as: 'div' })`
   justify-content: space-between;
   padding: 7px 14px 5px 14px;
   color: ${({ theme }) => theme.colors.darkGray300};
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.9);
   a {
     color: ${({ theme }) => theme.colors.otterBlue};
   }
@@ -222,8 +222,8 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
       <StyledContainer>
         <StyledDetails>
           <StyledColumn>
-            <StyledAvatarContainer size={80}>
-              <OttoImage unoptimized size={80} src={otto.image} />
+            <StyledAvatarContainer size={70}>
+              <OttoImage unoptimized size={70} src={otto.image} />
             </StyledAvatarContainer>
           </StyledColumn>
           <StyledColumn>
@@ -273,7 +273,9 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
         </StyledDetails>
       </StyledContainer>
       {otto.adventureStatus === AdventureOttoStatus.Finished && (
-        <StyledAdventureText />
+        <StyledAdventureText>
+          <span>{t('finished', { name: otto.name, location: location?.name })}</span>
+        </StyledAdventureText>
       )}
       {otto.adventureStatus === AdventureOttoStatus.Ongoing && (
         <StyledAdventureText>
@@ -285,7 +287,7 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
           <span>{t('ready', { name: otto.name })}</span>
           <ContentSmall  onClick={goToJournal}>
             <StyledJournalButton>
-              <a>{t('journal')}</a>
+              <a>{t('results')}</a>
             </StyledJournalButton>
           </ContentSmall>
         </StyledAdventureText>
@@ -295,7 +297,7 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
           <span>{t('resting_1', { name: otto.name })}</span>
           <ContentSmall onClick={goToJournal}>
             <StyledJournalButton>
-              <a>{t('journal')}</a>
+              <a>{t('results')}</a>
             </StyledJournalButton>
           </ContentSmall>
         </StyledAdventureText>
