@@ -93,7 +93,11 @@ const StyledName = styled(Caption)`
   margin: 0 5px;
   border-radius: 4px;
   color: ${({ theme }) => theme.colors.otterBlack};
-  background: ${({ theme }) => theme.colors.lightGray200};
+  background: ${({ adventureStatus, theme }) =>
+    adventureStatus === AdventureOttoStatus.Ongoing ||
+    adventureStatus === AdventureOttoStatus.Finished
+      ? theme.colors.lightGray200
+      : "none"};
   white-space: nowrap;
 `
 
@@ -229,7 +233,9 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
           <StyledColumn>
             <StyledRow>
               <StyledLevel>LV {otto.level}</StyledLevel>
-              <StyledName>{otto.name}</StyledName>
+              <StyledName bg={location && location.bgImage ? location.bgImage : ''} adventureStatus={otto.adventureStatus}>
+                {otto.name}
+              </StyledName>
             </StyledRow>
             <StyledLocationContainer>
               {location && (
