@@ -22,6 +22,8 @@ const StyledOttoCard = styled(BorderContainer)`
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     gap: 8px;
+    align-items: center;
+    text-align: center;
   }
 
   &:hover {
@@ -35,6 +37,8 @@ const StyledOttoCard = styled(BorderContainer)`
 const StyledImageWrap = styled.div`
   display: inline-block;
   position: relative;
+  width: 100%;
+  max-width: 259px;
 `
 
 const StyledOttoImage = styled(OttoImage).attrs({ size: 225 })`
@@ -67,12 +71,6 @@ const StyledOttoRarity = styled.div`
   display: flex;
   gap: 5px;
   align-items: center;
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-  }
 `
 
 const StyledRarityScore = styled(ContentSmall).attrs({ as: 'p' })``
