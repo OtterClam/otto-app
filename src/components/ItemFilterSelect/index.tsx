@@ -1,37 +1,58 @@
+import { AscendingIcon, FilterIcon, SearchIcon, SortedIcon } from 'assets/icons'
+import MenuButton from 'components/Button'
 import RealDropdown, { DropdownPostion } from 'components/RealDropdown'
 import { ItemsFilter, ItemsOrder, ItemsSortBy, useItemFilters } from 'contexts/ItemFilters'
 import noop from 'lodash/noop'
 import { useTranslation } from 'next-i18next'
-import { memo, useEffect, useMemo } from 'react'
+import { memo, useEffect, useMemo, useState, ReactElement } from 'react'
 import styled from 'styled-components'
-import { Note } from 'styles/typography'
+import { ContentSmall, Note, RegularInput } from 'styles/typography'
+
+const StyledMenuItem = styled(ContentSmall).attrs({ as: 'div' })`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`
+
+export const BlankIcon = styled.div`
+  width: 30px;
+  height: 30px;
+`
 
 const StyledBottom = styled(Note).attrs({ as: 'button' })`
   padding: 0 10px;
   background: ${({ theme }) => theme.colors.white};
   border-radius: 6px;
-  border: 2px solid ${({ theme }) => theme.colors.otterBlack};
+  border: 0px;
   height: 37px;
   display: flex;
   align-items: center;
 `
 
 const StyledItems = styled(Note).attrs({ as: 'ul' })`
-  padding: 5px 10px;
   background: ${({ theme }) => theme.colors.white};
   list-style: none;
   margin: 0;
   border-radius: 6px;
+  border: 0px;
+`
+
+const StyledItemsExpanded = styled(StyledItems)`
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
 `
 
 const StyledItem = styled.li`
+  padding: 5px 10px;
   height: 37px;
   display: flex;
   align-items: center;
+  &:hover {
+    background: ${({ theme }) => theme.colors.lightGray100};
+  }
 `
 
 interface ItemFilterSelectProps<T = any> {
+  icon: ReactElement
   value?: T
   items: { key: T; label: string }[]
   onSelect?: (key: T) => void
@@ -39,6 +60,7 @@ interface ItemFilterSelectProps<T = any> {
 }
 
 const ItemFilterSelect = memo(function ItemFilterSelect({
+  icon,
   value,
   items,
   position,
@@ -54,8 +76,8 @@ const ItemFilterSelect = memo(function ItemFilterSelect({
     <RealDropdown
       position={position}
       content={close => (
-        <StyledItems>
-          {items.map(item => (
+        <StyledItemsExpanded>
+          {items.map((item, idx) => (
             <StyledItem
               key={String(item.key)}
               onClick={() => {
@@ -63,13 +85,19 @@ const ItemFilterSelect = memo(function ItemFilterSelect({
                 onSelect(item.key)
               }}
             >
+              {idx === 0 ? icon : <BlankIcon />}
               {item.label}
             </StyledItem>
           ))}
-        </StyledItems>
+        </StyledItemsExpanded>
       )}
     >
-      <StyledBottom>{label}</StyledBottom>
+      <StyledItems>
+        <StyledItem>
+          {useMemo(() => icon, [])}
+          {label}
+        </StyledItem>
+      </StyledItems>
     </RealDropdown>
   )
 })
@@ -87,7 +115,11 @@ export function SortedBySelector() {
     []
   )
 
-  return <ItemFilterSelect value={sortedBy} items={items} onSelect={setSortedBy} />
+  return (
+    <StyledMenuItem>
+      <ItemFilterSelect icon={<SortedIcon />} value={sortedBy} items={items} onSelect={setSortedBy} />
+    </StyledMenuItem>
+  )
 }
 
 export function OrderSelector() {
@@ -101,7 +133,7 @@ export function OrderSelector() {
     ]
   }, [])
 
-  return <ItemFilterSelect value={order} items={items} onSelect={setOrder} />
+  return <ItemFilterSelect icon={<AscendingIcon />} value={order} items={items} onSelect={setOrder} />
 }
 
 export function FilterSelector() {
@@ -117,5 +149,50 @@ export function FilterSelector() {
     []
   )
 
-  return <ItemFilterSelect value={filter} items={items} onSelect={setFilter} position={DropdownPostion.TopRight} />
+  return (
+    <ItemFilterSelect
+      icon={<FilterIcon />}
+      value={filter}
+      items={items}
+      onSelect={setFilter}
+      position={DropdownPostion.TopRight}
+    />
+  )
+}
+
+const StyledInput = styled(RegularInput)`
+  border: 0px;
+  border-radius: 6px;
+  padding: 5px;
+  width: 100%;
+  background: ${({ theme }) => theme.colors.lightGray100};
+
+  ::placeholder {
+    color: ${({ theme }) => theme.colors.lightGray400};
+    background: ${({ theme }) => theme.colors.lightGray100};
+    opacity: 1;
+  }
+`
+
+const StyledSearchBar = styled(StyledMenuItem)`
+  background: ${({ theme }) => theme.colors.lightGray100};
+  border-radius: 6px;
+  @media ${({ theme }) => theme.breakpoints.mobile} {
+    width: 100%;
+  }
+`
+
+export function SearchBar() {
+  const { searchString, setSearchString } = useItemFilters()
+  return (
+    <StyledSearchBar>
+      <SearchIcon />
+      <StyledInput
+        type="text"
+        placeholder="Search"
+        value={searchString}
+        onChange={e => setSearchString(e.target.value)}
+      />
+    </StyledSearchBar>
+  )
 }
