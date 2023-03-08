@@ -18,10 +18,12 @@ const StyledOttoCard = styled(BorderContainer)`
 
   padding: 15px;
   gap: 12px;
+  align-items: center;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     gap: 8px;
     align-items: center;
+    text-align: center;
   }
 
   &:hover {
@@ -30,6 +32,13 @@ const StyledOttoCard = styled(BorderContainer)`
     box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.2);
     transition: 0.2s;
   }
+`
+
+const StyledImageWrap = styled.div`
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  max-width: 259px;
 `
 
 const StyledOttoImage = styled(OttoImage).attrs({ size: 225 })`
@@ -41,6 +50,19 @@ const StyledOttoImage = styled(OttoImage).attrs({ size: 225 })`
   }
 `
 
+const StyledLevelBadge = styled.div`
+  display: inline-block;
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 5px 0;
+  border-radius: 4px;
+  color: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.otterBlack};
+  white-space: nowrap;
+`
+
 const StyledOttoName = styled.h2`
   text-align: center;
 `
@@ -49,12 +71,6 @@ const StyledOttoRarity = styled.div`
   display: flex;
   gap: 5px;
   align-items: center;
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-  }
 `
 
 const StyledRarityScore = styled(ContentSmall).attrs({ as: 'p' })``
@@ -78,7 +94,7 @@ const StyledRanking = styled(ContentSmall).attrs({
 const StyledAttrs = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 80px);
-  column-gap: 10px;
+  column-gap: 20px;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
     width: 100%;
@@ -164,7 +180,13 @@ export default function OttoCard({ otto, oldOtto, withItem: item, takeOff = fals
 
   return (
     <StyledOttoCard borderColor={theme.colors.lightGray400} className={className}>
-      <StyledOttoImage unoptimized={isMyOtto} src={otto.image} />
+      <StyledImageWrap>
+        <StyledOttoImage unoptimized={isMyOtto} src={otto.image}/>
+        <StyledLevelBadge>
+          <Caption>LV. </Caption>
+          <Caption>{otto.level}</Caption>
+        </StyledLevelBadge>
+      </StyledImageWrap>
       <StyledOttoName>
         <ContentMedium>{otto.name}</ContentMedium>
       </StyledOttoName>

@@ -386,6 +386,7 @@
     "legendary_boost_added": "BRS+100",
     "legendary_boost_removed": "BRS+0\n（初始配置已被替换）",
     "legendary_note": "绝无仅有，为艺术家钦定的传奇梦幻阿獭。",
+    "level": "等级： {{level}}",
     "opensea_link": "在 OpenSea 上瞧瞧",
     "personality": "个性： {{personality}}",
     "play_voice": "听听这只阿獭的声音",
@@ -982,7 +983,9 @@
     "resting_2": "点此查看前一次冒险结果 >",
     "resting_1": "{{name}} 正在休息中",
     "ready": "{{name}} 已经准备好冒险！",
-    "ongoing": "{{name}} 正在 {{location}} 冒险中..."
+    "ongoing": "{{name}} 正在 {{location}} 冒险中...",
+    "finished": "{{name}} 完成了对 {{location}} 的探索！",
+    "results": "成果"
   },
   "adventureLocationPopup": {
     "difficulty": "困难度：",

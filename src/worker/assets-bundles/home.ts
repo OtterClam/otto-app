@@ -7,7 +7,7 @@ export const home = new GeneralAssetsBundle(BundleName.HomePage, [
   'src/views/home/Map/city_center.jpg',
   'src/views/home/Map/cloud_left.png',
   'src/views/home/Map/cloud_right.png',
-  'src/views/home/Map/city_center2.jpg',
+  'src/views/home/Map/city_center2_smaller.jpg',
   'src/views/home/Map/cloud_left2.png',
   'src/views/home/Map/cloud_right2.png',
   'src/views/home/Map/flag.png',

@@ -157,13 +157,32 @@ const StyledInfo = styled.div<{ icon: string }>`
 
 const StyledAttrs = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 118px);
-  column-gap: 20px;
+  align-items: center;
+  justify-content: flex-start;
+  grid-template-columns: repeat(2, 142px);
+  column-gap: 40px;
 `
 
 const StyledAttr = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  width:100%;
+`
+
+const StyledAttrIcon = styled.span<{ icon: string }>`
+  display: flex;
+  width: 30px;
+  height: 30px;
+  background-image: url(${({ icon }) => icon});
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right:12px;
+`
+
+const StyledAttrLabel =  styled.span`
+  display: flex;
+  justify-content: center;
 `
 
 const StyledAttributePoints = styled(ContentSmall).attrs({ as: 'div' })`
@@ -334,10 +353,23 @@ export default function OttoPage() {
               icon: Constellations[otto.zodiacSign],
               text: t('otto.zodiac_sign', { constellation: otto.zodiacSign }),
             },
+            {
+              icon: '/trait-icons/Level.png',
+              text: t('otto.level', { level: otto.level }),
+            },
           ]
         : null,
     [otto, t]
-  )
+  );
+  const AttrIconsMap = useMemo(() => ({
+    'STR': '/trait-icons/STR.png',
+    'DEF': '/trait-icons/DEF.png',
+    'DEX': '/trait-icons/DEX.png',
+    'INT': '/trait-icons/INT.png',
+    'LUK': '/trait-icons/LUK.png',
+    'CON': '/trait-icons/_CON.png',
+    'CUTE': '/trait-icons/CUTE.png',
+  }), []);
 
   const openAttributePointsPopup = () => {
     dispatch({ type: AdventureUIActionType.DistributeAttributePoints, data: { ottoId } })
@@ -445,28 +477,40 @@ export default function OttoPage() {
               )}
             </StyledDescription>
 
-            <StyledAttrs>
-              {otto?.displayAttrs.map(({ trait_type, value }, index) => (
-                <StyledAttr key={index}>
-                  <ContentLarge>{trait_type}</ContentLarge>
-                  <ContentLarge>{value}</ContentLarge>
-                </StyledAttr>
-              ))}
-            </StyledAttrs>
-
-            {isMyOtto && (otto?.attributePoints || 0) > 0 && (
-              <StyledAttributePoints>
-                {t('otto.attribute_points', { attributePoints: otto?.attributePoints ?? 0 })}
-                <Button
-                  onClick={openAttributePointsPopup}
-                  padding="0 12px"
-                  Typography={ContentMedium}
-                  disabled={!otto?.attributePoints}
-                >
-                  {t('otto.attribute_points_button')}
-                </Button>
-              </StyledAttributePoints>
-            )}
+            <StyledStat>
+              <StyledAttrs>
+                {otto?.displayAttrs.map(({ trait_type, value }, index) => (
+                  <StyledAttr key={trait_type}>
+                    <StyledAttrLabel>
+                      {AttrIconsMap[trait_type] && (
+                        <StyledAttrIcon icon={AttrIconsMap[trait_type]} />
+                      )}
+                      {trait_type && (
+                        <ContentLarge>
+                          {trait_type}
+                        </ContentLarge>
+                      )}
+                    </StyledAttrLabel>
+                    <ContentLarge>
+                      {value}
+                    </ContentLarge>
+                  </StyledAttr>
+                ))}
+              </StyledAttrs>
+              {isMyOtto && (otto?.attributePoints || 0) > 0 && (
+                <StyledAttributePoints>
+                  {t('otto.attribute_points', { attributePoints: otto?.attributePoints ?? 0 })}
+                  <Button
+                    onClick={openAttributePointsPopup}
+                    padding="0 12px"
+                    Typography={ContentMedium}
+                    disabled={!otto?.attributePoints}
+                  >
+                    {t('otto.attribute_points_button')}
+                  </Button>
+                </StyledAttributePoints>
+              )}
+            </StyledStat>
 
             {otto && (
               <>

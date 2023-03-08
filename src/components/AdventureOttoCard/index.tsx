@@ -13,7 +13,7 @@ import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
 import { memo } from 'react'
 import styled from 'styled-components/macro'
-import { Caption, ContentExtraSmall, ContentMedium, Note } from 'styles/typography'
+import { Caption, ContentExtraSmall, ContentSmall, ContentMedium, Note } from 'styles/typography'
 import RemainingTime from './RemainingTime'
 
 const StyledAdventureOttoCard = styled.div`
@@ -22,52 +22,51 @@ const StyledAdventureOttoCard = styled.div`
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.colors.otterBlack};
   overflow: hidden;
+  margin-bottom: 8px;
+  background: ${({ theme, disabled, bg }) =>
+    bg ? `center / cover url(${bg})` : (disabled ? theme.colors.lightGray400 : theme.colors.white)};
+  background-position-y: 70%;
 `
 
-const StyledContainer = styled.button<{ disabled: boolean }>`
+const StyledContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: ${({ theme, disabled }) => (disabled ? theme.colors.lightGray400 : theme.colors.white)};
-  padding: 17px 20px;
+  padding: 14px;
   outline: none;
   text-align: left;
   min-width: 0px;
   overflow: hidden;
+  background-color: rgba(245, 234, 228, 0.75);
 `
 
 const StyledDetails = styled.div`
-  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  justify-content: flex-start;
+  width: 100%;
+`
+
+const StyledColumn = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  min-width: 0px;
+  flex-basis: min-content;
 `
 
-const StyledAction = styled.div`
+const StyledRightColumn = styled.div`
   display: flex;
+  flex: 1;
   justify-content: flex-end;
+  flex-direction: column;
 `
 
-const StyledName = styled(ContentExtraSmall)`
+const StyledRow = styled.div`
   display: flex;
-  align-items: center;
-  gap: 5px;
-  flex-wrap: wrap;
-`
-
-const StyledLocationContainer = styled.div`
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  flex-wrap: wrap;
-`
-
-const StyledLocation = styled(Caption)`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  white-space: nowrap;
+  flex-direction: row;
+  align-self: flex-end;
+  button, a div{
+    min-width: 90px;
+  }
 `
 
 const StyledAvatarContainer = styled.div<{ size: number }>`
@@ -81,26 +80,83 @@ const StyledAvatarContainer = styled.div<{ size: number }>`
   border: 1px ${({ theme }) => theme.colors.otterBlack} solid;
 `
 
-const StyledAdventureStatus = styled(Caption).attrs({ as: 'div' })`
-  padding: 5px 10px;
-  color: ${({ theme }) => theme.colors.darkGray300};
-  background: ${({ theme }) => theme.colors.lightGray200};
-  a {
-    color: ${({ theme }) => theme.colors.otterBlue};
-  }
-`
-
-const StyledLevel = styled(Note)`
-  display: inline-block;
-  padding: 0 5px;
-  border-radius: 4px;
+const StyledLevel = styled(Caption)`
+  display: inline-flex;
+  margin: 1px 0 -1px;
+  padding: 3px 5px 1px;
+  border-radius: 3px;
   color: ${({ theme }) => theme.colors.white};
   background: ${({ theme }) => theme.colors.otterBlack};
   white-space: nowrap;
 `
 
+const StyledName = styled(Caption)`
+  display: inline-flex;
+  padding: 3px 7px 1px;
+  margin: 0 5px;
+  border-radius: 4px;
+  color: ${({ theme }) => theme.colors.otterBlack};
+  background: ${({ adventureStatus, theme }) =>
+    adventureStatus === AdventureOttoStatus.Ongoing ||
+    adventureStatus === AdventureOttoStatus.Finished
+      ? theme.colors.lightGray200
+      : "none"};
+  white-space: nowrap;
+`
+
+const StyledLocationContainer = styled.div`
+  display: flex;
+  align-self: flex-start;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin: 5px 4px 0 0;
+`
+
+const StyledLocation = styled(Caption)`
+  display: inline-flex;
+  padding: 3px 7px 2px 2px;
+  gap: 4px;
+  white-space: nowrap;
+  border-radius: 4px;
+  color: ${({ theme }) => theme.colors.otterBlack};
+  background: ${({ theme }) => theme.colors.lightGray200};
+`
+
+const StyledAdventureStatus = styled.span`
+  span {
+    display: flex;
+    width: 90px;
+    justify-content: space-around;
+    margin: 0 0 6px;
+  }
+`
+
 const StyledRemainingTime = styled(RemainingTime)`
   width: 80px;
+  p, p::after {
+    margin-top:2px;
+  }
+`
+
+const StyledJournalButton = styled.div`
+  display: flex;
+  width: 87px;
+  justify-content: space-around;
+  border-radius: 4px;
+  background: url("/trait-icons/Mission Item.png") left/contain no-repeat;
+  padding-left: 20px;
+  margin-top: -3px;
+`
+
+const StyledAdventureText = styled(Caption).attrs({ as: 'div' })`
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 14px 5px 14px;
+  color: ${({ theme }) => theme.colors.darkGray300};
+  background-color: rgba(255, 255, 255, 0.9);
+  a {
+    color: ${({ theme }) => theme.colors.otterBlue};
+  }
 `
 
 export interface AdventureOttoCardProps {
@@ -121,14 +177,22 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
     }
   }
 
-  const go = () => {
-    setOtto(otto, true)
-    openPopup(undefined, AdventurePopupStep.Map)
+  const goToJournal = () => {
+    setOtto(otto)
+    if (otto.latestAdventurePass?.finishedTx) {
+      goToAdventureResultStep({
+        ottoId: otto.id,
+        tx: otto.latestAdventurePass.finishedTx,
+        locationId: otto.latestAdventurePass.locationId,
+        showEvent: false,
+      })
+    }
   }
 
-  const openRestingPopup = () => {
+  const openPopupWithStep = (step: AdventurePopupStep) => {
     setOtto(otto)
-    openPopup(0, AdventurePopupStep.Resting)
+    const locationId = step === AdventurePopupStep.Resting ? 0 : undefined
+    openPopup(locationId, step)
   }
 
   const onClick = () => {
@@ -137,11 +201,11 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
         check()
         break
       case AdventureOttoStatus.Ready:
-        go()
+        openPopupWithStep(AdventurePopupStep.Map)
         break
       case AdventureOttoStatus.Resting:
         if (otto.restingUntil) {
-          openRestingPopup()
+          openPopupWithStep(AdventurePopupStep.Resting)
         }
         break
       case AdventureOttoStatus.Ongoing:
@@ -150,107 +214,87 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
         }
         break
       default:
-      // do nothing
+        break
     }
   }
 
+  const adventureTexts = {
+    [AdventureOttoStatus.Finished]: t('finished', { name: otto.name, location: location?.name }),
+    [AdventureOttoStatus.Ongoing]: t('ongoing', { name: otto.name, location: location?.name }),
+    [AdventureOttoStatus.Ready]: t('ready', { name: otto.name }),
+    [AdventureOttoStatus.Resting]: t('resting_1', { name: otto.name }),
+  };
+
+  const showJournalButton = [AdventureOttoStatus.Ready, AdventureOttoStatus.Resting].includes(otto.adventureStatus);
+
   return (
-    <StyledAdventureOttoCard>
-      <StyledContainer onClick={onClick} disabled={otto.adventureStatus === AdventureOttoStatus.Unavailable}>
-        <StyledAvatarContainer size={50}>
-          <OttoImage unoptimized size={50} src={otto.image} />
-        </StyledAvatarContainer>
-
+    <StyledAdventureOttoCard disabled={otto.adventureStatus === AdventureOttoStatus.Unavailable} bg={location && location.bgImage ? location.bgImage : ''}>
+      <StyledContainer>
         <StyledDetails>
-          <div>
-            <StyledName>
+          <StyledColumn>
+            <StyledAvatarContainer size={70}>
+              <OttoImage unoptimized size={70} src={otto.image} />
+            </StyledAvatarContainer>
+          </StyledColumn>
+          <StyledColumn>
+            <StyledRow>
               <StyledLevel>LV {otto.level}</StyledLevel>
-              {otto.name}
-            </StyledName>
-          </div>
-          <StyledLocationContainer>
-            <AdventureStatus status={otto.adventureStatus} />
-            {location && (
-              <StyledLocation>
-                <Image unoptimized width={21} height={21} src={location.image} />
-                {location.name}
-              </StyledLocation>
-            )}
-          </StyledLocationContainer>
-        </StyledDetails>
-
-        <StyledAction>
-          {otto.adventureStatus === AdventureOttoStatus.Finished && (
-            <Button Typography={ContentMedium} primaryColor="white" padding="3px 10px">
-              {t('checkOtto')}
-            </Button>
-          )}
-
-          {otto.adventureStatus === AdventureOttoStatus.Ready && (
-            <Button Typography={ContentMedium} primaryColor="white" padding="3px 10px">
-              {t('go')}
-            </Button>
-          )}
-
-          {otto.adventureStatus === AdventureOttoStatus.Resting && otto.restingUntil && (
-            <StyledRemainingTime target={otto.restingUntil} />
-          )}
-
-          {otto.adventureStatus === AdventureOttoStatus.Ongoing &&
-            otto.latestAdventurePass?.canFinishAt !== undefined && (
-              <StyledRemainingTime target={otto.latestAdventurePass?.canFinishAt} />
-            )}
-        </StyledAction>
-      </StyledContainer>
-      <StyledAdventureStatus>
-        {otto.adventureStatus === AdventureOttoStatus.Ready && (
-          <>
-            {t('ready', { name: otto.name })}
-            {otto.latestAdventurePass && (
-              <div>
-                <a
-                  onClick={() => {
-                    setOtto(otto)
-                    otto.latestAdventurePass &&
-                      otto.latestAdventurePass?.finishedTx &&
-                      goToAdventureResultStep({
-                        ottoId: otto.id,
-                        tx: otto.latestAdventurePass.finishedTx,
-                        locationId: otto.latestAdventurePass.locationId,
-                        showEvent: false,
-                      })
-                  }}
-                >
-                  {t('resting_2')}
+              <StyledName bg={location && location.bgImage ? location.bgImage : ''} adventureStatus={otto.adventureStatus}>
+                {otto.name}
+              </StyledName>
+            </StyledRow>
+            <StyledLocationContainer>
+              {location && (
+                <StyledLocation>
+                  <Image unoptimized width={21} height={21} src={location.image} />
+                  {location.name}
+                </StyledLocation>
+              )}
+            </StyledLocationContainer>
+          </StyledColumn>
+          <StyledRightColumn>
+            <StyledRow>
+              <StyledAdventureStatus>
+                <AdventureStatus status={otto.adventureStatus} />
+              </StyledAdventureStatus>
+            </StyledRow>
+            <StyledRow>
+              {otto.adventureStatus === AdventureOttoStatus.Finished && (
+                <Button Typography={ContentMedium} primaryColor="white" padding="3px 10px" onClick={onClick}>
+                  {t('checkOtto')}
+                </Button>
+              )}
+              {otto.adventureStatus === AdventureOttoStatus.Ready && (
+                <Button Typography={ContentSmall} primaryColor="white" padding="3px 10px" onClick={onClick}>
+                  {t('go')}
+                </Button>
+              )}
+              {(otto.adventureStatus === AdventureOttoStatus.Resting || 
+                (otto.adventureStatus === AdventureOttoStatus.Ongoing && 
+                otto.latestAdventurePass?.canFinishAt !== undefined)
+              ) && (
+                <a onClick={onClick}>
+                  <StyledRemainingTime target={
+                    otto.adventureStatus === AdventureOttoStatus.Resting ? 
+                    otto.restingUntil : 
+                    otto.latestAdventurePass?.canFinishAt
+                  } />
                 </a>
-              </div>
-            )}
-          </>
+              )}
+            </StyledRow>
+          </StyledRightColumn>
+        </StyledDetails>
+      </StyledContainer>
+      <StyledAdventureText>
+        <span>{adventureTexts[otto.adventureStatus]}</span>
+        {showJournalButton && (
+          <ContentSmall onClick={goToJournal}>
+            <StyledJournalButton>
+              <a>{t('results')}</a>
+            </StyledJournalButton>
+          </ContentSmall>
         )}
-
-        {otto.adventureStatus === AdventureOttoStatus.Ongoing &&
-          t('ongoing', { name: otto.name, location: location?.name })}
-        {otto.adventureStatus === AdventureOttoStatus.Resting && (
-          <>
-            {t('resting_1', { name: otto.name })}
-            <a
-              onClick={() => {
-                setOtto(otto)
-                otto.latestAdventurePass &&
-                  otto.latestAdventurePass?.finishedTx &&
-                  goToAdventureResultStep({
-                    ottoId: otto.id,
-                    tx: otto.latestAdventurePass.finishedTx,
-                    locationId: otto.latestAdventurePass.locationId,
-                    showEvent: false,
-                  })
-              }}
-            >
-              {t('resting_2')}
-            </a>
-          </>
-        )}
-      </StyledAdventureStatus>
+      </StyledAdventureText>
     </StyledAdventureOttoCard>
   )
 }, isEqual)

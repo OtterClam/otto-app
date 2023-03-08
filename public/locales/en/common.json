@@ -399,6 +399,7 @@
     "legendary_boost_added": "BRS+100",
     "legendary_boost_removed": "BRS+0\n(The initial traits have been replaced)",
     "legendary_note": "Artist chosen Otto that is super rare and unique.",
+    "level": "Level: {{level}}",
     "opensea_link": "View on OpenSea",
     "personality": "Personality: {{personality}}",
     "play_voice": "Hear this Otto's voice",
@@ -1004,7 +1005,9 @@
     "resting_2": "View the previous adventure journal here >",
     "resting_1": "{{name}} is resting now. ",
     "ready": "{{name}} is ready for an adventure!",
-    "ongoing": "{{name}} is exploring {{location}}..."
+    "ongoing": "{{name}} is exploring {{location}}...",
+    "finished": "{{name}} has finished exploring {{location}}!",
+    "results": "Results"
   },
   "adventureLocationPopup": {
     "difficulty": "Difficulty:",
