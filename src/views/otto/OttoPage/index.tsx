@@ -480,7 +480,7 @@ export default function OttoPage() {
             <StyledStat>
               <StyledAttrs>
                 {otto?.displayAttrs.map(({ trait_type, value }, index) => (
-                  <StyledAttr key={index}>
+                  <StyledAttr key={trait_type}>
                     <StyledAttrLabel>
                       {AttrIconsMap[trait_type] && (
                         <StyledAttrIcon icon={AttrIconsMap[trait_type]} />
