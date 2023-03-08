@@ -11,10 +11,9 @@ const plugins = [
   }],
   ['imagemin-jpegtran', {
     progressive: true,
-    quality: 80 // set maximum quality value (0-100)
   }],
   ['imagemin-optipng', {
-    optimizationLevel: 5,
+    optimizationLevel: 5, // set maximum optimization level (0-7)
   }],
   ['imagemin-svgo', {
     plugins: [
