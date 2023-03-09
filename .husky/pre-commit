@@ -4,5 +4,5 @@
 yarn check-types
 yarn next lint --quiet
 ./node_modules/.bin/lint-staged
-# node scripts/imagemin.mjs {src,public}/**/*.{jpg,png,svg,gif}
+node scripts/imagemin.mjs {src,public}/**/*.{jpg,png,svg,gif}
 
