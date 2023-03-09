@@ -361,7 +361,7 @@ export default function OttoPage() {
         : null,
     [otto, t]
   );
-  const AttrIconsMap = useMemo(() => ({
+  const AttrIconsMap: {[key: string]: string} = useMemo(() => ({
     'STR': '/trait-icons/STR.png',
     'DEF': '/trait-icons/DEF.png',
     'DEX': '/trait-icons/DEX.png',
