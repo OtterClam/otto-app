@@ -15,18 +15,25 @@ import { memo } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentExtraSmall, ContentSmall, ContentMedium, Note } from 'styles/typography'
 import RemainingTime from './RemainingTime'
+import React, { HTMLAttributes } from 'react';
 
-const StyledAdventureOttoCard = styled.div`
+interface AdventureOttoCardProps extends HTMLAttributes<HTMLDivElement> {
+  bg?: string;
+  adventureStatus?: AdventureOttoStatus;
+  otto: Otto;
+}
+
+const StyledAdventureOttoCard = styled.div<{ bg?: string, adventureStatus?: AdventureOttoStatus }>`
   display: flex;
   flex-direction: column;
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.colors.otterBlack};
   overflow: hidden;
   margin-bottom: 8px;
-  background: ${({ theme, disabled, bg }) =>
-    bg ? `center / cover url(${bg})` : (disabled ? theme.colors.lightGray400 : theme.colors.white)};
+  background: ${({ theme, bg }) =>
+    bg ? `center / cover url(${bg})` : theme.colors.white};
   background-position-y: 70%;
-`
+`;
 
 const StyledContainer = styled.div`
   display: flex;
@@ -90,7 +97,7 @@ const StyledLevel = styled(Caption)`
   white-space: nowrap;
 `
 
-const StyledName = styled(Caption)`
+const StyledName = styled(Caption)<{ adventureStatus?: AdventureOttoStatus }>`
   display: inline-flex;
   padding: 3px 7px 1px;
   margin: 0 5px;
@@ -102,7 +109,7 @@ const StyledName = styled(Caption)`
       ? theme.colors.lightGray200
       : "none"};
   white-space: nowrap;
-`
+`;
 
 const StyledLocationContainer = styled.div`
   display: flex;
@@ -159,11 +166,7 @@ const StyledAdventureText = styled(Caption).attrs({ as: 'div' })`
   }
 `
 
-export interface AdventureOttoCardProps {
-  otto: Otto
-}
-
-export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps) {
+export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: AdventureOttoCardProps) {
   const location = useAdventureLocation(otto.currentLocationId)
   const { t } = useTranslation('', { keyPrefix: 'adventureOttoCard' })
   const { setOtto } = useOtto()
@@ -228,7 +231,7 @@ export default memo(function AdventureOttoCard({ otto }: AdventureOttoCardProps)
   const showJournalButton = [AdventureOttoStatus.Ready, AdventureOttoStatus.Resting].includes(otto.adventureStatus);
 
   return (
-    <StyledAdventureOttoCard disabled={otto.adventureStatus === AdventureOttoStatus.Unavailable} bg={location && location.bgImage ? location.bgImage : ''}>
+    <StyledAdventureOttoCard bg={location && location.bgImage ? location.bgImage : ''} adventureStatus={otto.adventureStatus}>
       <StyledContainer>
         <StyledDetails>
           <StyledColumn>
