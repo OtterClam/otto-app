@@ -15,15 +15,14 @@ import { memo } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentExtraSmall, ContentSmall, ContentMedium, Note } from 'styles/typography'
 import RemainingTime from './RemainingTime'
-import React, { HTMLAttributes } from 'react';
 
-interface AdventureOttoCardProps extends HTMLAttributes<HTMLDivElement> {
+interface AdventureOttoCardProps {
   bg?: string;
   adventureStatus?: AdventureOttoStatus;
   otto: Otto;
 }
 
-const StyledAdventureOttoCard = styled.div<{ bg?: string, adventureStatus?: AdventureOttoStatus }>`
+const StyledAdventureOttoCard = styled.div<AdventureOttoCardProps>`
   display: flex;
   flex-direction: column;
   border-radius: 5px;
@@ -97,7 +96,7 @@ const StyledLevel = styled(Caption)`
   white-space: nowrap;
 `
 
-const StyledName = styled(Caption)<{ adventureStatus?: AdventureOttoStatus }>`
+const StyledName = styled(Caption)<AdventureOttoCardProps>`
   display: inline-flex;
   padding: 3px 7px 1px;
   margin: 0 5px;
@@ -231,7 +230,7 @@ export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: Ad
   const showJournalButton = [AdventureOttoStatus.Ready, AdventureOttoStatus.Resting].includes(otto.adventureStatus);
 
   return (
-    <StyledAdventureOttoCard bg={location && location.bgImage ? location.bgImage : ''} adventureStatus={otto.adventureStatus}>
+    <StyledAdventureOttoCard bg={location && location.bgImage ? location.bgImage : ''} adventureStatus={otto.adventureStatus} otto={otto}>
       <StyledContainer>
         <StyledDetails>
           <StyledColumn>
@@ -242,7 +241,7 @@ export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: Ad
           <StyledColumn>
             <StyledRow>
               <StyledLevel>LV {otto.level}</StyledLevel>
-              <StyledName bg={location && location.bgImage ? location.bgImage : ''} adventureStatus={otto.adventureStatus}>
+              <StyledName bg={location && location.bgImage ? location.bgImage : ''} adventureStatus={otto.adventureStatus} otto={otto}>
                 {otto.name}
               </StyledName>
             </StyledRow>
@@ -277,10 +276,10 @@ export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: Ad
                 otto.latestAdventurePass?.canFinishAt !== undefined)
               ) && (
                 <a onClick={onClick}>
-                  <StyledRemainingTime target={
-                    otto.adventureStatus === AdventureOttoStatus.Resting ? 
-                    otto.restingUntil : 
-                    otto.latestAdventurePass?.canFinishAt
+                  <StyledRemainingTime  target={
+                    otto.adventureStatus === AdventureOttoStatus.Resting 
+                      ? otto.restingUntil ?? new Date()
+                      : otto.latestAdventurePass?.canFinishAt ?? new Date()
                   } />
                 </a>
               )}
@@ -289,7 +288,9 @@ export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: Ad
         </StyledDetails>
       </StyledContainer>
       <StyledAdventureText>
-        <span>{adventureTexts[otto.adventureStatus]}</span>
+        {otto.adventureStatus !== AdventureOttoStatus.Unavailable && (
+          <span>{adventureTexts[otto.adventureStatus]}</span>
+        )}
         {showJournalButton && (
           <ContentSmall onClick={goToJournal}>
             <StyledJournalButton>
