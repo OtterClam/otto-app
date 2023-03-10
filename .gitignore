@@ -33,6 +33,7 @@ tsconfig.tsbuildinfo
 # generated files
 public/locales/zh-cn/*.json
 
-# yarn cache
+# local yarn install
+yarn.lock
 .yarn/*
 .yarnrc.yml
