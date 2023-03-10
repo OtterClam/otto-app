@@ -1,9 +1,9 @@
 import Board, { Background } from 'components/Board'
-import WhitepaperView from 'views/whitepaper'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import IFrameLayout from 'layouts/IFrameLayout'
 import { NextPageWithLayout } from './_app'
+import { WhitepaperView } from 'views/iframe'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
@@ -11,7 +11,11 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   },
 })
 
-const WhitepaperPage: NextPageWithLayout = WhitepaperView
+const WhitepaperPage: NextPageWithLayout = () => {
+  return (
+    <WhitepaperView />
+  )
+}
 
 WhitepaperPage.getLayout = (page, i18n) => {
   return (
