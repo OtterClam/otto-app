@@ -24,7 +24,7 @@ export default function FloatingNavButtons({ className }: { className?: string }
         </div>
       </Tooltip>
       <NavButton showNotifcationIcon image={giveawayImage} link="/giveaway" label={t('giveaway')} />
-      <NavButton image={whitePaperImage} link="https://docs.ottopia.app/ottopia/" label={t('whitepaper')} />
+      <NavButton image={whitePaperImage} link="/whitepaper" label={t('whitepaper')} />
     </StyledContainer>
   )
 }
