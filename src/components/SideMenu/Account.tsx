@@ -35,7 +35,7 @@ const StyledInfo = styled.div`
   flex-direction: column;
 `
 
-const StyledDisconnectButtoon = styled(Caption).attrs({ as: 'button' })`
+const StyledDisconnectButton = styled(Caption).attrs({ as: 'button' })`
   color: ${({ theme }) => theme.colors.darkGray400};
 `
 
@@ -51,7 +51,7 @@ export default function Account() {
         <ContentExtraSmall>{address}</ContentExtraSmall>
         <ContentExtraSmall>Polygon</ContentExtraSmall>
       </StyledInfo>
-      <StyledDisconnectButtoon onClick={() => deactivate()}>{t('disconnect')}</StyledDisconnectButtoon>
+      <StyledDisconnectButton onClick={() => deactivate()}>{t('disconnect')}</StyledDisconnectButton>
     </StyledContainer>
   )
 }
