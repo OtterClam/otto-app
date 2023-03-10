@@ -178,14 +178,14 @@ export default function ResultStep() {
     <Button
       Typography={Headline}
       onClick={() => {
-        setOtto(otto, true);
-        closePopup();
-        openPopup(location.id, AdventurePopupStep.PreviewOtto);
+        setOtto(otto, true)
+        closePopup()
+        openPopup(location.id, AdventurePopupStep.PreviewOtto)
       }}
     >
       {t('explore_again_btn')}
     </Button>
-  );
+  )
 
   return (
     <StyledResultStep bg={location.bgImageBlack}>

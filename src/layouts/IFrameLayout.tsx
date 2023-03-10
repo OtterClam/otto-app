@@ -1,6 +1,6 @@
 import GameMenu from 'components/GameMenu'
 import { PropsWithChildren } from 'react'
-import styled from 'styled-components/macro'
+import styled, { createGlobalStyle } from 'styled-components/macro'
 import PageHeader from '../components/PageHeader'
 
 const StyledBody = styled.div`
@@ -17,8 +17,6 @@ const StyledGameMenu = styled(GameMenu)`
   bottom: 0;
   width: 100%;
 `
-
-import { createGlobalStyle } from 'styled-components/macro'
 
 const GlobalStyle = createGlobalStyle`
   body {

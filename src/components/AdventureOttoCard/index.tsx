@@ -17,9 +17,9 @@ import { Caption, ContentExtraSmall, ContentSmall, ContentMedium, Note } from 's
 import RemainingTime from './RemainingTime'
 
 interface AdventureOttoCardProps {
-  bg?: string;
-  adventureStatus?: AdventureOttoStatus;
-  otto: Otto;
+  bg?: string
+  adventureStatus?: AdventureOttoStatus
+  otto: Otto
 }
 
 const StyledAdventureOttoCard = styled.div<AdventureOttoCardProps>`
@@ -29,10 +29,9 @@ const StyledAdventureOttoCard = styled.div<AdventureOttoCardProps>`
   border: 1px solid ${({ theme }) => theme.colors.otterBlack};
   overflow: hidden;
   margin-bottom: 8px;
-  background: ${({ theme, bg }) =>
-    bg ? `center / cover url(${bg})` : theme.colors.white};
+  background: ${({ theme, bg }) => (bg ? `center / cover url(${bg})` : theme.colors.white)};
   background-position-y: 70%;
-`;
+`
 
 const StyledContainer = styled.div`
   display: flex;
@@ -70,7 +69,8 @@ const StyledRow = styled.div`
   display: flex;
   flex-direction: row;
   align-self: flex-end;
-  button, a div{
+  button,
+  a div {
     min-width: 90px;
   }
 `
@@ -103,12 +103,11 @@ const StyledName = styled(Caption)<AdventureOttoCardProps>`
   border-radius: 4px;
   color: ${({ theme }) => theme.colors.otterBlack};
   background: ${({ adventureStatus, theme }) =>
-    adventureStatus === AdventureOttoStatus.Ongoing ||
-    adventureStatus === AdventureOttoStatus.Finished
+    adventureStatus === AdventureOttoStatus.Ongoing || adventureStatus === AdventureOttoStatus.Finished
       ? theme.colors.lightGray200
-      : "none"};
+      : 'none'};
   white-space: nowrap;
-`;
+`
 
 const StyledLocationContainer = styled.div`
   display: flex;
@@ -139,8 +138,9 @@ const StyledAdventureStatus = styled.span`
 
 const StyledRemainingTime = styled(RemainingTime)`
   width: 80px;
-  p, p::after {
-    margin-top:2px;
+  p,
+  p::after {
+    margin-top: 2px;
   }
 `
 
@@ -149,7 +149,7 @@ const StyledJournalButton = styled.div`
   width: 87px;
   justify-content: space-around;
   border-radius: 4px;
-  background: url("/trait-icons/Mission Item.png") left/contain no-repeat;
+  background: url('/trait-icons/Mission Item.png') left/contain no-repeat;
   padding-left: 20px;
   margin-top: -3px;
 `
@@ -225,12 +225,16 @@ export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: Ad
     [AdventureOttoStatus.Ongoing]: t('ongoing', { name: otto.name, location: location?.name }),
     [AdventureOttoStatus.Ready]: t('ready', { name: otto.name }),
     [AdventureOttoStatus.Resting]: t('resting_1', { name: otto.name }),
-  };
+  }
 
-  const showJournalButton = [AdventureOttoStatus.Ready, AdventureOttoStatus.Resting].includes(otto.adventureStatus);
+  const showJournalButton = [AdventureOttoStatus.Ready, AdventureOttoStatus.Resting].includes(otto.adventureStatus)
 
   return (
-    <StyledAdventureOttoCard bg={location && location.bgImage ? location.bgImage : ''} adventureStatus={otto.adventureStatus} otto={otto}>
+    <StyledAdventureOttoCard
+      bg={location && location.bgImage ? location.bgImage : ''}
+      adventureStatus={otto.adventureStatus}
+      otto={otto}
+    >
       <StyledContainer>
         <StyledDetails>
           <StyledColumn>
@@ -241,7 +245,11 @@ export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: Ad
           <StyledColumn>
             <StyledRow>
               <StyledLevel>LV {otto.level}</StyledLevel>
-              <StyledName bg={location && location.bgImage ? location.bgImage : ''} adventureStatus={otto.adventureStatus} otto={otto}>
+              <StyledName
+                bg={location && location.bgImage ? location.bgImage : ''}
+                adventureStatus={otto.adventureStatus}
+                otto={otto}
+              >
                 {otto.name}
               </StyledName>
             </StyledRow>
@@ -271,16 +279,17 @@ export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: Ad
                   {t('go')}
                 </Button>
               )}
-              {(otto.adventureStatus === AdventureOttoStatus.Resting || 
-                (otto.adventureStatus === AdventureOttoStatus.Ongoing && 
-                otto.latestAdventurePass?.canFinishAt !== undefined)
-              ) && (
+              {(otto.adventureStatus === AdventureOttoStatus.Resting ||
+                (otto.adventureStatus === AdventureOttoStatus.Ongoing &&
+                  otto.latestAdventurePass?.canFinishAt !== undefined)) && (
                 <a onClick={onClick}>
-                  <StyledRemainingTime  target={
-                    otto.adventureStatus === AdventureOttoStatus.Resting 
-                      ? otto.restingUntil ?? new Date()
-                      : otto.latestAdventurePass?.canFinishAt ?? new Date()
-                  } />
+                  <StyledRemainingTime
+                    target={
+                      otto.adventureStatus === AdventureOttoStatus.Resting
+                        ? otto.restingUntil ?? new Date()
+                        : otto.latestAdventurePass?.canFinishAt ?? new Date()
+                    }
+                  />
                 </a>
               )}
             </StyledRow>
