@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import giveawayImage from './giveaway.png'
 import NavButton from './NavButton'
 import oldAppImage from './old-app.png'
+import whitePaperImage from './news.png'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -23,6 +24,7 @@ export default function FloatingNavButtons({ className }: { className?: string }
         </div>
       </Tooltip>
       <NavButton showNotifcationIcon image={giveawayImage} link="/giveaway" label={t('giveaway')} />
+      <NavButton image={whitePaperImage} link="https://docs.ottopia.app/ottopia/" label={t('whitepaper')} />
     </StyledContainer>
   )
 }

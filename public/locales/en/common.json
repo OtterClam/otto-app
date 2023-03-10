@@ -788,7 +788,8 @@
   "floatingNavButtons": {
     "giveaway": "Giveaway",
     "oldApp": "Old App",
-    "oldAppTip": "Looking for your old Pearl Chests? \n\nClick Here!"
+    "oldAppTip": "Looking for your old Pearl Chests? \n\nClick Here!",
+    "whitepaper": "Whitepaper"
   },
   "gameMenu": {
     "portals": "My Portals",

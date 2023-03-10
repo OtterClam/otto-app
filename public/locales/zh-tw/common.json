@@ -767,7 +767,8 @@
   "floatingNavButtons": {
     "giveaway": "禮物",
     "oldApp": "舊 App",
-    "oldAppTip": "還有舊版的質押貝殼尚未提領嗎？\n\n點擊這裡！"
+    "oldAppTip": "還有舊版的質押貝殼尚未提領嗎？\n\n點擊這裡！",
+    "whitepaper": "查看白皮書"
   },
   "gameMenu": {
     "portals": "我的傳送門",
