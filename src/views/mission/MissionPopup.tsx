@@ -51,6 +51,7 @@ const StyledListContainer = styled.div`
   width: 100%;
   height: calc(90vh - 156px);
   overflow: scroll;
+  overflow-x: auto;
 `
 
 const StyledCloseButton = styled(CloseButton)`
