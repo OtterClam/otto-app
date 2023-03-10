@@ -104,7 +104,7 @@ export const pins: PinData[] = [
   {
     key: 'palace',
     image: palaceImage,
-    link: 'https://warm-egg-c0e.notion.site/64952dfd28ee4aee85a1c837af30f71d?v=251e24cda631430992c183fba21ed185',
+    link: '/palace',
     position: {
       x: 1.35,
       y: -11,
