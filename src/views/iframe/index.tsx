@@ -6,7 +6,12 @@ const StyledIframe = styled.iframe`
   overflow: hidden;
 `;
 
-function AutoHeightIframe(props: {src: string, scrolling?: 'yes' | 'no'}) {
+interface IFrameViewProps {
+  src: string;
+  scrolling?: 'yes' | 'no';
+}
+
+export default function IFrameView({ src, scrolling = 'no' }: IFrameViewProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   function handleMessage(event: MessageEvent) {
@@ -20,21 +25,9 @@ function AutoHeightIframe(props: {src: string, scrolling?: 'yes' | 'no'}) {
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, [props.src]);
+  }, [src]);
 
   return (
-    <StyledIframe ref={iframeRef} src={props.src} frameBorder="0" scrolling={props.scrolling ?? 'no'} />
-  );
-}
-
-export function PalaceView() {
-  return (
-    <AutoHeightIframe src="https://v2-embednotion.com/64952dfd28ee4aee85a1c837af30f71d" scrolling="no" />
-  );
-}
-
-export function WhitepaperView() {
-  return (
-    <AutoHeightIframe src="https://docs.ottopia.app/ottopia" scrolling="yes" />
+    <StyledIframe ref={iframeRef} src={src} frameBorder="0" scrolling={scrolling} />
   );
 }

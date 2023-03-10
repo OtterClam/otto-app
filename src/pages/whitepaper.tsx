@@ -3,7 +3,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import IFrameLayout from 'layouts/IFrameLayout'
 import { NextPageWithLayout } from './_app'
-import { WhitepaperView } from 'views/iframe'
+import IFrameView from 'views/iframe'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
@@ -13,7 +13,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => ({
 
 const WhitepaperPage: NextPageWithLayout = () => {
   return (
-    <WhitepaperView />
+    <IFrameView src="https://docs.ottopia.app/ottopia" scrolling="yes" />
   )
 }
 
