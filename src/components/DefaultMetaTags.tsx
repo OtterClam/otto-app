@@ -3,6 +3,7 @@ import Head from 'next/head'
 export default function DefaultMetaTags() {
   return (
     <Head>
+      <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, maximum-scale=1" />
       <meta property="og:title" content="Otto | The first official citizen of the Otter Kingdom" />
       <meta
         name="description"
