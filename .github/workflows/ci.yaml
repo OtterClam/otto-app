@@ -1,0 +1,21 @@
+name: ci
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    paths:
+      - .github/workflows/app.yml
+      - clients/app/**
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - run: yarn --frozen-lockfile
+      - run: yarn check-types
+      - run: yarn next lint
