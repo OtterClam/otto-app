@@ -36,6 +36,16 @@ const DicePopup = dynamic(() => import('components/DicePopup'), {
   ssr: false,
 })
 
+const AttrIconsMap = {
+  STR: '/trait-icons/STR.png',
+  DEF: '/trait-icons/DEF.png',
+  DEX: '/trait-icons/DEX.png',
+  INT: '/trait-icons/INT.png',
+  LUK: '/trait-icons/LUK.png',
+  CON: '/trait-icons/_CON.png',
+  CUTE: '/trait-icons/CUTE.png',
+};
+
 const StyledOttoPage = styled.div`
   min-height: 100%;
   background: white;
@@ -360,18 +370,6 @@ export default function OttoPage() {
           ]
         : null,
     [otto, t]
-  )
-  const AttrIconsMap: { [key: string]: string } = useMemo(
-    () => ({
-      STR: '/trait-icons/STR.png',
-      DEF: '/trait-icons/DEF.png',
-      DEX: '/trait-icons/DEX.png',
-      INT: '/trait-icons/INT.png',
-      LUK: '/trait-icons/LUK.png',
-      CON: '/trait-icons/_CON.png',
-      CUTE: '/trait-icons/CUTE.png',
-    }),
-    []
   )
 
   const openAttributePointsPopup = () => {
