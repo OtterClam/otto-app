@@ -113,7 +113,7 @@ export default function UseItemCompleteView({ otto, hideCloseButton, updatedOtto
       <StyledOttoResult>
         {otto && <StyledOttoCard otto={otto} />}
         <StyledArrow src={Arrow.src} />
-        {newOttoReady && (updatedOtto || newOtto) && <StyledOttoCard otto={updatedOtto ?? newOtto} />}
+        {newOttoReady && (updatedOtto || newOtto) && <StyledOttoCard otto={updatedOtto ?? (newOtto as Otto)} />}
       </StyledOttoResult>
       {receivedItem && (
         <StyledReceivedItem>
