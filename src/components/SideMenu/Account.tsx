@@ -35,12 +35,12 @@ const StyledInfo = styled.div`
   flex-direction: column;
 `
 
-const StyledDisconnectButtoon = styled(Caption).attrs({ as: 'button' })`
-  color: ${({ theme }) => theme.colors.darkGray100};
+const StyledDisconnectButton = styled(Caption).attrs({ as: 'button' })`
+  color: ${({ theme }) => theme.colors.darkGray400};
 `
 
 export default function Account() {
-  const { account } = useEthers()
+  const { account, deactivate } = useEthers()
   const { t } = useTranslation('', { keyPrefix: 'side_menu' })
 
   const address = `${account!.slice(0, 3)}...${account!.slice(account!.length - 3, account!.length)}`
@@ -51,7 +51,7 @@ export default function Account() {
         <ContentExtraSmall>{address}</ContentExtraSmall>
         <ContentExtraSmall>Polygon</ContentExtraSmall>
       </StyledInfo>
-      <StyledDisconnectButtoon>{t('disconnect')}</StyledDisconnectButtoon>
+      <StyledDisconnectButton onClick={() => deactivate()}>{t('disconnect')}</StyledDisconnectButton>
     </StyledContainer>
   )
 }
