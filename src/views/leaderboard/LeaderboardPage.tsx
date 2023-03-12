@@ -53,12 +53,19 @@ const StyledBoard = styled(Board)`
 `
 
 export default function LeaderboardPage() {
-  const { t } = useTranslation('', { keyPrefix: 'leaderboard' })
+  const { t } = useTranslation('', {
+    keyPrefix: 'leaderboard',
+  })
+
   const { constellation } = useRarityEpoch()
   const {
     epoch: { themes },
   } = useLeaderboardEpoch()
-  const [boost, setBoost] = useState<null | { location: string; successRate: number; image: string }>(null)
+  const [boost, setBoost] = useState<null | {
+    location: string
+    successRate: number
+    image: string
+  }>(null)
   const api = useApi()
   const router = useRouter()
   const isAdventure = Boolean(router.query.adventure)
@@ -68,7 +75,7 @@ export default function LeaderboardPage() {
       .getAdventureBoost()
       .then(setBoost)
       .catch(err => {
-        alert(err.message)
+        console.error('failed getAdventureBoost', err.message)
       })
   }, [api])
 
@@ -113,13 +120,24 @@ export default function LeaderboardPage() {
             {!isAdventure && (
               <Info
                 image={LeftInfo.src}
-                desc={t('left_info', { themes })}
+                desc={t('left_info', {
+                  themes,
+                })}
                 links={[
-                  { text: t('left_info_link'), href: 'https://docs.ottopia.app/ottopia/events/rarity-competition-s2' },
+                  {
+                    text: t('left_info_link'),
+                    href: 'https://docs.ottopia.app/ottopia/events/rarity-competition-s2',
+                  },
                 ]}
               />
             )}
-            <Info image={RightInfo.src} desc={t('right_info', { constellation })} links={[]} />
+            <Info
+              image={RightInfo.src}
+              desc={t('right_info', {
+                constellation,
+              })}
+              links={[]}
+            />
           </StyledInfos>
           <StyledRankList />
         </StyledLeaderboardPage>
