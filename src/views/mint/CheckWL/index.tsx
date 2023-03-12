@@ -1,6 +1,6 @@
 import { useEthers } from '@usedapp/core'
 import Button from 'components/Button'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useCallback } from 'react'
 import axios from 'axios'
 import { useTranslation } from 'next-i18next'
 import { useDispatch } from 'react-redux'
@@ -11,7 +11,6 @@ import { WHITELIST_MINT_TIME, PUBLIC_MINT_TIME } from 'constant'
 import CheckImage from './otter_reviewing_paper.png'
 import HasWLImage from './has-wl.png'
 import NoWLImage from './no-wl.png'
-import { useCallback } from 'react';
 
 const StyledCheckWL = styled.div`
   width: 90%;

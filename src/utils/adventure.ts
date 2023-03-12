@@ -3,7 +3,10 @@ import { RawAdventureLocation } from 'models/AdventureLocation'
 import { RawOtto } from 'models/Otto'
 import { ParsedUrlQuery } from 'querystring'
 
-const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_MAINNET!
+const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_MAINNET
+if (!baseUrl) {
+  throw new Error('API endpoint not defined')
+}
 
 export interface ServerSideAdventureShare {
   location: RawAdventureLocation
