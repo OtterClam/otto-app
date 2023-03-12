@@ -36,7 +36,7 @@ const DicePopup = dynamic(() => import('components/DicePopup'), {
   ssr: false,
 })
 
-const AttrIconsMap = {
+const AttrIconsMap: { [key: string]: string } = {
   STR: '/trait-icons/STR.png',
   DEF: '/trait-icons/DEF.png',
   DEX: '/trait-icons/DEX.png',
