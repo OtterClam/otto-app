@@ -293,12 +293,13 @@ export default function InvestmentsPage({ className }: Props) {
   const { loading, metrics } = useCrossChainTreasuryMetrics()
 
   const toDateMetrics = useMemo(
-    () =>
-      metrics.length > 0
-        ? metrics.reduce(function (prev, curr) {
+    function findClosestMetric() {
+      return metrics.length > 0
+        ? metrics.reduce(function findClosest(prev, curr) {
             return Math.abs(parseInt(curr.id, 10) - toDate) < Math.abs(parseInt(prev.id, 10) - toDate) ? curr : prev
           })
-        : undefined,
+        : undefined
+    },
     [metrics, toDate]
   )
 
@@ -321,7 +322,7 @@ export default function InvestmentsPage({ className }: Props) {
         return { inv: x, pct: portfolioPcts[i] }
       })
       .sort((a, b) => b.pct - a.pct)
-  }, [investments, toDateMetrics, daySecs])
+  }, [investments, toDateMetrics, lastDataDate])
 
   const sortedInvestments = useMemo(() => joinedInvestments.map(x => x.inv), [joinedInvestments])
   const revenue = sortedInvestments?.reduce(
@@ -329,10 +330,9 @@ export default function InvestmentsPage({ className }: Props) {
     0
   )
 
-  const dateDiff = useMemo(() => (utcTo - utcFrom) / daySecs, [toDate, fromDate, daySecs])
+  const dateDiff = useMemo(() => (utcTo - utcFrom) / daySecs, [utcFrom, utcTo, daySecs])
   const maybeTmv = toDateMetrics?.treasuryMarketValue ?? 1
   const netApr = (1 + revenue / maybeTmv / dateDiff) ** 365 * 100 - 100
-
   const [showPnl, setShowPnl] = useState<boolean>(false)
   const showMemo = useMemo(() => showPnl, [showPnl])
   return (

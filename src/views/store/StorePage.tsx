@@ -7,6 +7,7 @@ import Head from 'next/head'
 import { useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentMedium, Display3 } from 'styles/typography'
+import Image from 'next/image'
 import BorderedProductCard from './BorderedProductCard'
 import Curtain from './Curtain'
 import FishProductCard from './FishProductCard'
@@ -163,9 +164,9 @@ export default function StorePage() {
             Date.now() < new Date(flashSell.end_time).valueOf() && (
               <StyledFlashSellBody key={flashSell.id} ref={i === 0 ? bodyRef : null}>
                 <StyledShellChestTitle>
-                  <img src={StarLeft.src} alt="Star Left" />
+                  <Image src={StarLeft.src} alt="Star Left" width="230" height="120" />
                   <Display3>{flashSell.name}</Display3>
-                  <img src={StarRight.src} alt="Star Left" />
+                  <Image src={StarRight.src} alt="Star Left" width="230" height="120" />
                 </StyledShellChestTitle>
                 <StyledChestDesc>
                   <MarkdownWithHtml>{flashSell.desc}</MarkdownWithHtml>
@@ -179,9 +180,9 @@ export default function StorePage() {
           fishStore.map((store, i) => (
             <StyledProductBody key={i}>
               <StyledShellChestTitle>
-                <img src={store.left_img} alt="Left" />
+                <Image src={store.left_img} alt="Left" width="230" height="120" />
                 <Display3>{store.title}</Display3>
-                <img src={store.right_img} alt="Right" />
+                <Image src={store.right_img} alt="Right" width="230" height="120" />
               </StyledShellChestTitle>
               <StyledChestDesc>
                 <MarkdownWithHtml>{store.desc}</MarkdownWithHtml>
@@ -195,9 +196,9 @@ export default function StorePage() {
           ))}
         <StyledProductBody ref={(chestStore?.flashSells.length || 0) > 0 ? null : bodyRef}>
           <StyledShellChestTitle>
-            <img src={GemLeft.src} alt="Gem Left" />
+            <Image src={GemLeft.src} alt="Gem Left" width="230" height="120" />
             <Display3>{t('shell_chest')}</Display3>
-            <img src={GemRight.src} alt="Gem Left" />
+            <Image src={GemRight.src} alt="Gem Left" width="230" height="120" />
           </StyledShellChestTitle>
           <StyledChestDesc>
             {t('chest_desc')}

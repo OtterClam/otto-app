@@ -74,8 +74,8 @@ const PlayPage = () => {
       <DefaultMetaTags />
       <StyledBanner />
       {menus.map(({ title, icon, href }, i) => (
-        <Link key={i} href={href || ''}>
-          <a>
+        <Link key={i} href={href || '#'}>
+          <a href={href || '#'}>
             <StyledMenuButton title={title} icon={icon} disabled={!href} />
           </a>
         </Link>

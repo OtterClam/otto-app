@@ -144,7 +144,7 @@ const useMapSize = (containerSize: { width: number; height: number }) => {
       width: containerSize.height * mapRatio,
       height: containerSize.height,
     }
-  }, [containerSize.width, containerSize.height])
+  }, [containerSize.width, containerSize.height, containerRatio, mapRatio])
 }
 
 const useCloudOffsetTransform = (size?: { width: number; height: number }) => {

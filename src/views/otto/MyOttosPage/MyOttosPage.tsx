@@ -56,7 +56,7 @@ export default function MyOttosPage() {
       return State.HasOttos
     }
     return State.NoOttos
-  }, [account, loading, ottos])
+  }, [loading, ottos])
   const renderContent = useCallback(() => {
     switch (state) {
       case State.Loading:

@@ -195,7 +195,7 @@ export default function MineDialog({ className }: Props) {
           .toString() || '0',
         decimals
       ),
-    [clamAmount, usdPerClam, decimals]
+    [clamAmount, usdPerClam, decimals, CLAM.decimal]
   )
 
   useEffect(() => {
@@ -206,7 +206,7 @@ export default function MineDialog({ className }: Props) {
     if (mineState.state === 'Success') {
       wallet?.setBalance(CLAM.address, balance => balance.sub(utils.parseUnits(clamAmount, 9)))
     }
-  }, [mineState.state])
+  }, [mineState.state, CLAM.address, clamAmount, mineState.status.errorMessage, resetMine, wallet])
 
   return (
     <StyledMineDialog className={className}>

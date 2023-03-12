@@ -133,7 +133,7 @@ export default function MissionPopup() {
       setNewMission(buyState.mission)
       resetBuy()
     }
-  }, [buyState])
+  }, [buyState, resetBuy, setNewMission])
   return (
     <Fullscreen width="660px" show={showPopup}>
       <StyledMissionPopup>

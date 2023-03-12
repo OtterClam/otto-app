@@ -38,7 +38,7 @@ export default function PortalCandidates({ portal, onSummon }: Props) {
   const [candidates, setCandidates] = useState<OttoCandidateMeta[]>([])
   useEffect(() => {
     api.getPortalCandidates(portal.tokenId).then(setCandidates)
-  }, [portal])
+  }, [portal, api])
 
   return (
     <StyledPortalCandidates>

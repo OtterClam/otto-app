@@ -47,7 +47,7 @@ export default function ConnectStep({ onComplete, className }: Props) {
     if (account) {
       onComplete()
     }
-  }, [account])
+  }, [account, onComplete])
   return (
     <StyledStep className={className}>
       <StyledIcon />

@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
+import Link from 'next/link'
 import LockedButton from './LockedButton'
 import Twitter from './twitter.svg'
 
@@ -82,12 +83,12 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
         }
       })
       .catch(err => console.warn(err))
-  }, [])
+  }, [chainId, onComplete])
   useEffect(() => {
     if (!locked) {
       verify()
     }
-  }, [!locked, verify])
+  }, [locked, verify])
   return (
     <StyledStep className={className} locked={locked}>
       <StyledActionContainer>
@@ -127,11 +128,11 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
               {t('verify')}
             </Button>
           ) : (
-            <a href="/api/twitter-login">
+            <Link href="/api/twitter-login">
               <Button padding="0px 10px" Typography={Headline}>
                 {t('verify')}
               </Button>
-            </a>
+            </Link>
           )}
         </StyledVerifyArea>
       )}

@@ -60,7 +60,7 @@ export default function MyPortalsPage() {
       return State.HasPortals
     }
     return State.NoPortals
-  }, [account, loading, data])
+  }, [loading, data])
   const renderContent = useCallback(() => {
     switch (state) {
       case State.Loading:
@@ -88,7 +88,7 @@ export default function MyPortalsPage() {
       default:
         return <ConnectView />
     }
-  }, [state, data])
+  }, [state, data, router])
   return (
     <StyledMyPortalsPage>
       <DefaultMetaTags />

@@ -252,7 +252,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
   if (isMobile) {
     return (
       <Link href={`/ottos/${id}`} passHref>
-        <a>
+        <a href={`/ottos/${id}`}>
           <StyledMobileRow>
             <StyledTd>
               <StyledRank rank={rank}>{rank}</StyledRank>
@@ -287,7 +287,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
 
   return (
     <Link href={`/ottos/${id}`} passHref>
-      <a>
+      <a href={`/ottos/${id}`}>
         <StyledOttoRow isMyOttoRow={isMyOttoRow} adventure={isAdventure}>
           <StyledTd>
             <StyledRank rank={rank}>{rank}</StyledRank>

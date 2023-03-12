@@ -7,6 +7,7 @@ import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { Caption, ContentLarge, Headline } from 'styles/typography'
+import Image from 'next/image'
 
 const StyledProductCard = styled.div`
   display: flex;
@@ -81,7 +82,7 @@ export default function ProductCard({
     <StyledProductCard>
       <Headline>{name}</Headline>
       <StyledImage>
-        <img src={image} alt={name} width="100%" />
+        <Image src={image} alt={name} width="225" height="225" />
       </StyledImage>
       <StyledPrice>
         <ContentLarge>{trim(ethers.utils.formatEther(price), 5)}</ContentLarge>
