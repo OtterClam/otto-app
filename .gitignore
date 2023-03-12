@@ -34,6 +34,5 @@ tsconfig.tsbuildinfo
 public/locales/zh-cn/*.json
 
 # local yarn install
-yarn.lock
 .yarn/*
 .yarnrc.yml
