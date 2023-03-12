@@ -11,6 +11,7 @@ const StyledButton = styled(Note).attrs({ as: 'button' })`
   background: ${({ theme }) => theme.colors.otterBlack};
   color: ${({ theme }) => theme.colors.white};
   border-radius: 9px;
+  padding-top: 2px;
 
   &::before {
     content: '?';
