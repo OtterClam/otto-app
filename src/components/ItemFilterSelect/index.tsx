@@ -1,9 +1,11 @@
 import { AscendingIcon, FilterIcon, SearchIcon, SortedIcon } from 'assets/icons'
+import CloseIcon from 'assets/ui/close_icon_dark.svg'
 import MenuButton from 'components/Button'
 import RealDropdown, { DropdownPostion } from 'components/RealDropdown'
 import { ItemsFilter, ItemsOrder, ItemsSortBy, useItemFilters } from 'contexts/ItemFilters'
 import noop from 'lodash/noop'
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import { memo, useEffect, useMemo, useState, ReactElement } from 'react'
 import styled from 'styled-components'
 import { ContentSmall, Note, RegularInput } from 'styles/typography'
@@ -17,16 +19,6 @@ const StyledMenuItem = styled(ContentSmall).attrs({ as: 'div' })`
 export const BlankIcon = styled.div`
   width: 30px;
   height: 30px;
-`
-
-const StyledBottom = styled(Note).attrs({ as: 'button' })`
-  padding: 0 10px;
-  background: ${({ theme }) => theme.colors.white};
-  border-radius: 6px;
-  border: 0px;
-  height: 37px;
-  display: flex;
-  align-items: center;
 `
 
 const StyledItems = styled(Note).attrs({ as: 'ul' })`
@@ -48,6 +40,7 @@ const StyledItem = styled.li`
   align-items: center;
   &:hover {
     background: ${({ theme }) => theme.colors.lightGray100};
+    border-radius: 6px;
   }
 `
 
@@ -155,7 +148,7 @@ export function FilterSelector() {
       value={filter}
       items={items}
       onSelect={setFilter}
-      position={DropdownPostion.TopRight}
+      position={DropdownPostion.TopLeft}
     />
   )
 }
@@ -182,8 +175,22 @@ const StyledSearchBar = styled(StyledMenuItem)`
   }
 `
 
+const StyledCloseIcon = styled.button`
+  padding-right: 5px;
+  display: flex;
+`
+
+export const BlankCloseIcon = styled.div`
+  width: 21px;
+  height: 16px;
+  padding-right: 5px;
+`
+
 export function SearchBar() {
   const { searchString, setSearchString } = useItemFilters()
+  const onClear = () => {
+    setSearchString('')
+  }
   return (
     <StyledSearchBar>
       <SearchIcon />
@@ -193,6 +200,13 @@ export function SearchBar() {
         value={searchString}
         onChange={e => setSearchString(e.target.value)}
       />
+      {searchString ? (
+        <StyledCloseIcon onClick={onClear}>
+          <Image src={CloseIcon.src} alt="clear" width={16} height={16} />
+        </StyledCloseIcon>
+      ) : (
+        <BlankCloseIcon />
+      )}
     </StyledSearchBar>
   )
 }
