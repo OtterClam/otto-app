@@ -44,7 +44,7 @@ const AttrIconsMap: { [key: string]: string } = {
   LUK: '/trait-icons/LUK.png',
   CON: '/trait-icons/_CON.png',
   CUTE: '/trait-icons/CUTE.png',
-};
+}
 
 const StyledOttoPage = styled.div`
   min-height: 100%;
