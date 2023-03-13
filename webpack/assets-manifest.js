@@ -1,5 +1,5 @@
 const { writeFileSync, readFileSync, mkdirSync } = require('fs')
-const { ConcatSource } = require('webpack-sources');
+const { ConcatSource } = require('webpack-sources')
 const { Compilation } = require('webpack')
 const NormalModule = require('webpack/lib/NormalModule')
 const { dirname, resolve, relative } = require('path')
@@ -16,16 +16,20 @@ const readCachedManifest = () => {
   }
 }
 
-const updateManifestCache = (assets) => {
+const updateManifestCache = assets => {
   mkdirSync(dirname(cachedFile), { recursive: true })
   writeFileSync(cachedFile, JSON.stringify(assets, null, 2))
 }
 
 const updateManifest = (compilation, moduleAssets) => {
   const cache = readCachedManifest()
-  const filePathToModulePath = Object.keys(cache).reduce((obj, key) => Object.assign(obj, {
-    [cache[key]]: key
-  }), {})
+  const filePathToModulePath = Object.keys(cache).reduce(
+    (obj, key) =>
+      Object.assign(obj, {
+        [cache[key]]: key,
+      }),
+    {}
+  )
   const newManifest = {}
 
   const stats = compilation.getStats().toJson({
@@ -33,8 +37,8 @@ const updateManifest = (compilation, moduleAssets) => {
     assets: true,
     cachedAssets: true,
     ids: true,
-    publicPath: true
-  });
+    publicPath: true,
+  })
 
   stats.assets.forEach(asset => {
     if (filePathToModulePath[asset.name]) {
@@ -49,51 +53,68 @@ const updateManifest = (compilation, moduleAssets) => {
   return newManifest
 }
 
-const transformManifest = manifest => Object.keys(manifest).reduce((obj, key) => Object.assign(obj, {
-  [key]: manifest[key].replace(/^\/static\//, '/_next/static/'),
-}), {})
+const transformManifest = manifest =>
+  Object.keys(manifest).reduce(
+    (obj, key) =>
+      Object.assign(obj, {
+        [key]: manifest[key].replace(/^\/static\//, '/_next/static/'),
+      }),
+    {}
+  )
 
 exports.AssetsManifestPlugin = class AssetsManifestPlugin {
   apply(compiler) {
     const assets = {}
 
-    compiler.hooks.thisCompilation.tap({
-      name: 'AssetsManifestPlugin',
-      stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER - 11,
-    }, compilation => {
-      compilation.hooks.processAssets.tap({
+    compiler.hooks.thisCompilation.tap(
+      {
         name: 'AssetsManifestPlugin',
-        stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONS,
-      }, () => {
-        const asset = compilation.getAsset(swFile)
-        if (asset) {
-          const manifest = transformManifest(updateManifest(compilation, assets))
-          compilation.updateAsset(swFile, old => {
-            return new ConcatSource(`self.__ASSETS_LOADER_MANIFEST = ${JSON.stringify(manifest)};`, '\n', old)
-          })
-        }
-      })
-    })
+        stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER - 11,
+      },
+      compilation => {
+        compilation.hooks.processAssets.tap(
+          {
+            name: 'AssetsManifestPlugin',
+            stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONS,
+          },
+          () => {
+            const asset = compilation.getAsset(swFile)
+            if (asset) {
+              const manifest = transformManifest(updateManifest(compilation, assets))
+              compilation.updateAsset(swFile, old => {
+                return new ConcatSource(`self.__ASSETS_LOADER_MANIFEST = ${JSON.stringify(manifest)};`, '\n', old)
+              })
+            }
+          }
+        )
+      }
+    )
 
-    compiler.hooks.compilation.tap({
-      name: 'AssetsManifestPlugin',
-      stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE,
-    }, compilation => {
-      NormalModule.getCompilationHooks(compilation).loader.tap({
+    compiler.hooks.compilation.tap(
+      {
         name: 'AssetsManifestPlugin',
         stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE,
-      }, (loaderContext, module) => {
-        const { emitFile } = loaderContext;
+      },
+      compilation => {
+        NormalModule.getCompilationHooks(compilation).loader.tap(
+          {
+            name: 'AssetsManifestPlugin',
+            stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE,
+          },
+          (loaderContext, module) => {
+            const { emitFile } = loaderContext
 
-        loaderContext.emitFile = (file, content, sourceMap) => {
-          if (module.userRequest && !assets[file]) {
-            const userRequest = relative(resolve(__dirname, '..'), module.userRequest)
-            Object.assign(assets, { [userRequest]: file });
+            loaderContext.emitFile = (file, content, sourceMap) => {
+              if (module.userRequest && !assets[file]) {
+                const userRequest = relative(resolve(__dirname, '..'), module.userRequest)
+                Object.assign(assets, { [userRequest]: file })
+              }
+
+              return emitFile.call(module, file, content, sourceMap)
+            }
           }
-
-          return emitFile.call(module, file, content, sourceMap);
-        };
-      })
-    })
+        )
+      }
+    )
   }
 }

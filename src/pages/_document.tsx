@@ -71,7 +71,6 @@ export default class MyDocument extends Document<{ asPath: string }> {
           <meta charSet="utf-8" />
           <link rel="icon" href="/favicon.ico" />
           <link rel="canonical" href={process.env.BASE_URL + this.props.asPath} />
-          <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, maximum-scale=1" />
           <meta name="theme-color" content="#000000" />
           <meta property="og:type" content="website" />
           <link rel="apple-touch-icon" href="/logo192.png" />

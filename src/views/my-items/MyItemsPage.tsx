@@ -32,6 +32,7 @@ const StyledSectionTabContainer = styled.div`
   display: flex;
   align-items: stretch;
   overflow: scroll;
+  overflow-x: auto;
   border-bottom: 4px solid ${({ theme }) => theme.colors.otterBlack};
 `
 
@@ -46,7 +47,7 @@ const StyledSectionTab = styled.button<{ section: string; selected: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 10px;
+  padding: 0 10px 4px;
   min-width: 120px;
   background-color: ${({ theme, selected }) => (selected ? theme.colors.crownYellow : 'transparent')};
   border-left: 4px solid ${({ theme, selected }) => (selected ? theme.colors.otterBlack : 'transparent')};

@@ -36,6 +36,16 @@ const DicePopup = dynamic(() => import('components/DicePopup'), {
   ssr: false,
 })
 
+const AttrIconsMap: { [key: string]: string } = {
+  STR: '/trait-icons/STR.png',
+  DEF: '/trait-icons/DEF.png',
+  DEX: '/trait-icons/DEX.png',
+  INT: '/trait-icons/INT.png',
+  LUK: '/trait-icons/LUK.png',
+  CON: '/trait-icons/_CON.png',
+  CUTE: '/trait-icons/CUTE.png',
+}
+
 const StyledOttoPage = styled.div`
   min-height: 100%;
   background: white;
@@ -167,7 +177,7 @@ const StyledAttr = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width:100%;
+  width: 100%;
 `
 
 const StyledAttrIcon = styled.span<{ icon: string }>`
@@ -177,10 +187,10 @@ const StyledAttrIcon = styled.span<{ icon: string }>`
   background-image: url(${({ icon }) => icon});
   background-size: contain;
   background-repeat: no-repeat;
-  margin-right:12px;
+  margin-right: 12px;
 `
 
-const StyledAttrLabel =  styled.span`
+const StyledAttrLabel = styled.span`
   display: flex;
   justify-content: center;
 `
@@ -360,16 +370,7 @@ export default function OttoPage() {
           ]
         : null,
     [otto, t]
-  );
-  const AttrIconsMap = useMemo(() => ({
-    'STR': '/trait-icons/STR.png',
-    'DEF': '/trait-icons/DEF.png',
-    'DEX': '/trait-icons/DEX.png',
-    'INT': '/trait-icons/INT.png',
-    'LUK': '/trait-icons/LUK.png',
-    'CON': '/trait-icons/_CON.png',
-    'CUTE': '/trait-icons/CUTE.png',
-  }), []);
+  )
 
   const openAttributePointsPopup = () => {
     dispatch({ type: AdventureUIActionType.DistributeAttributePoints, data: { ottoId } })
@@ -482,18 +483,10 @@ export default function OttoPage() {
                 {otto?.displayAttrs.map(({ trait_type, value }, index) => (
                   <StyledAttr key={trait_type}>
                     <StyledAttrLabel>
-                      {AttrIconsMap[trait_type] && (
-                        <StyledAttrIcon icon={AttrIconsMap[trait_type]} />
-                      )}
-                      {trait_type && (
-                        <ContentLarge>
-                          {trait_type}
-                        </ContentLarge>
-                      )}
+                      {AttrIconsMap[trait_type] && <StyledAttrIcon icon={AttrIconsMap[trait_type]} />}
+                      {trait_type && <ContentLarge>{trait_type}</ContentLarge>}
                     </StyledAttrLabel>
-                    <ContentLarge>
-                      {value}
-                    </ContentLarge>
+                    <ContentLarge>{value}</ContentLarge>
                   </StyledAttr>
                 ))}
               </StyledAttrs>
