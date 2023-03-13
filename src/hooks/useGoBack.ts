@@ -10,7 +10,7 @@ export default function useGoBack() {
 
   const goBack = useCallback(() => {
     window.history.back()
-  }, [historyLength])
+  }, [])
 
   useEffect(() => {
     if (IS_SERVER) {

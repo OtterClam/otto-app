@@ -46,7 +46,7 @@ const useUnfinishDice = (ottoId?: string) => {
       .then(diceList => setDiceList(diceList))
       .catch(err => dispatch(setError(err)))
       .then(() => setLoading(false))
-  }, [api, ottoId, i18n.resolvedLanguage, ottoInTheHell])
+  }, [api, ottoId, i18n.resolvedLanguage, ottoInTheHell, dispatch])
 
   return {
     loading,
@@ -96,7 +96,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
         }
       }
     },
-    [api, otto, account, library]
+    [api, otto, account, library, dispatch, ottoHellDiceRoller]
   )
 
   const answerQuestion = useCallback(
@@ -109,7 +109,7 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
         .then(setDice)
         .catch(err => dispatch(setError(err)))
     },
-    [api, dice, otto]
+    [api, dice, otto, dispatch]
   )
 
   const nextEvent = useCallback(() => {

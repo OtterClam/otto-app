@@ -71,9 +71,13 @@ export interface FishStoreResponse {
 
 export type MissionFilter = 'ongoing' | 'finished'
 
+if (!process.env.NEXT_PUBLIC_API_ENDPOINT_MAINNET || !process.env.NEXT_PUBLIC_API_ENDPOINT_MUMBAI) {
+  throw new Error('API endpoints are not defined')
+}
+
 const otterclamApiEndpoint: { [key: number]: string } = {
-  [ChainId.Polygon]: process.env.NEXT_PUBLIC_API_ENDPOINT_MAINNET!,
-  [ChainId.Mumbai]: process.env.NEXT_PUBLIC_API_ENDPOINT_MUMBAI!,
+  [ChainId.Polygon]: process.env.NEXT_PUBLIC_API_ENDPOINT_MAINNET,
+  [ChainId.Mumbai]: process.env.NEXT_PUBLIC_API_ENDPOINT_MUMBAI,
 }
 
 export class Api {
