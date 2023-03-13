@@ -132,7 +132,7 @@ export default memo(function ItemPreview({
   const { equipItem, removeItem } = useOtto()
   const { draftOtto: otto } = useAdventureOtto()
   const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
-  const { t : tMyItems } = useTranslation('', { keyPrefix: 'my_items' })
+  const { t: tMyItems } = useTranslation('', { keyPrefix: 'my_items' })
   const containerRef = useRef<HTMLDivElement | null>(null)
   const equippedItem = otto?.equippedItems.find(item => item.metadata.type === traitType)
   const equippedOtto = useMyOtto(selectedItem?.equippedBy)
@@ -172,14 +172,15 @@ export default memo(function ItemPreview({
               )}
               {metadata?.name}
             </StyledItemName>
-            {metadata && <StyledRarityScore>
-              {tMyItems('total_rarity_score', {
-                total: metadata.totalRarityScore,
-                brs: metadata.baseRarityScore,
-                rrs: metadata.relativeRarityScore,
-              })}
-            </StyledRarityScore>
-            }
+            {metadata && (
+              <StyledRarityScore>
+                {tMyItems('total_rarity_score', {
+                  total: metadata.totalRarityScore,
+                  brs: metadata.baseRarityScore,
+                  rrs: metadata.relativeRarityScore,
+                })}
+              </StyledRarityScore>
+            )}
             {metadata && <TraitLabels highlightMatched metadata={metadata} />}
             <StyledWearCount>{t('equippedCount', { count: metadata?.equippedCount ?? 0 })}</StyledWearCount>
             <StyledItemLevels>
