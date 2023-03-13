@@ -40,7 +40,7 @@ export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
 
   useEffect(() => {
     refetch()
-  }, [itemsRepo, account])
+  }, [itemsRepo, account, refetch])
 
   const value = useMemo(() => {
     return {

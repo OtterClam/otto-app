@@ -70,6 +70,11 @@ export const OverlayProvider = ({ children }: PropsWithChildren<object>) => {
     return <OverlayContext.Provider value={value}>{children}</OverlayContext.Provider>
   }
 
+  const modalRoot = document.body.querySelector('#modal-root')
+  if (!modalRoot) {
+    throw new Error('Modal root not found!')
+  }
+
   return (
     <OverlayContext.Provider value={value}>
       {children}
@@ -77,7 +82,7 @@ export const OverlayProvider = ({ children }: PropsWithChildren<object>) => {
         <CSSTransition unmountOnExit in={Boolean(counter)} timeout={200} classNames="fade">
           <StyledOverlay />
         </CSSTransition>,
-        document.body.querySelector('#modal-root')!
+        modalRoot
       )}
     </OverlayContext.Provider>
   )
@@ -91,5 +96,5 @@ export const useOverlay = (show: boolean) => {
       dispatch({ type: ActionType.Increase })
       return () => dispatch({ type: ActionType.Decrease })
     }
-  }, [show])
+  }, [show, dispatch])
 }

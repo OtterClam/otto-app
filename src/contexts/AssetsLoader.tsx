@@ -81,7 +81,7 @@ export const AssetsLoaderProvider = ({ children }: PropsWithChildren<object>) =>
 
     assetsLoader.init()
     return () => assetsLoader.destroy()
-  }, [])
+  }, [assetsLoader])
 
   return <AssetsLoaderContext.Provider value={assetsLoader}>{children}</AssetsLoaderContext.Provider>
 }

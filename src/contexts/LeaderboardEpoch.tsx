@@ -43,10 +43,10 @@ export const LeaderboardEpochProvider = ({ children }: PropsWithChildren<object>
       epoch,
       refetch,
     }),
-    [loading, epoch, api]
+    [loading, epoch, refetch]
   )
 
-  useEffect(refetch, [api])
+  useEffect(refetch, [refetch, api])
 
   return <LeaderboardEpochContext.Provider value={value}>{children}</LeaderboardEpochContext.Provider>
 }

@@ -32,7 +32,7 @@ export default function useAdventurePotion() {
         use(String(potion), ottoId)
       }
     },
-    [amounts]
+    [amounts, use]
   )
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function useAdventurePotion() {
       refetchMyItems()
     }
     setLoading(useItemState.state === 'PendingSignature' || useItemState.state === 'Mining')
-  }, [useItemState.state])
+  }, [useItemState.state, refetchMyItems])
 
   return {
     amounts,

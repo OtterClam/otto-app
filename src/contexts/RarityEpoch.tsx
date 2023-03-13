@@ -50,7 +50,7 @@ export const RarityEpochProvider = ({ children }: PropsWithChildren<object>) => 
       constellation: t(`constellation.${epoch?.constellation}`),
       constellationBoost: epoch?.constellationBoost || 50,
     }),
-    [epoch, epochEndTime, isLatestEpoch, hasPrevEpoch, hasNextEpoch, totalOttoSupply]
+    [epoch, epochEndTime, isLatestEpoch, hasPrevEpoch, hasNextEpoch, totalOttoSupply, epochNum, t]
   )
 
   return <RarityEpochContext.Provider value={value}>{children}</RarityEpochContext.Provider>

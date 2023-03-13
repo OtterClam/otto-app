@@ -99,8 +99,8 @@ export const useItem = () => {
     } else {
       setUseItemState({ state: state.status, status: state })
     }
-  }, [state, i18n])
-  return { useItemState, use, resetUse }
+  }, [state, i18n, item.interface, itemsRepo, account])
+  return { useItemState, use, resetUse, account }
 }
 
 export const useTakeOffItem = () => {
@@ -199,7 +199,7 @@ export const useBuyProduct = () => {
     } else {
       setBuyState({ state: state.status, status: state })
     }
-  }, [state, i18n, account])
+  }, [state, i18n, account, itemsRepo])
   return { buyState, buy, resetBuy }
 }
 
@@ -269,7 +269,7 @@ export const useRedeemProduct = () => {
     } else {
       setRedeemState({ state: state.status, status: state })
     }
-  }, [state])
+  }, [state, account, itemsRepo])
   return { redeemState, redeem, resetRedeem }
 }
 
@@ -510,7 +510,7 @@ export const useForge = () => {
     } else {
       setForgeState({ state: state.status, status: state })
     }
-  }, [account, api, state])
+  }, [account, api, state, itemsRepo])
   return { forgeState, forge, resetForge: resetState }
 }
 
@@ -635,7 +635,7 @@ export const useAdventureExplore = () => {
         status: state,
       })
     }
-  }, [state])
+  }, [state, adventure.interface])
 
   useEffect(() => {
     if (passId && rawPassResult?.value?.[0].canFinishAt.gt(0)) {
@@ -647,7 +647,7 @@ export const useAdventureExplore = () => {
       })
       setPassId(null)
     }
-  }, [passId, rawPassResult])
+  }, [passId, rawPassResult, state])
 
   const resetExplore = () => {
     resetItem()
@@ -683,7 +683,7 @@ export const useAdventureExplore = () => {
       const data = await api.explore(ottoId, locationId, account, itemActions)
       sendExplore(...data)
     },
-    [account, library, state, otto, item, api, sendExplore]
+    [account, library, state, otto, item, api, sendExplore, adventure.address, approveItemSpending, approveOttoSpending]
   )
 
   return {
@@ -738,12 +738,12 @@ export const useAdventureFinish = () => {
 
       setResult(result)
     }
-  }, [state.status])
+  }, [state.status, adventure.interface, state.receipt])
 
   const reset = useCallback(() => {
     resetState()
     setResult(undefined)
-  }, [])
+  }, [resetState])
 
   return { finishState, finish, resetFinish: reset, finishResult: result }
 }
@@ -838,7 +838,7 @@ export const useDoItemBatchActions = () => {
       state: txState(state.status),
       status: state,
     })
-  }, [approveItemState])
+  }, [approveItemState, state])
   useEffect(() => {
     if (state.status === 'Success' && state.receipt) {
       const restingUntil = last(
@@ -864,7 +864,7 @@ export const useDoItemBatchActions = () => {
         status: state,
       })
     }
-  }, [state])
+  }, [state, adventure.interface])
   const doItemBatchActions = useCallback(
     async (ottoId: string, actions: ItemAction[]) => {
       if (!account) {
@@ -885,7 +885,7 @@ export const useDoItemBatchActions = () => {
         { gasLimit: 2000000 }
       )
     },
-    [send, item]
+    [send, item, account, approveItemSpending, otto.address]
   )
   const resetDoItemBatchActions = useCallback(() => {
     resetState()
@@ -955,7 +955,7 @@ export const useBuyFishItem = () => {
         })
       }
     },
-    [account, library, state, OTTOPIA_STORE, api, sendBuy, approve]
+    [account, library, state, OTTOPIA_STORE, api, sendBuy, approve, fish]
   )
 
   return {
@@ -1055,7 +1055,7 @@ export const useRequestNewMission = () => {
       })
       send(key, 1, { value: price })
     },
-    [account, send, state]
+    [send, state]
   )
   useEffect(() => {
     if (state.status === 'Success') {
@@ -1102,7 +1102,7 @@ export const useRefreshMission = (missionId: number) => {
       })
       send(key, 1, { value: price })
     },
-    [account, send, state]
+    [send, state]
   )
   useEffect(() => {
     if (state.status === 'Success' && account && state.transaction?.hash) {

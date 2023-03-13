@@ -49,14 +49,14 @@ export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<
       .then(setResult)
       .catch(setErr)
       .finally(() => setLoading(false))
-  }, [api, controller, methodName].concat(deps))
+  }, [api, controller, methodName, args])
 
   useEffect(() => {
     if (!when) {
       return
     }
     fetch()
-  }, [when, api, methodName].concat(deps))
+  }, [when, api, methodName, fetch, deps])
 
   return useMemo(
     () => ({
@@ -65,6 +65,6 @@ export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<
       err,
       refetch: fetch,
     }),
-    [loading, result]
+    [loading, result, err, fetch]
   )
 }
