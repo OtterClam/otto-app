@@ -34,13 +34,6 @@ module.exports = withBundleAnalyzer(
         return config
       },
       i18n,
-      pwa: {
-        dest: 'public',
-        scope: '/',
-        cacheStartUrl: false,
-        swSrc: './src/worker/index.ts',
-        disable: process.env.NODE_ENV === 'development',
-      },
       images: {
         domains: imageDomains,
         formats: ['image/avif', 'image/webp'],
