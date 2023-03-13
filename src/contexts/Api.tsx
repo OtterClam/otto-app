@@ -1,7 +1,7 @@
 import { useEthers } from '@usedapp/core'
 import { Api, defaultApi } from 'libs/api'
 import { useTranslation } from 'next-i18next'
-import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState, useRef } from 'react'
 
 const ApiContext = createContext<Api>(defaultApi)
 
@@ -31,8 +31,10 @@ export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<Awaited<ReturnType<Api[M]>> | undefined>(undefined)
   const [err, setErr] = useState<Error | undefined>(undefined)
+  const [trigger, setTrigger] = useState(0)
+  const fetchRef = useRef<(() => void) | null>(null)
 
-  const fetch: () => Promise<void> = useCallback(() => {
+  fetchRef.current = useCallback(() => {
     if (controller) {
       controller.abort()
     }
@@ -55,16 +57,16 @@ export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<
     if (!when) {
       return
     }
-    fetch()
-  }, [when, api, methodName, fetch, deps])
+    fetchRef.current?.()
+  }, [when])
 
   return useMemo(
     () => ({
       loading,
       result,
       err,
-      refetch: fetch,
+      refetch: () => setTrigger(trigger + 1),
     }),
-    [loading, result, err, fetch]
+    [loading, result, err, trigger]
   )
 }
