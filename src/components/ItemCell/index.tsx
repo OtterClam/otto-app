@@ -117,17 +117,21 @@ const StyledRarity = styled.div<{ rarity?: string }>`
 
 const StyledAmount = styled.div`
   z-index: 1;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 5px;
+  right: 5px;
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: rgba(255, 255, 255, 0.5);
+`
+
+const StyledAmountText = styled(ContentLarge)`
+  opacity: 1;
 `
 
 const StyledEquipped = styled.div`
@@ -226,7 +230,7 @@ export default memo(function ItemCell({
       </StyledRarity>
       {amount > 1 && !hideAmount && (
         <StyledAmount>
-          <ContentLarge>{amount}</ContentLarge>
+          <StyledAmountText>{amount}</StyledAmountText>
         </StyledAmount>
       )}
       {equippedByOtto && (

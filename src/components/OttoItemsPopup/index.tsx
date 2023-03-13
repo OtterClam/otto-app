@@ -187,11 +187,9 @@ export default memo(function OttoItemsPopup({ className, maxWidth, height, onReq
           <PreviewAttrs otto={otto} actions={actions} />
           <StyledActions>
             <StyledAction>
-              <StyledActionLabel>{t('sort')}</StyledActionLabel>
               <SortedBySelector />
             </StyledAction>
             <StyledAction>
-              <StyledActionLabel>{t('filter')}</StyledActionLabel>
               <FilterSelector />
             </StyledAction>
           </StyledActions>
