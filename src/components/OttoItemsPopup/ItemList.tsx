@@ -57,7 +57,6 @@ export default function ItemList({ otto, selectItem, selectedItemId }: ItemListP
       {restItems.map(item => (
         <StyledItem
           key={item.id}
-          hideAmount
           unavailable={!otto?.canWear(item)}
           item={item}
           currentOtto={otto}
