@@ -130,10 +130,6 @@ const StyledAmount = styled.div`
   background-color: rgba(255, 255, 255, 0.5);
 `
 
-const StyledAmountText = styled(ContentLarge)`
-  opacity: 1;
-`
-
 const StyledEquipped = styled.div`
   position: absolute;
   z-index: 1;
@@ -230,7 +226,7 @@ export default memo(function ItemCell({
       </StyledRarity>
       {amount > 1 && !hideAmount && (
         <StyledAmount>
-          <StyledAmountText>{amount}</StyledAmountText>
+          <ContentLarge>{amount}</ContentLarge>
         </StyledAmount>
       )}
       {equippedByOtto && (
