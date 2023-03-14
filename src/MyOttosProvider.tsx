@@ -58,7 +58,7 @@ export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
       .getOttosByAccount(account)
       .then(setOttos)
       .catch(err => {
-        console.error(err)
+        console.error('failed to getOttosByAccount', err)
       })
       .finally(() => {
         setLoading(false)

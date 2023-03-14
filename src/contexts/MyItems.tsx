@@ -33,8 +33,7 @@ export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
       .getAllItemsByAccount(account)
       .then(setItems)
       .catch(err => {
-        // TODO:
-        alert(err.message)
+        console.error('failed getAllItemsByAccount', err.message)
       })
       .finally(() => setLoading(false))
   }, [itemsRepo, account])

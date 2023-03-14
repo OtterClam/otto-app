@@ -131,9 +131,9 @@ export default function InvitationCodeStep({ locked, onComplete, className }: Pr
         })
         .catch(err => {
           if (err.response) {
-            window.alert(err.response.data.error)
+            console.error('failed submit-giveaway response', err.response.data.error)
           } else {
-            window.alert(err.message)
+            console.error('failed submit-giveaway', err.message)
           }
         })
         .finally(() => setLoading(false))

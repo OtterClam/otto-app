@@ -115,7 +115,7 @@ export default function ResultStep() {
         .getOtto(ottoId)
         .then(setSharedOtto)
         .catch(err => {
-          alert(err.message)
+          console.error('failed to getOtto', err.message)
         })
     }
   }, [ottosRepo])

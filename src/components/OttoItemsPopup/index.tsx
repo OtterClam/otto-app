@@ -98,7 +98,7 @@ function PreviewAttrs({ otto, actions }: { otto?: Otto; actions: ItemAction[] })
         .catch(err => {
           if (err.message !== 'canceled') {
             // handle error
-            alert(err.message)
+            console.error('failed previewAdventureOtto', err.message)
           }
         })
         .finally(() => setLoading(false))
