@@ -114,14 +114,16 @@ export default function OttoPopupBody() {
   useEffect(() => {
     if (doItemBatchActionsState.state === 'Success' && otto) {
       otto.raw.resting_until = doItemBatchActionsState.restingUntil?.toISOString()
-      setOtto(preview!.otto.clone())
-      updateOtto(preview!.otto)
+      if (preview?.otto) {
+        setOtto(preview.otto.clone())
+        updateOtto(preview.otto)
+      }
       setSaved(true)
     } else if (doItemBatchActionsState.state === 'Fail') {
       alert(doItemBatchActionsState.status.errorMessage)
       resetDoItemBatchActions()
     }
-  }, [doItemBatchActionsState])
+  }, [doItemBatchActionsState, otto, preview, resetDoItemBatchActions, setOtto, updateOtto])
 
   useEffect(() => {
     if (!otto) {
@@ -142,7 +144,7 @@ export default function OttoPopupBody() {
       clearTimeout(timer)
       controller.abort()
     }
-  }, [ottosRepo, otto?.id, itemActions])
+  }, [otto, ottosRepo, otto?.id, itemActions])
 
   if (saved && oldOtto) {
     return (
@@ -185,8 +187,10 @@ export default function OttoPopupBody() {
             loading={txPending}
             Typography={Headline}
             onClick={() => {
-              setOldOtto(otto)
-              doItemBatchActions(otto!.id, itemActions)
+              if (otto) {
+                setOldOtto(otto)
+                doItemBatchActions(otto.id, itemActions)
+              }
             }}
           >
             {t('submitButton')}

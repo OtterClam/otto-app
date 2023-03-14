@@ -1,5 +1,4 @@
 const { DefinePlugin, Compilation } = require('webpack')
-const withPWA = require('next-pwa')
 const pkg = require('./package.json')
 const { i18n } = require('./next-i18next.config')
 const { AssetsManifestPlugin } = require('./webpack/assets-manifest')
@@ -13,6 +12,10 @@ if (process.env.NODE_ENV === 'development') {
   imageDomains.push('localhost')
 }
 
+const isWatch = process.argv.includes('--watch')
+
+const withPWA = require('next-pwa')
+
 module.exports = withBundleAnalyzer(
   withPWA(
     withTM({
@@ -20,7 +23,7 @@ module.exports = withBundleAnalyzer(
       eslint: {
         ignoreDuringBuilds: true,
       },
-      webpack: config => {
+      webpack: (config) => {
         config.module.rules.push({
           test: /\.mp3$/,
           loader: 'file-loader',
@@ -59,6 +62,16 @@ module.exports = withBundleAnalyzer(
           },
         ]
       },
-    })
+    }),
+    {
+      pwa: {
+        dest: 'public',
+        scope: '/',
+        cacheStartUrl: false,
+        swSrc: './src/worker/index.ts',
+        swDest: isWatch ? undefined : 'public/sw.js',
+        disable: process.env.NODE_ENV === 'development',
+      },
+    }
   )
 )

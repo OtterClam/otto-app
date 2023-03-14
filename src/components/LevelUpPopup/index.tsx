@@ -175,7 +175,7 @@ export default function LevelUpPopup() {
 
   const handleClose = useCallback(() => {
     dispatch({ type: AdventureUIActionType.LevelUp })
-  }, [])
+  }, [dispatch])
 
   const distributeAttributePoints = useCallback(() => {
     if (!levelUp) {
@@ -191,7 +191,7 @@ export default function LevelUpPopup() {
         newLevel: levelUp.levelUp?.to.level,
       },
     })
-  }, [levelUp])
+  }, [levelUp, dispatch, handleClose])
 
   useEffect(() => {
     if (otto && otto.latestAdventurePass) {

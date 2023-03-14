@@ -70,11 +70,9 @@ export default function MintBanner({ className }: Props) {
             <Display2>{t('mint_banner.para2')}</Display2>
           </StyledParagraph>
           <Link href="/mint">
-            <a href="/mint">
-              <Button primaryColor="pink" padding="6px 10px" Typography={Headline}>
-                {t('mint_banner.cta')}
-              </Button>
-            </a>
+            <Button primaryColor="pink" padding="6px 10px" Typography={Headline}>
+              {t('mint_banner.cta')}
+            </Button>
           </Link>
         </StyledContainer>
       </StyledInnerButton>

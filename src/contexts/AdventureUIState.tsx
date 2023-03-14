@@ -183,7 +183,7 @@ export const useGoToAdventurePopupStep = () => {
   const { dispatch } = useAdventureUIState()
   return useCallback(
     (step: AdventurePopupStep) => dispatch({ type: AdventureUIActionType.SetPopupStep, data: step }),
-    []
+    [dispatch]
   )
 }
 
@@ -198,7 +198,7 @@ export const useGoToAdventureResultStep = () => {
       router.push(router)
       dispatch({ type: AdventureUIActionType.GoToResult, data: { tx, locationId, showEvent } })
     },
-    [router]
+    [router, dispatch]
   )
 }
 

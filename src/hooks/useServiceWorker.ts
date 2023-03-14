@@ -11,7 +11,11 @@ export enum ServiceWorkerStatus {
 export default function useServiceWorker() {
   const { t } = useTranslation()
   const [enabled] = useState(
-    () => typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined
+    () =>
+      typeof window !== 'undefined' &&
+      'serviceWorker' in navigator &&
+      window.workbox !== undefined &&
+      process.env.NODE_ENV !== 'development'
   )
 
   const [activated, setActivated] = useState(false)
@@ -35,7 +39,9 @@ export default function useServiceWorker() {
 
   useEffect(() => {
     if (!enabled) {
-      console.warn('The execution environment does not support service worker')
+      if (process.env.NODE_ENV !== 'development') {
+        console.warn('The execution environment does not support service worker')
+      }
       return
     }
 

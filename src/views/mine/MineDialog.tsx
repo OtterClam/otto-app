@@ -275,11 +275,11 @@ export default function MineDialog({ className }: Props) {
             <p>
               <Caption>1 CLAM</Caption>
             </p>
-            <p>
+            <div>
               <Caption>
                 = {usdPerClam && formatUnits(usdPerClam, decimals)} {DAI.symbol}
               </Caption>
-            </p>
+            </div>
           </StyledSwapInfo>
         </StyledSwapInfoContainer>
         <StyledButton

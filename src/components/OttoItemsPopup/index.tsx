@@ -108,7 +108,7 @@ function PreviewAttrs({ otto, actions }: { otto?: Otto; actions: ItemAction[] })
       clearTimeout(timer)
       controller.abort()
     }
-  }, [otto?.id, location?.id, actions, ottosRepo])
+  }, [otto, otto?.id, location?.id, actions, ottosRepo])
 
   return (
     <AdventureOttoProvider otto={otto} draftOtto={preview?.otto}>
@@ -159,19 +159,21 @@ export default memo(function OttoItemsPopup({ className, maxWidth, height, onReq
       item_id: Number(selectedItemMetadata.tokenId),
       from_otto_id: 0,
     })
-  }, [otherActions, selectedItemMetadata?.tokenId])
+  }, [otherActions, selectedItemMetadata])
 
   useEffect(() => {
     if (show) {
       refetch()
     }
-  }, [draftOtto?.id, show])
+  }, [draftOtto?.id, show, refetch])
+
+  const isTraitTypeTruthy = Boolean(traitType)
 
   useEffect(() => {
     if (!traitType) {
       selectItem(undefined)
     }
-  }, [Boolean(traitType)])
+  }, [traitType, isTraitTypeTruthy])
 
   return (
     <ItemFiltersProvider items={filteredItems}>

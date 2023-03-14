@@ -36,7 +36,7 @@ export default memo(function RedeemCouponPopup({
       resetRedeem()
       onErrorClose()
     }
-  }, [redeemState])
+  }, [redeemState, onErrorClose, resetRedeem])
 
   if (state === State.Loading) return <LoadingView type={productType} images={productImages} />
   return <OpenItemView items={redeemState.receivedItems || []} onClose={onClose} />

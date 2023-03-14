@@ -55,7 +55,7 @@ export default function TreasuryChestPopup() {
   const closeRedeemCouponPopup = useCallback(() => {
     setRedeem(false)
     dispatch({ type: AdventureUIActionType.SetTreasuryChestItem })
-  }, [])
+  }, [dispatch])
 
   return (
     <>

@@ -22,7 +22,7 @@ const AdventureLocationsContext = createContext<{
 export const AdventureLocationsProvider = ({ children }: PropsWithChildren<object>) => {
   const api = useApi()
   const [loading, setLoading] = useState(false)
-  const [locations, steLocations] = useState<AdventureLocation[]>([])
+  const [locations, setLocations] = useState<AdventureLocation[]>([])
   const images = useMemo(() => {
     const images: string[] = []
     locations.forEach(location => {
@@ -35,16 +35,13 @@ export const AdventureLocationsProvider = ({ children }: PropsWithChildren<objec
 
   usePreloadImages(images)
 
-  const refetch = useCallback(
-    throttle(() => {
-      setLoading(true)
-      api
-        .getAdventureLocations()
-        .then(steLocations)
-        .finally(() => setLoading(false))
-    }, 500),
-    [api]
-  )
+  const refetch = useCallback(() => {
+    setLoading(true)
+    api
+      .getAdventureLocations()
+      .then(setLocations)
+      .finally(() => setLoading(false))
+  }, [api, setLoading, setLocations])
 
   const value = useMemo(
     () => ({
@@ -59,10 +56,10 @@ export const AdventureLocationsProvider = ({ children }: PropsWithChildren<objec
         {}
       ),
     }),
-    [loading, locations]
+    [loading, locations, refetch]
   )
 
-  useEffect(refetch, [api])
+  useEffect(refetch, [api, refetch])
 
   return <AdventureLocationsContext.Provider value={value}>{children}</AdventureLocationsContext.Provider>
 }

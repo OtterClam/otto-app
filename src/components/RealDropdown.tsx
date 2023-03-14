@@ -80,7 +80,7 @@ export default function RealDropdown({
       x: position === DropdownPostion.TopLeft ? rect.left : rect.left + rect.width - containerRect.width,
       y: rect.top,
     }
-  }, [childRef.current, forceUpdateState, show, position])
+  }, [position])
 
   useOnClickOutside(containerRef, () => {
     setShow(false)
@@ -102,17 +102,21 @@ export default function RealDropdown({
     },
   })
 
-  return (
-    <>
-      {child}
-      {createPortal(
-        <CSSTransition unmountOnExit in={show} timeout={200} classNames="slide">
-          <StyledContainer ref={containerRef} className={className} pos={pos}>
-            {content(() => setShow(false))}
-          </StyledContainer>
-        </CSSTransition>,
-        document.querySelector('#modal-root')!
-      )}
-    </>
-  )
+  const modalRoot = document.querySelector('#modal-root')
+  if (modalRoot) {
+    return (
+      <>
+        {child}
+        {createPortal(
+          <CSSTransition unmountOnExit in={show} timeout={200} classNames="slide">
+            <StyledContainer ref={containerRef} className={className} pos={pos}>
+              {content(() => setShow(false))}
+            </StyledContainer>
+          </CSSTransition>,
+          modalRoot
+        )}
+      </>
+    )
+  }
+  return null
 }

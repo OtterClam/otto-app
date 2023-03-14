@@ -49,7 +49,6 @@ export default class MyDocument extends Document<{ asPath: string }> {
           />
           <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
           <link rel="preload" href="/fonts/Pangolin-Regular.ttf" as="font" type="font/woff2" crossOrigin="" />
-          <link rel="preload" href="/ottoclick.mp3" as="audio" type="audio/mpeg" crossOrigin="" />
 
           <script
             // eslint-disable-next-line react/no-danger

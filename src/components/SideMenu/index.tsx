@@ -91,41 +91,45 @@ export default function SideMenu() {
 
   const hideMenu = useCallback(() => {
     dispatch(hideSideMenu())
-  }, [])
+  }, [dispatch])
 
   const stopPropagation: MouseEventHandler = useCallback(e => {
     e.stopPropagation()
   }, [])
 
-  return createPortal(
-    <CSSTransition unmountOnExit in={show} timeout={200} classNames="fade">
-      <StyledContainer onClick={hideMenu}>
-        <CSSTransition unmountOnExit in={show} timeout={200} classNames="slide">
-          <StyledContent onClick={stopPropagation}>
-            <StyledIcon>
-              <Image src={logoImage} width={logoImage.width / 2} height={logoImage.height / 2} />
-            </StyledIcon>
+  const modalRoot = document.querySelector('#modal-root')
+  if (modalRoot) {
+    return createPortal(
+      <CSSTransition unmountOnExit in={show} timeout={200} classNames="fade">
+        <StyledContainer onClick={hideMenu}>
+          <CSSTransition unmountOnExit in={show} timeout={200} classNames="slide">
+            <StyledContent onClick={stopPropagation}>
+              <StyledIcon>
+                <Image src={logoImage} width={logoImage.width / 2} height={logoImage.height / 2} />
+              </StyledIcon>
 
-            {account && <Account />}
+              {account && <Account />}
 
-            <StyledSection>
-              <StyledTitle>{t('select_language')}</StyledTitle>
-              <LanguageSelector />
-            </StyledSection>
+              <StyledSection>
+                <StyledTitle>{t('select_language')}</StyledTitle>
+                <LanguageSelector />
+              </StyledSection>
 
-            <StyledSection>
-              <StyledTitle>{t('more')}</StyledTitle>
-              <More />
-            </StyledSection>
+              <StyledSection>
+                <StyledTitle>{t('more')}</StyledTitle>
+                <More />
+              </StyledSection>
 
-            <StyledSection>
-              <StyledTitle>{t('follow_us')}</StyledTitle>
-              <SocialLinks />
-            </StyledSection>
-          </StyledContent>
-        </CSSTransition>
-      </StyledContainer>
-    </CSSTransition>,
-    document.querySelector('#modal-root')!
-  )
+              <StyledSection>
+                <StyledTitle>{t('follow_us')}</StyledTitle>
+                <SocialLinks />
+              </StyledSection>
+            </StyledContent>
+          </CSSTransition>
+        </StyledContainer>
+      </CSSTransition>,
+      modalRoot
+    )
+  }
+  return null
 }

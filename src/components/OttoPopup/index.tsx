@@ -3,7 +3,7 @@ import { useMyItems } from 'contexts/MyItems'
 import { useOtto, withOtto } from 'contexts/Otto'
 import { withTrait } from 'contexts/TraitContext'
 import { useMyOtto } from 'MyOttosProvider'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { hideOttoPopup, selectOttoPopup } from 'store/uiSlice'
 import styled from 'styled-components/macro'
@@ -24,16 +24,23 @@ export default withOtto(
 
     const closePopup = useCallback(() => {
       dispatch(hideOttoPopup())
-    }, [])
+    }, [dispatch])
+
+    const prevOtto = useRef(otto)
 
     useEffect(() => {
       setOtto(otto)
-      if (otto) {
-        refreshMyItems()
-      } else {
-        resetEquippedItems()
+      prevOtto.current = otto
+    }, [otto, setOtto])
+
+    useEffect(() => {
+      if (prevOtto.current && !otto) {
+        resetEquippedItems?.()
+      } else if (!prevOtto.current && otto) {
+        refreshMyItems?.()
       }
-    }, [otto])
+      prevOtto.current = otto
+    }, [otto, refreshMyItems, resetEquippedItems])
 
     return (
       <StyledAdventureFullscreen show={Boolean(otto)} onRequestClose={closePopup} closeButtonColor="white">

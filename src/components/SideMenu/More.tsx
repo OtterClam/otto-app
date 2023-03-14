@@ -46,7 +46,7 @@ export default function More() {
   return (
     <StyledContainer>
       {items.map(item => (
-        <Link href={item.link} passHref>
+        <Link key={item.key} href={item.link} passHref>
           <StyledItem image={item.image} target="_blank" rel="noreferrer">
             <Note>{t(item.key)}</Note>
           </StyledItem>
