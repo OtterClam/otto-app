@@ -68,6 +68,7 @@ const StyledContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  white-space: pre-wrap;
 `
 
 const StyledLevel = styled(Display1)<{ levelUp?: boolean }>`

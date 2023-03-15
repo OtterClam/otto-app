@@ -72,18 +72,19 @@ export const OverlayProvider = ({ children }: PropsWithChildren<object>) => {
 
   const modalRoot = document.body.querySelector('#modal-root')
   if (!modalRoot) {
-    throw new Error('Modal root not found!')
+    console.error('Modal root not found!')
   }
 
   return (
     <OverlayContext.Provider value={value}>
       {children}
-      {createPortal(
-        <CSSTransition unmountOnExit in={Boolean(counter)} timeout={200} classNames="fade">
-          <StyledOverlay />
-        </CSSTransition>,
-        modalRoot
-      )}
+      {modalRoot &&
+        createPortal(
+          <CSSTransition unmountOnExit in={Boolean(counter)} timeout={200} classNames="fade">
+            <StyledOverlay />
+          </CSSTransition>,
+          modalRoot
+        )}
     </OverlayContext.Provider>
   )
 }

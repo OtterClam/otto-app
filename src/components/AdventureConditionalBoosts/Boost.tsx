@@ -40,6 +40,7 @@ const StyledFirstMatchBoostIcon = styled.span<{ attr: string }>`
 const StyledContainer = styled(Note)<{ disabled: boolean }>`
   display: flex;
   gap: 10px;
+  white-space: pre-wrap;
   ${({ disabled }) =>
     disabled &&
     `
@@ -59,7 +60,7 @@ export default function Boost({ boost, noPreview }: BoostProps) {
         <StyledFirstMatchBoostIcon attr={boost.attr.toLocaleUpperCase()} />
       )}
       {boost.boostType !== BoostType.FirstMatchGroup && <StyledNormalBoostIcon icon={boost.icon} />}
-      <div dangerouslySetInnerHTML={{ __html: boost.message }} />
+      <div>{boost.message}</div>
     </StyledContainer>
   )
 }

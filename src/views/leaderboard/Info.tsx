@@ -56,7 +56,7 @@ export default function Info({ image, desc, links }: Props) {
           {links.map((link, index) =>
             link.internal ? (
               <Link key={index} href={link.href}>
-                <a href={link.href}>
+                <a>
                   <StyledLink>{link.text}</StyledLink>
                 </a>
               </Link>

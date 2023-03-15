@@ -5,7 +5,7 @@ import { ParsedUrlQuery } from 'querystring'
 
 const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_MAINNET
 if (!baseUrl) {
-  throw new Error('API endpoint not defined')
+  console.error('API endpoint not defined')
 }
 
 export interface ServerSideAdventureShare {
