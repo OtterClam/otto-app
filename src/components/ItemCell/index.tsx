@@ -206,7 +206,7 @@ export default memo(function ItemCell({
     if (showDetailsPopup) {
       dispatch(showItemDetailsPopup(tokenId))
     }
-  }, [onClick, showDetailsPopup, tokenId])
+  }, [onClick, showDetailsPopup, tokenId, dispatch])
 
   return (
     <StyledItemCell
@@ -240,9 +240,9 @@ export default memo(function ItemCell({
           </Help>
         </StyledEquipped>
       )}
-      {equippedByCurrentOtto && (
+      {equippedByCurrentOtto && currentOtto && (
         <StyledEquipped>
-          <Image src={currentOtto!.image} layout="fill" width={50} height={50} />
+          <Image src={currentOtto.image} layout="fill" width={50} height={50} />
         </StyledEquipped>
       )}
       {selected && (

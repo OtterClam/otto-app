@@ -38,7 +38,13 @@
   },
   "rules": {
     "no-restricted-globals": "warn",
-    "jsx-a11y/anchor-is-valid": "warn",
+    "jsx-a11y/anchor-is-valid": ["warn",
+      {
+        "components": ["Link"],
+        "specialLink": ["hrefLeft", "hrefRight"],
+        "aspects": ["invalidHref", "preferButton"]
+      }
+    ],
     "class-methods-use-this": "off",
     "import/no-unresolved": "off",
     "import/no-extraneous-dependencies": "off",

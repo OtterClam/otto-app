@@ -197,7 +197,7 @@ export default function LevelUpPopup() {
     if (otto && otto.latestAdventurePass) {
       api
         .getOttoAdventurePreview(otto.id, otto.latestAdventurePass.locationId, [])
-        .then(preview => parseBoosts(i18n, otto, preview.location!.conditionalBoosts, false))
+        .then(preview => parseBoosts(i18n, otto, preview.location?.conditionalBoosts || [], false))
         .then(boosts => {
           const boost = boosts.find(({ boostType }) => boostType === BoostType.Exp)
           if (boost && boost.boostType === BoostType.Exp) {
@@ -242,7 +242,7 @@ export default function LevelUpPopup() {
               </StyledRewardTitle>
               <StyledBoosts>
                 {boosts.map((boost, i) => (
-                  <div dangerouslySetInnerHTML={{ __html: boost }} key={i} />
+                  <div key={i}>{boost}</div>
                 ))}
               </StyledBoosts>
             </StyledRewardSection>

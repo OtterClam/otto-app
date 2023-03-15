@@ -1,6 +1,13 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
+import Script from 'next/script'
+
+declare global {
+  interface Window {
+    dataLayer: any[]
+  }
+}
 
 export default class MyDocument extends Document<{ asPath: string }> {
   static async getInitialProps(ctx: DocumentContext) {
@@ -39,7 +46,6 @@ export default class MyDocument extends Document<{ asPath: string }> {
           <link rel="preconnect" href="https://cdn.jsdelivr.net" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-
           <link
             rel="preload"
             href="https://cdn.jsdelivr.net/gh/max32002/naikaifont@1.0/webfont/NaikaiFont-Regular-Lite.woff2"
@@ -49,24 +55,6 @@ export default class MyDocument extends Document<{ asPath: string }> {
           />
           <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
           <link rel="preload" href="/fonts/Pangolin-Regular.ttf" as="font" type="font/woff2" crossOrigin="" />
-
-          <script
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{
-              __html: `
-              ;(function (w, d, s, l, i) {
-                w[l] = w[l] || []
-                w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
-                var f = d.getElementsByTagName(s)[0],
-                  j = d.createElement(s),
-                  dl = l != 'dataLayer' ? '&l=' + l : ''
-                j.async = true
-                j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
-                f.parentNode.insertBefore(j, f)
-              })(window, document, 'script', 'dataLayer', 'GTM-W4MP2GV')
-            `,
-            }}
-          />
           <meta charSet="utf-8" />
           <link rel="icon" href="/favicon.ico" />
           <link rel="canonical" href={process.env.BASE_URL + this.props.asPath} />
@@ -89,6 +77,15 @@ export default class MyDocument extends Document<{ asPath: string }> {
           </noscript>
           <Main />
           <NextScript />
+          <Script
+            id="gtm-script"
+            src="https://www.googletagmanager.com/gtm.js?id=GTM-W4MP2GV"
+            strategy="afterInteractive"
+            onLoad={() => {
+              window.dataLayer = window.dataLayer || []
+              window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
+            }}
+          />
           <div id="modal-root" />
         </body>
       </Html>

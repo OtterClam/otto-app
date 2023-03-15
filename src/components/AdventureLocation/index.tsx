@@ -159,7 +159,7 @@ export default function AdventureLocation({ id, className, ottoLocked = false }:
         popupStep: AdventurePopupStep.LocationInfo,
       },
     })
-  }, [dispatch, id, ottoLocked])
+  }, [dispatch, id, ottoLocked, setOtto])
 
   return (
     <StyledContainer disabled={buttonLocked} onClick={openPopup} top={top} left={left} className={className}>
