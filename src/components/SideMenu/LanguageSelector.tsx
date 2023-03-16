@@ -10,7 +10,8 @@ export default function LanguageSelector() {
 
   const handleChangeEvent = useCallback(
     (locale: string) => {
-      router.push(router.asPath, router.asPath, { locale })
+      const lowerCaseLocale = locale.toLowerCase()
+      router.push(router.asPath, router.asPath, { locale: lowerCaseLocale })
     },
     [router]
   )

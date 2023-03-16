@@ -1,4 +1,5 @@
 const { DefinePlugin, Compilation } = require('webpack')
+const withPWA = require('next-pwa')
 const pkg = require('./package.json')
 const { i18n } = require('./next-i18next.config')
 const { AssetsManifestPlugin } = require('./webpack/assets-manifest')
@@ -13,8 +14,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const isWatch = process.argv.includes('--watch')
-
-const withPWA = require('next-pwa')
 
 module.exports = withBundleAnalyzer(
   withPWA(
