@@ -33,6 +33,11 @@ export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<
   const [err, setErr] = useState<Error | undefined>(undefined)
   const [trigger, setTrigger] = useState(0)
   const fetchRef = useRef<(() => void) | null>(null)
+  const depsRef = useRef(deps)
+
+  useEffect(() => {
+    depsRef.current = deps
+  }, [deps])
 
   fetchRef.current = useCallback(() => {
     if (controller) {
@@ -51,7 +56,7 @@ export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<
       .then(setResult)
       .catch(setErr)
       .finally(() => setLoading(false))
-  }, [api, controller, methodName, args])
+  }, [api, args, controller, methodName])
 
   useEffect(() => {
     if (!when) {
