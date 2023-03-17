@@ -39,7 +39,7 @@ export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<
     depsRef.current = deps
   }, [deps])
 
-  fetchRef.current = useCallback(() => {
+  fetchRef.current = useCallback(async () => {
     if (controller) {
       controller.abort()
     }
@@ -63,15 +63,18 @@ export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<
       return
     }
     fetchRef.current?.()
-  }, [when])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [when, trigger, ...deps])
 
   return useMemo(
     () => ({
       loading,
       result,
       err,
-      refetch: () => setTrigger(trigger + 1),
+      refetch: () => {
+        fetchRef.current?.()
+      },
     }),
-    [loading, result, err, trigger]
+    [loading, result, err]
   )
 }
