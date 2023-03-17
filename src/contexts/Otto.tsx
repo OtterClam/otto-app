@@ -3,7 +3,7 @@ import noop from 'lodash/noop'
 import { ItemAction, Item } from 'models/Item'
 import Otto, { AdventureOttoStatus, OttoGender } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
-import { createContext, FC, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, FC, PropsWithChildren, useContext, useEffect, useMemo, useState, useCallback } from 'react'
 import { useMyItems } from './MyItems'
 
 const OttoContext = createContext<{
@@ -106,6 +106,10 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
         })
   }, [draftItems, items, otto, ottos])
 
+  const resetEquippedItems = useCallback(() => {
+    setDraftItems({})
+  }, [])
+
   const value = useMemo(() => {
     return {
       otto,
@@ -141,9 +145,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
           return newMap
         })
       },
-      resetEquippedItems: () => {
-        setDraftItems({})
-      },
+      resetEquippedItems,
       unequipAllItems: () => {
         const draftItems: Record<string, string | null> = {}
         otto?.wearableTraits.forEach(({ type, unreturnable }) => {
@@ -156,7 +158,7 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
       itemActions: actions,
       locked,
     }
-  }, [otto, actions, locked])
+  }, [otto, actions, locked, resetEquippedItems])
 
   return <OttoContext.Provider value={value}>{children}</OttoContext.Provider>
 }

@@ -98,10 +98,10 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
   const container = useRef<HTMLDivElement>(null)
   const { updateOtto, loading: loadingOttos } = useMyOttos()
   const { confirmedOtto: otto, confirmed, confirm } = useConfirmedOtto()
-  const { itemActions: equippedItemActions, setOtto, locked } = useOtto()
+  const { itemActions: equippedItemActions, setOtto, locked, resetEquippedItems } = useOtto()
   const [usedPotionAmounts, setUsedPotionAmounts] = useState<{ [k: string]: number }>({})
   const { t, i18n } = useTranslation()
-  const location = useSelectedAdventureLocation()!
+  const location = useSelectedAdventureLocation()
   const goToStep = useGoToAdventurePopupStep()
   const [preview, setPreview] = useState<{ otto: Otto; location?: AdventureLocation }>()
   const [{ itemPopupWidth, itemPopupHeight, itemPopupOffset }, setItemPopupSize] = useState<{
@@ -114,14 +114,14 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
   })
   const { explore, exploreState, resetExplore } = useAdventureExplore()
   const waitingTx = exploreState.state === 'Processing'
-  const loading = !otto || !location || waitingTx || loadingPreviewData
+  const loading = !otto || location === null || waitingTx || loadingPreviewData
 
   const levelBoost = useMemo(
     () =>
-      parseBoosts(i18n, otto, location.conditionalBoosts).find(
+      parseBoosts(i18n, otto, location?.conditionalBoosts ?? []).find(
         boost => boost.effective && boost.boostType === BoostType.Exp
       ),
-    [location]
+    [location, i18n, otto]
   )
 
   const actions = useMemo(() => {
@@ -140,7 +140,7 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
       }
     })
     return actions
-  }, [equippedItemActions, usedPotionAmounts, otto?.id])
+  }, [equippedItemActions, usedPotionAmounts, otto])
 
   useEffect(() => {
     if (otto && location) {
@@ -167,7 +167,7 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
         abortController.abort()
       }
     }
-  }, [ottosRepo, otto?.id, location?.id, actions])
+  }, [ottosRepo, otto?.id, location?.id, actions, location, otto])
 
   const handleExploreButtonClick = useCallback(() => {
     if (!otto || !location) {
@@ -208,7 +208,18 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
       alert(exploreState.status.errorMessage)
       resetExplore()
     }
-  }, [exploreState.state])
+  }, [
+    exploreState.state,
+    exploreState.pass,
+    exploreState.passId,
+    exploreState.status.errorMessage,
+    goToStep,
+    otto,
+    preview,
+    resetExplore,
+    setOtto,
+    updateOtto,
+  ])
 
   useResizeObserver(container, () => {
     const rect = container?.current?.getBoundingClientRect()
@@ -221,7 +232,7 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
   return (
     <AdventureLocationProvider location={preview?.location}>
       <AdventureOttoProvider otto={otto} draftOtto={preview?.otto} actions={actions}>
-        <StyledContainer bg={location.bgImageBlack} ref={container}>
+        <StyledContainer bg={location?.bgImageBlack ?? ''} ref={container}>
           <StyledHead>
             <Button
               primaryColor="white"
@@ -308,18 +319,18 @@ const useConfirmedOtto = () => {
         setConfirmedOtto(prevOtto)
       }
     },
-    [prevOtto?.id, otto?.id]
+    [prevOtto, otto, selectOtto, resetEquippedItems]
   )
 
   useEffect(() => {
     resetEquippedItems()
-  }, [])
+  }, [resetEquippedItems])
 
   useEffect(() => {
     return () => {
       setPrevOtto(otto)
     }
-  }, [otto?.id])
+  }, [otto?.id, otto])
 
   useEffect(() => {
     if (prevOtto?.id && confirmed && itemActions.length > 0) {
@@ -328,13 +339,13 @@ const useConfirmedOtto = () => {
       setConfirmedOtto(otto)
       setConfirmed(true)
     }
-  }, [otto?.id])
+  }, [prevOtto?.id, otto?.id, otto, confirmed, itemActions.length])
 
   useEffect(() => {
     if (confirmed) {
       setConfirmedOtto(otto)
     }
-  }, [confirmed])
+  }, [confirmed, otto])
 
   return {
     confirmedOtto,
