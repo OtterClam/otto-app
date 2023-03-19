@@ -63,6 +63,7 @@ export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<
       return
     }
     fetchRef.current?.()
+    // removing ...deps makes bad things happen
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [when, trigger, ...deps])
 

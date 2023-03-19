@@ -2,7 +2,7 @@ import LoadingView from 'components/OpenItem/OpenItemLoadingView'
 import OpenItemView from 'components/OpenItem/OpenItemView'
 import { useRedeemProduct } from 'contracts/functions'
 import { ItemMetadata } from 'models/Item'
-import { memo, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 
 enum State {
   Loading,
@@ -24,10 +24,16 @@ export default memo(function RedeemCouponPopup({
 }: Props) {
   const [state, setState] = useState<State>(State.Loading)
   const { resetRedeem, redeem, redeemState } = useRedeemProduct()
-  useEffect(() => {
+
+  const handleRedeem = useCallback(() => {
     redeem(id, amount)
     setState(State.Loading)
-  }, [])
+  }, [redeem, id, amount])
+
+  useEffect(() => {
+    handleRedeem()
+  }, [handleRedeem])
+
   useEffect(() => {
     if (redeemState.state === 'Success') {
       setState(State.Success)
