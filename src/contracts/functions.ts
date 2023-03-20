@@ -77,7 +77,8 @@ export const useItem = () => {
     resetState()
     setUseItemState({ state: 'None', status: state })
   }
-  useEffect(() => {
+
+  const handleStateChange = useCallback(() => {
     if (state.status === 'Success') {
       const receivedItemTokenId = state.receipt?.logs
         .map(log => {
@@ -99,7 +100,12 @@ export const useItem = () => {
     } else {
       setUseItemState({ state: state.status, status: state })
     }
-  }, [state, i18n])
+  }, [state, account, item.interface, itemsRepo])
+
+  useEffect(() => {
+    handleStateChange()
+  }, [handleStateChange])
+
   return { useItemState, use, resetUse }
 }
 
@@ -199,7 +205,7 @@ export const useBuyProduct = () => {
     } else {
       setBuyState({ state: state.status, status: state })
     }
-  }, [state, i18n, account])
+  }, [state, i18n, account, itemsRepo])
   return { buyState, buy, resetBuy }
 }
 
@@ -214,37 +220,43 @@ export const useRedeemProduct = () => {
     state: 'None',
     status: state,
   })
-  const redeem = async (couponId: string, amount = 1) => {
-    const signer = library?.getSigner()
-    if (account && signer) {
-      setRedeemState({
-        state: 'PendingSignature',
-        status: state,
-      })
-      try {
-        const isApprovedForAll = await item.connect(signer).isApprovedForAll(account, store.address)
-        if (!isApprovedForAll) {
-          await (await item.setApprovalForAll(store.address, true)).wait()
-        }
-        const data = await api.signOpenChest({ from: account, to: account, itemId: Number(couponId), amount })
-        ;(send as any)(...data, { gasLimit: 1000000 })
-      } catch (err: any) {
-        const message =
-          err.response && err.response.data && err.response.data.error ? err.response.data.error : err.message
+
+  const redeem = useCallback(
+    async (couponId: string, amount = 1) => {
+      const signer = library?.getSigner()
+      if (account && signer) {
         setRedeemState({
-          state: 'Fail',
-          status: {
-            ...state,
-            errorMessage: message,
-          },
+          state: 'PendingSignature',
+          status: state,
         })
+        try {
+          const isApprovedForAll = await item.connect(signer).isApprovedForAll(account, store.address)
+          if (!isApprovedForAll) {
+            await (await item.setApprovalForAll(store.address, true)).wait()
+          }
+          const data = await api.signOpenChest({ from: account, to: account, itemId: Number(couponId), amount })
+          ;(send as any)(...data, { gasLimit: 1000000 })
+        } catch (err: any) {
+          const message =
+            err.response && err.response.data && err.response.data.error ? err.response.data.error : err.message
+          setRedeemState({
+            state: 'Fail',
+            status: {
+              ...state,
+              errorMessage: message,
+            },
+          })
+        }
       }
-    }
-  }
+    },
+    [account, api, item, library, send, state, store.address]
+  )
+
   const resetRedeem = () => {
     resetState()
     setRedeemState({ state: 'None', status: state })
   }
+
   useEffect(() => {
     if (state.status === 'Success') {
       const IItem = new utils.Interface(OttoItemAbi)
@@ -269,7 +281,8 @@ export const useRedeemProduct = () => {
     } else {
       setRedeemState({ state: state.status, status: state })
     }
-  }, [state])
+  }, [state, account, itemsRepo])
+
   return { redeemState, redeem, resetRedeem }
 }
 
@@ -510,7 +523,7 @@ export const useForge = () => {
     } else {
       setForgeState({ state: state.status, status: state })
     }
-  }, [account, api, state])
+  }, [account, api, state, itemsRepo])
   return { forgeState, forge, resetForge: resetState }
 }
 
@@ -616,12 +629,14 @@ export const useAdventureExplore = () => {
     })
   }, [approveItemState])
 
+  const parseLog = useCallback(log => adventure.interface.parseLog(log), [adventure])
+
   useEffect(() => {
     if (state.status === 'Success' && state.receipt) {
       const passId = state.receipt.logs
         .map(log => {
           try {
-            return adventure.interface.parseLog(log)
+            return parseLog(log)
           } catch (err) {
             // skip
           }
@@ -630,12 +645,15 @@ export const useAdventureExplore = () => {
         .filter(e => e?.name === 'Departure')[0]?.args[0]
       setPassId(passId)
     } else {
-      setExploreState({
-        state: txState(state.status),
-        status: state,
-      })
+      const newState = txState(state.status)
+      if (exploreState.state !== newState) {
+        setExploreState({
+          state: newState,
+          status: state,
+        })
+      }
     }
-  }, [state])
+  }, [state, parseLog, exploreState.state])
 
   useEffect(() => {
     if (passId && rawPassResult?.value?.[0].canFinishAt.gt(0)) {
@@ -647,7 +665,7 @@ export const useAdventureExplore = () => {
       })
       setPassId(null)
     }
-  }, [passId, rawPassResult])
+  }, [passId, rawPassResult, state])
 
   const resetExplore = () => {
     resetItem()
@@ -683,7 +701,7 @@ export const useAdventureExplore = () => {
       const data = await api.explore(ottoId, locationId, account, itemActions)
       sendExplore(...data)
     },
-    [account, library, state, otto, item, api, sendExplore]
+    [account, library, state, otto, item, api, sendExplore, adventure.address, approveItemSpending, approveOttoSpending]
   )
 
   return {
@@ -721,13 +739,15 @@ export const useAdventureFinish = () => {
     [api, account, send, state]
   )
 
+  const parseLog = useCallback(log => adventure.interface.parseLog(log), [adventure])
+
   useEffect(() => {
     if (state.status === 'Success') {
       const result = { restingUntil: new Date() }
 
       ;(state.receipt?.logs ?? []).forEach(raw => {
         try {
-          const log = adventure.interface.parseLog(raw)
+          const log = parseLog(raw)
           if (log.name === 'RestingUntilUpdated') {
             result.restingUntil = new Date(BigNumber.from(log.args.restingUntil).toNumber() * 1000)
           }
@@ -738,12 +758,12 @@ export const useAdventureFinish = () => {
 
       setResult(result)
     }
-  }, [state.status])
+  }, [state.status, state.receipt?.logs, parseLog])
 
   const reset = useCallback(() => {
     resetState()
     setResult(undefined)
-  }, [])
+  }, [resetState])
 
   return { finishState, finish, resetFinish: reset, finishResult: result }
 }
@@ -833,13 +853,8 @@ export const useDoItemBatchActions = () => {
     state: approveItemState,
     resetState: resetItem,
   } = useContractFunction(item, 'setApprovalForAll')
-  useEffect(() => {
-    setDoItemBatchActionsState({
-      state: txState(state.status),
-      status: state,
-    })
-  }, [approveItemState])
-  useEffect(() => {
+
+  const handleStateChange = useCallback(() => {
     if (state.status === 'Success' && state.receipt) {
       const restingUntil = last(
         state.receipt.logs
@@ -864,7 +879,21 @@ export const useDoItemBatchActions = () => {
         status: state,
       })
     }
+  }, [state, adventure.interface])
+
+  useEffect(() => {
+    if (state.status === 'Success' || state.status === 'Exception' || state.status === 'Fail') {
+      handleStateChange()
+    }
+  }, [state.status, handleStateChange])
+
+  useEffect(() => {
+    setDoItemBatchActionsState({
+      state: txState(state.status),
+      status: state,
+    })
   }, [state])
+
   const doItemBatchActions = useCallback(
     async (ottoId: string, actions: ItemAction[]) => {
       if (!account) {
@@ -885,7 +914,7 @@ export const useDoItemBatchActions = () => {
         { gasLimit: 2000000 }
       )
     },
-    [send, item]
+    [account, send, item, approveItemSpending, otto.address]
   )
   const resetDoItemBatchActions = useCallback(() => {
     resetState()
@@ -955,7 +984,7 @@ export const useBuyFishItem = () => {
         })
       }
     },
-    [account, library, state, OTTOPIA_STORE, api, sendBuy, approve]
+    [account, library, state, OTTOPIA_STORE, api, sendBuy, approve, fish]
   )
 
   return {
@@ -1055,7 +1084,7 @@ export const useRequestNewMission = () => {
       })
       send(key, 1, { value: price })
     },
-    [account, send, state]
+    [send, state]
   )
   useEffect(() => {
     if (state.status === 'Success') {
@@ -1102,7 +1131,7 @@ export const useRefreshMission = (missionId: number) => {
       })
       send(key, 1, { value: price })
     },
-    [account, send, state]
+    [send, state]
   )
   useEffect(() => {
     if (state.status === 'Success' && account && state.transaction?.hash) {
