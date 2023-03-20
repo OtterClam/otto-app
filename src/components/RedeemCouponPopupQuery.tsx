@@ -3,6 +3,7 @@ import CloseButton from 'components/CloseButton'
 import Fullscreen from 'components/Fullscreen'
 import ItemCell from 'components/ItemCell'
 import RedeemCouponPopup from 'components/RedeemCouponPopup'
+import { useRedeemProduct } from 'contracts/functions'
 import { Item } from 'models/Item'
 import { useTranslation } from 'next-i18next'
 import { memo, useEffect, useState } from 'react'
@@ -73,8 +74,10 @@ export default memo(function RedeemCouponPopupQuery({ item, onClose }: Props) {
   const [amount, setAmount] = useState(1)
   const { t } = useTranslation('', { keyPrefix: 'my_items' })
   const maxAmount = item ? item.amount : 1
+  const { resetRedeem, redeem, redeemState } = useRedeemProduct()
 
   const onRedeem = () => {
+    redeem(item.metadata.tokenId, amount)
     setState(State.Submitting)
   }
 
@@ -108,5 +111,13 @@ export default memo(function RedeemCouponPopupQuery({ item, onClose }: Props) {
       </Fullscreen>
     )
   }
-  return <RedeemCouponPopup coupon={item.metadata} amount={amount} onErrorClose={onErrorClose} onClose={onClose} />
+  return (
+    <RedeemCouponPopup
+      coupon={item.metadata}
+      redeemState={redeemState}
+      resetRedeem={resetRedeem}
+      onErrorClose={onErrorClose}
+      onClose={onClose}
+    />
+  )
 })

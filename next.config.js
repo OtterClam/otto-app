@@ -1,8 +1,15 @@
 const { DefinePlugin, Compilation } = require('webpack')
-const withPWA = require('next-pwa')
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  scope: '/',
+  cacheStartUrl: false,
+  swSrc: './src/worker/index.ts',
+  disable: process.env.NODE_ENV === 'development',
+})
 const pkg = require('./package.json')
 const { i18n } = require('./next-i18next.config')
 const { AssetsManifestPlugin } = require('./webpack/assets-manifest')
+const { PHASE_DEVELOPMENT_SERVER } = require('next/dist/shared/lib/constants')
 const withTM = require('next-transpile-modules')(['@usedapp/core'])
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -15,9 +22,8 @@ if (process.env.NODE_ENV === 'development') {
 
 const isWatch = process.argv.includes('--watch')
 
-module.exports = withBundleAnalyzer(
-  withPWA(
-    withTM({
+module.exports = async (phase) => {
+  const nextConfig = withTM({
       productionBrowserSourceMaps: false,
       eslint: {
         ignoreDuringBuilds: true,
@@ -61,16 +67,8 @@ module.exports = withBundleAnalyzer(
           },
         ]
       },
-    }),
-    {
-      pwa: {
-        dest: 'public',
-        scope: '/',
-        cacheStartUrl: false,
-        swSrc: './src/worker/index.ts',
-        swDest: isWatch ? undefined : 'public/sw.js',
-        disable: process.env.NODE_ENV === 'development',
-      },
-    }
-  )
-)
+    });
+  return withBundleAnalyzer(
+    phase === PHASE_DEVELOPMENT_SERVER ? nextConfig : withPWA(nextConfig)
+    );
+}
