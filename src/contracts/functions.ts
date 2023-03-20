@@ -29,6 +29,8 @@ import {
 import useOtterMine from './useOtterMine'
 import { Adventure } from './__generated__'
 
+const DEFAULT_TRANSACTION_STATE: TransactionStatus = { status: 'None' }
+
 export const useApprove = (tokenAddress?: string) => {
   const { CLAM } = useContractAddresses()
   const erc20 = useERC20(tokenAddress ?? CLAM)
@@ -227,7 +229,7 @@ export const useRedeemProduct = () => {
       if (account && signer) {
         setRedeemState({
           state: 'PendingSignature',
-          status: state,
+          status: DEFAULT_TRANSACTION_STATE,
         })
         try {
           const isApprovedForAll = await item.connect(signer).isApprovedForAll(account, store.address)
@@ -242,20 +244,20 @@ export const useRedeemProduct = () => {
           setRedeemState({
             state: 'Fail',
             status: {
-              ...state,
               errorMessage: message,
+              ...DEFAULT_TRANSACTION_STATE,
             },
           })
         }
       }
     },
-    [account, api, item, library, send, state, store.address]
+    [account, api, item, library, send, store.address]
   )
 
-  const resetRedeem = () => {
+  const resetRedeem = useCallback(() => {
     resetState()
-    setRedeemState({ state: 'None', status: state })
-  }
+    setRedeemState({ state: 'None', status: DEFAULT_TRANSACTION_STATE })
+  }, [resetState])
 
   useEffect(() => {
     if (state.status === 'Success') {
