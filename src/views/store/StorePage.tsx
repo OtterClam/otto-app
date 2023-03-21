@@ -4,7 +4,7 @@ import { useApiCall } from 'contexts/Api'
 import { SellData } from 'libs/api'
 import { useTranslation } from 'next-i18next'
 import Head from 'next/head'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 import { ContentMedium, Display3 } from 'styles/typography'
 import Image from 'next/image'
@@ -128,12 +128,20 @@ const StyledProductList = styled.div`
   }
 `
 
+const emptyArgs: [] = []
+
 export default function StorePage() {
   const { t } = useTranslation('', { keyPrefix: 'store' })
   const bodyRef = useRef<HTMLDivElement>(null)
-  const { result: chestStore } = useApiCall('getChestStore', [], true, [])
+  const { fetch: getChestStore, result: chestStore } = useApiCall('getChestStore', emptyArgs)
   const [selectedProduct, setSelectedProduct] = useState<GroupedProduct | null>(null)
-  const { result: fishStore } = useApiCall('getFishStoreProducts', [], true, [])
+  const { fetch: getFishStore, result: fishStore } = useApiCall('getFishStoreProducts', emptyArgs)
+  useEffect(() => {
+    getChestStore()
+  }, [getChestStore])
+  useEffect(() => {
+    getFishStore()
+  }, [getFishStore])
   const onSelectSell = (data: SellData) => {
     setSelectedProduct({
       sellId: data.id,
