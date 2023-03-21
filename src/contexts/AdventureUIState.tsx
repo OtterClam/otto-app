@@ -2,8 +2,8 @@ import noop from 'lodash/noop'
 import { AdventurePreview } from 'models/AdventurePreview'
 import { AdventureResultEvents, AdventureResultReward } from 'models/AdventureResult'
 import { ItemMetadata } from 'models/Item'
-import { useRouter, NextRouter } from 'next/router'
-import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useReducer, useRef } from 'react'
+import { useRouter } from 'next/router'
+import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useReducer } from 'react'
 import { useAdventureLocation } from './AdventureLocations'
 
 export enum AdventureUIActionType {
@@ -187,35 +187,18 @@ export const useGoToAdventurePopupStep = () => {
   )
 }
 
-const updateRouter = (router: NextRouter, ottoId: string, tx: string, locationId: number) => {
-  const newQuery = {
-    ...router.query,
-    adventure_tx: tx,
-    location: String(locationId),
-    otto: String(ottoId),
-  }
-
-  const newUrl = {
-    pathname: router.pathname,
-    query: newQuery,
-  }
-
-  router.push(newUrl, newUrl)
-}
-
 export const useGoToAdventureResultStep = () => {
   const { dispatch } = useAdventureUIState()
   const router = useRouter()
-
   return useCallback(
-    ({ ottoId, tx, locationId, showEvent }) => {
-      updateRouter(router, ottoId, tx, locationId) // Pass the 'router' object as an argument
-      dispatch({
-        type: AdventureUIActionType.GoToResult,
-        data: { tx, locationId, showEvent },
-      })
+    ({ ottoId, tx, locationId, showEvent }: { ottoId: string; tx: string; locationId: number; showEvent: boolean }) => {
+      router.query.adventure_tx = tx
+      router.query.location = String(locationId)
+      router.query.otto = String(ottoId)
+      router.push(router)
+      dispatch({ type: AdventureUIActionType.GoToResult, data: { tx, locationId, showEvent } })
     },
-    [dispatch, router] // Include 'router' in the dependency array
+    [router, dispatch]
   )
 }
 
