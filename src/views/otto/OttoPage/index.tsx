@@ -522,7 +522,7 @@ export default function OttoPage() {
                     )}
                   </StyledStat>
                   <StyledStat>
-                    <StyledStatIcon src={`/arms/${otto.armsImage}.png`} />
+                    {otto.armsImage && <StyledStatIcon src={`/arms/${otto.armsImage}.png`} />}
                     <StyledStatTitle>{otto.coatOfArms}</StyledStatTitle>
                     <StyledStatDesc>{t('otto.coatOfArms', { arms: otto.coatOfArms })}</StyledStatDesc>
                   </StyledStat>
