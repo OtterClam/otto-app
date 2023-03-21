@@ -195,7 +195,16 @@ export const useGoToAdventureResultStep = () => {
       router.query.adventure_tx = tx
       router.query.location = String(locationId)
       router.query.otto = String(ottoId)
-      router.push(router)
+      const url = {
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          adventure_tx: tx,
+          location: String(locationId),
+          otto: String(ottoId),
+        },
+      }
+      router.push(url)
       dispatch({ type: AdventureUIActionType.GoToResult, data: { tx, locationId, showEvent } })
     },
     [router, dispatch]
