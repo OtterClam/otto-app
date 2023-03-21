@@ -25,57 +25,37 @@ type ApiMethod = {
 
 export const useApi = () => useContext(ApiContext)
 
-export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<Api[M]>, when: boolean, deps: any[]) {
+/**
+ * Use API Call - Returns callback that can be used to trigger the fetch, along with
+ * associated reactive state variables.
+ *
+ * @param methodName Method name
+ * @param args Method arguments - This is used as an effect dependency,
+ *  so if generated on the fly (new array), it needs to be wrapped with
+ *  useMemo or it should be non-reactive (e.g. constant).
+ * @returns Fetch callback, loading status, result if present, error if present.
+ */
+export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<Api[M]>) {
   const api = useApi()
-  const [controller, setController] = useState<AbortController | undefined>(undefined)
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<Awaited<ReturnType<Api[M]>> | undefined>(undefined)
   const [err, setErr] = useState<Error | undefined>(undefined)
-  const [trigger, setTrigger] = useState(0)
-  const fetchRef = useRef<(() => void) | null>(null)
-  const depsRef = useRef(deps)
 
-  useEffect(() => {
-    depsRef.current = deps
-  }, [deps])
-
-  fetchRef.current = useCallback(async () => {
-    if (controller) {
-      controller.abort()
-    }
-
-    const newController = new AbortController()
-    const cancelableApi = api.withAbortController(newController)
-    const method = cancelableApi[methodName] as any
-
+  const fetch: () => Promise<void> = useCallback(() => {
     setLoading(true)
-    setController(newController)
-
-    return method
-      .call(cancelableApi, ...args)
+    return (api[methodName] as any)(...args)
       .then(setResult)
       .catch(setErr)
       .finally(() => setLoading(false))
-  }, [api, args, controller, methodName])
-
-  useEffect(() => {
-    if (!when) {
-      return
-    }
-    fetchRef.current?.()
-    // removing ...deps makes bad things happen
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [when, trigger, ...deps])
+  }, [api, args, methodName])
 
   return useMemo(
     () => ({
+      fetch,
       loading,
       result,
       err,
-      refetch: () => {
-        fetchRef.current?.()
-      },
     }),
-    [loading, result, err]
+    [fetch, loading, result, err]
   )
 }
