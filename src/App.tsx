@@ -1,5 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
-import { ChainId, Config, DAppProvider } from '@usedapp/core'
+import { ChainId, Config, DAppProvider, MulticallAddresses, NodeUrls } from '@usedapp/core'
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch'
 import ottoLoadingImage from 'assets/ui/otto-loading.jpg'
 import adventureMapImage from 'components/AdventureMap/map.jpg'
@@ -20,9 +20,7 @@ import useServiceWorker from 'hooks/useServiceWorker'
 import MyOttosProvider from 'MyOttosProvider'
 import dynamic from 'next/dynamic'
 import OtterSubgraphProvider from 'OtterSubgraphProvider'
-import AvaxSubgraphProvider from 'AvaxSubgraphProvider'
 import SnapshotProvider from 'SnapshotSubgraphProvider'
-import BscSubgraphProvider from 'BscSubgraphProvider'
 import React, { PropsWithChildren, useEffect } from 'react'
 import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
@@ -55,16 +53,24 @@ const StyledPageContainer = styled.div.attrs({ id: 'page' })`
   width: 100%;
 `
 
+const dev = process.env.NODE_ENV === 'development'
+
+const readOnlyUrls: NodeUrls = {
+  [ChainId.Polygon]: 'https://polygon-rpc.com',
+}
+
+const multicallAddresses: MulticallAddresses = {}
+
+if (dev) {
+  // readOnlyUrls[ChainId.Mumbai] = process.env.NEXT_PUBLIC_RPC_ENDPOINT_MUMBAI || ''
+  // readOnlyUrls[ChainId.Hardhat] =  'http://127.0.0.1:8545' || '',
+  // multicallAddresses[ChainId.Hardhat] = '0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507'
+}
+
 const config: Config = {
   readOnlyChainId: ChainId.Polygon,
-  readOnlyUrls: {
-    [ChainId.Polygon]: 'https://polygon-rpc.com',
-    [ChainId.Mumbai]: process.env.NEXT_PUBLIC_RPC_ENDPOINT_MUMBAI || '',
-    // [ChainId.Hardhat]: 'http://127.0.0.1:8545',
-  },
-  multicallAddresses: {
-    [ChainId.Hardhat]: '0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507',
-  },
+  readOnlyUrls,
+  multicallAddresses,
   bufferGasLimitPercentage: 15,
 }
 
@@ -103,24 +109,20 @@ const ApolloApp = ({ children }: PropsWithChildren<object>) => {
                           <BannersProvider>
                             <OverlayProvider>
                               <SnapshotProvider>
-                                <AvaxSubgraphProvider>
-                                  <BscSubgraphProvider>
-                                    <StyledApp>
-                                      <SkeletonThemeProvider>
-                                        <StyledPageContainer>{children}</StyledPageContainer>
-                                        <Error />
-                                        <WalletSelector />
-                                        <SideMenu />
-                                        <MyMissionsProvider>
-                                          <MissionPopup />
-                                        </MyMissionsProvider>
-                                        <AssetsLoader />
-                                        <ItemDetailsPopup />
-                                        <OttoPopup />
-                                      </SkeletonThemeProvider>
-                                    </StyledApp>
-                                  </BscSubgraphProvider>
-                                </AvaxSubgraphProvider>
+                                <StyledApp>
+                                  <SkeletonThemeProvider>
+                                    <StyledPageContainer>{children}</StyledPageContainer>
+                                    <Error />
+                                    <WalletSelector />
+                                    <SideMenu />
+                                    <MyMissionsProvider>
+                                      <MissionPopup />
+                                    </MyMissionsProvider>
+                                    <AssetsLoader />
+                                    <ItemDetailsPopup />
+                                    <OttoPopup />
+                                  </SkeletonThemeProvider>
+                                </StyledApp>
                               </SnapshotProvider>
                             </OverlayProvider>
                           </BannersProvider>
