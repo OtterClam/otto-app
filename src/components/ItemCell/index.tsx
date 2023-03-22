@@ -234,7 +234,7 @@ export default memo(function ItemCell({
           <Help noicon message={equippedByOtto.name}>
             <Link href={`/my-ottos/${equippedByOtto.id}`} passHref>
               <StyledOttoLink onClick={e => e.stopPropagation()}>
-                <Image src={equippedByOtto.image} layout="fill" width={50} height={50} />
+                <Image src={equippedByOtto.image} layout="responsive" width={50} height={50} />
               </StyledOttoLink>
             </Link>
           </Help>

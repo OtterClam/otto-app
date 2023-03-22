@@ -30,7 +30,7 @@ const StyledAdventureOttoCard = styled.div<AdventureOttoCardProps>`
   overflow: hidden;
   margin-bottom: 8px;
   background: ${({ theme, bg }) => (bg ? `center / cover url(${bg})` : theme.colors.white)};
-  background-position-y: 70%;
+  background-position-y: ${({ adventureStatus }) => (adventureStatus === AdventureOttoStatus.Resting ? '42%' : '70%')};
 `
 
 const StyledContainer = styled.div`
@@ -103,7 +103,9 @@ const StyledName = styled(Caption)<AdventureOttoCardProps>`
   border-radius: 4px;
   color: ${({ theme }) => theme.colors.otterBlack};
   background: ${({ adventureStatus, theme }) =>
-    adventureStatus === AdventureOttoStatus.Ongoing || adventureStatus === AdventureOttoStatus.Finished
+    adventureStatus === AdventureOttoStatus.Ongoing ||
+    adventureStatus === AdventureOttoStatus.Finished ||
+    adventureStatus === AdventureOttoStatus.Resting
       ? theme.colors.lightGray200
       : 'none'};
   white-space: nowrap;
@@ -231,7 +233,13 @@ export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: Ad
 
   return (
     <StyledAdventureOttoCard
-      bg={location && location.bgImage ? location.bgImage : ''}
+      bg={
+        otto.adventureStatus === AdventureOttoStatus.Resting
+          ? '/location-bg/hot-spring.jpg'
+          : location && location.bgImage
+          ? location.bgImage
+          : ''
+      }
       adventureStatus={otto.adventureStatus}
       otto={otto}
     >

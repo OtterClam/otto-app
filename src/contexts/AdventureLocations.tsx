@@ -19,6 +19,10 @@ const AdventureLocationsContext = createContext<{
   idMap: { [k: string]: AdventureLocation }
 }>(defaultValue)
 
+const replaceBgImageURL = (url: string) => {
+  return url.replace(/^https:\/\/api\.otterclam\.finance\/assets\/adventure\//, '/location-bg/')
+}
+
 export const AdventureLocationsProvider = ({ children }: PropsWithChildren<object>) => {
   const api = useApi()
   const [loading, setLoading] = useState(false)
@@ -39,7 +43,15 @@ export const AdventureLocationsProvider = ({ children }: PropsWithChildren<objec
     setLoading(true)
     api
       .getAdventureLocations()
-      .then(setLocations)
+      .then(locations => {
+        const updatedLocations = locations.map(location => ({
+          ...location,
+          image: replaceBgImageURL(location.image),
+          bgImage: replaceBgImageURL(location.bgImage),
+          bgImageBlack: replaceBgImageURL(location.bgImageBlack),
+        }))
+        setLocations(updatedLocations)
+      })
       .finally(() => setLoading(false))
   }, [api, setLoading, setLocations])
 
