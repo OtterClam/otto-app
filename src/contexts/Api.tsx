@@ -1,7 +1,7 @@
 import { useEthers } from '@usedapp/core'
 import { Api, defaultApi } from 'libs/api'
 import { useTranslation } from 'next-i18next'
-import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState, useRef } from 'react'
+import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react'
 
 const ApiContext = createContext<Api>(defaultApi)
 
