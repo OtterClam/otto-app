@@ -20,7 +20,7 @@ const AdventureLocationsContext = createContext<{
 }>(defaultValue)
 
 const replaceBgImageURL = (url: string) => {
-  return url.replace(/^https:\/\/api\.otterclam\.finance\/assets\/adventure\//, '/location-bg/')
+  return url.replace(/^https:\/\/api\.otterclam\.finance\/assets\/adventure\//, '/location/')
 }
 
 export const AdventureLocationsProvider = ({ children }: PropsWithChildren<object>) => {

@@ -235,7 +235,7 @@ export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: Ad
     <StyledAdventureOttoCard
       bg={
         otto.adventureStatus === AdventureOttoStatus.Resting
-          ? '/location-bg/hot-spring.jpg'
+          ? '/location/hot-spring.jpg'
           : location && location.bgImage
           ? location.bgImage
           : ''
