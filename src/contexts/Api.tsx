@@ -43,6 +43,8 @@ export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<
 
   const fetch: () => Promise<void> = useCallback(() => {
     setLoading(true)
+    setResult(undefined)
+    setErr(undefined)
     return (api[methodName] as any)(...args)
       .then(setResult)
       .catch(setErr)

@@ -260,21 +260,15 @@ export default function MineDialog({ className }: Props) {
         </StyledTokenInputContainer>
         <StyledSwapInfoContainer>
           <StyledSwapInfo>
-            <p>
-              <Caption>{t('current_supply')}</Caption>
-            </p>
-            <p>
-              <StyledSwapInfoTokenSymbol icon={DAI.icon.src}>
-                <Caption>
-                  {availableSupply && formatUsd(formatUnits(availableSupply, decimals))} {DAI.symbol}
-                </Caption>
-              </StyledSwapInfoTokenSymbol>
-            </p>
+            <Caption>{t('current_supply')}</Caption>
+            <StyledSwapInfoTokenSymbol icon={DAI.icon.src}>
+              <Caption>
+                {availableSupply && formatUsd(formatUnits(availableSupply, decimals))} {DAI.symbol}
+              </Caption>
+            </StyledSwapInfoTokenSymbol>
           </StyledSwapInfo>
           <StyledSwapInfo>
-            <p>
-              <Caption>1 CLAM</Caption>
-            </p>
+            <Caption>1 CLAM</Caption>
             <div>
               <Caption>
                 = {usdPerClam && formatUnits(usdPerClam, decimals)} {DAI.symbol}
