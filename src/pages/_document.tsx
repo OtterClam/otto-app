@@ -46,15 +46,7 @@ export default class MyDocument extends Document<{ asPath: string }> {
           <link rel="preconnect" href="https://cdn.jsdelivr.net" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-          <link
-            rel="preload"
-            href="https://cdn.jsdelivr.net/gh/max32002/naikaifont@1.0/webfont/NaikaiFont-Regular-Lite.woff2"
-            as="font"
-            type="font/woff2"
-            crossOrigin=""
-          />
           <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
-          <link rel="preload" href="/fonts/Pangolin-Regular.ttf" as="font" type="font/woff2" crossOrigin="" />
           <meta charSet="utf-8" />
           <link rel="icon" href="/favicon.ico" />
           <link rel="canonical" href={process.env.BASE_URL + this.props.asPath} />
