@@ -25,6 +25,7 @@ import { Mission, MissionInfo, rawMissionToMission } from 'models/Mission'
 import { Notification, RawNotification } from 'models/Notification'
 import { RawOtto } from 'models/Otto'
 import Product from 'models/store/Product'
+import retry from 'retry'
 import { RawAdventureResult } from './RawAdventureResult'
 
 export interface OttoCandidateMeta {
@@ -143,7 +144,26 @@ export class Api {
   }
 
   public async rollTheDice(ottoId: string, tx: string): Promise<Dice> {
-    return this.otterclamClient.post(`/ottos/${ottoId}/helldice/${tx}`, null).then(res => new Dice(res.data))
+    return new Promise((resolve, reject) => {
+      const operation = retry.operation({
+        retries: 5,
+        factor: 3,
+        minTimeout: 1 * 1000,
+        maxTimeout: 60 * 1000,
+        randomize: true,
+      })
+      operation.attempt(async () => {
+        try {
+          const response = await this.otterclamClient.post(`/ottos/${ottoId}/helldice/${tx}`, null)
+          resolve(new Dice(response.data))
+        } catch (e) {
+          if (operation.retry(e as Error)) {
+            return
+          }
+          reject(e)
+        }
+      })
+    })
   }
 
   public async getDice(ottoId: string, tx = ''): Promise<Dice> {
