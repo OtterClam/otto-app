@@ -128,10 +128,12 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
               {t('verify')}
             </Button>
           ) : (
-            <Link href="/api/twitter-login">
-              <Button padding="0px 10px" Typography={Headline}>
-                {t('verify')}
-              </Button>
+            <Link href="/api/twitter-login" passHref>
+              <a style={{ textDecoration: 'none', display: 'inline-block' }}>
+                <Button padding="0px 10px" Typography={Headline}>
+                  {t('verify')}
+                </Button>
+              </a>
             </Link>
           )}
         </StyledVerifyArea>
