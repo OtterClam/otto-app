@@ -633,8 +633,10 @@ export const useAdventureExplore = () => {
 
   const parseLog = useCallback(log => adventure.interface.parseLog(log), [adventure])
 
-  useEffect(() => {
-    if (state.status === 'Success' && state.receipt) {
+  const [passIdUpdated, setPassIdUpdated] = useState(false)
+
+  const updateExploreState = useCallback(() => {
+    if (state.status === 'Success' && state.receipt && !passIdUpdated) {
       const passId = state.receipt.logs
         .map(log => {
           try {
@@ -646,6 +648,7 @@ export const useAdventureExplore = () => {
         })
         .filter(e => e?.name === 'Departure')[0]?.args[0]
       setPassId(passId)
+      setPassIdUpdated(true)
     } else {
       const newState = txState(state.status)
       if (exploreState.state !== newState) {
@@ -655,7 +658,11 @@ export const useAdventureExplore = () => {
         })
       }
     }
-  }, [state, parseLog, exploreState.state])
+  }, [state, parseLog, exploreState.state, passIdUpdated])
+
+  useEffect(() => {
+    updateExploreState()
+  }, [updateExploreState])
 
   useEffect(() => {
     if (passId && rawPassResult?.value?.[0].canFinishAt.gt(0)) {
