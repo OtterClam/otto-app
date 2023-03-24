@@ -50,12 +50,14 @@ export function fromRawResult(raw: RawAdventureResult): AdventureResult {
     success: raw.success,
     revived: raw.revived,
     restingUntil: new Date(raw.resting_until),
-    journal: raw.journal.map(e => ({
-      happened_at: e.happened_at,
-      text: e.text,
-    })),
+    journal: raw.journal
+      ? raw.journal.map(e => ({
+          happened_at: e.happened_at,
+          text: e.text,
+        }))
+      : [],
     rewards: {
-      items: raw.rewards.items.map(raw => rawItemMetadataToItemMetadata(raw)),
+      items: raw.rewards.items ? raw.rewards.items.map(raw => rawItemMetadataToItemMetadata(raw)) : [],
       exp: raw.rewards.exp,
       tcp: raw.rewards.tcp,
       ap: raw.rewards.ap,
@@ -73,12 +75,15 @@ export function fromRawResult(raw: RawAdventureResult): AdventureResult {
           expToNextLevel: raw.events.level_up.to.expToNextLevel,
         },
         got: {
-          items: raw.events.level_up.got.items.map(raw => rawItemMetadataToItemMetadata(raw)),
+          items: raw.events.level_up.got.items
+            ? raw.events.level_up.got.items.map(raw => rawItemMetadataToItemMetadata(raw))
+            : [],
           attrs_points: raw.events.level_up.got.attrs_points,
         },
       },
-      treasureChests:
-        raw.events?.treasure_chests && raw.events.treasure_chests.map(raw => rawItemMetadataToItemMetadata(raw)),
+      treasureChests: raw.events?.treasure_chests
+        ? raw.events.treasure_chests.map(raw => rawItemMetadataToItemMetadata(raw))
+        : [],
     },
     pass: fromRawPass(raw.pass),
     image: raw.image,
