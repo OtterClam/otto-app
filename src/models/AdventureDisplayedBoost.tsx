@@ -203,13 +203,12 @@ const parseFirstMatchGroup = (
       break
     }
 
+    boost = boosts.shift() || ({} as AdventureLocationConditionalBoost)
     group.push(boost)
 
     if (boost.effective) {
       effectiveBoost = boost
     }
-
-    boost = boosts.shift() || ({} as AdventureLocationConditionalBoost)
   }
 
   if (!firstMatchedBoost) {
