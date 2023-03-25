@@ -57,7 +57,7 @@ export function fromRawResult(raw: RawAdventureResult): AdventureResult {
         }))
       : [],
     rewards: {
-      items: raw.rewards.items ? raw.rewards.items.map(raw => rawItemMetadataToItemMetadata(raw)) : [],
+      items: raw.rewards && raw.rewards.items ? raw.rewards.items.map(raw => rawItemMetadataToItemMetadata(raw)) : [],
       exp: raw.rewards.exp,
       tcp: raw.rewards.tcp,
       ap: raw.rewards.ap,
