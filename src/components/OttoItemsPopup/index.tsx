@@ -132,7 +132,7 @@ export default memo(function OttoItemsPopup({ className, maxWidth, height, onReq
   const { traitType } = useTrait()
   const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
   // eslint-disable-next-line prefer-const
-  let { items, refetch } = useMyItems()
+  let { items } = useMyItems()
   items = useAdventurePreviewItems(items, draftOtto)
   const [selectedItemId, selectItem] = useState<string>()
   const filteredItems = items.filter(item => item.metadata.type === traitType)
@@ -160,12 +160,6 @@ export default memo(function OttoItemsPopup({ className, maxWidth, height, onReq
       from_otto_id: 0,
     })
   }, [otherActions, selectedItemMetadata])
-
-  useEffect(() => {
-    if (show) {
-      refetch()
-    }
-  }, [draftOtto?.id, show, refetch])
 
   const isTraitTypeTruthy = Boolean(traitType)
 

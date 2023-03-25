@@ -16,7 +16,6 @@ const StyledAdventureFullscreen = styled(AdventureFullscreen)`
 
 export default withOtto(
   withTrait(function OttoPopup() {
-    const { refetch: refreshMyItems } = useMyItems()
     const { setOtto, resetEquippedItems } = useOtto()
     const dispatch = useDispatch()
     const ottoTokenId = useSelector(selectOttoPopup)
@@ -36,11 +35,9 @@ export default withOtto(
     useEffect(() => {
       if (prevOtto.current && !otto) {
         resetEquippedItems?.()
-      } else if (!prevOtto.current && otto) {
-        refreshMyItems?.()
       }
       prevOtto.current = otto
-    }, [otto, refreshMyItems, resetEquippedItems])
+    }, [otto, resetEquippedItems])
 
     return (
       <StyledAdventureFullscreen show={Boolean(otto)} onRequestClose={closePopup} closeButtonColor="white">
