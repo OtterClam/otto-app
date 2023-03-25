@@ -148,6 +148,7 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
 
       const abortController = new AbortController()
       const timer = setTimeout(() => {
+        console.log('previewottostep using preview adventure otto')
         ottosRepo
           .withAbortSignal(abortController.signal)
           .previewAdventureOtto(otto.id, location.id, actions)
@@ -195,7 +196,7 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
   useEffect(() => {
     if (exploreState.state === 'Success' && exploreState.passId && exploreState.pass && otto) {
       const draftOtto = new Otto(
-        { ...otto.raw, ...preview },
+        { ...otto.raw, ...preview?.otto.raw },
         otto.equippedItems,
         otto.nativeItemsMetadata,
         otto.itemsMetadata
