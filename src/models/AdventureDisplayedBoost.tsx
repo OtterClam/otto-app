@@ -185,29 +185,29 @@ const parseFirstMatchGroup = (
   const group: AdventureLocationConditionalBoost[] = []
   let effectiveBoost: AdventureLocationConditionalBoost | undefined
   let firstMatchedBoost: AdventureLocationConditionalBoost | undefined
-  let boost: AdventureLocationConditionalBoost = boosts[0] || ({} as AdventureLocationConditionalBoost)
 
-  while (boost.type === BoostType.FirstMatchGroup) {
+  while (boosts[0] && boosts[0].type === BoostType.FirstMatchGroup) {
     if (!firstMatchedBoost) {
       ;[firstMatchedBoost] = boosts
     }
 
-    if (boost.condition?.type !== BoostConditionType.Base) {
+    if (boosts[0].condition?.type !== BoostConditionType.Base) {
       break
     }
 
     const firstMatchCondition = firstMatchedBoost.condition as AttrBoostCondition
-    const currentCondition = boost.condition as AttrBoostCondition
+    const currentCondition = boosts[0].condition as AttrBoostCondition
 
     if (firstMatchCondition.attr !== currentCondition.attr) {
       break
     }
 
-    boost = boosts.shift() || ({} as AdventureLocationConditionalBoost)
-    group.push(boost)
-
-    if (boost.effective) {
-      effectiveBoost = boost
+    const boost = boosts.shift()
+    if (boost) {
+      group.push(boost)
+      if (boost.effective) {
+        effectiveBoost = boost
+      }
     }
   }
 
