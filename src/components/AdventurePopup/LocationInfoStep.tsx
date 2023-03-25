@@ -118,7 +118,14 @@ export function LocationInfoStep() {
           <StyledHead bg={location.bgImage}>
             <StyledName location={location} />
             <StyledImageWrapper>
-              <Image key={`location-image-${location.id}`} layout="fill" src={location.image} unoptimized />
+              <Image
+                key={`location-image-${location.id}`}
+                layout="responsive"
+                src={location.image}
+                unoptimized
+                width="22"
+                height="22"
+              />
             </StyledImageWrapper>
           </StyledHead>
           <StyledDetails>

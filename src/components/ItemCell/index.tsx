@@ -135,8 +135,8 @@ const StyledEquipped = styled.div`
   z-index: 1;
   left: 6px;
   bottom: 6px;
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 28px;
   border: 2px ${({ theme }) => theme.colors.white} solid;
   border-radius: 13px;
   overflow: hidden;
@@ -165,8 +165,10 @@ const StyledUnreturnable = styled.div`
   }
 `
 
-// workaround for eslint
-const StyledOttoLink = styled.a``
+const StyledOttoLink = styled.a`
+  display: block;
+  width: 24px;
+`
 
 interface Props {
   item?: Item
@@ -234,7 +236,7 @@ export default memo(function ItemCell({
           <Help noicon message={equippedByOtto.name}>
             <Link href={`/my-ottos/${equippedByOtto.id}`} passHref>
               <StyledOttoLink onClick={e => e.stopPropagation()}>
-                <Image src={equippedByOtto.image} layout="responsive" width={50} height={50} />
+                <Image src={equippedByOtto.image} layout="responsive" width={24} height={24} />
               </StyledOttoLink>
             </Link>
           </Help>
