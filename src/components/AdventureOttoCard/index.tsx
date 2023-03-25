@@ -229,7 +229,9 @@ export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: Ad
     [AdventureOttoStatus.Resting]: t('resting_1', { name: otto.name }),
   }
 
-  const showJournalButton = [AdventureOttoStatus.Ready, AdventureOttoStatus.Resting].includes(otto.adventureStatus)
+  const showJournalButton =
+    [AdventureOttoStatus.Ready, AdventureOttoStatus.Resting].includes(otto.adventureStatus) &&
+    otto.latestAdventurePass?.finishedTx !== undefined
 
   return (
     <StyledAdventureOttoCard

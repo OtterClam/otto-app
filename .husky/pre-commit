@@ -4,4 +4,3 @@
 yarn check-types
 yarn next lint
 ./node_modules/.bin/lint-staged
-
