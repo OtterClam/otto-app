@@ -148,7 +148,6 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
 
       const abortController = new AbortController()
       const timer = setTimeout(() => {
-        console.log('previewottostep using preview adventure otto')
         ottosRepo
           .withAbortSignal(abortController.signal)
           .previewAdventureOtto(otto.id, location.id, actions)
