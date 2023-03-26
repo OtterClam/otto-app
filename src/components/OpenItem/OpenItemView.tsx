@@ -154,7 +154,7 @@ export default function OpenItemView({ items, onClose }: Props) {
                 <ItemCell showDetailsPopup key={index} metadata={item} />
               ))}
             </StyledItemList>
-            <Link href="/my-items">
+            <Link href="/my-items" passHref>
               <StyledCheckOutButton Typography={Headline} onClick={onClose}>
                 {t('store.popup.check_out')}
               </StyledCheckOutButton>
