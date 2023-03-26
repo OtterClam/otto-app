@@ -60,6 +60,7 @@ const StyledLocation = styled.div`
   flex-direction: column;
   gap: 10px;
   align-items: stretch;
+  min-height: 427px;
 `
 
 const StyledPreview = styled.div`
