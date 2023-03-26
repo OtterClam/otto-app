@@ -110,55 +110,66 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
     setDraftItems({})
   }, [])
 
+  const setOttoWithLock = useCallback((otto?: Otto, locked = false) => {
+    setOtto(otto)
+    setLocked(locked)
+  }, [])
+
+  const equipItem = useCallback(
+    (traitType: string, traitId: string) => {
+      setDraftItems(map => {
+        const equippedItemIndex = otto?.equippedItems.findIndex(item => item.metadata.tokenId === traitId) ?? -1
+        const nativeItemIndex = otto?.nativeItemsMetadata.findIndex(metadata => metadata.tokenId === traitId) ?? -1
+
+        if (equippedItemIndex !== -1 || nativeItemIndex !== -1) {
+          const newMap = { ...map }
+          delete newMap[traitType]
+          return newMap
+        }
+
+        return {
+          ...map,
+          [traitType]: traitId,
+        }
+      })
+    },
+    [otto]
+  )
+
+  const removeItem = useCallback((traitType: string) => {
+    setDraftItems(map => {
+      const newMap = { ...map }
+      if (newMap[traitType]) {
+        delete newMap[traitType]
+      } else {
+        newMap[traitType] = null
+      }
+      return newMap
+    })
+  }, [])
+
+  const unequipAllItems = useCallback(() => {
+    const draftItems: Record<string, string | null> = {}
+    otto?.wearableTraits.forEach(({ type, unreturnable }) => {
+      if (!unreturnable) {
+        draftItems[type] = null
+      }
+    })
+    setDraftItems(draftItems)
+  }, [otto?.wearableTraits])
+
   const value = useMemo(() => {
     return {
       otto,
-      setOtto: (otto?: Otto, locked = false) => {
-        setOtto(otto)
-        setLocked(locked)
-      },
-      equipItem: (traitType: string, traitId: string) => {
-        setDraftItems(map => {
-          const equippedItemIndex = otto?.equippedItems.findIndex(item => item.metadata.tokenId === traitId) ?? -1
-          const nativeItemIndex = otto?.nativeItemsMetadata.findIndex(metadata => metadata.tokenId === traitId) ?? -1
-
-          if (equippedItemIndex !== -1 || nativeItemIndex !== -1) {
-            const newMap = { ...map }
-            delete newMap[traitType]
-            return newMap
-          }
-
-          return {
-            ...map,
-            [traitType]: traitId,
-          }
-        })
-      },
-      removeItem: (traitType: string) => {
-        setDraftItems(map => {
-          const newMap = { ...map }
-          if (newMap[traitType]) {
-            delete newMap[traitType]
-          } else {
-            newMap[traitType] = null
-          }
-          return newMap
-        })
-      },
+      setOtto: setOttoWithLock,
+      equipItem,
+      removeItem,
       resetEquippedItems,
-      unequipAllItems: () => {
-        const draftItems: Record<string, string | null> = {}
-        otto?.wearableTraits.forEach(({ type, unreturnable }) => {
-          if (!unreturnable) {
-            draftItems[type] = null
-          }
-        })
-        setDraftItems(draftItems)
-      },
+      unequipAllItems,
       itemActions: actions,
       locked,
     }
-  }, [otto, actions, locked, resetEquippedItems])
+  }, [otto, actions, locked, setOttoWithLock, equipItem, removeItem, resetEquippedItems, unequipAllItems])
 
   return <OttoContext.Provider value={value}>{children}</OttoContext.Provider>
 }
