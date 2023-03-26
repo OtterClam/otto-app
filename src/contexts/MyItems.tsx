@@ -8,12 +8,12 @@ const MyItemsContext = createContext<{
   items: Item[]
   idToItem: { [k: string]: Item }
   loading: boolean
-  refetch: () => void
+  fetchAccountItems: () => void
 }>({
   items: [],
   idToItem: {},
   loading: false,
-  refetch: noop,
+  fetchAccountItems: noop,
 })
 
 export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
@@ -22,13 +22,14 @@ export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
   const { account } = useEthers()
   const { items: itemsRepo } = useRepositories()
 
-  const refetch = useCallback(() => {
+  const fetchAccountItems = useCallback(() => {
     if (!account) {
       setLoading(false)
       setItems([])
       return
     }
     setLoading(true)
+    console.log('refetching all account items')
     itemsRepo
       .getAllItemsByAccount(account)
       .then(setItems)
@@ -39,8 +40,10 @@ export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
   }, [itemsRepo, account])
 
   useEffect(() => {
-    refetch()
-  }, [itemsRepo, account, refetch])
+    if (!items || !items.length) {
+      fetchAccountItems()
+    }
+  }, [items, fetchAccountItems])
 
   const value = useMemo(() => {
     return {
@@ -50,9 +53,9 @@ export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
         return map
       }, {} as { [id: string]: Item }),
       loading,
-      refetch,
+      fetchAccountItems,
     }
-  }, [items, loading, refetch])
+  }, [items, loading, fetchAccountItems])
 
   return <MyItemsContext.Provider value={value}>{children}</MyItemsContext.Provider>
 }

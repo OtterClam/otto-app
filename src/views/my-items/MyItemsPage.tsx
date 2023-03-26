@@ -284,7 +284,7 @@ export default function MyItemsPage() {
   const [selectedItemId, setSelectedItemId] = useState<string>()
   const [usingItemId, setUsingItemId] = useState<string>()
   const [redeemingCouponId, setRedeemingCouponId] = useState<string>()
-  const { items, loading, refetch } = useMyItems()
+  const { items, loading } = useMyItems()
   const selectedItem = useMyItem(selectedItemId)
   const usingItem = useMyItem(usingItemId)
   const redeemingCoupon = useMyItem(redeemingCouponId)
@@ -316,7 +316,7 @@ export default function MyItemsPage() {
           <UseItemPopup
             item={usingItem}
             onClose={() => {
-              refetch()
+              // TODO: trigger item fetch after API has picked up the tx.
               setUsingItemId(undefined)
             }}
           />
@@ -325,7 +325,7 @@ export default function MyItemsPage() {
           <RedeemCouponPopupQuery
             item={redeemingCoupon}
             onClose={() => {
-              refetch()
+              // TODO: trigger item fetch after API has picked up the tx.
               setRedeemingCouponId(undefined)
             }}
           />

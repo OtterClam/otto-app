@@ -29,7 +29,7 @@ const useForgeFormulas = () => {
 }
 
 const useMyItemAmounts = () => {
-  const { items, refetch: refetchMyItems } = useMyItems()
+  const { items, fetchAccountItems } = useMyItems()
 
   const amounts = useMemo(() => {
     return items
@@ -40,14 +40,14 @@ const useMyItemAmounts = () => {
       }, {} as MyItemAmounts)
   }, [items])
 
-  return { amounts, refetchMyItems }
+  return { amounts, fetchAccountItems }
 }
 
 export default function FoundryView() {
   const { t } = useTranslation('', { keyPrefix: 'foundry' })
   const { OTTO_ITEM, FOUNDRY } = useContractAddresses()
   const forgeFormulas = useForgeFormulas()
-  const { amounts, refetchMyItems } = useMyItemAmounts()
+  const { amounts, fetchAccountItems } = useMyItemAmounts()
 
   useAssetsBundles([BundleName.FoundryPage])
 
@@ -61,7 +61,7 @@ export default function FoundryView() {
         <meta property="og:image" content="/og.jpg" />
       </Head>
       <FoundryHero />
-      <ForgeList formulas={forgeFormulas} itemAmounts={amounts} refetchMyItems={refetchMyItems} />
+      <ForgeList formulas={forgeFormulas} itemAmounts={amounts} refetchMyItems={fetchAccountItems} />
     </ERC1155ApprovalProvider>
   )
 }
