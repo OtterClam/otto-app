@@ -73,6 +73,8 @@ const StyledInnerContainer = styled.div<{ background?: string }>`
   flex-direction: column;
   align-items: center;
   background: ${({ background }) => background || 'transparent'};
+
+  overflow-y: hidden;
 `
 
 const Content = styled.div`
