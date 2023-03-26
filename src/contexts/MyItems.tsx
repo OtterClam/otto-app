@@ -16,16 +16,18 @@ const MyItemsContext = createContext<{
   fetchAccountItems: noop,
 })
 
+const EMPTY_ITEMS: [] = []
+
 export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
   const [loading, setLoading] = useState(false)
-  const [items, setItems] = useState<Item[]>([])
+  const [items, setItems] = useState<Item[]>(EMPTY_ITEMS)
   const { account } = useEthers()
   const { items: itemsRepo } = useRepositories()
 
   const fetchAccountItems = useCallback(() => {
     if (!account) {
       setLoading(false)
-      setItems([])
+      setItems(EMPTY_ITEMS)
       return
     }
     setLoading(true)

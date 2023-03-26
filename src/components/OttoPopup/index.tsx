@@ -25,19 +25,13 @@ export default withOtto(
       dispatch(hideOttoPopup())
     }, [dispatch])
 
-    const prevOtto = useRef(otto)
-
     useEffect(() => {
-      setOtto(otto)
-      prevOtto.current = otto
-    }, [otto, setOtto])
-
-    useEffect(() => {
-      if (prevOtto.current && !otto) {
-        resetEquippedItems?.()
+      if (otto) {
+        setOtto(otto)
+      } else {
+        resetEquippedItems()
       }
-      prevOtto.current = otto
-    }, [otto, resetEquippedItems])
+    }, [otto, setOtto, resetEquippedItems])
 
     return (
       <StyledAdventureFullscreen show={Boolean(otto)} onRequestClose={closePopup} closeButtonColor="white">
