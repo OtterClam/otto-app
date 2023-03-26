@@ -125,10 +125,7 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
   )
 
   const actions = useMemo(() => {
-    if (!otto) {
-      return []
-    }
-    const actions = equippedItemActions.slice()
+    const actions = equippedItemActions ? equippedItemActions.slice() : []
     Object.keys(usedPotionAmounts).forEach(potion => {
       const amount = usedPotionAmounts[potion]
       for (let i = 0; i < amount; i++) {
@@ -140,7 +137,7 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
       }
     })
     return actions
-  }, [equippedItemActions, usedPotionAmounts, otto])
+  }, [equippedItemActions, usedPotionAmounts])
 
   useEffect(() => {
     if (otto && location) {
