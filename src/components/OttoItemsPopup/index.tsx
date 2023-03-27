@@ -161,13 +161,11 @@ export default memo(function OttoItemsPopup({ className, maxWidth, height, onReq
     })
   }, [otherActions, selectedItemMetadata])
 
-  const isTraitTypeTruthy = Boolean(traitType)
-
   useEffect(() => {
     if (!traitType) {
       selectItem(undefined)
     }
-  }, [traitType, isTraitTypeTruthy])
+  }, [traitType])
 
   return (
     <ItemFiltersProvider items={filteredItems}>
