@@ -23,6 +23,7 @@ export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
   const [items, setItems] = useState<Item[]>(EMPTY_ITEMS)
   const { account } = useEthers()
   const { items: itemsRepo } = useRepositories()
+  const [fetchedAccount, setFetchedAccount] = useState<string | undefined>()
 
   const fetchAccountItems = useCallback(() => {
     if (!account) {
@@ -42,10 +43,11 @@ export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
   }, [itemsRepo, account])
 
   useEffect(() => {
-    if (!items || !items.length) {
+    if (fetchedAccount !== account) {
       fetchAccountItems()
+      setFetchedAccount(account)
     }
-  }, [items, fetchAccountItems])
+  }, [account, fetchedAccount, fetchAccountItems])
 
   const value = useMemo(() => {
     return {
