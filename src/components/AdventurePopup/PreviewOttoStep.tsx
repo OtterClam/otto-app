@@ -336,7 +336,7 @@ const useConfirmedOtto = () => {
         setPrevOtto(otto)
       }
     }
-  }, [prevOtto, otto])
+  }, [prevOtto, otto, itemActions.length])
 
   return {
     confirmedOtto,
