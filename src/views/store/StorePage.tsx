@@ -108,7 +108,7 @@ const StyledShellChestTitle = styled.h2`
   }
 `
 
-const StyledChestDesc = styled(ContentMedium).attrs({ as: 'p' })`
+const StyledChestDesc = styled(ContentMedium).attrs({ as: 'span' })`
   text-align: center;
 
   a {
