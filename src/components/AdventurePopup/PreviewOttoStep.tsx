@@ -311,7 +311,9 @@ const useConfirmedOtto = () => {
         setConfirmed(true)
         resetEquippedItems()
         setConfirmedOtto(otto)
+        setPrevOtto(otto)
       } else {
+        setConfirmed(true)
         selectOtto(prevOtto)
         setConfirmedOtto(prevOtto)
       }
@@ -324,25 +326,17 @@ const useConfirmedOtto = () => {
   }, [resetEquippedItems])
 
   useEffect(() => {
-    return () => {
-      setPrevOtto(otto)
+    if (!prevOtto || (otto && prevOtto.id !== otto.id)) {
+      // first confirm if item actions is nonempty
+      if (itemActions.length > 0) {
+        setConfirmed(false)
+      } else {
+        setConfirmedOtto(otto)
+        setConfirmed(true)
+        setPrevOtto(otto)
+      }
     }
-  }, [otto?.id, otto])
-
-  useEffect(() => {
-    if (prevOtto?.id && confirmed && itemActions.length > 0) {
-      setConfirmed(false)
-    } else {
-      setConfirmedOtto(otto)
-      setConfirmed(true)
-    }
-  }, [prevOtto?.id, otto?.id, otto, confirmed, itemActions.length])
-
-  useEffect(() => {
-    if (confirmed) {
-      setConfirmedOtto(otto)
-    }
-  }, [confirmed, otto])
+  }, [prevOtto, otto])
 
   return {
     confirmedOtto,
