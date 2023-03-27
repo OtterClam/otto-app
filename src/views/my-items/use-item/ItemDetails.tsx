@@ -199,7 +199,6 @@ export default memo(function ItemDetails({ item, onClose, onUse, className }: Pr
   } = item.metadata
   const equipped = Boolean(equippedBy)
   const [showTransferPopup, setShowTransferPopup] = useState(false)
-  console.log(item.metadata.labels, item.metadata.themeBoost)
 
   return (
     <StyledItemDetails className={className}>
