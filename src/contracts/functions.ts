@@ -651,7 +651,7 @@ export const useAdventureExplore = () => {
       setPassIdUpdated(true)
     } else {
       const newState = txState(state.status)
-      if (exploreState.state !== newState) {
+      if (newState !== 'None' && exploreState.state !== newState) {
         setExploreState({
           state: newState,
           status: state,
