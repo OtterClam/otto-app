@@ -8,7 +8,7 @@ export default function useClickOutside<T>(ref: RefObject<T>, callback: () => vo
   }
 
   useEffect(() => {
-    document.addEventListener('click', handleClick)
+    document.addEventListener('click', handleClick, { passive: true })
     document.addEventListener('touchstart', handleClick, { passive: true })
     document.addEventListener('touchend', handleClick, { passive: true })
 

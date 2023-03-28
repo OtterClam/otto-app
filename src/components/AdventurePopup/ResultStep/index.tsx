@@ -178,6 +178,7 @@ export default function ResultStep() {
     <Button
       Typography={Headline}
       onClick={() => {
+        otto.playVoice()
         setOtto(otto, true)
         closePopup()
         openPopup(location.id, AdventurePopupStep.PreviewOtto)
