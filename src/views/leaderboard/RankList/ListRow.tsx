@@ -1,7 +1,9 @@
 import CLAM from 'assets/clam.png'
 import FISH from 'assets/fish.png'
+import MATIC from 'assets/tokens/WMATIC.svg'
 import styled from 'styled-components/macro'
 import { useBreakpoints } from 'contexts/Breakpoints'
+import { useRarityEpoch } from 'contexts/RarityEpoch'
 import Otto from 'models/Otto'
 import Link from 'next/link'
 import { memo } from 'react'
@@ -189,7 +191,7 @@ const StyledOttoAvatarContainer = styled.div<{ isMyOttoRow?: boolean }>`
   }
 `
 
-const StyledReward = styled(ContentLarge).attrs({ as: 'div' })<{ isAdventure?: boolean }>`
+const StyledReward = styled(ContentLarge).attrs({ as: 'div' })<{ isAdventure?: boolean; isMatic?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -198,7 +200,7 @@ const StyledReward = styled(ContentLarge).attrs({ as: 'div' })<{ isAdventure?: b
     content: '';
     width: 24px;
     height: 24px;
-    background-image: url(${({ isAdventure }) => (isAdventure ? FISH.src : CLAM.src)});
+    background-image: url(${({ isAdventure, isMatic }) => (isAdventure ? FISH.src : isMatic ? MATIC.src : CLAM.src)});
     background-size: 100%;
   }
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -248,6 +250,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
     adventureSuccessRate,
   } = otto
   const estimatedReward = useEstimatedReward(rank, isAdventure, ap)
+  const { isMatic } = useRarityEpoch()
 
   if (isMobile) {
     return (
@@ -274,7 +277,9 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
               {!isAdventure && (
                 <>
                   <OttoBoostLabels otto={otto} />
-                  <StyledReward as="div">{estimatedReward}</StyledReward>
+                  <StyledReward as="div" isMatic={isMatic}>
+                    {estimatedReward}
+                  </StyledReward>
                   <StyledRarityScore>{totalRarityScore}</StyledRarityScore>
                 </>
               )}
@@ -304,7 +309,9 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
             </StyledAvatarName>
           </StyledTd>
           <StyledTd>
-            <StyledReward isAdventure={isAdventure}>{estimatedReward}</StyledReward>
+            <StyledReward isAdventure={isAdventure} isMatic={isMatic}>
+              {estimatedReward}
+            </StyledReward>
           </StyledTd>
           {!isAdventure && (
             <>
