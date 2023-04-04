@@ -87,19 +87,19 @@ export default function EpochInfo() {
   const { query } = useRouter()
   const isAdventure = Boolean(query.adventure)
   const { t } = useTranslation('', { keyPrefix: 'leaderboard.hero' })
-  const { isLatestEpoch, epochEndTime } = useRarityEpoch()
-  const { CLAM, FISH } = useTokenInfo()
+  const { isLatestEpoch, epochEndTime, totalReward, isMatic } = useRarityEpoch()
+  const { CLAM, FISH, MATIC } = useTokenInfo()
   const epochEnd = Date.now() > epochEndTime
   const rewardAmount = isAdventure
     ? BigNumber.from(String(TOTAL_ADVENTURE_REWARD)).mul(String(1e18))
-    : BigNumber.from(String(TOTAL_RARITY_REWARD)).mul(String(1e9))
+    : BigNumber.from(String(totalReward)).mul(String(isMatic ? 1e18 : 1e9))
 
   return (
     <StyledContainer isAdventure={isAdventure}>
       <StyledReward>
         <ContentMedium>{t('title')}</ContentMedium>
         <Headline>
-          <Price token={isAdventure ? FISH : CLAM} amount={rewardAmount} showSymbol />
+          <Price token={isAdventure ? FISH : isMatic ? MATIC : CLAM} amount={rewardAmount} showSymbol />
         </Headline>
       </StyledReward>
       <StyledTime>
