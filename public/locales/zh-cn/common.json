@@ -355,7 +355,10 @@
     "rarity_score": "稀有度： {{score}}"
   },
   "my_portals": {
+    "title": "我的传送门",
+    "docTitle": "$t(titlePrefix)$t(my_portals.title)$t(titleSuffix)",
     "choose_otto": "选择你的 Otto 吧！",
+    "has_portals": "这里有您可用的Otto传送门",
     "legendary_desc": "传奇阿獭",
     "mint_portal": "马上铸造一个吧",
     "no_portal": "你还没有拥有任何传送门喔",
@@ -367,8 +370,7 @@
       "CAN_OPEN": "可以开启了！",
       "CHARGING": "充能中...",
       "OPENED": "这个传送门已经开启，但你只能召唤一只阿獭进入阿獭王国，请谨慎选择喔！"
-    },
-    "title": "我的传送门"
+    }
   },
   "otto": {
     "times": "{{ times }} 次",

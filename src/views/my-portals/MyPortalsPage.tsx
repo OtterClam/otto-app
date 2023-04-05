@@ -5,6 +5,7 @@ import { ottoClick } from 'constant'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
+import Head from 'next/head'
 import ConnectView from 'components/ConnectView'
 import { useRouter } from 'next/router'
 import { LIST_MY_PORTALS } from 'graphs/otto'
@@ -45,7 +46,7 @@ enum State {
 }
 
 export default function MyPortalsPage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('', { keyPrefix: 'my_portals' })
   const router = useRouter()
   const { account } = useEthers()
   const { data, loading } = useQuery<ListMyPortals, ListMyPortalsVariables>(LIST_MY_PORTALS, {
@@ -61,6 +62,32 @@ export default function MyPortalsPage() {
     }
     return State.NoPortals
   }, [account, loading, data])
+
+  const renderMetaTags = useCallback(() => {
+    let description = ''
+
+    switch (state) {
+      case State.NoPortals:
+        description = t('no_portal')
+        break
+      case State.HasPortals:
+        description = t('has_portals')
+        break
+      default:
+        return null
+    }
+
+    return (
+      <Head>
+        <title>{t('docTitle')}</title>
+        <meta property="og:title" content={t('docTitle')} />
+        <meta name="description" content={description} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content="/og.jpg" />
+      </Head>
+    )
+  }, [state, t])
+
   const renderContent = useCallback(() => {
     switch (state) {
       case State.Loading:
@@ -92,6 +119,7 @@ export default function MyPortalsPage() {
   return (
     <StyledMyPortalsPage>
       <DefaultMetaTags />
+      {renderMetaTags()}
       {renderContent()}
     </StyledMyPortalsPage>
   )

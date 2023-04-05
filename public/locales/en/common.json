@@ -369,7 +369,10 @@
     "rarity_score": "Rarity Score: {{score}}"
   },
   "my_portals": {
+    "title": "My Portals",
+    "docTitle": "$t(titlePrefix)$t(my_portals.title)$t(titleSuffix)",
     "choose_otto": "Choose an Otto now!",
+    "has_portals": "Here are your available Otto portals",
     "legendary_desc": "Legendary Ottos deserve legendary owners. Are you up for the challenge?",
     "mint_portal": "Mint Portals",
     "no_portal": "You don't have any portal yet.",
@@ -381,8 +384,7 @@
       "CAN_OPEN": "Ready to initiate!",
       "CHARGING": "Charging...",
       "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
-    },
-    "title": "My Portals"
+    }
   },
   "otto": {
     "times": "{{ times }} times",
