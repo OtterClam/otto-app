@@ -347,10 +347,12 @@
     "opensea_link": "在 Opensea 上查看"
   },
   "my_ottos": {
+    "title": "我的阿獺",
+    "docTitle": "$t(titlePrefix)$t(my_ottos.title)$t(titleSuffix)",
     "mint_portal": "鑄造傳送門",
+    "has_otto": "我的阿獺收藏",
     "no_otto": "你還沒有任何阿獺。",
-    "rarity_score": "稀有度： {{score}}",
-    "title": "我的阿獺"
+    "rarity_score": "稀有度： {{score}}"
   },
   "my_portals": {
     "choose_otto": "選擇你的 Otto 吧！",

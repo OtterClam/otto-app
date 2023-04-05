@@ -361,10 +361,12 @@
     "opensea_link": "View on Opensea"
   },
   "my_ottos": {
+    "title": "My Ottos",
+    "docTitle": "$t(titlePrefix)$t(my_ottos.title)$t(titleSuffix)",
     "mint_portal": "Mint Portal",
-    "no_otto": "You don't have any otto yet.",
-    "rarity_score": "Rarity Score: {{score}}",
-    "title": "My Ottos"
+    "has_otto": "My Otto collection",
+    "no_otto": "You don't have any otters yet.",
+    "rarity_score": "Rarity Score: {{score}}"
   },
   "my_portals": {
     "choose_otto": "Choose an Otto now!",
