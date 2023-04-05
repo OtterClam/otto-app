@@ -1,6 +1,7 @@
 import GameMenu from 'components/GameMenu'
 import { PropsWithChildren } from 'react'
 import styled from 'styled-components/macro'
+import Head from 'next/head'
 import PageHeader from '../components/PageHeader'
 
 const StyledBody = styled.div`
@@ -25,11 +26,15 @@ const StyledGameMenu = styled(GameMenu)`
 
 interface Props {
   title: string
+  docTitle?: string
 }
 
-export default function DefaultLayout({ title, children }: PropsWithChildren<Props>) {
+export default function DefaultLayout({ title, docTitle, children }: PropsWithChildren<Props>) {
   return (
     <>
+      <Head>
+        <title>{docTitle || title}</title>
+      </Head>
       <PageHeader title={title} />
       <StyledBody>{children}</StyledBody>
       <StyledGameMenu />
