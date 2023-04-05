@@ -277,6 +277,7 @@
     "para2": "OTTERVERSE!"
   },
   "my_items": {
+    "docTitle": "$t(titlePrefix)$t(my_items.title)$t(titleSuffix)",
     "next_page": "Next >",
     "prev_page": "< Previous",
     "empty": "You don't have any items.",

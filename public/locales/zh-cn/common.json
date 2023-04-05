@@ -264,6 +264,7 @@
     "para2": "阿獭王国！"
   },
   "my_items": {
+    "docTitle": "$t(titlePrefix)$t(my_items.title)$t(titleSuffix)",
     "next_page": "下一页 >",
     "prev_page": "上一页 >",
     "empty": "你没有任何物品",
