@@ -12,8 +12,9 @@ import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } from 'styles/typography'
-import BuyFISHIcon from './buy-fish.png'
 import SwapLoading from './SwapLoading'
+
+const BuyFISHIcon = '/images/header/buy-fish.png'
 
 const StyledSwap = styled.div`
   display: flex;
@@ -29,12 +30,12 @@ const StyledTitle = styled(ContentLarge).attrs({ as: 'h2' })`
   &:before {
     width: 43px;
     content: ' ';
-    background: center / 43px 38px url(${BuyFISHIcon.src}) no-repeat;
+    background: center / 43px 38px url(${BuyFISHIcon}) no-repeat;
   }
   &:after {
     width: 43px;
     content: ' ';
-    background: center / 43px 38px url(${BuyFISHIcon.src}) no-repeat;
+    background: center / 43px 38px url(${BuyFISHIcon}) no-repeat;
   }
 `
 

@@ -1,6 +1,6 @@
 // ui scripts are allowed to import this file
 
-export const CACHE_VERSION = 'v3'
+export const CACHE_VERSION = 'v4'
 
 export enum BundleName {
   Basic = 'basic',

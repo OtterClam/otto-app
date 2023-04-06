@@ -11,10 +11,11 @@ import styled, { useTheme } from 'styled-components/macro'
 import { ContentMedium } from 'styles/typography'
 import { formatClamEthers } from 'utils/currency'
 import Balance from './balance'
-import LargeClamBg from './header_clam_xl.png'
-import SmallClamBg from './header_clam_xs.png'
-import LargeFishBg from './large-fish.png'
-import SmallFishBg from './small-fish.png'
+
+const LargeClamBg = '/images/header/header_clam_xl.png'
+const SmallClamBg = '/images/header/header_clam_xs.png'
+const LargeFishBg = '/images/header/large-fish.png'
+const SmallFishBg = '/images/header/small-fish.png'
 
 const StyledToolTip = styled(ReactTooltip)`
   background: ${({ theme }) => theme.colors.clamPink};
@@ -69,7 +70,7 @@ export const ClamBalance = ({ onClick }: Props) => {
   return (
     <div data-tip ref={tooltipRef}>
       <Balance
-        background={bg.src}
+        background={bg}
         width={width}
         balance={balance}
         onClick={() => {
@@ -101,7 +102,7 @@ export const FishBalance = ({ onClick }: Props) => {
   return (
     <Balance
       showBuyButton
-      background={bg.src}
+      background={bg}
       width={width}
       balance={trim(ethers.utils.formatEther(fishBalance), 4)}
       onClick={onClick}
