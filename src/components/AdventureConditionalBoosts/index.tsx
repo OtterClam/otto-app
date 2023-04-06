@@ -52,7 +52,7 @@ export default function AdventureConditionalBoosts({
       return boosts.filter(boost => boost.boostType === BoostType.FirstMatchGroup)
     }
     return parseBoosts(i18n, otto, location.conditionalBoosts)
-  }, [location, i18n])
+  }, [location, locationBoostsOnly, otto, i18n])
 
   const effectiveBoosts = boosts.filter(boost => boost.effective)
   const ineffectiveBoosts = boosts.filter(boost => !boost.effective)

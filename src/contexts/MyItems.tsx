@@ -8,27 +8,31 @@ const MyItemsContext = createContext<{
   items: Item[]
   idToItem: { [k: string]: Item }
   loading: boolean
-  refetch: () => void
+  fetchAccountItems: () => void
 }>({
   items: [],
   idToItem: {},
   loading: false,
-  refetch: noop,
+  fetchAccountItems: noop,
 })
+
+const EMPTY_ITEMS: [] = []
 
 export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
   const [loading, setLoading] = useState(false)
-  const [items, setItems] = useState<Item[]>([])
+  const [items, setItems] = useState<Item[]>(EMPTY_ITEMS)
   const { account } = useEthers()
   const { items: itemsRepo } = useRepositories()
+  const [fetchedAccount, setFetchedAccount] = useState<string | undefined>()
 
-  const refetch = useCallback(() => {
+  const fetchAccountItems = useCallback(() => {
     if (!account) {
       setLoading(false)
-      setItems([])
+      setItems(EMPTY_ITEMS)
       return
     }
     setLoading(true)
+    console.log('refetching all account items')
     itemsRepo
       .getAllItemsByAccount(account)
       .then(setItems)
@@ -39,8 +43,11 @@ export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
   }, [itemsRepo, account])
 
   useEffect(() => {
-    refetch()
-  }, [itemsRepo, account])
+    if (fetchedAccount !== account) {
+      fetchAccountItems()
+      setFetchedAccount(account)
+    }
+  }, [account, fetchedAccount, fetchAccountItems])
 
   const value = useMemo(() => {
     return {
@@ -50,9 +57,9 @@ export const MyItemsProvider = ({ children }: PropsWithChildren<object>) => {
         return map
       }, {} as { [id: string]: Item }),
       loading,
-      refetch,
+      fetchAccountItems,
     }
-  }, [items, loading, refetch])
+  }, [items, loading, fetchAccountItems])
 
   return <MyItemsContext.Provider value={value}>{children}</MyItemsContext.Provider>
 }

@@ -108,7 +108,7 @@ function PreviewAttrs({ otto, actions }: { otto?: Otto; actions: ItemAction[] })
       clearTimeout(timer)
       controller.abort()
     }
-  }, [otto?.id, location?.id, actions, ottosRepo])
+  }, [otto, otto?.id, location?.id, actions, ottosRepo])
 
   return (
     <AdventureOttoProvider otto={otto} draftOtto={preview?.otto}>
@@ -132,7 +132,7 @@ export default memo(function OttoItemsPopup({ className, maxWidth, height, onReq
   const { traitType } = useTrait()
   const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
   // eslint-disable-next-line prefer-const
-  let { items, refetch } = useMyItems()
+  let { items } = useMyItems()
   items = useAdventurePreviewItems(items, draftOtto)
   const [selectedItemId, selectItem] = useState<string>()
   const filteredItems = items.filter(item => item.metadata.type === traitType)
@@ -159,19 +159,13 @@ export default memo(function OttoItemsPopup({ className, maxWidth, height, onReq
       item_id: Number(selectedItemMetadata.tokenId),
       from_otto_id: 0,
     })
-  }, [otherActions, selectedItemMetadata?.tokenId])
-
-  useEffect(() => {
-    if (show) {
-      refetch()
-    }
-  }, [draftOtto?.id, show])
+  }, [otherActions, selectedItemMetadata])
 
   useEffect(() => {
     if (!traitType) {
       selectItem(undefined)
     }
-  }, [Boolean(traitType)])
+  }, [traitType])
 
   return (
     <ItemFiltersProvider items={filteredItems}>

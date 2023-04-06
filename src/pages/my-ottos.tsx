@@ -1,6 +1,7 @@
 import Board from 'components/Board'
 import MyOttosView from 'views/otto/MyOttosPage/MyOttosPage'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useTranslation } from 'next-i18next'
 import { GetStaticProps } from 'next'
 import DefaultLayout from 'layouts/DefaultLayout'
 import RequireConnect from 'components/RequireConnect'
@@ -15,8 +16,10 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => ({
 const MyOttosPage: NextPageWithLayout = MyOttosView
 
 MyOttosPage.getLayout = (page, i18n) => {
+  const docTitle = i18n.t('my_ottos.docTitle')
+
   return (
-    <DefaultLayout title={i18n.t('my_ottos.title')}>
+    <DefaultLayout title={i18n.t('my_ottos.title')} docTitle={docTitle}>
       <Board>
         <RequireConnect>{page}</RequireConnect>
       </Board>

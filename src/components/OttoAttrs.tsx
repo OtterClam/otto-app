@@ -29,7 +29,7 @@ const StyledLevel = styled(Note)<{ traitType?: string }>`
     css<{ traitType?: string }>`
       &::before {
         content: attr(data-label);
-        background: ${({ theme, traitType }) => theme.colors.attr[traitType!]};
+        background: ${({ theme, traitType }) => traitType && theme.colors.attr?.[traitType]};
       }
     `}
 `

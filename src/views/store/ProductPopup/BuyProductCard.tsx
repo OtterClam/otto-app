@@ -9,6 +9,7 @@ import Product from 'models/store/Product'
 import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { Caption, ContentLarge, Headline, Note } from 'styles/typography'
+import Image from 'next/image'
 import useProductBorderColor from '../useProductBorderColor'
 
 const StyledProductCard = styled(BorderContainer)`
@@ -114,7 +115,7 @@ export default function BuyProductCard({
     <StyledProductCard borderColor={borderColor}>
       <Headline>x {amount}</Headline>
       <StyledImage>
-        <img src={image} alt={name} width="100%" />
+        <Image src={image} alt={name} width="190" height="190" />
       </StyledImage>
       <StyledPrice>
         {hasDiscount && <StyledOriginPrice>{trim(ethers.utils.formatEther(price), 5)}</StyledOriginPrice>}

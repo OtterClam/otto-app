@@ -1,6 +1,6 @@
 import Button from 'components/Button'
 import { useTranslation } from 'next-i18next'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 import styled from 'styled-components/macro'
 import { Display2, Headline } from 'styles/typography'
 import JoinUsImage from './join-us.png'
@@ -60,6 +60,12 @@ interface Props {
 
 export default function MintBanner({ className }: Props) {
   const { t } = useTranslation()
+  const router = useRouter()
+
+  const handleMintButton = () => {
+    router.push('/mint')
+  }
+
   return (
     <StyledMintBanner className={className}>
       <StyledInnerButton>
@@ -69,13 +75,9 @@ export default function MintBanner({ className }: Props) {
             <Headline>{t('mint_banner.para1')}</Headline>
             <Display2>{t('mint_banner.para2')}</Display2>
           </StyledParagraph>
-          <Link href="/mint">
-            <a href="/mint">
-              <Button primaryColor="pink" padding="6px 10px" Typography={Headline}>
-                {t('mint_banner.cta')}
-              </Button>
-            </a>
-          </Link>
+          <Button primaryColor="pink" padding="6px 10px" Typography={Headline} onClick={handleMintButton}>
+            {t('mint_banner.cta')}
+          </Button>
         </StyledContainer>
       </StyledInnerButton>
     </StyledMintBanner>

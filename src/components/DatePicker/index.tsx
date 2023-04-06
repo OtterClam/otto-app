@@ -155,7 +155,7 @@ const DatePicker = ({
         setMonth(defaultValue.getMonth())
       }
     }
-  }, [])
+  }, [defaultValue, minDate])
 
   React.useEffect(() => {
     setIsOpen(showCalendar)

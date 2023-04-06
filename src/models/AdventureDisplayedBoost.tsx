@@ -152,8 +152,8 @@ const parseLevelUpBoosts = (
   let boost: AdventureLocationConditionalBoost
 
   while (boosts[0]?.type === BoostType.LevelUp) {
-    boost = boosts.shift()!
-    if (boost.effective) {
+    const boost = boosts.shift()
+    if (boost && boost.effective) {
       effectiveBoost = boost
     }
   }
@@ -185,9 +185,8 @@ const parseFirstMatchGroup = (
   const group: AdventureLocationConditionalBoost[] = []
   let effectiveBoost: AdventureLocationConditionalBoost | undefined
   let firstMatchedBoost: AdventureLocationConditionalBoost | undefined
-  let boost: AdventureLocationConditionalBoost
 
-  while (boosts[0]?.type === BoostType.FirstMatchGroup) {
+  while (boosts[0] && boosts[0].type === BoostType.FirstMatchGroup) {
     if (!firstMatchedBoost) {
       ;[firstMatchedBoost] = boosts
     }
@@ -203,12 +202,12 @@ const parseFirstMatchGroup = (
       break
     }
 
-    boost = boosts.shift()!
-
-    group.push(boost)
-
-    if (boost.effective) {
-      effectiveBoost = boost
+    const boost = boosts.shift()
+    if (boost) {
+      group.push(boost)
+      if (boost.effective) {
+        effectiveBoost = boost
+      }
     }
   }
 
@@ -230,9 +229,7 @@ const parseFirstMatchGroup = (
 
   return {
     boostType: BoostType.FirstMatchGroup,
-    message: details
-      ? group.map(stringifyBoost).join('<br />')
-      : stringifyBoost(effectiveBoost ?? group[group.length - 1]),
+    message: details ? group.map(stringifyBoost).join('\n') : stringifyBoost(effectiveBoost ?? group[group.length - 1]),
     effective: Boolean(effectiveBoost),
     attr: condition.attr,
     boosts: group,

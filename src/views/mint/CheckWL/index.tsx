@@ -1,6 +1,6 @@
 import { useEthers } from '@usedapp/core'
 import Button from 'components/Button'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useCallback } from 'react'
 import axios from 'axios'
 import { useTranslation } from 'next-i18next'
 import { useDispatch } from 'react-redux'
@@ -85,10 +85,10 @@ export default function CheckWL() {
         image: NoWLImage.src,
       },
     }),
-    [t, state]
+    [t]
   )
 
-  const checkWL = async () => {
+  const checkWL = useCallback(async () => {
     setState(CheckState.Loading)
     try {
       const res = await axios.get(`https://otter-discordbot.herokuapp.com/ottolisted/${account}`)
@@ -96,13 +96,13 @@ export default function CheckWL() {
     } catch (error) {
       setState(CheckState.NoWL)
     }
-  }
+  }, [account])
 
   useEffect(() => {
     if (account && state === CheckState.Connect) {
       checkWL()
     }
-  }, [account, state])
+  }, [account, state, checkWL])
 
   return (
     <StyledCheckWL>

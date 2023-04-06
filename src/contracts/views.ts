@@ -12,7 +12,6 @@ import {
   useOttoContract,
   useOttoHellDiceRoller,
   usePearlBank,
-  usePortalCreatorContract,
   useRewardManager,
   useStoreContract,
 } from './contracts'
@@ -299,7 +298,10 @@ export const useFinishFee = (passId: BigNumberish | undefined) => {
 
 export const useMineInfo = () => {
   const mine = useOtterMine()
-  const usd = useCall({ contract: mine, method: 'usd', args: [] })?.value?.[0] || ''
+  const {
+    tokens: { DAI },
+  } = useContractAddresses()
+  const usd = useCall({ contract: mine, method: 'usd', args: [] })?.value?.[0] || DAI
   const usdToken = useERC20(usd)
   const [usdPerClam, deadline, availableSupply, decimals] = useCalls([
     {

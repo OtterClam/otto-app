@@ -5,7 +5,7 @@ import { useOtto } from 'contexts/Otto'
 import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
 import usePrevious from 'hooks/usePrevious'
 import { useTranslation } from 'next-i18next'
-import { MouseEventHandler, useCallback, useEffect, useMemo, useState } from 'react'
+import { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components/macro'
 import { useAdventureLocations } from 'contexts/AdventureLocations'
@@ -129,8 +129,9 @@ export default function AdventurePopup() {
 
   const closePopup = useCallback(() => {
     setClosePopupRequested(false)
+    setOtto()
     dispatch({ type: AdventureUIActionType.ClosePopup })
-  }, [dispatch])
+  }, [dispatch, setOtto])
 
   const requestClosePopup = useCallback(() => {
     if (itemActions.length) {
@@ -138,7 +139,7 @@ export default function AdventurePopup() {
     } else {
       closePopup()
     }
-  }, [itemActions])
+  }, [itemActions, closePopup])
 
   const nextLocation: MouseEventHandler = e => {
     e.stopPropagation()
@@ -171,7 +172,7 @@ export default function AdventurePopup() {
       effects[step] = index <= stepIndex ? 'right' : 'left'
       return effects
     }, {} as { [k: string]: string })
-  }, [adventureUIState.popupStep])
+  }, [adventureUIState.popupStep, prevStep])
 
   useBrowserLayoutEffect(() => {
     if (!itemActions.length) {
@@ -189,12 +190,6 @@ export default function AdventurePopup() {
       window.removeEventListener('beforeunload', handler)
     }
   }, [itemActions])
-
-  useEffect(() => {
-    return () => {
-      setOtto()
-    }
-  }, [])
 
   return (
     <StyledFullscreen

@@ -100,7 +100,7 @@ export default memo(function ItemPopup({ item, onClose }: Props) {
       resetUse()
       resetTakeOff()
     }
-  }, [useItemState, takeOffState])
+  }, [useItemState, takeOffState, resetTakeOff, resetUse])
 
   const render = () => {
     switch (state) {

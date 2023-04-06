@@ -15,6 +15,7 @@ import { FilterSelector, OrderSelector, SortedBySelector, SearchBar } from 'comp
 import Button from 'components/Button'
 import { useMyItem, useMyItems } from 'contexts/MyItems'
 import DefaultMetaTags from 'components/DefaultMetaTags'
+import Image from 'next/image'
 import EmptyStatus from './empty.png'
 import ItemDetails from './use-item/ItemDetails'
 
@@ -135,10 +136,6 @@ const StyledEmptySlate = styled(ContentSmall).attrs({ as: 'div' })`
   align-items: center;
   justify-content: center;
   height: 100%;
-  img {
-    width: 220px;
-    height: 192px;
-  }
 `
 
 const StyledItemListContainer = styled.div`
@@ -170,7 +167,7 @@ function ItemList({
         {loading && <LoadingView />}
         {!loading && items.length === 0 ? (
           <StyledEmptySlate>
-            <img src={EmptyStatus.src} alt="Empty Status" />
+            <Image src={EmptyStatus.src} alt="Empty Status" width="220" height="192" />
             <p>{t('empty')}</p>
           </StyledEmptySlate>
         ) : (
@@ -287,7 +284,7 @@ export default function MyItemsPage() {
   const [selectedItemId, setSelectedItemId] = useState<string>()
   const [usingItemId, setUsingItemId] = useState<string>()
   const [redeemingCouponId, setRedeemingCouponId] = useState<string>()
-  const { items, loading, refetch } = useMyItems()
+  const { items, loading } = useMyItems()
   const selectedItem = useMyItem(selectedItemId)
   const usingItem = useMyItem(usingItemId)
   const redeemingCoupon = useMyItem(redeemingCouponId)
@@ -301,7 +298,7 @@ export default function MyItemsPage() {
       }
     }
     setSelectedItemId(undefined)
-  }, [selectedItem])
+  }, [selectedItem, selectedItemId])
 
   return (
     <StyledMyItemsPage>
@@ -319,7 +316,7 @@ export default function MyItemsPage() {
           <UseItemPopup
             item={usingItem}
             onClose={() => {
-              refetch()
+              // TODO: trigger item fetch after API has picked up the tx.
               setUsingItemId(undefined)
             }}
           />
@@ -328,7 +325,7 @@ export default function MyItemsPage() {
           <RedeemCouponPopupQuery
             item={redeemingCoupon}
             onClose={() => {
-              refetch()
+              // TODO: trigger item fetch after API has picked up the tx.
               setRedeemingCouponId(undefined)
             }}
           />

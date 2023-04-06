@@ -1,6 +1,7 @@
 // TODO: refactor the table
 import CLAM from 'assets/clam.png'
 import FISH from 'assets/fish.png'
+import MATIC from 'assets/tokens/WMATIC.svg'
 import ArrowDown from 'assets/ui/arrow_down.svg'
 import Button from 'components/Button'
 import { useMyOttos } from 'hooks/useOtto'
@@ -14,6 +15,7 @@ import { useRouter } from 'next/router'
 import { useRepositories } from 'contexts/Repositories'
 import { Leaderboard, LeaderboardType } from 'models/Leaderboard'
 import { useEstimatedTotalReward } from 'hooks/useEstimatedReward'
+import Image from 'next/image'
 import LoadingGif from './loading.gif'
 import ListRow from './ListRow'
 
@@ -175,7 +177,7 @@ const StyledButton = styled(Button)`
   width: 100%;
 `
 
-const StyledEstimatedReward = styled(ContentMedium).attrs({ as: 'div' })<{ isAdventure?: boolean }>`
+const StyledEstimatedReward = styled(ContentMedium).attrs({ as: 'div' })<{ isAdventure?: boolean; isMatic?: boolean }>`
   margin-bottom: 10px;
   display: flex;
   vertical-align: top;
@@ -187,7 +189,7 @@ const StyledEstimatedReward = styled(ContentMedium).attrs({ as: 'div' })<{ isAdv
     content: '';
     width: 24px;
     height: 24px;
-    background-image: url(${({ isAdventure }) => (isAdventure ? FISH.src : CLAM.src)});
+    background-image: url(${({ isAdventure, isMatic }) => (isAdventure ? FISH.src : isMatic ? MATIC.src : CLAM.src)});
     background-size: 100%;
   }
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -222,6 +224,7 @@ export default function RankList({ className }: Props) {
   const [expand, setExpand] = useState(false)
   const loading = !leaderboard || loadingApi
   const estimatedTotalReward = useEstimatedTotalReward(myOttos, adventure)
+  const { isMatic } = useRarityEpoch()
 
   useEffect(() => {
     setLoadingApi(true)
@@ -233,7 +236,7 @@ export default function RankList({ className }: Props) {
       })
       .then(setLeaderboard)
       .finally(() => setLoadingApi(false))
-  }, [page, epoch, adventure])
+  }, [page, epoch, adventure, leaderboardsRepo])
 
   return (
     <StyledRankList className={className}>
@@ -242,7 +245,7 @@ export default function RankList({ className }: Props) {
           <StyledMyOttoSection isLatestEpoch={isLatestEpoch}>
             <StyledTextWrapper>
               <StyledHint>{t('your_rank')}</StyledHint>
-              <StyledEstimatedReward as="div" isAdventure={adventure}>
+              <StyledEstimatedReward as="div" isAdventure={adventure} isMatic={isMatic}>
                 {estimatedTotalReward}
               </StyledEstimatedReward>
             </StyledTextWrapper>
@@ -274,7 +277,7 @@ export default function RankList({ className }: Props) {
         </StyledTableHead>
         {loading && (
           <StyledLoading>
-            <img src={LoadingGif.src} alt="loading" />
+            <Image src={LoadingGif.src} alt="loading" width="300" height="300" />
           </StyledLoading>
         )}
         {!loading &&

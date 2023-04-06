@@ -66,7 +66,7 @@ const StyledDetails = styled.div`
   padding-top: 90px;
 `
 
-const StyledPinImage = styled(Image).attrs({ layout: 'fill', width: 120, height: 120 })``
+const StyledPinImage = styled(Image).attrs({ layout: 'fill' })``
 
 const StyledOttoImageContainer = styled.div`
   border: 1px ${({ theme }) => theme.colors.otterBlack} solid;
@@ -159,7 +159,7 @@ export default function AdventureLocation({ id, className, ottoLocked = false }:
         popupStep: AdventurePopupStep.LocationInfo,
       },
     })
-  }, [dispatch, id, ottoLocked])
+  }, [dispatch, id, ottoLocked, setOtto])
 
   return (
     <StyledContainer disabled={buttonLocked} onClick={openPopup} top={top} left={left} className={className}>

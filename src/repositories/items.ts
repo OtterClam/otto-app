@@ -70,14 +70,13 @@ export class ItemsRepository {
   async getAllItemsByAccount(account: string): Promise<Item[]> {
     let items: Item[] = []
     let page = 0
+    let hasMoreItems = true
 
-    while (1) {
+    while (hasMoreItems) {
       const result = await this.getItemsByAccount(account, page)
       items = items.concat(result)
       page += 1
-      if (result.length === 0) {
-        break
-      }
+      hasMoreItems = result.length > 0
     }
 
     return items

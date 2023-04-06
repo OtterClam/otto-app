@@ -233,6 +233,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
       window.alert(forgeState.status.errorMessage)
       resetForge()
     }
+    // TODO: On forge success refetch items but after API has picked up tx
   }, [forgeState, resetForge])
 
   return (

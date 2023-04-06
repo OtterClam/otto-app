@@ -78,7 +78,7 @@ export default function AdventureMap({ hideFooter, className, ottoLocked }: Adve
   return (
     <StyledContainer className={className}>
       <StyledImageContainer>
-        <Image unoptimized src={mapImage} layout="fill" />
+        <Image unoptimized src={mapImage} layout="fill" priority />
         {locations.map(location => (
           <AdventureLocation key={location.id} ottoLocked={ottoLocked} id={location.id} />
         ))}

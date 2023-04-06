@@ -237,7 +237,7 @@ export default function Mint() {
       dispatch(mintFailed())
       window.alert(mintState.errorMessage)
     }
-  }, [mintState])
+  }, [mintState, dispatch, quantity, resetMint])
 
   return (
     <StyledMint>

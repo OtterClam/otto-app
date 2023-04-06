@@ -99,15 +99,12 @@ export default function PointsView({ onSuccess, onRequestClose }: PointsViewProp
     )
   }, [otto])
 
-  const handleChange = useCallback(
-    (attr: string, diff: number) => {
-      setPoints(points => ({
-        ...points,
-        [attr]: points[attr] + diff,
-      }))
-    },
-    [otto]
-  )
+  const handleChange = useCallback((attr: string, diff: number) => {
+    setPoints(points => ({
+      ...points,
+      [attr]: points[attr] + diff,
+    }))
+  }, [])
 
   const handleConfirm = () => {
     if (!ottoId) {
@@ -125,7 +122,7 @@ export default function PointsView({ onSuccess, onRequestClose }: PointsViewProp
     } else if (useAttributePointsState.status === 'Success') {
       onSuccess({ otto, points })
     }
-  }, [useAttributePointsState.status])
+  }, [onSuccess, otto, points, useAttributePointsState.errorMessage, useAttributePointsState.status])
 
   return (
     <StyedContainer>

@@ -15,7 +15,7 @@ export default function useOnClickOutside(
         handler(event)
       }
       document.addEventListener('mousedown', listener)
-      document.addEventListener('touchstart', listener)
+      document.addEventListener('touchstart', listener, { passive: true })
       return () => {
         document.removeEventListener('mousedown', listener)
         document.removeEventListener('touchstart', listener)
@@ -27,6 +27,6 @@ export default function useOnClickOutside(
     // ... callback/cleanup to run every render. It's not a big deal ...
     // ... but to optimize you can wrap handler in useCallback before ...
     // ... passing it into this hook.
-    [ref.current, handler]
+    [ref, handler]
   )
 }

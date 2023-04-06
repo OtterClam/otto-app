@@ -14,5 +14,5 @@ export default function useAssetsBundles(names: BundleName[], deps: any[] = []) 
 
     assetsLoader.loadBundleByNames(names)
     assetsLoader.watch(names)
-  }, [names, ...deps])
+  }, [names, deps, assetsLoader])
 }

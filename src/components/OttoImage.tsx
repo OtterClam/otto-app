@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import styled from 'styled-components/macro'
-import LoadingImage from 'assets/ui/otto-loading.jpg'
 
 const StyledContainer = styled.div<{ size?: number }>`
   position: relative;
@@ -19,13 +18,15 @@ const StyledContainer = styled.div<{ size?: number }>`
   }
 `
 
+const loadingImage = '/otto-loading.jpg'
+
 const StyledImage = styled.div`
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background: center / cover url(${LoadingImage.src});
+  background: center / cover url(${loadingImage});
 `
 
 export interface OttoImageProps {
@@ -52,7 +53,7 @@ export default function OttoImage({
             unoptimized={unoptimized}
             width={imageSize}
             height={imageSize}
-            src={{ src, blurDataURL: LoadingImage.src, width: imageSize, height: imageSize }}
+            src={{ src, blurDataURL: loadingImage, width: imageSize, height: imageSize }}
           />
         )}
       </StyledImage>

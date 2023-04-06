@@ -7,7 +7,7 @@ export const WHITELIST_MINT_TIME = 1647694800000 // 2022/3/19 21:00+8
 
 export const PUBLIC_MINT_TIME = 1647781200000 // 2022/3/20 21:00+8
 
-export const WHITE_PAPER_LINK = 'https://docs.ottopia.app/ottopia/'
+export const WHITE_PAPER_LINK = '/whitepaper'
 
 export const DAO_LINK = 'https://snapshot.org/#/otterclam.eth'
 
@@ -47,6 +47,7 @@ export const ROUND_RARITY_REWARD_AFTER_3 = 3000
 export const ROUND_RARITY_REWARD_S2 = 2500
 export const ROUND_RARITY_REWARD_S2_NEW = 3000
 export const ROUND_RARITY_REWARD_SEASON_CLAM_FINAL = 5000
+export const ROUND_RARITY_REWARD_S3_MATIC = 2000
 export const RARITY_S1_END = 1660867200000
 export const RARITY_S2_END = 1668384000000
 export const RARITY_S2_END_EPOCH = 9

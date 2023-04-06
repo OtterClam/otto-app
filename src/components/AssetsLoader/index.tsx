@@ -160,7 +160,7 @@ function useOtto() {
       setDialogNo(num => (num + 1) % dialogCount)
     }, 5000)
     return () => clearInterval(timer)
-  }, [])
+  }, [ottoNo])
 
   return { ottoNo, dialogNo }
 }
@@ -201,7 +201,7 @@ export default function AssetsLoader() {
     return () => {
       assetsLoader.off('progress', setProgress)
     }
-  }, [])
+  }, [assetsLoader])
 
   useEffect(() => {
     if (!IS_SERVER && loading) {
@@ -216,7 +216,7 @@ export default function AssetsLoader() {
     if (activated) {
       assetsLoader.updateLoadingProgress()
     }
-  }, [activated])
+  }, [assetsLoader, activated])
 
   if (typeof document === 'undefined') {
     return null

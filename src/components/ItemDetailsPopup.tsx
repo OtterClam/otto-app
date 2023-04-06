@@ -102,7 +102,7 @@ export default function ItemDetailsPopup() {
 
   const close = useCallback(() => {
     dispatch(hideItemDetailsPopup())
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     if (!itemTokenId) {

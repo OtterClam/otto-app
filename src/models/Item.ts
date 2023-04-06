@@ -103,7 +103,7 @@ export interface ItemMetadata {
 
 const parseNumericalStat = (val?: string): number => {
   const parsedVal = parseInt(val ?? '', 10)
-  return isNaN(parsedVal) ? 0 : parsedVal
+  return Number.isNaN(parsedVal) ? 0 : parsedVal
 }
 
 export const rawItemMetadataToItemMetadata = (raw: RawItemMetadata): ItemMetadata => {

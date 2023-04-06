@@ -6,6 +6,7 @@ import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { Caption, ContentLarge, Headline } from 'styles/typography'
 import Star from 'assets/ui/star.svg'
+import Image from 'next/image'
 import useProductBorderColor from '../useProductBorderColor'
 
 const StyledProductCard = styled(BorderContainer)`
@@ -86,7 +87,7 @@ export default function AirdropProductCard({ product: { type, name, image, airdr
     <StyledProductCard borderColor={borderColor}>
       <Headline>x {airdropAmount}</Headline>
       <StyledImage>
-        <img src={image} alt={name} width="100%" />
+        <Image src={image} alt={name} width="190" height="190" />
       </StyledImage>
       <StyledPrice>
         <ContentLarge>{t('store.popup.free')}</ContentLarge>

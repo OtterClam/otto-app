@@ -37,7 +37,7 @@ export default function useOtto(id: string | Falsy, details: boolean) {
         })
         .finally(() => setLoading(false))
     }
-  }, [id, i18n.resolvedLanguage, fetchCount, api, details])
+  }, [id, i18n.resolvedLanguage, fetchCount, api, details, ottosRepo])
 
   const refetch = () => setFetchCount(fetchCount + 1)
 
@@ -65,7 +65,7 @@ export function useOttos(ids: string[] | Falsy, { details, epoch }: { details: b
         })
         .finally(() => setLoading(false))
     }
-  }, [ids, i18n.resolvedLanguage, fetchCount])
+  }, [ids, i18n.resolvedLanguage, fetchCount, api, details, epoch])
   const refetch = () => setFetchCount(fetchCount + 1)
   return { loading, ottos, error, refetch }
 }

@@ -68,6 +68,7 @@ const StyledContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  white-space: pre-wrap;
 `
 
 const StyledLevel = styled(Display1)<{ levelUp?: boolean }>`
@@ -175,7 +176,7 @@ export default function LevelUpPopup() {
 
   const handleClose = useCallback(() => {
     dispatch({ type: AdventureUIActionType.LevelUp })
-  }, [])
+  }, [dispatch])
 
   const distributeAttributePoints = useCallback(() => {
     if (!levelUp) {
@@ -191,13 +192,13 @@ export default function LevelUpPopup() {
         newLevel: levelUp.levelUp?.to.level,
       },
     })
-  }, [levelUp])
+  }, [levelUp, dispatch, handleClose])
 
   useEffect(() => {
     if (otto && otto.latestAdventurePass) {
       api
         .getOttoAdventurePreview(otto.id, otto.latestAdventurePass.locationId, [])
-        .then(preview => parseBoosts(i18n, otto, preview.location!.conditionalBoosts, false))
+        .then(preview => parseBoosts(i18n, otto, preview.location?.conditionalBoosts || [], false))
         .then(boosts => {
           const boost = boosts.find(({ boostType }) => boostType === BoostType.Exp)
           if (boost && boost.boostType === BoostType.Exp) {
@@ -242,7 +243,7 @@ export default function LevelUpPopup() {
               </StyledRewardTitle>
               <StyledBoosts>
                 {boosts.map((boost, i) => (
-                  <div dangerouslySetInnerHTML={{ __html: boost }} key={i} />
+                  <div key={i}>{boost}</div>
                 ))}
               </StyledBoosts>
             </StyledRewardSection>

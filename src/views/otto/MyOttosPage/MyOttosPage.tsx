@@ -3,12 +3,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useEthers } from '@usedapp/core'
 import ConnectView from 'components/ConnectView'
+import { useTranslation } from 'next-i18next'
 import { LoadingView } from 'components/LoadingView'
 import MintBanner from 'components/MintBanner'
 import { ottoClick } from 'constant'
 import { MyOttosContext } from 'MyOttosProvider'
 import { useCallback, useContext, useMemo } from 'react'
 import styled from 'styled-components/macro'
+import Head from 'next/head'
 import Link from 'next/link'
 import OttoCard from 'components/OttoCard'
 import NoOttoView from './NoOttoView'
@@ -46,6 +48,7 @@ enum State {
 }
 
 export default function MyOttosPage() {
+  const { t } = useTranslation('', { keyPrefix: 'my_ottos' })
   const { account } = useEthers()
   const { ottos, loading } = useContext(MyOttosContext)
   const state = useMemo(() => {
@@ -56,7 +59,33 @@ export default function MyOttosPage() {
       return State.HasOttos
     }
     return State.NoOttos
-  }, [account, loading, ottos])
+  }, [loading, ottos])
+
+  const renderMetaTags = useCallback(() => {
+    let description = ''
+
+    switch (state) {
+      case State.NoOttos:
+        description = t('no_otto')
+        break
+      case State.HasOttos:
+        description = t('has_otto')
+        break
+      default:
+        return null
+    }
+
+    return (
+      <>
+        <title>{t('docTitle')}</title>
+        <meta property="og:title" content={t('docTitle')} />
+        <meta name="description" content={description} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content="/og.jpg" />
+      </>
+    )
+  }, [state, t])
+
   const renderContent = useCallback(() => {
     switch (state) {
       case State.Loading:
@@ -84,5 +113,10 @@ export default function MyOttosPage() {
         return <ConnectView />
     }
   }, [state, ottos])
-  return <StyledMyOttosPage>{renderContent()}</StyledMyOttosPage>
+  return (
+    <StyledMyOttosPage>
+      <Head>{renderMetaTags()}</Head>
+      {renderContent()}
+    </StyledMyOttosPage>
+  )
 }

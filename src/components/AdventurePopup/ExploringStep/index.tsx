@@ -147,10 +147,11 @@ export default function ExploringStep() {
   const loading = finishState.state === 'Processing' || usePotionsState.status === 'Mining'
 
   const onClick = (immediately: boolean) => {
-    if (!otto) {
+    if (!otto || !otto.latestAdventurePass) {
       return
     }
-    const finishedAt = calcRemainingTime(otto.latestAdventurePass!.canFinishAt!, usedPotionIds)
+
+    const finishedAt = calcRemainingTime(canFinishAt, usedPotionIds)
     if (immediately || finishedAt.getTime() <= Date.now()) {
       finish(otto.id, immediately, usedPotionIds)
     } else {
@@ -167,7 +168,7 @@ export default function ExploringStep() {
       alert(finishState.status.errorMessage)
       resetFinish()
     }
-  }, [finishState, resetFinish, otto])
+  }, [finishState, resetFinish, otto, finishResult?.restingUntil, goToResult, location, updateOtto])
 
   useEffect(() => {
     if (!otto) {
@@ -184,7 +185,15 @@ export default function ExploringStep() {
       alert(finishState.status.errorMessage)
       resetUsePotions()
     }
-  }, [usePotionsState.status])
+  }, [
+    usePotionsState.status,
+    finishState.status.errorMessage,
+    otto,
+    resetUsePotions,
+    setOtto,
+    updateOtto,
+    usedPotionIds,
+  ])
 
   if (!otto || !location) {
     return null

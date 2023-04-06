@@ -190,7 +190,7 @@ export default function AdventureRewards({ loading, canUsePotions, onUsePotion =
 
   useEffect(() => {
     onUsePotion(usedPotionAmounts)
-  }, [usedPotionAmounts])
+  }, [usedPotionAmounts, onUsePotion])
 
   if (!location || loading) {
     return (

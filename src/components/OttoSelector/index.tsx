@@ -119,13 +119,13 @@ export default function OttoSelector() {
 
   useResizeObserver(conveyorRef, forceUpdate)
 
-  useLayoutEffect(updateOffset, [forceUpdateState])
+  useLayoutEffect(updateOffset, [forceUpdateState, containerRect.width, conveyorRect.width])
 
   useEffect(() => {
     if (!selectedOtto && ottos.length > 0) {
       selectOtto(ottos[0])
     }
-  }, [selectedOtto, ottos])
+  }, [selectedOtto, selectOtto, ottos])
 
   const swipeableWorkaround = (t: any) => {
     swipeableHandlers.ref(t)
