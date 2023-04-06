@@ -59,8 +59,7 @@ export default function MyOttosPage() {
       return State.HasOttos
     }
     return State.NoOttos
-
-  }, [account, loading, ottos])
+  }, [loading, ottos])
 
   const renderMetaTags = useCallback(() => {
     let description = ''
@@ -85,7 +84,7 @@ export default function MyOttosPage() {
         <meta property="og:image" content="/og.jpg" />
       </>
     )
-  }, [loading, ottos])
+  }, [state, t])
 
   const renderContent = useCallback(() => {
     switch (state) {

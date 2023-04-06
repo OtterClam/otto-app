@@ -61,8 +61,7 @@ export default function MyPortalsPage() {
       return State.HasPortals
     }
     return State.NoPortals
-
-  }, [account, loading, data])
+  }, [loading, data])
 
   const renderMetaTags = useCallback(() => {
     let description = ''
@@ -87,7 +86,7 @@ export default function MyPortalsPage() {
         <meta property="og:image" content="/og.jpg" />
       </Head>
     )
-  }, [loading, data])
+  }, [state, t])
 
   const renderContent = useCallback(() => {
     switch (state) {
