@@ -3,6 +3,7 @@ import Fullscreen from 'components/Fullscreen'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Display3, Headline } from 'styles/typography'
+import Image from 'next/image'
 import Gif from './unstake.gif'
 
 const StyledUnstakeSuccessPopup = styled.div`
@@ -58,7 +59,7 @@ export default function UnstakeSuccessPopup({ clamAmount, onClose }: Props) {
           {t('desc')} <span>{clamAmount}</span> CLAM!
         </StyledDesc>
         <StyledCloseIcon onClick={onClose}>
-          <img src={CloseIcon.src} alt="close" />
+          <Image src={CloseIcon.src} alt="close" width="24" height="24" />
         </StyledCloseIcon>
       </StyledUnstakeSuccessPopup>
     </Fullscreen>

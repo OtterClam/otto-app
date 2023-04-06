@@ -14,7 +14,7 @@ export default function useApollo() {
         uri,
         cache: new InMemoryCache(),
       }),
-    [chainId, uri]
+    [uri]
   )
   return client
 }

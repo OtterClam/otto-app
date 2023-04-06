@@ -1,4 +1,5 @@
 import AdventureFullscreen from 'components/AdventureFullscreen'
+import { useRedeemProduct } from 'contracts/functions'
 import styled from 'styled-components/macro'
 import RewardRibbonText from 'components/RewardRibbonText'
 import { AdventureUIActionType, useAdventureUIState } from 'contexts/AdventureUIState'
@@ -45,17 +46,24 @@ const StyledChest = styled.div`
 `
 
 export default function TreasuryChestPopup() {
-  const [redeem, setRedeem] = useState(false)
+  const [redeeming, setRedeeming] = useState(false)
+  const { resetRedeem, redeem, redeemState } = useRedeemProduct()
   const { t } = useTranslation('', { keyPrefix: 'treasuryChestPopup' })
   const {
     state: { treasuryChest },
     dispatch,
   } = useAdventureUIState()
 
+  const startRedeem = () => {
+    if (treasuryChest) {
+      redeem(treasuryChest.tokenId, 1)
+    }
+    setRedeeming(true)
+  }
   const closeRedeemCouponPopup = useCallback(() => {
-    setRedeem(false)
+    setRedeeming(false)
     dispatch({ type: AdventureUIActionType.SetTreasuryChestItem })
-  }, [])
+  }, [dispatch])
 
   return (
     <>
@@ -67,15 +75,16 @@ export default function TreasuryChestPopup() {
         <StyledContainer>
           <StyledDesc>{t('desc')}</StyledDesc>
           <StyledChest />
-          <Button width="100%" Typography={Headline} onClick={() => setRedeem(true)}>
+          <Button width="100%" Typography={Headline} onClick={startRedeem}>
             {t('button')}
           </Button>
         </StyledContainer>
       </StyledFullscreen>
-      {redeem && treasuryChest && (
+      {redeeming && treasuryChest && (
         <RedeemCouponPopup
           coupon={treasuryChest}
-          amount={1}
+          redeemState={redeemState}
+          resetRedeem={resetRedeem}
           onErrorClose={closeRedeemCouponPopup}
           onClose={closeRedeemCouponPopup}
         />

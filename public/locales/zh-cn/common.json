@@ -22,7 +22,7 @@
         "1": "小提醒，提领 CLAM 不会收取额外提领手续费喔！"
       },
       "2": {
-        "0": "CLAM 炼成金! CLAM 已开放赎回 ，请前往矿场看看，呜米！",
+        "0": "CLAM 炼成金! CLAM 已开放赎回 ，请前往矿场看看，阿波!",
         "1": "小提醒，提领 CLAM 不会收取额外提领手续费喔！"
       }
     }
@@ -202,7 +202,7 @@
       "title": "Check if you’re Whitelisted"
     },
     "check_on_opensea": "去 OpenSea 瞧瞧",
-    "clam_balance": "你的 CLAM:",
+    "clam_balance": "你的 MATIC:",
     "connect": "连接钱包",
     "countdown": {
       "days": "天",
@@ -676,7 +676,7 @@
     "stake_tab": "投入贝壳",
     "unstake_tab": "领出贝壳",
     "welcome": "欢迎来到贝壳水池!",
-    "desc": "投入贝壳币 CLAM 来赚取 USD+ 奖励。水池会自动再投入你已获得的 USD+ 奖励来产生更多 CLAM ，以自动复利来达到最大效益。你可以随时投入或领出贝壳币喔！",
+    "desc": "根据 CIP056, 贝壳水池将于 {{time}} 结束运作。您可以在此时间之后将贝壳币领出或移至珍珠银行。",
     "available": "你的贝壳币:",
     "max": "最大值",
     "input_placeholder": "请输入数量",
@@ -992,7 +992,7 @@
     "ready": "{{name}} 已经准备好冒险！",
     "ongoing": "{{name}} 正在 {{location}} 冒险中...",
     "finished": "{{name}} 完成了对 {{location}} 的探索！",
-    "results": "成果"
+    "results":"成果"
   },
   "adventureLocationPopup": {
     "difficulty": "困难度：",

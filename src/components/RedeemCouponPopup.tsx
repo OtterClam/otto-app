@@ -1,8 +1,8 @@
 import LoadingView from 'components/OpenItem/OpenItemLoadingView'
 import OpenItemView from 'components/OpenItem/OpenItemView'
-import { useRedeemProduct } from 'contracts/functions'
+import { OttoBuyTransactionState } from 'contracts/functions'
 import { ItemMetadata } from 'models/Item'
-import { memo, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState, useRef } from 'react'
 
 enum State {
   Loading,
@@ -11,23 +11,21 @@ enum State {
 
 interface Props {
   coupon: ItemMetadata
-  amount: number
+  redeemState: OttoBuyTransactionState
+  resetRedeem: () => void
   onErrorClose: () => void
   onClose: () => void
 }
 
 export default memo(function RedeemCouponPopup({
-  coupon: { tokenId: id, productType, productImages },
-  amount,
+  coupon: { productType, productImages },
+  redeemState,
+  resetRedeem,
   onErrorClose,
   onClose,
 }: Props) {
   const [state, setState] = useState<State>(State.Loading)
-  const { resetRedeem, redeem, redeemState } = useRedeemProduct()
-  useEffect(() => {
-    redeem(id, amount)
-    setState(State.Loading)
-  }, [])
+
   useEffect(() => {
     if (redeemState.state === 'Success') {
       setState(State.Success)
@@ -36,7 +34,7 @@ export default memo(function RedeemCouponPopup({
       resetRedeem()
       onErrorClose()
     }
-  }, [redeemState])
+  }, [redeemState, onErrorClose, resetRedeem])
 
   if (state === State.Loading) return <LoadingView type={productType} images={productImages} />
   return <OpenItemView items={redeemState.receivedItems || []} onClose={onClose} />

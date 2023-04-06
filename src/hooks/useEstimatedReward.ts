@@ -20,7 +20,7 @@ export default function useEstimatedReward(rank: number, isAdventure: boolean, a
 
   return useMemo(
     () => trim(calcReward(rank, totalReward, prizeCount, isAdventure, ap), isAdventure ? 0 : 2),
-    [rank, prizeCount, epoch, isAdventure, ap]
+    [rank, prizeCount, isAdventure, ap, totalReward]
   )
 }
 
@@ -37,7 +37,7 @@ export function useEstimatedTotalReward(myOttos: Otto[], isAdventure: boolean) {
       }, 0),
       isAdventure ? 0 : 2
     )
-  }, [myOttos, prizeCount, epoch, isAdventure])
+  }, [myOttos, prizeCount, isAdventure, totalReward])
 
   return estimatedTotalReward
 }

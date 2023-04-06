@@ -91,7 +91,7 @@ export default function PortalCard({ portal, state, progress, duration, metadata
     if (state === PortalState.OPENED) return theme.colors.crownYellow
     if (state === PortalState.CAN_OPEN) return theme.colors.seaweedGreen
     return theme.colors.clamPink
-  }, [state])
+  }, [state, theme.colors.clamPink, theme.colors.crownYellow, theme.colors.seaweedGreen])
   return (
     <StyledPortalCard borderColor={borderColor}>
       <StyledPortalImage src={metadata?.image} />

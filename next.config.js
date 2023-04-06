@@ -1,8 +1,15 @@
 const { DefinePlugin, Compilation } = require('webpack')
-const withPWA = require('next-pwa')
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  scope: '/',
+  cacheStartUrl: false,
+  swSrc: './src/worker/index.ts',
+  disable: process.env.NODE_ENV === 'development',
+})
 const pkg = require('./package.json')
 const { i18n } = require('./next-i18next.config')
 const { AssetsManifestPlugin } = require('./webpack/assets-manifest')
+const { PHASE_DEVELOPMENT_SERVER } = require('next/dist/shared/lib/constants')
 const withTM = require('next-transpile-modules')(['@usedapp/core'])
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -13,14 +20,15 @@ if (process.env.NODE_ENV === 'development') {
   imageDomains.push('localhost')
 }
 
-module.exports = withBundleAnalyzer(
-  withPWA(
-    withTM({
+const isWatch = process.argv.includes('--watch')
+
+module.exports = async (phase) => {
+  const nextConfig = withTM({
       productionBrowserSourceMaps: false,
       eslint: {
         ignoreDuringBuilds: true,
       },
-      webpack: config => {
+      webpack: (config) => {
         config.module.rules.push({
           test: /\.mp3$/,
           loader: 'file-loader',
@@ -34,13 +42,6 @@ module.exports = withBundleAnalyzer(
         return config
       },
       i18n,
-      pwa: {
-        dest: 'public',
-        scope: '/',
-        cacheStartUrl: false,
-        swSrc: './src/worker/index.ts',
-        disable: process.env.NODE_ENV === 'development',
-      },
       images: {
         domains: imageDomains,
         formats: ['image/avif', 'image/webp'],
@@ -66,6 +67,8 @@ module.exports = withBundleAnalyzer(
           },
         ]
       },
-    })
-  )
-)
+    });
+  return withBundleAnalyzer(
+    phase === PHASE_DEVELOPMENT_SERVER ? nextConfig : withPWA(nextConfig)
+    );
+}

@@ -93,7 +93,7 @@ export default function useCrossChainTreasuryMetrics(): {
           treasuryArrakisUsdcMaiMarketValue: x.treasuryArrakisUsdcMaiMarketValue,
         } as AggregatedMetrics
       }),
-    [metrics, avaxMetrics]
+    [metrics, avaxMetrics, bscMetrics]
   )
 
   return {

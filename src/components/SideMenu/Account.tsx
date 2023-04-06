@@ -43,7 +43,7 @@ export default function Account() {
   const { account, deactivate } = useEthers()
   const { t } = useTranslation('', { keyPrefix: 'side_menu' })
 
-  const address = `${account!.slice(0, 3)}...${account!.slice(account!.length - 3, account!.length)}`
+  const address = account ? `${account.slice(0, 3)}...${account.slice(account.length - 3, account.length)}` : ''
 
   return (
     <StyledContainer>

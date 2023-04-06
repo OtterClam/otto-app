@@ -76,7 +76,7 @@ export default function OttoStats({ loading, showScore }: { loading?: boolean; s
     },
     { key: 'gender', icon: '/trait-icons/Gender.png', value: otto?.gender },
     { key: 'personality', icon: '/trait-icons/Personality.png', value: otto?.personality },
-    { key: 'arms', icon: `/arms/${otto?.armsImage}.png`, value: otto?.coatOfArms },
+    { key: 'arms', icon: otto && otto.armsImage ? `/arms/${otto.armsImage}.png` : '', value: otto?.coatOfArms },
     {
       key: 'legendary',
       icon: otto?.legendary ? LegendaryIcon.src : ClassicIcon.src,

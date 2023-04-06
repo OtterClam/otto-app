@@ -92,6 +92,7 @@ export class CacheController {
   }
 
   private getFileUri(file: string): string {
+    // eslint-disable-next-line no-restricted-globals
     return (self.__ASSETS_LOADER_MANIFEST ?? {})[file] ?? file
   }
 

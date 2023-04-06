@@ -8,9 +8,13 @@ export default function LanguageSelector() {
   const router = useRouter()
   const { t } = useTranslation()
 
-  const handleChangeEvent = useCallback((locale: string) => {
-    router.push(router.asPath, router.asPath, { locale })
-  }, [])
+  const handleChangeEvent = useCallback(
+    (locale: string) => {
+      const lowerCaseLocale = locale.toLowerCase()
+      router.push(router.asPath, router.asPath, { locale: lowerCaseLocale })
+    },
+    [router]
+  )
 
   return (
     <SelectButtons value={router.locale ?? router.defaultLocale ?? ''} onChange={handleChangeEvent}>

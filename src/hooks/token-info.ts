@@ -73,6 +73,6 @@ export const useTokenInfo = (): Record<string, TokenInfo> => {
         symbol: 'DAI',
       },
     }),
-    [fishBalance, clamBalance, maticBalance]
+    [fishBalance, clamBalance, maticBalance, CLAM, DAI, FISH, USDC]
   )
 }

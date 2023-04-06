@@ -26,6 +26,7 @@ const StyledContainer = styled.div<{ bgLeft: number; bgWidth: number }>`
     background: ${({ theme }) => theme.colors.white};
     z-index: -1;
     transition: all 0.2s ease;
+    margin-left: 0px;
   }
 `
 

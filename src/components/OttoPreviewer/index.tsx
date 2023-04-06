@@ -85,7 +85,7 @@ export default function OttoPreviewer({
 
   const close = useCallback(() => {
     selectTrait(undefined)
-  }, [])
+  }, [selectTrait])
 
   return (
     <>
@@ -104,21 +104,22 @@ export default function OttoPreviewer({
               <AdventureRibbonText>{otto.name}</AdventureRibbonText>
               <StyledOttoImage src={otto.image} size={200} />
             </StyledPreviewImage>
-
-            <StyledTraitGroup>
-              {otto.geneticTraits
-                ?.filter(trait => trait.image)
-                ?.map(trait => (
-                  <TraitButton
-                    locked
-                    type={trait.type}
-                    trait={trait}
-                    key={otto!.id + trait.type}
-                    onSelect={selectTrait}
-                  />
-                ))}
-              <FeedButton hide={hideFeedButton} />
-            </StyledTraitGroup>
+            {otto && (
+              <StyledTraitGroup>
+                {otto.geneticTraits
+                  ?.filter(trait => trait.image)
+                  ?.map(trait => (
+                    <TraitButton
+                      locked
+                      type={trait.type}
+                      trait={trait}
+                      key={otto.id + trait.type}
+                      onSelect={selectTrait}
+                    />
+                  ))}
+                <FeedButton hide={hideFeedButton} />
+              </StyledTraitGroup>
+            )}
           </StyledPreview>
         </StyledContainer>
       )}

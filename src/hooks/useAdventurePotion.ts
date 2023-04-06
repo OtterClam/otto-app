@@ -11,7 +11,7 @@ const potionIdMap = potionIds.reduce(
 
 export default function useAdventurePotion() {
   const [loading, setLoading] = useState(false)
-  const { items, loading: loadingMyItems, refetch: refetchMyItems } = useMyItems()
+  const { items, loading: loadingMyItems } = useMyItems()
 
   const { use, useItemState } = useItem()
 
@@ -32,12 +32,12 @@ export default function useAdventurePotion() {
         use(String(potion), ottoId)
       }
     },
-    [amounts]
+    [amounts, use]
   )
 
   useEffect(() => {
     if (useItemState.state === 'Success') {
-      refetchMyItems()
+      // TODO: trigger item fetch after API has picked up the tx.
     }
     setLoading(useItemState.state === 'PendingSignature' || useItemState.state === 'Mining')
   }, [useItemState.state])

@@ -26,6 +26,7 @@ import { useIsMyOttos } from 'MyOttosProvider'
 import { useDispatch } from 'react-redux'
 import { showOttoPopup } from 'store/uiSlice'
 import { AdventureOttoStatus } from 'models/Otto'
+import Image from 'next/image'
 import PlayIcon from './icons/play-voice.svg'
 import Theme from './icons/theme.png'
 import TheOtter from './icons/the_otter.png'
@@ -444,7 +445,7 @@ export default function OttoPage() {
 
             {otto && (otto.zodiacBoost || 0) > 0 && (
               <StyledBoostBox>
-                <img src={TheOtter.src} alt="the Otter" />
+                <Image src={TheOtter.src} alt="the Otter" width="80" height="80" />
                 <ContentSmall>
                   {t(otto?.isChosenOne ? 'otto.chosen_one' : 'otto.constellation_boost', {
                     birthday: format(otto.birthday, 'MMM d'),
@@ -457,7 +458,7 @@ export default function OttoPage() {
 
             {otto && otto.themeBoost > 0 && (
               <StyledBoostBox>
-                <img src={Theme.src} alt="the Otter" />
+                <Image src={Theme.src} alt="the Otter" width="80" height="80" />
                 <ContentSmall>
                   <StyledThemeBoostDesc
                     dangerouslySetInnerHTML={{
@@ -525,7 +526,7 @@ export default function OttoPage() {
                     )}
                   </StyledStat>
                   <StyledStat>
-                    <StyledStatIcon src={`/arms/${otto.armsImage}.png`} />
+                    {otto.armsImage && <StyledStatIcon src={`/arms/${otto.armsImage}.png`} />}
                     <StyledStatTitle>{otto.coatOfArms}</StyledStatTitle>
                     <StyledStatDesc>{t('otto.coatOfArms', { arms: otto.coatOfArms })}</StyledStatDesc>
                   </StyledStat>

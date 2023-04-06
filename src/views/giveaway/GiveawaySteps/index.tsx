@@ -101,7 +101,7 @@ export default function GiveawaySteps() {
       window.alert(claimState.errorMessage)
       resetClaim()
     }
-  }, [claimState])
+  }, [claimState, resetClaim])
   useEffect(() => {
     if (step === Steps.JoinDiscord || step === Steps.InputInvitationCode) {
       stepsRef.current?.scrollIntoView()

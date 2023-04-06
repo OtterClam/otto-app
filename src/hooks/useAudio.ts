@@ -7,13 +7,13 @@ export default function useAudio(audioUrl: string, preload = true) {
     setErr(undefined)
     const audio = new Audio(audioUrl)
     audio.onerror = () => {
-      setErr(err)
+      setErr(e => e || err)
     }
     if (preload) {
       audio.load()
     }
     return audio
-  }, [audioUrl, preload])
+  }, [audioUrl, preload, err])
 
   return { audio, audioError: err }
 }

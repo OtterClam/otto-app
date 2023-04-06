@@ -1,41 +1,55 @@
-// https://gist.github.com/tomchentw/19c4275bc2c2e89e18a616355a3cca88
-
-'use strict';
-const fs = require('fs');
-const imagemin = require('imagemin');
+import fs from 'fs';
+import imagemin from 'imagemin';
+import imageminGifsicle from 'imagemin-gifsicle';
+import imageminJpegtran from 'imagemin-jpegtran';
+import imageminOptipng from 'imagemin-optipng';
+import imageminSvgo from 'imagemin-svgo';
 
 const plugins = [
-  ['imagemin-gifsicle', {
+  [imageminGifsicle, {
     interlaced: true,
     optimizationLevel: 3 // set maximum optimization level (1-3)
   }],
-  ['imagemin-jpegtran', {
+  [imageminJpegtran, {
     progressive: true,
   }],
-  ['imagemin-optipng', {
+  [imageminOptipng, {
     optimizationLevel: 5, // set maximum optimization level (0-7)
   }],
-  ['imagemin-svgo', {
+  [imageminSvgo, {
     plugins: [
-      {removeViewBox: false},
+      {name: 'preset-default'},
+      {name: 'removeViewBox', active: false}
     ],
   }],
-].map(it => require(it[0])(it[1]))
+].map(([plugin, options]) => plugin(options));
 
 const minifyFile = filename =>
   new Promise((resolve, reject) =>
-    fs.readFile(filename, (err, data) => err ? reject(err) : resolve(data))
+    fs.access(filename, fs.constants.F_OK, (err) => err ? reject(err) : resolve())
   )
+  .then(() => new Promise((resolve, reject) =>
+    fs.readFile(filename, (err, data) => err ? reject(err) : resolve(data))
+  ))
   .then(originalBuffer => imagemin
     .buffer(originalBuffer, { plugins })
     .then(minimizedBuffer => ({
-      // minimized: minimizedBuffer !== originalBuffer,
-      // originalSize: originalBuffer.length,
+      minimized: minimizedBuffer !== originalBuffer,
+      originalSize: originalBuffer.length,
       minimizedBuffer,
     }))
   ).then(({ minimizedBuffer }) => new Promise((resolve, reject) =>
     fs.writeFile(filename, minimizedBuffer, err => err ? reject(err) : resolve())
   ))
+  .catch(e => {
+    if (e.code === 'ENOENT') {
+      console.log(`File not found: ${filename}`);
+      return Promise.resolve();
+    } else {
+      console.error(e);
+      process.exit(1);
+    }
+  });
 
 Promise.resolve(process.argv)
   .then(x => x.slice(2))

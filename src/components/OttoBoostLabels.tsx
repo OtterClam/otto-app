@@ -27,11 +27,6 @@ const StyledLabel = styled(Caption).attrs({ as: 'div' })`
   background: ${({ theme }) => theme.colors.lightGray300};
   border-radius: 5px;
 
-  img {
-    width: 21px;
-    height: 21px;
-  }
-
   @media ${({ theme }) => theme.breakpoints.mobile} {
     img {
       width: 18px;
@@ -77,19 +72,19 @@ export default function OttoBoostLabels({ otto, isAdventure }: OttoBoostLabelsPr
         <StyledLabel>LV {level}</StyledLabel>
         {apBirthdayBoost > 0 && (
           <StyledLabel>
-            <img src="/trait-icons/Birthday.png" alt="Birthday Boost" />
+            <Image src="/trait-icons/Birthday.png" alt="Birthday Boost" width="21" height="21" />
             {t('chosen_one_ap', { boost: apBirthdayBoost })}
           </StyledLabel>
         )}
         {apZodiacBoost > 0 && (
           <StyledLabel>
-            <img src={ConstellationIcons[zodiacSign]} alt="Zodiac Boost" />
+            <Image src={ConstellationIcons[zodiacSign]} alt="Zodiac Boost" width="21" height="21" />
             {t('zodiac_boost_ap', { boost: apZodiacBoost, zodiac: zodiacSign })}
           </StyledLabel>
         )}
         {apLegendaryBoost > 0 && (
           <StyledLabel>
-            <img src="/trait-icons/Legendary.png" alt="Legendary" />
+            <Image src="/trait-icons/Legendary.png" alt="Legendary" width="21" height="21" />
             {t('legendary_boost_ap', { boost: apLegendaryBoost })}
           </StyledLabel>
         )}
@@ -102,7 +97,7 @@ export default function OttoBoostLabels({ otto, isAdventure }: OttoBoostLabelsPr
       {zodiacBoost > 0 &&
         (isChosenOne ? (
           <StyledChosenOne>
-            <img src="/trait-icons/Birthday.png" alt="The Otter" />
+            <Image src="/trait-icons/Birthday.png" alt="The Otter" width="21" height="21" />
             {t('chosen_one')}
           </StyledChosenOne>
         ) : (
@@ -113,19 +108,19 @@ export default function OttoBoostLabels({ otto, isAdventure }: OttoBoostLabelsPr
         ))}
       {(diceCount ?? 0) > 0 && (
         <StyledLabel>
-          <img src="/trait-icons/dice.png" alt="Hell Dice" />
+          <Image src="/trait-icons/dice.png" alt="Hell Dice" width="21" height="21" />
           {t('hell_dice', { diceCount, boost: numberWithSign(epochRarityBoost ?? 0) })}
         </StyledLabel>
       )}
       {themeBoost > 0 && (
         <StyledLabel>
-          <img src="/trait-icons/Theme.png" alt="Theme Boost" />
+          <Image src="/trait-icons/Theme.png" alt="Theme Boost" width="21" height="21" />
           {t('theme_boost', { boost: themeBoost })}
         </StyledLabel>
       )}
       {legendaryBoost > 0 && (
         <StyledLabel>
-          <img src="/trait-icons/Legendary.png" alt="Legendary" />
+          <Image src="/trait-icons/Legendary.png" alt="Legendary" width="21" height="21" />
           {t('legendary_boost_ap', { boost: legendaryBoost })}
         </StyledLabel>
       )}

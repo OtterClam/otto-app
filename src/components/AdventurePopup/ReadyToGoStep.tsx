@@ -31,7 +31,7 @@ const StyledDesc = styled(ContentLarge).attrs({ as: 'p' })`
 export default function ReadyToGoStep() {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.readyToGoStep' })
   const { otto } = useOtto()
-  const location = useSelectedAdventureLocation()!
+  const location = useSelectedAdventureLocation()
   const goToStep = useGoToAdventurePopupStep()
 
   useEffect(() => {
@@ -41,9 +41,9 @@ export default function ReadyToGoStep() {
     return () => {
       clearTimeout(timer)
     }
-  }, [])
+  }, [goToStep])
 
-  if (!otto) {
+  if (!otto || !location) {
     return <div />
   }
 

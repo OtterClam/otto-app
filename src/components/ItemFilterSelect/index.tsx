@@ -63,7 +63,7 @@ const ItemFilterSelect = memo(function ItemFilterSelect({
 
   useEffect(() => {
     onSelect(items[0].key)
-  }, [])
+  }, [items, onSelect])
 
   return (
     <RealDropdown
@@ -87,7 +87,7 @@ const ItemFilterSelect = memo(function ItemFilterSelect({
     >
       <StyledItems>
         <StyledItem>
-          {useMemo(() => icon, [])}
+          {useMemo(() => icon, [icon])}
           {label}
         </StyledItem>
       </StyledItems>
@@ -105,7 +105,7 @@ export function SortedBySelector() {
         key: option,
         label: t(option),
       })),
-    []
+    [t]
   )
 
   return (
@@ -124,7 +124,7 @@ export function OrderSelector() {
       { key: ItemsOrder.Desc, label: t('desc') },
       { key: ItemsOrder.Asc, label: t('asc') },
     ]
-  }, [])
+  }, [t])
 
   return <ItemFilterSelect icon={<AscendingIcon />} value={order} items={items} onSelect={setOrder} />
 }
@@ -139,7 +139,7 @@ export function FilterSelector() {
         key: option,
         label: t(option),
       })),
-    []
+    [t]
   )
 
   return (

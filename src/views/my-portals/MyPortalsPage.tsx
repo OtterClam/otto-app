@@ -61,6 +61,7 @@ export default function MyPortalsPage() {
       return State.HasPortals
     }
     return State.NoPortals
+
   }, [account, loading, data])
 
   const renderMetaTags = useCallback(() => {
@@ -86,7 +87,7 @@ export default function MyPortalsPage() {
         <meta property="og:image" content="/og.jpg" />
       </Head>
     )
-  }, [state, t])
+  }, [loading, data])
 
   const renderContent = useCallback(() => {
     switch (state) {
@@ -115,7 +116,7 @@ export default function MyPortalsPage() {
       default:
         return <ConnectView />
     }
-  }, [state, data])
+  }, [state, data, router])
   return (
     <StyledMyPortalsPage>
       <DefaultMetaTags />

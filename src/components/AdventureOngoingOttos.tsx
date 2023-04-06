@@ -94,7 +94,7 @@ export default function AdventureOngoingOttos({ ongoingOttos }: Props) {
       setOtto(otto)
       openPopup(selectedLocationId, AdventurePopupStep.Exploring)
     },
-    [selectedLocationId, ongoingOttos]
+    [selectedLocationId, ongoingOttos, openPopup, setOtto]
   )
 
   return (

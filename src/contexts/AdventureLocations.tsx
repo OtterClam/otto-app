@@ -19,10 +19,14 @@ const AdventureLocationsContext = createContext<{
   idMap: { [k: string]: AdventureLocation }
 }>(defaultValue)
 
+const replaceBgImageURL = (url: string) => {
+  return url.replace(/^https:\/\/api\.otterclam\.finance\/assets\/adventure\//, '/location/')
+}
+
 export const AdventureLocationsProvider = ({ children }: PropsWithChildren<object>) => {
   const api = useApi()
   const [loading, setLoading] = useState(false)
-  const [locations, steLocations] = useState<AdventureLocation[]>([])
+  const [locations, setLocations] = useState<AdventureLocation[]>([])
   const images = useMemo(() => {
     const images: string[] = []
     locations.forEach(location => {
@@ -35,16 +39,21 @@ export const AdventureLocationsProvider = ({ children }: PropsWithChildren<objec
 
   usePreloadImages(images)
 
-  const refetch = useCallback(
-    throttle(() => {
-      setLoading(true)
-      api
-        .getAdventureLocations()
-        .then(steLocations)
-        .finally(() => setLoading(false))
-    }, 500),
-    [api]
-  )
+  const refetch = useCallback(() => {
+    setLoading(true)
+    api
+      .getAdventureLocations()
+      .then(locations => {
+        const updatedLocations = locations.map(location => ({
+          ...location,
+          image: replaceBgImageURL(location.image),
+          bgImage: replaceBgImageURL(location.bgImage),
+          bgImageBlack: replaceBgImageURL(location.bgImageBlack),
+        }))
+        setLocations(updatedLocations)
+      })
+      .finally(() => setLoading(false))
+  }, [api, setLoading, setLocations])
 
   const value = useMemo(
     () => ({
@@ -59,10 +68,10 @@ export const AdventureLocationsProvider = ({ children }: PropsWithChildren<objec
         {}
       ),
     }),
-    [loading, locations]
+    [loading, locations, refetch]
   )
 
-  useEffect(refetch, [api])
+  useEffect(refetch, [api, refetch])
 
   return <AdventureLocationsContext.Provider value={value}>{children}</AdventureLocationsContext.Provider>
 }
