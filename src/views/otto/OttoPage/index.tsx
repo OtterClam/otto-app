@@ -15,6 +15,7 @@ import { format } from 'date-fns'
 import useOtto from 'hooks/useOtto'
 import { useTranslation } from 'next-i18next'
 import dynamic from 'next/dynamic'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import ReactMarkdown from 'react-markdown'
@@ -383,6 +384,9 @@ export default function OttoPage() {
 
   return (
     <>
+      <Head>
+        <title>{otto ? t('otto.docTitle', { name: otto.name }) : 'Loading...'}</title>
+      </Head>
       <StyledOttoPage>
         <StyledOttoContainer>
           <StyledLeftContainer>

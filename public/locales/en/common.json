@@ -4,7 +4,8 @@
     "zh-tw": "繁體中文",
     "zh-cn": "简体中文"
   },
-  "titleSuffix": " | The first official citizen of the Otter Kingdom",
+  "titlePrefix": "",
+  "titleSuffix": " | Ottopia",
   "new_version": "A newer version of this web app is available, reload to update?",
   "assets_loader": {
     "name": {
@@ -149,9 +150,9 @@
       "store": "Store",
       "bank": "Pearl Bank"
     },
-    "title": "Ottopia",
+    "title": "Otter Kingdom",
     "docDesc": "Otto is the first official citizen of the Otter Kingdom. Each Otto is an ERC721 NFT with unique traits and attributes. These NFTs are not only irresistibly cute, but they also happen to be the main characters of OtterClam’s first adventure game – Ottopia.",
-    "docTitle": "$t(home.title)$t(titleSuffix)"
+    "docTitle": "$t(titlePrefix)$t(home.title)$t(titleSuffix)"
   },
   "leaderboard": {
     "head": "Be the rarest Otto to win the prize!",
@@ -193,7 +194,7 @@
     "shell_chest_link": "Buy Shell Chest >",
     "title": "Leaderboard",
     "docDesc": "Attend the Ottopia leaderboard competitions to earn CLAM, FISH and previous prizes! It strives to reward the users who are the most thoughtfully and enthusiastically engaged with the ecosystem. As its name suggests, this is a process where you attempt to raise the rarest and bravest Otto, Lottie or Cleo, and get rewarded for doing so.",
-    "docTitle": "$t(leaderboard.title)$t(titleSuffix)",
+    "docTitle": "$t(titlePrefix)$t(leaderboard.title)$t(titleSuffix)",
     "right_info": "The upcoming epoch falls to <span style=\"color: #FFDC77\">{{constellation}}</span>. The god of {{constellation}} has blessed every {{constellation}} Otto, Lottie and Cleo with glory and power! <span style=\"color: #FF6854\">Success Rate +10%</span>",
     "left_info_link": "See how BRS boost works >",
     "left_info": "Ottos wearing items matching either of the upcoming epoch themes <span style=\"color: #FFDC77\">{{ themes }}</span> will receive extra BRS boosts.",
@@ -267,7 +268,7 @@
     "portal_amount": "Otto Portals:",
     "title": "Mint Portals",
     "docDesc": "To enter the Otterverse and find the floating island, you must generate a portal. Portals can be thought of as intergalactic wormholes that transform humans into otters while sending them to the Otterverse.",
-    "docTitle": "$t(mint.title)$t(titleSuffix)",
+    "docTitle": "$t(titlePrefix)$t(mint.title)$t(titleSuffix)",
     "total_payment": "Total Payment:"
   },
   "mint_banner": {
@@ -276,6 +277,7 @@
     "para2": "OTTERVERSE!"
   },
   "my_items": {
+    "docTitle": "$t(titlePrefix)$t(my_items.title)$t(titleSuffix)",
     "next_page": "Next >",
     "prev_page": "< Previous",
     "empty": "You don't have any items.",
@@ -360,13 +362,18 @@
     "opensea_link": "View on Opensea"
   },
   "my_ottos": {
+    "title": "My Ottos",
+    "docTitle": "$t(titlePrefix)$t(my_ottos.title)$t(titleSuffix)",
     "mint_portal": "Mint Portal",
-    "no_otto": "You don't have any otto yet.",
-    "rarity_score": "Rarity Score: {{score}}",
-    "title": "My Ottos"
+    "has_otto": "My Otto collection",
+    "no_otto": "You don't have any otters yet.",
+    "rarity_score": "Rarity Score: {{score}}"
   },
   "my_portals": {
+    "title": "My Portals",
+    "docTitle": "$t(titlePrefix)$t(my_portals.title)$t(titleSuffix)",
     "choose_otto": "Choose an Otto now!",
+    "has_portals": "Here are your available Otto portals",
     "legendary_desc": "Legendary Ottos deserve legendary owners. Are you up for the challenge?",
     "mint_portal": "Mint Portals",
     "no_portal": "You don't have any portal yet.",
@@ -378,10 +385,11 @@
       "CAN_OPEN": "Ready to initiate!",
       "CHARGING": "Charging...",
       "OPENED": "The portal is now open, but only one Otto can be summoned. Choose wisely."
-    },
-    "title": "My Portals"
+    }
   },
   "otto": {
+    "title": "Otto Details",
+    "docTitle": "$t(titlePrefix){{name}}$t(titleSuffix)",
     "times": "{{ times }} times",
     "birthday": "Birthday: {{birthday}}",
     "chosen_one": "This Otto is the chosen one!\nThe upcoming epoch falls to {{birthday}}. All Otto, Lotties and Cleo that the Birthday is same to the date are blessed with special boosts!",
@@ -415,7 +423,6 @@
       "R3": "Rare"
     },
     "rarity_score": "Rarity Score: {{score}} (BRS: {{brs}} + RRS: {{rrs}})",
-    "title": "Otto Details",
     "trait_count_one": "{{count}} Otto has this trait",
     "trait_count_other": "{{count}} Ottos have this trait",
     "traits": {
@@ -573,7 +580,7 @@
     "subtitle_2": "Good things come to Otters who wait, unless they're on sale! These Shell Chests are a deal worth running for!",
     "title": "Ottopia Store",
     "docDesc": "These Shell Chests contain more than 600+ pieces of special, wearable equipment, and they're on sale! The more you buy, the more you save! Each Chest holds 1 item!",
-    "docTitle": "$t(store.title)$t(titleSuffix)"
+    "docTitle": "$t(titlePrefix)$t(store.title)$t(titleSuffix)"
   },
   "unsupported_network": {
     "action": "Switch to Polygon",
@@ -610,7 +617,7 @@
     "dashboard": {
       "title": "Treasury Dashboard",
       "docDesc": "Checkout the treasury page where you can stake your Clam in the Clam pond or Pearl bank to earn APY on your Clam to earn more CLAM or USD+ stablecoin.",
-      "docTitle": "$t(treasury.dashboard.title)$t(titleSuffix)",
+      "docTitle": "$t(titlePrefix)$t(treasury.dashboard.title)$t(titleSuffix)",
       "clamPrice": "CLAM Price",
       "backing": "Backing per CLAM",
       "backingTooltip": "Market Value of Treasury Assets divided by the circulating supply of CLAM. The value of CLAM tokens in liquidity pools is NOT included in the backing price.",
@@ -867,7 +874,7 @@
   "foundry": {
     "title": "Foundry",
     "docDesc": "Welcome to the Foundry, where you can melt several items to create a new item with the possibility of getting a higher rarity score or better attributes!",
-    "docTitle": "$t(foundry.title)$t(titleSuffix)",
+    "docTitle": "$t(titlePrefix)$t(foundry.title)$t(titleSuffix)",
     "dialog": {
       "title": "Welcome to the Foundry!",
       "content": "Welcome to the Foundry, where you can melt several items to create a new item with the possibility of getting a higher rarity score or better attributes!"
@@ -1040,7 +1047,7 @@
   "adventure": {
     "title": "Adventure",
     "docDesc": "The adventure system is now open! In the adventure system, Ottos can explore a wide variety of adventure areas in Ottopia and discover brand new Mission Items, Collectibles, and Wearable Items only available in specific areas.",
-    "docTitle": "$t(adventure.title)$t(titleSuffix)",
+    "docTitle": "$t(titlePrefix)$t(adventure.title)$t(titleSuffix)",
     "continue": "To Be Continued...",
     "listTitle": "Overview",
     "viewSwitcher": {

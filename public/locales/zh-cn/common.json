@@ -145,7 +145,7 @@
     "play": "开始玩",
     "title": "欢迎来到阿獭王国",
     "docDesc": "在阿獭王国，你的角色将透过传送门化身为阿獭，在这片美丽又迷人的国度进行生活和探险，这里还有许多集会、比赛以及道具商店，让你跟你的阿獭能快乐游玩！",
-    "docTitle": "$t(home.title)$t(titleSuffix)"
+    "docTitle": "$t(titlePrefix)$t(home.title)$t(titleSuffix)"
   },
   "leaderboard": {
     "head": "成为最稀有的阿獭来赢得奖金!",
@@ -181,7 +181,7 @@
     "shell_chest_link": "购买贝壳宝箱 >",
     "title": "排行榜",
     "docDesc": "阿獭王国会不定期举办各类型比赛的排行榜，准备好你的阿獭，让他们发挥自己最大的优势，站上排行榜之列，并赢得包含 CLAM, FISH 甚至稀有道具等奖品吧！",
-    "docTitle": "$t(leaderboard.title)$t(titleSuffix)",
+    "docTitle": "$t(titlePrefix)$t(leaderboard.title)$t(titleSuffix)",
     "right_info": "这一轮比赛奖励星座落在<span style=\"color: #FFDC77\">处女座</span>，所有此星座的阿獭、萝提及克蕾欧都会被神祝福并赐予特殊效果： <span style=\"color: #FF6854\">Success Rate +10%</span>",
     "left_info_link": "主题加成如何运作 >",
     "left_info": "只要你的阿獭 NFT 穿上的物品符合此轮比赛所指定的主题标签： <span style=\"color: #FFDC77\">{{ themes }}</span> ，就可以得到额外稀有度分数加成！",
@@ -255,7 +255,7 @@
     "portal_amount": "传送门:",
     "title": "铸造传送门",
     "docDesc": "想要加入阿獭王国，首先你得需要传送门将阿獭传送到王国。马上铸造一个传送门，就可以开启你的专属阿獭进行游玩了！",
-    "docTitle": "$t(mint.title)$t(titleSuffix)",
+    "docTitle": "$t(titlePrefix)$t(mint.title)$t(titleSuffix)",
     "total_payment": "总计:"
   },
   "mint_banner": {
@@ -264,6 +264,7 @@
     "para2": "阿獭王国！"
   },
   "my_items": {
+    "docTitle": "$t(titlePrefix)$t(my_items.title)$t(titleSuffix)",
     "next_page": "下一页 >",
     "prev_page": "上一页 >",
     "empty": "你没有任何物品",
@@ -347,13 +348,18 @@
     "opensea_link": "在 Opensea 上查看"
   },
   "my_ottos": {
+    "title": "我的阿獭",
+    "docTitle": "$t(titlePrefix)$t(my_ottos.title)$t(titleSuffix)",
     "mint_portal": "铸造传送门",
+    "has_otto": "我的阿獭收藏",
     "no_otto": "你还没有任何阿獭。",
-    "rarity_score": "稀有度： {{score}}",
-    "title": "我的阿獭"
+    "rarity_score": "稀有度： {{score}}"
   },
   "my_portals": {
+    "title": "我的传送门",
+    "docTitle": "$t(titlePrefix)$t(my_portals.title)$t(titleSuffix)",
     "choose_otto": "选择你的 Otto 吧！",
+    "has_portals": "这里有您可用的Otto传送门",
     "legendary_desc": "传奇阿獭",
     "mint_portal": "马上铸造一个吧",
     "no_portal": "你还没有拥有任何传送门喔",
@@ -365,10 +371,11 @@
       "CAN_OPEN": "可以开启了！",
       "CHARGING": "充能中...",
       "OPENED": "这个传送门已经开启，但你只能召唤一只阿獭进入阿獭王国，请谨慎选择喔！"
-    },
-    "title": "我的传送门"
+    }
   },
   "otto": {
+    "title": "详细资讯",
+    "docTitle": "$t(titlePrefix){{name}}$t(titleSuffix)",
     "times": "{{ times }} 次",
     "birthday": "生日： {{birthday}}",
     "chosen_one": "这只是天选之獭！\n这一轮的稀有度大赛日期落在了 {{birthday}}，所有与此日期相同生日的阿獭、萝提及克蕾欧都会被阿獭之神祝福并赐予特殊效果。",
@@ -403,7 +410,6 @@
       "R3": "稀有"
     },
     "rarity_score": "稀有度: {{score}} (BRS: {{brs}} + RRS: {{rrs}})",
-    "title": "详细资讯",
     "trait_count_one": "{{count}} 阿獭拥有这个特征",
     "trait_count_other": "{{count}} 阿獭拥有这个特征",
     "traits": {
@@ -557,7 +563,7 @@
     "subtitle_2": "走过路过千万别错过！这些宝箱里的道具可以让阿獭变得更强，趁打折期间快来增强战力，呜獭！",
     "title": "阿獭王国商店",
     "docDesc": "在阿獭王国商店，有众多商品供你选购，除了常驻的贝壳宝箱之外，也会有不定期的主题宝箱或季节限定宝箱，也会有限时道具特卖，记得每天都要上来看看有什么新货到来喔。",
-    "docTitle": "$t(store.title)$t(titleSuffix)"
+    "docTitle": "$t(titlePrefix)$t(store.title)$t(titleSuffix)"
   },
   "unsupported_network": {
     "action": "切换到 Polygon",
@@ -593,7 +599,7 @@
     "dashboard": {
       "title": "国库概况",
       "docDesc": "透过阿獭王国的国库概况，可以了解到王国目前的财政状况，在这里，你也可以投入贝壳币到水池，或是存入珍珠银行，来赚取更多奖励。",
-      "docTitle": "$t(treasury.dashboard.title)$t(titleSuffix)",
+      "docTitle": "$t(titlePrefix)$t(treasury.dashboard.title)$t(titleSuffix)",
       "clamPrice": "CLAM 价格",
       "backing": "CLAM 单位价值",
       "backingTooltip": "国库的总资产价值除以 CLAM 流通量。已排除国库中的 CLAM 价值。",
@@ -845,7 +851,7 @@
   "foundry": {
     "title": "铸造厂",
     "docDesc": "欢迎来到铸造厂，在这里你可以将多个物品重新铸造成一个新物品, 并且有机会得到稀有度或数值较高的物品！",
-    "docTitle": "$t(foundry.title)$t(titleSuffix)",
+    "docTitle": "$t(titlePrefix)$t(foundry.title)$t(titleSuffix)",
     "dialog": {
       "title": "欢迎来到铸造厂！",
       "content": "欢迎来到铸造厂，在这里你可以将多个物品重新铸造成一个新物品, 并且有机会得到稀有度或数值较高的物品！"
@@ -1018,7 +1024,7 @@
   "adventure": {
     "title": "冒险",
     "docDesc": "准备好踏出阿獭王国去探险了吗？在丛林、沙漠、溪流甚至是未知之境，藏着许多宝藏和任务道具等着你来探索，快准备好阿獭的装备，出发冒险吧！",
-    "docTitle": "$t(adventure.title)$t(titleSuffix)",
+    "docTitle": "$t(titlePrefix)$t(adventure.title)$t(titleSuffix)",
     "continue": "更多区域即将开放...",
     "listTitle": "阿獭概况",
     "viewSwitcher": {
