@@ -388,6 +388,8 @@
     }
   },
   "otto": {
+    "title": "Otto Details",
+    "docTitle": "$t(titlePrefix){{name}}$t(titleSuffix)",
     "times": "{{ times }} times",
     "birthday": "Birthday: {{birthday}}",
     "chosen_one": "This Otto is the chosen one!\nThe upcoming epoch falls to {{birthday}}. All Otto, Lotties and Cleo that the Birthday is same to the date are blessed with special boosts!",
@@ -421,7 +423,6 @@
       "R3": "Rare"
     },
     "rarity_score": "Rarity Score: {{score}} (BRS: {{brs}} + RRS: {{rrs}})",
-    "title": "Otto Details",
     "trait_count_one": "{{count}} Otto has this trait",
     "trait_count_other": "{{count}} Ottos have this trait",
     "traits": {

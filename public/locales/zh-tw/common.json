@@ -374,6 +374,8 @@
     }
   },
   "otto": {
+    "title": "詳細資訊",
+    "docTitle": "$t(titlePrefix){{name}}$t(titleSuffix)",
     "times": "{{ times }} 次",
     "birthday": "生日： {{birthday}}",
     "chosen_one": "這隻是天選之獺！\n這一輪的稀有度大賽日期落在了 {{birthday}}，所有與此日期相同生日的阿獺、蘿提及克蕾歐都會被阿獺之神祝福並賜予特殊效果。",
@@ -408,7 +410,6 @@
       "R3": "稀有"
     },
     "rarity_score": "稀有度: {{score}} (BRS: {{brs}} + RRS: {{rrs}})",
-    "title": "詳細資訊",
     "trait_count_one": "{{count}} 阿獺擁有這個特徵",
     "trait_count_other": "{{count}} 阿獺擁有這個特徵",
     "traits": {

@@ -374,6 +374,8 @@
     }
   },
   "otto": {
+    "title": "详细资讯",
+    "docTitle": "$t(titlePrefix){{name}}$t(titleSuffix)",
     "times": "{{ times }} 次",
     "birthday": "生日： {{birthday}}",
     "chosen_one": "这只是天选之獭！\n这一轮的稀有度大赛日期落在了 {{birthday}}，所有与此日期相同生日的阿獭、萝提及克蕾欧都会被阿獭之神祝福并赐予特殊效果。",
@@ -408,7 +410,6 @@
       "R3": "稀有"
     },
     "rarity_score": "稀有度: {{score}} (BRS: {{brs}} + RRS: {{rrs}})",
-    "title": "详细资讯",
     "trait_count_one": "{{count}} 阿獭拥有这个特征",
     "trait_count_other": "{{count}} 阿獭拥有这个特征",
     "traits": {
