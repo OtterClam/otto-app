@@ -50,33 +50,14 @@ export class LeaderboardsRepository {
     const ottoTokenIds = result.data.ottos.map(({ tokenId }) => tokenId)
     const ottos = await this.ottos.getOttosByTokenIds(ottoTokenIds, epoch)
     // For otters with dice, use the helldice endpoint to get a more up to date view
-    if (epoch === -1) {
-      await Promise.all(
-        ottos.map(async otto => {
-          if (otto.diceCount) {
-            const diceResults = await this.api.getAllDice(otto.id)
-            otto.diceCount = diceResults.length
-            const adjustedBrs = diceResults.reduce(
-              (prev, current) => prev + (current.events[0]?.effects?.brs ?? 0) + (current.events[1]?.effects?.brs ?? 0),
-              0
-            )
-            otto.totalRarityScore = (
-              Number(otto.totalRarityScore) -
-              (otto.epochRarityBoost ?? 0) +
-              adjustedBrs
-            ).toString()
-            otto.epochRarityBoost = adjustedBrs
-          }
-        })
-      )
-    }
+    const ottosWithDice = epoch === -1 ? await this.ottos.augmentOttosWithDiceResults(ottos) : ottos
     return {
       type,
       epoch,
       page: {
         page,
         itemsPerPage,
-        data: ottos,
+        data: ottosWithDice,
       },
     }
   }
