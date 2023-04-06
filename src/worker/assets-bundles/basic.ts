@@ -30,4 +30,7 @@ export const basic = new BasicAssetsBundle(BundleName.Basic, [
   'src/components/PageHeader/Wallet/small-center.png',
   'src/components/PageHeader/Wallet/large-center.png',
   'src/components/PageHeader/Title/small-center.png',
+
+  // loading images
+  '/otto-loading.jpg',
 ])
