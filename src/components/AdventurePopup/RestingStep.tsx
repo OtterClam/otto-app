@@ -134,7 +134,7 @@ export default function RestingStep() {
       alert(doItemBatchActionsState.status.errorMessage)
       resetDoItemBatchActions()
     }
-  }, [doItemBatchActionsState])
+  }, [otto, resetDoItemBatchActions, setOtto, updateOtto, doItemBatchActionsState])
   if (!otto) {
     return null
   }

@@ -6,6 +6,7 @@ import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
+import Image from 'next/image'
 import ItemPreviewCard from './ItemPreviewCard'
 
 const StyledWearItemView = styled.div`
@@ -72,7 +73,7 @@ export default function TakeOffItemView({ item, otto, onUse }: Props) {
         <StyledOttoPreviewContainer>
           <StyledItemPreview>
             <ItemPreviewCard title={t('my_items.wear_item.current_equipped')} metadata={item.metadata} />
-            <img width={30} src={Arrow.src} alt="arrow" />
+            <Image src={Arrow.src} alt="arrow" width="30" height="30" />
             <ItemPreviewCard title={t('my_items.wear_item.replaced')} metadata={nativeItemMetadata} />
           </StyledItemPreview>
           <StyledUseButton disabled={!otto?.availableForItem} Typography={Headline} onClick={onUse}>

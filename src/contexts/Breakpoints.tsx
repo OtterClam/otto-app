@@ -34,7 +34,7 @@ export const BreakpointsProvider = ({ children }: PropsWithChildren<object>) => 
             isSmallTablet,
             isDesktop,
           },
-    [ready, isMobile, isTablet]
+    [ready, isMobile, isTablet, isDesktop, isSmallTablet]
   )
 
   // if we change the dom tree structure before the hydration process is finished, something will be broken.

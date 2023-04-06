@@ -1,5 +1,4 @@
 import AdventureFullscreen from 'components/AdventureFullscreen'
-import { useMyItems } from 'contexts/MyItems'
 import { useOtto, withOtto } from 'contexts/Otto'
 import { withTrait } from 'contexts/TraitContext'
 import { useMyOtto } from 'MyOttosProvider'
@@ -16,7 +15,6 @@ const StyledAdventureFullscreen = styled(AdventureFullscreen)`
 
 export default withOtto(
   withTrait(function OttoPopup() {
-    const { refetch: refreshMyItems } = useMyItems()
     const { setOtto, resetEquippedItems } = useOtto()
     const dispatch = useDispatch()
     const ottoTokenId = useSelector(selectOttoPopup)
@@ -24,16 +22,15 @@ export default withOtto(
 
     const closePopup = useCallback(() => {
       dispatch(hideOttoPopup())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
-      setOtto(otto)
       if (otto) {
-        refreshMyItems()
+        setOtto(otto)
       } else {
         resetEquippedItems()
       }
-    }, [otto])
+    }, [otto, setOtto, resetEquippedItems])
 
     return (
       <StyledAdventureFullscreen show={Boolean(otto)} onRequestClose={closePopup} closeButtonColor="white">

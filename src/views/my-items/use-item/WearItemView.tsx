@@ -7,6 +7,7 @@ import Otto from 'models/Otto'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { Headline, Note } from 'styles/typography'
+import Image from 'next/image'
 import ItemPreviewCard from './ItemPreviewCard'
 import OttoList from './OttoList'
 
@@ -95,12 +96,12 @@ export default function WearItemView({ item, selectedOtto, onSelect, onUse }: Pr
         <StyledOttoPreviewContainer>
           <StyledItemPreview>
             <ItemPreviewCard title={t('my_items.wear_item.current_equipped')} metadata={originItemMetadata} />
-            <img width={30} src={Arrow.src} alt="arrow" />
+            <Image src={Arrow.src} alt="arrow" width="30" height="30" />
             <ItemPreviewCard title={t('my_items.wear_item.replaced')} metadata={item.metadata} />
           </StyledItemPreview>
           {selectedOtto?.legendary && (
             <StyledLegendaryWarning>
-              <img src={LegendaryIcon} alt="Legendary Icon" />
+              <Image src={LegendaryIcon} alt="Legendary Icon" width="40" height="40" />
               {t('my_items.legendary_warning')}
             </StyledLegendaryWarning>
           )}

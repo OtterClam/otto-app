@@ -143,7 +143,7 @@ export default function Swap({ onClose }: Props) {
   const [tokenIn, tokenOut] = [tokenInfo.MATIC, tokenInfo.FISH]
   const wallet = useWallet()
   const fishReturn = useBuyFishReturn(amountIn ? parseUnits(amountIn, tokenIn.decimal) : 0)
-  const fishAmount = useMemo(() => formatUnits(fishReturn, tokenOut.decimal), [fishReturn])
+  const fishAmount = useMemo(() => formatUnits(fishReturn, tokenOut.decimal), [fishReturn, tokenOut.decimal])
   const enoughBalance = tokenIn.balance && tokenIn.balance.gte(amountIn ? parseUnits(amountIn, tokenIn.decimal) : 0)
   const swapState = useMemo(
     () => ({
@@ -163,7 +163,7 @@ export default function Swap({ onClose }: Props) {
       window.alert(swapState.status.errorMessage)
       resetBuyFish()
     }
-  }, [swapState.state])
+  }, [swapState.state, fishAmount, resetBuyFish, swapState.status.errorMessage, tokenOut.address, wallet])
 
   if (buyFishState.state !== 'None') {
     return (

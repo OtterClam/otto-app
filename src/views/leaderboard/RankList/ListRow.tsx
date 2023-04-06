@@ -187,7 +187,6 @@ const StyledOttoAvatarContainer = styled.div<{ isMyOttoRow?: boolean }>`
   &::before {
     content: '';
     display: block;
-    padding-bottom: 100%;
   }
 `
 
@@ -261,7 +260,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
               <StyledRank rank={rank}>{rank}</StyledRank>
             </StyledTd>
             <StyledOttoAvatarContainer>
-              <Image src={image} layout="fill" width={200} height={200} />
+              <Image src={image} layout="responsive" width={100} height={100} />
             </StyledOttoAvatarContainer>
             <StyledMobileContent>
               <StyledAvatarName>{name}</StyledAvatarName>
@@ -300,7 +299,7 @@ export default memo(function ListRow({ rank, otto, isMyOttoRow }: ListRowProps) 
           <StyledTd>
             <StyledAvatarName>
               <StyledOttoAvatarContainer isMyOttoRow={isMyOttoRow}>
-                <Image src={image} layout="fill" width={200} height={200} />
+                <Image src={image} layout="responsive" width={100} height={100} />
               </StyledOttoAvatarContainer>
               <StyledNameColumn>
                 {name}

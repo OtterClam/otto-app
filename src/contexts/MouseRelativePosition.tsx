@@ -46,7 +46,7 @@ function _useMouseRelativePosition<T extends HTMLElement>(ref: RefObject<T>, cen
     return () => {
       target.removeEventListener('mousemove', eventHandler)
     }
-  }, [ref.current, center])
+  }, [ref, center])
 
   return pos
 }

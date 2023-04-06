@@ -27,7 +27,7 @@ export default function AttributePoinsPopup() {
 
   const closePopup = useCallback(() => {
     dispatch({ type: AdventureUIActionType.DistributeAttributePoints })
-  }, [])
+  }, [dispatch])
 
   return (
     <StyledFullscreen onRequestClose={closePopup} show={Boolean(attributePoints)} bodyClassName="fullscreen-inner">

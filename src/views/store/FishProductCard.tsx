@@ -112,7 +112,7 @@ export default function FishProductCard({
       alert(buyState.status.errorMessage)
       resetBuy()
     }
-  }, [buyState])
+  }, [buyState, resetBuy])
   return (
     <>
       <StyledContainer>

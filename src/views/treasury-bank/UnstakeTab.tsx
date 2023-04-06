@@ -110,7 +110,7 @@ export default function UnstakeTab({ className }: Props) {
       wallet?.setBalance(CLAM, balance => balance.add(receiveAmount))
       wallet?.setBalance(PEARL_BANK, balance => balance.sub(receiveAmount))
     }
-  }, [state.state])
+  }, [state.state, CLAM, PEARL_BANK, receiveAmount, wallet])
 
   return (
     <StyledUnstakeTab className={className}>

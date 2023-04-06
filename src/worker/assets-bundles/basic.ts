@@ -13,10 +13,6 @@ export const basic = new BasicAssetsBundle(BundleName.Basic, [
   // header
   'src/components/PageHeader/Logo/logo-small.png',
   'src/components/PageHeader/Logo/logo-large.png',
-  'src/components/PageHeader/Balance/large-pearl.png',
-  'src/components/PageHeader/Balance/small-pearl.png',
-  'src/components/PageHeader/Balance/large-clam.png',
-  'src/components/PageHeader/Balance/small-clam.png',
   'src/components/PageHeader/Balance/large-fish.png',
   'src/components/PageHeader/Balance/small-fish.png',
   'src/components/PageHeader/Balance/plus.png',

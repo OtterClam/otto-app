@@ -74,12 +74,16 @@ const StyledPinsLayer = styled.div<{ scale: number; offset: Position }>`
   transform: translate(${({ offset }) => `${offset.x}px, ${offset.y}px`});
 `
 
-const StyledCloudsLayer = styled.div<{
+const StyledCloudsLayer = styled.div.attrs<{
   scale: number
   containerSize: { width: number; height: number }
   offset: Position
   day?: boolean
-}>`
+}>(props => ({
+  style: {
+    transform: `translate(${props.offset.x}px, ${props.offset.y}px)`,
+  },
+}))<{ scale: number; containerSize: { width: number; height: number }; offset: Position; day?: boolean }>`
   position: absolute;
   left: calc(50% - ${({ scale, containerSize }) => (containerSize.width / 2) * scale}px);
   top: calc(50% - ${({ scale, containerSize }) => (containerSize.height / 2) * scale}px);
@@ -87,7 +91,6 @@ const StyledCloudsLayer = styled.div<{
   height: ${({ scale, containerSize }) => containerSize.height * scale}px;
   z-index: 1;
   pointer-events: none;
-  transform: translate(${({ offset }) => `${offset.x}px, ${offset.y}px`});
 
   &::before {
     content: '';
@@ -144,7 +147,7 @@ const useMapSize = (containerSize: { width: number; height: number }) => {
       width: containerSize.height * mapRatio,
       height: containerSize.height,
     }
-  }, [containerSize.width, containerSize.height])
+  }, [containerSize.width, containerSize.height, containerRatio, mapRatio])
 }
 
 const useCloudOffsetTransform = (size?: { width: number; height: number }) => {

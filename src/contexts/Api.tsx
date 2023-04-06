@@ -1,7 +1,7 @@
 import { useEthers } from '@usedapp/core'
 import { Api, defaultApi } from 'libs/api'
 import { useTranslation } from 'next-i18next'
-import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react'
 
 const ApiContext = createContext<Api>(defaultApi)
 
@@ -25,46 +25,39 @@ type ApiMethod = {
 
 export const useApi = () => useContext(ApiContext)
 
-export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<Api[M]>, when: boolean, deps: any[]) {
+/**
+ * Use API Call - Returns callback that can be used to trigger the fetch, along with
+ * associated reactive state variables.
+ *
+ * @param methodName Method name
+ * @param args Method arguments - This is used as an effect dependency,
+ *  so if generated on the fly (new array), it needs to be wrapped with
+ *  useMemo or it should be non-reactive (e.g. constant).
+ * @returns Fetch callback, loading status, result if present, error if present.
+ */
+export function useApiCall<M extends ApiMethod>(methodName: M, args: Parameters<Api[M]>) {
   const api = useApi()
-  const [controller, setController] = useState<AbortController | undefined>(undefined)
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<Awaited<ReturnType<Api[M]>> | undefined>(undefined)
   const [err, setErr] = useState<Error | undefined>(undefined)
 
   const fetch: () => Promise<void> = useCallback(() => {
-    if (controller) {
-      controller.abort()
-    }
-
-    const newController = new AbortController()
-    const cancelableApi = api.withAbortController(newController)
-    const method = cancelableApi[methodName] as any
-
     setLoading(true)
-    setController(newController)
-
-    return method
-      .call(cancelableApi, ...args)
+    setResult(undefined)
+    setErr(undefined)
+    return (api[methodName] as any)(...args)
       .then(setResult)
       .catch(setErr)
       .finally(() => setLoading(false))
-  }, [api, controller, methodName].concat(deps))
-
-  useEffect(() => {
-    if (!when) {
-      return
-    }
-    fetch()
-  }, [when, api, methodName].concat(deps))
+  }, [api, args, methodName])
 
   return useMemo(
     () => ({
+      fetch,
       loading,
       result,
       err,
-      refetch: fetch,
     }),
-    [loading, result]
+    [fetch, loading, result, err]
   )
 }

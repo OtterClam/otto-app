@@ -6,7 +6,7 @@ import ItemCell from 'components/ItemCell'
 import { ItemMetadata } from 'models/Item'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
 import Star from 'assets/ui/large-star.svg'
@@ -116,6 +116,11 @@ interface Props {
 
 export default function OpenItemView({ items, onClose }: Props) {
   const { t } = useTranslation()
+  const router = useRouter()
+  const handleCheckOut = () => {
+    onClose()
+    router.push('/my-items')
+  }
   const [state, setState] = useState(items.length > 1 ? State.Playing : State.Finished)
   const [current, setCurrent] = useState(0)
   useEffect(() => {
@@ -154,13 +159,9 @@ export default function OpenItemView({ items, onClose }: Props) {
                 <ItemCell showDetailsPopup key={index} metadata={item} />
               ))}
             </StyledItemList>
-            <Link href="/my-items">
-              <a href="/my-items">
-                <StyledCheckOutButton Typography={Headline} onClick={onClose}>
-                  {t('store.popup.check_out')}
-                </StyledCheckOutButton>
-              </a>
-            </Link>
+            <Button padding="0px 10px" Typography={Headline} onClick={handleCheckOut}>
+              {t('store.popup.check_out')}
+            </Button>
           </>
         )}
         <StyledCloseButton color="white" onClose={onClose} />

@@ -152,11 +152,11 @@ export default function OpenPortalPopup({ show, portalId, onClose }: Props) {
     if (opened) {
       fetchCandidates()
     }
-  }, [portalId, api, opened])
+  }, [portalId, api, opened, fetchCandidates])
 
   useEffect(() => {
     if (candidates.length > 0) audio.play()
-  }, [candidates])
+  }, [candidates, audio])
 
   return (
     <Fullscreen show={show}>

@@ -65,11 +65,11 @@ export default function PointInput({
 }: PointInputProps) {
   const increase = useCallback(() => {
     onChange(attr, 1)
-  }, [onChange])
+  }, [onChange, attr])
 
   const decrease = useCallback(() => {
     onChange(attr, -1)
-  }, [onChange])
+  }, [onChange, attr])
 
   return (
     <StyledContainer>

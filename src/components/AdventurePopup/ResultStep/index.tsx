@@ -106,7 +106,7 @@ export default function ResultStep() {
 
   const share = useCallback(() => {
     dispatch({ type: AdventureUIActionType.OpenSharePopup })
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     if (router.query.otto) {
@@ -118,7 +118,7 @@ export default function ResultStep() {
           console.error('failed to getOtto', err.message)
         })
     }
-  }, [ottosRepo])
+  }, [ottosRepo, router.query.otto])
 
   useEffect(() => {
     getAdventureResult()
@@ -178,6 +178,7 @@ export default function ResultStep() {
     <Button
       Typography={Headline}
       onClick={() => {
+        otto.playVoice()
         setOtto(otto, true)
         closePopup()
         openPopup(location.id, AdventurePopupStep.PreviewOtto)

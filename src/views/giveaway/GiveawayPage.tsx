@@ -5,6 +5,7 @@ import Silver from 'models/store/images/silver.png'
 import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentMedium, Display2 } from 'styles/typography'
+import Image from 'next/image'
 import GiveawayFAQ from './GiveawayFAQ'
 import GiveawaySteps from './GiveawaySteps'
 import HeroBg from './hero-bg.png'
@@ -87,7 +88,7 @@ export default function GiveawayPage() {
       <StyledSubtitle>{t('subtitle')}</StyledSubtitle>
       <StyledHero>
         <StyledSliverChestContainer>
-          <img src={Silver.src} alt="silver" width="100%" />
+          <Image src={Silver.src} alt="silver" width="360" height="360" />
         </StyledSliverChestContainer>
       </StyledHero>
       <StyledBody>

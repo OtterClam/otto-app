@@ -89,12 +89,12 @@ export default function DiscordStep({ locked, onComplete, className }: Props) {
           onComplete()
         }
       })
-  }, [params])
+  }, [params, chainId, onComplete])
   useEffect(() => {
     if (!locked && params.get('state') === DISCORD_OAUTH_STATE) {
       onVerify()
     }
-  }, [locked, params])
+  }, [locked, params, onVerify])
   return (
     <StyledStep className={className} locked={locked}>
       <StyledActionContainer>

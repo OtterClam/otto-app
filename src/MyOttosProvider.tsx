@@ -45,7 +45,7 @@ export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
   const { ottos: ottosRepo } = useRepositories()
   const [loading, setLoading] = useState(false)
   const [ottos, setOttos] = useState<Otto[]>([])
-  const images = useMemo(() => flatten(ottos.map(({ image, imageWoBg }) => [image, imageWoBg])), [])
+  const images = useMemo(() => flatten(ottos.map(({ image, imageWoBg }) => [image, imageWoBg])), [ottos])
 
   usePreloadImages(images)
 
@@ -63,11 +63,11 @@ export default function MyOttosProvider({ children }: PropsWithChildren<any>) {
       .finally(() => {
         setLoading(false)
       })
-  }, [account])
+  }, [account, ottosRepo])
 
   useEffect(() => {
     refetch()
-  }, [account])
+  }, [account, refetch])
 
   const updateOtto = useCallback(
     (otto: Otto) => {

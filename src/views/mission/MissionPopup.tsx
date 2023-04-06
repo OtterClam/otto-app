@@ -133,7 +133,7 @@ export default function MissionPopup() {
       setNewMission(buyState.mission)
       resetBuy()
     }
-  }, [buyState])
+  }, [buyState, resetBuy, setNewMission])
   return (
     <Fullscreen width="660px" show={showPopup}>
       <StyledMissionPopup>
@@ -144,7 +144,7 @@ export default function MissionPopup() {
           <Image src={HeadRight} width={32} height={32} />
         </StyledTitle>
         <StyledListContainer>
-          <MissionList />
+          <MissionList key={filter} />
         </StyledListContainer>
         {filter !== 'finished' && info && (
           <StyledNewMissionSection>

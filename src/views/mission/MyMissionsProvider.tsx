@@ -1,9 +1,9 @@
 import { useEthers } from '@usedapp/core'
 import { useApiCall } from 'contexts/Api'
-import { MissionFilter } from 'libs/api'
+import { Api, MissionFilter } from 'libs/api'
 import noop from 'lodash/noop'
 import { Mission, MissionInfo } from 'models/Mission'
-import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react'
+import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 interface MyMissions {
   loading: boolean
@@ -32,18 +32,26 @@ export function useMyMissions() {
 
 export default function MyMissionsProvider({ children }: PropsWithChildren<any>) {
   const { account } = useEthers()
-  const { result: info } = useApiCall('getMissionInfo', [{ account: account ?? '' }], Boolean(account), [account])
   const [filter, setFilter] = useState<MissionFilter>('ongoing')
   const [newMission, setNewMission] = useState<Mission | null>(null)
-  const { result: missions = [], refetch } = useApiCall(
-    'listMissions',
-    [{ account: account ?? '', filter }],
-    Boolean(account),
-    [account, filter]
+  const { fetch: getInfo, result: info } = useApiCall(
+    'getMissionInfo',
+    useMemo(() => [{ account: account ?? '' }], [account])
   )
-  const reload = useCallback(() => {
-    refetch()
-  }, [refetch])
+  useEffect(() => {
+    if (account) {
+      getInfo()
+    }
+  }, [account, getInfo])
+  const { fetch: listMissions, result: missions = [] } = useApiCall(
+    'listMissions',
+    useMemo(() => [{ account: account ?? '', filter }], [account, filter])
+  )
+  useEffect(() => {
+    if (account) {
+      listMissions()
+    }
+  }, [account, listMissions])
   const myMissions: MyMissions = useMemo(
     () => ({
       loading: false,
@@ -52,15 +60,15 @@ export default function MyMissionsProvider({ children }: PropsWithChildren<any>)
       newMission,
       filter,
       setFilter,
-      reload,
+      reload: listMissions,
       setNewMission: (mission: Mission | null) => {
         setNewMission(mission)
         if (mission) {
-          reload()
+          listMissions()
         }
       },
     }),
-    [filter, info, missions, newMission, reload]
+    [filter, info, missions, newMission, listMissions]
   )
   return <MyMissionsContext.Provider value={myMissions}>{children}</MyMissionsContext.Provider>
 }

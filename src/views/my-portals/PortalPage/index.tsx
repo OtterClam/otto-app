@@ -149,7 +149,7 @@ export default function PortalPage() {
       window.alert(openState.errorMessage)
       resetOpen()
     }
-  }, [openState])
+  }, [openState, resetOpen])
 
   useEffect(() => {
     if (summonState.status === 'Mining') setShowSummonPopup(true)
@@ -158,13 +158,13 @@ export default function PortalPage() {
       window.alert(summonState.errorMessage)
       resetSummon()
     }
-  }, [summonState])
+  }, [summonState, resetSummon])
 
   useEffect(() => {
     if (data?.ottos[0].portalStatus === PortalStatus.SUMMONED) {
       router.push(`/my-ottos/${portalId}`)
     }
-  }, [data])
+  }, [data, portalId, router])
 
   return (
     <>

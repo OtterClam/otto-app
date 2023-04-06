@@ -176,7 +176,7 @@ export default function OttoCard({ otto, oldOtto, withItem: item, takeOff = fals
     }
 
     return diff
-  }, [otto, oldOtto, item])
+  }, [otto, oldOtto, item, takeOff])
 
   return (
     <StyledOttoCard borderColor={theme.colors.lightGray400} className={className}>

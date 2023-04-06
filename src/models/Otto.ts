@@ -433,8 +433,8 @@ export function diffTraitAttrs(a: Trait, b: Trait): OttoAttrsDiff {
   )
   const result: OttoAttrsDiff = {}
   b.stats.forEach(stat => {
-    const aValue = isNaN(Number(stat.value)) ? 0 : Number(stat.value)
-    const bValue = isNaN(Number(stats[stat.name])) ? 0 : Number(Number(stats[stat.name]))
+    const aValue = Number.isNaN(Number(stat.value)) ? 0 : Number(stat.value)
+    const bValue = Number.isNaN(Number(stats[stat.name])) ? 0 : Number(stats[stat.name])
     result[stat.name] = aValue - bValue
   })
   return result

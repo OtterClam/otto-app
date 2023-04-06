@@ -28,7 +28,7 @@ const useContractAddresses = () => {
         })
       )
     }
-  }, [chainId])
+  }, [chainId, active, dispatch, t])
 
   return useMemo(() => {
     return addresses[chainId ?? -1] ?? POLYGON_MAINNET

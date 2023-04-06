@@ -15,6 +15,7 @@ import { useRouter } from 'next/router'
 import { useRepositories } from 'contexts/Repositories'
 import { Leaderboard, LeaderboardType } from 'models/Leaderboard'
 import { useEstimatedTotalReward } from 'hooks/useEstimatedReward'
+import Image from 'next/image'
 import LoadingGif from './loading.gif'
 import ListRow from './ListRow'
 
@@ -235,7 +236,7 @@ export default function RankList({ className }: Props) {
       })
       .then(setLeaderboard)
       .finally(() => setLoadingApi(false))
-  }, [page, epoch, adventure])
+  }, [page, epoch, adventure, leaderboardsRepo])
 
   return (
     <StyledRankList className={className}>
@@ -276,7 +277,7 @@ export default function RankList({ className }: Props) {
         </StyledTableHead>
         {loading && (
           <StyledLoading>
-            <img src={LoadingGif.src} alt="loading" />
+            <Image src={LoadingGif.src} alt="loading" width="300" height="300" />
           </StyledLoading>
         )}
         {!loading &&

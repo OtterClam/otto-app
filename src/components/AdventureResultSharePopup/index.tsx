@@ -69,10 +69,10 @@ export default function AdventureResultSharePopup({
     state: { showSharePopup },
   } = useAdventureUIState()
 
-  const url = `${location.origin}/?adventure_tx=${tx}&otto=${ottoId}&location=${locationId}`
+  const url = `${window.location.origin}/?adventure_tx=${tx}&otto=${ottoId}&location=${locationId}`
   const close = useCallback(() => {
     dispatch({ type: AdventureUIActionType.CloseSharePopup })
-  }, [])
+  }, [dispatch])
 
   return (
     <StyledPopup width="auto" show={showSharePopup} onRequestClose={close}>

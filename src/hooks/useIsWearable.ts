@@ -35,6 +35,6 @@ export default function useIsWearable(items: Item[]): (itemId?: string, currentO
       console.log(itemAmount, myReadyOttosWithItem)
       return itemAmount > 0 || myReadyOttosWithItem.length > 0
     },
-    [readyOttosMap]
+    [readyOttosMap, items, ottos]
   )
 }

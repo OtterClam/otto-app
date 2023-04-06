@@ -23,5 +23,5 @@ export default function useSharedAdventureResult(): void {
     } else if (finishedTx !== tx) {
       gotoResultStep({ ottoId, tx, locationId, showEvent: false })
     }
-  }, [tx, ottoId, locationId, router.asPath])
+  }, [tx, ottoId, locationId, router.asPath, finishedTx, gotoResultStep, router])
 }

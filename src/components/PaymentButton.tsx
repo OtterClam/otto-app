@@ -59,7 +59,7 @@ export default function PaymentButton({
       return
     }
     onClick()
-  }, [onClick, amount, allowance, spenderAddress, approve])
+  }, [onClick, amount, allowance, spenderAddress, approve, noAmount])
 
   useEffect(() => {
     if (btnState === BtnState.WaitingApprove && allowance && BigNumber.from(amount).lte(allowance)) {
@@ -74,7 +74,7 @@ export default function PaymentButton({
     } else if (approveState.status === 'Success') {
       onSuccess()
     }
-  }, [approveState.status])
+  }, [approveState.status, onSuccess])
 
   return (
     <TxButton onClick={pay} disabled={disabled || loading || approving} loading={loading || approving} {...btnProps}>

@@ -1,15 +1,18 @@
 @font-face {
 	font-family: 'Pangolin';
-	src: url('/fonts/Pangolin-Regular.ttf') ;
+	src: url('/fonts/Pangolin-Regular.ttf') format('truetype');
+	font-display: swap;
 }
 
 @font-face {
 	font-family: 'PaytoneOne';
 	src: url('/fonts/paytoneone-regular.woff2') format('woff2');
+	font-display: swap;
 }
 
 @font-face {
 	font-family: naikaifont;
 	src: url(https://cdn.jsdelivr.net/gh/max32002/naikaifont@1.0/webfont/NaikaiFont-Regular-Lite.woff2) format("woff2")
 	, url(https://cdn.jsdelivr.net/gh/max32002/naikaifont@1.0/webfont/NaikaiFont-Regular-Lite.woff) format("woff");
+	font-display: swap;
 }
