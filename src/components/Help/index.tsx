@@ -27,6 +27,22 @@ const StyledContent = styled.div`
   display: inline-block;
 `
 
+const tooltipOverridePosition = (
+  { left, top }: { left: number; top: number },
+  _currentEvent: Event,
+  _currentTarget: EventTarget,
+  node: HTMLSpanElement | HTMLDivElement | null
+) => {
+  if (node) {
+    const d = document.documentElement
+    left = Math.min(d.clientWidth - node.clientWidth, left)
+    top = Math.min(d.clientHeight - node.clientHeight, top)
+    left = Math.max(0, left)
+    top = Math.max(0, top)
+  }
+  return { top, left }
+}
+
 export interface HelpProps {
   message: string
   className?: string
@@ -56,7 +72,7 @@ export default function Help({
         {!noicon && <StyledIcon src={icon} />}
       </StyledContent>
       {mounted && (
-        <ReactTooltip id={id} effect="solid">
+        <ReactTooltip id={id} overridePosition={tooltipOverridePosition} effect="solid">
           <StyledNote>{message}</StyledNote>
         </ReactTooltip>
       )}
