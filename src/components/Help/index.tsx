@@ -27,6 +27,14 @@ const StyledContent = styled.div`
   display: inline-block;
 `
 
+const StyledReactTooltip = styled(ReactTooltip)`
+  &.place-top {
+    &:after {
+      visibility: hidden;
+    }
+  }
+`
+
 const tooltipOverridePosition = (
   { left, top }: { left: number; top: number },
   _currentEvent: Event,
@@ -72,9 +80,9 @@ export default function Help({
         {!noicon && <StyledIcon src={icon} />}
       </StyledContent>
       {mounted && (
-        <ReactTooltip id={id} overridePosition={tooltipOverridePosition} effect="solid">
+        <StyledReactTooltip id={id} overridePosition={tooltipOverridePosition} effect="solid">
           <StyledNote>{message}</StyledNote>
-        </ReactTooltip>
+        </StyledReactTooltip>
       )}
     </StyledContainer>
   )
