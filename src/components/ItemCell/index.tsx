@@ -162,7 +162,7 @@ const StyledUnreturnable = styled.div`
   }
 `
 
-const StyledOttoThumb = styled.div`
+const StyledOttoLink = styled.a`
   display: block;
   width: 24px;
 `
@@ -231,9 +231,18 @@ export default memo(function ItemCell({
       {equippedByOtto && (
         <StyledEquipped>
           <Help noicon message={equippedByOtto.name}>
-            <StyledOttoThumb onClick={e => e.stopPropagation()}>
-              <Image src={equippedByOtto.image} layout="responsive" width={24} height={24} />
-            </StyledOttoThumb>
+            {!currentOtto && (
+              <Link href={`/my-ottos/${equippedByOtto.id}`} passHref>
+                <StyledOttoLink onClick={e => e.stopPropagation()}>
+                  <Image src={equippedByOtto.image} layout="responsive" width={24} height={24} />
+                </StyledOttoLink>
+              </Link>
+            )}
+            {currentOtto && (
+              <StyledOttoLink onClick={e => e.stopPropagation()}>
+                <Image src={equippedByOtto.image} layout="responsive" width={24} height={24} />
+              </StyledOttoLink>
+            )}
           </Help>
         </StyledEquipped>
       )}
