@@ -27,7 +27,6 @@ const StyledItemCell = styled.button<{
   border-radius: 5px;
   position: relative;
   background: ${({ theme, rarity }) => (rarity ? (theme.colors.rarity as any)[rarity] : theme.colors.lightGray200)};
-  z-index: 0;
 
   &::before {
     content: '';
@@ -54,7 +53,6 @@ const StyledItemCell = styled.button<{
 
 const StyledSelectedFrame = styled.div<{ right?: boolean }>`
   position: absolute;
-  z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
@@ -103,7 +101,6 @@ const StyledImageContainer = styled.div`
 
 const StyledRarity = styled.div<{ rarity?: string }>`
   position: absolute;
-  z-index: 1;
   top: 3px;
   right: 3px;
   padding-left: 3px;
