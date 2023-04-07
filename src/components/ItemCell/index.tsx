@@ -239,7 +239,7 @@ export default memo(function ItemCell({
               </Link>
             )}
             {currentOtto && (
-              <StyledOttoLink onClick={e => e.stopPropagation()}>
+              <StyledOttoLink as="span">
                 <Image src={equippedByOtto.image} layout="responsive" width={24} height={24} />
               </StyledOttoLink>
             )}
