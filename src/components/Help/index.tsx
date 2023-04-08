@@ -49,12 +49,6 @@ export default function Help({
   noicon,
 }: PropsWithChildren<HelpProps>) {
   const [id] = useState(() => `help-${nextId++}`)
-  const [modalRoot, setModalRoot] = useState<Element | null>(null)
-
-  // solve an ssr issue
-  useEffect(() => {
-    setModalRoot(document.querySelector('#modal-root'))
-  }, [])
 
   return (
     <StyledContainer>
@@ -66,7 +60,7 @@ export default function Help({
         <StyledReactTooltip id={id} effect="solid">
           <StyledNote>{message}</StyledNote>
         </StyledReactTooltip>,
-        modalRoot ?? document.body
+        document.querySelector('#modal-root') ?? document.body
       )}
     </StyledContainer>
   )
