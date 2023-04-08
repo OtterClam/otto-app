@@ -49,12 +49,10 @@ export default function Help({
   noicon,
 }: PropsWithChildren<HelpProps>) {
   const [id] = useState(() => `help-${nextId++}`)
-  const [mounted, setMounted] = useState(false)
   const [modalRoot, setModalRoot] = useState<Element | null>(null)
 
   // solve an ssr issue
   useEffect(() => {
-    setMounted(true)
     setModalRoot(document.querySelector('#modal-root'))
   }, [])
 
@@ -64,13 +62,12 @@ export default function Help({
         {children}
         {!noicon && <StyledIcon src={icon} />}
       </StyledContent>
-      {mounted &&
-        ReactDOM.createPortal(
-          <StyledReactTooltip id={id} effect="solid">
-            <StyledNote>{message}</StyledNote>
-          </StyledReactTooltip>,
-          modalRoot ?? document.body
-        )}
+      {ReactDOM.createPortal(
+        <StyledReactTooltip id={id} effect="solid">
+          <StyledNote>{message}</StyledNote>
+        </StyledReactTooltip>,
+        modalRoot ?? document.body
+      )}
     </StyledContainer>
   )
 }
