@@ -73,6 +73,7 @@ const config: Config = {
   readOnlyUrls,
   multicallAddresses,
   bufferGasLimitPercentage: 15,
+  multicallVersion: 1,
 }
 
 function useRealWindowSize() {

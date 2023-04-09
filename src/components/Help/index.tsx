@@ -1,4 +1,5 @@
 import { PropsWithChildren, useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
 import ReactTooltip from 'react-tooltip'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
@@ -27,6 +28,12 @@ const StyledContent = styled.div`
   display: inline-block;
 `
 
+const StyledReactTooltip = styled(ReactTooltip)`
+  &.place-top {
+    z-index: 10000;
+  }
+`
+
 export interface HelpProps {
   message: string
   className?: string
@@ -42,12 +49,6 @@ export default function Help({
   noicon,
 }: PropsWithChildren<HelpProps>) {
   const [id] = useState(() => `help-${nextId++}`)
-  const [mounted, setMounted] = useState(false)
-
-  // solve an ssr issue
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   return (
     <StyledContainer>
@@ -55,10 +56,11 @@ export default function Help({
         {children}
         {!noicon && <StyledIcon src={icon} />}
       </StyledContent>
-      {mounted && (
-        <ReactTooltip id={id} effect="solid">
+      {ReactDOM.createPortal(
+        <StyledReactTooltip id={id} effect="solid">
           <StyledNote>{message}</StyledNote>
-        </ReactTooltip>
+        </StyledReactTooltip>,
+        document.querySelector('#modal-root') ?? document.body
       )}
     </StyledContainer>
   )

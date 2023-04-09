@@ -90,6 +90,30 @@ export class OttosRepository {
     return ottos.map(raw => new Otto(raw))
   }
 
+  async augmentOttosWithDiceResults(ottos: Otto[]): Promise<Otto[]> {
+    return Promise.all(
+      ottos.map(async (otto: Otto) => {
+        if (otto.diceCount) {
+          const ottoWithDice = otto.clone()
+          const diceResults = await this.api.getAllDice(otto.id)
+          ottoWithDice.diceCount = diceResults.length
+          const adjustedBrs = diceResults.reduce(
+            (prev, current) => prev + (current.events[0]?.effects?.brs ?? 0) + (current.events[1]?.effects?.brs ?? 0),
+            0
+          )
+          ottoWithDice.totalRarityScore = (
+            Number(otto.totalRarityScore) -
+            (otto.epochRarityBoost ?? 0) +
+            adjustedBrs
+          ).toString()
+          ottoWithDice.epochRarityBoost = adjustedBrs
+          return ottoWithDice
+        }
+        return otto
+      })
+    )
+  }
+
   async getOttosByAccount(account: string): Promise<Otto[]> {
     const ottos = await this.api.getAdventureOttos(account, this.abortSignal)
     const items = await this.items.getAllItemsByAccount(account)
