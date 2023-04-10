@@ -52,7 +52,7 @@ export default class MyDocument extends Document<{ asPath: string }> {
           <link rel="canonical" href={process.env.BASE_URL + this.props.asPath} />
           <meta name="theme-color" content="#000000" />
           <meta property="og:type" content="website" />
-          <link rel="apple-touch-icon" href="/logo192.png" />
+          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
           <link rel="manifest" href="/manifest.json" />
         </Head>
         <body className="loading">
