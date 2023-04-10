@@ -59,7 +59,7 @@ export class AssetsLoader extends EventEmitter {
 
     console.log(`[assets-loader] update loading progress...`, this.bundleNames)
     window.workbox.messageSW({
-      type: EventType.GetDowbloadProgress,
+      type: EventType.GetDownloadProgress,
       data: this.bundleNames,
     })
   }

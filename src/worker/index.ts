@@ -1,7 +1,9 @@
 /* eslint-disable no-restricted-globals */
 
 import { RegExpRoute, registerRoute, setDefaultHandler } from 'workbox-routing'
-import { StaleWhileRevalidate } from 'workbox-strategies'
+import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies'
+import { ExpirationPlugin } from 'workbox-expiration'
+import { RouteHandlerCallbackOptions } from 'workbox-core/types'
 import { CacheController } from './cache-controller'
 import { BundleName, EventType } from './consts'
 import { WorkerMessageEvent } from './event'
@@ -9,7 +11,28 @@ import { bundles } from './assets-bundles'
 import { broadcast } from './broadcast'
 import { BundleRouteHandler } from './bundle-route-handler'
 
-// the following line can't be removed
+const LARGE_FILE_SIZE_THRESHOLD = 2500000
+const IMAGES_MAX_ENTRIES = 200
+const FONTS_MAX_ENTRIES = 10
+const CACHE_MAX_AGE_SECONDS = 30 * 24 * 60 * 60
+
+class CustomCacheFirst extends CacheFirst {
+  async handle({ event, request }: RouteHandlerCallbackOptions & { event: ExtendableEvent }): Promise<Response> {
+    const response = await super.handle({ event, request })
+
+    if (response && response.body) {
+      const contentLength = response.headers.get('content-length')
+      const parsedContentLength = contentLength ? parseInt(contentLength, 10) : 0
+
+      if (parsedContentLength > LARGE_FILE_SIZE_THRESHOLD) {
+        return new Response(null, { status: 204, statusText: 'No Content' })
+      }
+    }
+
+    return response
+  }
+}
+
 self.__WB_MANIFEST
 self.__WB_DISABLE_DEV_LOGS = true
 
@@ -27,20 +50,26 @@ const cacheController = new CacheController({
   },
 })
 
-const eventHandlers: { [key: string]: (event: WorkerMessageEvent<any>) => void } = {
-  [EventType.SkipWaiting]: () => {
-    console.log('[worker] skip waiting')
-    self.skipWaiting()
-  },
-  [EventType.UpdateBundleByNames]: (event: WorkerMessageEvent<string[]>) => {
-    event.data.data.forEach(name => cacheController.updateByBundleName(name))
-  },
-  [EventType.GetDowbloadProgress]: (event: WorkerMessageEvent<string[]>) => {
-    event.source?.postMessage({
-      type: EventType.DownloadProgress,
-      data: cacheController.getProgress(event.data.data),
-    })
-  },
+const handleSkipWaiting = () => {
+  console.log('[worker] skip waiting')
+  self.skipWaiting()
+}
+
+const handleUpdateBundleByNames = (event: WorkerMessageEvent<string[]>) => {
+  event.data.data.forEach(name => cacheController.updateByBundleName(name))
+}
+
+const handleGetDownloadProgress = (event: WorkerMessageEvent<string[]>) => {
+  event.source?.postMessage({
+    type: EventType.DownloadProgress,
+    data: cacheController.getProgress(event.data.data),
+  })
+}
+
+const eventHandlers: Record<string, (event: WorkerMessageEvent<any>) => void> = {
+  [EventType.SkipWaiting]: handleSkipWaiting,
+  [EventType.UpdateBundleByNames]: handleUpdateBundleByNames,
+  [EventType.GetDownloadProgress]: handleGetDownloadProgress,
 }
 
 self.addEventListener('install', (event: ExtendableEvent) => {
@@ -53,8 +82,14 @@ self.addEventListener('install', (event: ExtendableEvent) => {
   )
 })
 
+self.addEventListener('activate', (event: ExtendableEvent) => {
+  event.waitUntil(clients.claim())
+})
+
 self.addEventListener('message', event => {
-  console.log('[worker] service worker receive `message` event', event)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[worker] service worker receive `message` event', event)
+  }
   const { type } = (event as WorkerMessageEvent<any>).data ?? {}
   const handler = eventHandlers[type]
 
@@ -73,3 +108,40 @@ self.addEventListener('message', event => {
 setDefaultHandler(new BundleRouteHandler(cacheController))
 
 registerRoute(new RegExpRoute(/\/locales\/.*\.json/, new StaleWhileRevalidate()))
+
+registerRoute(
+  /\.(?:png|jpg|jpeg|svg|gif|ico|webp)$/,
+  new CustomCacheFirst({
+    cacheName: 'images',
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: IMAGES_MAX_ENTRIES,
+        maxAgeSeconds: CACHE_MAX_AGE_SECONDS,
+      }),
+    ],
+    matchOptions: {
+      ignoreSearch: true,
+    },
+  }),
+  'GET'
+)
+
+registerRoute(
+  /\.(?:js|css)$/,
+  new StaleWhileRevalidate({
+    cacheName: 'static-resources',
+  })
+)
+
+registerRoute(
+  /\.(?:woff|woff2|eot|ttf|otf)$/,
+  new CacheFirst({
+    cacheName: 'fonts',
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: FONTS_MAX_ENTRIES,
+        maxAgeSeconds: CACHE_MAX_AGE_SECONDS,
+      }),
+    ],
+  })
+)

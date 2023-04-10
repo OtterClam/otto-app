@@ -18,5 +18,5 @@ export enum EventType {
   // request
   SkipWaiting = 'SKIP_WAITING',
   UpdateBundleByNames = 'update-bundle-by-name',
-  GetDowbloadProgress = 'get-download-progress',
+  GetDownloadProgress = 'get-download-progress',
 }
