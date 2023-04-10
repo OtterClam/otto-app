@@ -1,4 +1,5 @@
 import { PropsWithChildren, useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
 import ReactTooltip from 'react-tooltip'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
@@ -29,27 +30,9 @@ const StyledContent = styled.div`
 
 const StyledReactTooltip = styled(ReactTooltip)`
   &.place-top {
-    &:after {
-      visibility: hidden;
-    }
+    z-index: 10000;
   }
 `
-
-const tooltipOverridePosition = (
-  { left, top }: { left: number; top: number },
-  _currentEvent: Event,
-  _currentTarget: EventTarget,
-  node: HTMLSpanElement | HTMLDivElement | null
-) => {
-  if (node) {
-    const d = document.documentElement
-    left = Math.min(d.clientWidth - node.clientWidth, left)
-    top = Math.min(d.clientHeight - node.clientHeight, top)
-    left = Math.max(0, left)
-    top = Math.max(0, top)
-  }
-  return { top, left }
-}
 
 export interface HelpProps {
   message: string
@@ -66,12 +49,6 @@ export default function Help({
   noicon,
 }: PropsWithChildren<HelpProps>) {
   const [id] = useState(() => `help-${nextId++}`)
-  const [mounted, setMounted] = useState(false)
-
-  // solve an ssr issue
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   return (
     <StyledContainer>
@@ -79,10 +56,11 @@ export default function Help({
         {children}
         {!noicon && <StyledIcon src={icon} />}
       </StyledContent>
-      {mounted && (
-        <StyledReactTooltip id={id} overridePosition={tooltipOverridePosition} effect="solid">
+      {ReactDOM.createPortal(
+        <StyledReactTooltip id={id} effect="solid">
           <StyledNote>{message}</StyledNote>
-        </StyledReactTooltip>
+        </StyledReactTooltip>,
+        document.querySelector('#modal-root') ?? document.body
       )}
     </StyledContainer>
   )
