@@ -217,7 +217,7 @@ export default memo(function ItemDetails({ item, onClose, onUse, className }: Pr
       </StyledActionBar>
       {onClose && <StyledCloseButton onClose={onClose} />}
       <StyledItemImageContainer rarity={rarity}>
-        <StyledItemImage src={image} />
+        <StyledItemImage key={image} src={image} />
         <StyledRarity rarity={rarity}>
           <Note>{rarity}</Note>
         </StyledRarity>
