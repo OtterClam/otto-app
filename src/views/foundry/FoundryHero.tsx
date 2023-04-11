@@ -1,10 +1,11 @@
 import { useTranslation } from 'next-i18next'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentSmall, Headline } from 'styles/typography'
-import Bg from './foundry_bg.jpg'
-import Fg from './foundry_fg.png'
-import Otto from './otto_smith.png'
-import Arrow from './arrow.svg'
+
+const Bg = '/images/foundry/foundry_bg.jpg'
+const Fg = '/images/foundry/foundry_fg.png'
+const Otto = '/images/foundry/otto_smith.png'
+const Arrow = '/images/foundry/arrow.svg'
 
 const StyledFoundryHero = styled.div`
   width: 100%;
@@ -22,7 +23,7 @@ const StyledBg = styled.div`
   justify-content: center;
   width: 100%;
   height: 520px;
-  background: no-repeat center / cover url(${Bg.src});
+  background: no-repeat center / cover url(${Bg});
   overflow: hidden;
 
   &::before,
@@ -30,7 +31,7 @@ const StyledBg = styled.div`
     content: '';
     width: 100%;
     padding-bottom: 60%;
-    background: no-repeat left top / auto 100% url(${Fg.src});
+    background: no-repeat left top / auto 100% url(${Fg});
     animation: ${FgAnimation} 2000ms steps(1) infinite;
   }
 
@@ -55,7 +56,7 @@ const StyledOtto = styled.div`
   position: absolute;
   bottom: 0;
   right: 15%;
-  background: no-repeat left top / auto 100% url(${Otto.src});
+  background: no-repeat left top / auto 100% url(${Otto});
   animation: ${OttoAnimation} 2000ms steps(1) infinite;
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
@@ -80,7 +81,7 @@ const StyledDialog = styled.div`
     content: '';
     width: 28px;
     height: 20px;
-    background-image: url(${Arrow.src});
+    background-image: url(${Arrow});
     background-size: 100% 100%;
     position: absolute;
     top: calc(50% - 9px);
