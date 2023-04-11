@@ -11,27 +11,12 @@ import { bundles } from './assets-bundles'
 import { broadcast } from './broadcast'
 import { BundleRouteHandler } from './bundle-route-handler'
 
+type RouteHandlerCallback = (options: RouteHandlerCallbackOptions) => Promise<Response>
+
 const LARGE_FILE_SIZE_THRESHOLD = 2500000
 const IMAGES_MAX_ENTRIES = 200
 const FONTS_MAX_ENTRIES = 10
 const CACHE_MAX_AGE_SECONDS = 30 * 24 * 60 * 60
-
-class CustomCacheFirst extends CacheFirst {
-  async handle({ event, request }: RouteHandlerCallbackOptions & { event: ExtendableEvent }): Promise<Response> {
-    const response = await super.handle({ event, request })
-
-    if (response && response.body) {
-      const contentLength = response.headers.get('content-length')
-      const parsedContentLength = contentLength ? parseInt(contentLength, 10) : 0
-
-      if (parsedContentLength > LARGE_FILE_SIZE_THRESHOLD) {
-        return new Response(null, { status: 204, statusText: 'No Content' })
-      }
-    }
-
-    return response
-  }
-}
 
 self.__WB_MANIFEST
 self.__WB_DISABLE_DEV_LOGS = true
@@ -104,14 +89,13 @@ self.addEventListener('message', event => {
   handler(event)
 })
 
-// workbox
-setDefaultHandler(new BundleRouteHandler(cacheController))
+setDefaultHandler(BundleRouteHandler.create(cacheController))
 
 registerRoute(new RegExpRoute(/\/locales\/.*\.json/, new StaleWhileRevalidate()))
 
 registerRoute(
   /\.(?:png|jpg|jpeg|svg|gif|ico|webp)$/,
-  new CustomCacheFirst({
+  new CacheFirst({
     cacheName: 'images',
     plugins: [
       new ExpirationPlugin({
@@ -144,4 +128,18 @@ registerRoute(
       }),
     ],
   })
+)
+
+registerRoute(
+  /\.mp3$/,
+  new CacheFirst({
+    cacheName: 'audio',
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 50,
+        maxAgeSeconds: 30 * 24 * 60 * 60,
+      }),
+    ],
+  }),
+  'GET'
 )
