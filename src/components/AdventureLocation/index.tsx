@@ -11,8 +11,6 @@ import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
 import { useOtto } from 'contexts/Otto'
 import AdventureRibbonText from '../AdventureRibbonText'
-import lockImage from './lock.svg'
-import chainImage from './chain.png'
 
 const WIDTH = 134
 const HEIGHT = 150
@@ -44,7 +42,7 @@ const StyledPinImageContainer = styled.div<{ locked: boolean }>`
     &::before {
       content: '';
       position: absolute;
-      background: center / cover url(${chainImage.src});
+      background: center / cover url(/images/adventure/chain.png);
       left: 0;
       top: 0;
       width: 100%;
@@ -111,7 +109,7 @@ const StyledRequiredLevel = styled(Note)<{ locked: boolean }>`
     `
     &::before {
       content: '';
-      background: url(${lockImage.src});
+      background: url(/images/adventure/lock.svg);
       width: 18px;
       height: 18px;
     }

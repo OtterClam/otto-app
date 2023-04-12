@@ -2,9 +2,14 @@ import styled from 'styled-components/macro'
 import { ContentMedium, Note } from 'styles/typography'
 import { AdventureLocation } from 'models/AdventureLocation'
 import { useTranslation } from 'next-i18next'
-import locationNameBgImage from './location_name.png'
-import skullImage from './skull.png'
-import lockImage from './lock.png'
+
+const skullImage = '/images/adventure/skull.png'
+const lockImage = '/images/adventure/lock.png'
+const locationNameBgImage = {
+  src: '/images/adventure/location_name.png',
+  width: 386,
+  height: 162,
+}
 
 const StyledName = styled.div`
   background: center / cover url(${locationNameBgImage.src});
@@ -45,7 +50,7 @@ const StyledLevel = styled(Note)`
     display: block;
     width: 18px;
     height: 18px;
-    background: center / cover url(${lockImage.src});
+    background: center / cover url(${lockImage});
   }
 `
 
@@ -58,7 +63,7 @@ const StyledSkull = styled.span`
   display: block;
   width: 12px;
   height: 12px;
-  background: center / cover url(${skullImage.src});
+  background: center / cover url(${skullImage});
 `
 
 export interface AdventureLocationNameProps {

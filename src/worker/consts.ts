@@ -6,6 +6,7 @@ export enum BundleName {
   Basic = 'basic',
   HomePage = 'home-page',
   FoundryPage = 'foundry-page',
+  AdventurePage = 'adventure-page',
 }
 
 export enum EventType {

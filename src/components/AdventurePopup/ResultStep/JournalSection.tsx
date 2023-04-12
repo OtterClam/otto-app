@@ -7,8 +7,13 @@ import Skeleton from 'react-loading-skeleton'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components/macro'
 import { Caption, ContentSmall, Headline } from 'styles/typography'
-import AdventureJournalBg from './adventure_journal_bg.png'
 import 'react-loading-skeleton/dist/skeleton.css'
+
+const AdventureJournalBg = {
+  src: '/images/adventure//adventure_journal_bg.png',
+  width: 552,
+  height: 150,
+}
 
 interface Props {
   className?: string
