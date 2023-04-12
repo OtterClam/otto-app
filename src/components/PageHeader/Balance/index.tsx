@@ -5,6 +5,7 @@ import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
 import useContractAddresses from 'hooks/useContractAddresses'
 import useTokenBalance from 'hooks/useTokenBalance'
 import localforage from 'localforage'
+import dynamic from 'next/dynamic'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import ReactTooltip from 'react-tooltip'
 import styled, { useTheme } from 'styled-components/macro'
@@ -16,7 +17,9 @@ import SmallClamBg from './header_clam_xs.png'
 import LargeFishBg from './large-fish.png'
 import SmallFishBg from './small-fish.png'
 
-const StyledToolTip = styled(ReactTooltip)`
+const DynamicReactTooltip = dynamic(() => import('react-tooltip'), { ssr: false })
+
+const StyledToolTip = styled(DynamicReactTooltip)`
   background: ${({ theme }) => theme.colors.clamPink};
   padding: 1px 10px !important;
   opacity: 1 !important;

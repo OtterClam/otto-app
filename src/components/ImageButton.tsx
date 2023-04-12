@@ -36,7 +36,7 @@ export type ImageButtonProps = ComponentProps<typeof StyledButton> & {
 
 export default forwardRef(function ImageButton(
   { scale = 0.5, states = [], ...restProps }: PropsWithChildren<ImageButtonProps>,
-  ref
+  _ref
 ) {
   return <StyledButton scale={scale} states={states} {...restProps} />
 })
