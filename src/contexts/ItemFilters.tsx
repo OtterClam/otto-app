@@ -129,6 +129,8 @@ function raritySort(lhs: Item, rhs: Item) {
   if (lhs.metadata.type === 'Mission Item' || lhs.metadata.type === 'Collectible') {
     return rarityClassMap[rhs.metadata.rarity] - rarityClassMap[lhs.metadata.rarity]
   }
+  cmp = rhs.metadata.themeBoost - lhs.metadata.themeBoost
+  if (cmp !== 0) return cmp
   cmp = rhs.metadata.totalRarityScore - lhs.metadata.totalRarityScore
   if (cmp !== 0) return cmp
   cmp = rhs.metadata.baseRarityScore - lhs.metadata.baseRarityScore
