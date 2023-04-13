@@ -200,6 +200,7 @@ export default function Swap({ onClose }: Props) {
               <ContentSmall>{tokenIn.symbol}</ContentSmall>
             </StyledTokenSymbol>
             <StyledInput
+              type="number"
               placeholder={t('placeholder')}
               value={amountIn}
               min={0}
@@ -216,7 +217,7 @@ export default function Swap({ onClose }: Props) {
               <ContentSmall>{tokenOut.symbol}</ContentSmall>
             </StyledTokenSymbol>
             <ContentSmall>
-              <StyledInput value={trim(fishAmount, 4)} disabled />
+              <StyledInput type="number" value={trim(fishAmount, 4)} disabled />
             </ContentSmall>
           </StyledTokenInputRow>
         </StyledTokenInput>
