@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic'
 import Button from 'components/Button'
 import { useClaimGiveaway } from 'contracts/functions'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components/macro'
 import { ContentLarge, Headline } from 'styles/typography'
@@ -91,6 +91,19 @@ export default function GiveawaySteps() {
   const [step, setStep] = useState(Steps.ConnectWallet)
   const { claimState, claim, resetClaim } = useClaimGiveaway()
   const stepsRef = useRef<HTMLDivElement>(null)
+  const onCompleteConnect = useCallback(() => {
+    setStep(prev => (prev === Steps.ConnectWallet ? Steps.FollowTwitter : prev))
+  }, [])
+  const onCompleteTwitter = useCallback(() => {
+    setStep(prev => (prev === Steps.FollowTwitter ? Steps.JoinDiscord : prev))
+  }, [])
+  const onCompleteDiscord = useCallback(() => {
+    setStep(prev => (prev === Steps.JoinDiscord ? Steps.InputInvitationCode : prev))
+  }, [])
+  const onCompleteInviteCode = useCallback(data => {
+    setGiveawayData(data)
+    setStep(prev => (prev === Steps.InputInvitationCode ? Steps.Completed : prev))
+  }, [])
   const onClaim = () => {
     if (giveawayData) {
       claim({ itemId: giveawayData?.item_id, ...giveawayData })
@@ -114,31 +127,19 @@ export default function GiveawaySteps() {
       <StyledBottomRightDrawing />
       <StyledHeadline>{t('headline')}</StyledHeadline>
       <StyledStepContainer>
-        <ConnectStep onComplete={() => setStep(prev => (prev === Steps.ConnectWallet ? Steps.FollowTwitter : prev))} />
+        <ConnectStep onComplete={onCompleteConnect} />
       </StyledStepContainer>
       <StyledArrowDown />
       <StyledStepContainer>
-        <TwitterStep
-          locked={step < Steps.FollowTwitter}
-          onComplete={() => setStep(prev => (prev === Steps.FollowTwitter ? Steps.JoinDiscord : prev))}
-        />
+        <TwitterStep locked={step < Steps.FollowTwitter} onComplete={onCompleteTwitter} />
       </StyledStepContainer>
       <StyledArrowDown />
       <StyledStepContainer>
-        <DiscordStep
-          locked={step < Steps.JoinDiscord}
-          onComplete={() => setStep(prev => (prev === Steps.JoinDiscord ? Steps.InputInvitationCode : prev))}
-        />
+        <DiscordStep locked={step < Steps.JoinDiscord} onComplete={onCompleteDiscord} />
       </StyledStepContainer>
       <StyledArrowDown />
       <StyledStepContainer>
-        <InvitationCodeStep
-          locked={step < Steps.InputInvitationCode}
-          onComplete={data => {
-            setGiveawayData(data)
-            setStep(prev => (prev === Steps.InputInvitationCode ? Steps.Completed : prev))
-          }}
-        />
+        <InvitationCodeStep locked={step < Steps.InputInvitationCode} onComplete={onCompleteInviteCode} />
       </StyledStepContainer>
       <StyledArrowDown />
       <StyledCompleteButton

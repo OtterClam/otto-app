@@ -74,7 +74,7 @@ export default function DiscordStep({ locked, onComplete, className }: Props) {
   const [discordUser, setDiscordUser] = useState<string | null>(null)
   const hash = useUrlHash()
   const params = useMemo(() => new URLSearchParams(hash), [hash])
-  const onVerify = useCallback(() => {
+  const doVerify = useCallback(() => {
     axios
       .get('/api/discord-verify', {
         headers: {
@@ -91,10 +91,10 @@ export default function DiscordStep({ locked, onComplete, className }: Props) {
       })
   }, [params, chainId, onComplete])
   useEffect(() => {
-    if (!locked && params.get('state') === DISCORD_OAUTH_STATE) {
-      onVerify()
+    if (!locked && state !== State.Verified && params.get('state') === DISCORD_OAUTH_STATE) {
+      doVerify()
     }
-  }, [locked, params, onVerify])
+  }, [locked, params, doVerify, state])
   return (
     <StyledStep className={className} locked={locked}>
       <StyledActionContainer>
