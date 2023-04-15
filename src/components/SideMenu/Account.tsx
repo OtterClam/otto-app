@@ -1,3 +1,5 @@
+import { Web3Provider } from '@ethersproject/providers'
+import WalletConnectProvider from '@walletconnect/ethereum-provider'
 import { useEthers } from '@usedapp/core'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components'
@@ -40,8 +42,18 @@ const StyledDisconnectButton = styled(Caption).attrs({ as: 'button' })`
 `
 
 export default function Account() {
-  const { account, deactivate } = useEthers()
+  const { account, deactivate, library } = useEthers()
   const { t } = useTranslation('', { keyPrefix: 'side_menu' })
+  const doDisconnect = () => {
+    deactivate()
+    if (library instanceof Web3Provider) {
+      if (library.provider instanceof WalletConnectProvider) {
+        library.provider.disconnect()
+      } else if (typeof (library.provider as any).close === 'function') {
+        ;(library.provider as any).close()
+      }
+    }
+  }
 
   const address = account ? `${account.slice(0, 3)}...${account.slice(account.length - 3, account.length)}` : ''
 
@@ -51,7 +63,7 @@ export default function Account() {
         <ContentExtraSmall>{address}</ContentExtraSmall>
         <ContentExtraSmall>Polygon</ContentExtraSmall>
       </StyledInfo>
-      <StyledDisconnectButton onClick={() => deactivate()}>{t('disconnect')}</StyledDisconnectButton>
+      <StyledDisconnectButton onClick={() => doDisconnect()}>{t('disconnect')}</StyledDisconnectButton>
     </StyledContainer>
   )
 }
