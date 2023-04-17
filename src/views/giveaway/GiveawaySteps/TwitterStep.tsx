@@ -70,7 +70,7 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
   const { chainId } = useEthers()
   const [state, setState] = useState(State.Follow)
   const [twitterUser, setTwitterUser] = useState<string | null>(null)
-  const verify = useCallback(async () => {
+  const doVerify = useCallback(async () => {
     axios
       .get('/api/twitter-verify', { params: { chainId } })
       .then(res => {
@@ -85,10 +85,10 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
       .catch(err => console.warn(err))
   }, [chainId, onComplete])
   useEffect(() => {
-    if (!locked) {
-      verify()
+    if (!locked && state !== State.Verified) {
+      doVerify()
     }
-  }, [locked, verify])
+  }, [locked, state, doVerify])
   return (
     <StyledStep className={className} locked={locked}>
       <StyledActionContainer>
@@ -124,7 +124,7 @@ export default function TwitterStep({ locked, onComplete, className }: Props) {
             <p>{t('verify_desc')}</p>
           </StyledVerifyMessage>
           {twitterUser ? (
-            <Button padding="0px 10px" onClick={verify} Typography={Headline}>
+            <Button padding="0px 10px" onClick={doVerify} Typography={Headline}>
               {t('verify')}
             </Button>
           ) : (
