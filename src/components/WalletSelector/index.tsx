@@ -1,5 +1,5 @@
 import { useEthers } from '@usedapp/core'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+import WalletConnectProvider from '@walletconnect/ethereum-provider'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { useTranslation } from 'next-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,11 +18,11 @@ const CoinbaseWallet = new WalletLinkConnector({
   supportedChainIds: [137],
 })
 
-export const walletConnectConnector = new WalletConnectConnector({
+const walletConnectProvider = new WalletConnectProvider({
   rpc: {
     137: 'https://polygon-rpc.com',
   },
-  qrcode: true,
+  chainId: 137,
 })
 
 const StyledContainer = styled.div`
@@ -63,6 +63,10 @@ const WalletSelector = (): JSX.Element => {
   const dispatch = useDispatch()
   const { account, activateBrowserWallet, activate } = useEthers()
   const connectingWallet = useSelector(selectConnectingWallet)
+  const activateWalletConnect = async () => {
+    await walletConnectProvider.enable()
+    activate(walletConnectProvider)
+  }
   return (
     <Popup
       show={connectingWallet && !account}
@@ -75,7 +79,7 @@ const WalletSelector = (): JSX.Element => {
           <Name>Metamask</Name>
           <Icon src={metamask.src} alt="Metamask logo" />
         </Option>
-        <Option onClick={() => activate(walletConnectConnector)}>
+        <Option onClick={activateWalletConnect}>
           <Name>WalletConnect</Name>
           <Icon src={walletConnect.src} alt="WalletConnect logo" />
         </Option>
