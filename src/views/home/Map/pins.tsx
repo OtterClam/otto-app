@@ -48,15 +48,6 @@ export const pins: PinData[] = [
     },
   },
   {
-    key: 'mine',
-    image: mineImage,
-    link: '/mine',
-    position: {
-      x: 16.3,
-      y: -7.6,
-    },
-  },
-  {
     key: 'mint',
     image: mintImage,
     link: '/mint',
