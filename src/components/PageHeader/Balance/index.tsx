@@ -102,7 +102,7 @@ export const MaticBalance = ({ onClick }: Props) => {
   const { isMobile } = useBreakpoints()
   const tokenInfo = useTokenInfo()
   const bg = isMobile ? SmallMaticBg : LargeMaticBg
-  const width = isMobile ? 103 : 155
+  const width = isMobile ? 108 : 128
   return (
     <Balance
       showBuyButton
