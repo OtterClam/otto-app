@@ -7,7 +7,7 @@ import Logo from './Logo'
 import Wallet from './Wallet'
 import Title from './Title'
 import { PageHeaderProps } from './type'
-import { ClamBalance, FishBalance } from './Balance'
+import { MaticBalance, FishBalance } from './Balance'
 import MenuButton from './MenuButton'
 import FishWalletPopup from './FishWalletPopup'
 
@@ -41,7 +41,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
     <StyledContainer>
       <StyledRow>
         <Logo />
-        <ClamBalance onClick={() => dispatch(account ? showWalletPopup() : connectWallet())} />
+        <MaticBalance onClick={() => !account && dispatch(connectWallet())} />
         <FishBalance onClick={() => dispatch(account ? showFishWalletPopup() : connectWallet())} />
         <Wallet />
       </StyledRow>
