@@ -105,7 +105,6 @@ export const MaticBalance = ({ onClick }: Props) => {
   const width = isMobile ? 108 : 128
   return (
     <Balance
-      showBuyButton
       background={bg.src}
       width={width}
       balance={trim(ethers.utils.formatEther(tokenInfo.MATIC.balance || '0'), 4)}
