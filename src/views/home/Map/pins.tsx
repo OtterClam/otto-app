@@ -3,16 +3,32 @@ import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
-import adventureImage from './adventure.png'
-import bankImage from './bank.png'
-import leaderboardImage from './leaderboard.png'
-import marketImage from './market.png'
-import mineImage from './mine.png'
-import mintImage from './mint.png'
-import palaceImage from './palace.png'
-import pondImage from './pond.png'
-import storeImage from './store.png'
-import foundryImage from './foundry.png'
+
+const pinIcons = [
+  { src: '/images/map/adventure.png' },
+  { src: '/images/map/bank.png' },
+  { src: '/images/map/leaderboard.png' },
+  { src: '/images/map/market.png' },
+  { src: '/images/map/mine.png' },
+  { src: '/images/map/mint.png' },
+  { src: '/images/map/palace.png' },
+  { src: '/images/map/pond.png' },
+  { src: '/images/map/store.png' },
+  { src: '/images/map/foundry.png' },
+].map(image => ({ ...image, width: 600, height: 220 }))
+
+const [
+  adventureImage,
+  bankImage,
+  leaderboardImage,
+  marketImage,
+  mineImage,
+  mintImage,
+  palaceImage,
+  pondImage,
+  storeImage,
+  foundryImage,
+] = pinIcons
 
 export interface PinData {
   key: string

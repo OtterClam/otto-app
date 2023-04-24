@@ -9,9 +9,10 @@ import styled from 'styled-components/macro'
 import { Caption, ContentLarge, ContentSmall, Headline, Note, RegularInput } from 'styles/typography'
 import { useWallet } from 'contexts/Wallet'
 import { Token, use1inchQuote, use1inchSwap, useTokenList } from './1inchHelper'
-import BuyCLAMIcon from './buy-clam.png'
 import SwapLoading from './SwapLoading'
-import OneInchIcon from './1inch.png'
+
+const BuyCLAMIcon = '/images/header/buy-clam.png'
+const OneInchIcon = '/images/header/1inch.png'
 
 const StyledSwap = styled.div`
   display: flex;
@@ -27,12 +28,12 @@ const StyledTitle = styled(ContentLarge).attrs({ as: 'h2' })`
   &:before {
     width: 43px;
     content: ' ';
-    background: center / 43px 38px url(${BuyCLAMIcon.src}) no-repeat;
+    background: center / 43px 38px url(${BuyCLAMIcon}) no-repeat;
   }
   &:after {
     width: 43px;
     content: ' ';
-    background: center / 43px 38px url(${BuyCLAMIcon.src}) no-repeat;
+    background: center / 43px 38px url(${BuyCLAMIcon}) no-repeat;
   }
 `
 
@@ -104,7 +105,7 @@ const StyledSelectTokenButton = styled.button<{ icon: string }>`
     content: '';
     width: 12px;
     height: 12px;
-    background: url(${ArrowDownIcon.src}) no-repeat center/12px 12px;
+    background: url(${ArrowDownIcon}) no-repeat center/12px 12px;
   }
 
   &:hover {

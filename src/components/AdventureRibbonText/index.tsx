@@ -1,7 +1,12 @@
 import { PropsWithChildren } from 'react'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
-import ribbonImage from './ribbon.png'
+
+const ribbonImage = {
+  src: '/images/adventure/ribbon.png',
+  width: 33,
+  height: 70,
+}
 
 const StyledContainer = styled(Note)`
   width: fit-content;

@@ -9,10 +9,11 @@ import { useTranslation } from 'next-i18next'
 import Image, { StaticImageData } from 'next/image'
 import styled from 'styled-components/macro'
 import { ContentSmall, Note } from 'styles/typography'
-import ApImage from 'assets/adventure/reward/ap.png'
-import ExpIcon from './EXP.png'
 import ProgressBar from './ProgressBar'
-import TcpIcon from './TCP.png'
+
+const ApImage = '/images/adventure/ap.png'
+const ExpIcon = '/images/adventure/EXP.png'
+const TcpIcon = '/images/adventure/TCP.png'
 
 const StyledTooltip = styled(AdventureTooltip)`
   margin-top: 20px;
@@ -185,7 +186,7 @@ const StyledFailedInfoContainer = styled.div`
 
 interface FailedInfoProps {
   className?: string
-  image: StaticImageData
+  image: string
   text: string
 }
 

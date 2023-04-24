@@ -6,8 +6,9 @@ import { useTranslation } from 'next-i18next'
 import { useMemo } from 'react'
 import styled from 'styled-components/macro'
 import { ContentMedium } from 'styles/typography'
-import SpeedPotion from './speed-up-potion.png'
 import SpeedUpPotion from './SpeedUpPotion'
+
+const SpeedPotion = '/images/adventure/speed-up-potion.png'
 
 const StyledSpeedUpPotions = styled.div`
   display: flex;
@@ -58,7 +59,7 @@ export default function SpeedUpPotions({ disabled, targetDate, potions, onUsedPo
           potion={AdventurePotion.OneHourSpeedy}
           targetDate={previewRemainingTime}
           onChanged={onUsedPotionsUpdate}
-          image={SpeedPotion.src}
+          image={SpeedPotion}
           amounts={amounts}
           usedAmounts={potions}
           reducedTime="1h"
@@ -68,7 +69,7 @@ export default function SpeedUpPotions({ disabled, targetDate, potions, onUsedPo
           potion={AdventurePotion.ThreeHourSpeedy}
           targetDate={previewRemainingTime}
           onChanged={onUsedPotionsUpdate}
-          image={SpeedPotion.src}
+          image={SpeedPotion}
           amounts={amounts}
           usedAmounts={potions}
           reducedTime="3h"
@@ -78,7 +79,7 @@ export default function SpeedUpPotions({ disabled, targetDate, potions, onUsedPo
           potion={AdventurePotion.SixHourSpeedy}
           targetDate={previewRemainingTime}
           onChanged={onUsedPotionsUpdate}
-          image={SpeedPotion.src}
+          image={SpeedPotion}
           amounts={amounts}
           usedAmounts={potions}
           reducedTime="6h"

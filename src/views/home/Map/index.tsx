@@ -3,14 +3,49 @@ import { Position, useMouseRelativePosition } from 'contexts/MouseRelativePositi
 import useSize from 'hooks/useSize'
 import { RefObject, useCallback, useMemo, useRef } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
-import mapImage from './city_center.jpg'
-import cloudLeftImage from './cloud_left.png'
-import cloudRightImage from './cloud_right.png'
-import mapImageDay from './city_center2_smaller.jpg'
-import cloudLeftImageDay from './cloud_left2.png'
-import cloudRightImageDay from './cloud_right2.png'
 import { pins, Pin } from './pins'
-import flagImage from './flag.png'
+
+const mapImage = {
+  src: '/images/map/city_center.jpg',
+  width: 8000,
+  height: 5040,
+}
+
+const cloudLeftImage = {
+  src: '/images/map/cloud_left.png',
+  width: 1992,
+  height: 4800,
+}
+
+const cloudRightImage = {
+  src: '/images/map/cloud_right.png',
+  width: 2502,
+  height: 4800,
+}
+
+const mapImageDay = {
+  src: '/images/map/city_center2_smaller.jpg',
+  width: 8000,
+  height: 5040,
+}
+
+const cloudLeftImageDay = {
+  src: '/images/map/cloud_left2.png',
+  width: 1992,
+  height: 4800,
+}
+
+const cloudRightImageDay = {
+  src: '/images/map/cloud_right2.png',
+  width: 2502,
+  height: 4800,
+}
+
+const flagImage = {
+  src: '/images/map/flag.png',
+  width: 624,
+  height: 268,
+}
 
 const flagAnimation = (scale: number) => keyframes`
   from {

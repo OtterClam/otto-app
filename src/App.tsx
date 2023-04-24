@@ -1,7 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import { ChainId, Config, DAppProvider, MulticallAddresses, NodeUrls } from '@usedapp/core'
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch'
-import adventureMapImage from 'components/AdventureMap/map.jpg'
 import SkeletonThemeProvider from 'components/SkeletonThemeProvider'
 import { ApiProvider } from 'contexts/Api'
 import { AssetsLoaderProvider } from 'contexts/AssetsLoader'
@@ -25,9 +24,11 @@ import styled, { ThemeProvider } from 'styled-components/macro'
 import { theme } from 'styles'
 import MyMissionsProvider from 'views/mission/MyMissionsProvider'
 
+const adventureMapImage = '/images/adventure/map.jpg'
+
 const loadingImage = '/otto-loading.jpg'
 
-const preloadImages = [loadingImage, adventureMapImage.src]
+const preloadImages = [loadingImage, adventureMapImage]
 
 const AssetsLoader = dynamic(() => import('components/AssetsLoader'), { ssr: false })
 

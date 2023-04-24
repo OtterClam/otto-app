@@ -1,6 +1,7 @@
 import styled from 'styled-components/macro'
 import { Caption } from 'styles/typography'
-import PlusBg from './plus.png'
+
+const PlusBg = '/images/header/plus.png'
 
 const StyledContainer = styled.button<{ background: string; width: number }>`
   flex: 0 ${props => props.width}px;
@@ -39,7 +40,7 @@ const StyledText = styled(Caption)`
 const StyledBuyButton = styled.a`
   width: 22px;
   height: 22px;
-  background: left / 66px 22px url(${PlusBg.src});
+  background: left / 66px 22px url(${PlusBg});
 
   &:hover {
     background-position: center;

@@ -5,8 +5,9 @@ import TreasureChestLevel from 'components/TreasureChestLevel'
 import { useAdventureLocations } from 'contexts/AdventureLocations'
 import AdventureLocation from 'components/AdventureLocation'
 import Image from 'next/image'
-import continueImage from './continue.png'
-import mapImage from './map.jpg'
+
+const continueImage = '/images/adventure/continue.png'
+const mapImage = '/images/adventure/map.jpg'
 
 const StyledContainer = styled.div`
   padding: 24px;
@@ -43,7 +44,7 @@ const StyledContinue = styled(ContentExtraSmall)`
   align-items: center;
   justify-content: center;
   flex: 0 176px;
-  background: center / cover url(${continueImage.src});
+  background: center / cover url(${continueImage});
   min-width: 176px;
   max-width: 176px;
   min-height: 52px;
