@@ -5,14 +5,15 @@ import { connectWallet } from 'store/uiSlice'
 import { Caption } from 'styles/typography'
 import { useBreakpoints } from 'contexts/Breakpoints'
 import { useTranslation } from 'next-i18next'
-import LargeEdge from './large-edge.png'
-import LargeCenter from './large-center.png'
-import SmallEdge from './small-edge.png'
-import SmallCenter from './small-center.png'
-import LargeBtnEdge from './large-btn-edge.png'
-import LargeBtnCenter from './large-btn-center.png'
-import SmallBtnEdge from './small-btn-edge.png'
-import SmallBtnCenter from './small-btn-center.png'
+
+const LargeEdge = '/images/header/large-edge.png'
+const LargeCenter = '/images/header/large-center-wallet.png'
+const SmallEdge = '/images/header/small-edge.png'
+const SmallCenter = '/images/header/small-center-wallet.png'
+const LargeBtnEdge = '/images/header/large-btn-edge.png'
+const LargeBtnCenter = '/images/header/large-btn-center.png'
+const SmallBtnEdge = '/images/header/small-btn-edge.png'
+const SmallBtnCenter = '/images/header/small-btn-center.png'
 
 const StyledContainer = styled.div<{ isButton?: boolean }>`
   flex: ${props => (props.isButton ? '0' : '1')};
@@ -32,7 +33,7 @@ const StyledContent = styled.div<{ isButton?: boolean }>`
     content: '';
     width: 8px;
     min-width: 8px;
-    background: center / 8px 40px url(${props => (props.isButton ? LargeBtnEdge.src : LargeEdge.src)});
+    background: center / 8px 40px url(${props => (props.isButton ? LargeBtnEdge : LargeEdge)});
   }
 
   &::after {
@@ -47,7 +48,7 @@ const StyledContent = styled.div<{ isButton?: boolean }>`
     &::after {
       width: 5px;
       min-width: 5px;
-      background: center / 5px 24px url(${props => (props.isButton ? SmallBtnEdge.src : SmallEdge.src)});
+      background: center / 5px 24px url(${props => (props.isButton ? SmallBtnEdge : SmallEdge)});
     }
   }
 `
@@ -57,7 +58,7 @@ const StyledText = styled(Caption)<{ isButton?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: left / 1px 40px url(${props => (props.isButton ? LargeBtnCenter.src : LargeCenter.src)});
+  background: left / 1px 40px url(${props => (props.isButton ? LargeBtnCenter : LargeCenter)});
   color: ${props => props.theme.colors.white};
   white-space: nowrap;
   padding: 0 0.5em;
@@ -65,7 +66,7 @@ const StyledText = styled(Caption)<{ isButton?: boolean }>`
   @media ${({ theme }) => theme.breakpoints.mobile} {
     padding: 0;
     justify-content: center;
-    background: left / 1px 24px url(${props => (props.isButton ? SmallBtnCenter.src : SmallCenter.src)});
+    background: left / 1px 24px url(${props => (props.isButton ? SmallBtnCenter : SmallCenter)});
   }
 `
 

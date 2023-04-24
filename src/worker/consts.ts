@@ -1,11 +1,12 @@
 // ui scripts are allowed to import this file
 
-export const CACHE_VERSION = 'v3'
+export const CACHE_VERSION = 'v4'
 
 export enum BundleName {
   Basic = 'basic',
   HomePage = 'home-page',
   FoundryPage = 'foundry-page',
+  AdventurePage = 'adventure-page',
 }
 
 export enum EventType {
@@ -18,5 +19,5 @@ export enum EventType {
   // request
   SkipWaiting = 'SKIP_WAITING',
   UpdateBundleByNames = 'update-bundle-by-name',
-  GetDowbloadProgress = 'get-download-progress',
+  GetDownloadProgress = 'get-download-progress',
 }

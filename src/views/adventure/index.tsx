@@ -1,3 +1,5 @@
+import useAssetsBundles from 'hooks/useAssetsBundles'
+import { BundleName } from 'worker/consts'
 import AdventureShareMeta from 'components/AdventureShareMeta'
 import FlatButton, { FlatButtonColor } from 'components/FlatButton'
 import TreasurySection from 'components/TreasurySection'
@@ -75,6 +77,7 @@ export default function AdventureView({ adventure }: { adventure?: ServerSideAdv
   const { isTablet } = useBreakpoints()
 
   useSharedAdventureResult()
+  useAssetsBundles([BundleName.AdventurePage])
 
   const head = (
     <AdventureShareMeta adventure={adventure}>
@@ -82,7 +85,7 @@ export default function AdventureView({ adventure }: { adventure?: ServerSideAdv
       <meta property="og:title" content={t('docTitle')} />
       <meta name="description" content={t('docDesc')} />
       <meta property="og:description" content={t('docDesc')} />
-      <meta property="og:image" content="/og.jpg" />
+      <meta property="og:image" content="/images/og/adventure-map.jpg" />
     </AdventureShareMeta>
   )
 

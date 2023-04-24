@@ -8,7 +8,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await redis.setex(oauthToken, 600, oauthSecret)
   res
     .status(302)
-    .setHeader('set-cookie', `twitter_token=${oauthToken}; Path=/; HttpOnly; Max-Age=7200;`)
+    .setHeader('set-cookie', `twitter_token=${oauthToken}; Path=/; HttpOnly; Max-Age=7200; SameSite=None; Secure`)
     .setHeader('location', '/giveaway')
     .json({})
 }

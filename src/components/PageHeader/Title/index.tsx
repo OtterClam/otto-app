@@ -2,12 +2,13 @@ import { PropsWithChildren } from 'react'
 import styled from 'styled-components/macro'
 import { ContentMedium } from 'styles/typography'
 import useGoBack from 'hooks/useGoBack'
-import LargeButtonBg from './large-button.png'
-import SmallButtonBg from './small-button.png'
-import LargeCenterBg from './large-center.png'
-import SmallCenterBg from './small-center.png'
-import LargeRightBg from './large-right.png'
-import SmallRightBg from './small-right.png'
+
+const LargeButtonBg = '/images/header/large-button.png'
+const SmallButtonBg = '/images/header/small-button.png'
+const LargeCenterBg = '/images/header/large-center.png'
+const SmallCenterBg = '/images/header/small-center.png'
+const LargeRightBg = '/images/header/large-right.png'
+const SmallRightBg = '/images/header/small-right.png'
 
 const StyledContainer = styled.div<{ showLeftBg: boolean }>`
   flex: 1;
@@ -20,7 +21,7 @@ const StyledContainer = styled.div<{ showLeftBg: boolean }>`
     flex: 0 14px;
     content: '';
     display: block;
-    background: left / 14px 48px url(${LargeRightBg.src});
+    background: left / 14px 48px url(${LargeRightBg});
   }
 
   &::before {
@@ -33,7 +34,7 @@ const StyledContainer = styled.div<{ showLeftBg: boolean }>`
 
     &::after,
     &::before {
-      background: left / 14px 40px url(${SmallRightBg.src});
+      background: left / 14px 40px url(${SmallRightBg});
     }
   }
 `
@@ -41,7 +42,7 @@ const StyledContainer = styled.div<{ showLeftBg: boolean }>`
 const StyledButton = styled.button<{ show: boolean }>`
   display: ${props => (props.show ? 'block' : 'none')};
   flex: 0 63px;
-  background: left / 189px 48px url(${LargeButtonBg.src});
+  background: left / 189px 48px url(${LargeButtonBg});
 
   &:hover {
     background-position: center;
@@ -52,7 +53,7 @@ const StyledButton = styled.button<{ show: boolean }>`
   }
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    background: left / 189px 40px url(${SmallButtonBg.src});
+    background: left / 189px 40px url(${SmallButtonBg});
   }
 `
 
@@ -61,11 +62,11 @@ const StyledText = styled(ContentMedium)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: left / 1px 48px url(${LargeCenterBg.src});
+  background: left / 1px 48px url(${LargeCenterBg});
   color: ${props => props.theme.colors.white};
 
   @media ${({ theme }) => theme.breakpoints.mobile} {
-    background: left / 1px 40px url(${SmallCenterBg.src});
+    background: left / 1px 40px url(${SmallCenterBg});
   }
 `
 

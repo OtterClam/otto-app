@@ -16,7 +16,6 @@ import PreviewOttoStep from './PreviewOttoStep'
 import ReadyToGoStep from './ReadyToGoStep'
 import RestingStep from './RestingStep'
 import ResultStep from './ResultStep'
-import arrowImage from './arrow.svg'
 
 const StyledStepContainer = styled.div`
   &.left-enter {
@@ -88,7 +87,7 @@ const StyledNextLocationButton = styled.button`
   min-width: 44px;
   max-width: 44px;
   height: 44px;
-  background: center / cover url(${arrowImage.src});
+  background: center / cover url(/images/adventure/arrow.svg);
   margin-left: -22px;
 `
 

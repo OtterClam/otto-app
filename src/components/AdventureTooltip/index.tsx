@@ -1,7 +1,8 @@
 import { ReactNode } from 'react'
 import styled from 'styled-components/macro'
 import { Note } from 'styles/typography'
-import iconImage from './icon.png'
+
+const iconImage = '/images/adventure/tooltipicon.png'
 
 const StyledContainer = styled(Note).attrs({ as: 'div' })`
   position: relative;
@@ -21,7 +22,7 @@ const StyledContainer = styled(Note).attrs({ as: 'div' })`
     min-width: 32px;
     max-width: 32px;
     height: 32px;
-    background: center / cover url(${iconImage.src});
+    background: center / cover url(${iconImage});
   }
 
   &::after {

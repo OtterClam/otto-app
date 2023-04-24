@@ -28,7 +28,12 @@ import styled from 'styled-components/macro'
 import { Headline } from 'styles/typography'
 import JournalSection from './JournalSection'
 import RewardSection from './RewardSection'
-import ShareImage from './share.png'
+
+const ShareImage = {
+  src: '/images/adventure/share.png',
+  width: 40,
+  height: 40,
+}
 
 const StyledResultStep = styled.div<{ bg: string }>`
   background: center / cover url(${({ bg }) => bg});

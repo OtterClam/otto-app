@@ -58,7 +58,7 @@ export default function FoundryView() {
         <meta property="og:title" content={t('docTitle')} />
         <meta name="description" content={t('docDesc')} />
         <meta property="og:description" content={t('docDesc')} />
-        <meta property="og:image" content="/og.jpg" />
+        <meta property="og:image" content="/images/og/foundry-smith.jpg" />
       </Head>
       <FoundryHero />
       <ForgeList formulas={forgeFormulas} itemAmounts={amounts} refetchMyItems={fetchAccountItems} />
