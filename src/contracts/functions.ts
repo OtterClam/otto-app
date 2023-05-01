@@ -636,19 +636,22 @@ export const useAdventureExplore = () => {
   const [passIdUpdated, setPassIdUpdated] = useState(false)
 
   const updateExploreState = useCallback(() => {
-    if (state.status === 'Success' && state.receipt && !passIdUpdated) {
-      const passId = state.receipt.logs
-        .map(log => {
-          try {
-            return parseLog(log)
-          } catch (err) {
-            // skip
-          }
-          return null
-        })
-        .filter(e => e?.name === 'Departure')[0]?.args[0]
-      setPassId(passId)
-      setPassIdUpdated(true)
+    if (state.status === 'Success') {
+      if (state.receipt && !passIdUpdated) {
+        const passId = state.receipt.logs
+          .map(log => {
+            try {
+              return parseLog(log)
+            } catch (err) {
+              // skip
+            }
+            return null
+          })
+          .filter(e => e?.name === 'Departure')[0]?.args[0]
+        setPassId(passId)
+        setPassIdUpdated(true)
+      }
+      // Otherwise, do not set explore state until processing logs
     } else {
       const newState = txState(state.status)
       if (newState !== 'None' && exploreState.state !== newState) {
