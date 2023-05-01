@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import { trim } from 'helpers/trim'
 import useBrowserLayoutEffect from 'hooks/useBrowserLayoutEffect'
 import useContractAddresses from 'hooks/useContractAddresses'
+import { useTokenInfo } from 'hooks/token-info'
 import useTokenBalance from 'hooks/useTokenBalance'
 import localforage from 'localforage'
 import dynamic from 'next/dynamic'
@@ -15,6 +16,8 @@ import Balance from './balance'
 
 const LargeClamBg = '/images/header/header_clam_xl.png'
 const SmallClamBg = '/images/header/header_clam_xs.png'
+const LargeMaticBg = '/images/header/header_matic_xl.png'
+const SmallMaticBg = '/images/header/header_matic_xs.png'
 const LargeFishBg = '/images/header/large-fish.png'
 const SmallFishBg = '/images/header/small-fish.png'
 
@@ -93,6 +96,21 @@ export const ClamBalance = ({ onClick }: Props) => {
         </StyledToolTip>
       )}
     </div>
+  )
+}
+
+export const MaticBalance = ({ onClick }: Props) => {
+  const { isMobile } = useBreakpoints()
+  const tokenInfo = useTokenInfo()
+  const bg = isMobile ? SmallMaticBg : LargeMaticBg
+  const width = isMobile ? 108 : 128
+  return (
+    <Balance
+      background={bg}
+      width={width}
+      balance={trim(ethers.utils.formatEther(tokenInfo.MATIC.balance || '0'), 4)}
+      onClick={onClick}
+    />
   )
 }
 

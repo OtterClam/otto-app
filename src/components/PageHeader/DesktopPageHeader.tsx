@@ -8,7 +8,7 @@ import Logo from './Logo'
 import Wallet from './Wallet'
 import Title from './Title'
 import { PageHeaderProps } from './type'
-import { ClamBalance, FishBalance } from './Balance'
+import { MaticBalance, FishBalance } from './Balance'
 import MenuButton from './MenuButton'
 
 const WalletPopup = dynamic(() => import('./WalletPopup'), { ssr: false })
@@ -47,7 +47,7 @@ export default function PageHeader({ title }: PageHeaderProps) {
         <Logo />
         <Title>{title}</Title>
         <div ref={clamRef}>
-          <ClamBalance onClick={() => dispatch(account ? showWalletPopup() : connectWallet())} />
+          <MaticBalance onClick={() => !account && dispatch(connectWallet())} />
         </div>
         <div ref={fishRef}>
           <FishBalance onClick={() => dispatch(account ? showFishWalletPopup() : connectWallet())} />
