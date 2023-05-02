@@ -12,7 +12,6 @@ import Draw from './draw.png'
 import BottomLeftDraw from './draw-bottom-left.jpg'
 import BottomRightDraw from './draw-bottom-right.jpg'
 import InvitationCodeStep, { SuccessResponse } from './InvitationCodeStep'
-import TwitterStep from './TwitterStep'
 
 const GiveawayPopup = dynamic(() => import('../GiveawayPopup'), { ssr: false })
 
@@ -92,10 +91,7 @@ export default function GiveawaySteps() {
   const { claimState, claim, resetClaim } = useClaimGiveaway()
   const stepsRef = useRef<HTMLDivElement>(null)
   const onCompleteConnect = useCallback(() => {
-    setStep(prev => (prev === Steps.ConnectWallet ? Steps.FollowTwitter : prev))
-  }, [])
-  const onCompleteTwitter = useCallback(() => {
-    setStep(prev => (prev === Steps.FollowTwitter ? Steps.JoinDiscord : prev))
+    setStep(prev => (prev === Steps.ConnectWallet ? Steps.JoinDiscord : prev))
   }, [])
   const onCompleteDiscord = useCallback(() => {
     setStep(prev => (prev === Steps.JoinDiscord ? Steps.InputInvitationCode : prev))
@@ -128,10 +124,6 @@ export default function GiveawaySteps() {
       <StyledHeadline>{t('headline')}</StyledHeadline>
       <StyledStepContainer>
         <ConnectStep onComplete={onCompleteConnect} />
-      </StyledStepContainer>
-      <StyledArrowDown />
-      <StyledStepContainer>
-        <TwitterStep locked={step < Steps.FollowTwitter} onComplete={onCompleteTwitter} />
       </StyledStepContainer>
       <StyledArrowDown />
       <StyledStepContainer>

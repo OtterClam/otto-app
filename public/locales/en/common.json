@@ -103,7 +103,7 @@
     },
     "steps": {
       "claim": "Claim Free Silver Chest!",
-      "complete": "Complete ({{count}}/4)",
+      "complete": "Complete ({{count}}/3)",
       "discord": {
         "desc": "Join Our Discord Community",
         "join": "Join",
@@ -111,7 +111,7 @@
         "verify_desc": "Verify yourself On Discord",
         "welcome": "Welcome, "
       },
-      "headline": "Complete the following 4 steps to get reward:",
+      "headline": "Complete the following 3 steps to get reward:",
       "invitation": {
         "apply": "Apply",
         "desc": "Enter the Invitation Code",
@@ -131,7 +131,7 @@
         "desc_completed": "Your Wallet: "
       }
     },
-    "subtitle": "Follow the 4 easy steps to complete the mission, and you will get a Silver Shell Chest FOR FREE!",
+    "subtitle": "Follow the 3 easy steps to complete the mission, and you will get a Silver Shell Chest FOR FREE!",
     "title": "Giveaway"
   },
   "header": {

@@ -6,14 +6,6 @@ import redis from 'pages/api/_libs/redis'
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { code, wallet, chainId } = req.body
   const discordToken = req.headers.authorization?.split(' ')[1] || ''
-  const part = req.headers.cookie?.split('twitter_token=') || []
-  if (part.length < 2) {
-    res.status(401).send('Missing twitter token')
-    return
-  }
-
-  const access_token_key = part[1].split(';')[0]
-  const access_token_secret = (await redis.get(access_token_key)) || ''
   try {
     const axios = getApi(chainId)
     const apiRes = await axios.post(
@@ -25,8 +17,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       {
         headers: {
           'X-DISCORD-ACCESS-TOKEN': discordToken,
-          'X-TWITTER-ACCESS-TOKEN-KEY': access_token_key,
-          'X-TWITTER-ACCESS-TOKEN-SECRET': access_token_secret,
         },
       }
     )

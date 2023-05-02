@@ -95,7 +95,7 @@
     },
     "steps": {
       "claim": "獲取免費的白銀貝殼寶箱",
-      "complete": "已完成 ({{count}}/4)",
+      "complete": "已完成 ({{count}}/3)",
       "discord": {
         "desc": "加入我們的 Dicord 社群",
         "join": "加入",
@@ -103,7 +103,7 @@
         "verify_desc": "驗證你在 Discord 的身份",
         "welcome": "歡迎, "
       },
-      "headline": "完成 4 個步驟來領取寶箱:",
+      "headline": "完成 3 個步驟來領取寶箱:",
       "invitation": {
         "apply": "套用",
         "desc": "輸入邀請碼",
@@ -123,7 +123,7 @@
         "desc_completed": "你的錢包: "
       }
     },
-    "subtitle": "只需要完成 4 步驟，就可以免費領取白銀貝殼寶箱！",
+    "subtitle": "只需要完成 3 步驟，就可以免費領取白銀貝殼寶箱！",
     "title": "邀請碼好禮"
   },
   "header": {
