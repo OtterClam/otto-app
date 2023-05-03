@@ -95,7 +95,7 @@
     },
     "steps": {
       "claim": "获取免费的白银贝壳宝箱",
-      "complete": "已完成 ({{count}}/4)",
+      "complete": "已完成 ({{count}}/3)",
       "discord": {
         "desc": "加入我们的 Dicord 社群",
         "join": "加入",
@@ -103,7 +103,7 @@
         "verify_desc": "验证你在 Discord 的身份",
         "welcome": "欢迎, "
       },
-      "headline": "完成 4 个步骤来领取宝箱:",
+      "headline": "完成 3 个步骤来领取宝箱:",
       "invitation": {
         "apply": "套用",
         "desc": "输入邀请码",
@@ -123,7 +123,7 @@
         "desc_completed": "你的钱包: "
       }
     },
-    "subtitle": "只需要完成 4 步骤，就可以免费领取白银贝壳宝箱！",
+    "subtitle": "只需要完成 3 步骤，就可以免费领取白银贝壳宝箱！",
     "title": "邀请码好礼"
   },
   "header": {
