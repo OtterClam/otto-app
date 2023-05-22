@@ -402,12 +402,29 @@ export class Api {
   }
 
   public async confirm({ missionId, tx }: { missionId: number; tx: string }): Promise<any> {
-    return this.otterclamClient
-      .put(`/missions/${missionId}/confirm`, {
-        mission_id: missionId,
-        tx_hash: tx,
+    return new Promise((resolve, reject) => {
+      const operation = retry.operation({
+        retries: 5,
+        factor: 3,
+        minTimeout: 1 * 1000,
+        maxTimeout: 60 * 1000,
+        randomize: true,
       })
-      .then(res => res.data)
+      operation.attempt(async () => {
+        try {
+          const response = await this.otterclamClient.put(`/missions/${missionId}/confirm`, {
+            mission_id: missionId,
+            tx_hash: tx,
+          })
+          resolve(response.data)
+        } catch (e) {
+          if (operation.retry(e as Error)) {
+            return
+          }
+          reject(e)
+        }
+      })
+    })
   }
 
   public async getAdventureBoost() {
