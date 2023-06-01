@@ -123,7 +123,7 @@ const rarityClassMap: { [key: string]: number } = {
   C3: 80,
 }
 
-function raritySort(lhs: Item, rhs: Item) {
+export function raritySort(lhs: Item, rhs: Item) {
   let cmp = typeClassMap[rhs.metadata.type] - typeClassMap[lhs.metadata.type]
   if (cmp !== 0) return cmp
   if (lhs.metadata.type === 'Mission Item' || lhs.metadata.type === 'Collectible') {
