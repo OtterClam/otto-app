@@ -57,7 +57,7 @@ const StyledRow = styled.div<{ isMyOttoRow?: boolean; adventure: boolean }>`
       `
       &:nth-child(4) {
         // ap
-        width: 64px;
+        width: 70px;
         text-align: center;
       }
       &:nth-child(5) {
