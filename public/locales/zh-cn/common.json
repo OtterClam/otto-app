@@ -1044,6 +1044,7 @@
   "ottoPopup": {
     "title": "更换阿獭装备",
     "unequipAllButton": "一键全脱",
+    "ottomize": "Ottomize!",
     "submitButton": "储存配置",
     "submitButtonHelp": "你将会执行一笔交易以更新这只阿獭的装备配置",
     "placeholder": "点击左边装备缩图<br />来更换装备 "

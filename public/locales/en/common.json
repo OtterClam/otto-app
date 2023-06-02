@@ -1070,6 +1070,7 @@
   "ottoPopup": {
     "title": "Change Otto’s Equipment",
     "unequipAllButton": "Unequip All",
+    "ottomize": "Ottomize!",
     "submitButton": "Save this Setup",
     "submitButtonHelp": "You will be required to perform a transaction to update the new setup of the equipment on this Otto.",
     "placeholder": "Click the left equipment thumbnail<br />to change the equipment "

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useRepositories } from 'contexts/Repositories'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { ContentMedium, ContentSmall, Headline, Note } from 'styles/typography'
 import { useTranslation } from 'next-i18next'
 import Button from 'components/Button'
@@ -9,6 +9,8 @@ import useResizeObserver from '@react-hook/resize-observer'
 import OttoAdventureLevel from 'components/OttoAdventureLevel'
 import OttoAttrs from 'components/OttoAttrs'
 import OttoStats from 'components/OttoStats'
+import { raritySort } from 'contexts/ItemFilters'
+import { useMyItems } from 'contexts/MyItems'
 import { useOtto } from 'contexts/Otto'
 import Otto from 'models/Otto'
 import { AdventureOttoProvider } from 'contexts/AdventureOtto'
@@ -17,11 +19,13 @@ import { useMyOttos } from 'MyOttosProvider'
 import UseItemCompleteView from 'views/my-items/use-item/UseItemCompleteView'
 import { useDispatch } from 'react-redux'
 import { hideOttoPopup } from 'store/uiSlice'
+import { Item } from 'models/Item'
 
 const StyledContainer = styled.div`
   display: grid;
   grid-template:
     'title title' 36px
+    'buttons buttons'
     'info placeholder' auto / 1fr 1fr;
   gap: 20px;
   margin: 12px 24px 24px 24px;
@@ -62,16 +66,12 @@ const StyledPlaceholder = styled.div`
   }
 `
 
-const StyledUnequipAllButton = styled(Button).attrs({ padding: '0 12px', primaryColor: 'white' })`
-  position: absolute;
-  left: -20px;
-  top: -8px;
-
-  @media ${({ theme }) => theme.breakpoints.mobile} {
-    position: static;
-    margin-left: -48px;
-  }
+const StyledEquipButtons = styled.div`
+  display: flex;
+  grid-area: buttons;
 `
+
+const StyledEquipButton = styled(Button).attrs({ padding: '0 12px', primaryColor: 'white' })``
 
 const StyledSubmitButton = styled(Button)``
 
@@ -79,6 +79,8 @@ const StyledSubmitButtonHelp = styled(Note)`
   color: ${({ theme }) => theme.colors.white};
   text-align: center;
 `
+
+const wearableTraitTypes = ['Holding', 'Headwear', 'Facial Accessories', 'Clothes', 'Background']
 
 export default function OttoPopupBody() {
   const dispatch = useDispatch()
@@ -88,7 +90,7 @@ export default function OttoPopupBody() {
   const { updateOtto } = useMyOttos()
   const [saved, setSaved] = useState(false)
   const [oldOtto, setOldOtto] = useState<Otto | undefined>()
-  const { otto, itemActions, unequipAllItems, setOtto } = useOtto()
+  const { otto, itemActions, unequipAllItems, equipItem, removeItem, setOtto } = useOtto()
   const { ottos: ottosRepo } = useRepositories()
   const [loadingPreviewData, setLoadingPreviewData] = useState(false)
   const { doItemBatchActions, doItemBatchActionsState, resetDoItemBatchActions } = useDoItemBatchActions()
@@ -100,6 +102,7 @@ export default function OttoPopupBody() {
     itemPopupWidth: 375,
     itemPopupOffset: 0,
   })
+  const { items } = useMyItems()
   const loading = loadingPreviewData || !otto
   const txPending = doItemBatchActionsState.state === 'Processing'
 
@@ -146,6 +149,27 @@ export default function OttoPopupBody() {
     }
   }, [otto, ottosRepo, otto?.id, itemActions])
 
+  const ottomize = useCallback(() => {
+    wearableTraitTypes.forEach(traitType => {
+      let filteredItems = items.filter(item => !item.equippedBy && item.metadata.type === traitType)
+      filteredItems = filteredItems.sort(raritySort)
+      const bestItem = filteredItems.at(0)
+      if (bestItem) {
+        const nativeItem = otto?.ottoNativeTraits.find(nativeTrait => nativeTrait.type === traitType)
+        if (
+          nativeItem &&
+          (nativeItem.theme_boost > bestItem.metadata.themeBoost ||
+            (nativeItem.theme_boost === bestItem.metadata.themeBoost &&
+              nativeItem.total_rarity_score > bestItem.metadata.totalRarityScore))
+        ) {
+          removeItem(traitType)
+        } else {
+          equipItem(traitType, bestItem.metadata.tokenId)
+        }
+      }
+    })
+  }, [otto, items, equipItem, removeItem])
+
   if (saved && oldOtto) {
     return (
       <UseItemCompleteView
@@ -161,11 +185,16 @@ export default function OttoPopupBody() {
     <AdventureOttoProvider otto={otto} draftOtto={preview?.otto} actions={itemActions}>
       <StyledContainer ref={container}>
         <StyledTitle>
-          <StyledUnequipAllButton Typography={ContentMedium} onClick={unequipAllItems}>
-            {t('unequipAllButton')}
-          </StyledUnequipAllButton>
           <Headline>{t('title')}</Headline>
         </StyledTitle>
+        <StyledEquipButtons>
+          <StyledEquipButton Typography={ContentMedium} onClick={unequipAllItems}>
+            {t('unequipAllButton')}
+          </StyledEquipButton>
+          <StyledEquipButton Typography={ContentMedium} onClick={ottomize}>
+            {t('ottomize')}
+          </StyledEquipButton>
+        </StyledEquipButtons>
 
         <StyledOttoInfo>
           <OttoPreviewer

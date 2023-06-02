@@ -1044,6 +1044,7 @@
   "ottoPopup": {
     "title": "更換阿獺裝備",
     "unequipAllButton": "一鍵全脫",
+    "ottomize": "Ottomize!",
     "submitButton": "儲存配置",
     "submitButtonHelp": "你將會執行一筆交易以更新這隻阿獺的裝備配置",
     "placeholder": "點擊左邊裝備縮圖<br />來更換裝備 "
