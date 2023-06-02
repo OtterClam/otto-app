@@ -151,7 +151,10 @@ export default function OttoPopupBody() {
 
   const ottomize = useCallback(() => {
     wearableTraitTypes.forEach(traitType => {
-      let filteredItems = items.filter(item => !item.equippedBy && item.metadata.type === traitType)
+      let filteredItems = items.filter(
+        item =>
+          (!item.equippedBy || item.equippedBy === otto?.id) && item.metadata.type === traitType && otto?.canWear(item)
+      )
       filteredItems = filteredItems.sort(raritySort)
       const bestItem = filteredItems.at(0)
       if (bestItem) {
