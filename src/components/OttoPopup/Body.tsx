@@ -165,7 +165,10 @@ export default function OttoPopupBody() {
             (nativeItem.theme_boost === bestItem.metadata.themeBoost &&
               nativeItem.total_rarity_score > bestItem.metadata.totalRarityScore))
         ) {
-          removeItem(traitType)
+          // check if otto is already wearing
+          if ((otto?.wearableTraits ?? []).find(trait => trait.id === nativeItem.id) === undefined) {
+            removeItem(traitType)
+          }
         } else {
           equipItem(traitType, bestItem.metadata.tokenId)
         }
