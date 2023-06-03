@@ -12,7 +12,7 @@ const OttoContext = createContext<{
   resetEquippedItems: () => void
   unequipAllItems: () => void
   equipItem: (traitType: string, traitId: string) => void
-  removeItem: (traitType: string) => void
+  removeItem: (traitType: string, toNative?: boolean) => void
   itemActions: ItemAction[]
   locked: boolean
 }>({
@@ -136,10 +136,10 @@ export function OttoProvider({ children }: PropsWithChildren<object>) {
     [otto]
   )
 
-  const removeItem = useCallback((traitType: string) => {
+  const removeItem = useCallback((traitType: string, toNative = false) => {
     setDraftItems(map => {
       const newMap = { ...map }
-      if (newMap[traitType]) {
+      if (!toNative && newMap[traitType]) {
         delete newMap[traitType]
       } else {
         newMap[traitType] = null
