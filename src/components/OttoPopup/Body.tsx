@@ -151,7 +151,10 @@ export default function OttoPopupBody() {
 
   const ottomize = useCallback(() => {
     wearableTraitTypes.forEach(traitType => {
-      let filteredItems = items.filter(item => !item.equippedBy && item.metadata.type === traitType)
+      let filteredItems = items.filter(
+        item =>
+          (!item.equippedBy || item.equippedBy === otto?.id) && item.metadata.type === traitType && otto?.canWear(item)
+      )
       filteredItems = filteredItems.sort(raritySort)
       const bestItem = filteredItems.at(0)
       if (bestItem) {
@@ -162,7 +165,10 @@ export default function OttoPopupBody() {
             (nativeItem.theme_boost === bestItem.metadata.themeBoost &&
               nativeItem.total_rarity_score > bestItem.metadata.totalRarityScore))
         ) {
-          removeItem(traitType)
+          // check if otto is already wearing
+          if ((otto?.wearableTraits ?? []).find(trait => trait.id === nativeItem.id) === undefined) {
+            removeItem(traitType)
+          }
         } else {
           equipItem(traitType, bestItem.metadata.tokenId)
         }

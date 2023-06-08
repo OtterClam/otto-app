@@ -129,14 +129,16 @@ export default memo(function ItemPreview({
   onItemUpdated,
 }: ItemPreviewProps) {
   const { traitType } = useTrait()
-  const { equipItem, removeItem } = useOtto()
-  const { draftOtto: otto } = useAdventureOtto()
+  const { otto, equipItem, removeItem } = useOtto()
+  const { draftOtto } = useAdventureOtto()
   const { t } = useTranslation('', { keyPrefix: 'ottoItemsPopup' })
   const { t: tMyItems } = useTranslation('', { keyPrefix: 'my_items' })
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const equippedItem = otto?.equippedItems.find(item => item.metadata.type === traitType)
+  const equippedItem = draftOtto?.equippedItems.find(item => item.metadata.type === traitType)
   const equippedOtto = useMyOtto(selectedItem?.equippedBy)
-  const equippedByCurrentOtto = equippedOtto?.id === otto?.id || selectedItemId?.startsWith('draft_')
+  const equippedByCurrentOtto = equippedOtto?.id === draftOtto?.id || selectedItemId?.startsWith('draft_')
+  const nativeItem = otto?.ottoNativeTraits.find(nativeTrait => nativeTrait.type === traitType)
+  const nativelyWornByCurrentOtto = otto?.wearableTraits.findIndex(trait => trait.id === nativeItem?.id) !== -1
   const equippedSameToken =
     equippedItem && selectedItem && equippedItem.metadata.tokenId === selectedItem.metadata.tokenId
   const unavailable =
@@ -149,8 +151,8 @@ export default memo(function ItemPreview({
     equipItem(type, itemId)
     onItemUpdated?.()
   }
-  const onRemove = (type: string) => {
-    removeItem(type)
+  const onRemove = (type: string, toNative = false) => {
+    removeItem(type, toNative)
     onItemUpdated?.()
   }
 
@@ -207,7 +209,7 @@ export default memo(function ItemPreview({
             disabled={!equippedItem}
             primaryColor="white"
             Typography={Headline}
-            onClick={() => onRemove(traitType)}
+            onClick={() => onRemove(traitType, !nativelyWornByCurrentOtto)}
           >
             {t('takeOff')}
           </StyledButton>
