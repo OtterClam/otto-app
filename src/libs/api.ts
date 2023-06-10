@@ -225,8 +225,18 @@ export class Api {
     })
   }
 
-  public async signFishStoreProduct({ from, to, productId }: { from: string; to: string; productId: number }) {
-    return this.otterclamClient.post('/store/buy', { from, to, product_id: productId }).then(res => res.data)
+  public async signFishStoreProduct({
+    from,
+    to,
+    productId,
+    amount,
+  }: {
+    from: string
+    to: string
+    productId: number
+    amount: number
+  }) {
+    return this.otterclamClient.post('/store/buy', { from, to, product_id: productId, amount }).then(res => res.data)
   }
 
   public async signBuyProduct({ from, to, id, amount }: { from: string; to: string; id: number; amount: number }) {
@@ -326,10 +336,11 @@ export class Api {
     return result.data
   }
 
-  public async getForgeCalldata(formulaId: number, account: string) {
+  public async getForgeCalldata(formulaId: number, account: string, numFusion: number) {
     const result = await this.otterclamClient.post('/foundry/fuse', {
       id: formulaId,
       wallet: account,
+      num_fusion: numFusion,
     })
     return result.data
   }

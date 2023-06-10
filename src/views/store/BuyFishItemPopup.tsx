@@ -38,15 +38,16 @@ function Forging() {
 interface Props {
   state: OttoTransactionWriteState
   item: Item
+  amount: number
   onClose: () => void
 }
 
-export default function BuyFishItemPopup({ state, item, onClose }: Props) {
+export default function BuyFishItemPopup({ state, item, amount, onClose }: Props) {
   if (state.state === 'None') {
     return null
   }
   if (state.state === 'Success') {
-    return <OpenItemView items={[item.metadata]} onClose={onClose} />
+    return <OpenItemView items={new Array(amount).fill(item.metadata)} onClose={onClose} />
   }
   return <Forging />
 }

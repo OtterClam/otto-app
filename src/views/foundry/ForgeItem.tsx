@@ -15,10 +15,18 @@ import { useTokenInfo } from 'hooks/token-info'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { ForgeFormula } from 'models/Forge'
 import { useTranslation } from 'next-i18next'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components/macro'
-import { ContentExtraSmall, ContentMedium, Display3, Headline, Note } from 'styles/typography'
+import {
+  ContentExtraSmall,
+  ContentSmall,
+  ContentMedium,
+  Display3,
+  Headline,
+  Note,
+  RegularInput,
+} from 'styles/typography'
 import ForgePopup from './ForgePopup'
 import { MyItemAmounts } from './type'
 
@@ -158,6 +166,36 @@ const StyledMaterialSectionTitle = styled(Headline)`
   }
 `
 
+const StyledForgeAmountTitle = styled(ContentSmall)`
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    text-align: center;
+  }
+`
+
+const StyledInputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+`
+
+const StyledInput = styled(RegularInput)`
+  width: 100px;
+  border: 2px solid ${({ theme }) => theme.colors.otterBlack};
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+
+  ::placeholder {
+    color: ${({ theme }) => theme.colors.lightGray400};
+    opacity: 1;
+  }
+`
+
 const StyledCount = styled(Note)`
   background: ${({ theme }) => theme.colors.otterBlack};
   border-radius: 14px;
@@ -205,9 +243,11 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
   const timeZone = formatDate(new Date(), 'z')
   const { isTablet } = useBreakpoints()
   const { forgeState, forge, resetForge } = useForge()
+  const [numFusion, setNumFusion] = useState(1)
   const availableCount = useAvailableCount(formula, itemCounts)
   const now = new Date()
-  const disabled = availableCount === 0 || isBefore(now, formula.startTime) || isAfter(now, formula.endTime)
+  const disabled =
+    availableCount < numFusion || isBefore(now, formula.startTime) || isAfter(now, formula.endTime) || numFusion <= 0
   const { isApprovedForAll, updateApprovalStatus, erc1155, operator: forgeContractAddress } = useERC1155Approval() || {}
   const { state: setApprovalState, send: sendSetApprovalCall } = useSetApprovalForAll(erc1155?.address || '')
   const approving = isProcessing(setApprovalState)
@@ -219,8 +259,8 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
       sendSetApprovalCall(forgeContractAddress, true, {})
       return
     }
-    forge(formula.id)
-  }, [isApprovedForAll, forgeContractAddress, forge, formula.id, sendSetApprovalCall])
+    forge(formula.id, numFusion)
+  }, [isApprovedForAll, forgeContractAddress, forge, formula.id, sendSetApprovalCall, numFusion])
 
   useEffect(() => {
     if (setApprovalState.status === 'Success') {
@@ -275,10 +315,20 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
               </StyledMaterialListItem>
             ))}
           </StyledMaterialList>
+          <StyledInputContainer>
+            <StyledForgeAmountTitle>Amount:</StyledForgeAmountTitle>
+            <StyledInput
+              disabled={processing}
+              type="number"
+              min={1}
+              value={numFusion}
+              onChange={e => setNumFusion(Number(e.target.value))}
+            />
+          </StyledInputContainer>
           <PaymentButton
             spenderAddress={FOUNDRY}
             token={FISH}
-            amount={formula.fish}
+            amount={formula.fish.mul(numFusion)}
             loading={processing}
             disabled={disabled}
             padding="5px 0"
@@ -290,7 +340,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
             {t(
               isBefore(now, formula.startTime)
                 ? 'comingSoon'
-                : availableCount === 0
+                : availableCount < numFusion
                 ? 'forgeButton_insufficient'
                 : isApprovedForAll
                 ? 'forgeButton'
