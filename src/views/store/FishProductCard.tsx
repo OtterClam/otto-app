@@ -161,7 +161,7 @@ export default function FishProductCard({
           </StyledPrice>
           {hasDiscount && <StyledDiscount>{t('store.popup.discount', { discount })}</StyledDiscount>}
           <StyledInputContainer>
-            <StyledAmountTitle>Amount:</StyledAmountTitle>
+            <StyledAmountTitle>{t('my_items.transfer.amount')}:</StyledAmountTitle>
             <StyledInput
               disabled={buyState.state === 'Processing'}
               type="number"

@@ -237,7 +237,7 @@ const isProcessing = (state: TransactionStatus) => state.status === 'PendingSign
 export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyItems }: ForgeItemProps) {
   const { FISH } = useTokenInfo()
   const { FOUNDRY } = useContractAddresses()
-  const { t } = useTranslation('', { keyPrefix: 'foundry' })
+  const { t } = useTranslation('')
   const startTime = formatDate(formula.startTime, TIME_FORMAT)
   const endTime = formatDate(formula.endTime, TIME_FORMAT)
   const timeZone = formatDate(new Date(), 'z')
@@ -284,7 +284,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
       </StyledDesc>
       <StyledDetails>
         <StyledResult bgImage={formula.bgImage}>
-          <Headline>{t('result.title')}</Headline>
+          <Headline>{t('foundry.result.title')}</Headline>
           {formula.result && (
             <>
               <StyledResultItemPreview metadata={formula.result} showDetailsPopup />
@@ -301,7 +301,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
         </StyledResult>
         <StyledSectionRope vertical={!isTablet} />
         <StyledMaterials showRope={false}>
-          <StyledMaterialSectionTitle>{t('materials.title')}</StyledMaterialSectionTitle>
+          <StyledMaterialSectionTitle>{t('foundry.materials.title')}</StyledMaterialSectionTitle>
           <StyledMaterialList>
             {formula.materials.map((material, index) => (
               <StyledMaterialListItem key={index}>
@@ -316,7 +316,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
             ))}
           </StyledMaterialList>
           <StyledInputContainer>
-            <StyledForgeAmountTitle>Amount:</StyledForgeAmountTitle>
+            <StyledForgeAmountTitle>{t('my_items.transfer.amount')}:</StyledForgeAmountTitle>
             <StyledInput
               disabled={processing}
               type="number"
@@ -339,15 +339,15 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
           >
             {t(
               isBefore(now, formula.startTime)
-                ? 'comingSoon'
+                ? 'foundry.comingSoon'
                 : availableCount < numFusion
-                ? 'forgeButton_insufficient'
+                ? 'foundry.forgeButton_insufficient'
                 : isApprovedForAll
-                ? 'forgeButton'
-                : 'approve'
+                ? 'foundry.forgeButton'
+                : 'foundry.approve'
             )}
           </PaymentButton>
-          <StyledAvailableTime>{t('forgeAvailableTime', { startTime, endTime, timeZone })}</StyledAvailableTime>
+          <StyledAvailableTime>{t('foundry.forgeAvailableTime', { startTime, endTime, timeZone })}</StyledAvailableTime>
         </StyledMaterials>
       </StyledDetails>
       <ForgePopup state={forgeState} onClose={() => resetForge()} />
