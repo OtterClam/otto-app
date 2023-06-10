@@ -1,12 +1,9 @@
-import { BigNumber } from '@ethersproject/bignumber'
 import FISH from 'assets/fish.png'
 import Star from 'assets/ui/star.svg'
 import BorderContainer from 'components/BorderContainer'
 import Button from 'components/Button'
 import ItemCell from 'components/ItemCell'
-import Price from 'components/Price'
 import { useBuyFishItem } from 'contracts/functions'
-import { useTokenInfo } from 'hooks/token-info'
 import { FishStoreProduct } from 'libs/api'
 import { useTranslation } from 'next-i18next'
 import { useEffect, useState } from 'react'
@@ -134,7 +131,6 @@ export default function FishProductCard({
   product: { id, item, price, displayPrice, discountPrice, displayDiscountPrice, end_time },
   button,
 }: Props) {
-  const { FISH } = useTokenInfo()
   const { t } = useTranslation()
   const { buy, buyState, resetBuy } = useBuyFishItem()
   const [amount, setAmount] = useState(1)
