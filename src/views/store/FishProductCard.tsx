@@ -4,12 +4,11 @@ import BorderContainer from 'components/BorderContainer'
 import Button from 'components/Button'
 import ItemCell from 'components/ItemCell'
 import { useBuyFishItem } from 'contracts/functions'
-import { trim } from 'helpers/trim'
 import { FishStoreProduct } from 'libs/api'
 import { useTranslation } from 'next-i18next'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
-import { ContentLarge, Headline, Caption } from 'styles/typography'
+import { ContentSmall, ContentLarge, Headline, Caption, RegularInput } from 'styles/typography'
 import BuyFishItemPopup from './BuyFishItemPopup'
 import FishProductCountdown from './FishProductCountdown'
 
@@ -93,6 +92,36 @@ const StyledDiscount = styled(Caption)`
   color: ${({ theme }) => theme.colors.clamPink};
 `
 
+const StyledAmountTitle = styled(ContentSmall)`
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    text-align: center;
+  }
+`
+
+const StyledInputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+`
+
+const StyledInput = styled(RegularInput)`
+  width: 100px;
+  border: 2px solid ${({ theme }) => theme.colors.otterBlack};
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+
+  ::placeholder {
+    color: ${({ theme }) => theme.colors.lightGray400};
+    opacity: 1;
+  }
+`
+
 interface Props {
   product: FishStoreProduct
   button?: string
@@ -104,6 +133,7 @@ export default function FishProductCard({
 }: Props) {
   const { t } = useTranslation()
   const { buy, buyState, resetBuy } = useBuyFishItem()
+  const [amount, setAmount] = useState(1)
   const hasDiscount = price !== discountPrice
   const discount = (((Number(price) - Number(discountPrice)) / Number(price)) * 100).toFixed(0)
 
@@ -113,6 +143,10 @@ export default function FishProductCard({
       resetBuy()
     }
   }, [buyState, resetBuy])
+
+  const buyItem = () => {
+    buy(id, discountPrice, amount)
+  }
   return (
     <>
       <StyledContainer>
@@ -126,20 +160,23 @@ export default function FishProductCard({
             <ContentLarge>{displayDiscountPrice}</ContentLarge>
           </StyledPrice>
           {hasDiscount && <StyledDiscount>{t('store.popup.discount', { discount })}</StyledDiscount>}
-          <Button
-            Typography={Headline}
-            width="100%"
-            loading={buyState.state === 'Processing'}
-            onClick={() => {
-              buy(id, discountPrice)
-            }}
-          >
+          <StyledInputContainer>
+            <StyledAmountTitle>{t('my_items.transfer.amount')}:</StyledAmountTitle>
+            <StyledInput
+              disabled={buyState.state === 'Processing'}
+              type="number"
+              min={1}
+              value={amount}
+              onChange={e => setAmount(Number(e.target.value))}
+            />
+          </StyledInputContainer>
+          <Button Typography={Headline} width="100%" loading={buyState.state === 'Processing'} onClick={buyItem}>
             {button || t('store.product_card.buy_btn')}
           </Button>
           <FishProductCountdown target={end_time} />
         </StyledProductCard>
       </StyledContainer>
-      <BuyFishItemPopup state={buyState} item={item} onClose={() => resetBuy()} />
+      <BuyFishItemPopup state={buyState} item={item} amount={amount} onClose={() => resetBuy()} />
     </>
   )
 }

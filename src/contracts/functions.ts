@@ -504,13 +504,13 @@ export const useForge = () => {
     state: 'None',
     status: state,
   })
-  const forge = async (formulaId: number) => {
+  const forge = async (formulaId: number, numFusion: number) => {
     if (account) {
       setForgeState({
         state: 'PendingSignature',
         status: state,
       })
-      api.getForgeCalldata(formulaId, account).then(calldata => (send as any)(...calldata))
+      api.getForgeCalldata(formulaId, account, numFusion).then(calldata => (send as any)(...calldata))
     }
   }
   useEffect(() => {
@@ -967,7 +967,7 @@ export const useBuyFishItem = () => {
   }
 
   const buy = useCallback(
-    async (productId: number, price: BigNumberish) => {
+    async (productId: number, price: BigNumberish, amount: number) => {
       if (!account || !library) {
         return
       }
@@ -984,7 +984,7 @@ export const useBuyFishItem = () => {
         }
       }
       try {
-        const data = await api.signFishStoreProduct({ from: account, to: account, productId })
+        const data = await api.signFishStoreProduct({ from: account, to: account, productId, amount })
         ;(sendBuy as any)(...data)
       } catch (err: any) {
         setBuyState({
