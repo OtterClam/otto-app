@@ -322,7 +322,7 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
               type="number"
               min={1}
               value={numFusion}
-              onChange={e => setNumFusion(Number(e.target.value))}
+              onChange={e => setNumFusion(1)}
             />
           </StyledInputContainer>
           <PaymentButton
