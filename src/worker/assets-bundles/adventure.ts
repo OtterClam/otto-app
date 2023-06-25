@@ -25,6 +25,7 @@ export const adventure = new GeneralAssetsBundle(BundleName.AdventurePage, [
   '/images/adventure/continue.png',
   '/images/adventure/hot-spring-large.jpg',
   '/images/adventure/hot-spring.jpg',
+  '/images/adventure/kodama-revive.png',
   '/images/adventure/location_name.png',
   '/images/adventure/lock.png',
   '/images/adventure/lock.svg',
