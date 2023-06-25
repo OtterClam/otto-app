@@ -22,11 +22,10 @@ import Otto, { AdventureOttoStatus } from 'models/Otto'
 import { useMyOttos } from 'MyOttosProvider'
 import { useTranslation } from 'next-i18next'
 import Head from 'next/head'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
-import { Headline, Note } from 'styles/typography'
+import { Headline } from 'styles/typography'
 import JournalSection from './JournalSection'
 import RewardSection from './RewardSection'
 
@@ -78,25 +77,6 @@ const StyledShareButtonText = styled.span`
   }
 `
 
-const StyledRevivingBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  max-width: 480px;
-  margin: 0 auto;
-`
-
-const StyledRevivingText = styled(Note).attrs({ as: 'p' })`
-  color: ${({ theme }) => theme.colors.white};
-  position: relative;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 27px;
-  letter-spacing: 0em;
-  text-align: center;
-`
-
 export default function ResultStep() {
   const { t } = useTranslation('', { keyPrefix: 'adventurePopup.resultStep' })
   const {
@@ -118,7 +98,6 @@ export default function ResultStep() {
   const { MATIC } = useTokenInfo()
 
   const displayedOtto = otto || sharedOtto
-  const reviving = reviveState.status === 'Mining'
 
   const closePopup = useCallback(() => {
     dispatch({ type: AdventureUIActionType.ClosePopup })
@@ -250,46 +229,38 @@ export default function ResultStep() {
           <meta property="og:image" content={result.image} />
         </Head>
       )}
-      {reviveState.status === 'Mining' && (
-        <StyledRevivingBody>
-          <Image width={300} height={300} src="/images/adventure/kodama-revive.png" />
-          <StyledRevivingText>{t('reviving_desc')}</StyledRevivingText>
-        </StyledRevivingBody>
-      )}
-      {reviveState.status !== 'Mining' && (
-        <StyledBody>
-          <StyledJournalSection result={result} />
-          {result && displayedOtto && <StyledRewardSection result={result} otto={displayedOtto} />}
-          {result && (
-            <StyledButtons>
-              {otto && !result.success && !result.revived && (
-                <>
-                  <PaymentButton
-                    Typography={Headline}
-                    loading={reviveState.status === 'PendingSignature'}
-                    spenderAddress={ADVENTURE}
-                    token={MATIC}
-                    amount={price || '0'}
-                    onClick={() => otto && revive(otto.id, { value: price || '0', gasLimit: 2000000 })}
-                  >
-                    {t('revive_btn')}
-                  </PaymentButton>
-                  {exploreAgainButton}
-                </>
-              )}
-              {otto && (result.success || result.revived) && exploreAgainButton}
-              <StyledButtonGroup>
-                <Button width="50%" Typography={Headline} primaryColor="white" onClick={share}>
-                  <StyledShareButtonText>{t('share_btn')}</StyledShareButtonText>
-                </Button>
-                <Button width="50%" Typography={Headline} primaryColor="white" onClick={closePopup}>
-                  {t('close_btn')}
-                </Button>
-              </StyledButtonGroup>
-            </StyledButtons>
-          )}
-        </StyledBody>
-      )}
+      <StyledBody>
+        <StyledJournalSection result={result} />
+        {result && displayedOtto && <StyledRewardSection result={result} otto={displayedOtto} />}
+        {result && (
+          <StyledButtons>
+            {otto && !result.success && !result.revived && (
+              <>
+                <PaymentButton
+                  Typography={Headline}
+                  loading={reviveState.status === 'PendingSignature' || reviveState.status === 'Mining'}
+                  spenderAddress={ADVENTURE}
+                  token={MATIC}
+                  amount={price || '0'}
+                  onClick={() => otto && revive(otto.id, { value: price || '0', gasLimit: 2000000 })}
+                >
+                  {t('revive_btn')}
+                </PaymentButton>
+                {exploreAgainButton}
+              </>
+            )}
+            {otto && (result.success || result.revived) && exploreAgainButton}
+            <StyledButtonGroup>
+              <Button width="50%" Typography={Headline} primaryColor="white" onClick={share}>
+                <StyledShareButtonText>{t('share_btn')}</StyledShareButtonText>
+              </Button>
+              <Button width="50%" Typography={Headline} primaryColor="white" onClick={closePopup}>
+                {t('close_btn')}
+              </Button>
+            </StyledButtonGroup>
+          </StyledButtons>
+        )}
+      </StyledBody>
       {result && displayedOtto && router.query.location && router.query.adventure_tx && (
         <AdventureResultSharePopup
           result={result}
