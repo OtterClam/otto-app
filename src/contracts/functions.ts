@@ -225,7 +225,7 @@ export const useRedeemProduct = () => {
 
   const redeem = useCallback(
     async (couponId: string, amount = 1) => {
-      const signer = library?.getSigner()
+      const signer = library && 'getSigner' in library ? library.getSigner() : undefined
       if (account && signer) {
         setRedeemState({
           state: 'PendingSignature',

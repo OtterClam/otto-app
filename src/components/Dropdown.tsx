@@ -21,7 +21,7 @@ const StyledOptions = styled.ul`
   border: 2px solid ${({ theme }) => theme.colors.otterBlack};
   padding: 5px 10px;
   position: absolute;
-  z-index: 99;
+  z-index: 11;
   background: ${({ theme }) => theme.colors.white};
   top: 0;
 `

@@ -1,6 +1,4 @@
 import { useEthers } from '@usedapp/core'
-import WalletConnectProvider from '@walletconnect/ethereum-provider'
-import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { useTranslation } from 'next-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
@@ -11,19 +9,6 @@ import walletConnect from 'assets/wallets/walletconnect.jpg'
 import { selectConnectingWallet, walletConnected } from '../../store/uiSlice'
 import Popup from '../Popup'
 import Banner from './wallet.png'
-
-const CoinbaseWallet = new WalletLinkConnector({
-  url: 'https://polygon-rpc.com',
-  appName: 'Ottopia',
-  supportedChainIds: [137],
-})
-
-const walletConnectProvider = new WalletConnectProvider({
-  rpc: {
-    137: 'https://polygon-rpc.com',
-  },
-  chainId: 137,
-})
 
 const StyledContainer = styled.div`
   display: flex;
@@ -61,12 +46,8 @@ const Icon = styled.img`
 const WalletSelector = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { account, activateBrowserWallet, activate } = useEthers()
+  const { account, activateBrowserWallet } = useEthers()
   const connectingWallet = useSelector(selectConnectingWallet)
-  const activateWalletConnect = async () => {
-    await walletConnectProvider.enable()
-    activate(walletConnectProvider)
-  }
   return (
     <Popup
       show={connectingWallet && !account}
@@ -75,15 +56,15 @@ const WalletSelector = (): JSX.Element => {
     >
       <StyledContainer>
         <StyledBanner src={Banner.src} />
-        <Option onClick={() => activateBrowserWallet()}>
+        <Option onClick={() => activateBrowserWallet({ type: 'metamask' })}>
           <Name>Metamask</Name>
           <Icon src={metamask.src} alt="Metamask logo" />
         </Option>
-        <Option onClick={activateWalletConnect}>
+        <Option onClick={() => activateBrowserWallet({ type: 'walletconnect' })}>
           <Name>WalletConnect</Name>
           <Icon src={walletConnect.src} alt="WalletConnect logo" />
         </Option>
-        <Option onClick={() => activate(CoinbaseWallet)}>
+        <Option onClick={() => activateBrowserWallet({ type: 'coinbase' })}>
           <Name>Coinbase Wallet</Name>
           <Icon src={CoinbaseWalletIcon.src} alt="Coinbase Wallet" />
         </Option>

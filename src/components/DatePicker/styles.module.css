@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   animation: fadeIn 0.5s;
-  z-index: 500;
+  z-index: 20;
   margin-top: 2px;
 }
 

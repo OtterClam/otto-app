@@ -132,7 +132,7 @@ export function use1inchSwap() {
     }
     try {
       setSwapState({ state: 'PendingSignature', status: state })
-      const fromERC20 = getERC20(fromToken, library?.getSigner())
+      const fromERC20 = getERC20(fromToken, library && 'getSigner' in library ? library.getSigner() : undefined)
       const allowance = await fromERC20.allowance(account, ONE_INCH)
       if (allowance.lt(amount)) {
         const tx = await fromERC20.approve(ONE_INCH, ethers.constants.MaxUint256)

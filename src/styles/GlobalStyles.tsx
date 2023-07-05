@@ -10,11 +10,11 @@ const GlobalStyle = createGlobalStyle`
       --game-menu-height: 40px; 
       --game-body-height: calc(var(--real-vh) - var(--header-height) - var(--header-margin) - var(--game-menu-height) - env(safe-area-inset-bottom) - 2px);
 
-      --z-index-header: 1000;
-      --z-index-popup: 2000;
-      --z-index-overlay: 1999;
-      --z-index-side-menu: 2001;
-      --z-index-dropdown: 2002;
+      --z-index-header: 30;
+      --z-index-popup: 40;
+      --z-index-overlay: 39;
+      --z-index-side-menu: 41;
+      --z-index-dropdown: 42;
 
       @media ${({ theme }) => theme.breakpoints.desktop} {
         --game-body-height: calc(var(--real-vh) - var(--header-height) - var(--game-menu-height) - env(safe-area-inset-bottom));
