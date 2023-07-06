@@ -80,7 +80,11 @@ export const useDiceRoller = (otto?: Otto): DiceRoller => {
       try {
         setState(State.Processing)
         const tx = await (
-          connectContractToSigner(ottoHellDiceRoller, {}, library.getSigner()) as OttoHellDiceRoller
+          connectContractToSigner(
+            ottoHellDiceRoller,
+            {},
+            library && 'getSigner' in library ? library.getSigner() : undefined
+          ) as OttoHellDiceRoller
         ).rollWithMatic(otto.id, BigNumber.from('1'), { value })
         await tx.wait()
         setDice(await api.rollTheDice(otto.id, tx.hash))

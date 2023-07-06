@@ -1,5 +1,15 @@
 import { ApolloProvider } from '@apollo/client'
-import { ChainId, Config, DAppProvider, MulticallAddresses, NodeUrls } from '@usedapp/core'
+import {
+  ChainId,
+  Config,
+  DAppProvider,
+  MulticallAddresses,
+  NodeUrls,
+  MetamaskConnector,
+  CoinbaseWalletConnector,
+} from '@usedapp/core'
+import { Polygon } from '@usedapp/core/src/model/chain/polygon'
+import { WalletConnectV2Connector } from '@usedapp/wallet-connect-v2-connector'
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch'
 import SkeletonThemeProvider from 'components/SkeletonThemeProvider'
 import { ApiProvider } from 'contexts/Api'
@@ -75,6 +85,14 @@ const config: Config = {
   multicallAddresses,
   bufferGasLimitPercentage: 15,
   multicallVersion: 1,
+  connectors: {
+    metamask: new MetamaskConnector(),
+    coinbase: new CoinbaseWalletConnector(),
+    walletconnect: new WalletConnectV2Connector({
+      projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '',
+      chains: [Polygon],
+    }),
+  },
 }
 
 function useRealWindowSize() {

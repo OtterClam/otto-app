@@ -44,7 +44,10 @@ import { OttopiaStore } from './__generated__/OttopiaStore'
 
 export function useERC20(address: string) {
   const { library } = useEthers()
-  return useMemo(() => getERC20(address, library?.getSigner()), [address, library])
+  return useMemo(
+    () => getERC20(address, library && 'getSigner' in library ? library.getSigner() : undefined),
+    [address, library]
+  )
 }
 
 export function getERC20(address: string, signer?: Signer) {
@@ -72,7 +75,10 @@ export function useOttoSummonerContract() {
 export function useItemContract() {
   const { OTTO_ITEM } = useContractAddresses()
   const { account, library } = useEthers()
-  return useMemo(() => new Contract(OTTO_ITEM, OttoItemAbi, library?.getSigner()), [OTTO_ITEM, library])
+  return useMemo(
+    () => new Contract(OTTO_ITEM, OttoItemAbi, library && 'getSigner' in library ? library.getSigner() : undefined),
+    [OTTO_ITEM, library]
+  )
 }
 
 export function useStoreContract() {
