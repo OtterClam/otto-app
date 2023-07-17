@@ -54,7 +54,8 @@ export const RarityEpochProvider = ({ children }: PropsWithChildren<object>) => 
   const epochEndTime = (epoch?.endedAt || 0) * 1000
   const hasPrevEpoch = (epochNum === -1 || epochNum > 0) && (latestEpoch?.num || 0) > 0
   const hasNextEpoch = !isLatestEpoch
-  const totalOttoSupply = (epoch?.totalOttos ?? 0) - 20
+  const numIneligibleOtto = isAdventure ? 20 : epochNum === -1 || epochNum >= 18 ? 20 : 250
+  const totalOttoSupply = (epoch?.totalOttos ?? 0) - numIneligibleOtto
   const threshold = epochNum >= 17 || epochNum === -1 ? 0.1 : 0.5
   let prizeCount = Math.floor(totalOttoSupply * threshold)
   if (epochNum >= 22 || epochNum === -1) {
