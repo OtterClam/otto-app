@@ -953,7 +953,7 @@
       "give_up_back_btn": "让我再想想",
       "failed_desc": "你的阿獭冒险失败了，因此你无法得到此次冒险的任何奖励。",
       "failed_tooltip": "想要得到冒险中找到的物品吗？只需要花费 1 $MATIC，小森灵就会帮你取回物品喔！ (+30% EXP 及 +50% AP) 如果你都未取回物品，这些物品将会在下一次出发冒险时永远消失。",
-      "reviving_desc": "Kodama squad is retrieving the items...  Please do not close the window. The transaction will be finished soon.",
+      "reviving_desc": "木灵小队正在取回你的物品...请不要关闭这个视窗。交易通常很快会完成 ʕ•̫͡•ʔ b",
       "og_succeeded": "成功",
       "og_failed": "失败",
       "og_title": "{{ name }} 在 {{ location }} 的冒险 {{ result }} 了!",
