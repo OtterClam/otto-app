@@ -27,6 +27,7 @@ const RarityEpochContext = createContext({
   totalOttoSupply: 0,
   totalReward: 0,
   prizeCount: 0,
+  reciprocalRewardShift: 0,
   isMatic: false,
   constellation: '',
   constellationBoost: 50,
@@ -53,9 +54,14 @@ export const RarityEpochProvider = ({ children }: PropsWithChildren<object>) => 
   const epochEndTime = (epoch?.endedAt || 0) * 1000
   const hasPrevEpoch = (epochNum === -1 || epochNum > 0) && (latestEpoch?.num || 0) > 0
   const hasNextEpoch = !isLatestEpoch
-  const totalOttoSupply = (epoch?.totalOttos ?? 0) - (isAdventure ? 20 : 250)
+  const numIneligibleOtto = isAdventure ? 20 : epochNum === -1 || epochNum >= 18 ? 20 : 250
+  const totalOttoSupply = (epoch?.totalOttos ?? 0) - numIneligibleOtto
   const threshold = epochNum >= 17 || epochNum === -1 ? 0.1 : 0.5
-  const prizeCount = Math.floor(totalOttoSupply * threshold)
+  let prizeCount = Math.floor(totalOttoSupply * threshold)
+  if (epochNum >= 22 || epochNum === -1) {
+    prizeCount = 500
+  }
+  const reciprocalRewardShift = epochNum >= 22 || epochNum === -1 ? 3 : 0
   const isMatic = epochNum >= 17 || epochNum === -1
   let totalReward =
     epochNum >= 17 || epochNum === -1
@@ -82,6 +88,7 @@ export const RarityEpochProvider = ({ children }: PropsWithChildren<object>) => 
       totalOttoSupply,
       totalReward,
       prizeCount,
+      reciprocalRewardShift,
       isMatic,
       constellation: t(`constellation.${epoch?.constellation}`),
       constellationBoost: epoch?.constellationBoost || 50,
@@ -95,6 +102,7 @@ export const RarityEpochProvider = ({ children }: PropsWithChildren<object>) => 
       totalOttoSupply,
       totalReward,
       prizeCount,
+      reciprocalRewardShift,
       isMatic,
       epochNum,
       t,
