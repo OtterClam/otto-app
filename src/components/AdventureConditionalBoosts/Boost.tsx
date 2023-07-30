@@ -60,6 +60,7 @@ export default function Boost({ boost, noPreview }: BoostProps) {
         <StyledFirstMatchBoostIcon attr={boost.attr.toLocaleUpperCase()} />
       )}
       {boost.boostType !== BoostType.FirstMatchGroup && <StyledNormalBoostIcon icon={boost.icon} />}
+      {/* API Boost info will have markup in some cases. // eslint-disable-next-line react/no-danger */}
       <div dangerouslySetInnerHTML={{ __html: boost.message }} />
     </StyledContainer>
   )
