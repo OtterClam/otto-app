@@ -1,4 +1,5 @@
 /* eslint-disable react/no-danger */
+/* react/no-danger: API Boost info contains markup. */
 import { AdventureDisplayedBoost } from 'models/AdventureDisplayedBoost'
 import { BoostType } from 'models/AdventureLocation'
 import styled from 'styled-components/macro'
