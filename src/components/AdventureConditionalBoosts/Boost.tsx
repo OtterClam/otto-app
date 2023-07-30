@@ -60,7 +60,7 @@ export default function Boost({ boost, noPreview }: BoostProps) {
         <StyledFirstMatchBoostIcon attr={boost.attr.toLocaleUpperCase()} />
       )}
       {boost.boostType !== BoostType.FirstMatchGroup && <StyledNormalBoostIcon icon={boost.icon} />}
-      <div>{boost.message}</div>
+      <div dangerouslySetInnerHTML={{ __html: boost.message }} />
     </StyledContainer>
   )
 }
