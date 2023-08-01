@@ -1,3 +1,5 @@
+/* eslint-disable react/no-danger */
+/* react/no-danger: API Boost info contains markup. */
 import { AdventureDisplayedBoost } from 'models/AdventureDisplayedBoost'
 import { BoostType } from 'models/AdventureLocation'
 import styled from 'styled-components/macro'
@@ -60,7 +62,7 @@ export default function Boost({ boost, noPreview }: BoostProps) {
         <StyledFirstMatchBoostIcon attr={boost.attr.toLocaleUpperCase()} />
       )}
       {boost.boostType !== BoostType.FirstMatchGroup && <StyledNormalBoostIcon icon={boost.icon} />}
-      <div>{boost.message}</div>
+      <div dangerouslySetInnerHTML={{ __html: boost.message }} />
     </StyledContainer>
   )
 }
