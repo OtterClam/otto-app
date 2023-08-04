@@ -30,7 +30,7 @@ const useContractAddresses = () => {
         })
       )
     }
-  }, [chainId, active, dispatch, t, isLoading])
+  }, [chainId, active, dispatch, t, isLoading, account, activateBrowserWallet])
 
   return useMemo(() => {
     return addresses[chainId ?? -1] ?? POLYGON_MAINNET
