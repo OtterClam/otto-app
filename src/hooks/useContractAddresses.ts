@@ -14,21 +14,23 @@ const addresses: { [key: number]: typeof POLYGON_MAINNET } = {
 const useContractAddresses = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { chainId, active } = useEthers()
+  const { chainId, active, isLoading, account, activateBrowserWallet } = useEthers()
 
   useEffect(() => {
-    if (!active || Object.keys(addresses).includes(String(chainId))) {
+    if (!active || isLoading || Object.keys(addresses).includes(String(chainId))) {
       dispatch(clearError())
+    } else if (!account) {
+      activateBrowserWallet()
     } else {
       dispatch(
         setError({
-          header: t('unsupported_network.title'),
+          header: t('unsupported_network.title') + chainId,
           subHeader: t('unsupported_network.desc'),
           button: ErrorButtonType.SWITCH_TO_MAINNET,
         })
       )
     }
-  }, [chainId, active, dispatch, t])
+  }, [chainId, active, dispatch, t, isLoading, account, activateBrowserWallet])
 
   return useMemo(() => {
     return addresses[chainId ?? -1] ?? POLYGON_MAINNET

@@ -252,7 +252,7 @@ export default function ResultStep() {
       )}
       {reviveState.status === 'Mining' && (
         <StyledRevivingBody>
-          <Image width={300} height={300} src="/images/adventure/kodama-revive.png" />
+          <Image width={300} height={300} src="/images/adventure/kodama-revive.gif" />
           <StyledRevivingText>{t('reviving_desc')}</StyledRevivingText>
         </StyledRevivingBody>
       )}

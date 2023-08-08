@@ -56,7 +56,7 @@ const WalletSelector = (): JSX.Element => {
     >
       <StyledContainer>
         <StyledBanner src={Banner.src} />
-        <Option onClick={() => activateBrowserWallet({ type: 'metamask' })}>
+        <Option onClick={() => activateBrowserWallet()}>
           <Name>Metamask</Name>
           <Icon src={metamask.src} alt="Metamask logo" />
         </Option>
