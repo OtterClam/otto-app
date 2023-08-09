@@ -932,7 +932,12 @@
       "see_results_hint": "你將會執行一筆交易以查看冒險結果",
       "wants_more": "想要更多加速藥水嗎？",
       "buy_now": "馬上購買 >",
-      "used": "使用 {{ amount }}"
+      "used": "使用 {{ amount }}",
+      "title_stake": "{{name}} 正在放鬆中...",
+      "elapsed_time": "Elapsed Time: {{time}}",
+      "rounds": "Rounds: {{rounds}}",
+      "max": "最大值",
+      "next_round_in": "Next round in: {{time}}"
     },
     "resultStep": {
       "journal": "冒險日誌",

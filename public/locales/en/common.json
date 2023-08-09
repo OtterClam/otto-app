@@ -955,7 +955,12 @@
       "see_results_hint": "To check the Adventure Journal, you will proceed a transaction.",
       "wants_more": "Want more Speed-Up Potions?",
       "buy_now": "Buy NOW>",
-      "used": "Use {{ amount }}"
+      "used": "Use {{ amount }}",
+      "title_stake": "{{name}} is relaxing...",
+      "elapsed_time": "Elapsed Time: {{time}}",
+      "rounds": "Rounds: {{rounds}}",
+      "max": "MAX",
+      "next_round_in": "Next round in: {{time}}"
     },
     "resultStep": {
       "journal": "Adventure Journal",

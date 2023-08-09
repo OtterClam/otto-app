@@ -95,6 +95,8 @@ export interface RawAdventureLocation {
   conditional_boosts: RawAdventureLocationConditionalBoost[]
   min_level: number
   open: boolean
+  stake_mode: boolean
+  max_stake_rounds: number
 }
 
 export interface AdventureLocation {
@@ -116,6 +118,8 @@ export interface AdventureLocation {
   conditionalBoosts: AdventureLocationConditionalBoost[]
   minLevel: number
   open: boolean
+  stakeMode: boolean
+  maxStakeRounds: number
 }
 
 export type RawAdventureExploreArgs = [
@@ -187,5 +191,7 @@ export function rawAdventureLocationToAdventureLocation(raw: RawAdventureLocatio
     conditionalBoosts: raw.conditional_boosts.map(rawConditionalBoostToConditionalBoost),
     minLevel: raw.min_level,
     open: raw.open,
+    stakeMode: raw.stake_mode,
+    maxStakeRounds: raw.max_stake_rounds,
   }
 }
