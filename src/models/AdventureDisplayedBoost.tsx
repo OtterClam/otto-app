@@ -6,6 +6,7 @@ import birthImage from 'assets/adventure/boost/birth.png'
 import legendaryImage from 'assets/adventure/boost/legendary.png'
 import expImage from 'assets/adventure/boost/exp.png'
 import {
+  AdventureLocation,
   AdventureLocationConditionalBoost,
   AttrBoostCondition,
   BoostAmounts,
@@ -58,13 +59,15 @@ export type AdventureDisplayedBoost =
 export const parseBoosts = (
   i18n: I18n,
   otto: Otto | undefined,
-  boosts: AdventureLocationConditionalBoost[],
+  location: AdventureLocation | undefined,
   details = false
 ): AdventureDisplayedBoost[] => {
+  const boosts = location ? location.conditionalBoosts : []
   const queue = boosts.slice()
   const displayedBoosts: AdventureDisplayedBoost[] = []
   let fixedLevelBoost: (AdventureDisplayedBoost & { currentLevelEffectiveBoosts: string[] }) | undefined
   let levelUpBoost: AdventureDisplayedBoost | undefined
+  const disableTemporalBoost = location?.stakeMode
 
   while (queue.length > 0) {
     const displayedBoost =
@@ -74,15 +77,18 @@ export const parseBoosts = (
     if (displayedBoost) {
       if (displayedBoost.boostType === BoostType.FirstMatchGroup && displayedBoost.attr === 'level') {
         fixedLevelBoost = displayedBoost
-      } else if (displayedBoost.boostType === BoostType.LevelUp) {
+      } else if (displayedBoost.boostType === BoostType.LevelUp && !disableTemporalBoost) {
         levelUpBoost = displayedBoost
-      } else {
+      } else if (
+        !disableTemporalBoost ||
+        [BoostType.Birthday, BoostType.Zodiac].findIndex(x => x === displayedBoost.boostType) === -1
+      ) {
         displayedBoosts.push(displayedBoost)
       }
     }
   }
 
-  if (levelUpBoost || fixedLevelBoost) {
+  if ((levelUpBoost && !disableTemporalBoost) || fixedLevelBoost) {
     displayedBoosts.push({
       boostType: BoostType.Exp,
       message: [levelUpBoost?.message, fixedLevelBoost?.message].filter(Boolean).join('<br />'),

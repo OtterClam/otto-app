@@ -118,10 +118,7 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
   const loading = !otto || location === null || waitingTx || loadingPreviewData
 
   const levelBoost = useMemo(
-    () =>
-      parseBoosts(i18n, otto, location?.conditionalBoosts ?? []).find(
-        boost => boost.effective && boost.boostType === BoostType.Exp
-      ),
+    () => parseBoosts(i18n, otto, location).find(boost => boost.effective && boost.boostType === BoostType.Exp),
     [location, i18n, otto]
   )
 
@@ -263,7 +260,11 @@ export default function PreviewOttoStep({ onRequestClose }: { onRequestClose: ()
 
             <StyledLocation>
               <AdventureConditionalBoosts loading={loading} />
-              <AdventureRewards loading={loading} canUsePotions onUsePotion={setUsedPotionAmounts} />
+              <AdventureRewards
+                loading={loading}
+                canUsePotions={!location?.stakeMode}
+                onUsePotion={setUsedPotionAmounts}
+              />
             </StyledLocation>
           </StyledMain>
 

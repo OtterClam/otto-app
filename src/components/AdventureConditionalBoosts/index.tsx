@@ -48,10 +48,10 @@ export default function AdventureConditionalBoosts({
       return []
     }
     if (locationBoostsOnly) {
-      const boosts = parseBoosts(i18n, otto, location.conditionalBoosts, true)
+      const boosts = parseBoosts(i18n, otto, location, true)
       return boosts.filter(boost => boost.boostType === BoostType.FirstMatchGroup)
     }
-    return parseBoosts(i18n, otto, location.conditionalBoosts)
+    return parseBoosts(i18n, otto, location)
   }, [location, locationBoostsOnly, otto, i18n])
 
   const effectiveBoosts = boosts.filter(boost => boost.effective)
