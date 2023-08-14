@@ -134,6 +134,8 @@ const StyledFoundItemList = styled.div`
   display: flex;
   gap: 10px;
   margin-top: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
 `
 
 const StyledItemCell = styled(ItemCell)`
