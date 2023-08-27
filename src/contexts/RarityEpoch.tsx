@@ -7,6 +7,7 @@ import {
   TOTAL_ADVENTURE_REWARD,
   ROUND_RARITY_REWARD_SEASON_CLAM_FINAL,
   ROUND_RARITY_REWARD_S3_MATIC,
+  ROUND_RARITY_REWARD_S3_MATIC_NEW,
   RARITY_S2_END,
   RARITY_S2_END_EPOCH,
   RARITY_S3_START,
@@ -64,7 +65,9 @@ export const RarityEpochProvider = ({ children }: PropsWithChildren<object>) => 
   const reciprocalRewardShift = epochNum >= 22 || epochNum === -1 ? 3 : 0
   const isMatic = epochNum >= 17 || epochNum === -1
   let totalReward =
-    epochNum >= 17 || epochNum === -1
+    epochNum >= 24 || epochNum === -1
+      ? ROUND_RARITY_REWARD_S3_MATIC_NEW
+      : epochNum >= 17
       ? ROUND_RARITY_REWARD_S3_MATIC
       : epochNum >= 15
       ? ROUND_RARITY_REWARD_SEASON_CLAM_FINAL
