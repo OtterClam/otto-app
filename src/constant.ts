@@ -53,6 +53,7 @@ export const RARITY_S1_END = 1660867200000
 export const RARITY_S2_END = 1668384000000
 export const RARITY_S2_END_EPOCH = 9
 export const RARITY_S3_START = 1669593600000 // 2022-11-28 0:00 UTC
+export const RARITY_S3_MATIC_NEW_START = 1693180800000 // 2023-08-28 0:00 UTC
 
 export enum Token {
   Clam = 'CLAM',
