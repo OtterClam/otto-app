@@ -57,19 +57,22 @@ export function getERC20(address: string, signer?: Signer) {
 export function useOttoContract() {
   const { OTTO } = useContractAddresses()
   const { library } = useEthers()
-  return new Contract(OTTO, OttoAbi, library) as Otto
+  return useMemo(() => new Contract(OTTO, OttoAbi, library) as Otto, [OTTO, library])
 }
 
 export function usePortalCreatorContract() {
   const { PORTAL_CREATOR } = useContractAddresses()
   const { library } = useEthers()
-  return new Contract(PORTAL_CREATOR, OttopiaPortalCreatorAbi, library) as OttopiaPortalCreator
+  return useMemo(
+    () => new Contract(PORTAL_CREATOR, OttopiaPortalCreatorAbi, library) as OttopiaPortalCreator,
+    [PORTAL_CREATOR, library]
+  )
 }
 
 export function useOttoSummonerContract() {
   const { SUMMONER } = useContractAddresses()
   const { library } = useEthers()
-  return new Contract(SUMMONER, OttoSummonerAbi, library)
+  return useMemo(() => new Contract(SUMMONER, OttoSummonerAbi, library), [SUMMONER, library])
 }
 
 export function useItemContract() {
@@ -84,75 +87,90 @@ export function useItemContract() {
 export function useStoreContract() {
   const { OTTOPIA_STORE } = useContractAddresses()
   const { library } = useEthers()
-  return new Contract(OTTOPIA_STORE, OttopiaStoreAbi, library) as OttopiaStore
+  return useMemo(() => new Contract(OTTOPIA_STORE, OttopiaStoreAbi, library) as OttopiaStore, [OTTOPIA_STORE, library])
 }
 
 export function useOttoHellDiceRoller() {
   const { OTTO_HELL_DICE_ROLLER } = useContractAddresses()
   const { library } = useEthers()
-  return new Contract(OTTO_HELL_DICE_ROLLER, OttoHellDiceRollerApi, library) as OttoHellDiceRoller
+  return useMemo(
+    () => new Contract(OTTO_HELL_DICE_ROLLER, OttoHellDiceRollerApi, library) as OttoHellDiceRoller,
+    [OTTO_HELL_DICE_ROLLER, library]
+  )
 }
 
 export function useItemFactoryContract(address: string) {
   const { library } = useEthers()
-  return new Contract(address, IOttoItemFactoryAbi, library) as IOttoItemFactory
+  return useMemo(() => new Contract(address, IOttoItemFactoryAbi, library) as IOttoItemFactory, [address, library])
 }
 
 export function useItemGiveaway() {
   const { OTTO_ITEM_GIVEAWAY } = useContractAddresses()
   const { library } = useEthers()
-  return new Contract(OTTO_ITEM_GIVEAWAY, OttoItemGiveawayAbi, library) as OttoItemGiveaway
+  return useMemo(
+    () => new Contract(OTTO_ITEM_GIVEAWAY, OttoItemGiveawayAbi, library) as OttoItemGiveaway,
+    [OTTO_ITEM_GIVEAWAY, library]
+  )
 }
 
 export function useClamCirculatingSupply() {
   const { CLAM_CIRCULATING_SUPPLY } = useContractAddresses()
   const { library } = useEthers()
-  return new Contract(CLAM_CIRCULATING_SUPPLY, ClamCirculatingSupplyAbi, library) as ClamCirculatingSupply
+  return useMemo(
+    () => new Contract(CLAM_CIRCULATING_SUPPLY, ClamCirculatingSupplyAbi, library) as ClamCirculatingSupply,
+    [CLAM_CIRCULATING_SUPPLY, library]
+  )
 }
 
 export function useClamPond() {
   const { CLAM_POND } = useContractAddresses()
   const { library } = useEthers()
-  return new Contract(CLAM_POND, ClamPondAbi, library) as ClamPond
+  return useMemo(() => new Contract(CLAM_POND, ClamPondAbi, library) as ClamPond, [CLAM_POND, library])
 }
 
 export function usePearlBank() {
   const { PEARL_BANK } = useContractAddresses()
   const { library } = useEthers()
-  return new Contract(PEARL_BANK, PearlBankAbi, library) as PearlBank
+  return useMemo(() => new Contract(PEARL_BANK, PearlBankAbi, library) as PearlBank, [PEARL_BANK, library])
 }
 
 export function useRewardManager() {
   const { REWARD_MANAGER } = useContractAddresses()
   const { library } = useEthers()
-  return new Contract(REWARD_MANAGER, RewardManagerAbi, library) as OtterRewardManager
+  return useMemo(
+    () => new Contract(REWARD_MANAGER, RewardManagerAbi, library) as OtterRewardManager,
+    [REWARD_MANAGER, library]
+  )
 }
 
 export function useOcUsdPlus() {
   const { OC_USD_PLUS } = useContractAddresses()
   const { library } = useEthers()
-  return new Contract(OC_USD_PLUS, OtterWrappedUsdPlusAbi, library) as OtterWrappedUsdPlusToken
+  return useMemo(
+    () => new Contract(OC_USD_PLUS, OtterWrappedUsdPlusAbi, library) as OtterWrappedUsdPlusToken,
+    [OC_USD_PLUS, library]
+  )
 }
 
 export function useFoundry() {
   const { FOUNDRY } = useContractAddresses()
   const { library } = useEthers()
-  return new Contract(FOUNDRY, FoundryAbi, library) as Foundry
+  return useMemo(() => new Contract(FOUNDRY, FoundryAbi, library) as Foundry, [FOUNDRY, library])
 }
 
 export function useERC1155(address: string) {
   const { library } = useEthers()
-  return new Contract(address, ERC1155Abi, library) as ERC1155
+  return useMemo(() => new Contract(address, ERC1155Abi, library) as ERC1155, [address, library])
 }
 
 export function useAdventureContract() {
   const { ADVENTURE } = useContractAddresses()
   const { library } = useEthers()
-  return new Contract(ADVENTURE, AdventureAbi, library) as Adventure
+  return useMemo(() => new Contract(ADVENTURE, AdventureAbi, library) as Adventure, [ADVENTURE, library])
 }
 
 export function useMissionContract() {
   const { MISSION } = useContractAddresses()
   const { library } = useEthers()
-  return new Contract(MISSION, MissionAbi, library) as Mission
+  return useMemo(() => new Contract(MISSION, MissionAbi, library) as Mission, [MISSION, library])
 }
