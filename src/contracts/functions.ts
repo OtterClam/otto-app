@@ -504,15 +504,18 @@ export const useForge = () => {
     state: 'None',
     status: state,
   })
-  const forge = async (formulaId: number, numFusion: number) => {
-    if (account) {
-      setForgeState({
-        state: 'PendingSignature',
-        status: state,
-      })
-      api.getForgeCalldata(formulaId, account, numFusion).then(calldata => (send as any)(...calldata))
-    }
-  }
+  const forge = useCallback(
+    async (formulaId: number, numFusion: number) => {
+      if (account) {
+        setForgeState({
+          state: 'PendingSignature',
+          status: state,
+        })
+        api.getForgeCalldata(formulaId, account, numFusion).then(calldata => (send as any)(...calldata))
+      }
+    },
+    [account, api, state, send]
+  )
   useEffect(() => {
     if (state.status === 'Success') {
       parseReceivedItems({ itemsRepository: itemsRepo, receipt: state.receipt, api, account }).then(receivedItems =>

@@ -69,12 +69,15 @@ export default function PaymentButton({
   }, [btnState, allowance, amount, onClick])
 
   useEffect(() => {
-    if (approveState.status === 'Exception') {
-      setBtnState(BtnState.WaitingClick)
-    } else if (approveState.status === 'Success') {
-      onSuccess()
+    if (btnState === BtnState.WaitingApprove) {
+      if (approveState.status === 'Exception') {
+        setBtnState(BtnState.WaitingClick)
+      } else if (approveState.status === 'Success') {
+        onSuccess()
+        setBtnState(BtnState.WaitingClick)
+      }
     }
-  }, [approveState.status, onSuccess])
+  }, [approveState.status, btnState, onSuccess])
 
   return (
     <TxButton onClick={pay} disabled={disabled || loading || approving} loading={loading || approving} {...btnProps}>

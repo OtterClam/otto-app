@@ -234,6 +234,12 @@ const useAvailableCount = (formula: ForgeFormula, itemCounts: MyItemAmounts): nu
 
 const isProcessing = (state: TransactionStatus) => state.status === 'PendingSignature' || state.status === 'Mining'
 
+enum ForgeItemState {
+  WaitingClick,
+  WaitingApprove,
+  WaitingForge,
+}
+
 export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyItems }: ForgeItemProps) {
   const { FISH } = useTokenInfo()
   const { FOUNDRY } = useContractAddresses()
@@ -251,16 +257,21 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
   const { isApprovedForAll, updateApprovalStatus, erc1155, operator: forgeContractAddress } = useERC1155Approval() || {}
   const { state: setApprovalState, send: sendSetApprovalCall } = useSetApprovalForAll(erc1155?.address || '')
   const approving = isProcessing(setApprovalState)
+  const [forgeItemState, setForgeItemState] = useState(ForgeItemState.WaitingClick)
   const forging = isProcessing(forgeState.status)
   const processing = approving || forging
 
   const callForge = useCallback(() => {
-    if (!isApprovedForAll && forgeContractAddress) {
+    if (!isApprovedForAll && forgeContractAddress && forgeItemState !== ForgeItemState.WaitingApprove) {
+      setForgeItemState(ForgeItemState.WaitingApprove)
       sendSetApprovalCall(forgeContractAddress, true, {})
       return
     }
-    forge(formula.id, numFusion)
-  }, [isApprovedForAll, forgeContractAddress, forge, formula.id, sendSetApprovalCall, numFusion])
+    if (forgeItemState !== ForgeItemState.WaitingForge) {
+      setForgeItemState(ForgeItemState.WaitingForge)
+      forge(formula.id, numFusion)
+    }
+  }, [isApprovedForAll, forgeContractAddress, forge, formula.id, sendSetApprovalCall, numFusion, forgeItemState])
 
   useEffect(() => {
     if (setApprovalState.status === 'Success') {
@@ -269,9 +280,18 @@ export default function ForgeItem({ formula, itemAmounts: itemCounts, refetchMyI
   }, [setApprovalState, updateApprovalStatus])
 
   useEffect(() => {
+    if (forgeItemState === ForgeItemState.WaitingApprove && isApprovedForAll) {
+      callForge()
+    }
+  }, [forgeItemState, isApprovedForAll, callForge])
+
+  useEffect(() => {
     if (forgeState.state === 'Exception' || forgeState.state === 'Fail') {
       window.alert(forgeState.status.errorMessage)
       resetForge()
+      setForgeItemState(ForgeItemState.WaitingClick)
+    } else if (forgeState.state === 'Success') {
+      setForgeItemState(ForgeItemState.WaitingClick)
     }
     // TODO: On forge success refetch items but after API has picked up tx
   }, [forgeState, resetForge])
