@@ -209,7 +209,7 @@ export default function ExploringStep() {
   const elapsedDurationMillis = differenceInMilliseconds(now, otto?.latestAdventurePass?.departureAt ?? now)
   const stakeRounds =
     location.stakeMode && location.adventureTime
-      ? Math.floor(elapsedDurationMillis / milliseconds(location.adventureTime))
+      ? Math.min(location.maxStakeRounds, Math.floor(elapsedDurationMillis / milliseconds(location.adventureTime)))
       : 0
   const timeToNextRoundMillis =
     milliseconds(location.adventureTime) - (elapsedDurationMillis % milliseconds(location.adventureTime))
