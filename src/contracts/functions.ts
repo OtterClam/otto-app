@@ -179,14 +179,14 @@ export const useBuyProduct = () => {
         ;(send as any)(...data)
       } catch (err: any) {
         const message =
-            err.response && err.response.data && err.response.data.error ? err.response.data.error : err.message
-          setBuyState({
-            state: 'Fail',
-            status: {
-              errorMessage: message,
-              ...DEFAULT_TRANSACTION_STATE,
-            },
-          })
+          err.response && err.response.data && err.response.data.error ? err.response.data.error : err.message
+        setBuyState({
+          state: 'Fail',
+          status: {
+            errorMessage: message,
+            ...DEFAULT_TRANSACTION_STATE,
+          },
+        })
       }
     }
   }
