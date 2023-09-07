@@ -167,15 +167,27 @@ export const useBuyProduct = () => {
     if (account) {
       setBuyState({
         state: 'PendingSignature',
-        status: state,
+        status: DEFAULT_TRANSACTION_STATE,
       })
-      const data = await api.signBuyProduct({
-        id: sellId,
-        amount,
-        from: account,
-        to: account,
-      })
-      ;(send as any)(...data)
+      try {
+        const data = await api.signBuyProduct({
+          id: sellId,
+          amount,
+          from: account,
+          to: account,
+        })
+        ;(send as any)(...data)
+      } catch (err: any) {
+        const message =
+          err.response && err.response.data && err.response.data.error ? err.response.data.error : err.message
+        setBuyState({
+          state: 'Fail',
+          status: {
+            errorMessage: message,
+            ...DEFAULT_TRANSACTION_STATE,
+          },
+        })
+      }
     }
   }
   const resetBuy = () => {
