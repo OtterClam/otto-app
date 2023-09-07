@@ -50,6 +50,7 @@ export const colors = {
     [AdventureOttoStatus.Resting]: '#FFC978',
     [AdventureOttoStatus.Ongoing]: '#B3A4FF',
     [AdventureOttoStatus.Unavailable]: '#99B6FF',
+    [AdventureOttoStatus.Staking]: '#A6B5FF',
   },
   treasury: {
     clamLpRed: ['rgba(238,75,78,1)', 'rgba(219, 55, 55, 0.5)'],

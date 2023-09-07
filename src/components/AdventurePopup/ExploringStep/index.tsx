@@ -6,12 +6,7 @@ import { useGoToAdventureResultStep, useSelectedAdventureLocation } from 'contex
 import { useOtto } from 'contexts/Otto'
 import { useAdventureFinish, useUsePotions } from 'contracts/functions'
 import { useFinishFee } from 'contracts/views'
-import addMilliseconds from 'date-fns/addMilliseconds'
-import differenceInMilliseconds from 'date-fns/differenceInMilliseconds'
 import formatDistance from 'date-fns/formatDistance'
-import formatDistanceStrict from 'date-fns/formatDistanceStrict'
-import formatDuration from 'date-fns/formatDuration'
-import milliseconds from 'date-fns/milliseconds'
 import { useTokenInfo } from 'hooks/token-info'
 import useContractAddresses from 'hooks/useContractAddresses'
 import { useMyOttos } from 'MyOttosProvider'
@@ -22,6 +17,7 @@ import { useEffect, useMemo, useState } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 import { ContentLarge, ContentMedium, Note } from 'styles/typography'
 import { calcRemainingTime } from 'utils/potion'
+import { computeStakingInfo } from 'utils/adventure'
 import SpeedUpPotions from '../SpeedUpPotions'
 
 const jump = keyframes`
@@ -205,17 +201,7 @@ export default function ExploringStep() {
     return null
   }
 
-  const elapsedDuration = formatDistanceStrict(now, otto?.latestAdventurePass?.departureAt ?? 0, { unit: 'hour' })
-  const elapsedDurationMillis = differenceInMilliseconds(now, otto?.latestAdventurePass?.departureAt ?? now)
-  const stakeRounds =
-    location.stakeMode && location.adventureTime
-      ? Math.min(location.maxStakeRounds, Math.floor(elapsedDurationMillis / milliseconds(location.adventureTime)))
-      : 0
-  const timeToNextRoundMillis =
-    milliseconds(location.adventureTime) - (elapsedDurationMillis % milliseconds(location.adventureTime))
-  const nextRoundTime = addMilliseconds(now, timeToNextRoundMillis)
-  const timeToNextRound = formatDistance(nextRoundTime, now)
-  const isMaxRounds = location.maxStakeRounds === stakeRounds
+  const { elapsedDuration, stakeRounds, timeToNextRound, isMaxRounds } = computeStakingInfo(now, otto, location)
 
   return (
     <StyledExploringStep bg={location.bgImageBlack}>
@@ -229,17 +215,17 @@ export default function ExploringStep() {
             {formattedDuration}
           </StyledDuration>
         </StyledOttoPlace>
+        {location.stakeMode && (
+          <>
+            <ContentMedium>{t('elapsed_time', { time: elapsedDuration })}</ContentMedium>
+            <ContentMedium>
+              {t('rounds', { rounds: stakeRounds })} {isMaxRounds && <Note>({t('max')})</Note>}
+            </ContentMedium>
+            {!isMaxRounds && <ContentMedium>{t('next_round_in', { time: timeToNextRound })}</ContentMedium>}
+          </>
+        )}
         {now >= canFinishAt && (
           <>
-            {location.stakeMode && (
-              <>
-                <ContentMedium>{t('elapsed_time', { time: elapsedDuration })}</ContentMedium>
-                <ContentMedium>
-                  {t('rounds', { rounds: stakeRounds })} {isMaxRounds && <Note>({t('max')})</Note>}
-                </ContentMedium>
-                {!isMaxRounds && <ContentMedium>{t('next_round_in', { time: timeToNextRound })}</ContentMedium>}
-              </>
-            )}
             <Button Typography={ContentLarge} loading={loading} onClick={() => onClick(false)}>
               {t('see_results_btn')}
             </Button>

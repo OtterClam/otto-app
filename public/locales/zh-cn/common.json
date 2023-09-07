@@ -914,7 +914,8 @@
     "ongoing": "冒险中",
     "resting": "休息中",
     "ready": "闲置中",
-    "unavailable": "无法冒险"
+    "unavailable": "无法冒险",
+    "staking": "Staking"
   },
   "adventurePopup": {
     "start": "出发 GO!",
@@ -997,6 +998,7 @@
     "ready": "{{name}} 已经准备好冒险！",
     "ongoing": "{{name}} 正在 {{location}} 冒险中...",
     "finished": "{{name}} 完成了对 {{location}} 的探索！",
+    "staking": "{{name}} is relaxing at {{location}}",
     "results":"成果"
   },
   "adventureLocationPopup": {
