@@ -433,8 +433,8 @@
     "zodiac_sign": "星座： {{constellation}}",
     "total_rarity_score": "稀有度总计： {{score}} (BRS {{brs}} + RRS {{rrs}})",
     "theme_boost": "主题加成",
-    "attribute_points": "Available Attribute Points: {{attributePoints}}",
-    "attribute_points_button": "Add Now >"
+    "attribute_points": "可用点数: {{attributePoints}}",
+    "attribute_points_button": "立马分配 >"
   },
   "otto_one": "{{count}} 只阿獭",
   "otto_other": "{{count}} 只阿獭",
