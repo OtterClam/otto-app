@@ -915,7 +915,7 @@
     "resting": "休息中",
     "ready": "閒置中",
     "unavailable": "無法冒險",
-    "staking": "Staking"
+    "staking": "長時間冒險中"
   },
   "adventurePopup": {
     "start": "出發 GO!",
@@ -935,10 +935,10 @@
       "buy_now": "馬上購買 >",
       "used": "使用 {{ amount }}",
       "title_stake": "{{name}} 正在放鬆中...",
-      "elapsed_time": "Elapsed Time: {{time}}",
-      "rounds": "Rounds: {{rounds}}",
+      "elapsed_time": "已過去時間：{{time}}",
+      "rounds": "第幾輪：{{rounds}}",
       "max": "最大值",
-      "next_round_in": "Next round in: {{time}}"
+      "next_round_in": "下一輪倒數：{{time}}"
     },
     "resultStep": {
       "journal": "冒險日誌",
@@ -998,7 +998,7 @@
     "ready": "{{name}} 已經準備好冒險！",
     "ongoing": "{{name}} 正在 {{location}} 冒險中...",
     "finished": "{{name}} 完成了對 {{location}} 的探索！",
-    "staking": "{{name}} is relaxing at {{location}}",
+    "staking": "{{name}} 正在 {{location}} 休息",
     "results":"成果"
   },
   "adventureLocationPopup": {
