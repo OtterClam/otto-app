@@ -915,7 +915,7 @@
     "resting": "休息中",
     "ready": "闲置中",
     "unavailable": "无法冒险",
-    "staking": "Staking"
+    "staking": "长时间冒险中"
   },
   "adventurePopup": {
     "start": "出发 GO!",
@@ -935,7 +935,7 @@
       "buy_now": "马上购买 >",
       "used": "使用 {{ amount }}",
       "title_stake": "{{name}} 正在放松中...",
-      "elapsed_time": "Elapsed Time: {{time}}",
+      "elapsed_time": "已过去时间：{{time}}",
       "rounds": "Rounds: {{rounds}}",
       "max": "最大值",
       "next_round_in": "Next round in: {{time}}"
@@ -998,7 +998,7 @@
     "ready": "{{name}} 已经准备好冒险！",
     "ongoing": "{{name}} 正在 {{location}} 冒险中...",
     "finished": "{{name}} 完成了对 {{location}} 的探索！",
-    "staking": "{{name}} is relaxing at {{location}}",
+    "staking": "{{name}} 正在 {{location}} 休息",
     "results":"成果"
   },
   "adventureLocationPopup": {
