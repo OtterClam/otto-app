@@ -936,9 +936,9 @@
       "used": "使用 {{ amount }}",
       "title_stake": "{{name}} 正在放松中...",
       "elapsed_time": "已过去时间：{{time}}",
-      "rounds": "Rounds: {{rounds}}",
+      "rounds": "第几轮: {{rounds}}",
       "max": "最大值",
-      "next_round_in": "Next round in: {{time}}"
+      "next_round_in": "下一轮倒数: {{time}}"
     },
     "resultStep": {
       "journal": "冒险日志",
