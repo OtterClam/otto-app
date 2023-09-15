@@ -1,6 +1,11 @@
+import addMilliseconds from 'date-fns/addMilliseconds'
+import differenceInMilliseconds from 'date-fns/differenceInMilliseconds'
+import formatDistance from 'date-fns/formatDistance'
+import formatDistanceStrict from 'date-fns/formatDistanceStrict'
+import milliseconds from 'date-fns/milliseconds'
 import { RawAdventureResult } from 'libs/RawAdventureResult'
-import { RawAdventureLocation } from 'models/AdventureLocation'
-import { RawOtto } from 'models/Otto'
+import { AdventureLocation, RawAdventureLocation } from 'models/AdventureLocation'
+import Otto, { RawOtto } from 'models/Otto'
 import { ParsedUrlQuery } from 'querystring'
 
 const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_MAINNET
@@ -55,4 +60,30 @@ async function getOtto(ottoId: string) {
   const res = await fetch(`${baseUrl}ottos/metadata/${ottoId}`)
   const otto: RawOtto = await res.json()
   return otto
+}
+
+export const computeStakingInfo = (now: Date, otto: Otto | undefined, location: AdventureLocation | undefined) => {
+  if (!location) {
+    return {}
+  }
+  const elapsedDuration = formatDistanceStrict(now, otto?.latestAdventurePass?.departureAt ?? 0, { unit: 'hour' })
+  const elapsedDurationMillis = differenceInMilliseconds(now, otto?.latestAdventurePass?.departureAt ?? now)
+  const stakeRounds =
+    location.stakeMode && location.adventureTime
+      ? Math.min(location.maxStakeRounds, Math.floor(elapsedDurationMillis / milliseconds(location.adventureTime)))
+      : 0
+  const timeToNextRoundMillis =
+    milliseconds(location.adventureTime) - (elapsedDurationMillis % milliseconds(location.adventureTime))
+  const nextRoundTime = addMilliseconds(now, timeToNextRoundMillis)
+  const timeToNextRound = formatDistance(nextRoundTime, now)
+  const isMaxRounds = location.maxStakeRounds === stakeRounds
+  return {
+    elapsedDuration,
+    elapsedDurationMillis,
+    stakeRounds,
+    timeToNextRoundMillis,
+    nextRoundTime,
+    timeToNextRound,
+    isMaxRounds,
+  }
 }

@@ -433,8 +433,8 @@
     "zodiac_sign": "星座： {{constellation}}",
     "total_rarity_score": "稀有度总计： {{score}} (BRS {{brs}} + RRS {{rrs}})",
     "theme_boost": "主题加成",
-    "attribute_points": "Available Attribute Points: {{attributePoints}}",
-    "attribute_points_button": "Add Now >"
+    "attribute_points": "可用点数: {{attributePoints}}",
+    "attribute_points_button": "立马分配 >"
   },
   "otto_one": "{{count}} 只阿獭",
   "otto_other": "{{count}} 只阿獭",
@@ -914,7 +914,8 @@
     "ongoing": "冒险中",
     "resting": "休息中",
     "ready": "闲置中",
-    "unavailable": "无法冒险"
+    "unavailable": "无法冒险",
+    "staking": "长时间冒险中"
   },
   "adventurePopup": {
     "start": "出发 GO!",
@@ -934,10 +935,10 @@
       "buy_now": "马上购买 >",
       "used": "使用 {{ amount }}",
       "title_stake": "{{name}} 正在放松中...",
-      "elapsed_time": "Elapsed Time: {{time}}",
-      "rounds": "Rounds: {{rounds}}",
+      "elapsed_time": "已过去时间：{{time}}",
+      "rounds": "第几轮: {{rounds}}",
       "max": "最大值",
-      "next_round_in": "Next round in: {{time}}"
+      "next_round_in": "下一轮倒数: {{time}}"
     },
     "resultStep": {
       "journal": "冒险日志",
@@ -997,6 +998,7 @@
     "ready": "{{name}} 已经准备好冒险！",
     "ongoing": "{{name}} 正在 {{location}} 冒险中...",
     "finished": "{{name}} 完成了对 {{location}} 的探索！",
+    "staking": "{{name}} 正在 {{location}} 休息",
     "results":"成果"
   },
   "adventureLocationPopup": {

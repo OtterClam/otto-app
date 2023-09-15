@@ -34,8 +34,8 @@ export default function AdventureJournal({ className, result }: Props) {
 
       <StyledResultContainer>
         <StyledResultLabel>{t('result_label')}</StyledResultLabel>
-        <StyledResultValue succeeded={result?.success}>
-          {result && t(result.success ? 'result_succeeded' : 'result_failed')}
+        <StyledResultValue succeeded={result?.success && result?.rewards.exp > 0}>
+          {result && t(result.success && result.rewards.exp > 0 ? 'result_succeeded' : 'result_failed')}
           {!result && <Skeleton />}
         </StyledResultValue>
       </StyledResultContainer>

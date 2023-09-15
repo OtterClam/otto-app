@@ -14,6 +14,7 @@ import Image from 'next/image'
 import { memo } from 'react'
 import styled from 'styled-components/macro'
 import { Caption, ContentExtraSmall, ContentSmall, ContentMedium, Note } from 'styles/typography'
+import { computeStakingInfo } from 'utils/adventure'
 import RemainingTime from './RemainingTime'
 
 interface AdventureOttoCardProps {
@@ -173,6 +174,8 @@ export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: Ad
   const { setOtto } = useOtto()
   const openPopup = useOpenAdventurePopup()
   const goToAdventureResultStep = useGoToAdventureResultStep()
+  const now = new Date()
+  const { nextRoundTime } = computeStakingInfo(now, otto, location)
 
   const check = () => {
     if (location) {
@@ -213,6 +216,7 @@ export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: Ad
         }
         break
       case AdventureOttoStatus.Ongoing:
+      case AdventureOttoStatus.Staking:
         if (otto.latestAdventurePass?.canFinishAt !== undefined) {
           check()
         }
@@ -227,6 +231,7 @@ export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: Ad
     [AdventureOttoStatus.Ongoing]: t('ongoing', { name: otto.name, location: location?.name }),
     [AdventureOttoStatus.Ready]: t('ready', { name: otto.name }),
     [AdventureOttoStatus.Resting]: t('resting_1', { name: otto.name }),
+    [AdventureOttoStatus.Staking]: t('staking', { name: otto.name, location: location?.name }),
   }
 
   const showJournalButton =
@@ -290,13 +295,16 @@ export default memo(function AdventureOttoCard({ bg, adventureStatus, otto }: Ad
                 </Button>
               )}
               {(otto.adventureStatus === AdventureOttoStatus.Resting ||
-                (otto.adventureStatus === AdventureOttoStatus.Ongoing &&
+                ((otto.adventureStatus === AdventureOttoStatus.Ongoing ||
+                  otto.adventureStatus === AdventureOttoStatus.Staking) &&
                   otto.latestAdventurePass?.canFinishAt !== undefined)) && (
                 <a onClick={onClick}>
                   <StyledRemainingTime
                     target={
                       otto.adventureStatus === AdventureOttoStatus.Resting
                         ? otto.restingUntil ?? new Date()
+                        : otto.adventureStatus === AdventureOttoStatus.Staking && nextRoundTime
+                        ? nextRoundTime
                         : otto.latestAdventurePass?.canFinishAt ?? new Date()
                     }
                   />

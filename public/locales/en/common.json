@@ -937,7 +937,8 @@
     "ongoing": "Ongoing",
     "resting": "Resting",
     "ready": "Ready",
-    "unavailable": "Unavailable"
+    "unavailable": "Unavailable",
+    "staking": "Staking"
   },
   "adventurePopup": {
     "start": "Let's Go!",
@@ -1020,6 +1021,7 @@
     "ready": "{{name}} is ready for an adventure!",
     "ongoing": "{{name}} is exploring {{location}}...",
     "finished": "{{name}} has finished exploring {{location}}!",
+    "staking": "{{name}} is relaxing at {{location}}",
     "results": "Results"
   },
   "adventureLocationPopup": {

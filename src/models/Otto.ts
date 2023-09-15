@@ -8,6 +8,8 @@ import { AdventurePass, fromRawPass } from './AdventurePass'
 import { AdventureResult } from './AdventureResult'
 import { ItemMetadata, Item } from './Item'
 
+const STAKING_LOCATIONS = [10]
+
 export enum TraitCollection {
   Genesis = 'genesis',
   Second = 'second',
@@ -93,6 +95,7 @@ export interface Stat {
 export enum AdventureOttoStatus {
   Finished = 'finished',
   Ongoing = 'ongoing',
+  Staking = 'staking',
   Resting = 'resting',
   Ready = 'ready',
   Unavailable = 'unavailable',
@@ -308,6 +311,9 @@ export default class Otto {
       }
     }
     if (this.latestAdventurePass && !this.latestAdventurePass.finishedAt) {
+      if (STAKING_LOCATIONS.findIndex(x => x === this.latestAdventurePass?.locationId) !== -1) {
+        return AdventureOttoStatus.Staking
+      }
       if (this.latestAdventurePass.canFinishAt > now) {
         return AdventureOttoStatus.Ongoing
       }
