@@ -8,7 +8,14 @@ import { AdventurePass, fromRawPass } from './AdventurePass'
 import { AdventureResult } from './AdventureResult'
 import { ItemMetadata, Item } from './Item'
 
-const STAKING_LOCATIONS = [10]
+const STAKING_LOCATION_MAP = new Map<number, any>([
+  [
+    10,
+    {
+      maxTimeMillis: 7 * 24 * 3600 * 1000,
+    },
+  ],
+])
 
 export enum TraitCollection {
   Genesis = 'genesis',
@@ -311,7 +318,11 @@ export default class Otto {
       }
     }
     if (this.latestAdventurePass && !this.latestAdventurePass.finishedAt) {
-      if (STAKING_LOCATIONS.findIndex(x => x === this.latestAdventurePass?.locationId) !== -1) {
+      const stakingDetails = STAKING_LOCATION_MAP.get(this.latestAdventurePass?.locationId)
+      if (stakingDetails) {
+        if (now.getTime() - this.latestAdventurePass.departureAt.getTime() > stakingDetails.maxTimeMillis) {
+          return AdventureOttoStatus.Finished
+        }
         return AdventureOttoStatus.Staking
       }
       if (this.latestAdventurePass.canFinishAt > now) {
