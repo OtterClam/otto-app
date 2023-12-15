@@ -49,7 +49,7 @@ export const pins: PinData[] = [
   {
     key: 'leaderboard',
     image: leaderboardImage,
-    link: '/leaderboard',
+    link: '/leaderboard?epoch=28',
     position: {
       x: -12.4,
       y: 0,
