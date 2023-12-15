@@ -110,7 +110,7 @@ export default function EpochInfo() {
           <StyledRoundEnd>
             {t('round_end')}
             {!isLatestEpoch && (
-              <Link href="?epoch=-1">
+              <Link href="?epoch=28">
                 <a>
                   <Button primaryColor="white" width="fit-content" Typography={Headline}>
                     {t('back_to_current')}

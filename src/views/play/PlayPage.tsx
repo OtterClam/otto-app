@@ -61,7 +61,7 @@ const PlayPage = () => {
       { title: t('play.menu.my_ottos'), icon: MyOttosIcon.src, href: '/my-ottos' },
       { title: t('play.menu.my_items'), icon: MyItemsIcon.src, href: '/my-items' },
       { title: t('play.menu.otto_store'), icon: OttoStoreIcon.src, href: '/store' },
-      { title: t('play.menu.leaderboard'), icon: LeaderboardIcon.src, href: '/leaderboard' },
+      { title: t('play.menu.leaderboard'), icon: LeaderboardIcon.src, href: '/leaderboard?epoch=28' },
       { title: t('play.menu.forge_house'), icon: ForgeHouseIcon.src },
       { title: t('play.menu.auction_house'), icon: AuctionHouseIcon.src },
       { title: t('play.menu.missions'), icon: MissionsIcon.src },
