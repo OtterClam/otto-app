@@ -227,16 +227,24 @@ export default function RankList({ className }: Props) {
   const { isMatic } = useRarityEpoch()
 
   useEffect(() => {
-    setLoadingApi(true)
-    leaderboardsRepo
-      .get({
-        type: adventure ? LeaderboardType.AdventurePoint : LeaderboardType.RarityScore,
-        page,
-        epoch,
-      })
-      .then(setLeaderboard)
-      .finally(() => setLoadingApi(false))
-  }, [page, epoch, adventure, leaderboardsRepo])
+    if (
+      !loadingApi &&
+      (!leaderboard ||
+        leaderboard.epoch !== epoch ||
+        leaderboard.type !== (adventure ? LeaderboardType.AdventurePoint : LeaderboardType.RarityScore) ||
+        leaderboard.page?.page !== page)
+    ) {
+      setLoadingApi(true)
+      leaderboardsRepo
+        .get({
+          type: adventure ? LeaderboardType.AdventurePoint : LeaderboardType.RarityScore,
+          page,
+          epoch,
+        })
+        .then(setLeaderboard)
+        .finally(() => setLoadingApi(false))
+    }
+  }, [leaderboard, loadingApi, page, epoch, adventure, leaderboardsRepo])
 
   return (
     <StyledRankList className={className}>

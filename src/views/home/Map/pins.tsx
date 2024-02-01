@@ -49,7 +49,7 @@ export const pins: PinData[] = [
   {
     key: 'leaderboard',
     image: leaderboardImage,
-    link: 'https://zealy.io/c/otterclam/leaderboard',
+    link: '/leaderboard?adventure=1',
     position: {
       x: -12.4,
       y: 0,
