@@ -50,7 +50,8 @@ export class LeaderboardsRepository {
     const ottoTokenIds = result.data.ottos.map(({ tokenId }) => tokenId)
     const ottos = await this.ottos.getOttosByTokenIds(ottoTokenIds, epoch)
     // For otters with dice, use the helldice endpoint to get a more up to date view
-    const ottosWithDice = epoch === -1 ? await this.ottos.augmentOttosWithDiceResults(ottos) : ottos
+    const ottosWithDice =
+      type === LeaderboardType.RarityScore && epoch === -1 ? await this.ottos.augmentOttosWithDiceResults(ottos) : ottos
     return {
       type,
       epoch,

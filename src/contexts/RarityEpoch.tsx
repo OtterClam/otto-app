@@ -12,6 +12,7 @@ import {
   RARITY_S2_END_EPOCH,
   RARITY_S3_START,
   RARITY_S3_MATIC_NEW_START,
+  RARITY_S4_END,
 } from 'constant'
 import { GET_EPOCH } from 'graphs/otto'
 import { GetEpoch, GetEpochVariables } from 'graphs/__generated__/GetEpoch'
@@ -53,7 +54,10 @@ export const RarityEpochProvider = ({ children }: PropsWithChildren<object>) => 
   if (now > RARITY_S2_END && now < RARITY_S3_START) {
     isLatestEpoch = true
   }
-  const epochEndTime = (epoch?.endedAt || 0) * 1000
+  let epochEndTime = (epoch?.endedAt || 0) * 1000
+  if (epoch?.num === 30) {
+    epochEndTime = RARITY_S4_END * 1000
+  }
   const hasPrevEpoch = (epochNum === -1 || epochNum > 0) && (latestEpoch?.num || 0) > 0
   const hasNextEpoch = !isLatestEpoch
   const numIneligibleOtto = isAdventure ? 20 : epochNum === -1 || epochNum >= 18 ? 20 : 250
