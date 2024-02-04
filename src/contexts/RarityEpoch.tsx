@@ -70,9 +70,11 @@ export const RarityEpochProvider = ({ children }: PropsWithChildren<object>) => 
   const reciprocalRewardShift = epochNum >= 22 || epochNum === -1 ? 3 : 0
   const isMatic = epochNum >= 17 || epochNum === -1
   let totalReward =
-    epochNum >= 24 || (epochNum === -1 && now > RARITY_S3_MATIC_NEW_START)
+    epochNum >= 30 || epochNum === -1
+      ? 0
+      : epochNum >= 24
       ? ROUND_RARITY_REWARD_S3_MATIC_NEW
-      : epochNum >= 17 || epochNum === -1
+      : epochNum >= 17
       ? ROUND_RARITY_REWARD_S3_MATIC
       : epochNum >= 15
       ? ROUND_RARITY_REWARD_SEASON_CLAM_FINAL
