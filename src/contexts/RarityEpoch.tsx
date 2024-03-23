@@ -58,6 +58,10 @@ export const RarityEpochProvider = ({ children }: PropsWithChildren<object>) => 
   if (epoch?.num === 30) {
     epochEndTime = RARITY_S4_END * 1000
   }
+  if (isAdventure && epochNum === -1 && latestEpoch?.num) {
+    epochNum = latestEpoch?.num
+    isLatestEpoch = false
+  }
   const hasPrevEpoch = (epochNum === -1 || epochNum > 0) && (latestEpoch?.num || 0) > 0
   const hasNextEpoch = !isLatestEpoch
   const numIneligibleOtto = isAdventure ? 20 : epochNum === -1 || epochNum >= 18 ? 20 : 250
